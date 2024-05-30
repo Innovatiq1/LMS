@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
 import { Support } from './support.model';
-import { map } from 'rxjs';
+import { map,Observable } from 'rxjs';
 import { ApiResponse } from '@core/models/response';
 import { CoursePaginationModel } from '@core/models/course.model';
 
@@ -40,6 +40,12 @@ export class SupportService {
     const apiUrl = `${this.defaultUrl}admin/chatbot`;
     return this.http.get<Support>(apiUrl, { params: this.buildParams(filter) }).pipe(map((response) => response));
   }
+  getCount(
+    filter?: Partial<CoursePaginationModel>
+  ): Observable<ApiResponse> {
+    const apiUrl = this.defaultUrl+'admin/chatbot/count';
+    return this.http.get<ApiResponse>(apiUrl);
+  }
   getTicketById(id:string) {
     const apiUrl = `${this.defaultUrl}admin/chatbot/${id}`;
     return this.http.get<Support>(apiUrl).pipe(map((response) => response));
@@ -51,8 +57,9 @@ export class SupportService {
       .delete<Support>(apiUrl)
       .pipe(map((response) => response));
   }
-  updateChat(dataDetails: Support) {
-    const apiUrl = `${this.defaultUrl}admin/chatbot/${dataDetails.id}`;
+  updateChat(id:string,dataDetails: Support) {
+   // const apiUrl = `${this.defaultUrl}admin/chatbot/${dataDetails.id}`;
+   const apiUrl = `${this.defaultUrl}admin/chatbot/${id}`;
     return this.http.put<ApiResponse>(apiUrl, dataDetails).pipe(
       map((response) => {
         return response.data

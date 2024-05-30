@@ -552,7 +552,7 @@ export class SettingsComponent {
     } else if (role == 'student') {
       this.isAdmin = false;
     } else if (
-      !(role == 'admin' || role == 'Student' || role == 'Instructor')
+      !(role == 'Student' || role == 'Instructor')
     ) {
       this.isApprovers = true;
     }

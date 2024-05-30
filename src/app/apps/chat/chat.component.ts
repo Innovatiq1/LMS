@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SupportService } from '../support/support.service';
 import { StudentsService } from 'app/admin/students/students.service';
 import Swal from 'sweetalert2';
+import { CoursePaginationModel } from '@core/models/course.model';
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
@@ -20,15 +21,18 @@ export class ChatComponent {
   ];
   students: any;
   chatId!:string;
+  id:any;
  currentTime:any;
  source:any;
 format: string|undefined;
+coursePaginationModel: Partial<CoursePaginationModel>;
 user!:string;
   dataToUpdate: any;
   dataSource: any;
   totalTickets: any;
   constructor(private studentService:StudentsService,public activeRoute: ActivatedRoute, private supportService: SupportService,public router:Router) {
     //constructor
+    this.coursePaginationModel = {};
     const today = new Date();
      this.currentTime = today.getHours() + ":" + today.getMinutes() ;
 
@@ -69,10 +73,12 @@ this.listOfTicket();
 
   getDetailedAboutTickets(){
    this.supportService.getTicketById(this.chatId).subscribe(res =>{
-console.log("res",res);
+//console.log("res",res);
  this.dataToUpdate = res;
   this.source = res.messages;
  this.user = res.messages[0].role;
+ //this.id=res.messages[0]._id;
+ 
 
    })
   }
@@ -82,13 +88,18 @@ console.log("res",res);
   }
  update(){
   // console.log("source",this.dataToUpdate);
-  this.supportService.updateChat(this.dataToUpdate).subscribe(res =>{
+  this.dataToUpdate.messages[0].status="closed";
+  let data=this.dataToUpdate.messages;
+  this.id=this.dataToUpdate.id;
+ // this.id=this.dataToUpdate.messages[0]._id;
+  this.supportService.updateChat(this.id,data).subscribe(res =>{
     //this.router.navigate(['apps/support'])
-    window.history.back();
+    //window.history.back();
+    // this.getDetailedAboutTickets();
   })
 }
 listOfTicket() {
-  this.supportService.getAllTickets().subscribe((res) => {
+  this.supportService.getAllTickets({ ...this.coursePaginationModel }).subscribe((res) => {
     this.dataSource = res.data.docs;
     this.totalTickets = this.dataSource.length;
   });

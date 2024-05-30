@@ -301,6 +301,7 @@ export class MainComponent implements OnInit {
   programClassList: any;
   totalDocs: any;
   docs: any;
+  classList: any;
 
   constructor(
     private courseService: CourseService,
@@ -866,7 +867,7 @@ export class MainComponent implements OnInit {
     this.getAnnouncementForStudents();
 
     //Instructor
-    this.getClassList();
+    this.getInsClassList();
     this.getProgramClassList();
     this.getClassList1();
     this.chart1Ins();
@@ -878,11 +879,25 @@ export class MainComponent implements OnInit {
   }
   
   getClassList() {
+    this.classService.getClassListWithPagination().subscribe(
+      (response) => {
+        if (response.data) {
+          this.classesList = response.data.docs.slice(0, 5).sort();
+          this.docs = response.data.totalDocs;
+        }
+      },
+      (error) => {
+        console.log('error', error);
+      }
+    );
+  }
+  
+  getInsClassList() {
     let instructorId = localStorage.getItem('id')
     this.lecturesService.getClassListWithPagination(instructorId, this.filterName,{ ...this.coursePaginationModel }).subscribe(
       (response) => {
         if (response.data) {
-          this.classesList = response.data.docs.slice(0, 5).sort();
+          this.classList = response.data.docs.slice(0, 5).sort();
           this.docs = response.data.totalDocs;
         }
       },
