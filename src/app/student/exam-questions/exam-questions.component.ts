@@ -189,6 +189,7 @@ export class ExamQuestionsComponent {
           confirmButtonText: 'Yes, submit!',
           cancelButtonText: 'Cancel'
         }).then((result) => {
+          clearInterval(this.interval);
           if (this.retake && result.isConfirmed) {
             this.updateAnswers();
         } else if (result.isConfirmed) {
@@ -217,7 +218,8 @@ export class ExamQuestionsComponent {
               this.updateExamStatus();
             }
           this.answerId = response.response;
-          this.getAnswerById()
+          // this.getAnswerById();
+          this.submitFeedback();
           },
           (error: any) => {
             console.error('Error:', error);
@@ -238,10 +240,11 @@ export class ExamQuestionsComponent {
               icon: "success"
             });
           this.answerId = this.answerAssessmentId;
-          this.getAnswerById()
-          if(this.retake) {
-            this.updateRetakes()
-          }
+          // this.getAnswerById()
+          this.submitFeedback();
+          // if(this.retake) {
+          //   this.updateRetakes()
+          // }
           },
           (error: any) => {
             console.error('Error:', error);

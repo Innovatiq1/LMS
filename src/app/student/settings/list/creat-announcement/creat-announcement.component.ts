@@ -10,6 +10,7 @@ import { ClassService } from 'app/admin/schedule-class/class.service';
 import { forkJoin } from 'rxjs';
 import Swal from 'sweetalert2';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { FormService } from '@core/service/customization.service';
 
 
 @Component({
@@ -47,6 +48,7 @@ export class CreatAnnouncementComponent {
   public Editor: any = ClassicEditor;
   mode: string = 'editUrl';
   userTypeNames: any;
+  forms!: any[];
 
   config: AngularEditorConfig = {
     editable: true,
@@ -107,7 +109,9 @@ cancel(){
 
 
   constructor(private router: Router, public classService: ClassService, public utils: UtilsService, private formBuilder: FormBuilder,
-    private announcementService: AnnouncementService,private adminService: AdminService) {
+    private formService: FormService,
+    private announcementService: AnnouncementService,private adminService: AdminService,) {
+      this.forms = [];
     let urlPath = this.router.url.split('/')
     this.editUrl = urlPath.includes('edit-announcement');
     this.viewUrl = urlPath.includes('view-announcement');
@@ -144,6 +148,7 @@ cancel(){
       announcementFor: new FormControl('', [Validators.required,]),
       'isActive': [true],
     });
+    this.getForms();
   }
   student1(event: any) {
 
@@ -300,5 +305,21 @@ cancel(){
       (error) => {
       }
     );
+  }
+
+  getForms(): void {
+    this.formService.getAllForms('Announcement Form').subscribe(forms => {
+      this.forms = forms;
+    });
+  }
+
+  labelStatusCheck(labelName: string): any {
+    if (this.forms && this.forms.length > 0) {
+      const status = this.forms[0]?.labels?.filter((v:any) => v?.name === labelName);
+      if (status && status.length > 0) {
+        return status[0]?.checked;
+      }
+    }
+    return false;
   }
 }

@@ -162,21 +162,25 @@ export class CreateSurveyComponent {
         this.studentFirstName = response.data.studentFirstName;
         this.studentLastName = response.data.studentLastName;
       }
-      // this.selectedIndex = response.data.question5;
-      // this.question6 = response.data.question6;
-      this.questionList = response?.data?.selectedOptions;
+      // this.questionList = response?.data?.selectedOptions;
+      const surveyId  = response.data.surveyId;
+      const selectedAnswer = response.data.selectedOptions;
+      this.questionList = {
+        name: surveyId.name,
+        questions: surveyId.questions.map((question: any) => {
+          return {
+            type: question.type,
+            questionText: question.questionText,
+            isMandatory: question.isMandatory,
+            maxRating: question.maxRating,
+            options: question.options?.map((option:any)=> option.text)|| null,
+            answer: selectedAnswer.find((ans:any)=>ans.questionText == question.questionText)?.selectedOption
+          };
+        }),
+      };
 
       this.feedbackForm.patchValue({
         courseName: response.data.courseName,
-        // question1: response.data.selectedOption
-        // question1:response.data?.question1,
-        // question2:response.data?.question2,
-        // question3:response.data?.question3,
-        // question4:response.data?.question4,
-        // question6:response.data?.question6,
-        // question7:response.data?.question7,
-
-
       });
     }, (err:any) => {});
   }

@@ -191,6 +191,10 @@ export class SettingsComponent {
     this.dashboardsUrl = urlPath.includes('dashboards');
     this.studentDbUrl = urlPath.includes('student-dashboard');
 
+    const formURLs = [this.courseFormsUrl, this.programFormsUrl, this.usersFormsUrl, this.financeFormsUrl, this.bannerFormsUrl]
+    if(formURLs.includes(true))
+      this.customFormsUrl = false;
+
     if (this.cmUrl === true) {
       this.breadscrums = [
         {
@@ -672,19 +676,19 @@ export class SettingsComponent {
     this.router.navigate(['/student/settings/student-dashboard']);
   }
   navigateToCourseFormsSettings() {
-    this.router.navigate(['/student/settings/course-forms']);
+    this.router.navigate(['/student/settings/customization-forms/course-forms']);
   }
   navigateToProgramFormsSettings() {
-    this.router.navigate(['/student/settings/program-forms']);
+    this.router.navigate(['/student/settings/customization-forms/program-forms']);
   }
   navigateToUsersFormsSettings() {
-    this.router.navigate(['/student/settings/users-forms']);
+    this.router.navigate(['/student/settings/customization-forms/users-forms']);
   }
   navigateToFinanceFormsSettings() {
-    this.router.navigate(['/student/settings/finance-forms']);
+    this.router.navigate(['/student/settings/customization-forms/finance-forms']);
   }
   navigateToBannerFormsSettings() {
-    this.router.navigate(['/student/settings/banner-forms']);
+    this.router.navigate(['/student/settings/customization-forms/banner-forms']);
   }
   navigateToDashboardSettings() {
     this.router.navigate(['/student/settings/dashboards']);

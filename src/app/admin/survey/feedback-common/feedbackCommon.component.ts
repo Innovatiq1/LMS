@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 export class FeedbackCommonComponent implements OnChanges {
   @Input() feedbackInfo: any;
   @Input() isPreview: boolean = false;
+  @Input() answer: boolean = false;
   @Input() col: number = 1;
   @Input() showSkip: boolean = false;
   @Output() submitAnswers: EventEmitter<any> = new EventEmitter<any>();
@@ -28,7 +29,7 @@ export class FeedbackCommonComponent implements OnChanges {
     return (
       this.feedbackInfo?.questions?.map((question: any) => ({
         ...question,
-        answer: null,
+        answer: this.answer ? question.answer: null,
       })) || []
     );
   }

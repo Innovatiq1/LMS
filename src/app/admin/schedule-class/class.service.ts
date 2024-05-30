@@ -301,6 +301,11 @@ enableExamStudentClass(id: any, item: any): Observable<ApiResponse> {
   return this.http.put<ApiResponse>(apiUrl, item);
 }
 
+getEnabledExamStudentClass(page: number, limit: number):  Observable<ApiResponse>{
+  const apiUrl = `${this.prefix}admin/studentClasses/students/enableExam`;
+  return this.http.get<ApiResponse>(apiUrl, { params: this.buildRegisteredClassesParams(page, limit) })
+}
+
 }
 
 

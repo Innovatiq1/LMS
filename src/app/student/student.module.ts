@@ -116,6 +116,7 @@ import { CheckoutComponent } from './checkout/checkout.component';
 import { CreateApprovalWorkflowComponent } from './settings/approval-workflow/create-approval-workflow/create-approval-workflow.component';
 import { ViewApprovalWorkflowComponent } from './settings/approval-workflow/view-approval-workflow/view-approval-workflow.component';
 import { InvoiceComponent } from './view-course/invoice/invoice.component';
+import { ExamTestListComponent } from './exam-test-list/exam-test-list.component';
 
 @NgModule({
   declarations: [
@@ -211,6 +212,7 @@ import { InvoiceComponent } from './view-course/invoice/invoice.component';
     CreateApprovalWorkflowComponent,
     ViewApprovalWorkflowComponent,
     InvoiceComponent,
+    ExamTestListComponent,
   
     // CourseKitComponent,
     // VideoPlayerComponent,
