@@ -140,7 +140,6 @@ export class ViewCourseComponent implements OnDestroy {
   defaultTab:string = 'home';
   assessmentTaken! : number;
   examAssessmentTaken!: number;
-  enableExam: boolean = false;
   assessmentAnswerLatest: any;
   constructor(
     private classService: ClassService,
@@ -320,7 +319,6 @@ export class ViewCourseComponent implements OnDestroy {
                   .subscribe((response) => {
                     this.studentClassDetails = response.data.docs[0].coursekit;
                     // console.log("payload",response)
-                    this.enableExam = response.data.docs[0].enableExam;
                     if (
                       this.studentClassDetails.playbackTime !== 100 ||
                       !this.studentClassDetails.playbackTime
@@ -729,7 +727,6 @@ export class ViewCourseComponent implements OnDestroy {
       .getStudentClass(studentId, this.classId)
       .subscribe((response) => {
         this.studentClassDetails = response?.data?.docs[0];
-        this.enableExam = response?.data?.docs[0]?.enableExam;
         this.coursekitDetails = response?.data?.docs[0]?.coursekit;
         this.longDescription = this?.coursekitDetails[0]?.longDescription;
         let totalPlaybackTime = 0;
@@ -792,9 +789,7 @@ export class ViewCourseComponent implements OnDestroy {
     let payload = {
       status: 'completed',
       studentId: studentId,
-      playbackTime: 100,
       classId:this.classId,
-      enableExam: this.free ? true: this.classDetails?.enableExam
     };
     this.classService
       .saveApprovedClasses(this.classId, payload)
