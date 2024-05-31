@@ -201,8 +201,7 @@ export class ViewCompletionComponent {
     return sessions;
   }
 
-  enableExam() {
-    
+  assignExam() {
     const studentId = this.response.studentId._id;
     const examAssessmentId = this.response.courseId.exam_assessment;
     const assessmentAnswerId = this.response.assessmentAnswer._id;

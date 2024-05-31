@@ -125,13 +125,13 @@
         </li>
         <li>
 
-          <button mat-button  *ngIf="role =='admin'"[matMenuTriggerFor]="menu">
+          <button mat-button  *ngIf="checkViewSettings(role)"[matMenuTriggerFor]="menu">
             <app-feather-icons [icon]="'settings'" [class]="'user-menu-icons'"></app-feather-icons>
           </button>
           <mat-menu #menu="matMenu" class="horizontal-menu">
             <div class="menu-row">
               <div class="user-container">
-                <div class="user-option" (click)="navigateToUserSettings()">
+                <div class="user-option" *ngIf="role==='admin'" (click)="navigateToUserSettings()">
                   <img src="assets/images/settings/role.png" alt="User" class="user-image">
                   <button mat-menu-item>
                     <h5>Manage Users</h5>
@@ -145,7 +145,7 @@
                     </button>
                   </div>
                 </div>
-                <div class="user-option" (click)="navigateToConfigSettings()" style="margin-left: 25px;">
+                <div class="user-option" *ngIf="role==='admin'" (click)="navigateToConfigSettings()" style="margin-left: 25px;">
                   <img src="assets/images/settings/system-configuration1.png" alt="User" class="user-image">
                   <button mat-menu-item>
                     <h5>Configuration</h5>
@@ -158,7 +158,7 @@
               </div>
             </div>
 
-            <div class="menu-row">
+            <div class="menu-row" *ngIf="role==='admin'">
               <div class="user-options" (click)="navigateToIntegrateSettings()">
                 <img src="assets/images/settings/integrate.jpg" alt="Custom" class="user-image">
                 <button mat-menu-item>

@@ -23,6 +23,7 @@ export interface AssessmentOption {
 export interface AssessmentQuestionsPaginationModel extends Pagination {
     docs: AssessmentQuestionModel[];
     filterText: string;
+    studentId: string;
     sortBy: string;
     sortByDirection: string;
 }

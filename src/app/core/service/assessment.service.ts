@@ -43,6 +43,10 @@ import { ApiResponse } from '@core/models/general.response';
         if (filter.filterText) {
           params = params.set('title', filter.filterText?.toString());
         }
+
+        if(filter.studentId) {
+          params = params.set('studentId', filter.studentId?.toString());
+        }
         // if (filter.status && filter.status === 'active') {
         //   params = params.set('status', 'active');
         // }else if (filter.status && filter.status === 'approved')  {
@@ -157,6 +161,13 @@ import { ApiResponse } from '@core/models/general.response';
 
     updateAssessment(data: any): Observable<any> {
       const apiUrl = `${this.defaultUrl}admin/exam-assesment-answers/${data.id}`;
+      return this.http.put<ApiResponse>(apiUrl, data).pipe(
+        map(response => response)
+      );
+    }
+
+    updateAssessmentStudentView(data: any): Observable<any> {
+      const apiUrl = `${this.defaultUrl}admin/exam-assesment-answers/${data.id}/student-view`;
       return this.http.put<ApiResponse>(apiUrl, data).pipe(
         map(response => response)
       );

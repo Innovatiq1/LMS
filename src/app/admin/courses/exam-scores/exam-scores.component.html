@@ -114,7 +114,7 @@
                   <mat-header-cell *matHeaderCellDef mat-sort-header>
                     Assessment Score
                   </mat-header-cell>
-                  <mat-cell *matCellDef="let row" [routerLink]="row.assessmentAnswer?._id ? ['/student/test/preview', row.assessmentAnswer?._id, 'student', row.studentInfo._id]:null" [queryParams]="{ assessmentType: 'assessment' }">
+                  <mat-cell *matCellDef="let row" [routerLink]="row.assessmentAnswer?._id ? ['/student/test/preview', row.assessmentAnswer?._id, 'student', row.studentId._id]:null" [queryParams]="{ assessmentType: 'assessment' }">
                     <span class="mobile-label">Assessment Score:</span
                     >{{ row?.assessmentAnswer?.score }} <span *ngIf="row?.assessmentAnswer?._id">/</span>
                     {{
@@ -127,10 +127,23 @@
                   <mat-header-cell *matHeaderCellDef mat-sort-header
                     >Exam Assessment Score
                   </mat-header-cell>
-                  <mat-cell *matCellDef="let row" [routerLink]="row?.examAssessmentAnswer?._id ? ['/student/test/preview', row.examAssessmentAnswer?._id, 'student', row.studentInfo._id]:null" [queryParams]="{ assessmentType: 'exam' }">
+                  <mat-cell *matCellDef="let row" [routerLink]="row?.examAssessmentAnswer?._id ? ['/student/test/preview', row.examAssessmentAnswer?._id, 'student', row.studentId._id]:null" [queryParams]="{ assessmentType: 'exam' }">
                     <span class="mobile-label">Exam Assessment Score:</span
                     >{{ row?.examAssessmentAnswer?.score }} <span *ngIf="row?.examAssessmentAnswer?._id">/</span>
                     {{ row?.examAssessmentAnswer?.totalScore }}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Action">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header
+                    >Action
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let row">
+                    <div *ngIf="!row?.examAssessmentAnswer?.studentView">
+                      <button id="student-view" mat-flat-button color="primary" (click)="enableStudentView(row)">
+                        <span>Enable Student View</span>
+                      </button>
+                    </div>
                   </mat-cell>
                 </ng-container>
 
