@@ -1609,7 +1609,7 @@
         </div>
       </div>
       <div class="body">
-        <div class="row px-4">
+        <div class="row px-4"  *ngIf="role==='admin'">
           <div class="col-md-6 banner">
             <button id="saved" [routerLink]="['/student/settings/sidemenu']">
               Sidemenu
@@ -1621,7 +1621,7 @@
             </button>
           </div>
         </div>
-        <div class="row px-4 py-4">
+        <div class="row px-4 py-4" *ngIf="role==='admin'">
           <div class="col-md-6 banner">
             <button
               id="saved"
@@ -1645,7 +1645,7 @@
               Survey
             </button>
           </div>
-          <div class="col-md-5">
+          <div class="col-md-5" *ngIf="role==='admin'">
             <button
               id="saved"
               routerLink="/student/settings/logo-customization"
@@ -1654,13 +1654,13 @@
             </button>
           </div>
         </div>
-        <div class="row px-4 py-4">
+        <div class="row px-4 py-4" *ngIf="role==='admin'">
           <div class="col-md-6 banner">
             <button id="saved" (click)="navigateToEmailSettings()">
               Email Templates
             </button>
           </div>
-          <div class="col-md-5">
+          <div class="col-md-5" *ngIf="role==='admin'">
             <button id="saved" (click)="navigateToStudentDbSettings()">Dashboards</button>
           </div>
         </div>

@@ -144,6 +144,7 @@ export class SettingsComponent {
   directorUsers: any;
   trainingAdminUsers: any;
   showBodyContent: boolean = false;
+  role: string|null;
 
   constructor(
     private studentService: StudentsService,
@@ -159,6 +160,7 @@ export class SettingsComponent {
     private settingsService: SettingsService,
     public dialog: MatDialog
   ) {
+    this.role = localStorage.getItem('user_type');
     let urlPath = this.router.url.split('/');
     this.cmUrl = urlPath.includes('coursemanager-settings');
     this.pmUrl = urlPath.includes('programmanager-settings');

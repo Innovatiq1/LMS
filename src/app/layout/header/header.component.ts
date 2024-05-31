@@ -365,4 +365,7 @@ export class HeaderComponent
       // }
     }
   }
+  checkViewSettings(role:any){
+    return role ? ['Instructor','admin'].includes(role):false;
+  }
 }

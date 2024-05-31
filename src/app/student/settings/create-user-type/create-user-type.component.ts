@@ -92,11 +92,11 @@ export class CreateUserTypeComponent {
   }
   getUserTypeList(filters?: any) {
     this.adminService
-      .getUserTypeList({ ...this.coursePaginationModel })
+      .getUserTypeList({ allRows: true })
       .subscribe(
         (response: any) => {
 
-          this.typesList = response.docs;
+          this.typesList = response;
           this. data = this.typesList.find((id: any) => id._id === this.paramId);
           if (this.data) {
             this.type = this.data.typeName;
