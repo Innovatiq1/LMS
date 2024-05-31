@@ -38,6 +38,7 @@ export class ExamScoresComponent {
   id: any;
   selection = new SelectionModel<any>(true, []);
   dataSource :any;
+  examScores: any;
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild('filter', { static: true }) filter!: ElementRef;
 
@@ -54,6 +55,7 @@ export class ExamScoresComponent {
     this.assessmentService.getExamAnswersV2({ ...this.assessmentPaginationModel})
       .subscribe(res => {
         this.dataSource = res.data.docs;
+        this.examScores = res.data.docs;
         this.totalItems = res.data.totalDocs;
         this.assessmentPaginationModel.docs = res.docs;
         this.assessmentPaginationModel.page = res.page;
@@ -80,6 +82,19 @@ export class ExamScoresComponent {
       : this.dataSource.forEach((row: any) =>
           this.selection.select(row)
         );
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value?.toLowerCase();
+    this.dataSource = filterValue.trim().toLowerCase();
+    if (filterValue) {
+      this.dataSource = this.examScores?.filter((item: any) => {
+        const searchList = `${item.studentInfo.name.toLowerCase()} ${item.studentInfo.last_name.toLowerCase()}`;
+        return searchList.includes(filterValue);
+      });
+    } else {
+      this.dataSource = this.examScores;
+    }
   }
 
 }

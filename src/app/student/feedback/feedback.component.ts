@@ -197,10 +197,7 @@ export class FeedbackComponent {
               this.classService
                 .saveApprovedClasses(this.classId, payload)
                 .subscribe((response) => {
-                  setTimeout(() => {
-                    this.router.navigate(['/student/view-course/'+ this.classId]);
-                  }, 4000);
-
+                  this.router.navigate(['/student/view-course/'+ this.classId]);
                 });
             } else if(this.isFree){
               let payload = {
@@ -213,10 +210,7 @@ export class FeedbackComponent {
               this.classService
                 .saveApprovedClasses(this.classId, payload)
                 .subscribe((response) => {
-                  setTimeout(() => {
-                    this.router.navigate(['/student/view-freecourse/'+ this.courseId]);
-                  }, 4000);
-
+                  this.router.navigate(['/student/view-freecourse/'+ this.courseId]);
                 });
             }
 
@@ -318,10 +312,10 @@ skipCallback(){
 
     this.courseService.getCourseById(this.courseId).subscribe((response) => {
       this.isFeedbackRequired =response.isFeedbackRequired;
-    this.questionList = response?.survey?.questions;
-    const survey = response?.survey;
+      this.questionList = response?.survey?.questions;
+      const survey = response?.survey;
       this.feedbackInfo = survey
-      ? {
+        ? {
           name: survey?.name,
           id: survey?.id,
           questions: survey?.questions?.map((question: any) => ({

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Session, Student, StudentApproval, StudentPaginationModel } from '@core/models/class.model';
+import { AssessmentService } from '@core/service/assessment.service';
 import { CourseService } from '@core/service/course.service';
 import { ClassService } from 'app/admin/schedule-class/class.service';
 import * as moment from 'moment';
@@ -28,7 +29,7 @@ export class ViewCompletionComponent {
   status:boolean = false;
   showTab:boolean = false;
   paramStatus: any;
-  constructor(private classService: ClassService,private courseService: CourseService,private _router: Router, private activatedRoute: ActivatedRoute,public _classService: ClassService,) {
+  constructor(private classService: ClassService,private courseService: CourseService,private _router: Router, private activatedRoute: ActivatedRoute,public _classService: ClassService, private assessmentService: AssessmentService) {
 
     this.studentPaginationModel = {} as StudentPaginationModel;
     this.activatedRoute.queryParams.subscribe((params: any) => {
@@ -55,6 +56,8 @@ export class ViewCompletionComponent {
         active: 'View Approved Courses',
       },
     ];
+  } else if(params['status'] === 'completed'){
+    this.showTab = true;
   }
   this.paramStatus =  params['status'];
       // if(this.courseId){
@@ -196,5 +199,33 @@ export class ViewCompletionComponent {
       return session;
     });
     return sessions;
+  }
+
+  enableExam() {
+    
+    const studentId = this.response.studentId._id;
+    const examAssessmentId = this.response.courseId.exam_assessment;
+    const assessmentAnswerId = this.response.assessmentAnswer._id;
+    const courseId = this.response.courseId._id;
+    const requestBody = {
+      studentId,
+      examAssessmentId,
+      assessmentAnswerId,
+      courseId
+    };
+
+    this.assessmentService.assignExamAssessment(requestBody).subscribe(
+      (response: any) => {
+        Swal.fire({
+          title: "Assigned!",
+          text: "Exam Assigned Successfully!",
+          icon: "success"
+        });
+      this.getCompletedClasses()
+      },
+      (error: any) => {
+        console.error('Error:', error);
+      }
+    );
   }
 }

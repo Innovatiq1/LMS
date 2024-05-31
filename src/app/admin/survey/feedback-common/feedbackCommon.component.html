@@ -84,7 +84,7 @@
       <ng-container *ngIf="['rating'].includes(question.type)">
         <app-star-rating
           [maxRating]="question.maxRating"
-          [value]="question.value"
+          [value]="question.answer"
           (changeEvent)="handleRatingInput($event, question, i)"
         ></app-star-rating>
       </ng-container>

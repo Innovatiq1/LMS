@@ -97,20 +97,25 @@
                     </div> -->
                     <div class="p-4">
                       <ul class="list-group list-group-unbordered">
-                          <li class="list-group-item">
+                          <li class="list-group-item p-1">
                             <b>Student Name: </b>
                             <span class="profile-desc-item gap-4">{{studentLastName? studentFirstName + " " + studentLastName:studentFirstName}}</span>
                           </li>
-                          <li class="list-group-item">
+                          <li class="list-group-item p-1">
                             <b>Course/Program Name: </b>
                             <span class="profile-desc-item">{{courseName}}</span>
                             <!-- <div class="profile-desc-item float-end">{{courseName}}</div> -->
                           </li>
                         </ul>
+                        <div class="mt-4 p-1">
+                          <app-feedbackcommon [feedbackInfo]="questionList" [col]="3" [isPreview]="true" [answer]="true"></app-feedbackcommon>
+                        </div>
                     </div>
 
                     <br>
-              <div class="row">
+
+
+              <div class="row" *ngIf="false">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                   <div class="card" *ngFor="let row of questionList">
                     <div class="header">

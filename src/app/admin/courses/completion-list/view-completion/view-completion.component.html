@@ -29,9 +29,9 @@
                 row.id === classDataById ? ' bg-c-green ' : 'border-class'
               " (click)="getCategories(row.id)">
                                 <h6>{{row?.title }}</h6>
-                                <!-- <small class="text-muted">
-                    <i class="fa fa-play-circle-o"></i> </small> -->
-      <!-- <span class="feedLblStyle1 lblCommentStyle">Program {{i+1}}</span> --
+                                 <small class="text-muted">
+                    <i class="fa fa-play-circle-o"></i> </small>
+      <span class="feedLblStyle1 lblCommentStyle">Program {{i+1}}</span>
 
                             </div>
                         </div>
@@ -69,7 +69,8 @@
                             <button
                               mat-icon-button
                               matTooltip="Withdraw"
-                              class="tbl-action-btn" (click)="Status(response,'cancel')"
+                              class="tbl-action-btn"
+                              (click)="Status(response, 'cancel')"
                             >
                               <img
                                 class="img-w"
@@ -353,10 +354,75 @@
                   </mat-tab>
 
                   <mat-tab *ngIf="showTab">
-                    <ng-template mat-tab-label>
-                      <!-- <mat-icon class="example-tab-icon msr-2">settings</mat-icon> -->
-                      Score Card
-                    </ng-template>
+                    <ng-template mat-tab-label> Score Card </ng-template>
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                      <div class="project_widget">
+                        <div class="header">
+                          <h2>Assessment Test</h2>
+                        </div>
+                        <div class="body">
+                          <div class="row">
+                            <div class="col-6">
+                              <div class="px-2">
+                                <div class="row">
+                                  <div class="col-6">
+                                    <h6>Score</h6>
+                                  </div>
+                                  <div class="col-6">
+                                    <p *ngIf="response?.assessmentAnswer">{{response?.assessmentAnswer?.score}} / {{response?.assessmentAnswer?.totalScore}}</p>
+                                    <p *ngIf="!response?.assessmentAnswer">--</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-6">
+                              <div class="px-2">
+                                <div class="row">
+                                  <div class="col-6">
+                                    <h6>Submitted at</h6>
+                                  </div>
+                                  <div class="col-6">
+                                    <p>{{response?.assessmentAnswer?.submittedAt  | date: 'MM/dd/yyyy'}}</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="header">
+                          <h2>Exam</h2>
+                        </div>
+                        <div class="body">
+                          <div class="row">
+                            <div class="col-6">
+                              <div class="px-2">
+                                <div class="row">
+                                  <div class="col-6">
+                                    <h6>Score</h6>
+                                  </div>
+                                  <div class="col-6">
+                                    <p *ngIf="response?.examAssessmentAnswer">{{response?.examAssessmentAnswer?.score}} / {{response?.examAssessmentAnswer?.totalScore}}</p>
+                                    <p *ngIf="!response?.examAssessmentAnswer">--</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-6">
+                              <div class="px-2">
+                                <div class="row">
+                                  <div class="col-6">
+                                    <h6>Submitted at</h6>
+                                  </div>
+                                  <div class="col-6">
+                                    <p>{{response?.examAssessmentAnswer?.submittedAt  | date: 'MM/dd/yyyy'}}</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </mat-tab>
                 </mat-tab-group>
               </div>
@@ -398,6 +464,11 @@
               >
                 Back
               </button>
+            </div>
+            <div class="col-md-2 mb-3" *ngIf="!response.examAssessmentAnswer&& response.assessmentAnswer && !response.isExamAssigned">
+             <button mat-raised-button color="primary" (click)="enableExam()">
+              Enable Exam
+             </button> 
             </div>
           </div>
         </div>

@@ -64,6 +64,7 @@ import { EditTeacherComponent } from './settings/edit-teacher/edit-teacher.compo
 import { AddStaffComponent } from './settings/add-staff/add-staff.component';
 import { AboutStaffComponent } from './settings/about-staff/about-staff.component';
 import { ExamResultsComponent } from './exam-results/exam-results.component';
+import { ExamTestListComponent } from './exam-test-list/exam-test-list.component';
 import { VendorComponent } from './settings/vendor/vendor.component';
 import { UpdateFundingComponent } from './settings/funding/update-funding/update-funding.component';
 import { UpdateDeptComponent } from './settings/create-department/update-dept/update-dept.component';
@@ -125,8 +126,12 @@ const routes: Routes = [
     component: ExamComponent,
   },
   {
-    path: 'enrollment/exam-results',
+    path: 'exams/exam-results',
     component: ExamResultsComponent,
+  },
+  {
+    path: 'exams/exam',
+    component: ExamTestListComponent,
   },
 
   {
@@ -182,7 +187,7 @@ const routes: Routes = [
   },
 
   {
-    path: 'exam-questions/:id/:id/:id/:id',
+    path: 'exam-questions/:id/:id/:id/:id', // 1.assessmentAnswerId, 2.studentId, 3.courseId, 4.examAssessmentId
     component: ExamQuestionsComponent,
   },
   {
@@ -309,7 +314,7 @@ const routes: Routes = [
     component: ListComponent,
   },
   {
-    path: 'settings/create-announcement',
+    path: 'settings/customization-forms/create-announcement',
     component: CreatAnnouncementComponent,
   },
   {
@@ -494,23 +499,23 @@ const routes: Routes = [
     component: EditStaffComponent
   },
   {
-    path: 'settings/course-forms',
+    path: 'settings/customization-forms/course-forms',
     component: SettingsComponent,
   },
   {
-    path: 'settings/program-forms',
+    path: 'settings/customization-forms/program-forms',
     component: SettingsComponent,
   },
   {
-    path: 'settings/users-forms',
+    path: 'settings/customization-forms/users-forms',
     component: SettingsComponent,
   },
   {
-    path: 'settings/finance-forms',
+    path: 'settings/customization-forms/finance-forms',
     component: SettingsComponent,
   },
   {
-    path: 'settings/banner-forms',
+    path: 'settings/customization-forms/banner-forms',
     component: SettingsComponent,
   },
   {

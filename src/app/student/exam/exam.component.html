@@ -55,13 +55,13 @@
                               <ng-container matColumnDef="Exam">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header>Exam</mat-header-cell>
                                 <mat-cell *matCellDef="let row">
-                                  <button *ngIf="row.is_tutorial && row.isEnableDeleteTutorial" 
+                                  <button *ngIf="row.is_tutorial && !row.isLatestTutorial" 
                                   (click)="onDelete(row.id)" 
                                   mat-flat-button 
                                   color="warn">
                                   Delete
                                   </button>
-                                  <button *ngIf="row.is_tutorial && !row.isEnableDeleteTutorial"
+                                  <button *ngIf="row.is_tutorial && row.isLatestTutorial"
                                   [disabled]="row.is_exam_completed"
                                   (click)="openTest(row, false)"
                                   mat-flat-button 

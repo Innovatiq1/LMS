@@ -12,7 +12,7 @@
                     </div>
                 
                     <!-- Right side div -->
-                    <div class="col-lg-5 col-md-12 col-sm-12 col-12 d-flex justify-content-end align-items-center">
+                    <div class="col-lg-5 col-md-12 col-sm-12 col-12 d-flex justify-content-end align-items-center" *ngIf="!answerId">
                         <mat-icon class="material-icons text-primary me-2" style="font-size: 25px; margin-top:2px">schedule</mat-icon>
                         <span class="m-0 h3" [style.color]="totalTime  <= 10 ? 'red' : ''">
                             {{ minutes > 9 ? minutes : '0' + minutes }} :

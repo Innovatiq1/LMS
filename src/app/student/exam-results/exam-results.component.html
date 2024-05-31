@@ -53,7 +53,7 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header>Exam Assessment Score
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let row">
-                                  <span class="mobile-label">Exam Assessment Score:</span>{{ row?.score }} / {{row?.courseId?.exam_assessment?.questions?.length}}
+                                  <span class="mobile-label">Exam Assessment Score:</span>{{ row?.score }} / {{row?.totalScore}}
                                 </mat-cell>
                               </ng-container>
 
@@ -61,15 +61,15 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header>Retakes left
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let row">
-                                  <span class="mobile-label">Retakes left:</span>{{ row?.examAssessmentId?.retake }}
+                                  <span class="mobile-label">Retakes left:</span>{{ row?.retakeLeft || 0 }}
                                 </mat-cell>
                               </ng-container>
                               <ng-container matColumnDef="Exam">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header>Exam</mat-header-cell>
                                 <mat-cell *matCellDef="let row">
                                   <button 
-                                  [disabled]="row?.examAssessmentId?.retake <= 0"
-                                  [routerLink]="['/student/exam-questions/',  row.id, row?.studentId?.id, row?.courseId?._id, row?.courseId?.exam_assessment?.id]" [queryParams]="{ retake: true }" mat-flat-button color="primary" >
+                                  [disabled]="row?.retakeLeft <= 0"
+                                  [routerLink]="['/student/exam-questions/',  row.id, row?.studentId?.id, row?.courseId?._id, row?.examAssessmentId?.id]" [queryParams]="{ retake: false }" mat-flat-button color="primary" >
                                     Retake Test
                                   </button>
                                 </mat-cell>

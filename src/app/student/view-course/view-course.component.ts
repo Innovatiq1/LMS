@@ -793,7 +793,8 @@ export class ViewCourseComponent implements OnDestroy {
       status: 'completed',
       studentId: studentId,
       playbackTime: 100,
-      classId:this.classId
+      classId:this.classId,
+      enableExam: this.free ? true: this.classDetails?.enableExam
     };
     this.classService
       .saveApprovedClasses(this.classId, payload)

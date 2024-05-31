@@ -10,7 +10,7 @@ import { UtilsService } from '@core/service/utils.service';
 @Component({
   selector: 'app-all-questions',
   templateUrl: './all-questions.component.html',
-  styleUrls: ['./all-questions.component.scss']
+  styleUrls: ['./all-questions.component.scss'],
 })
 export class AllQuestionsComponent {
   displayedColumns: string[] = [
@@ -18,18 +18,18 @@ export class AllQuestionsComponent {
     'Count',
     'Created At',
     'Assessment Type',
-    'Approval Status'
-   ];
+    'Approval Status',
+  ];
   coursePaginationModel!: Partial<CoursePaginationModel>;
   totalItems: any;
   pageSizeArr = this.utils.pageSizeArr;
 
-
   id: any;
   selection = new SelectionModel<any>(true, []);
-  dataSource :any;
+  dataSource: any;
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild('filter', { static: true }) filter!: ElementRef;
+  assessmentList: any[] = [];
   breadscrums = [
     {
       title: 'Questions',
@@ -38,22 +38,27 @@ export class AllQuestionsComponent {
     },
   ];
 
-constructor(private router:Router,public utils: UtilsService, private questionService: QuestionService){
-  this.coursePaginationModel = {};
-
-}
+  constructor(
+    private router: Router,
+    public utils: UtilsService,
+    private questionService: QuestionService
+  ) {
+    this.coursePaginationModel = {};
+  }
   ngOnInit() {
-   this.getAllQuestions()
+    this.getAllQuestions();
   }
   getAllQuestions() {
-    this.questionService.getExamAssessmentsAndAssesments({ ...this.coursePaginationModel})
-      .subscribe(res => {
+    this.questionService
+      .getExamAssessmentsAndAssesments({ ...this.coursePaginationModel })
+      .subscribe((res) => {
         this.dataSource = res.data.docs;
+        this.assessmentList = res.data.docs;
         this.totalItems = res.data.totalDocs;
         this.coursePaginationModel.docs = res.docs;
         this.coursePaginationModel.page = res.page;
         this.coursePaginationModel.limit = res.limit;
-      })
+      });
   }
   pageSizeChange($event: any) {
     this.coursePaginationModel.page = $event?.pageIndex + 1;
@@ -66,21 +71,19 @@ constructor(private router:Router,public utils: UtilsService, private questionSe
     return numSelected === numRows;
   }
 
-  assessmentType(row : any) {
-    if(row.collectionName === "assesmentquestions") {
-      return "Assessment"
+  assessmentType(row: any) {
+    if (row.collectionName === 'assesmentquestions') {
+      return 'Assessment';
     } else {
-      return "Exam"
+      return 'Exam';
     }
   }
 
-   /** Selects all rows if they are not all selected; otherwise clear selection. */
-   masterToggle() {
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
     this.isAllSelected()
       ? this.selection.clear()
-      : this.dataSource.forEach((row: any) =>
-          this.selection.select(row)
-        );
+      : this.dataSource.forEach((row: any) => this.selection.select(row));
   }
 
   getStatusClass(status: string): string {
@@ -89,5 +92,17 @@ constructor(private router:Router,public utils: UtilsService, private questionSe
   getDotClass(status: string): string {
     return status === 'approved' ? 'green' : 'red';
   }
-  
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value?.toLowerCase();
+    this.dataSource = filterValue.trim().toLowerCase();
+    if (filterValue) {
+      this.dataSource = this.assessmentList?.filter((item: any) => {
+        const searchList = item.name.toLowerCase();
+        return searchList.includes(filterValue);
+      });
+    } else {
+      this.dataSource = this.assessmentList;
+    }
+  }
 }

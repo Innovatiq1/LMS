@@ -949,24 +949,6 @@
                       Feedback
                     </button>
                   </li>
-                  <li
-                    class="nav-item"
-                    role="presentation"
-                    *ngIf="isCompleted && (enableExam||free)"
-                  >
-                    <button
-                      class="nav-link"
-                      id="exam-tab"
-                      data-bs-toggle="tab"
-                      data-bs-target="#examTab"
-                      type="button"
-                      role="tab"
-                      aria-controls="examTab"
-                      aria-selected="false"
-                    >
-                      Exam
-                    </button>
-                  </li>
                   <li class="nav-item" role="presentation" *ngIf="isCompleted">
                     <button
                       class="nav-link"
@@ -1290,35 +1272,6 @@
                         *matRowDef="let row; columns: displayedColumns"
                       ></tr>
                     </table>
-                  </div>
-                  <div
-                    class="tab-pane fade text-center"
-                    id="examTab"
-                    role="tabpanel"
-                    aria-labelledby="Exam"
-                  >
-                    <button *ngIf="!(examAssessmentTaken != undefined &&
-                    examAssessmentTaken >= examAssessmentInfo.retake)"
-                    mat-flat-button color="primary"
-                      [routerLink]="[
-                        '/student/exam-questions/',
-                        assessmentAnswerLatest?.id,
-                        studentClassDetails?.studentId?.id,
-                        studentClassDetails?.courseId?._id,
-                        studentClassDetails?.courseId?.exam_assessment
-                      ]"
-                    >
-                      Start Exam
-                    </button>
-                    <p
-                      class="text-center text-muted"
-                      *ngIf="
-                        examAssessmentTaken != undefined &&
-                        examAssessmentTaken >= examAssessmentInfo?.retake
-                      "
-                    >
-                      Max No. of Retake Reached
-                    </p>
                   </div>
                   <div
                     class="tab-pane fade"

@@ -54,7 +54,7 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-5">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-5" *ngIf="labelStatusCheck('Course Detailed Description')">
                   <label>Course Detailed Description</label>
                   <angular-editor placeholder="Enter text..." formControlName="details" [config]="config"></angular-editor>
                   <!-- <mat-form-field class="example-full-width mb-3" appearance="outline">
