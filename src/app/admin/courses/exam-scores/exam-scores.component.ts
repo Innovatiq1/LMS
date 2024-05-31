@@ -21,7 +21,7 @@ export class ExamScoresComponent {
     'Exam Name',
     'Assessment Score',
     'Exam Assessment Score',
-    // 'Actions'
+    'Action'
   ];
 
   breadscrums = [
@@ -94,6 +94,15 @@ export class ExamScoresComponent {
       });
     } else {
       this.dataSource = this.examScores;
+    }
+  }
+
+  enableStudentView(data: any){
+    if(data.examAssessmentAnswer){
+      const payload = {id: data.examAssessmentAnswer._id, studentView: true}
+      this.assessmentService.updateAssessmentStudentView(payload).subscribe(res=> {
+        this.getAllAnswers();
+      })
     }
   }
 

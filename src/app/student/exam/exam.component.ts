@@ -53,8 +53,9 @@ export class ExamComponent {
   }
 
   getAllAnswers() {
+    let studentId =localStorage.getItem('id') || '';
     this.assessmentService
-      .getExamQuestionJsonV2({ ...this.assessmentPaginationModel })
+      .getExamQuestionJsonV2({ ...this.assessmentPaginationModel, studentId })
       .subscribe((res) => {
         this.dataSource = res.data.docs;
         this.totalItems = res.data.totalDocs;

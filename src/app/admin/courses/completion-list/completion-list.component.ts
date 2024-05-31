@@ -327,50 +327,6 @@ export class CompletionListComponent {
     );
   }
 
-  enableExam(element: Student){
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'Do you want to Enable exam for this course!',
-      icon: 'warning',
-      confirmButtonText: 'Yes',
-      showCancelButton: true,
-      cancelButtonColor: '#d33',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        console.log(element);
-        
-        const payload = {
-          classId: element.classId._id,
-          session: element.session,
-          enableExam: true,
-          studentId: element.studentId,
-        }
-        this.classService
-          .enableExamStudentClass(element.id, payload)
-          .subscribe((response: any) => {
-            Swal.fire({
-              title: 'Success',
-              text: 'Exam Enabled Exam successfully.',
-              icon: 'success',
-              // confirmButtonColor: '#d33',
-            });
-
-            this.studentPaginationModel.page = this.studentPaginationModel.page-1 || 1;
-
-            this.getCompletedClasses();
-          });
-        () => {
-          Swal.fire({
-            title: 'Error',
-            text: 'Failed to approve course. Please try again.',
-            icon: 'error',
-            // confirmButtonColor: '#d33',
-          });
-        };
-      }
-    });
-  }
-
   genratePdf3(convertIdDynamic: any, memberId: any, memberProgrmId: any) {
     this.dafaultGenratepdf = true;
     setTimeout(() => {
