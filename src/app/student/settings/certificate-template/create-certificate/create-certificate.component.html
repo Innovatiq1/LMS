@@ -1,0 +1,219 @@
+<section class="content">
+    <div class="content-block">
+      <div class="block-header" *ngFor="let breadscrum of breadscrums">
+        <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active"></app-breadcrumb>
+      </div>
+      <div class="row clearfix">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+          <div class="card">
+            <div style="padding: 30px 10px">
+  
+              <form [formGroup]="certificateForm" style="display: flex; flex-wrap: wrap; gap: 20px;">
+                <div style="display: flex; width: 100%; gap: 20px;">
+                  <mat-form-field class="example-full-width" appearance="outline" style="flex: 1;">
+                    <mat-label>Website</mat-label>
+                    <input matInput formControlName="website" required>
+                    <mat-error *ngIf="certificateForm.get('website')?.hasError('required')">
+                      Enter Website
+                    </mat-error>
+                  </mat-form-field>
+  
+                  <mat-form-field class="example-full-width" appearance="outline" style="flex: 1;">
+                    <mat-label>Company Name</mat-label>
+                    <input matInput formControlName="companyName" required>
+                    <mat-error *ngIf="certificateForm.get('companyName')?.hasError('required')">
+                      Enter Company Name
+                    </mat-error>
+                  </mat-form-field>
+  
+                  <mat-form-field class="example-full-width" appearance="outline" style="flex: 1;">
+                    <mat-label>Recognition Text</mat-label>
+                    <input matInput formControlName="recognitionText" required>
+                    <mat-error *ngIf="certificateForm.get('recognitionText')?.hasError('required')">
+                      Enter Recognition Text
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+  
+                <div style="display: flex; width: 100%; gap: 20px;">
+                  <mat-form-field class="example-full-width" appearance="outline" style="flex: 1;">
+                    <mat-label>Student Name</mat-label>
+                    <input matInput formControlName="studentName" required>
+                    <mat-error *ngIf="certificateForm.get('studentName')?.hasError('required')">
+                      Enter Student Name
+                    </mat-error>
+                  </mat-form-field>
+  
+                  <mat-form-field class="example-full-width" appearance="outline" style="flex: 1;">
+                    <mat-label>Completion Text</mat-label>
+                    <input matInput formControlName="completionText" required>
+                    <mat-error *ngIf="certificateForm.get('completionText')?.hasError('required')">
+                      Enter Completion Text
+                    </mat-error>
+                  </mat-form-field>
+  
+                  <mat-form-field class="example-full-width" appearance="outline" style="flex: 1;">
+                    <mat-label>Course Name</mat-label>
+                    <input matInput formControlName="courseName" required>
+                    <mat-error *ngIf="certificateForm.get('courseName')?.hasError('required')">
+                      Enter Course Name
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+  
+                <div style="display: flex; width: 100%; gap: 20px;">
+                  <mat-form-field class="example-full-width" appearance="outline" style="flex: 1;">
+                    <mat-label>Completion Date</mat-label>
+                    <input matInput formControlName="completionDate" type="date" required>
+                    <mat-error *ngIf="certificateForm.get('completionDate')?.hasError('required')">
+                      Enter Completion Date
+                    </mat-error>
+                  </mat-form-field>
+  
+                  <mat-form-field class="example-full-width" appearance="outline" style="flex: 1;">
+                    <mat-label>Authorized Text</mat-label>
+                    <input matInput formControlName="authorizedText" required>
+                    <mat-error *ngIf="certificateForm.get('authorizedText')?.hasError('required')">
+                      Enter Authorized Text
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </form>
+  
+              <table width="800px" style="
+                margin: 0 auto;
+                background-image: url(/assets/certificates/pdf-bg.jpeg);
+                background-repeat: no-repeat;
+                background-position: center right;
+                background-size: 100% 100%;
+                border: 0.5px solid lightgray;
+                height: 700px;
+              ">
+                <tbody>
+                  <tr>
+                    <td width="11%"></td>
+                    <td width="59%" style="padding: 30px 0">
+                      <table style="width: 100%">
+                        <tr>
+                          <td></td>
+                          <td style="text-align: right; padding-right: 30px;">
+                            <p style="
+                              font-weight: 600;
+                              font-size: 28px;
+                              margin-bottom: 10px;
+                              line-height: 1.2;
+                            ">
+                              {{ certificateForm.get('website')?.value || 'www.lms.com' }}
+                            </p>
+                            <p style="
+                              font-weight: 300;
+                              font-size: 21px;
+                              margin-bottom: 5px;
+                              line-height: 1.2;
+                            ">
+                              India | Singapore
+                            </p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td colspan="2">
+                            <p style="
+                              font-weight: 700;
+                              font-size: 32px;
+                              margin-bottom: 0;
+                              line-height: 1.2;
+                              text-transform: uppercase;
+                            ">
+                              {{ certificateForm.get('companyName')?.value || 'LMS Inc.' }}
+                            </p>
+                            <p style="
+                              font-weight: 500;
+                              font-size: 15px;
+                              margin: 8px 0;
+                              line-height: 1.2;
+                              font-style: italic;
+                            ">
+                              {{ certificateForm.get('recognitionText')?.value || 'hereby recognizes that' }}
+                            </p>
+                            <p style="
+                              font-weight: 700;
+                              font-size: 32px;
+                              margin-bottom: 8px;
+                              line-height: 1.2;
+                              font-style: italic;
+                            ">
+                              {{ certificateForm.get('studentName')?.value || 'XYZ' }}
+                            </p>
+  
+                            <p style="
+                              font-weight: 400;
+                              font-size: 15px;
+                              margin-bottom: 10px;
+                              line-height: 1.2;
+                              font-style: italic;
+                            ">
+                              {{ certificateForm.get('completionText')?.value || 'has successfully completed the' }} <b>
+                                {{ certificateForm.get('courseName')?.value || 'XYZ' }}
+                              </b> course
+                              on <b>
+                                {{ certificateForm.get('completionDate')?.value | date: 'dd/MM/yyyy' || 'DD/MM/YYYY' }}
+                              </b>
+                            </p>
+                          </td>
+                        </tr>
+                      </table>
+                      <table style="width: 100%">
+                        <tr>
+                          <td width="70%">
+                            <p style="
+                              font-weight: normal;
+                              font-size: 12px;
+                              margin-bottom: 8px;
+                              line-height: 1.2;
+                            ">
+                              {{ certificateForm.get('authorizedText')?.value || 'Authorized and issued by:' }}
+                            </p>
+                            <p style="
+                              font-weight: 600;
+                              font-size: 15px;
+                              margin-bottom: 8px;
+                              line-height: 1.2;
+                              text-transform: uppercase;
+                            ">
+                              lms inc.
+                            </p>
+                            <p style="
+                              font-weight: normal;
+                              font-size: 12px;
+                              margin-bottom: 8px;
+                              line-height: 1.2;
+                            ">
+                              Mountbatten Road, Mountbatten Square, Singapore | Hyderabad, TS, India
+                            </p>
+                          </td>
+                          <td width="30%" style="text-align: right; vertical-align: bottom; padding-right: 30px;">
+                            <!-- <img src="/assets/certificates/stamp.png" width="140px" /> -->
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                    <td width="30%"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="display: flex; justify-content: flex-end; margin: 10px;">
+            <button mat-raised-button id="submit" [routerLink]="['/student/settings/certificate/template']">
+                Update
+              </button>
+              <br>
+            </div>    
+          </div>
+        </div>
+  
+      </div>
+
+
+    </div>
+  </section>
+  

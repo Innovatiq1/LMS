@@ -117,6 +117,7 @@ import { CreateApprovalWorkflowComponent } from './settings/approval-workflow/cr
 import { ViewApprovalWorkflowComponent } from './settings/approval-workflow/view-approval-workflow/view-approval-workflow.component';
 import { InvoiceComponent } from './view-course/invoice/invoice.component';
 import { ExamTestListComponent } from './exam-test-list/exam-test-list.component';
+import { CreateCertificateComponent } from './settings/certificate-template/create-certificate/create-certificate.component';
 
 @NgModule({
   declarations: [
@@ -213,6 +214,7 @@ import { ExamTestListComponent } from './exam-test-list/exam-test-list.component
     ViewApprovalWorkflowComponent,
     InvoiceComponent,
     ExamTestListComponent,
+    CreateCertificateComponent
   
     // CourseKitComponent,
     // VideoPlayerComponent,
