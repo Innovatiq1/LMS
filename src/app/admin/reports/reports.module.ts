@@ -9,6 +9,9 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { ReportsRoutingModule } from './reports-routing.module';
 import { ReportsComponent } from './reports/reports.component';
 import { GenereateReportComponent } from './genereate-report/genereate-report.component';
+import { FeedbackReportComponent } from './feedback-report/feedback-report.component';
+import { UserReportComponent } from './user-report/user-report.component';
+import { PaymentReportComponent } from './payment-report/payment-report.component';
 
 
 
@@ -20,7 +23,10 @@ import { GenereateReportComponent } from './genereate-report/genereate-report.co
 
   
     ReportsComponent,
-                     GenereateReportComponent
+                     GenereateReportComponent,
+                     FeedbackReportComponent,
+                     UserReportComponent,
+                     PaymentReportComponent
   ],
   imports: [
     CommonModule,
