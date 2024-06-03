@@ -20,7 +20,7 @@ const routes: Routes = [
     component: FeedbackReportComponent,
   },
   {
-    path: 'student-report',
+    path: 'user-report',
     component: UserReportComponent,
   },
   {
