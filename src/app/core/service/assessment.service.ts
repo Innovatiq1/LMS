@@ -47,6 +47,10 @@ import { ApiResponse } from '@core/models/general.response';
         if(filter.studentId) {
           params = params.set('studentId', filter.studentId?.toString());
         }
+
+        if(filter.studentName) {
+          params = params.set('studentName', filter.studentName?.toString());
+        }
         // if (filter.status && filter.status === 'active') {
         //   params = params.set('status', 'active');
         // }else if (filter.status && filter.status === 'approved')  {

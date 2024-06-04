@@ -1,0 +1,44 @@
+<section class="content">
+  <div class="block-header" *ngFor="let breadscrum of breadscrums">
+    <!-- breadcrumb -->
+    <app-breadcrumb
+      [title]="breadscrum.title"
+      [items]="breadscrum.items"
+      [active_item]="breadscrum.active"
+    >
+    </app-breadcrumb>
+  </div>
+
+  <div class="card">
+    <h2>Select Score Algorithm</h2>
+    <div class="row">
+      <div class="col-lg-6 col-md-6">
+        <div>
+          <label>Assessment<span class="mandatory">&nbsp;*</span></label>
+          <mat-form-field class="example-full-width mb-3" appearance="outline">
+            <mat-select [(ngModel)]="selectedAssessmentAlgorithm">
+              <mat-option *ngFor="let code of scoreAlgo" [value]="code">{{
+                code
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-6">
+        <label>Exam<span class="mandatory">&nbsp;*</span></label>
+        <mat-form-field class="example-full-width mb-3" appearance="outline">
+          <mat-select [(ngModel)]="selectedExamAlgorithm">
+            <mat-option *ngFor="let code of scoreAlgo" [value]="code">{{
+              code
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="button-container">
+      <button mat-button color="primary" (click)="updateScoreAlgo()">
+        Update Algorithm
+      </button>
+    </div>
+  </div>
+</section>

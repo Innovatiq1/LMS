@@ -1,0 +1,28 @@
+<section class="content">
+    <div class="block-header" *ngFor="let breadscrum of breadscrums">
+        <!-- breadcrumb -->
+        <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
+        </app-breadcrumb>
+    </div>
+
+
+    <div class="card">
+        <h2>Select Timer</h2>
+        <mat-form-field>
+            <mat-label>Timer</mat-label>
+            <mat-select [(ngModel)]="selectedTimer">
+                <mat-option *ngFor="let code of timerValues" [value]="code">{{ code }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <div class="button-container">
+            
+            <button mat-button color="primary" (click)="updateCurrency()">Update Exam Timer</button>
+          </div>
+    </div>
+    
+
+
+
+
+
+</section>

@@ -69,7 +69,7 @@
                                    Retake
                                   </button>
                                   <button *ngIf="!row.is_tutorial"
-                                  [disabled]="row.is_exam_completed" 
+                                  [disabled]="row.is_exam_completed || row.retakeCount>=row.assessmentId.retake"
                                   (click)="openTest(row, true)" 
                                   mat-flat-button 
                                   color="primary">

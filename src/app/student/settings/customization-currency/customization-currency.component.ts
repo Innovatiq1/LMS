@@ -49,8 +49,9 @@ export class CustomizationCurrencyComponent {
   getCurrency() : any {
     this.configurationSubscription = this.studentsService.configuration$.subscribe(configuration => {
       this.configuration = configuration;
-      if (this.configuration?.length > 0) {
-        this.defaultCurrency = this.configuration[0].value;
+      const config = this.configuration.find((v:any)=>v.field === 'currency')
+      if (config) {
+        this.defaultCurrency = config.value;
         this.selectedCurrency = this.defaultCurrency
       }
     });

@@ -573,6 +573,10 @@ export class CourseService {
         const apiUrl = `${this.prefix}admin/configuration/timer`;
         return this._Http.put<any>(apiUrl, currencyData).pipe(map((response) => response));
       }
+      createExamTimer(currencyData: any): Observable<any> {
+        const apiUrl = `${this.prefix}admin/configuration/examTimer`;
+        return this._Http.put<any>(apiUrl, currencyData).pipe(map((response) => response));
+      }
       createAssessment(currencyData: any): Observable<any> {
         const apiUrl = `${this.prefix}admin/configuration/assessment`;
         return this._Http.put<any>(apiUrl, currencyData).pipe(map((response) => response));
