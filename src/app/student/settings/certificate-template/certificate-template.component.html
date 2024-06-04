@@ -11,8 +11,14 @@
             <div class="row" style="float: right;">
               <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
 
-                <button class="btn-space" type="button" mat-raised-button id="submit">Create</button>
-                <button mat-raised-button id="submit">Edit</button>
+                <!-- <button class="btn-space" type="button" mat-raised-button id="submit">Create</button> -->
+                <button class="icons"
+                alt="Edit"
+                mat-menu-item  [routerLink]="['/student/settings/certificate/edit']"
+                ><app-feather-icons
+                [icon]="'edit'"
+                [class]="'tbl-fav-edit'"
+              ></app-feather-icons></button>
               </div>
             </div>
             <table width="800px" style="
@@ -40,7 +46,7 @@
                           margin-bottom: 10px;
                           line-height: 1.2;
                         ">
-                            www.tms.com
+                            www.lms.com
                           </p>
                           <p style="
                           font-weight: 300;
@@ -61,7 +67,7 @@
                           line-height: 1.2;
                           text-transform: uppercase;
                         ">
-                            TMS Inc.
+                            LMS Inc.
                           </p>
                           <p style="
                           font-weight: 500;
@@ -119,7 +125,7 @@
                           line-height: 1.2;
                           text-transform: uppercase;
                         ">
-                            tms inc.
+                            lms inc.
                           </p>
                           <p style="
                           font-weight: normal;

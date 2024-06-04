@@ -27,7 +27,7 @@ export class GenereateReportComponent {
     {
       title: 'Reports',
       items: ['Reports'],
-      active: ' Generate Report',
+      active: 'Filter Report',
     },
   ];
   reportForm!: FormGroup;

@@ -117,6 +117,7 @@ import { CreateApprovalWorkflowComponent } from './settings/approval-workflow/cr
 import { ViewApprovalWorkflowComponent } from './settings/approval-workflow/view-approval-workflow/view-approval-workflow.component';
 import { InvoiceComponent } from './view-course/invoice/invoice.component';
 import { ExamTestListComponent } from './exam-test-list/exam-test-list.component';
+import { CreateCertificateComponent } from './settings/certificate-template/create-certificate/create-certificate.component';
 import { CustomizationExamAssessmentAlgorithmComponent } from './settings/customization-exam-assessment-algorithm/customization-exam-assessment-algorithm.component';
 import { CustomizationExamTimerComponent } from './settings/customization-exam-timer/customization-exam-timer.component';
 
@@ -215,6 +216,7 @@ import { CustomizationExamTimerComponent } from './settings/customization-exam-t
     ViewApprovalWorkflowComponent,
     InvoiceComponent,
     ExamTestListComponent,
+    CreateCertificateComponent,
     CustomizationExamAssessmentAlgorithmComponent,
     CustomizationExamTimerComponent,
   

@@ -84,6 +84,7 @@ import { PreviewQuestionsComponent } from './settings/preview-questions/preview-
 import { PreviewTestAnswersheetComponent } from './preview-test-answersheet/preview-test-answersheet.component';
 import { ViewApprovalWorkflowComponent } from './settings/approval-workflow/view-approval-workflow/view-approval-workflow.component';
 import { CreateApprovalWorkflowComponent } from './settings/approval-workflow/create-approval-workflow/create-approval-workflow.component';
+import { CreateCertificateComponent } from './settings/certificate-template/create-certificate/create-certificate.component';
 import { CustomizationExamAssessmentAlgorithmComponent } from './settings/customization-exam-assessment-algorithm/customization-exam-assessment-algorithm.component';
 import { CustomizationExamTimerComponent } from './settings/customization-exam-timer/customization-exam-timer.component';
 
@@ -318,6 +319,10 @@ const routes: Routes = [
   {
     path: 'settings/certificate/template',
     component: CertificateTemplateComponent
+  },
+  {
+    path: 'settings/certificate/edit',
+    component: CreateCertificateComponent
   },
   {
     path: 'settings/announcement',
