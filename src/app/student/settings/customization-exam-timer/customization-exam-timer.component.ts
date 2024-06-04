@@ -1,32 +1,32 @@
-
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CourseService } from '@core/service/course.service';
+import { StudentsService } from 'app/admin/students/students.service';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
-import { StudentsService } from 'app/admin/students/students.service';
 
 @Component({
-  selector: 'app-customization-assessment-retake',
-  templateUrl: './customization-assessment-retake.component.html',
-  styleUrls: ['./customization-assessment-retake.component.scss']
+  selector: 'app-customization-exam-timer',
+  templateUrl: './customization-exam-timer.component.html',
+  styleUrls: ['./customization-exam-timer.component.scss']
 })
-export class CustomizationAssessmentRetakeComponent {
+export class CustomizationExamTimerComponent {
   breadscrums = [
     {
       title: 'Customization',
       items: ['Configuration'],
-      active: 'Assessment Retake',
+      active: 'Exam Timer',
     },
   ];
-  retakeCodes: string[] = ['1', '2', '3', '4', '5'];
+  timerValues: string[] = ['15', '30', '45', '60', '90', '120', '150'];
+  
 
-  selectedRetake: string = "";
+  selectedTimer: string = "";
   dialogRef: any;
   studentId: any;
   configuration: any;
   configurationSubscription!: Subscription;
-  defaultRetake: string = '';
+  defaultTimer: string = '';
  
   constructor(
     
@@ -49,33 +49,33 @@ export class CustomizationAssessmentRetakeComponent {
   getCurrency() : any {
     this.configurationSubscription = this.studentsService.configuration$.subscribe(configuration => {
       this.configuration = configuration;
-      const config = this.configuration.find((v:any)=>v.field === 'currency')
+      const config = this.configuration.find((v:any)=>v.field === 'examTimer')
       if (config) {
-        this.defaultRetake = config.value;
-        this.selectedRetake = this.defaultRetake
+        this.defaultTimer = config.value;
+        this.selectedTimer = this.defaultTimer
       }
     });
   }
 
-  updateRetake() {
-    const selectedRetake = this.selectedRetake;
+  updateCurrency() {
+    const selectedTimer = this.selectedTimer;
     Swal.fire({
       title: 'Are you sure?',
-      text: 'You want to update this Assessment Retake!',
+      text: 'You want to update this Exam Timer!',
       icon: 'warning',
       confirmButtonText: 'Yes',
       showCancelButton: true,
       cancelButtonColor: '#d33',
     }).then((result) => {
       if (result.isConfirmed) {
-    this.courseService.createAssessment({ value: selectedRetake }).subscribe(
+    this.courseService.createExamTimer({ value: selectedTimer }).subscribe(
       response => {
         Swal.fire({
           title: 'Successful',
-          text: 'Assessment Configuration Success',
+          text: 'Exam Timer Configuration Success',
           icon: 'success'
         });
-        // dialogRef.close(selectedRetake);
+        // dialogRef.close(selectedTimer);
       },
       error => {
         Swal.fire({
@@ -85,21 +85,8 @@ export class CustomizationAssessmentRetakeComponent {
         });
       }
     );
-      }
-    });
+  }
+});
   }
 
-  openDialog(): void {
-    const dialogRef = this.dialog.open(CustomizationAssessmentRetakeComponent, {
-      width: '500px',
-      data: { selectedRetake: this.selectedRetake }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.selectedRetake = result;
-      }
-    });
-  }
 }
-

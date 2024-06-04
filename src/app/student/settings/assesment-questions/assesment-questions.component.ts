@@ -86,8 +86,10 @@ export class AssesmentQuestionsComponent {
     this.configurationSubscription =
       this.studentsService.configuration$.subscribe((configuration) => {
         this.configuration = configuration;
-        if (this.configuration?.length > 0) {
-          this.defaultTimer = this.configuration[1].value;
+      const config = this.configuration.find((v:any)=>v.field === 'timer')
+
+        if (config) {
+          this.defaultTimer = config.value;
           this.questionFormTab3.patchValue({
             timer: this.defaultTimer,
           });
@@ -99,8 +101,10 @@ export class AssesmentQuestionsComponent {
     this.configurationSubscription =
       this.studentsService.configuration$.subscribe((configuration) => {
         this.configuration = configuration;
-        if (this.configuration?.length > 0) {
-          this.defaultRetake = this.configuration[2].value;
+      const config = this.configuration.find((v:any)=>v.field === 'assessment')
+
+        if (config) {
+          this.defaultRetake = config.value;
           this.questionFormTab3.patchValue({
             retake: this.defaultRetake,
           });

@@ -56,6 +56,9 @@ export class QuestionService {
       } else if (filter.status && filter.status === 'inactive') {
         params = params.set('status', 'inactive');
       }
+      if(filter.filterName) {
+        params = params.set('name', filter.filterName)
+      }
     }
     return params;
   }

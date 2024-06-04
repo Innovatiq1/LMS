@@ -127,6 +127,7 @@ export class SettingsComponent {
   scoreAlgo: number[] = [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
   selectedCurrency: string = '';
   selectedTimer: string = '';
+  selectedExamTimer: string = '';
   selectedAssessmentRetake: string = '';
   selectedExamAssessmentRetake: string = '';
   selectedAssessmentAlgorithm: number = 1;
@@ -783,6 +784,10 @@ export class SettingsComponent {
         (config: any) => config.field === 'timer'
       );
       const selectedTimer = timerConfig ? timerConfig.value : null;
+      const examTimerConfig = this.editData.configuration.find(
+        (config: any) => config.field === 'examTimer'
+      );
+      const selectedExamTimer = examTimerConfig ? examTimerConfig.value : null;
       const assessmentConfig = this.editData.configuration.find(
         (config: any) => config.field === 'assessment'
       );
@@ -832,6 +837,7 @@ export class SettingsComponent {
       });
       this.selectedCurrency = selectedCurrency;
       this.selectedTimer = selectedTimer;
+      this.selectedExamTimer = selectedExamTimer;
       this.selectedAssessmentRetake = selectedAssessmentRetake;
       this.selectedExamAssessmentRetake = selectedExamAssessmentRetake;
       this.selectedAssessmentAlgorithm = Number(selectedAssessmentAlgorithm);
@@ -1072,6 +1078,36 @@ export class SettingsComponent {
       );
         }
       });
+    }else if (value === 'examTimer') {
+      const selectedExamTimer = this.selectedExamTimer;
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'You want to update this Exam Timer!',
+        icon: 'warning',
+        confirmButtonText: 'Yes',
+        showCancelButton: true,
+        cancelButtonColor: '#d33',
+      }).then((result) => {
+        if (result.isConfirmed) {
+      this.courseService.createExamTimer({ value: selectedExamTimer }).subscribe(
+        (response) => {
+          Swal.fire({
+            title: 'Successful',
+            text: 'Exam Timer Configuration Success',
+            icon: 'success',
+          });
+          dialogRef.close(selectedExamTimer);
+        },
+        (error) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: error,
+          });
+        }
+      );
+        }
+      });
     } else if (value === 'assessment') {
       const selectedAssessmentRetake = this.selectedAssessmentRetake;
       Swal.fire({
@@ -1183,6 +1219,16 @@ export class SettingsComponent {
       dialogRef.afterClosed().subscribe((result) => {
         if (result) {
           this.selectedTimer = result;
+        }
+      });
+    } else if (value === 'examTimer') {
+      const dialogRef = this.dialog.open(templateRef, {
+        width: '500px',
+        data: { selectedTimer: this.selectedExamTimer },
+      });
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          this.selectedExamTimer = result;
         }
       });
     } else if (value === 'assessment') {

@@ -202,6 +202,22 @@ export class ViewCompletionComponent {
   }
 
   assignExam() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to assign Exam!',
+      icon: 'warning',
+      confirmButtonText: 'Yes',
+      showCancelButton: true,
+      cancelButtonColor: '#d33',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.addEmptyRecord();
+      }
+    });
+
+  }
+
+  addEmptyRecord(){
     const studentId = this.response.studentId._id;
     const examAssessmentId = this.response.courseId.exam_assessment;
     const assessmentAnswerId = this.response.assessmentAnswer._id;

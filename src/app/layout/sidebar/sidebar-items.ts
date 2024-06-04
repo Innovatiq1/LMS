@@ -2058,6 +2058,21 @@ export const SettingsMenu: MenuItem[] = [
         children:[]
       },
       {
+        path:'student/settings/exam-timer',
+        title:'Exam Timer',
+        id:'exam-timer',
+        iconType:'img',
+        icon:'',
+        class:'ml-menu',
+        badge:'',
+        iconsrc:'',
+        badgeClass:'',
+        groupTitle:false,
+        open:false,
+        role:[],
+        children:[]
+      },
+      {
         path:'student/settings/assessment-retake',
         title:'Assessment Retake',
         id:'assessment-retake',
@@ -2076,6 +2091,21 @@ export const SettingsMenu: MenuItem[] = [
         path:'student/settings/exam-assessment-retake',
         title:'Exam Retake',
         id:'exam-assessment-retake',
+        iconType:'img',
+        icon:'',
+        class:'ml-menu',
+        badge:'',
+        iconsrc:'',
+        badgeClass:'',
+        groupTitle:false,
+        open:false,
+        role:[],
+        children:[]
+      },
+      {
+        path:'student/settings/exam-assessment-algorithm',
+        title:'Score Algorithm',
+        id:'exam-assessment-algorithm',
         iconType:'img',
         icon:'',
         class:'ml-menu',

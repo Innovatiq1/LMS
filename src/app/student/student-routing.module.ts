@@ -84,6 +84,8 @@ import { PreviewQuestionsComponent } from './settings/preview-questions/preview-
 import { PreviewTestAnswersheetComponent } from './preview-test-answersheet/preview-test-answersheet.component';
 import { ViewApprovalWorkflowComponent } from './settings/approval-workflow/view-approval-workflow/view-approval-workflow.component';
 import { CreateApprovalWorkflowComponent } from './settings/approval-workflow/create-approval-workflow/create-approval-workflow.component';
+import { CustomizationExamAssessmentAlgorithmComponent } from './settings/customization-exam-assessment-algorithm/customization-exam-assessment-algorithm.component';
+import { CustomizationExamTimerComponent } from './settings/customization-exam-timer/customization-exam-timer.component';
 
 
 const routes: Routes = [
@@ -257,12 +259,20 @@ const routes: Routes = [
     component: CustomizationTimerComponent
   },
   {
+    path: 'settings/exam-timer',
+    component: CustomizationExamTimerComponent
+  },
+  {
     path: 'settings/assessment-retake',
     component: CustomizationAssessmentRetakeComponent
   },
   {
     path: 'settings/exam-assessment-retake',
     component: CustomizationExamAssessmentRetakeComponent
+  },
+  {
+    path: 'settings/exam-assessment-algorithm',
+    component: CustomizationExamAssessmentAlgorithmComponent
   },
   {
     path: 'settings/customization-forms',

@@ -264,6 +264,7 @@ export interface CoursePaginationModel extends Pagination {
 	feeType:string;
   	userGroupId:string;
   	isAll:boolean;
+	filterName: string;
 }
 
 export interface ProgramCourse {

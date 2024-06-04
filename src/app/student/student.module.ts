@@ -117,6 +117,8 @@ import { CreateApprovalWorkflowComponent } from './settings/approval-workflow/cr
 import { ViewApprovalWorkflowComponent } from './settings/approval-workflow/view-approval-workflow/view-approval-workflow.component';
 import { InvoiceComponent } from './view-course/invoice/invoice.component';
 import { ExamTestListComponent } from './exam-test-list/exam-test-list.component';
+import { CustomizationExamAssessmentAlgorithmComponent } from './settings/customization-exam-assessment-algorithm/customization-exam-assessment-algorithm.component';
+import { CustomizationExamTimerComponent } from './settings/customization-exam-timer/customization-exam-timer.component';
 
 @NgModule({
   declarations: [
@@ -213,6 +215,8 @@ import { ExamTestListComponent } from './exam-test-list/exam-test-list.component
     ViewApprovalWorkflowComponent,
     InvoiceComponent,
     ExamTestListComponent,
+    CustomizationExamAssessmentAlgorithmComponent,
+    CustomizationExamTimerComponent,
   
     // CourseKitComponent,
     // VideoPlayerComponent,

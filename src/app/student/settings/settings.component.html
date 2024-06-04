@@ -1,5 +1,32 @@
-<section class="content"
-  *ngIf="!isAdmin && !showAccountSettings && !showProfileSettings && !show2FaSettings && !showEmailConfig && !showBanners && !showCustomSettings && !showUsers && !showAllUsers && !showIntegration && !showAutomation && !showCustoms &&!showCustomForms && !showLms && !showConfig &&!showForms  && !showSidemenu && !showStudentDb && !showCourseForms && !showProgramForms && !showUsersForms && !showFinanceForms && !showBannerForms && !showDashboards">
+<section
+  class="content"
+  *ngIf="
+    !isAdmin &&
+    !showAccountSettings &&
+    !showProfileSettings &&
+    !show2FaSettings &&
+    !showEmailConfig &&
+    !showBanners &&
+    !showCustomSettings &&
+    !showUsers &&
+    !showAllUsers &&
+    !showIntegration &&
+    !showAutomation &&
+    !showCustoms &&
+    !showCustomForms &&
+    !showLms &&
+    !showConfig &&
+    !showForms &&
+    !showSidemenu &&
+    !showStudentDb &&
+    !showCourseForms &&
+    !showProgramForms &&
+    !showUsersForms &&
+    !showFinanceForms &&
+    !showBannerForms &&
+    !showDashboards
+  "
+>
   <div class="content-block">
     <div class="block-header" *ngFor="let breadscrum of breadscrums">
       <!-- breadcrumb -->
@@ -286,8 +313,34 @@
     </div>
     <!-- </div> -->
 
-    <div class="card"
-      *ngIf="!showAccountSettings && !showProfileSettings && !show2FaSettings && !showEmailConfig && !showBanners && !showCustomSettings && !showUsers &&!showAllUsers && !showIntegration && !showAutomation && !showCustoms &&!showCustomForms && !showLms && !showConfig && !showForms && !showSidemenu && !showStudentDb && !showCourseForms && !showProgramForms && !showUsersForms && !showFinanceForms && !showBannerForms && !showDashboards">
+    <div
+      class="card"
+      *ngIf="
+        !showAccountSettings &&
+        !showProfileSettings &&
+        !show2FaSettings &&
+        !showEmailConfig &&
+        !showBanners &&
+        !showCustomSettings &&
+        !showUsers &&
+        !showAllUsers &&
+        !showIntegration &&
+        !showAutomation &&
+        !showCustoms &&
+        !showCustomForms &&
+        !showLms &&
+        !showConfig &&
+        !showForms &&
+        !showSidemenu &&
+        !showStudentDb &&
+        !showCourseForms &&
+        !showProgramForms &&
+        !showUsersForms &&
+        !showFinanceForms &&
+        !showBannerForms &&
+        !showDashboards
+      "
+    >
       <div class="header">
         <h2>Settings</h2>
       </div>
@@ -1609,7 +1662,7 @@
         </div>
       </div>
       <div class="body">
-        <div class="row px-4"  *ngIf="role==='admin'">
+        <div class="row px-4" *ngIf="role === 'admin'">
           <div class="col-md-6 banner">
             <button id="saved" [routerLink]="['/student/settings/sidemenu']">
               Sidemenu
@@ -1621,7 +1674,7 @@
             </button>
           </div>
         </div>
-        <div class="row px-4 py-4" *ngIf="role==='admin'">
+        <div class="row px-4 py-4" *ngIf="role === 'admin'">
           <div class="col-md-6 banner">
             <button
               id="saved"
@@ -1645,7 +1698,7 @@
               Survey
             </button>
           </div>
-          <div class="col-md-5" *ngIf="role==='admin'">
+          <div class="col-md-5" *ngIf="role === 'admin'">
             <button
               id="saved"
               routerLink="/student/settings/logo-customization"
@@ -1654,14 +1707,16 @@
             </button>
           </div>
         </div>
-        <div class="row px-4 py-4" *ngIf="role==='admin'">
+        <div class="row px-4 py-4" *ngIf="role === 'admin'">
           <div class="col-md-6 banner">
             <button id="saved" (click)="navigateToEmailSettings()">
               Email Templates
             </button>
           </div>
-          <div class="col-md-5" *ngIf="role==='admin'">
-            <button id="saved" (click)="navigateToStudentDbSettings()">Dashboards</button>
+          <div class="col-md-5" *ngIf="role === 'admin'">
+            <button id="saved" (click)="navigateToStudentDbSettings()">
+              Dashboards
+            </button>
           </div>
         </div>
       </div>
@@ -1753,8 +1808,10 @@
           <div class="col-md-5">
             <button
               id="saved"
-              [routerLink]="['/student/settings/customization-forms','create-announcement']"
-              
+              [routerLink]="[
+                '/student/settings/customization-forms',
+                'create-announcement'
+              ]"
             >
               Announcement
             </button>
@@ -2143,7 +2200,9 @@
       <div class="body">
         <div class="row px-4">
           <div class="col-md-6 banner">
-            <button id="saved" (click)="navigateToStudentDbSettings()">Student Dashboard </button>
+            <button id="saved" (click)="navigateToStudentDbSettings()">
+              Student Dashboard
+            </button>
           </div>
           <div class="col-md-5">
             <button id="saved">Instructor Dashboard</button>
@@ -2268,10 +2327,10 @@
               [routerLink]="['/student/settings/form-customization']"
               [queryParams]="{ name: 'Announcement Form' }"
             >
-            Announcement
+              Announcement
             </button>
           </div>
-          </div>
+        </div>
 
         <div class="col-md-12 py-3">
           <button
@@ -2327,7 +2386,7 @@
             </button>
           </div>
         </div>
-        <div class="row px-4 py-4">
+        <div class="row px-4 pt-4">
           <div class="col-md-6 banner">
             <button
               id="saved"
@@ -2342,7 +2401,7 @@
             </button>
           </div>
         </div>
-        <div class="row px-4">
+        <!-- <div class="row px-4 pt-4"> -->
           <!-- <div class="col-md-6 banner">
             <button id="no-link"> Managed Access Time </button>
           </div>
@@ -2352,104 +2411,89 @@
           <!-- <div class="col-md-5">
             <button id="no-link"> Managed Access Time </button>
           </div> -->
-        </div>
+        <!-- </div> -->
         <!-- <div class="row px-4">
           <div class="col-md-6 banner">
 
           </div>
                 </div> -->
-                <div class="row px-4">
-                  <div class="col-md-6 banner">
-                    <button id="saved" (click)="openDialog(timerDialog, 'timer')"> Assessment Timer </button>
-                  </div>
-                  <div class="col-md-5">
-                    <button id="saved" (click)="openDialog(assessmentDialog, 'assessment')"> Assessment Retake </button>
-                  </div>
-                </div>
-        
-                <div class="row px-4 py-4">
-                  <div class="col-md-6 banner">
-                    <button id="saved" (click)="openDialog(examAssessmentDialog, 'examAssessment')">Exam Retake </button>
-                  </div>
-                  <div class="col-md-5">
-                    <button
-                      id="saved"
-                      (click)="openDialog(scoreAlgoDialog, 'scoreAlgorithm')"
-                    >
-                      Score Algorithm
-                    </button>
-                  </div>
-                </div>
-      </div>
-    </div>
-    <div  *ngIf="showSidemenu">
-        <div class="content-block">
-          <div class="row clearfix">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-              <div class="card">
-                <div class="header">
-                  <h2>Sidemenu Customization</h2>
-                </div>
-                <div class="body">
-                  <div class="row">
-                      <!-- Logo List section -->
-                    <div class="col-md-4" >
-                      <ul
-                        class="list-unstyled user-progress list-unstyled-border list-unstyled-noborder"
-                        *ngFor="let row of sidemenu"
-                      >
-                        <li class="lecture-list cursor-pointer" [routerLink]="['/student/settings/side-menu',row.id]" >
-                          <div class="set-flex">
-                            <div class="media-title font-20">{{ row.name }}</div>
-                          </div>
-                          <div class="ms-auto">
-                              <div class="container">
-                                  <div class="checkmark  checkmark--inverted">
-                                      <div class="check">
-                                      </div>
-                                  </div>
-                              </div>
-                            </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+        <div class="row px-4 pt-4">
+          <div class="col-md-6 banner">
+            <button id="saved" (click)="openDialog(timerDialog, 'timer')">
+              Assessment Timer
+            </button>
+          </div>
+          <div class="col-md-5">
+            <button
+              id="saved"
+              (click)="openDialog(examTimerDialog, 'examTimer')"
+            >
+              Exam Timer
+            </button>
           </div>
         </div>
 
+        <div class="row px-4 pt-4">
+          <div class="col-md-6 banner">
+            <button
+              id="saved"
+              (click)="openDialog(assessmentDialog, 'assessment')"
+            >
+              Assessment Retake
+            </button>
+          </div>
+          <div class="col-md-5">
+            <button
+              id="saved"
+              (click)="openDialog(examAssessmentDialog, 'examAssessment')"
+            >
+              Exam Retake
+            </button>
+          </div>
+        </div>
 
+        <div class="row px-4 py-4">
+          <div class="col-md-6 banner">
+            <button
+              id="saved"
+              (click)="openDialog(scoreAlgoDialog, 'scoreAlgorithm')"
+            >
+              Score Algorithm
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-    <div  *ngIf="showStudentDb">
+    <div *ngIf="showSidemenu">
       <div class="content-block">
         <div class="row clearfix">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="card">
               <div class="header">
-                <h2>Dashboard Customization</h2>
+                <h2>Sidemenu Customization</h2>
               </div>
               <div class="body">
                 <div class="row">
-                    <!-- Logo List section -->
-                  <div class="col-md-4" >
+                  <!-- Logo List section -->
+                  <div class="col-md-4">
                     <ul
                       class="list-unstyled user-progress list-unstyled-border list-unstyled-noborder"
-                      *ngFor="let row of studentDb"
+                      *ngFor="let row of sidemenu"
                     >
-                      <li class="lecture-list cursor-pointer" [routerLink]="['/student/settings/student-dashboard',row.id]" >
+                      <li
+                        class="lecture-list cursor-pointer"
+                        [routerLink]="['/student/settings/side-menu', row.id]"
+                      >
                         <div class="set-flex">
-                          <div class="media-title font-20">{{ row.dashboard }}</div>
+                          <div class="media-title font-20">{{ row.name }}</div>
                         </div>
                         <div class="ms-auto">
-                            <div class="container">
-                                <div class="checkmark  checkmark--inverted">
-                                    <div class="check">
-                                    </div>
-                                </div>
+                          <div class="container">
+                            <div class="checkmark checkmark--inverted">
+                              <div class="check"></div>
                             </div>
                           </div>
+                        </div>
                       </li>
                     </ul>
                   </div>
@@ -2459,9 +2503,52 @@
           </div>
         </div>
       </div>
-
-
-  </div>
+    </div>
+    <div *ngIf="showStudentDb">
+      <div class="content-block">
+        <div class="row clearfix">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="card">
+              <div class="header">
+                <h2>Dashboard Customization</h2>
+              </div>
+              <div class="body">
+                <div class="row">
+                  <!-- Logo List section -->
+                  <div class="col-md-4">
+                    <ul
+                      class="list-unstyled user-progress list-unstyled-border list-unstyled-noborder"
+                      *ngFor="let row of studentDb"
+                    >
+                      <li
+                        class="lecture-list cursor-pointer"
+                        [routerLink]="[
+                          '/student/settings/student-dashboard',
+                          row.id
+                        ]"
+                      >
+                        <div class="set-flex">
+                          <div class="media-title font-20">
+                            {{ row.dashboard }}
+                          </div>
+                        </div>
+                        <div class="ms-auto">
+                          <div class="container">
+                            <div class="checkmark checkmark--inverted">
+                              <div class="check"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="card" *ngIf="showCustomSettings">
       <div class="header">
         <h2>Customization Settings</h2>
@@ -2714,13 +2801,14 @@
         <div class="col-lg-6 col-md-6">
           <div class="form-group">
             <label>Assessment <span class="mandatory">&nbsp;*</span></label>
-            <mat-form-field class="example-full-width mb-3" appearance="outline">
+            <mat-form-field
+              class="example-full-width mb-3"
+              appearance="outline"
+            >
               <mat-select [(ngModel)]="selectedAssessmentAlgorithm">
-                <mat-option
-                  *ngFor="let code of scoreAlgo"
-                  [value]="code"
-                  >{{ code }}</mat-option
-                >
+                <mat-option *ngFor="let code of scoreAlgo" [value]="code">{{
+                  code
+                }}</mat-option>
               </mat-select>
             </mat-form-field>
           </div>
@@ -2728,13 +2816,14 @@
         <div class="col-lg-6 col-md-6">
           <div class="form-group">
             <label>Exam <span class="mandatory">&nbsp;*</span></label>
-            <mat-form-field class="example-full-width mb-3" appearance="outline">
+            <mat-form-field
+              class="example-full-width mb-3"
+              appearance="outline"
+            >
               <mat-select [(ngModel)]="selectedExamAlgorithm">
-                <mat-option
-                  *ngFor="let code of scoreAlgo"
-                  [value]="code"
-                  >{{ code }}</mat-option
-                >
+                <mat-option *ngFor="let code of scoreAlgo" [value]="code">{{
+                  code
+                }}</mat-option>
               </mat-select>
             </mat-form-field>
           </div>
@@ -2745,6 +2834,26 @@
       <button mat-button (click)="dialogRef.close()">Cancel</button>
       <button mat-button (click)="updateCurrency(dialogRef, 'scoreAlgorithm')">
         Update Score Algorithm
+      </button>
+    </div>
+  </ng-template>
+
+  <ng-template #examTimerDialog let-dialogRef="dialogRef" let-data>
+    <h2 mat-dialog-title>Select Seconds Per Question</h2>
+    <div mat-dialog-content>
+      <mat-form-field>
+        <mat-label>Set timer</mat-label>
+        <mat-select [(ngModel)]="selectedExamTimer">
+          <mat-option *ngFor="let code of timerValues" [value]="code"
+            >{{ code }} Seconds</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-button (click)="dialogRef.close()">Cancel</button>
+      <button mat-button (click)="updateCurrency(dialogRef, 'examTimer')">
+        Update Timer
       </button>
     </div>
   </ng-template>

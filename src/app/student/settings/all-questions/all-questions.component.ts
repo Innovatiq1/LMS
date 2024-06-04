@@ -6,6 +6,8 @@ import { CoursePaginationModel } from '@core/models/course.model';
 import { EtmsService } from '@core/service/etms.service';
 import { QuestionService } from '@core/service/question.service';
 import { UtilsService } from '@core/service/utils.service';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-all-questions',
@@ -37,6 +39,7 @@ export class AllQuestionsComponent {
       active: 'Assessment Configuration',
     },
   ];
+  private keyupSubject: Subject<Event> = new Subject<Event>();
 
   constructor(
     private router: Router,
@@ -44,6 +47,11 @@ export class AllQuestionsComponent {
     private questionService: QuestionService
   ) {
     this.coursePaginationModel = {};
+    this.keyupSubject.pipe(
+      debounceTime(300)  // Adjust the debounce time as needed
+    ).subscribe(event => {
+      this.applyFilter(event);
+    });
   }
   ngOnInit() {
     this.getAllQuestions();
@@ -93,16 +101,21 @@ export class AllQuestionsComponent {
     return status === 'approved' ? 'green' : 'red';
   }
 
+  onKeyup(event: Event) {
+    this.keyupSubject.next(event);
+  }
+
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value?.toLowerCase();
-    this.dataSource = filterValue.trim().toLowerCase();
-    if (filterValue) {
-      this.dataSource = this.assessmentList?.filter((item: any) => {
-        const searchList = item.name.toLowerCase();
-        return searchList.includes(filterValue);
-      });
-    } else {
-      this.dataSource = this.assessmentList;
+    const filterValue = (event.target as HTMLInputElement).value?.trim()?.toLowerCase();
+    if(filterValue){
+      this.coursePaginationModel.filterName = filterValue;
+    }else {
+      delete this.coursePaginationModel.filterName;
     }
+    this.getAllQuestions();
+  }
+
+  ngOnDestroy() {
+    this.keyupSubject.unsubscribe();
   }
 }

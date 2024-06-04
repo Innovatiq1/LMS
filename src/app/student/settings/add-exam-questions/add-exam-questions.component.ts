@@ -87,8 +87,9 @@ export class AddExamQuestionsComponent {
   getTimer() : any {
     this.configurationSubscription = this.studentsService.configuration$.subscribe(configuration => {
       this.configuration = configuration;
-      if (this.configuration?.length > 0) {
-        this.defaultTimer = this.configuration[1].value;
+      const examTimerConfig = this.configuration.find((v:any)=>v.field === 'examTimer')
+      if (examTimerConfig) {
+        this.defaultTimer = examTimerConfig.value;
         this.questionFormTab2.patchValue({
           timer: this.defaultTimer,
         })
@@ -99,8 +100,9 @@ export class AddExamQuestionsComponent {
   getRetakes() : any {
     this.configurationSubscription = this.studentsService.configuration$.subscribe(configuration => {
       this.configuration = configuration;
-      if (this.configuration?.length > 0) {
-        this.defaultRetake = this.configuration[3].value;
+      const config = this.configuration.find((v:any)=>v.field === 'examAssessment')
+      if (config) {
+        this.defaultRetake = config.value;
         this.questionFormTab2.patchValue({
           retake: this.defaultRetake,
         })

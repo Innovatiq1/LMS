@@ -4,6 +4,7 @@ import { UtilsService } from '@core/service/utils.service';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { AssessmentService } from '@core/service/assessment.service';
+import { Subject, debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-exam-scores',
@@ -41,9 +42,15 @@ export class ExamScoresComponent {
   examScores: any;
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild('filter', { static: true }) filter!: ElementRef;
+  private keyupSubject: Subject<Event> = new Subject<Event>();
 
   constructor(public utils: UtilsService, private assessmentService: AssessmentService){
     this.assessmentPaginationModel = {};
+    this.keyupSubject.pipe(
+      debounceTime(300)  // Adjust the debounce time as needed
+    ).subscribe(event => {
+      this.applyFilter(event);
+    });
   }
 
   ngOnInit() {
@@ -84,17 +91,24 @@ export class ExamScoresComponent {
         );
   }
 
+  
+  onKeyup(event: Event) {
+    this.keyupSubject.next(event);
+  }
+
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value?.toLowerCase();
-    this.dataSource = filterValue.trim().toLowerCase();
-    if (filterValue) {
-      this.dataSource = this.examScores?.filter((item: any) => {
-        const searchList = `${item.studentInfo.name.toLowerCase()} ${item.studentInfo.last_name.toLowerCase()}`;
-        return searchList.includes(filterValue);
-      });
-    } else {
-      this.dataSource = this.examScores;
+    const filterValue = (event.target as HTMLInputElement).value?.trim()?.toLowerCase();
+    
+    if(filterValue){
+      this.assessmentPaginationModel.studentName = filterValue;
+    }else {
+      delete this.assessmentPaginationModel.studentName;
     }
+    this.getAllAnswers();
+  }
+
+  ngOnDestroy() {
+    this.keyupSubject.unsubscribe();
   }
 
   enableStudentView(data: any){
