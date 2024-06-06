@@ -52,6 +52,23 @@ export class AuthenService {
         console.log('err',error)
       })
     );
+
+
+  }
+  socialLogin(socialUser:any): Observable<Users> {
+    const loginUrl =this.defaultUrl + 'auth/social-login';
+    return this.http.post<ApiResponse>(loginUrl, socialUser).pipe(
+      map((response) => {
+        localStorage.setItem('currentUser', JSON.stringify(response.data));
+        localStorage.setItem('userLogs', JSON.stringify(response.userLogs));
+        localStorage.setItem('id', response.data.user.id);
+        this.currentUserSubject.next(response.data);
+      return response.data;
+      },
+      (error: any) =>{
+        console.log('err',error)
+      })
+    );
   }
   private buildParams(filter?: Partial<CoursePaginationModel>): HttpParams {
     let params = new HttpParams();
