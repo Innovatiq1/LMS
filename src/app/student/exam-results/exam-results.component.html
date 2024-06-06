@@ -57,6 +57,14 @@
                                 </mat-cell>
                               </ng-container>
 
+                              <ng-container matColumnDef="Submitted At">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>Submitted At
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row">
+                                  <span class="mobile-label">Submitted At:</span>{{ row?.submittedAt  | date: 'MM/dd/yyyy' }}
+                                </mat-cell>
+                              </ng-container>
+
                               <ng-container matColumnDef="Retakes left">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header>Retakes left
                                 </mat-header-cell>

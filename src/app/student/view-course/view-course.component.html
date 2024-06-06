@@ -1292,7 +1292,7 @@
                     <ng-container
                       *ngIf="
                         assessmentTaken != undefined &&
-                        assessmentTaken <= assessmentInfo.retake &&
+                        assessmentTaken < assessmentInfo.retake &&
                         (assessmentInfo.resultAfterFeedback &&
                         isAnswersSubmitted
                           ? isAnswersSubmitted && isFeedBackSubmitted

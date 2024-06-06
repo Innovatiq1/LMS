@@ -24,7 +24,6 @@ import { T } from '@angular/cdk/keycodes';
 import { MatDialog } from '@angular/material/dialog';
 import DomToImage from 'dom-to-image';
 
-
 import {
   AbstractControl,
   FormArray,
@@ -137,8 +136,8 @@ export class ViewCourseComponent implements OnDestroy {
   invoiceUrl: any;
 
   questionTimer: number = 60;
-  defaultTab:string = 'home';
-  assessmentTaken! : number;
+  defaultTab: string = 'home';
+  assessmentTaken!: number;
   examAssessmentTaken!: number;
   assessmentAnswerLatest: any;
   constructor(
@@ -153,8 +152,8 @@ export class ViewCourseComponent implements OnDestroy {
     private studentService: StudentsService,
     private surveyService: SurveyService,
     public dialog: MatDialog,
-    private settingsService:SettingsService,
-    private assessmentService:AssessmentService,
+    private settingsService: SettingsService,
+    private assessmentService: AssessmentService,
     private changeDetectorRef: ChangeDetectorRef
   ) {
     let urlPath = this.router.url.split('/');
@@ -186,7 +185,7 @@ export class ViewCourseComponent implements OnDestroy {
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe((params) => {
       if (params['tab'] === 'assessment') {
-        this.defaultTab = "test";
+        this.defaultTab = 'test';
       }
     });
   }
@@ -227,6 +226,7 @@ export class ViewCourseComponent implements OnDestroy {
           .getVideoPlayedById(studentId, classId, videoDetails.id)
           .subscribe((response) => {
             if (response) {
+              this.checkStudentClassRedirect();
             } else {
               let payload = {
                 status: 'ended',
@@ -236,62 +236,7 @@ export class ViewCourseComponent implements OnDestroy {
               };
 
               this.courseService.saveVideoPlayTime(payload).subscribe(() => {
-                this.courseService
-                  .getStudentClass(studentId, classId)
-                  .subscribe((response) => {
-                    this.studentClassDetails = response.data.docs[0].coursekit;
-                    // console.log("payload",response)
-                    if (
-                      this.studentClassDetails.playbackTime !== 100 ||
-                      !this.studentClassDetails.playbackTime
-                    ) {
-                      const unmatchedDocuments =
-                        this.studentClassDetails.filter(
-                          (doc: { videoId: any }) =>
-                            doc.videoId !== videoDetails.id
-                        );
-                      const allUnmatchedCompleted = unmatchedDocuments.every(
-                        (doc: { playbackTime: number }) =>
-                          doc.playbackTime === 100
-                      );
-                      // console.log("reached",allUnmatchedCompleted);
-                      if (allUnmatchedCompleted) {
-                        this.courseService
-                          .getStudentClass(studentId, this.classId)
-                          .subscribe((response) => {
-                            this.studentClassDetails = response.data.docs[0];
-                            // console.log("enterd", this.studentClassDetails);
-                            if (this.studentClassDetails.status == 'approved') {
-                              if (this.paid) {
-                                this.router.navigate([
-                                  '/student/questions/',
-                                  classId,
-                                  studentId,
-                                  this.courseId,
-                                ]);
-                              } else if (this.free) {
-                                this.router.navigate([
-                                  '/student/questions/freecourse/',
-                                  classId,
-                                  studentId,
-                                  this.courseId,
-                                ]);
-                              }
-                            } else {
-                            }
-                          });
-                      } else {
-                        let payload = {
-                          status: 'notCompleted',
-                          studentId: studentId,
-                        };
-                        this.classService
-                          .saveApprovedClasses(classId, payload)
-                          .subscribe((response) => {});
-                      }
-                    } else {
-                    }
-                  });
+                this.checkStudentClassRedirect();
               });
             }
           });
@@ -305,6 +250,7 @@ export class ViewCourseComponent implements OnDestroy {
           .getVideoPlayedById(studentId, courseId, videoDetails.id)
           .subscribe((response) => {
             if (response) {
+              this.checkStudentClassRedirect();
             } else {
               let payload = {
                 status: 'ended',
@@ -312,55 +258,8 @@ export class ViewCourseComponent implements OnDestroy {
                 courseId: courseId,
                 videoId: videoDetails.id,
               };
-
               this.courseService.saveVideoPlayTime(payload).subscribe(() => {
-                this.courseService
-                  .getStudentFreeCourse(studentId, courseId)
-                  .subscribe((response) => {
-                    this.studentClassDetails = response.data.docs[0].coursekit;
-                    // console.log("payload",response)
-                    if (
-                      this.studentClassDetails.playbackTime !== 100 ||
-                      !this.studentClassDetails.playbackTime
-                    ) {
-                      const unmatchedDocuments =
-                        this.studentClassDetails.filter(
-                          (doc: { videoId: any }) =>
-                            doc.videoId !== videoDetails.id
-                        );
-                      const allUnmatchedCompleted = unmatchedDocuments.every(
-                        (doc: { playbackTime: number }) =>
-                          doc.playbackTime === 100
-                      );
-                      // console.log("reached",allUnmatchedCompleted);
-                      if (allUnmatchedCompleted) {
-                        this.courseService
-                          .getStudentFreeCourse(studentId, this.courseDetailsId)
-                          .subscribe((response) => {
-                            this.studentClassDetails = response.data.docs[0];
-                            // console.log("enterd", this.studentClassDetails);
-                            if (this.studentClassDetails.status == 'approved') {
-                              this.router.navigate([
-                                '/student/questions/freecourse/',
-                                this.courseDetailsId,
-                                studentId,
-                                this.courseDetailsId,
-                              ]);
-                            } else {
-                            }
-                          });
-                      } else {
-                        let payload = {
-                          status: 'notCompleted',
-                          studentId: studentId,
-                        };
-                        this.classService
-                          .saveApprovedClasses(this.courseDetailsId, payload)
-                          .subscribe((response) => {});
-                      }
-                    } else {
-                    }
-                  });
+                this.checkStudentClassRedirect();
               });
             }
           });
@@ -368,6 +267,67 @@ export class ViewCourseComponent implements OnDestroy {
     }
 
     // this.destroyModal(event.target.currentTime);
+  }
+
+  checkStudentClassRedirect() {
+    let courseId = this.courseDetailsId;
+    let studentId = localStorage.getItem('id');
+    let classId = localStorage.getItem('classId');
+    const videoDetails = this.commonService.getVideoDetails();
+
+    this.courseService
+      .getStudentClass(studentId, classId)
+      .subscribe((response) => {
+        this.studentClassDetails = response.data.docs[0].coursekit;
+        // console.log("payload",response)
+        if (
+          this.studentClassDetails.playbackTime !== 100 ||
+          !this.studentClassDetails.playbackTime
+        ) {
+          const unmatchedDocuments = this.studentClassDetails.filter(
+            (doc: { videoId: any }) => doc.videoId !== videoDetails.id
+          );
+          const allUnmatchedCompleted = unmatchedDocuments.every(
+            (doc: { playbackTime: number }) => doc.playbackTime === 100
+          );
+          // console.log("reached",allUnmatchedCompleted);
+          if (allUnmatchedCompleted) {
+            this.courseService
+              .getStudentClass(studentId, this.classId)
+              .subscribe((response) => {
+                this.studentClassDetails = response.data.docs[0];
+                // console.log("enterd", this.studentClassDetails);
+                if (this.studentClassDetails.status == 'approved') {
+                  if (this.paid) {
+                    this.router.navigate([
+                      '/student/questions/',
+                      classId,
+                      studentId,
+                      this.courseId,
+                    ]);
+                  } else if (this.free) {
+                    this.router.navigate([
+                      '/student/questions/freecourse/',
+                      classId,
+                      studentId,
+                      this.courseId,
+                    ]);
+                  }
+                } else {
+                }
+              });
+          } else {
+            let payload = {
+              status: 'notCompleted',
+              studentId: studentId,
+            };
+            this.classService
+              .saveApprovedClasses(classId, payload)
+              .subscribe((response) => {});
+          }
+        } else {
+        }
+      });
   }
   onPlay() {
     this.isPlaying = true;
@@ -395,7 +355,7 @@ export class ViewCourseComponent implements OnDestroy {
   registerClass(classId: string) {
     var userdata = JSON.parse(localStorage.getItem('currentUser')!);
     var studentId = localStorage.getItem('id');
-    if(this.paid){
+    if (this.paid) {
       const today = new Date();
       const date = today.toISOString().split('T')[0];
       let body = {
@@ -412,16 +372,16 @@ export class ViewCourseComponent implements OnDestroy {
       const invoiceDialogRef = this.dialog.open(InvoiceComponent, {
         width: '1000px',
         height: '600px',
-        data: body
+        data: body,
       });
-      invoiceDialogRef.afterClosed().subscribe(res => {
-        if (res){
+      invoiceDialogRef.afterClosed().subscribe((res) => {
+        if (res) {
           const dialogRef = this.dialog.open(PaymentDailogComponent, {
             width: '650px',
             height: '300px',
-            data: { payment: '' } 
+            data: { payment: '' },
           });
-          dialogRef.afterClosed().subscribe(result => {
+          dialogRef.afterClosed().subscribe((result) => {
             if (result) {
               if (result.payment === 'card') {
                 let payload = {
@@ -434,12 +394,13 @@ export class ViewCourseComponent implements OnDestroy {
                   title: this.title,
                   coursekit: this.courseKit,
                 };
-            
-              this.courseService.saveRegisterClass(payload).subscribe((response) => {
-                
-                this.document.location.href = response.data.session.url;
-                this.getClassDetails();
-              });
+
+                this.courseService
+                  .saveRegisterClass(payload)
+                  .subscribe((response) => {
+                    this.document.location.href = response.data.session.url;
+                    this.getClassDetails();
+                  });
               } else if (result.payment === 'other') {
                 let payload = {
                   email: userdata.user.email,
@@ -451,121 +412,137 @@ export class ViewCourseComponent implements OnDestroy {
                   title: this.title,
                   coursekit: this.courseKit,
                 };
-            
-                    this.courseService.createOrder(payload).subscribe((response) => {
-                      if(response.status == 200){
-                        this.settingsService.getPayment().subscribe((res:any)=>{
+
+                this.courseService
+                  .createOrder(payload)
+                  .subscribe((response) => {
+                    if (response.status == 200) {
+                      this.settingsService
+                        .getPayment()
+                        .subscribe((res: any) => {
                           this.razorPayKey = res.data.docs[0].keyId;
-                        const paymentOrderId = response.data.id;
-                        const options: any = {
-                          key: this.razorPayKey,
-                          amount: this.classDetails?.courseId?.fee,
-                          currency: 'INR',
-                          name: userdata.user.email,
-                          description:this.classDetails?.courseId?.title,
-                          order_id: paymentOrderId, 
-                          modal: {
-                            escape: false,
-                          },
-                          notes: {
-                          },
-                          theme: {
-                            color: '#ddcbff',
-                          },
-                        };
-                        setTimeout(()=>{
-                          options.handler = (response: any, error: any) => {
-                            options.response = response;
-                            if (error) {
+                          const paymentOrderId = response.data.id;
+                          const options: any = {
+                            key: this.razorPayKey,
+                            amount: this.classDetails?.courseId?.fee,
+                            currency: 'INR',
+                            name: userdata.user.email,
+                            description: this.classDetails?.courseId?.title,
+                            order_id: paymentOrderId,
+                            modal: {
+                              escape: false,
+                            },
+                            notes: {},
+                            theme: {
+                              color: '#ddcbff',
+                            },
+                          };
+                          setTimeout(() => {
+                            options.handler = (response: any, error: any) => {
+                              options.response = response;
+                              if (error) {
+                                this.router.navigate([
+                                  '/student/fail-course/',
+                                  this.classId,
+                                ]);
+                              } else {
+                                this.courseService
+                                  .verifyPaymentSignature(
+                                    response,
+                                    paymentOrderId
+                                  )
+                                  .subscribe((response: any) => {
+                                    let body = {
+                                      courseTitle:
+                                        this.classDetails?.courseId?.title,
+                                      courseFee:
+                                        this.classDetails?.courseId?.fee,
+                                    };
+                                    this.generateInvoice(body);
+                                    setTimeout(() => {
+                                      console.log('invoice', this.invoiceUrl);
+                                      let payload = {
+                                        email: userdata.user.email,
+                                        name: userdata.user.name,
+                                        courseTitle:
+                                          this.classDetails?.courseId?.title,
+                                        courseFee:
+                                          this.classDetails?.courseId?.fee,
+                                        studentId: studentId,
+                                        classId: this.classId,
+                                        title: this.title,
+                                        coursekit: this.courseKit,
+                                        orderId:
+                                          response?.data?.payment
+                                            ?.original_order_id,
+                                        paymentId:
+                                          response?.data?.payment
+                                            ?.razorpay_payment_id,
+                                        razorpay: true,
+                                        invoiceUrl: this.invoiceUrl,
+                                      };
+
+                                      this.courseService
+                                        .saveRegisterClass(payload)
+                                        .subscribe((res) => {
+                                          this.getClassDetails();
+
+                                          response.data.isPaymentVerfied
+                                            ? this.router.navigate([
+                                                '/student/sucess-course/',
+                                                this.classId,
+                                              ])
+                                            : this.router.navigate([
+                                                '/student/fail-course/',
+                                                this.classId,
+                                              ]);
+                                        });
+                                    }, 5000);
+                                  });
+                              }
+                            };
+                            options.modal.ondismiss = () => {
+                              alert('Transaction has been cancelled.');
                               this.router.navigate([
                                 '/student/fail-course/',
-                                this.classId
+                                this.classId,
                               ]);
-                            } else {  
-                              this.courseService
-                                .verifyPaymentSignature(response, paymentOrderId)
-                                .subscribe((response: any) => {
-                                  let body = {
-                                    courseTitle: this.classDetails?.courseId?.title,
-                                    courseFee: this.classDetails?.courseId?.fee,
-                                  };
-                                  this.generateInvoice(body)
-                                  setTimeout(()=>{
-                                    console.log('invoice',this.invoiceUrl)
-                                    let payload = {
-                                      email: userdata.user.email,
-                                      name: userdata.user.name,
-                                      courseTitle: this.classDetails?.courseId?.title,
-                                      courseFee: this.classDetails?.courseId?.fee,
-                                      studentId: studentId,
-                                      classId: this.classId,
-                                      title: this.title,
-                                      coursekit: this.courseKit,
-                                      orderId:response?.data?.payment?.original_order_id,
-                                      paymentId:response?.data?.payment?.razorpay_payment_id,
-                                      razorpay:true,
-                                      invoiceUrl:this.invoiceUrl
-                                    };
-                                
-                                        this.courseService.saveRegisterClass(payload).subscribe((res) => {
-                                          this.getClassDetails();
-  
-  
-                                          response.data.isPaymentVerfied
-                                          ? this.router.navigate(['/student/sucess-course/',this.classId])
-                                          : this.router.navigate(['/student/fail-course/',this.classId])
-  
+                            };
+                            const rzp =
+                              new this.courseService.nativeWindow.Razorpay(
+                                options
+                              );
+                            rzp.open();
+                          }, 100);
+                        });
+                    } else {
+                      alert('Server side error');
+                    }
                   });
-              
-                                  },5000)
-                             
-                                 
-                                });
-                            }
-                          };
-                          options.modal.ondismiss = () => {
-                            alert('Transaction has been cancelled.');
-                            this.router.navigate(['/student/fail-course/',this.classId])             
-                           };
-                          const rzp = new this.courseService.nativeWindow.Razorpay(options);
-                          rzp.open();
-                        },100)
-                      })                  
-                      } else {
-                        alert('Server side error')
-                      }
-                    
-                    })
               }
-              
             }
           });
         }
-      })
-     
-    }
-      
-   
-
-  else if(this.free){
-    let payload = {
-      email: userdata.user.email,
-      name: userdata.user.name,
-      courseTitle: this.courseDetails?.title,
-      courseFee: 0,
-      studentId: studentId,
-      classId: null,
-      title: this.title,
-      coursekit: this.courseKit,
-      feeType:'free',
-      courseId:this.courseDetails.id,
-    };
-    this.courseService.saveRegisterClass(payload).subscribe((response) => {
-      Swal.fire({
-        title: 'Thank you',
-        text: 'We will approve once verified',
-        icon: 'success',
       });
+    } else if (this.free) {
+      let payload = {
+        email: userdata.user.email,
+        name: userdata.user.name,
+        courseTitle: this.courseDetails?.title,
+        courseFee: 0,
+        studentId: studentId,
+        classId: null,
+        title: this.title,
+        coursekit: this.courseKit,
+        feeType: 'free',
+        courseId: this.courseDetails.id,
+      };
+      this.courseService.saveRegisterClass(payload).subscribe((response) => {
+        Swal.fire({
+          title: 'Thank you',
+          text: 'We will approve once verified',
+          icon: 'success',
+        });
         this.isRegistered = true;
       });
     }
@@ -593,63 +570,63 @@ export class ViewCourseComponent implements OnDestroy {
     this.changeDetectorRef.detectChanges();
 
     var convertIdDynamic = 'contentToConvert';
-    this.genratePdf3(
-      convertIdDynamic
-    );
+    this.genratePdf3(convertIdDynamic);
   }
 
   genratePdf3(convertIdDynamic: any) {
     this.isInvoice = true;
     setTimeout(() => {
       this.waitForElement(convertIdDynamic).then((dashboard) => {
+        if (dashboard != null) {
+          const dashboardHeight = dashboard.clientHeight;
+          const dashboardWidth = dashboard.clientWidth;
 
-      if (dashboard != null) {
+          const options = {
+            background: 'white',
+            width: dashboardWidth,
+            height: dashboardHeight,
+          };
 
-        const dashboardHeight = dashboard.clientHeight;
-        const dashboardWidth = dashboard.clientWidth;
+          DomToImage.toPng(dashboard, options).then((imgData) => {
+            const doc = new jsPDF(
+              dashboardWidth > dashboardHeight ? 'l' : 'p',
+              'mm',
+              [dashboardWidth, dashboardHeight]
+            );
+            const imgProps = doc.getImageProperties(imgData);
+            const pdfWidth = doc.internal.pageSize.getWidth();
+            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
-        const options = {
-          background: 'white',
-          width: dashboardWidth,
-          height: dashboardHeight,
-        };
+            doc.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+            const currentDateTime = moment();
+            const randomString = this.generateRandomString(10);
 
-        DomToImage.toPng(dashboard, options).then((imgData) => {
-          const doc = new jsPDF(
-            dashboardWidth > dashboardHeight ? 'l' : 'p',
-            'mm',
-            [dashboardWidth, dashboardHeight]
-          );
-          const imgProps = doc.getImageProperties(imgData);
-          const pdfWidth = doc.internal.pageSize.getWidth();
-          const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-          doc.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-          const currentDateTime = moment();
-          const randomString = this.generateRandomString(10);
-
-
-          const pdfData = new File(
-            [doc.output('blob')],
-            randomString + 'invoice.pdf',
-            {
-              type: 'application/pdf',
-            }
-          );
-          this.classService.uploadFileApi(pdfData).subscribe(
-            (data: any) => {
-                this.invoiceUrl =data.inputUrl
-                          },
-            (err) => {}
-          );
-        });
-        this.isInvoice = false;
-      } else {
-        console.error('Element not found');
-      }})
+            const pdfData = new File(
+              [doc.output('blob')],
+              randomString + 'invoice.pdf',
+              {
+                type: 'application/pdf',
+              }
+            );
+            this.classService.uploadFileApi(pdfData).subscribe(
+              (data: any) => {
+                this.invoiceUrl = data.inputUrl;
+              },
+              (err) => {}
+            );
+          });
+          this.isInvoice = false;
+        } else {
+          console.error('Element not found');
+        }
+      });
     }, 500);
   }
-  private waitForElement(id: string, interval = 100, maxAttempts = 10): Promise<HTMLElement | null> {
+  private waitForElement(
+    id: string,
+    interval = 100,
+    maxAttempts = 10
+  ): Promise<HTMLElement | null> {
     let attempts = 0;
     return new Promise((resolve) => {
       const intervalId = setInterval(() => {
@@ -673,7 +650,7 @@ export class ViewCourseComponent implements OnDestroy {
     return result;
   }
 
-  getCourseKitDetails(id:string) {
+  getCourseKitDetails(id: string) {
     this.courseService.getCourseById(id).subscribe((response) => {
       this.courseKitDetails = response?.course_kit;
       this.courseDetails = response;
@@ -771,14 +748,14 @@ export class ViewCourseComponent implements OnDestroy {
       });
   }
 
-  getAssessmentAnswerCount(courseId:string){
+  getAssessmentAnswerCount(courseId: string) {
     const studentId = localStorage.getItem('id') || '';
     this.assessmentService
       .getAssessmentAnswerCount(studentId, courseId)
-      .subscribe((response:any) => {
+      .subscribe((response: any) => {
         this.assessmentTaken = response['count'];
         this.assessmentAnswerLatest = response['latestRecord'];
-        if(this.assessmentTaken >= 1){
+        if (this.assessmentTaken >= 1) {
           this.updateCompletionStatus();
         }
       });
@@ -789,19 +766,19 @@ export class ViewCourseComponent implements OnDestroy {
     let payload = {
       status: 'completed',
       studentId: studentId,
-      classId:this.classId,
+      classId: this.classId,
+      playbackTime: 100,
     };
     this.classService
       .saveApprovedClasses(this.classId, payload)
-      .subscribe((response) => {
-      });
+      .subscribe((response) => {});
   }
 
-  getExamAssessmentAnswerCount(courseId:string){
+  getExamAssessmentAnswerCount(courseId: string) {
     const studentId = localStorage.getItem('id') || '';
     this.assessmentService
       .getExamAssessmentAnswerCount(studentId, courseId)
-      .subscribe((response:any) => {
+      .subscribe((response: any) => {
         this.examAssessmentTaken = response['count'];
       });
   }
@@ -1086,7 +1063,7 @@ export class ViewCourseComponent implements OnDestroy {
   }
 
   submitFeedback(event: any) {
-    this.isFeedBackSubmitted= false;
+    this.isFeedBackSubmitted = false;
     const studentId = localStorage.getItem('id');
     const userData = JSON.parse(localStorage.getItem('user_data') || '');
     const studentFirstName = userData?.user?.name;
@@ -1101,7 +1078,7 @@ export class ViewCourseComponent implements OnDestroy {
     };
     this.surveyService.addSurveyBuilder(payload).subscribe(
       (response) => {
-        this.isFeedBackSubmitted= true;
+        this.isFeedBackSubmitted = true;
         Swal.fire({
           title: 'Successful',
           text: 'Feedback submitted successfully',
@@ -1119,7 +1096,7 @@ export class ViewCourseComponent implements OnDestroy {
       }
     );
   }
-  skipFeedback(){
+  skipFeedback() {
     this.isFeedBackSubmitted = true;
   }
 }
