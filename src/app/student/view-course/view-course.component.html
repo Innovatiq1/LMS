@@ -1287,12 +1287,12 @@
                         assessmentTaken >= assessmentInfo?.retake
                       "
                     >
-                      Max No. of Retake Reached
+                      Max No. of Retake Reached {{assessmentTaken}}
                     </p>
                     <ng-container
                       *ngIf="
                         assessmentTaken != undefined &&
-                        assessmentTaken <= assessmentInfo.retake &&
+                        assessmentTaken < assessmentInfo.retake &&
                         (assessmentInfo.resultAfterFeedback &&
                         isAnswersSubmitted
                           ? isAnswersSubmitted && isFeedBackSubmitted

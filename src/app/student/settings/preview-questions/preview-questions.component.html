@@ -36,7 +36,10 @@
                                     <h6 class="ml-5">{{ i + 1 + skip }}. {{ question.questionText }}</h6>
                                     <mat-radio-group>
                                         <div *ngFor="let option of question.options; let k=index">
-                                            <mat-radio-button class="example-margin option-text" [ngClass]="{'bg-success': question.selectedOptionText === option.text}" [value]="option.text">{{ optionsLabel[k] }} {{ option.text }}</mat-radio-button>
+                                            <mat-radio-button class="example-margin option-text"  [value]="option.text">{{ optionsLabel[k] }} {{ option.text }}</mat-radio-button>
+                                            <span>
+                                                <i *ngIf="option.correct" class="fa fa-check text-success"></i>
+                                            </span>
                                         </div>
                                     </mat-radio-group>
                                 </div>
