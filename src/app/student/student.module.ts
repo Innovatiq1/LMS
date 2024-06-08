@@ -96,6 +96,8 @@ import { AddStaffComponent } from './settings/add-staff/add-staff.component';
 import { AboutStaffComponent } from './settings/about-staff/about-staff.component';
 import { ExamResultsComponent } from './exam-results/exam-results.component';
 import { VendorComponent } from './settings/vendor/vendor.component';
+import { UpdateDiscountComponent } from './settings/discount/update-discount/update-discount.component';
+import { DiscountComponent } from './settings/discount/discount.component';
 import { UpdateFundingComponent } from './settings/funding/update-funding/update-funding.component';
 import { UpdateDeptComponent } from './settings/create-department/update-dept/update-dept.component';
 import { UpdateUsergroupComponent } from './settings/user-group/update-usergroup/update-usergroup.component';
@@ -195,6 +197,8 @@ import { CustomizationExamTimerComponent } from './settings/customization-exam-t
     AboutStaffComponent,
     ExamResultsComponent,
     VendorComponent,
+    DiscountComponent,
+    UpdateDiscountComponent,
     UpdateFundingComponent,
     UpdateDeptComponent,
     UpdateUsergroupComponent,

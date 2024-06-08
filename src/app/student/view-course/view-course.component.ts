@@ -368,6 +368,7 @@ export class ViewCourseComponent implements OnDestroy {
         title: this.title,
         coursekit: this.courseKit,
         date: date,
+        discountPercentage:5
       };
       const invoiceDialogRef = this.dialog.open(InvoiceComponent, {
         width: '1000px',
