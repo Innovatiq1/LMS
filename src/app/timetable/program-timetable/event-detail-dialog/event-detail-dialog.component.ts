@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AppConstants } from '@shared/constants/app.constants';
 
 @Component({
   selector: 'app-event-detail-dialog',
@@ -23,7 +24,7 @@ export class EventDetailDialogComponent implements OnInit {
     'programCode' in data ? (this.code = true) : (this.code = false);
 
     let userType = localStorage.getItem('user_type');
-    if (userType == 'Student') {
+    if (userType == AppConstants.STUDENT_ROLE) {
       this.isStudent = true;
     }
     if(data.programName){

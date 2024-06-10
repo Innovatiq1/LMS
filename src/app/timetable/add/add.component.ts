@@ -8,6 +8,7 @@ import { forkJoin } from 'rxjs';
 import { ExamScheduleService } from '../exam-schedule.service';
 import Swal from 'sweetalert2';
 import * as moment from 'moment';
+import { AppConstants } from '@shared/constants/app.constants';
 
 @Component({
   selector: 'app-add',
@@ -103,9 +104,9 @@ export class AddComponent {
   
   
     cancel(){
-      if(this.userType === 'admin' || this.userType === 'Instructor'){
+      if(this.userType === AppConstants.ADMIN_USERTYPE || this.userType === AppConstants.INSTRUCTOR_ROLE){
         this.router.navigate(['/timetable/course-exam']);
-      }else if(this.userType === 'Student'){
+      }else if(this.userType === AppConstants.STUDENT_ROLE){
         this.router.navigate(['/student/exams/courses']);
       }
       // this.router.navigate(['/student/exams/courses']);
@@ -149,9 +150,9 @@ export class AddComponent {
                text: 'Exam schdeule add successfully',
                icon: 'success',
              });
-             if(this.userType === 'admin' || this.userType === 'Instructor'){
+             if(this.userType === AppConstants.ADMIN_USERTYPE || this.userType === AppConstants.INSTRUCTOR_ROLE){
                this.router.navigate(['/timetable/course-exam']);
-             }else if(this.userType === 'Student'){
+             }else if(this.userType === AppConstants.STUDENT_ROLE){
                this.router.navigate(['/student/exams/courses']);
              }
              

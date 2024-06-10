@@ -31,6 +31,7 @@ import { Location } from '@angular/common';
 import { UtilsService } from '@core/service/utils.service';
 import { Teachers } from 'app/admin/teachers/teachers.model';
 import { TeachersService } from 'app/admin/teachers/teachers.service';
+import { AppConstants } from '@shared/constants/app.constants';
 
 @Component({
   selector: 'app-all-teachers',
@@ -371,7 +372,7 @@ export class ExampleDataSource extends DataSource<Teachers> {
       this.paginator.page,
     ];
     let payload = {
-      type: 'Instructor',
+      type: AppConstants.INSTRUCTOR_ROLE
     };
     this.exampleDatabase.getAllTeacherss(payload);
     this.rowData = this.exampleDatabase.data;

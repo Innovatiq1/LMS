@@ -20,6 +20,7 @@ import { UserService } from '@core/service/user.service';
 import { UtilsService } from '@core/service/utils.service';
 import { SettingsService } from '@core/service/settings.service';
 import { forkJoin } from 'rxjs';
+import { AppConstants } from '@shared/constants/app.constants';
 
 @Component({
   selector: 'app-settings',
@@ -146,6 +147,7 @@ export class SettingsComponent {
   trainingAdminUsers: any;
   showBodyContent: boolean = false;
   role: string|null;
+  commonRoles: any;
 
   constructor(
     private studentService: StudentsService,
@@ -549,13 +551,14 @@ export class SettingsComponent {
     this.getSidemenu();
     this.getStudentDb();
     this.getAllUsers();
+    this.commonRoles = AppConstants
     let role = localStorage.getItem('user_type');
-    if (role == 'admin') {
+    if (role == AppConstants.ADMIN_USERTYPE) {
       this.isAdmin = true;
-    } else if (role == 'student') {
+    } else if (role == AppConstants.STUDENT_ROLE) {
       this.isAdmin = false;
     } else if (
-      !(role == 'Student' || role == 'Instructor')
+      !(role == AppConstants.STUDENT_ROLE|| role == AppConstants.INSTRUCTOR_ROLE)
     ) {
       this.isApprovers = true;
     }

@@ -22,6 +22,7 @@ import { MenuItem, RouteInfo } from './sidebar.metadata';
 import { AuthenService } from '@core/service/authen.service';
 import { AdminService } from '@core/service/admin.service';
 import { StudentsService } from 'app/admin/students/students.service';
+import { AppConstants } from '@shared/constants/app.constants';
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
@@ -71,7 +72,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
           this.isSettings = false;
           this.menuitem = this.orgMenuItems;
         } else {
-          if (this.userType === 'Admin') {
+          if (this.userType === AppConstants.ADMIN_ROLE) {
             this.isSettings = true;
             this.menuitem = SettingsMenu;
           } else {
@@ -159,12 +160,12 @@ export class SidebarComponent implements OnInit, OnDestroy {
       this.userImg = this.authenService.currentUserValue.user.avatar;
       this.getUserTypeList();
       this.student();
-      if (userRole === Role.Admin) {
-        this.userType = Role.Admin;
-      } else if (userRole === Role.Instructor) {
-        this.userType = Role.Instructor;
-      } else if (userRole === Role.Student) {
-        this.userType = Role.Student;
+      if (userRole === AppConstants.ADMIN_ROLE) {
+        this.userType = AppConstants.ADMIN_ROLE;
+      } else if (userRole === AppConstants.INSTRUCTOR_ROLE) {
+        this.userType = AppConstants.INSTRUCTOR_ROLE;
+      } else if (userRole === AppConstants.STUDENT_ROLE) {
+        this.userType = AppConstants.STUDENT_ROLE;
       } else if (userRole === Role.TrainingAdministrator) {
         this.userType = Role.TrainingAdministrator;
       } else if (userRole === Role.Supervisor) {
@@ -184,7 +185,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
       }
     }
 
-    if(this.userType === Role.Admin || this.userType === 'admin'){
+    if(this.userType === AppConstants.ADMIN_ROLE || this.userType === AppConstants.ADMIN_USERTYPE){
       this.submenu = true;
     }
 
@@ -258,9 +259,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.authService.logout().subscribe((res) => {
       if (!res.success) {
         let userType = JSON.parse(localStorage.getItem('user_data')!).user.type;
-        if (userType == 'admin' || userType == 'Instructor') {
+        if (userType == AppConstants.ADMIN_USERTYPE || userType == AppConstants.INSTRUCTOR_ROLE) {
           this.router.navigate(['/authentication/TMS/signin']);
-        } else if (userType == 'Student') {
+        } else if (userType == AppConstants.STUDENT_ROLE) {
           this.router.navigate(['/authentication/LMS/signin']);
         } else {
           this.router.navigate(['/authentication/TMS/signin']);

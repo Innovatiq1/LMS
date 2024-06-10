@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { LecturesService } from 'app/teacher/lectures/lectures.service';
 import { EventDetailDialogComponent } from '../program-timetable/event-detail-dialog/event-detail-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { AppConstants } from '@shared/constants/app.constants';
 
 @Component({
   selector: 'app-course-timetable',
@@ -43,10 +44,10 @@ export class CourseTimetableComponent implements OnInit {
     //   this.getApprovedCourse();
     //   this.getApprovedProgram();
     // }
-    if (userType == 'admin' || userType == 'Student') {
+    if (userType == AppConstants.ADMIN_USERTYPE|| userType == AppConstants.STUDENT_ROLE) {
       this.getClassList();
     }
-    if (userType == 'Instructor') {
+    if (userType == AppConstants.INSTRUCTOR_ROLE) {
       this.getInstructorApprovedCourse();
       //this.getApprovedProgram();
     }
@@ -70,7 +71,7 @@ export class CourseTimetableComponent implements OnInit {
   }
   getInstructorApprovedCourse() {
     let studentId = localStorage.getItem('id');
-    const payload = { studentId: studentId, isAll: true, type: 'Instructor' };
+    const payload = { studentId: studentId, isAll: true, type: AppConstants.INSTRUCTOR_ROLE };
     let instructorId = localStorage.getItem('id');
     this.lecturesService
       .getClassListWithPagination(instructorId, this.filterName)

@@ -4,6 +4,7 @@ import { CalendarOptions } from '@fullcalendar/core';
 import { ClassService } from 'app/admin/schedule-class/class.service';
 import dayGridPlugin from '@fullcalendar/daygrid'
 import { LecturesService } from 'app/teacher/lectures/lectures.service';
+import { AppConstants } from '@shared/constants/app.constants';
 
 @Component({
   selector: 'app-program-timetable',
@@ -33,16 +34,16 @@ export class ProgramTimetableComponent implements OnInit{
   constructor(private classService: ClassService, private router: Router,public lecturesService: LecturesService,
     ) {
     let userType = localStorage.getItem("user_type")
-    if(userType == "Student"){
+    if(userType == AppConstants.STUDENT_ROLE){
       this.getApprovedCourse();
       this.getApprovedProgram();
     }
-    if(userType == "Instructor"){
+    if(userType == AppConstants.INSTRUCTOR_ROLE){
       console.log("test")
       //this.getApprovedCourse();
       this.getApprovedProgram();
     }
-    else if(userType == "admin"){
+    else if(userType == AppConstants.ADMIN_USERTYPE){
       this.getClassesList();
     }
   }

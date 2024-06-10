@@ -1,4 +1,4 @@
-<section class="content" *ngIf="userType == 'Student'">
+<section class="content" *ngIf="userType == commonRoles.STUDENT_ROLE">
     <div class="content-block">
       <div class="block-header" *ngFor="let breadscrum of breadscrums">
         <!-- breadcrumb -->
@@ -236,7 +236,7 @@
   </section>
 
 
-  <section class="content" *ngIf="userType == 'Instructor'">
+  <section class="content" *ngIf="userType == commonRoles.INSTRUCTOR_ROLE">
     <div class="content-block">
       <div class="block-header" *ngFor="let breadscrum of breadscrums">
         <!-- breadcrumb -->

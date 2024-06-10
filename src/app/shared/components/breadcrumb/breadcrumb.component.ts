@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { AuthService, Role } from '@core';
 import { AuthenService } from '@core/service/authen.service';
 import { Location } from '@angular/common';
+import { AppConstants } from '@shared/constants/app.constants';
 @Component({
   selector: 'app-breadcrumb',
   templateUrl: './breadcrumb.component.html',
@@ -30,17 +31,17 @@ export class BreadcrumbComponent {
     const role = this.authenticationService.currentUserValue.user.role;
     if (
       role === Role.All ||
-      (role === Role.Admin &&
+      (role === AppConstants.ADMIN_ROLE &&
         (role == 'RO' || role == 'Director' || role == 'Employee'))
     ) {
       url = '/dashboard/dashboard';
     } else if (
-      role === Role.Instructor ||
+      role === AppConstants.INSTRUCTOR_ROLE ||
       role === 'Trainer' ||
       role === 'instructor'
     ) {
       url = '/dashboard/instructor-dashboard';
-    } else if (role === Role.Student || role === 'student') {
+    } else if (role === AppConstants.STUDENT_ROLE || role === 'student') {
       url = '/dashboard/student-dashboard';
     } else if (
       role === Role.TrainingAdministrator ||

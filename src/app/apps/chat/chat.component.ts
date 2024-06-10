@@ -5,6 +5,7 @@ import { SupportService } from '../support/support.service';
 import { StudentsService } from 'app/admin/students/students.service';
 import Swal from 'sweetalert2';
 import { CoursePaginationModel } from '@core/models/course.model';
+import { AppConstants } from '@shared/constants/app.constants';
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
@@ -63,7 +64,7 @@ this.listOfTicket();
 
   getAllStudents(){
     let payload = {
-      type: "Student"
+      type: AppConstants.STUDENT_ROLE
     }
     this.studentService.getStudent(payload).subscribe(response =>{
     this.students = response.data

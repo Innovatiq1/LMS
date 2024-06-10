@@ -4,6 +4,7 @@ import { ClassService } from 'app/admin/schedule-class/class.service';
 import dayGridPlugin from '@fullcalendar/daygrid'
 import { Router } from '@angular/router';
 import { LecturesService } from 'app/teacher/lectures/lectures.service';
+import { AppConstants } from '@shared/constants/app.constants';
 
 @Component({
   selector: 'app-instructor-timetable',
@@ -35,16 +36,16 @@ export class InstructorTimetableComponent implements OnInit {
   constructor(private classService: ClassService, private router: Router,public lecturesService: LecturesService) {
     let userType = localStorage.getItem("user_type")
     console.log("sssssssssss",userType)
-    if(userType == "Student"){
+    if(userType == AppConstants.STUDENT_ROLE){
       this.getApprovedCourse();
       this.getApprovedProgram();
     }
-    if(userType == "Instructor"){
+    if(userType == AppConstants.INSTRUCTOR_ROLE){
       console.log("test")
       this.getApprovedCourse();
       //this.getApprovedProgram();
     }
-    else if(userType == "admin"){
+    else if(userType == AppConstants.ADMIN_USERTYPE){
       this.getClassList();
     }
   }
@@ -140,7 +141,7 @@ export class InstructorTimetableComponent implements OnInit {
   }
   getApprovedCourse(){
     let studentId=localStorage.getItem('id')
-    const payload = { studentId: studentId ,isAll:true,type:"Instructor"};
+    const payload = { studentId: studentId ,isAll:true,type:AppConstants.INSTRUCTOR_ROLE};
     let instructorId = localStorage.getItem('id')
     this.lecturesService.getClassListWithPagination(instructorId, this.filterName,).subscribe(
       (response: { data: { docs: string | any[]; }; }) => {
