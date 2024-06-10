@@ -740,7 +740,36 @@
                         firstFormGroup.get('isFeedbackRequired')?.touched
                       "
                     >
-                      Enter Vendor
+                      Choose Feedback Mandatory or not
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                  <label
+                    >Exam Type
+                    <span class="mandatory">&nbsp;*</span></label
+                  >
+                  <mat-form-field
+                    class="example-full-width mb-3"
+                    appearance="outline"
+                  >
+                    <mat-select formControlName="examType">
+                      <mat-option
+                        *ngFor="let item of examTypes"
+                        [value]="item.code"
+                      >
+                        {{ item.label }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error
+                      *ngIf="
+                        firstFormGroup
+                          .get('examType')
+                          ?.hasError('maxLength') ||
+                        firstFormGroup.get('examType')?.touched
+                      "
+                    >
+                      Choose Exam Type
                     </mat-error>
                   </mat-form-field>
                 </div>
