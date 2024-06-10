@@ -144,7 +144,7 @@ export class SurveyListComponent
   }
   generatePdf() {
     const doc = new jsPDF();
-    const headers = [['Student Name','Course/Program Name' ]];
+    const headers = [[[AppConstants.STUDENT_ROLE],'Course/Program Name' ]];
     ;
     const data = this.dataSource.filteredData.map((user: any) => [
       user.studentFirstName,
@@ -226,7 +226,7 @@ export class SurveyListComponent
     // key name with space add in brackets
     const exportData: Partial<TableElement>[] =
       this.dataSource.filteredData.map((x) => ({
-        'Student Name': x.studentFirstName,
+        [AppConstants.STUDENT_ROLE]: x.studentFirstName,
         'Course Name': x.courseName,
        
       }));

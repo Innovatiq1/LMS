@@ -192,7 +192,7 @@ export class StudentPendingListComponent {
   }
   generatePdf() {
     const doc = new jsPDF();
- const headers = [['Student', 'Status', 'Program','Program Fee','Instructor Fee', 'Start Date', 'End Date','Registered Date']];
+ const headers = [[[AppConstants.STUDENT_ROLE], 'Status', 'Program','Program Fee', [`${AppConstants.INSTRUCTOR_ROLE} Fee`], 'Start Date', 'End Date','Registered Date']];
     // Map status values to desired strings
    const mapStatus = (status: string): string => {
        if (status === 'active') {
@@ -237,11 +237,11 @@ export class StudentPendingListComponent {
    // key name with space add in brackets
    const exportData: Partial<TableElement>[] =
      this.dataSource.map((user: any) => ({
-       'Student': user?.student_name,
+      [AppConstants.STUDENT_ROLE]: user?.student_name,
        'Status':mapStatus(user.status),  
        'Program':user?.programTitle,
        'Program Fee': '$ ' + user?.classId?.courseId?.courseFee,
-       'Instructor Fee': '$ ' + user?.classId?.instructorCost,
+       [`${AppConstants.INSTRUCTOR_ROLE} Fee`]: '$ ' + user?.classId?.instructorCost,
        'Start Date': formatDate(new Date(user?.classId?.sessions[0]?.sessionStartDate), 'yyyy-MM-dd', 'en') || '',
        'End Date': formatDate(new Date(user?.classId?.sessions[0]?.sessionEndDate ), 'yyyy-MM-dd', 'en') || '',
        'Registered Date': formatDate(new Date(user?.registeredOn), 'yyyy-MM-dd', 'en') || '',
