@@ -1,3 +1,4 @@
+import { AppConstants } from '@shared/constants/app.constants';
 import { MenuItem, RouteInfo } from './sidebar.metadata';
 export const ROUTES: any[] = [
   {
@@ -1653,7 +1654,7 @@ export const SettingsMenu: MenuItem[] = [
           {
             iconsrc:'',
             path: 'student/settings/all-students',
-            title: 'Students',
+            title: `${AppConstants.STUDENT_ROLE}s`,
             iconType: '',
             icon: '',
             id:'all-students',
@@ -1669,7 +1670,7 @@ export const SettingsMenu: MenuItem[] = [
           {
             iconsrc:'',
             path: 'student/settings/all-instructors',
-            title: 'Instructors',
+            title: `${AppConstants.INSTRUCTOR_ROLE}s`,
             iconType: '',
             icon: '',
             id:'all-instructors',
