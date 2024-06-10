@@ -18,7 +18,7 @@ export class SBannerCreateListComponent {
     {
       title: 'Create Banner',
       items: ['Banners'],
-      active: 'Student Banner',
+      active: `${AppConstants.STUDENT_ROLE} Banner`,
     },
   ];
   instructorBanner : FormGroup
@@ -34,7 +34,7 @@ export class SBannerCreateListComponent {
 
 
     })
-    this.bannerFor = "Student Banner";
+    this.bannerFor = `${AppConstants.STUDENT_ROLE} Banner`;
   }
 
   ngOnInit(){

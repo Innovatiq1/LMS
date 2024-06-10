@@ -18,7 +18,7 @@ export class AboutTeacherComponent {
   breadscrums = [
     {
       title: 'Profile',
-      items: ['Instructor'],
+      items: [`${AppConstants.INSTRUCTOR_ROLE}`],
       active: 'Profile',
     },
   ];

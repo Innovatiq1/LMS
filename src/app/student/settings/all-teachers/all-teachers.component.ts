@@ -67,7 +67,7 @@ export class AllTeachersComponent
     {
       title: 'Instructors',
       items: ['User Profile'],
-      active: 'Instructors',
+      active: `${AppConstants.INSTRUCTOR_ROLE}s`,
     },
   ];
   totalItems: any;

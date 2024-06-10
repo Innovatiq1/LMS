@@ -16,7 +16,7 @@ export class SBannerCreateComponent {
     {
       title: 'Create Banner',
       items: ['Banner'],
-      active: 'Create Student Banner',
+      active: `Create ${AppConstants.STUDENT_ROLE} Banner`,
     },
   ];
   public addCusForm!: FormGroup;
@@ -32,7 +32,7 @@ export class SBannerCreateComponent {
   public ngOnInit(): void {
     this.commonRoles = AppConstants
     this.addCusForm = this.fb.group({
-      bannerFor: ['Student Banner', [Validators.required, Validators.pattern('[a-zA-Z]+([a-zA-Z ]+)*')] ],
+      bannerFor: [`${AppConstants.STUDENT_ROLE} Banner`, [Validators.required, Validators.pattern('[a-zA-Z]+([a-zA-Z ]+)*')] ],
       banner :['',Validators.required]
 
     });

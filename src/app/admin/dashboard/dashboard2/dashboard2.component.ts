@@ -477,7 +477,7 @@ export class Dashboard2Component implements OnInit,AfterViewInit {
         borderColor: '#9aa0ac',
         strokeDashArray: 1,
       },
-      yaxis: { title: { text: "Number of Instructors" } },
+      yaxis: { title: { text: `Number of ${AppConstants.INSTRUCTOR_ROLE}s` } },
       colors: ['#FFA500']
     };
   }
@@ -485,7 +485,7 @@ export class Dashboard2Component implements OnInit,AfterViewInit {
   private admissionBarChart() {
     this.admissionBarChartOptions = {
         series: [{
-            name: "Instructors",
+            name: `${AppConstants.INSTRUCTOR_ROLE}s`,
             data: [
                 this.twelveMonthsAgoInstructors.length,
                 this.tenMonthsAgoInstructors.length,
@@ -535,7 +535,7 @@ export class Dashboard2Component implements OnInit,AfterViewInit {
             borderColor: '#9aa0ac',
             strokeDashArray: 1,
         },
-        yaxis: { title: { text: "Number of Instructors" } },
+        yaxis: { title: { text: `Number of ${AppConstants.INSTRUCTOR_ROLE}s` } },
         colors: ['#FFA500']
     };
 }

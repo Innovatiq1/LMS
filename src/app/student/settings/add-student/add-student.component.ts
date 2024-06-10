@@ -28,8 +28,8 @@ export class AddStudentComponent {
   breadscrums = [
     {
       title: 'Add Student',
-      items: ['Students'],
-      active: 'Create Student',
+      items: [`${AppConstants.STUDENT_ROLE}s`],
+      active: `Create ${AppConstants.STUDENT_ROLE}`,
     },
   ];
   editData: any;
@@ -177,13 +177,13 @@ export class AddStudentComponent {
         // Set the avatar path to the URL received during file upload
         userData.avatar = this.avatar;
         
-        userData.type = 'Student';
-        userData.role = 'Student';
+        userData.type = AppConstants.STUDENT_ROLE;
+        userData.role = AppConstants.STUDENT_ROLE;
         userData.isLogin = true;
 
         Swal.fire({
           title: 'Are you sure?',
-          text: 'Do You want to create a student profile!',
+          text: 'Do You want to create a `${AppConstants.STUDENT_ROLE}` profile!',
           icon: 'warning',
           confirmButtonText: 'Yes',
           showCancelButton: true,
@@ -207,7 +207,7 @@ export class AddStudentComponent {
       () => {
         Swal.fire({
           title: 'Successful',
-          text: 'Student created successfully',
+          text: '`${AppConstants.STUDENT_ROLE}` created successfully',
           icon: 'success',
         });
         //this.fileDropEl.nativeElement.value = "";
@@ -217,7 +217,7 @@ export class AddStudentComponent {
       },
       (error) => {
         Swal.fire(
-          'Failed to create student',
+          'Failed to create `${AppConstants.STUDENT_ROLE}`',
           error.message || error.error,
           'error'
         );
@@ -375,14 +375,14 @@ getDepartment(){
       // Set the avatar path to the existing avatar URL
       userData.avatar = this.avatar;
 
-      userData.type = "Student";
-      userData.role = "Student";
+      userData.type = AppConstants.STUDENT_ROLE;
+      userData.role = AppConstants.STUDENT_ROLE;
 
       // Call the updateInstructor function with userData
 
       Swal.fire({
         title: 'Are you sure?',
-        text: 'Do You want to update this student profile!',
+        text: 'Do You want to update this `${AppConstants.STUDENT_ROLE}` profile!',
         icon: 'warning',
         confirmButtonText: 'Yes',
         showCancelButton: true,
@@ -403,7 +403,7 @@ getDepartment(){
       () => {
         Swal.fire({
           title: 'Successful',
-          text: 'Student details update successfully',
+          text: '`${AppConstants.STUDENT_ROLE}` details update successfully',
           icon: 'success',
         });
         //this.fileDropEl.nativeElement.value = "";
@@ -414,7 +414,7 @@ getDepartment(){
       },
       (error: { message: any; error: any }) => {
         Swal.fire(
-          'Failed to update student',
+          'Failed to update `${AppConstants.STUDENT_ROLE}`',
           error.message || error.error,
           'error'
         );

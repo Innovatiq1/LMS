@@ -986,7 +986,7 @@ export class MainComponent implements OnInit {
       this.surveyBarChartOptions = {
         series: [
           {
-            name: 'new students',
+            name:`New ${AppConstants.STUDENT_ROLE}s`,
             data: [
               this.twoMonthsAgoStudents.length,
               this.fourMonthsAgoStudents.length,
@@ -997,7 +997,7 @@ export class MainComponent implements OnInit {
             ],
           },
           {
-            name: 'old students',
+            name: `Old ${AppConstants.STUDENT_ROLE}s`,
             data: [
               this.tillPreviousTwoMonthsStudents.length,
               this.tillPreviousFourMonthsStudents.length,
@@ -1056,7 +1056,7 @@ export class MainComponent implements OnInit {
         },
         yaxis: {
           title: {
-            text: 'Number of Students',
+            text: `Number of ${AppConstants.STUDENT_ROLE}s`,
           },
         },
         plotOptions: {
@@ -1097,7 +1097,7 @@ export class MainComponent implements OnInit {
       height: 350,
       type: 'pie',
     },
-    labels: ['New Students', 'Old Students'],
+    labels: [`New ${AppConstants.STUDENT_ROLE}s`, `Old ${AppConstants.STUDENT_ROLE}s`],
     colors: ['#9F8DF1', '#E79A3B'],
     legend: {
       show: true,
@@ -1279,7 +1279,7 @@ export class MainComponent implements OnInit {
     this.areaChartOptions = {
       series: [
         {
-          name: 'new students',
+          name: `New ${AppConstants.STUDENT_ROLE}s`,
           data: [
             this.twoMonthsAgoStudents.length,
             this.fourMonthsAgoStudents.length,
@@ -1290,7 +1290,7 @@ export class MainComponent implements OnInit {
           ],
         },
         {
-          name: 'old students',
+          name: `Old ${AppConstants.STUDENT_ROLE}s`,
           data: [
             this.tillPreviousTwoMonthsStudents.length,
             this.tillPreviousFourMonthsStudents.length,
@@ -1463,7 +1463,7 @@ export class MainComponent implements OnInit {
     this.performanceRateChartOptions = {
       series: [
         {
-          name: 'Students',
+          name: `${AppConstants.STUDENT_ROLE}s`,
           data: [113, 120, 130, 120, 125, 119],
         },
       ],
@@ -1506,7 +1506,7 @@ export class MainComponent implements OnInit {
       },
       yaxis: {
         title: {
-          text: 'Students',
+          text: `${AppConstants.STUDENT_ROLE}s`,
         },
       },
       tooltip: {
@@ -1553,7 +1553,7 @@ private attendanceBarChart() {
   this.attendanceBarChartOptions = {
       series: [
           {
-              name: 'Students',
+              name: `${AppConstants.STUDENT_ROLE}s`,
               data: [113, 120, 130, 120, 125, 119],
           },
       ],
@@ -1596,7 +1596,7 @@ private attendanceBarChart() {
       },
       yaxis: {
           title: {
-              text: 'Students',
+              text: `${AppConstants.STUDENT_ROLE}s`,
           },
       },
       tooltip: {
@@ -1609,7 +1609,7 @@ private attendanceBarChart() {
           // },
       },
       title: {
-          text: 'Students by Day',
+          text: `${AppConstants.STUDENT_ROLE}s by Day`,
       },
   };
 }
@@ -1627,7 +1627,7 @@ private attendanceBarChart() {
       dataLabels: {
         enabled: false,
       },
-      labels: ['Instructors', 'Students', 'Admin'],
+      labels: [`${AppConstants.INSTRUCTOR_ROLE}s`, `${AppConstants.STUDENT_ROLE}s`, `${AppConstants.ADMIN_ROLE}`],
       colors: ['#6777ef', '#ff9800', '#B71180'],
       responsive: [
         {
@@ -1684,7 +1684,7 @@ private attendanceBarChart() {
         strokeDashArray: 1,
     },
     xaxis: {
-        categories: ['Instructors','Students','Admin'],
+        categories: [`${AppConstants.INSTRUCTOR_ROLE}s`, `${AppConstants.STUDENT_ROLE}s`, `${AppConstants.ADMIN_ROLE}`],
         title: {
             text: 'Users',
         },
@@ -1751,7 +1751,7 @@ private attendanceBarChart() {
         strokeDashArray: 1,
       },
       xaxis: {
-        categories: ['Instructors','Students','Admin'],
+        categories: [`${AppConstants.INSTRUCTOR_ROLE}s`, `${AppConstants.STUDENT_ROLE}s`, `${AppConstants.ADMIN_ROLE}`],
         title: {
           text: 'Users',
         },
