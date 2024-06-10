@@ -290,11 +290,11 @@ export class ApproveListComponent {
     //k//ey name with space add in brackets
     const exportData: Partial<TableElement>[] = this.dataSource.map(
       (user: any) => ({
-        'Student': user.studentId?.name,
+        [AppConstants.STUDENT_ROLE] : user.studentId?.name,
          Status: user.status,
         'Course': user.classId?.courseId?.title,
         'Course Fee': '$ '+user.classId?.courseId?.fee,
-        'Instructor Fee': '$ '+user.classId?.instructorCost,
+        [`${AppConstants.INSTRUCTOR_ROLE} Fee`]: '$ '+user.classId?.instructorCost,
         'Start Date': user.classStartDate,
         'End Date': user.classEndDate,
         'Registered On': formatDate(new Date(user.registeredOn), 'yyyy-MM-dd', 'en') || '',
@@ -308,11 +308,11 @@ export class ApproveListComponent {
     const doc = new jsPDF();
     const headers = [
       [
-        'Student',
+        [AppConstants.STUDENT_ROLE],
         'Status    ',
         'Course',
         'Course Fee',
-        'Instructor Fee',
+        [`${AppConstants.INSTRUCTOR_ROLE} Fee`],
         'Start Date  ',
         'End date    ',
         'Registered Date',

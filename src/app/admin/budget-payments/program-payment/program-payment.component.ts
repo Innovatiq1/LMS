@@ -161,7 +161,7 @@ export class ProgramPaymentComponent {
 
   generatePdf() {
     const doc = new jsPDF();
-    const headers = [['Student','Email','Program', 'Payment Date', 'Amount', 'Status']];
+    const headers = [[[AppConstants.STUDENT_ROLE],'Email','Program', 'Payment Date', 'Amount', 'Status']];
     const data = this.dataSource.map((user: any) => [
       user.name,
       user.email,
@@ -196,7 +196,7 @@ export class ProgramPaymentComponent {
     //k//ey name with space add in brackets
     const exportData: Partial<TableElement>[] = this.dataSource.map(
       (user: any) => ({
-        Student: user.name,
+        [AppConstants.STUDENT_ROLE]: user.name,
         Email: user.email,
         Program: user.program,
         'Payment Date':  formatDate(new Date( user.createdAt), 'yyyy-MM-dd', 'en') || '',

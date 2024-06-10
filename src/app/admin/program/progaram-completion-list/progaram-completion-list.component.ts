@@ -299,7 +299,7 @@ export class ProgaramCompletionListComponent {
 
   generatePdf() {
     const doc = new jsPDF();
-    const headers = [['Student', 'Email', 'Program', 'Start Date', 'End Date', 'Completed Date','Actions']];
+    const headers = [[[AppConstants.STUDENT_ROLE], 'Email', 'Program', 'Start Date', 'End Date', 'Completed Date','Actions']];
     // Map status values to desired strings
     const mapStatus = (status: string): string => {
       if (status === 'active') {
@@ -335,7 +335,7 @@ export class ProgaramCompletionListComponent {
     // key name with space add in brackets
     const exportData: Partial<TableElement>[] =
       this.dataSource.map((user: any) => ({
-        'Student': user?.student_name,
+        [AppConstants.STUDENT_ROLE] : user?.student_name,
         'Email': user?.email,
         'Program': user?.programTitle,
         'Start Date': formatDate(new Date(user?.classId?.sessions[0]?.sessionStartDate), 'yyyy-MM-dd', 'en') || '',

@@ -178,7 +178,7 @@ this.router.navigate(['/admin/budgets/view-course-payment/'], {queryParams:{id:i
     //k//ey name with space add in brackets
    const exportData: Partial<TableElement>[] =
       this.dataSource.map((user:any) => ({
-        Student:user.name,
+        [AppConstants.STUDENT_ROLE]:user.name,
         Email:user.email,
         Course:user.course,
         Amount: '$'+user.price,
@@ -190,7 +190,7 @@ this.router.navigate(['/admin/budgets/view-course-payment/'], {queryParams:{id:i
   // pdf
   generatePdf() {
     const doc = new jsPDF();
-    const headers = [['Student','Email','Course','Amount', 'Payment Date', 'Status']];
+    const headers = [[[AppConstants.STUDENT_ROLE],'Email','Course','Amount', 'Payment Date', 'Status']];
     
     const data = this.dataSource.map((user:any) =>
       [user.name,
