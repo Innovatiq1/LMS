@@ -29,6 +29,7 @@ export class ViewCompletionComponent {
   status:boolean = false;
   showTab:boolean = false;
   paramStatus: any;
+  verify :boolean = false;
   constructor(private classService: ClassService,private courseService: CourseService,private _router: Router, private activatedRoute: ActivatedRoute,public _classService: ClassService, private assessmentService: AssessmentService) {
 
     this.studentPaginationModel = {} as StudentPaginationModel;
@@ -39,6 +40,9 @@ export class ViewCompletionComponent {
   if(params['status'] === 'pending') {
     this.status = true;
     this.showTab = false;
+    if(params['verify'] === 'false') {
+      this.verify = true;
+    }
     this.breadscrums = [
       {
         title: 'Blank',
@@ -107,46 +111,85 @@ export class ViewCompletionComponent {
     return JSON.parse(localStorage.getItem('user_data')!).user.id;
   }
   changeStatus(element: Student, status: string) {
-    console.log('ele',element)
-    const item: StudentApproval = {
-      approvedBy: this.getCurrentUserId(),
-      approvedOn: moment().format('YYYY-MM-DD'),
-      classId: element?.classId?._id || null,
-      status,
-      studentId: element.studentId.id,
-      courseId:element.courseId._id,
-      session: this.getSessions(element),
-    };
-
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'Do you want to approve this course!',
-      icon: 'warning',
-      confirmButtonText: 'Yes',
-      showCancelButton: true,
-      cancelButtonColor: '#d33',
-    }).then((result) => {
-      if (result.isConfirmed){
-        this._classService
-        .saveApprovedClasses(element.id, item)
-        .subscribe((_response: any) => {
-          Swal.fire({
-            title: 'Success',
-            text: 'Course approved successfully.',
-            icon: 'success',
-            // confirmButtonColor: '#526D82',
-          });
-          window.history.back();
-        }, (error) => {
-              Swal.fire({
-                title: 'Error',
-                text: 'Failed to approve course. Please try again.',
-                icon: 'error',
-                // confirmButtonColor: '#526D82',
-              });
+    if(status == 'verified'){
+      const item = {
+        classId: element?.classId?._id || null,
+        studentId: element.studentId.id,
+        courseId:element.courseId._id,
+        verify:true
+      };
+  
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'Do you want to verify this.!',
+        icon: 'warning',
+        confirmButtonText: 'Yes',
+        showCancelButton: true,
+        cancelButtonColor: '#d33',
+      }).then((result) => {
+        if (result.isConfirmed){
+          this._classService
+          .saveApprovedClasses(element._id, item)
+          .subscribe((_response: any) => {
+            Swal.fire({
+              title: 'Success',
+              text: 'Verified successfully.',
+              icon: 'success',
+              // confirmButtonColor: '#526D82',
             });
-      }
-    });
+            window.history.back();
+          }, (error) => {
+                Swal.fire({
+                  title: 'Error',
+                  text: 'Failed to verify. Please try again.',
+                  icon: 'error',
+                  // confirmButtonColor: '#526D82',
+                });
+              });
+        }
+      });
+  
+    }  else {
+      const item: StudentApproval = {
+        approvedBy: this.getCurrentUserId(),
+        approvedOn: moment().format('YYYY-MM-DD'),
+        classId: element?.classId?._id || null,
+        status,
+        studentId: element.studentId.id,
+        courseId:element.courseId._id,
+        session: this.getSessions(element),
+      };
+  
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'Do you want to approve this course!',
+        icon: 'warning',
+        confirmButtonText: 'Yes',
+        showCancelButton: true,
+        cancelButtonColor: '#d33',
+      }).then((result) => {
+        if (result.isConfirmed){
+          this._classService
+          .saveApprovedClasses(element._id, item)
+          .subscribe((_response: any) => {
+            Swal.fire({
+              title: 'Success',
+              text: 'Course approved successfully.',
+              icon: 'success',
+              // confirmButtonColor: '#526D82',
+            });
+            window.history.back();
+          }, (error) => {
+                Swal.fire({
+                  title: 'Error',
+                  text: 'Failed to approve course. Please try again.',
+                  icon: 'error',
+                  // confirmButtonColor: '#526D82',
+                });
+              });
+        }
+      });
+    }
  
   }
   Status(element: Student, status: string) {

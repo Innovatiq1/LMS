@@ -129,17 +129,21 @@ export class ViewCourseComponent implements OnDestroy {
   courseDetailsId: any;
   razorPayKey: any;
   isInvoice: boolean = false;
+  paidAmount:boolean = false;
 
   pdfData: any = [];
   dafaultGenratepdf: boolean = false;
   element: any;
   invoiceUrl: any;
+  verify = false;
+  payment = false;
 
   questionTimer: number = 60;
   defaultTab: string = 'home';
   assessmentTaken!: number;
   examAssessmentTaken!: number;
   assessmentAnswerLatest: any;
+  registeredClassId: any;
   constructor(
     private classService: ClassService,
     private activatedRoute: ActivatedRoute,
@@ -351,7 +355,61 @@ export class ViewCourseComponent implements OnDestroy {
     this.header = video.name;
     this.commonService.setVideoDetails(video);
   }
+  submitForVerification(classId: string) {
+    var userdata = JSON.parse(localStorage.getItem('currentUser')!);
+    var studentId = localStorage.getItem('id');
+    if (this.paid) {
+      const today = new Date();
+      const date = today.toISOString().split('T')[0];
+      let body = {
+        email: userdata.user.email,
+        name: userdata.user.name,
+        courseTitle: this.classDetails?.courseId?.title,
+        courseFee: this.classDetails?.courseId?.fee,
+        studentId: studentId,
+        classId: this.classId,
+        title: this.title,
+        coursekit: this.courseKit,
+        date: date,
+        verify:false
+      };
 
+                this.courseService
+                  .saveRegisterClass(body)
+                  .subscribe((response) => {
+                    Swal.fire({
+                      title: 'Thank you',
+                      text: 'We will verify details & enable payment',
+                      icon: 'success',
+                    });
+            
+                    this.getClassDetails();
+                    this.payment = false;
+                    this.isRegistered = true;
+                  });
+    } else if (this.free) {
+      let payload = {
+        email: userdata.user.email,
+        name: userdata.user.name,
+        courseTitle: this.courseDetails?.title,
+        courseFee: 0,
+        studentId: studentId,
+        classId: null,
+        title: this.title,
+        coursekit: this.courseKit,
+        feeType: 'free',
+        courseId: this.courseDetails.id,
+      };
+      this.courseService.saveRegisterClass(payload).subscribe((response) => {
+        Swal.fire({
+          title: 'Thank you',
+          text: 'We will approve once verified',
+          icon: 'success',
+        });
+        this.isRegistered = true;
+      });
+    }
+  }
   registerClass(classId: string) {
     var userdata = JSON.parse(localStorage.getItem('currentUser')!);
     var studentId = localStorage.getItem('id');
@@ -394,11 +452,12 @@ export class ViewCourseComponent implements OnDestroy {
                   classId: this.classId,
                   title: this.title,
                   coursekit: this.courseKit,
+                  paid:true,
+                  stripe:true
                 };
 
-                this.courseService
-                  .saveRegisterClass(payload)
-                  .subscribe((response) => {
+                this.classService
+                .saveApprovedClasses(this.registeredClassId,payload).subscribe((response) => {
                     this.document.location.href = response.data.session.url;
                     this.getClassDetails();
                   });
@@ -481,10 +540,11 @@ export class ViewCourseComponent implements OnDestroy {
                                             ?.razorpay_payment_id,
                                         razorpay: true,
                                         invoiceUrl: this.invoiceUrl,
+                                        paid:true
                                       };
-
-                                      this.courseService
-                                        .saveRegisterClass(payload)
+                              
+                                      this.classService
+                                        .saveApprovedClasses(this.registeredClassId,payload)
                                         .subscribe((res) => {
                                           this.getClassDetails();
 
@@ -705,6 +765,7 @@ export class ViewCourseComponent implements OnDestroy {
       .getStudentClass(studentId, this.classId)
       .subscribe((response) => {
         this.studentClassDetails = response?.data?.docs[0];
+        this.registeredClassId = response?.data?.docs[0]?.id
         this.coursekitDetails = response?.data?.docs[0]?.coursekit;
         this.longDescription = this?.coursekitDetails[0]?.longDescription;
         let totalPlaybackTime = 0;
@@ -719,10 +780,29 @@ export class ViewCourseComponent implements OnDestroy {
         const time = totalPlaybackTime / documentCount;
         this.playBackTime = time;
         this.commonService.setCompletedPercentage(this.playBackTime);
-        if (this.studentClassDetails.status == 'registered') {
-          this.isRegistered == true;
+        if (this.studentClassDetails.status == 'registered' && this.studentClassDetails.verify == true && this.studentClassDetails.paid == false) {
+          this.isRegistered = true;
           this.isStatus = true;
+          this.verify = true;
+          this.payment = true;
+          this.paidAmount = false;
         }
+        if (this.studentClassDetails.status == 'registered' && this.studentClassDetails.verify == true && this.studentClassDetails.paid == true) {
+          this.isRegistered = true;
+          this.isStatus = true;
+          this.verify = true;
+          this.payment = true;
+          this.paidAmount = true;
+        }
+
+        if (this.studentClassDetails.status == 'registered' && this.studentClassDetails.verify == false) {
+          this.isRegistered = true;
+          this.isStatus = true;
+          this.payment = false;
+          this.verify = false;
+        }
+
+
         if (this.studentClassDetails.status == 'approved') {
           this.isRegistered == true;
           this.isApproved = true;
