@@ -65,6 +65,7 @@ import {
 } from '@angular/material/snack-bar';
 import { SettingsService } from '@core/service/settings.service';
 import { BarChart } from 'angular-feather/icons';
+import { AppConstants } from '@shared/constants/app.constants';
 export type barChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -855,7 +856,7 @@ export class MainComponent implements OnInit {
     }
     if (role == 'Admin') {
       this.getAdminDashboard();
-    } else if (role === 'Student') {
+    } else if (role === AppConstants.STUDENT_ROLE) {
       this.getStudentDashboard();
     }
     
