@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { LecturesService } from 'app/teacher/lectures/lectures.service';
 import { EventDetailDialogComponent } from '../program-timetable/event-detail-dialog/event-detail-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { AppConstants } from '@shared/constants/app.constants';
 
 @Component({
   selector: 'app-my-courses',
@@ -31,7 +32,7 @@ export class MyCoursesComponent {
 
   constructor(private classService: ClassService, private router: Router,public lecturesService: LecturesService,public dialog: MatDialog) {
     let userType = localStorage.getItem("user_type")
-    if(userType == "Student"){
+    if(userType == AppConstants.STUDENT_ROLE){
       this.getApprovedCourse();
     }
   
@@ -53,7 +54,7 @@ export class MyCoursesComponent {
   }
    getInstructorApprovedCourse(){
     let studentId=localStorage.getItem('id')
-    const payload = { studentId: studentId ,isAll:true,type:"Instructor"};
+    const payload = { studentId: studentId ,isAll:true,type: AppConstants.INSTRUCTOR_ROLE};
     let instructorId = localStorage.getItem('id')
     this.lecturesService.getClassListWithPagination(instructorId, this.filterName,).subscribe(
       (response: { data: { docs: string | any[]; }; }) => {
@@ -121,7 +122,7 @@ export class MyCoursesComponent {
     let userType = localStorage.getItem("user_type")
     var reschedule =false;
 
-    if(userType == "Student"){
+    if(userType == AppConstants.STUDENT_ROLE){
       reschedule = true
     }
 

@@ -273,24 +273,26 @@
                         <span class="font-bold"
                           >Status:
                           <button
-                            *ngIf="
-                              !isRegistered &&
-                              !isStatus &&
-                              !isApproved &&
-                              !isCancelled &&
-                              !isCompleted
-                            "
-                            class="btn btn-primary"
-                            (click)="registerClass(courseDetails._id)"
-                          >
-                            Register
-                          </button>
+                          *ngIf="
+                            !isRegistered &&  
+                            !isStatus &&
+                            !isApproved &&
+                            !isCancelled &&
+                            !isCompleted
+                          "
+                          class="btn btn-primary"
+                          (click)="registerClass(courseDetails._id)"
+                        >
+                          Register
+                        </button>
+
 
                           <span
                             class="badge badge-solid-orange mx-2"
-                            *ngIf="isRegistered || isStatus"
+                            *ngIf="isRegistered  || isStatus"
                             >Registered</span
                           >
+
                           <span
                             class="badge badge-solid-green mx-2"
                             *ngIf="isApproved"
@@ -395,25 +397,26 @@
                       <ng-container matColumnDef="action">
                         <th mat-header-cell *matHeaderCellDef>Action</th>
                         <td mat-cell *matCellDef="let element">
-                          <button
-                            *ngIf="
-                              !isRegistered &&
-                              !isStatus &&
-                              !isApproved &&
-                              !isCancelled &&
-                              !isCompleted
-                            "
-                            class="btn btn-primary"
-                            (click)="registerClass(element._id)"
-                          >
-                            Register
-                          </button>
+                        <button
+                        *ngIf="
+                          !isRegistered &&  
+                          !isStatus &&
+                          !isApproved &&
+                          !isCancelled &&
+                          !isCompleted
+                        "
+                        class="btn btn-primary"
+                        (click)="registerClass(courseDetails._id)"
+                      >
+                        Register
+                      </button>
 
-                          <span
-                            class="badge badge-solid-orange mx-2"
-                            *ngIf="isRegistered || isStatus"
-                            >Registered</span
-                          >
+                      <span
+                      class="badge badge-solid-orange mx-2"
+                      *ngIf="isRegistered || isStatus"
+                      >Registered</span
+                    >
+
                           <span
                             class="badge badge-solid-green mx-2"
                             *ngIf="isApproved"
@@ -618,24 +621,24 @@
                     <b>Registration </b>
                     <div class="profile-desc-item float-end">
                       <button
-                        *ngIf="
-                          !isRegistered &&
-                          !isStatus &&
-                          !isApproved &&
-                          !isCancelled &&
-                          !isCompleted
-                        "
-                        class="btn btn-primary"
-                        (click)="registerClass(courseDetails._id)"
-                      >
-                        Register
-                      </button>
+                      *ngIf="
+                        !isRegistered && 
+                        !isStatus &&
+                        !isApproved &&
+                        !isCancelled &&
+                        !isCompleted 
+                      "
+                      class="btn btn-primary"
+                      (click)="registerClass(courseDetails._id)"
+                    >
+                      Register
+                    </button>
+                  <span
+                  class="badge badge-solid-orange mx-2"
+                  *ngIf="isRegistered || isStatus"
+                  >Registered</span
+                >
 
-                      <span
-                        class="badge badge-solid-orange mx-2"
-                        *ngIf="isRegistered || isStatus"
-                        >Registered</span
-                      >
                       <span
                         class="badge badge-solid-green mx-2"
                         *ngIf="isApproved"
@@ -1149,24 +1152,38 @@
                         <th mat-header-cell *matHeaderCellDef>Action</th>
                         <td mat-cell *matCellDef="let element">
                           <button
-                            *ngIf="
-                              !isRegistered &&
-                              !isStatus &&
-                              !isApproved &&
-                              !isCancelled &&
-                              !isCompleted
-                            "
-                            class="btn btn-primary"
-                            (click)="registerClass(element._id)"
-                          >
-                            Register
-                          </button>
+                          *ngIf="
+                            !isRegistered && !verify &&
+                            !isStatus &&
+                            !isApproved &&
+                            !isCancelled &&
+                            !isCompleted 
+                          "
+                          class="btn btn-primary"
+                          (click)="submitForVerification(courseDetails._id)"
+                        >
+                          Register
+                        </button>
+                        <button
+                        *ngIf="
+                          !isRegistered &&  verify &&
+                          !isStatus &&
+                          !isApproved &&
+                          !isCancelled &&
+                          !isCompleted
+                        "
+                        class="btn btn-primary"
+                        (click)="registerClass(courseDetails._id)"
+                      >
+                        Pay
+                      </button>
 
-                          <span
-                            class="badge badge-solid-orange mx-2"
-                            *ngIf="isRegistered || isStatus"
-                            >Registered</span
-                          >
+                      <span
+                      class="badge badge-solid-orange mx-2"
+                      *ngIf="isRegistered  || isStatus"
+                      >Registered</span
+                    >
+
                           <span
                             class="badge badge-solid-green mx-2"
                             *ngIf="isApproved"
@@ -1467,25 +1484,44 @@
                         <th mat-header-cell *matHeaderCellDef>Action</th>
                         <td mat-cell *matCellDef="let element">
                           <button
-                            *ngIf="
-                              !isRegistered &&
-                              !isStatus &&
-                              !isApproved &&
-                              !isCancelled &&
-                              !isCompleted
-                            "
-                            class="btn btn-primary"
-                            (click)="registerClass(element._id)"
-                          >
-                            Register
-                          </button>
+                          *ngIf="
+                            !isRegistered && !verify &&
+                            !isStatus &&
+                            !isApproved &&
+                            !isCancelled &&
+                            !isCompleted 
+                          "
+                          class="btn btn-primary"
+                          (click)="submitForVerification(courseDetails._id)"
+                        >
+                          Register
+                        </button>
+                        <button
+                        *ngIf="
+                          isRegistered &&  verify && payment && !paidAmount &&
+                          isStatus &&
+                          !isApproved &&
+                          !isCancelled &&
+                          !isCompleted
+                        "
+                        class="btn btn-primary"
+                        (click)="registerClass(courseDetails._id)"
+                      >
+                        Pay
+                      </button>
 
-                          <span
-                            class="badge badge-solid-orange mx-2"
-                            *ngIf="isRegistered || isStatus"
-                            >Registered</span
-                          >
-                          <span
+                      <span
+                      class="badge badge-solid-orange mx-2"
+                      *ngIf="isRegistered && payment && paidAmount && verify "
+                      >Registered</span
+                    >
+                    <span
+                    class="badge badge-solid-orange mx-2"
+                    *ngIf="isRegistered && !payment && !verify  && !paidAmount"
+                    >Wait for Payment </span
+                  >
+
+                    <span
                             class="badge badge-solid-green mx-2"
                             *ngIf="isApproved"
                             >Approved</span

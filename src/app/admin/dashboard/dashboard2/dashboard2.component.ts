@@ -5,6 +5,7 @@ import { AuthenService } from '@core/service/authen.service';
 import { CourseService } from '@core/service/course.service';
 import { InstructorService } from '@core/service/instructor.service';
 import { SettingsService } from '@core/service/settings.service';
+import { AppConstants } from '@shared/constants/app.constants';
 import { ClassService } from 'app/admin/schedule-class/class.service';
 import {
   ApexAxisChartSeries,
@@ -133,7 +134,7 @@ export class Dashboard2Component implements OnInit,AfterViewInit {
     this.getProgramList();
     this.getAllCourse();
     const role = this.authenticationService.currentUserValue.user.role;
-    if (role == 'Admin') {
+    if (role == AppConstants.ADMIN_ROLE) {
       this.getStudentDashboards();
     }
     this.cdr.detectChanges();
@@ -175,7 +176,7 @@ export class Dashboard2Component implements OnInit,AfterViewInit {
 
   getInstructorsList() {
     let payload = {
-      type: "Instructor"
+      type: AppConstants.INSTRUCTOR_ROLE
     }
     this.instructorService.getInstructor(payload).subscribe((response: any) => {
       this.instructors = response.slice(0, 8);

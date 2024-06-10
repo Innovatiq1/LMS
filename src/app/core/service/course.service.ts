@@ -4,7 +4,7 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { BehaviorSubject, Observable, map } from "rxjs";
 import { ApiResponse } from "@core/models/response";
 import { environment } from "environments/environment";
-import { CourseKit, CourseModel, CoursePaginationModel, Program, Vendor } from "@core/models/course.model";
+import { CourseKit, CourseModel, CoursePaginationModel, Discount, Program, Vendor } from "@core/models/course.model";
 import { FundingGrant, Instructor, MainCategory, SubCategory, Survey } from "@core/models/course.model";
 import { isPlatformBrowser } from "@angular/common";
 
@@ -252,6 +252,30 @@ export class CourseService {
       .delete<Vendor>(apiUrl)
       .pipe(map((response) => response));
   }
+
+  createDiscount(payload:any) {
+    const apiUrl = `${this.prefix}admin/discount`;
+    return this._Http.post<any>(apiUrl, payload).pipe(map((response) => response));
+  }
+  updateDiscount(id:string, payload:any) {
+    const apiUrl = `${this.prefix}admin/discount/${id}`;
+    return this._Http.put<any>(apiUrl, payload).pipe(map((response) => response));
+  }
+  getDiscount(): Observable<Discount[]> {
+    const apiUrl = `${this.prefix}admin/discount/`;
+    return this._Http.get<any>(apiUrl).pipe(map((response:any) => response.data));
+  }
+  getDiscountById(id:string): Observable<Discount> {
+    const apiUrl = `${this.prefix}admin/discount/${id}`;
+    return this._Http.get<any>(apiUrl).pipe(map((response:any) => response.data));
+  }
+  deleteDiscount(id: string) {
+    const apiUrl = `${this.prefix}admin/discount/${id}`;
+    return this._Http
+      .delete<Discount>(apiUrl)
+      .pipe(map((response) => response));
+  }
+
 
   getSurvey(): Observable<Survey[]> {
     const apiUrl = `${this.prefix}admin/survey/`;

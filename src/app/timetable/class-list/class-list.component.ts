@@ -28,6 +28,7 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { formatDate } from '@angular/common';
 import { LecturesService } from 'app/teacher/lectures/lectures.service';
+import { AppConstants } from '@shared/constants/app.constants';
 
 @Component({
   selector: 'app-class-list',
@@ -94,11 +95,11 @@ export class ClassListComponent extends UnsubscribeOnDestroyAdapter implements O
 
   ngOnInit(): void {
     let userType = localStorage.getItem('user_type');
-    if (userType == 'admin') {
+    if (userType == AppConstants.ADMIN_USERTYPE) {
       this.isAdmin = true;
       this.getClassList();
     }
-    if (userType == 'Instructor') {
+    if (userType == AppConstants.INSTRUCTOR_ROLE) {
       this.isInstructor = true;
       this.getClassLectures();
     }
@@ -212,10 +213,10 @@ export class ClassListComponent extends UnsubscribeOnDestroyAdapter implements O
     this.coursePaginationModel.page = $event?.pageIndex + 1;
     this.coursePaginationModel.limit = $event?.pageSize;
     let userType = localStorage.getItem('user_type');
-    if (userType == 'admin') {
+    if (userType == AppConstants.ADMIN_USERTYPE) {
       this.getClassList();
     }
-    if (userType == 'Instructor') {
+    if (userType == AppConstants.INSTRUCTOR_ROLE) {
       this.getClassLectures();
     }
   }

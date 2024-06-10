@@ -1,0 +1,98 @@
+
+
+
+<section class="content">
+    <div class="content-block">
+      <div class="block-header" *ngFor="let breadscrum of breadscrums">
+        <!-- breadcrumb -->
+        <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
+        </app-breadcrumb>
+      </div>
+      <div class="row clearfix">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <div class="card" style="height: fit-content;">
+            <div class="header d-flex justify-content-between">
+              <h2>Update Discount</h2>
+              <button class="icons" (click)="deleteDiscount(id)" alt="Delete" matTooltip="Delete" mat-menu-item>
+                <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
+            </button>
+            </div>
+            <div class="body">
+                <!-- <div class="row">
+                  <form [formGroup]="userTypeFormGroup">
+                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
+                        <label>User Role</label>
+                        <mat-form-field class="example-full-width " appearance="outline">
+                            <input matInput type="text" formControlName="typeName"
+                            class="form-control" placeholder="Enter New User Type"
+                            >                                      
+                        </mat-form-field>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
+                        <div class="d-grid gap-3 d-md-flex">
+                        <button  mat-raised-button color="warn" [routerLink]="['/admin/users/user-type']"   > All User Role </button>
+                        </div>
+                      </div>
+                      </form>
+                </div> -->
+                <form [formGroup]="discountForm">
+
+                <div class="row">
+                  <div class="col-3">
+                    <label>Discount Title<span class="mandatory">&nbsp;*</span></label>
+                        <mat-form-field class="example-full-width " appearance="outline">
+                            <input matInput type="text" formControlName="discountTitle"
+                            class="form-control" placeholder="Enter New Vendor"
+                            >      
+                            <mat-error *ngIf="discountForm.get('discountTitle')?.invalid ||discountForm.get('discountTitle')?.touched">
+                              {{ utils.getErrorMessage1(discountForm.get('discountTitle'), 'discountTitle') }}
+                            </mat-error>
+                                      
+                        </mat-form-field>
+                  </div>
+                  <div class="col-3">
+                    <label>Discount Type<span class="mandatory">&nbsp;*</span></label>
+                        <mat-form-field class="example-full-width " appearance="outline">
+                          <mat-select formControlName="discountType" required>
+                            <mat-option [value]="'percentage'"> Percentage </mat-option>
+                            <mat-option [value]="'fixed'"> Fixed </mat-option>
+                          </mat-select>
+                                  <mat-error *ngIf="discountForm.get('discountType')?.invalid ||discountForm.get('discountType')?.touched">
+                              {{ utils.getErrorMessage1(discountForm.get('discountType'), 'discountType') }}
+                            </mat-error>
+                                      
+                        </mat-form-field>
+                  </div>
+                  <div class="col-3">
+                    <label>Discount Value<span class="mandatory">&nbsp;*</span></label>
+                        <mat-form-field class="example-full-width " appearance="outline">
+                            <input matInput type="text" formControlName="value"
+                            class="form-control" placeholder="Enter Discount Value"
+                            >      
+                            <mat-error *ngIf="discountForm.get('value')?.invalid ||discountForm.get('value')?.touched">
+                              {{ utils.getErrorMessage1(discountForm.get('value'), 'value') }}
+                            </mat-error>
+                                      
+                        </mat-form-field>
+                  </div>
+
+                  <!-- <div class="col mt-5 mx-5">
+                    <button  mat-flat-button color="accent" [routerLink]="['/student/settings/user-type']"   > All Roles </button>
+                  </div> -->
+                </div>
+                </form>
+                <hr/>
+                <div class="float-end">
+                    <div class="d-grid gap-3 d-md-flex">
+                      <button type="button" mat-raised-button  (click)="goBack()">
+                        Back
+                      </button>
+                    <button  mat-raised-button  id="submit" (click)="onUpdate()" > Update </button>
+                    </div>
+                  </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

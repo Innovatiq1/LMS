@@ -26,6 +26,8 @@ import { SimpleDialogComponent } from 'app/ui/modal/simpleDialog.component';
 import { LogoService } from 'app/student/settings/logo.service';
 import { Subscription } from 'rxjs';
 import { StudentsService } from 'app/admin/students/students.service';
+import { AppConstants } from '@shared/constants/app.constants';
+import { AnyComponent } from '@fullcalendar/core/preact';
 
 interface Notifications {
   message: string;
@@ -56,7 +58,7 @@ export class HeaderComponent
   docElement?: HTMLElement;
   isFullScreen = false;
   userFullName: any;
-  userType!: Role;
+  userType!: any;
   announcements: any;
   icon = 'announcement';
   color = 'nfc-green';
@@ -175,15 +177,15 @@ export class HeaderComponent
       this.userFullName = this.authenService.currentUserValue.user.name;
       this.userImg = this.authenService.currentUserValue.user.avatar;
       this.student();
-      if (userRole === Role.Admin) {
-        this.userType = Role.Admin;
-      } else if (userRole === Role.Instructor) {
-        this.userType = Role.Instructor;
-      } else if (userRole === Role.Student) {
-        this.userType = Role.Student;
+      if (userRole === AppConstants.ADMIN_ROLE) {
+        this.userType = AppConstants.ADMIN_ROLE;
+      } else if (userRole === AppConstants.INSTRUCTOR_ROLE) {
+        this.userType = AppConstants.INSTRUCTOR_ROLE;
+      } else if (userRole === AppConstants.STUDENT_ROLE) {
+        this.userType = AppConstants.STUDENT_ROLE;
         this.updateLogoForStudent();
       } else {
-        this.userType = Role.Admin;
+        this.userType = AppConstants.ADMIN_ROLE;
       }
     }
     this.config = this.configService.configData;
@@ -191,11 +193,11 @@ export class HeaderComponent
     const userRole = this.authService.currentUserValue.role;
     this.docElement = document.documentElement;
 
-    if (userRole === Role.Admin) {
+    if (userRole === AppConstants.ADMIN_ROLE) {
       this.homePage = 'admin/dashboard/main';
-    } else if (userRole === Role.Instructor) {
+    } else if (userRole === AppConstants.INSTRUCTOR_ROLE) {
       this.homePage = 'teacher/dashboard';
-    } else if (userRole === Role.Student) {
+    } else if (userRole === AppConstants.STUDENT_ROLE) {
       this.homePage = 'student/dashboard';
     } else {
       this.homePage = 'admin/dashboard/main';
@@ -237,18 +239,18 @@ export class HeaderComponent
   }
   onClick() {
     let role = localStorage.getItem('user_type');
-    if (role == 'admin') {
+    if (role == AppConstants.ADMIN_USERTYPE) {
       this.router.navigate(['/settings/admin-settings']);
-    } else if (role == 'Student') {
+    } else if (role == AppConstants.STUDENT_ROLE) {
       this.router.navigate(['/settings/student-settings']);
-    } else if (role == 'Instructor') {
+    } else if (role == AppConstants.INSTRUCTOR_ROLE) {
       this.router.navigate(['/settings/instructor-settings']);
     }
   }
 
   getAnnouncementForStudents(filter?: any) {
     let payload = {
-      announcementFor: 'Student',
+      announcementFor: AppConstants.STUDENT_ROLE,
     };
     this.announcementService
       .getAnnouncementsForStudents(payload)
@@ -339,9 +341,9 @@ export class HeaderComponent
     this.subs.sink = this.authService.logout().subscribe((res) => {
       if (!res.success) {
         let userType = JSON.parse(localStorage.getItem('user_data')!).user.type;
-        if (userType == 'admin' || userType == 'Instructor') {
+        if (userType == AppConstants.ADMIN_USERTYPE || userType == AppConstants.INSTRUCTOR_ROLE) {
           this.router.navigate(['/authentication/TMS/signin']);
-        } else if (userType == 'Student') {
+        } else if (userType == AppConstants.STUDENT_ROLE) {
           this.router.navigate(['/authentication/LMS/signin']);
         } else {
           this.router.navigate(['/authentication/TMS/signin']);
@@ -352,13 +354,13 @@ export class HeaderComponent
   }
   updateLogoForStudent() {
     let userType = JSON.parse(localStorage.getItem('user_data')!).user.type;
-    if (userType === 'Admin' || userType === 'Instructor') {
+    if (userType === AppConstants.ADMIN_ROLE || userType === AppConstants.INSTRUCTOR_ROLE) {
       this.isAdmin = true;
       const logoSpan = document.querySelector('.logo-name');
       if (logoSpan) {
         logoSpan.textContent = 'TMS';
       }
-    } else if (userType === 'Student') {
+    } else if (userType === AppConstants.STUDENT_ROLE) {
       const logoSpan = document.querySelector('.logo-name');
       // if (logoSpan) {
       //   logoSpan.textContent = 'LMS';

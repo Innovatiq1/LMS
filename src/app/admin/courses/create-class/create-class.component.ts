@@ -31,6 +31,7 @@ import { StudentsService } from 'app/admin/students/students.service';
 import { UserService } from '@core/service/user.service';
 import { MatOption } from '@angular/material/core';
 import { FormService } from '@core/service/customization.service';
+import { AppConstants } from '@shared/constants/app.constants';
 // import * as moment from 'moment';
 
 @Component({
@@ -156,7 +157,7 @@ export class CreateClassComponent {
     }
     this.loadForm();
     let payload = {
-      type: 'Instructor',
+      type: AppConstants.INSTRUCTOR_ROLE,
     };
 
     this.instructorService.getInstructor(payload).subscribe((res) => {

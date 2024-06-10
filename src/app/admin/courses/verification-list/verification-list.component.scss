@@ -1,0 +1,22 @@
+
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #f11541;
+    border-radius: 50%; 
+    display: inline-block;
+    margin-right: 5px; 
+  }
+  ::ng-deep .mat-column-programFee {
+    display: flex !important;
+    justify-content: flex-end !important;
+    margin-left: -20px;
+  }
+  ::ng-deep .mat-column-instructorFee {
+    display: flex !important;
+    justify-content: flex-end !important;
+    margin-left: -20px;
+  }
+
+ 

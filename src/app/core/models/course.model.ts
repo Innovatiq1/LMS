@@ -135,6 +135,18 @@ export interface Vendor {
 	__v: number;
 	id: string;
 }
+
+export interface Discount {
+	_id: string;
+	discountTitle: string;
+	discountType: string;
+	value: number;
+	createdAt: string;
+	updatedAt: string;
+	__v: number;
+	id: string;
+}
+
 export interface Assessment {
 	_id: string;
 	docs: Assessment[];

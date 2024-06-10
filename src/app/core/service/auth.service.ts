@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 import { User } from '../models/user';
 import { environment } from 'environments/environment';
 //import { ApiResponse } from '../models/response'
-import { ApiResponse } from '@core/models/response';
+import {  ApiResponse } from '@core/models/response';
 
 
 @Injectable({
@@ -26,23 +26,8 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  login(username: string, password: string) {
-    return this.http
-      .post<User>(`${environment.apiUrl}/authenticate`, {
-        username,
-        password,
-      })
-      .pipe(
-        map((user) => {
-          // store user details and jwt token in local storage to keep user logged in between page refreshes
+  
 
-          localStorage.setItem('currentUser', JSON.stringify(user));
-          localStorage.setItem('id', user.id);
-          this.currentUserSubject.next(user);
-          return user;
-        })
-      );
-  }
   forgotPassword(email: any): Observable<ApiResponse> {
     return this.http
       .post<ApiResponse>(

@@ -5,6 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Router } from '@angular/router';
 import { UnsubscribeOnDestroyAdapter } from '@shared/UnsubscribeOnDestroyAdapter';
+import { AppConstants } from '@shared/constants/app.constants';
 import { ExamSchedule } from 'app/timetable/exam-schedule.model';
 import { ExamScheduleService } from 'app/timetable/exam-schedule.service';
 import { BehaviorSubject, Observable, fromEvent, map, merge } from 'rxjs';
@@ -59,7 +60,7 @@ constructor(
 
 ngOnInit() {
   this.userType = localStorage.getItem('user_type');
-  if(this.userType ==='admin') { 
+  if(this.userType === AppConstants.ADMIN_USERTYPE) { 
     this.student = true;
   }
   this.loadData();

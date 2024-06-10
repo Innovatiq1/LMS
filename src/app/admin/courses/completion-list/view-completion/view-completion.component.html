@@ -53,7 +53,7 @@
                       <div class="project_widget">
                         <div class="header">
                           <h2>Student Details</h2>
-                          <div class="buttons" *ngIf="this.status">
+                          <div class="buttons" *ngIf="status && !verify">
                             <button
                               (click)="changeStatus(response, 'approved')"
                               mat-icon-button
@@ -78,6 +78,32 @@
                                 alt="approve"
                               />
                             </button>
+                          </div>
+                          <div class="buttons" *ngIf="status && verify">
+                            <button
+                              (click)="changeStatus(response, 'verified')"
+                              mat-icon-button
+                              matTooltip="Verify"
+                              class="tbl-action-btn"
+                            >
+                              <img
+                                class="img-w"
+                                src="/assets/approve.svg"
+                                alt="approve"
+                              />
+                            </button>
+                            <!-- <button
+                              mat-icon-button
+                              matTooltip="Withdraw"
+                              class="tbl-action-btn"
+                              (click)="Status(response, 'cancel')"
+                            >
+                              <img
+                                class="img-w"
+                                src="/assets/archive.svg"
+                                alt="approve"
+                              />
+                            </button> -->
                           </div>
                         </div>
                         <div class="body">

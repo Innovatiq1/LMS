@@ -1,4 +1,8 @@
 export class AppConstants {
+  static readonly STUDENT_ROLE = 'Student';
+  static readonly INSTRUCTOR_ROLE = 'Instructor';
+  static readonly ADMIN_ROLE = 'Admin';
+  static readonly ADMIN_USERTYPE = 'admin';
     static readonly TOAST_DISPLAY_TIME = 3000; // In milliseconds
     static readonly KEY_USER_DATA = 'user_data';
     static readonly DEFAULT_QUERY_LIMIT = 10;

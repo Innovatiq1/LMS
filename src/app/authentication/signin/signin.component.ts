@@ -1,6 +1,8 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+declare var google:any
+import { Component, OnInit, Input, OnChanges, ViewChild, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
+  FormGroup,
   UntypedFormBuilder,
   UntypedFormGroup,
   Validators,
@@ -10,6 +12,12 @@ import { UnsubscribeOnDestroyAdapter } from '@shared';
 import { AuthenService } from '@core/service/authen.service';
 import { LanguageService } from '@core/service/language.service';
 import { UtilsService } from '@core/service/utils.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AdminService } from '@core/service/admin.service';
+import Swal from 'sweetalert2';
+import { UserService } from '@core/service/user.service';
+import { RegistrationService } from '@core/service/registration.service';
+
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
@@ -19,8 +27,11 @@ export class SigninComponent
   extends UnsubscribeOnDestroyAdapter
   implements OnInit
 {
+  @ViewChild('profileDialog') profileDialog!: TemplateRef<any>;
+
   // strength: string = '';
   authForm!: UntypedFormGroup;
+  profileForm!:FormGroup;
   langStoreValue?: string;
   submitted = false;
   loading = false;
@@ -32,6 +43,8 @@ export class SigninComponent
   password: any;
   tmsUrl: boolean;
   lmsUrl: boolean;
+  accountDetails: any;
+  userTypes: any;
   constructor(
     private formBuilder: UntypedFormBuilder,
     private route: ActivatedRoute,
@@ -39,7 +52,13 @@ export class SigninComponent
     private authService: AuthService,
     private authenticationService: AuthenService,
     public utils: UtilsService,
-    private translate: LanguageService
+    private translate: LanguageService,
+    private dialog:MatDialog,
+    private adminService:AdminService,
+    private userService:UserService,
+    private registration: RegistrationService
+
+
   ) {
     super();
     let urlPath = this.router.url.split('/');
@@ -67,10 +86,151 @@ export class SigninComponent
 
   ngOnInit() {
     this.startSlideshow();
+    google.accounts.id.initialize({
+      client_id:'254303785853-4av7vt4kjc2fus3rgf01e3ltnp2icad0.apps.googleusercontent.com',
+      callback: (res:any) => {
+        this.handleGmailLogin(res)
+      }
+    })
+    google.accounts.id.renderButton(document.getElementById("google-btn"),{
+      theme:'filled_blue',
+      size:'large',
+      shape:'rectangle',
+      width:450
+    })
+  }
+
+  handleGmailLogin(data:any){
+    if(data){
+      const payload = this.decodeGmailToken(data.credential)
+      this.accountDetails = payload
+      let body = {
+        name:payload.given_name,
+        avatar:payload.picture,
+        last_name:payload.family_name,
+        email:payload.email,
+        authToken: data.credential, // Include the raw token as authToken
+        id: payload.sub,
+        gmail:true
+      }
+      this.authenticationService.socialLogin({ email:payload.email, social_type:'GOOGLE', social_id:payload.sub }).subscribe(
+      (user: any) => { 
+
+        if(user){
+          setTimeout(() => {
+            this.router.navigate(['/dashboard/dashboard']);
+            this.loading = false;
+          }, 100);
+          this.authenticationService.saveUserInfo(user);
+  
+        }
+      },
+      (err: any) => { 
+        if(err == "user not found!"){
+          this.getUserTypeList();
+          this.profileForm = this.formBuilder.group({
+            role: ['', Validators.required],
+            email: [this.accountDetails.email,[Validators.required,Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)] ],
+            name: [this.accountDetails.name, Validators.required],
+            password: [''],
+          })
+      
+          this.openDialog(this.profileDialog)
+          
+        } else {
+          console.log('err',err)
+        }
+      }
+      )
+
+    }
+
+  }
+  openDialog(templateRef: any): void {
+      const dialogRef = this.dialog.open(templateRef, {
+        width: '1000px',
+        data: {        account:this.accountDetails},
+      });    
+  }
+  getUserTypeList() {
+    this.adminService.getUserTypeList({ allRows: true }).subscribe(
+      (response: any) => {
+        this.userTypes = response;
+      },
+      (error) => {}
+    );
+  }
+
+  create(dialogRef:any) {
+  
+    if (this.profileForm.valid) {
+        Swal.fire({
+          title: 'Are you sure?',
+          text: 'Do you want to create user!',
+          icon: 'warning',
+          confirmButtonText: 'Yes',
+          showCancelButton: true,
+          cancelButtonColor: '#d33',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.profileForm.value.Active = true;
+            this.profileForm.value.type = this.profileForm.value.role;
+            this.profileForm.value.isLogin = true;   
+            this.profileForm.value.avatar =   this.accountDetails.picture
+            this.registration.registerUser(this.profileForm.value).subscribe(
+              () => {
+                Swal.fire({
+                  title: 'Successful',
+                  text: 'User created successfully',
+                  icon: 'success',
+                });
+                this.profileForm.reset();
+                    dialogRef.close();
+
+              },
+              (error) => {
+                Swal.fire(
+                  'Failed to create user',
+                  error.message || error.error,
+                  'error'
+                );
+              }
+            );
+                   }
+        });
+        
+    } else {
+      this.isSubmitted = true;
+    }
+  }
+
+  private linkedInCredentials = {
+    response_type: "code",
+    clientId: "86ggwpa949d3u5", //77u10423gsm7cx
+    //redirectUrl: `${DEFAULT_CONFIG.frontEndUrl}linkedInLogin`,
+    redirectUrl: "http%3A%2F%2F54.254.159.3%2FlinkedInLogin",
+    state: 23101992,
+    scope: "r_liteprofile%20r_emailaddress%20w_member_social",
+  };
+
+
+  loginWithlinkedin()
+  { 
+    window.location.href = `https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id=${
+      this.linkedInCredentials.clientId
+    }&redirect_uri=${this.linkedInCredentials.redirectUrl}&scope=${this.linkedInCredentials.scope}`;
+  } 
+  
+
+  private decodeGmailToken(token:string){
+    return JSON.parse(atob(token.split(".")[1]));
   }
   get f() {
     return this.authForm.controls;
   }
+
+
+
   adminSet() {
     this.authForm.get('email')?.setValue('admin1@tms.com');
     this.authForm.get('password')?.setValue('12345678');
@@ -143,44 +303,6 @@ export class SigninComponent
     this.translate.setLanguage(event.target.value);
   }
 
-  onSubmit() {
-    this.submitted = true;
-    this.loading = true;
-    this.error = '';
-    if (this.authForm.invalid) {
-      this.error = 'Username and Password not valid !';
-      return;
-    } else {
-      this.subs.sink = this.authService
-        .login(this.f['username'].value, this.f['password'].value)
-        .subscribe({
-          next: (res) => {
-            if (res) {
-              setTimeout(() => {
-                const role = this.authService.currentUserValue.role;
-                if (role === Role.All || role === Role.Admin) {
-                  this.router.navigate(['/admin/dashboard/main']);
-                } else if (role === Role.Instructor) {
-                  this.router.navigate(['/instructor/dashboard']);
-                } else if (role === Role.Student) {
-                  this.router.navigate(['/student/dashboard']);
-                } else {
-                  this.router.navigate(['/authentication/signin']);
-                }
-                this.loading = false;
-              }, 1000);
-            } else {
-              this.error = 'Invalid Login';
-            }
-          },
-          error: (error) => {
-            this.error = error;
-            this.submitted = false;
-            this.loading = false;
-          },
-        });
-    }
-  }
   images: string[] = [
     '/assets/images/login/Learning.jpeg',
     '/assets/images/login/learning2.jpg',

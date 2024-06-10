@@ -38,6 +38,15 @@ export class UtilsService {
       { type: 'minlength', message: 'Enter minimum 2 characters' },
       { type: 'maxlength', message: 'Enter maximum 255 characters' },
     ],
+    discountTitle: [
+      { type: 'required', message: 'Enter Discount Title' },
+      { type: 'minlength', message: 'Enter minimum 2 characters' },
+      { type: 'maxlength', message: 'Enter maximum 255 characters' },
+    ],
+    discountType: [
+      { type: 'required', message: 'Select Discount Type' },
+    ],
+
     role: [
       { type: 'required', message: 'Enter Role' },
       { type: 'minlength', message: 'Enter minimum 2 characters' },
@@ -542,12 +551,12 @@ export class UtilsService {
     sub_category:[Validators.required,Validators.minLength(2),Validators.maxLength(255)],
     noLeadingSpace: [Validators.pattern(/^\S/), (control: AbstractControl) => {
       if (Array.isArray(control.value)) {
-        if (control && control.value && !control.value[0]?.trim().length) {
+        if (control && control?.value && !control?.value[0]?.trim().length) {
           control.setValue('');
         }
       }
       else {
-        if (control && control.value && !control.value?.trim().length) {
+        if (control && control?.value && !control?.value?.trim().length) {
           control.setValue('');
         }
       }

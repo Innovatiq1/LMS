@@ -65,6 +65,7 @@ import {
 } from '@angular/material/snack-bar';
 import { SettingsService } from '@core/service/settings.service';
 import { BarChart } from 'angular-feather/icons';
+import { AppConstants } from '@shared/constants/app.constants';
 export type barChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -363,7 +364,7 @@ export class MainComponent implements OnInit {
   }
   getInstructorsList() {
     let payload = {
-      type: 'Instructor',
+      type: AppConstants.INSTRUCTOR_ROLE,
     };
     this.instructorService.getInstructor(payload).subscribe(
       (response: any) => {
@@ -484,7 +485,7 @@ export class MainComponent implements OnInit {
   }
   getAnnouncementForStudents(filter?: any) {
     let payload ={
-      announcementFor:'Student'
+      announcementFor:AppConstants.STUDENT_ROLE
     }
     this.announcementService.getAnnouncementsForStudents(payload).subscribe((res: { data: { data: any[]; }; totalRecords: number; }) => {
       this.announcements = res.data
@@ -581,7 +582,7 @@ export class MainComponent implements OnInit {
   //End Student Information
   getStudentsList() {
     let payload = {
-      type: 'Student',
+      type: AppConstants.STUDENT_ROLE,
     };
     this.instructorService.getInstructor(payload).subscribe(
       (response: any) => {
@@ -816,9 +817,9 @@ export class MainComponent implements OnInit {
     this.getClassList();
     const role = this.authenticationService.currentUserValue.user.role;
     console.log('roles', role);
-    if (role=='Admin'|| role=="RO"  || role == "Director" || role == "Employee") {
+    if (role== AppConstants.ADMIN_ROLE|| role=="RO"  || role == "Director" || role == "Employee") {
       this.isAdmin = true;
-    }else if (role === 'Student') {
+    }else if (role === AppConstants.STUDENT_ROLE) {
       this.isStudentDB = true;
       this.breadscrums = [
         {
@@ -827,7 +828,7 @@ export class MainComponent implements OnInit {
           active: 'Student Dashboad',
         },
       ];
-    }else if (role === 'Instructor' || role === 'Trainer' ) {
+    }else if (role === AppConstants.INSTRUCTOR_ROLE || role === 'Trainer' ) {
       this.isInstructorDB = true;
       this.breadscrums = [
         {
@@ -853,9 +854,9 @@ export class MainComponent implements OnInit {
     } else if ( role === 'programcoordinator'|| role === 'Program manager' ) {
       this.isPCDB = true;
     }
-    if (role == 'Admin') {
+    if (role == AppConstants.ADMIN_ROLE) {
       this.getAdminDashboard();
-    } else if (role === 'Student') {
+    } else if (role === AppConstants.STUDENT_ROLE) {
       this.getStudentDashboard();
     }
     
@@ -2070,7 +2071,7 @@ private attendanceBarChart() {
 
   instructorData() {
     let payload = {
-      type: 'Instructor',
+      type: AppConstants.INSTRUCTOR_ROLE,
     };
     this.instructorService.getInstructors(payload).subscribe(
       (response: { data: any }) => {

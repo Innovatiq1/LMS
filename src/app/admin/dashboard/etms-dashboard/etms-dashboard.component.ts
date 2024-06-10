@@ -22,6 +22,7 @@ import {
 } from 'ng-apexcharts';
 import { SettingsService } from '@core/service/settings.service';
 import { AuthenService } from '@core/service/authen.service';
+import { AppConstants } from '@shared/constants/app.constants';
 
 export type chartOptions = {
   series: ApexAxisChartSeries;
@@ -102,7 +103,7 @@ export class EtmsDashboardComponent implements OnInit {
   ngOnInit() {
     const role = this.authenticationService.currentUserValue.user.role;
     console.log('roles', this.authenticationService.currentUserValue.user);
-    if (role == 'Admin') {
+    if (role == AppConstants.ADMIN_ROLE) {
       this.getStudentDashboard();
     }
     this.chart2();

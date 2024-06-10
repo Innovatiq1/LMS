@@ -2116,7 +2116,23 @@ export const SettingsMenu: MenuItem[] = [
         open:false,
         role:[],
         children:[]
+      },
+      {
+        path:'student/settings/discount',
+        title:'Discount',
+        id:'discount',
+        iconType:'img',
+        icon:'',
+        class:'ml-menu',
+        badge:'',
+        iconsrc:'',
+        badgeClass:'',
+        groupTitle:false,
+        open:false,
+        role:[],
+        children:[]
       }
+
     ]
   },
  
