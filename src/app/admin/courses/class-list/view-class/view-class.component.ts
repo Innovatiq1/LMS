@@ -25,6 +25,7 @@ export class ViewClassComponent {
   response: any;
   isAdmin: boolean = false;
   isInstructor: boolean = false;
+  commonRoles: any;
 
   constructor(public _classService: ClassService,private _router: Router, private activatedRoute: ActivatedRoute,) {
     this.coursePaginationModel = {};
@@ -39,6 +40,7 @@ export class ViewClassComponent {
   }
 
   ngOnInit(): void {
+    this.commonRoles = AppConstants
     this.getClassList();
     if (this.courseId) {
       this.activatedRoute.params.subscribe((params: any) => {

@@ -15,6 +15,7 @@ import { CourseService } from '@core/service/course.service';
 import { StudentsService } from 'app/admin/students/students.service';
 import { UtilsService } from '@core/service/utils.service';
 import { FormService } from '@core/service/customization.service';
+import { AppConstants } from '@shared/constants/app.constants';
 
 @Component({
   selector: 'app-add-teacher',
@@ -38,6 +39,7 @@ export class AddTeacherComponent {
   files: any;
   fileName: any;
   forms!: any[];
+  commonRoles: any;
 
   constructor(private fb: UntypedFormBuilder,
     private instructor: InstructorService,
@@ -168,6 +170,7 @@ export class AddTeacherComponent {
   ngOnInit(){
     this.getDepartment();
     this.getForms();
+    this.commonRoles = AppConstants
   }
 
   getForms(): void {

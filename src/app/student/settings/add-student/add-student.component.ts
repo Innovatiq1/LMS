@@ -14,6 +14,7 @@ import { CourseService } from '@core/service/course.service';
 import { StudentsService } from 'app/admin/students/students.service';
 import { UtilsService } from '@core/service/utils.service';
 import { FormService } from '@core/service/customization.service';
+import { AppConstants } from '@shared/constants/app.constants';
 @Component({
   selector: 'app-add-student',
   templateUrl: './add-student.component.html',
@@ -39,6 +40,7 @@ export class AddStudentComponent {
   dept: any;
   thumbnail: any;
   forms!: any[];
+  commonRoles: any;
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -84,6 +86,7 @@ export class AddStudentComponent {
   }
 
   ngOnInit(){
+    this.commonRoles = AppConstants
     this.getDepartment();
     this.getForms();
 

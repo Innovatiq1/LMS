@@ -43,6 +43,7 @@ export class CreateClassComponent {
   item: any;
   dept: any;
   @ViewChild('allSelected') private allSelected!: MatOption;
+  commonRoles: any;
   @HostListener('document:keypress', ['$event'])
   keyPressNumbers(event: KeyboardEvent) {
     const charCode = event.which ? event.which : event.keyCode;
@@ -149,6 +150,7 @@ export class CreateClassComponent {
   // }
 
   ngOnInit(): void {
+    this.commonRoles = AppConstants
     if (this.classId != undefined) {
       this.loadClassList(this.classId);
     }

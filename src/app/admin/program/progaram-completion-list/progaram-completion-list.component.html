@@ -77,7 +77,7 @@
                   </mat-cell>
                 </ng-container> -->
                 <ng-container matColumnDef="Student Name">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>Student
+                  <mat-header-cell *matHeaderCellDef mat-sort-header>{{commonRoles.STUDENT_ROLE}}
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row" class="name" [routerLink]="['/admin/program/view-completion-list/',row.id]">
                     <span class="mobile-label">Student Name:</span> {{row.student_name | capitalizeFirstLetter}}</mat-cell>

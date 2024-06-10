@@ -93,7 +93,7 @@
                   </ng-container> -->
                 <!-- Name Column -->
                 <ng-container matColumnDef="Student Name">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>Student</mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef mat-sort-header>{{commonRoles.STUDENT_ROLE}}</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="view(row._id)" class="name">
                     <span class="mobile-label">Student:</span>{{row.name}}</mat-cell>
                 </ng-container>

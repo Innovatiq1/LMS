@@ -19,6 +19,7 @@ import { ClassService } from 'app/admin/schedule-class/class.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { formatDate } from '@angular/common';
+import { AppConstants } from '@shared/constants/app.constants';
 
 @Component({
   selector: 'app-verification-list',
@@ -59,6 +60,7 @@ export class VerificationListComponent {
   pageSizeArr = [10, 20, 30, 50, 100];
   isLoading = true;
   dataSource!: any;
+  commonRoles: any;
   constructor(
     public _classService: ClassService,
     private snackBar: MatSnackBar,
@@ -69,6 +71,7 @@ export class VerificationListComponent {
   }
 
   ngOnInit(): void {
+    this.commonRoles = AppConstants
     this.getPendingVerificationList();
   }
   showNotification(

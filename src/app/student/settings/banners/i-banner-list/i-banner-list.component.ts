@@ -9,6 +9,7 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { AppConstants } from '@shared/constants/app.constants';
 
 @Component({
   selector: 'app-i-banner-list',
@@ -28,6 +29,7 @@ export class IBannerListComponent {
   instructorBanner : FormGroup
   bannerList: any;
   bannerFor: string;
+  commonRoles: any;
   constructor(private bannerService :BannersService,private fb: FormBuilder, private router: Router,) {
     // constructor
     this.instructorBanner= this.fb.group({
@@ -41,6 +43,7 @@ export class IBannerListComponent {
   }
 
   ngOnInit(){
+    this.commonRoles = AppConstants
     this.getBanner(this.bannerFor);
   }
   getBanner(bannerFor: string) {

@@ -37,6 +37,7 @@ import { StudentsService } from 'app/admin/students/students.service';
 import { FormService } from '@core/service/customization.service';
 import { UserService } from '@core/service/user.service';
 import { MatOption } from '@angular/material/core';
+import { AppConstants } from '@shared/constants/app.constants';
 
 @Component({
   selector: 'app-create-class',
@@ -48,6 +49,7 @@ export class CreateClassComponent {
   editUrl!: boolean;
   subscribeParams: any;
   dept: any;
+  commonRoles: any;
   @HostListener('document:keypress', ['$event'])
   keyPressNumbers(event: KeyboardEvent) {
     const charCode = event.which ? event.which : event.keyCode;
@@ -170,6 +172,7 @@ export class CreateClassComponent {
   // }
 
   ngOnInit(): void {
+    this.commonRoles = AppConstants
     this.subscribeParams = this._activeRoute.params.subscribe((params: any) => {
       this.classId = params.id;
     });

@@ -100,7 +100,7 @@
             color="warn"
            (click)="cancel()"
           >
-            Back to all Instructors
+            Back to all {{commonRoles?.INSTRUCTOR_ROLE}}s
           </button>
         </div>
       </div>
@@ -183,7 +183,7 @@
                       <thead>
                         <tr>
                           <th>Program Name</th>
-                          <th>Instructor Fee</th>
+                          <th>{{commonRoles?.INSTRUCTOR_ROLE}} Fee</th>
                           <th>Class</th>
                         </tr>
                       </thead>
@@ -226,7 +226,7 @@
                       <thead>
                         <tr>
                           <th>Course Name</th>
-                          <th>Instructor Fee</th>
+                          <th>{{commonRoles?.INSTRUCTOR_ROLE}} Fee</th>
                           <th>Class</th>
                         </tr>
                       </thead>

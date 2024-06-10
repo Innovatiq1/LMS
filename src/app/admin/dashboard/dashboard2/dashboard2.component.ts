@@ -108,6 +108,7 @@ export class Dashboard2Component implements OnInit,AfterViewInit {
   isFeesBar: boolean = false;
   isFeesPie: boolean = false;
   dashboard: any;
+  commonRoles: any;
   
   constructor(private instructorService: InstructorService,
     private courseService: CourseService,
@@ -130,6 +131,7 @@ export class Dashboard2Component implements OnInit,AfterViewInit {
   //   this.cdr.detectChanges();
   }
   ngAfterViewInit(): void {
+    this.commonRoles = AppConstants
     this.getInstructorsList();
     this.getProgramList();
     this.getAllCourse();

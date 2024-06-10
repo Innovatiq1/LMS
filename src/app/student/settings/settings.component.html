@@ -1372,7 +1372,7 @@
                 '/student/banners/settings/instructor-banner-list'
               ]"
             >
-              Instructor Banners
+            {{commonRoles?.INSTRUCTOR_ROLE}} Banners
             </button>
           </div>
           <div class="col-md-5">
@@ -1380,7 +1380,7 @@
               id="saved"
               [routerLink]="['/student/banners/settings/student-banner-list']"
             >
-              Student Banners
+            {{commonRoles.STUDENT_ROLE}} Banners
             </button>
           </div>
         </div>
@@ -1513,7 +1513,7 @@
               id="saved"
               [routerLink]="['/student/settings/all-students']"
             >
-              Students
+            {{commonRoles.STUDENT_ROLE}}s
             </button>
           </div>
         </div>
@@ -1523,7 +1523,7 @@
               id="saved"
               [routerLink]="['/student/settings/all-instructors']"
             >
-              Instructors
+            {{commonRoles?.INSTRUCTOR_ROLE}}s
             </button>
           </div>
           <div class="col-md-5">
@@ -2050,7 +2050,7 @@
           </div>
           <div class="col-md-5">
             <button id="saved" [routerLink]="['/student/settings/add-student']">
-              Student
+              {{commonRoles.STUDENT_ROLE}}
             </button>
           </div>
         </div>
@@ -2060,7 +2060,7 @@
               id="saved"
               [routerLink]="['/student/settings/add-instructor']"
             >
-              Instructor
+            {{commonRoles?.INSTRUCTOR_ROLE}}
             </button>
           </div>
           <div class="col-md-5">
@@ -2157,7 +2157,7 @@
                 '/student/banners/settings/create-instructor-banner'
               ]"
             >
-              Instructor Banners
+            {{commonRoles?.INSTRUCTOR_ROLE}} Banners
             </button>
           </div>
           <div class="col-md-5">
@@ -2165,7 +2165,7 @@
               id="saved"
               [routerLink]="['/student/banners/settings/create-student-banner']"
             >
-              Student Banner
+            {{commonRoles.STUDENT_ROLE}} Banner
             </button>
           </div>
         </div>
@@ -2296,7 +2296,7 @@
               [routerLink]="['/student/settings/form-customization']"
               [queryParams]="{ name: 'Student Creation Form' }"
             >
-              Student Creation
+            {{commonRoles.STUDENT_ROLE}} Creation
             </button>
           </div>
         </div>
@@ -2307,7 +2307,7 @@
               [routerLink]="['/student/settings/form-customization']"
               [queryParams]="{ name: 'Instructor Creation Form' }"
             >
-              Instructor Creation
+            {{commonRoles?.INSTRUCTOR_ROLE}} Creation
             </button>
           </div>
           <div class="col-md-5">
@@ -2459,6 +2459,13 @@
               (click)="openDialog(scoreAlgoDialog, 'scoreAlgorithm')"
             >
               Score Algorithm
+            </button>
+          </div>
+          <div class="col-md-5">
+            <button
+              id="saved"
+            >
+              Discounts
             </button>
           </div>
         </div>

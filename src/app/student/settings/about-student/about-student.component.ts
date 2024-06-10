@@ -6,6 +6,7 @@ import { CoursePaginationModel } from '@core/models/course.model';
 import Swal from 'sweetalert2';
 import { Students } from 'app/admin/students/students.model';
 import { StudentsService } from 'app/admin/students/students.service';
+import { AppConstants } from '@shared/constants/app.constants';
 
 @Component({
   selector: 'app-about-student',
@@ -40,6 +41,7 @@ export class AboutStudentComponent {
   studentRegisteredModel!: Partial<CoursePaginationModel>;
   studentApprovedModel!: Partial<CoursePaginationModel>;
   studentCompletedModel!: Partial<CoursePaginationModel>;
+  commonRoles: any;
   
   constructor(private activeRoute:ActivatedRoute, 
     private StudentService:StudentsService,
@@ -67,6 +69,7 @@ export class AboutStudentComponent {
     this.getRegisteredProgram();
     this.getApprovedProgram();
     this.getCompletedProgram();
+    this.commonRoles = AppConstants
   }
 
 

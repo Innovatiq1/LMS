@@ -13,6 +13,7 @@ import { CourseService } from '@core/service/course.service';
 import { StudentsService } from 'app/admin/students/students.service';
 import { TeachersService } from 'app/admin/teachers/teachers.service';
 import { UtilsService } from '@core/service/utils.service';
+import { AppConstants } from '@shared/constants/app.constants';
 
 @Component({
   selector: 'app-edit-teacher',
@@ -39,6 +40,7 @@ export class EditTeacherComponent {
   avatar: any;
   uploaded: any;
   thumbnail: any;
+  commonRoles: any;
   constructor(
     private fb: UntypedFormBuilder,
     private courseService: CourseService,
@@ -194,6 +196,7 @@ export class EditTeacherComponent {
     //this.setup()
     this.getData();
     this.getDepartment();
+    this.commonRoles = AppConstants
   }
   getData() {
     forkJoin({

@@ -52,7 +52,7 @@
                     <div class="col-lg-12 col-md-12 col-sm-12">
                       <div class="project_widget">
                         <div class="header">
-                          <h2>Student Details</h2>
+                          <h2>{{commonRoles.STUDENT_ROLE}} Details</h2>
                           <div class="buttons" *ngIf="status && !verify">
                             <button
                               (click)="changeStatus(response, 'approved')"
@@ -112,7 +112,7 @@
                               <div class="px-2">
                                 <div class="row">
                                   <div class="col-6">
-                                    <h6>Student</h6>
+                                    <h6>{{commonRoles.STUDENT_ROLE}}</h6>
                                   </div>
                                   <div class="col-6">
                                     <p>
@@ -304,7 +304,7 @@
                               <div class="px-2">
                                 <div class="row">
                                   <div class="col-6">
-                                    <h6>Instructor Fee</h6>
+                                    <h6>{{commonRoles?.INSTRUCTOR_ROLE}} Fee</h6>
                                   </div>
                                   <div class="col-6">
                                     <p>

@@ -24,6 +24,7 @@ import { dA } from '@fullcalendar/core/internal-common';
 import { Router } from '@angular/router';
 import { formatDate } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
+import { AppConstants } from '@shared/constants/app.constants';
 
 @Component({
   selector: 'app-completion-list',
@@ -68,6 +69,7 @@ export class CompletionListComponent {
   searchTerm: string = '';
   // @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild(MatSort) matSort!: MatSort;
+  commonRoles: any;
   upload() {
     document.getElementById('input')?.click();
   }
@@ -77,6 +79,7 @@ export class CompletionListComponent {
   }
 
   ngOnInit(): void {
+    this.commonRoles = AppConstants
     this.getCompletedClasses();
   }
 

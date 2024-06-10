@@ -8,6 +8,7 @@ import { SurveyBuilderModel } from '../survey.model';
 import { HttpClient } from '@angular/common/http';
 import { fromEvent } from 'rxjs';
 import { ExampleDataSource } from '../survey-list/survey-list.component';
+import { AppConstants } from '@shared/constants/app.constants';
 
 @Component({
   selector: 'app-create-survey',
@@ -77,6 +78,7 @@ export class CreateSurveyComponent {
   paginator: any;
   filter: any;
   subs: any;
+  commonRoles: any;
   // exampleDatabase?: SurveyService;
   constructor(
     private fb: FormBuilder,
@@ -101,6 +103,8 @@ export class CreateSurveyComponent {
       question5:['',[]],
       question7: ['',[] ],
     });
+
+    this.commonRoles = AppConstants
 
   }
   // get questions(): FormArray {

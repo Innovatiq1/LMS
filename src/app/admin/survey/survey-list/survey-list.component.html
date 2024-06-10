@@ -90,7 +90,7 @@
                   </mat-cell>
                 </ng-container> -->
                 <ng-container matColumnDef="studentName">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>Student </mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef mat-sort-header>{{commonRoles.STUDENT_ROLE}} </mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="editCall(row.id)" (contextmenu)="onContextMenu($event, row)">
                     <span class="mobile-label">Student :</span> {{getStudentName(row) }}</mat-cell>
                 </ng-container>

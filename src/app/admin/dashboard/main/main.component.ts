@@ -303,6 +303,7 @@ export class MainComponent implements OnInit {
   totalDocs: any;
   docs: any;
   classList: any;
+  commonRoles: any;
 
   constructor(
     private courseService: CourseService,
@@ -813,7 +814,7 @@ export class MainComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.commonRoles = AppConstants
     this.getClassList();
     const role = this.authenticationService.currentUserValue.user.role;
     console.log('roles', role);

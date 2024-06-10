@@ -77,7 +77,7 @@
                   </mat-cell>
                 </ng-container> -->
                 <ng-container matColumnDef="Student">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>Student
+                  <mat-header-cell *matHeaderCellDef mat-sort-header>{{commonRoles.STUDENT_ROLE}}
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row" class="name" (click)="view(row.id)">
                     <span class="mobile-label">Student:</span> {{row.studentId?.name }}</mat-cell>
@@ -97,7 +97,7 @@
                     <span class="mobile-label">Course:</span>{{row.title}} </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="Instructorfee">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>Instructor Fee</mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef mat-sort-header>{{commonRoles?.INSTRUCTOR_ROLE}} Fee</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="view(row.id)">
                     <span class="mobile-label">Instructor Fee:</span>
                     <span *ngIf="row.classId?.instructorCost !== null && row.classId?.instructorCost !== undefined">

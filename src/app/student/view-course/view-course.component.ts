@@ -39,6 +39,7 @@ import { InvoiceComponent } from './invoice/invoice.component';
 import * as moment from 'moment';
 import jsPDF from 'jspdf';
 import { AssessmentService } from '@core/service/assessment.service';
+import { AppConstants } from '@shared/constants/app.constants';
 export interface PeriodicElement {
   name: string;
   position: number;
@@ -144,6 +145,7 @@ export class ViewCourseComponent implements OnDestroy {
   examAssessmentTaken!: number;
   assessmentAnswerLatest: any;
   registeredClassId: any;
+  commonRoles: any;
   constructor(
     private classService: ClassService,
     private activatedRoute: ActivatedRoute,
@@ -192,6 +194,7 @@ export class ViewCourseComponent implements OnDestroy {
         this.defaultTab = 'test';
       }
     });
+    this.commonRoles = AppConstants
   }
 
   getClassDetails() {

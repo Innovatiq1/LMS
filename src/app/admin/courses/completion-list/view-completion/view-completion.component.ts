@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Session, Student, StudentApproval, StudentPaginationModel } from '@core/models/class.model';
 import { AssessmentService } from '@core/service/assessment.service';
 import { CourseService } from '@core/service/course.service';
+import { AppConstants } from '@shared/constants/app.constants';
 import { ClassService } from 'app/admin/schedule-class/class.service';
 import * as moment from 'moment';
 import Swal from 'sweetalert2';
@@ -30,6 +31,7 @@ export class ViewCompletionComponent {
   showTab:boolean = false;
   paramStatus: any;
   verify :boolean = false;
+  commonRoles: any;
   constructor(private classService: ClassService,private courseService: CourseService,private _router: Router, private activatedRoute: ActivatedRoute,public _classService: ClassService, private assessmentService: AssessmentService) {
 
     this.studentPaginationModel = {} as StudentPaginationModel;
@@ -72,6 +74,7 @@ export class ViewCompletionComponent {
   }
 
     ngOnInit(): void {
+      this.commonRoles = AppConstants
       this.getCompletedClasses();
       // if (this.courseId) {
       //   this.activatedRoute.params.subscribe((params: any) => {

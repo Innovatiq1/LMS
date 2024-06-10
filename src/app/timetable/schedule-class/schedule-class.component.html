@@ -254,7 +254,7 @@
 
                 <ng-container matColumnDef="Minimum Students">
                   <mat-header-cell *matHeaderCellDef mat-sort-header
-                    >Minimum Students</mat-header-cell
+                    >Minimum {{commonRoles.STUDENT_ROLE}}s</mat-header-cell
                   >
                   <mat-cell
                     *matCellDef="let row"
@@ -266,7 +266,7 @@
                 </ng-container>
                 <ng-container matColumnDef="Maximum Students">
                   <mat-header-cell *matHeaderCellDef mat-sort-header
-                    >Maximum Students</mat-header-cell
+                    >Maximum {{commonRoles.STUDENT_ROLE}}s</mat-header-cell
                   >
                   <mat-cell
                     *matCellDef="let row"

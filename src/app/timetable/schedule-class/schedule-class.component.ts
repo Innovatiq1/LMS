@@ -89,6 +89,7 @@ export class ScheduleClassComponent {
   filterName='';
   isAdmin: boolean = false;
   isInstructor: boolean = false;
+  commonRoles: any;
   constructor(
     public courseService: ProgramService,
     private classService: ClassService,
@@ -101,6 +102,7 @@ export class ScheduleClassComponent {
   }
 
   ngOnInit(): void {
+    this.commonRoles = AppConstants
     let userType = localStorage.getItem('user_type');
     if (userType == AppConstants.ADMIN_USERTYPE) {
       this.isAdmin = true;
