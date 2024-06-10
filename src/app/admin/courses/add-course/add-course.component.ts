@@ -84,6 +84,7 @@ export class AddCourseComponent implements OnInit {
   configurationSubscription!: Subscription;
   defaultCurrency: string = '';
   booleanOpt: any[] = [{code: true, label: "Yes"},{code: false, label: "No"}]
+  examTypes: any[] = [ { code: 'after', label: 'After Assessment' }, { code: 'direct', label: 'Direct' } ];
 
   breadscrums = [
     {
@@ -191,6 +192,7 @@ export class AddCourseComponent implements OnInit {
         course_kit: new FormControl('', [Validators.required]),
         vendor: new FormControl('',[ Validators.maxLength(100)]),
         isFeedbackRequired: new FormControl(null, [Validators.required]),
+        examType: new FormControl(null, [Validators.required])
       });
       // this.secondFormGroup = this._formBuilder.group({
 
@@ -590,7 +592,8 @@ this.courseService.uploadCourseThumbnail(formData).subscribe((data: any) =>{
       image_link:this.image_link,
       creator:creator,
       id:this.courseId,
-      isFeedbackRequired: courseData?.isFeedbackRequired
+      isFeedbackRequired: courseData?.isFeedbackRequired,
+      examType: courseData?.examType
     }
         this.firstFormGroup.value?.course_kit?.map((item:any) => item.id);
     this.firstFormGroup.value?.assessment
@@ -702,7 +705,8 @@ this.courseService.uploadCourseThumbnail(formData).subscribe((data: any) =>{
         creator:creator,
         website_link:courseData?.website_link,
         feeType:courseData?.feeType,
-        isFeedbackRequired: courseData?.isFeedbackRequired
+        isFeedbackRequired: courseData?.isFeedbackRequired,
+        examType: courseData?.examType
       }
 
       Swal.fire({
@@ -806,7 +810,8 @@ this.courseService.uploadCourseThumbnail(formData).subscribe((data: any) =>{
         survey: feedbackId,
         uploadedImage:this.course?.image_link,
         vendor: this.course?.vendor,
-        isFeedbackRequired: this.course?.isFeedbackRequired
+        isFeedbackRequired: this.course?.isFeedbackRequired,
+        examType: this.course?.examType
       });
       this.mainCategoryChange();
       this.cd.detectChanges();

@@ -54,16 +54,19 @@
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Exam Name
                 </mat-header-cell>
                 <mat-cell *matCellDef="let row" class="name" (click)="view(row.id)">
-                  <span class="mobile-label">Exam Name:</span> {{row.courseId?.title }}</mat-cell>
+                  <span class="mobile-label">Exam Name:</span> {{row.examName }}</mat-cell>
               </ng-container>
 
               <ng-container matColumnDef="Exam">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Exam
                 </mat-header-cell>
                 <mat-cell *matCellDef="let row" class="name" (click)="view(row.id)">
-                    <button 
-                    [routerLink]="['/student/exam-questions/',  row.id, row?.studentId?.id, row?.courseId?.id, row?.examAssessmentId?.id]" [queryParams]="{ retake: true, submitted: false }" mat-flat-button color="primary" >
+                    <button *ngIf="row.assigned"
+                        [routerLink]="['/student/exam-questions/',  row._id, row?.studentInfo?._id, row?.courseId?._id, row?.examAssessmentId]" [queryParams]="{ retake: true, submitted: false }" mat-flat-button color="primary" >
                       Take Exam
+                    </button>
+                    <button *ngIf="!row.assigned" (click)="navToExam(row)" mat-flat-button color="primary" >
+                    Take Exam
                     </button>
                     </mat-cell>
               </ng-container>
