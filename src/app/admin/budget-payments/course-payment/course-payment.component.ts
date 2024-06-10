@@ -10,6 +10,7 @@ import {CourseKitModel, CourseModel, CoursePaginationModel } from '@core/models/
 import { CourseService } from '@core/service/course.service';
 import { UtilsService } from '@core/service/utils.service';
 import { TableElement, TableExportUtil } from '@shared';
+import { AppConstants } from '@shared/constants/app.constants';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import Swal from 'sweetalert2';
@@ -46,6 +47,7 @@ export class CoursePaymentComponent {
   dataSource: any;
   coursePaginationModel!: Partial<CoursePaginationModel>;
   searchTerm: string = '';
+  commonRoles: any;
  
 
   constructor(private router: Router, private formBuilder: FormBuilder,
@@ -60,6 +62,7 @@ export class CoursePaymentComponent {
 
   
   ngOnInit(): void {
+    this.commonRoles = AppConstants
    this.getAllCourse();
   }
   getAllCourse(){

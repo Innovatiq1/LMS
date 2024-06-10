@@ -91,7 +91,7 @@
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-2">
                   <label
-                    >Instructor Cost<span class="mandatory"
+                    >{{commonRoles?.INSTRUCTOR_ROLE}} Cost<span class="mandatory"
                       >&nbsp;*</span
                     ></label
                   >
@@ -111,14 +111,14 @@
                         classForm.get('instructorCost')?.touched
                       "
                     >
-                      Enter Instructor Cost .
+                      Enter {{commonRoles?.INSTRUCTOR_ROLE}} Cost .
                     </mat-error>
                   </mat-form-field>
                 </div>
 
                 <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2">
                   <label
-                    >Minimum students<span class="mandatory"
+                    >Minimum {{commonRoles.STUDENT_ROLE}}s<span class="mandatory"
                       >&nbsp;*</span
                     ></label
                   >
@@ -135,13 +135,13 @@
                         classForm.get('minimumEnrollment')?.touched
                       "
                     >
-                      Enter Minimum students.
+                      Enter Minimum {{commonRoles.STUDENT_ROLE}}s.
                     </mat-error>
                   </mat-form-field>
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2">
                   <label
-                    >Maximum students<span class="mandatory"
+                    >Maximum {{commonRoles.STUDENT_ROLE}}s<span class="mandatory"
                       >&nbsp;*</span
                     ></label
                   >
@@ -158,7 +158,7 @@
                         classForm.get('maximumEnrollment')?.touched
                       "
                     >
-                      Enter Maximum students.
+                      Enter Maximum {{commonRoles.STUDENT_ROLE}}s.
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -294,7 +294,7 @@
           <!-- <mat-step completed="false"> -->
           <form (ngSubmit)="saveProgramClass()">
             <div class="mx-3">
-              <h5>Assign Instructor</h5>
+              <h5>Assign {{commonRoles?.INSTRUCTOR_ROLE}}</h5>
             </div>
             <div class="body">
               <div
@@ -327,7 +327,7 @@
                     <mat-error
                       *ngIf="submitted && !element.instructor"
                       class="errors"
-                      >Please select an instructor</mat-error
+                      >Please select an {{commonRoles?.INSTRUCTOR_ROLE}}</mat-error
                     >
                   </mat-form-field>
                 </div>
@@ -357,13 +357,13 @@
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
                   <h6>
-                    Select Instructor<span class="mandatory">&nbsp;*</span>
+                    Select {{commonRoles?.INSTRUCTOR_ROLE}}<span class="mandatory">&nbsp;*</span>
                   </h6>
                   <mat-form-field
                     class="example-full-width mb-3"
                     appearance="outline"
                   >
-                    <mat-label>Choose Instructor</mat-label>
+                    <mat-label>Choose {{commonRoles?.INSTRUCTOR_ROLE}}</mat-label>
                     <mat-select
                       [(ngModel)]="element.instructor"
                       name="instructor"

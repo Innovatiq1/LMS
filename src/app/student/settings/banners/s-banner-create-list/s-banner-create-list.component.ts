@@ -5,6 +5,7 @@ import { BannersService } from '../banners.service';
 import { Router } from '@angular/router';
 import { SimpleDialogComponent } from 'app/ui/modal/simpleDialog.component';
 import { MatDialogRef } from '@angular/material/dialog';
+import { AppConstants } from '@shared/constants/app.constants';
 
 @Component({
   selector: 'app-s-banner-create-list',
@@ -23,6 +24,7 @@ export class SBannerCreateListComponent {
   instructorBanner : FormGroup
   bannerList: any;
   bannerFor: string;
+  commonRoles: any;
   constructor(private bannerService :BannersService,private fb: FormBuilder, private router: Router,) {
     // constructor
     this.instructorBanner= this.fb.group({
@@ -36,6 +38,7 @@ export class SBannerCreateListComponent {
   }
 
   ngOnInit(){
+    this.commonRoles = AppConstants
     this.getBanner(this.bannerFor);
   }
   getBanner(bannerFor: string) {

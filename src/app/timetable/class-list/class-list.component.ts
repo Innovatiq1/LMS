@@ -68,6 +68,7 @@ export class ClassListComponent extends UnsubscribeOnDestroyAdapter implements O
   filterName='';
   isAdmin: boolean = false;
   isInstructor: boolean = false;
+  commonRoles: any;
 
   constructor(
     public _classService: ClassService,
@@ -94,6 +95,7 @@ export class ClassListComponent extends UnsubscribeOnDestroyAdapter implements O
   @ViewChild('filter', { static: true }) filter!: ElementRef;
 
   ngOnInit(): void {
+    this.commonRoles = AppConstants
     let userType = localStorage.getItem('user_type');
     if (userType == AppConstants.ADMIN_USERTYPE) {
       this.isAdmin = true;

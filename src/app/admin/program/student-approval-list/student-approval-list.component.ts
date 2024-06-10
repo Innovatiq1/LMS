@@ -9,6 +9,7 @@ import { Student } from '@core/models/user.model';
 import { CourseService } from '@core/service/course.service';
 import { UtilsService } from '@core/service/utils.service';
 import { TableElement, TableExportUtil } from '@shared';
+import { AppConstants } from '@shared/constants/app.constants';
 import { ClassService } from 'app/admin/schedule-class/class.service';
 import jsPDF from 'jspdf';
 import * as moment from 'moment';
@@ -49,6 +50,7 @@ export class StudentApprovalListComponent {
   isLoading :any;
   coursePaginationModel!: Partial<CoursePaginationModel>;
   searchTerm:string = '';
+  commonRoles: any;
 
 
   upload() {
@@ -66,6 +68,7 @@ export class StudentApprovalListComponent {
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
 
     ngOnInit(): void {
+      this.commonRoles = AppConstants
       this.getRegisteredClasses();
     }
 

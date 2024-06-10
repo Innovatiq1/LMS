@@ -9,6 +9,7 @@ import {CourseKitModel, CourseModel, CoursePaginationModel } from '@core/models/
 import { CourseService } from '@core/service/course.service';
 import { UtilsService } from '@core/service/utils.service';
 import { TableElement, TableExportUtil } from '@shared';
+import { AppConstants } from '@shared/constants/app.constants';
 import jsPDF from 'jspdf';
 import Swal from 'sweetalert2';
 
@@ -49,6 +50,7 @@ export class ProgramPaymentComponent {
   selection = new SelectionModel<CourseModel>(true, []);
   dataSource: any;
   coursePaginationModel!: Partial<CoursePaginationModel>;
+  commonRoles: any;
 
   constructor(private router: Router, private formBuilder: FormBuilder,
     public utils: UtilsService, private courseService: CourseService,
@@ -62,6 +64,7 @@ export class ProgramPaymentComponent {
   @ViewChild('filter', { static: true }) filter!: ElementRef;
   
   ngOnInit(): void {
+    this.commonRoles = AppConstants
    this.getAllPrograms();
   }
   getAllPrograms(){

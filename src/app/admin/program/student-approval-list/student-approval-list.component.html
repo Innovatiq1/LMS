@@ -83,7 +83,7 @@
 
                                 <!-- Course Name -->
                                 <ng-container matColumnDef="Student Name">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Student 
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{commonRoles.STUDENT_ROLE}} 
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let row" class="name" [routerLink]="['/admin/program/view-approved-program/',row.id]">
                                         <span class="mobile-label">Student Name:</span>{{row.student_name |
@@ -101,7 +101,7 @@
                                         <span class="mobile-label">Program Fee:</span><span >$</span> {{row.classId.courseId.courseFee||0}}.00</mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="Instructor-Fee">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Instructor Fee</mat-header-cell>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{commonRoles?.INSTRUCTOR_ROLE}} Fee</mat-header-cell>
                                     <mat-cell *matCellDef="let row" [routerLink]="['/admin/program/view-approved-program/',row.id]">
                                         <span class="mobile-label">Instructor Fee:</span><span >$</span> {{row.classId.instructorCost||0 }}.00</mat-cell>
                                 </ng-container>

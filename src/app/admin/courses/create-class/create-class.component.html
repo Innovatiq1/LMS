@@ -56,7 +56,7 @@
                       </mat-form-field>
                     </div>
                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-2">
-                      <label>Instructor Cost<span class="mandatory">&nbsp;*</span></label>
+                      <label>{{commonRoles.INSTRUCTOR_ROLE}} Cost<span class="mandatory">&nbsp;*</span></label>
                       <mat-form-field class="example-full-width mb-3" appearance="outline">
                         <input matInput formControlName="instructorCost" (keypress)="keyPressNumbers($event)"
                           required />
@@ -81,27 +81,27 @@
 
                 
                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2">
-                      <label>Minimum students<span class="mandatory">&nbsp;*</span></label>
+                      <label>Minimum {{commonRoles.STUDENT_ROLE}}s<span class="mandatory">&nbsp;*</span></label>
                       <mat-form-field class="example-full-width mb-3" appearance="outline">
                         <input matInput formControlName="minimumEnrollment" />
                         <mat-error *ngIf="
                             classForm.get('minimumEnrollment')?.hasError('required') ||
                             classForm.get('minimumEnrollment')?.touched
                           ">
-                          Enter Minimum students.
+                          Enter Minimum {{commonRoles.STUDENT_ROLE}}s.
                         </mat-error>
 
                       </mat-form-field>
                     </div>
                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2">
-                      <label>Maximum students<span class="mandatory">&nbsp;*</span></label>
+                      <label>Maximum {{commonRoles.STUDENT_ROLE}}s<span class="mandatory">&nbsp;*</span></label>
                       <mat-form-field class="example-full-width mb-3" appearance="outline">
                         <input matInput formControlName="maximumEnrollment" />
                         <mat-error *ngIf="
                             classForm.get('maximumEnrollment')?.hasError('required') ||
                             classForm.get('maximumEnrollment')?.touched
                           ">
-                          Enter Maximum students .
+                          Enter Maximum {{commonRoles.STUDENT_ROLE}}s .
                         </mat-error>
                       </mat-form-field>
                     </div>
@@ -193,7 +193,7 @@
             <!-- <mat-step completed="false"> -->
               <form>
               <div >
-                <h5 class="mx-3">Assign Instructor</h5>
+                <h5 class="mx-3">Assign {{commonRoles.INSTRUCTOR_ROLE}}</h5>
                 <!-- <button (click)="addNewRow()" mat-mini-fab color="primary" style="margin-left: 300px;">
                   <mat-icon class="col-white">add</mat-icon>
                 </button> -->
@@ -223,9 +223,9 @@
                     </mat-form-field>
                   </div>
                   <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 ">
-                    <label>Select Instructor</label>
+                    <label>Select {{commonRoles.INSTRUCTOR_ROLE}}</label>
                     <mat-form-field class="example-full-width mb-3" appearance="outline">
-                      <mat-label>Choose Instructor</mat-label>
+                      <mat-label>Choose {{commonRoles.INSTRUCTOR_ROLE}}</mat-label>
                       <mat-select [(ngModel)]="element.instructor" name="instructor" (selectionChange)="onSelectChange1($event,element)"
                         (change)="onChangeInstructor(element,index)">
                         <mat-option *ngFor="let instructor of instructorList" [value]="instructor.id">

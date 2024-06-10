@@ -395,7 +395,7 @@
   <mat-tab>
     <ng-template mat-tab-label>
       <!-- <mat-icon class="example-tab-icon msr-2">face</mat-icon> -->
-      Student Analytics
+      {{commonRoles.STUDENT_ROLE}} Analytics
     </ng-template>
     <div class="row mt-5">
       <div class="col-lg-3 col-md-3 col-sm-12">
@@ -407,7 +407,7 @@
             </div>
             <div class="card-right">
               <div>
-                <h5 class="float-end">Total Students</h5>
+                <h5 class="float-end">Total {{commonRoles.STUDENT_ROLE}}s</h5>
               </div>
               <div class="col-green">
                 <h3 class="font-weight-bold float-end mb-0">{{count?.students}}</h3>
@@ -473,7 +473,7 @@
             </div>
             <div class="card-right">
               <div>
-                <h5 class="float-end">Total Instructors</h5>
+                <h5 class="float-end">Total {{commonRoles.INSTRUCTOR_ROLE}}s</h5>
               </div>
               <div class="col-green">
                 <h3 class="font-weight-bold float-end mb-0">{{count?.instructors}}</h3>
@@ -495,7 +495,7 @@
         <div class="card" style="border-radius: 31px;">
           <div class="header mt-3">
             <h2>
-              Students Survey</h2>
+              {{commonRoles.STUDENT_ROLE}}s Survey</h2>
           </div>
           <div class="body" *ngIf="isArea">
             <apx-chart [series]="areaChartOptions.series!" [chart]="areaChartOptions.chart!"
@@ -521,7 +521,7 @@
       <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
         <div class="card" style="border-radius: 31px;">
           <div class="header mt-3">
-            <h2>Student Performance Chart</h2>
+            <h2>{{commonRoles.STUDENT_ROLE}} Performance Chart</h2>
           </div>
           <div class="body" *ngIf="isBar">
             <apx-chart [series]="performanceBarChartOptions.series!" [chart]="performanceBarChartOptions.chart!"
@@ -558,7 +558,7 @@
             <h2>Average Class Attendance</h2>
           </div>
           <div class="float-start ms-3 me-3">
-            <h5>129 Students <span class="text-muted font-12">(Average)</span></h5>
+            <h5>129 {{commonRoles.STUDENT_ROLE}}s <span class="text-muted font-12">(Average)</span></h5>
           </div>
           <div class="body" *ngIf="isAttendanceLine">
             <apx-chart [series]="performanceRateChartOptions.series!" [chart]="performanceRateChartOptions.chart!"
@@ -669,7 +669,7 @@
       <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
         <div class="card" style="border-radius: 31px;">
           <div class="header mt-3">
-            <h2>Instructors List</h2>
+            <h2>{{commonRoles.INSTRUCTOR_ROLE}}s List</h2>
 
           </div>
           <div class="tableBody">
@@ -678,7 +678,7 @@
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th>Instructor Name</th>
+                    <th>{{commonRoles.INSTRUCTOR_ROLE}} Name</th>
                     <th>Status</th>
                   </tr>
                 </thead>
@@ -708,7 +708,7 @@
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <div class="card" style="border-radius: 31px;">
           <div class="header mt-3">
-            <h2>New Student List</h2>
+            <h2>New {{commonRoles.STUDENT_ROLE}} List</h2>
 
           </div>
           <div class="tableBody">
@@ -717,7 +717,7 @@
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th>Student Name</th>
+                    <th>{{commonRoles.STUDENT_ROLE}} Name</th>
                     <th>Qualification</th>
                     <th>Date Of Joining</th>
                     <th>Mobile</th>
@@ -750,7 +750,7 @@
   <mat-tab>
     <ng-template mat-tab-label>
       <!-- <mat-icon class="example-tab-icon msr-2">face</mat-icon> -->
-      Instructor Analytics
+      {{commonRoles.INSTRUCTOR_ROLE}} Analytics
     </ng-template>
     <app-dashboard2></app-dashboard2>
   </mat-tab>
@@ -1034,7 +1034,7 @@
             </div>
             <div class="card-right">
               <div>
-                <h5 class="float-end">Total Students</h5>
+                <h5 class="float-end">Total {{commonRoles.STUDENT_ROLE}}s</h5>
               </div>
               <div class="col-green">
                 <h3 class="font-weight-bold float-end mb-0">{{count?.students}}</h3>

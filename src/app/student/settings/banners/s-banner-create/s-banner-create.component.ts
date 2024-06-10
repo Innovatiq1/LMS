@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { BannersService } from '../banners.service';
 import { CourseService } from '@core/service/course.service';
+import { AppConstants } from '@shared/constants/app.constants';
 
 @Component({
   selector: 'app-s-banner-create',
@@ -26,8 +27,10 @@ export class SBannerCreateComponent {
   banner_for!: string;
   bannerList: any;
   thumbnail: any;
+  commonRoles: any;
   constructor(private fb: FormBuilder,private courseService: CourseService,private bannerService :BannersService,public router:Router) {}
   public ngOnInit(): void {
+    this.commonRoles = AppConstants
     this.addCusForm = this.fb.group({
       bannerFor: ['Student Banner', [Validators.required, Validators.pattern('[a-zA-Z]+([a-zA-Z ]+)*')] ],
       banner :['',Validators.required]

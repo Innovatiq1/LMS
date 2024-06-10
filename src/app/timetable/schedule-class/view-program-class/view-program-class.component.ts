@@ -26,6 +26,7 @@ export class ViewProgramClassComponent {
   id?: number;
   isAdmin: boolean = false;
   isInstructor: boolean = false;
+  commonRoles: any;
 
   constructor(private activatedRoute: ActivatedRoute,
     private _classService:ClassService,
@@ -37,6 +38,7 @@ export class ViewProgramClassComponent {
   
   }
   ngOnInit() {
+    this.commonRoles = AppConstants
     this.loadData()
     let userType = localStorage.getItem('user_type');
     if (userType == AppConstants.ADMIN_USERTYPE) {

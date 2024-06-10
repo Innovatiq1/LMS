@@ -8,6 +8,7 @@ import { CourseModel, CoursePaginationModel } from '@core/models/course.model';
 import { CourseService } from '@core/service/course.service';
 import { UtilsService } from '@core/service/utils.service';
 import { TableElement } from '@shared/TableElement';
+import { AppConstants } from '@shared/constants/app.constants';
 import { TableExportUtil } from '@shared/tableExportUtil';
 import { ClassService } from 'app/admin/schedule-class/class.service';
 import jsPDF from 'jspdf';
@@ -50,6 +51,7 @@ export class StudentPendingListComponent {
   isLoading :any;
   coursePaginationModel!: Partial<CoursePaginationModel>;
   searchTerm:string = '';
+  commonRoles: any;
 
 
   upload() {
@@ -67,6 +69,7 @@ export class StudentPendingListComponent {
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
 
     ngOnInit(): void {
+      this.commonRoles = AppConstants
       this.getRegisteredClasses();
     }
 

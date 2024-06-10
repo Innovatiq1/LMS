@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { SessionModel } from '@core/models/class.model';
 import Swal from 'sweetalert2';
 import { TeachersService } from 'app/admin/teachers/teachers.service';
+import { AppConstants } from '@shared/constants/app.constants';
 
 @Component({
   selector: 'app-about-teacher',
@@ -29,6 +30,7 @@ export class AboutTeacherComponent {
   dataSource: any[] = [];
   filterName='';
   myArray = new MatTableDataSource<SessionModel>([]);
+  commonRoles: any;
 
   constructor(private activeRoute:ActivatedRoute, 
     // private StudentService:TeachersService,
@@ -47,6 +49,7 @@ export class AboutTeacherComponent {
      this.loadData();
    this.getClassList();
    this.getProgramList();
+   this.commonRoles = AppConstants
    }
  
  

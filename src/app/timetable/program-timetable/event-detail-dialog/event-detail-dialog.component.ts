@@ -14,6 +14,7 @@ export class EventDetailDialogComponent implements OnInit {
   isProgram: boolean = false;
   currentId: any;
   subscribeParams: any;
+  commonRoles: any;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -31,5 +32,7 @@ export class EventDetailDialogComponent implements OnInit {
       this.isProgram = true
     }
   }
-  ngOnInit() {}
+  ngOnInit() {
+    this.commonRoles = AppConstants
+  }
 }

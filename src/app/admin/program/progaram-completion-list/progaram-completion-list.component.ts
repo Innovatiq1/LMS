@@ -11,6 +11,7 @@ import DomToImage from 'dom-to-image';
 import * as moment from 'moment';
 import Swal from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
+import { AppConstants } from '@shared/constants/app.constants';
 
 @Component({
   selector: 'app-progaram-completion-list',
@@ -47,6 +48,7 @@ export class ProgaramCompletionListComponent {
   element: any;
   certificateUrl: boolean = false;
   pdfData: any = [];
+  commonRoles: any;
 
 
   constructor(private classService: ClassService, private utils: UtilsService, public dialog: MatDialog) {
@@ -56,6 +58,7 @@ export class ProgaramCompletionListComponent {
   }
 
   ngOnInit(): void {
+    this.commonRoles = AppConstants
     this.getCompletedClasses();
   }
 

@@ -5,6 +5,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { AssessmentService } from '@core/service/assessment.service';
 import { Subject, debounceTime } from 'rxjs';
+import { AppConstants } from '@shared/constants/app.constants';
 
 @Component({
   selector: 'app-exam-scores',
@@ -43,6 +44,7 @@ export class ExamScoresComponent {
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild('filter', { static: true }) filter!: ElementRef;
   private keyupSubject: Subject<Event> = new Subject<Event>();
+  commonRoles: any;
 
   constructor(public utils: UtilsService, private assessmentService: AssessmentService){
     this.assessmentPaginationModel = {};
@@ -54,6 +56,7 @@ export class ExamScoresComponent {
   }
 
   ngOnInit() {
+    this.commonRoles = AppConstants
     this.getAllAnswers()
    }
 
