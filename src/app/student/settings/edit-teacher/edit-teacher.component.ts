@@ -27,8 +27,8 @@ export class EditTeacherComponent {
   breadscrums = [
     {
       title: 'Edit Instructor',
-      items: ['Instructor'],
-      active: 'Edit Instructor',
+      items: [`${AppConstants.INSTRUCTOR_ROLE}`],
+      active: ` Edit ${AppConstants.INSTRUCTOR_ROLE}`,
     },
   ];
   userId: any;
@@ -151,13 +151,13 @@ export class EditTeacherComponent {
       // Set the avatar path to the existing avatar URL
       userData.avatar = this.avatar;
 
-      userData.type = 'Instructor';
-      userData.role = 'Instructor';
+      userData.type = AppConstants.INSTRUCTOR_ROLE;
+      userData.role = AppConstants.INSTRUCTOR_ROLE;
 
       // Call the updateInstructor function with userData
       Swal.fire({
         title: 'Are you sure?',
-        text: 'Do You want to update this user!',
+        text: 'Do You want to update this `${AppConstants.INSTRUCTOR_ROLE}`!',
         icon: 'warning',
         confirmButtonText: 'Yes',
         showCancelButton: true,
@@ -175,7 +175,7 @@ export class EditTeacherComponent {
       () => {
         Swal.fire({
           title: 'Successful',
-          text: 'Instructor updated successfully',
+          text: '`${AppConstants.INSTRUCTOR_ROLE}` updated successfully',
           icon: 'success',
         });
         //this.fileDropEl.nativeElement.value = "";
@@ -185,7 +185,7 @@ export class EditTeacherComponent {
       },
       (error: { message: any; error: any }) => {
         Swal.fire(
-          'Failed to update instructor',
+          'Failed to update `${AppConstants.INSTRUCTOR_ROLE}`',
           error.message || error.error,
           'error'
         );

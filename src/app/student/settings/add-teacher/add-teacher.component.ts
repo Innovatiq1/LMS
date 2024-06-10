@@ -32,8 +32,8 @@ export class AddTeacherComponent {
   breadscrums = [
     {
       title: 'Add Instructor',
-      items: ['Instructor'],
-      active: 'Create Instructor',
+      items: [`${AppConstants.INSTRUCTOR_ROLE}s`],
+      active: `Create ${AppConstants.INSTRUCTOR_ROLE}`,
     },
   ];
   files: any;
@@ -156,8 +156,8 @@ export class AddTeacherComponent {
         // Set the avatar path to the URL received during file upload
         userData.avatar = this.avatar;
         
-        userData.type = 'Instructor';
-        userData.role = 'Instructor';
+        userData.type = AppConstants.INSTRUCTOR_ROLE;
+        userData.role = AppConstants.INSTRUCTOR_ROLE;
         userData.isLogin = true;
 
         this.createInstructor(userData);
@@ -199,7 +199,7 @@ export class AddTeacherComponent {
 
     Swal.fire({
       title: 'Are you sure?',
-      text: 'Do You want to create a instructor!',
+      text: 'Do You want to create a `${AppConstants.INSTRUCTOR_ROLE}`!',
       icon: 'warning',
       confirmButtonText: 'Yes',
       showCancelButton: true,
@@ -210,7 +210,7 @@ export class AddTeacherComponent {
           () => {
             Swal.fire({
               title: "Successful",
-              text: "Instructor created successfully",
+              text: "`${AppConstants.INSTRUCTOR_ROLE}` created successfully",
               icon: "success",
             });
             //this.fileDropEl.nativeElement.value = "";
@@ -220,7 +220,7 @@ export class AddTeacherComponent {
           },
           (error) => {
             Swal.fire(
-              "Failed to create instructor",
+              "Failed to create `${AppConstants.INSTRUCTOR_ROLE}`",
               error.message || error.error,
               "error"
             );

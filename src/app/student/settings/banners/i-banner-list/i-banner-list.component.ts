@@ -23,7 +23,7 @@ export class IBannerListComponent {
     {
       title: 'Blank',
       items: ['Banners'],
-      active: 'Instructor Banner',
+      active: `${AppConstants.INSTRUCTOR_ROLE} Banner`,
     },
   ];
   instructorBanner : FormGroup
@@ -39,7 +39,7 @@ export class IBannerListComponent {
 
 
     })
-    this.bannerFor = "Instructor Banner";
+    this.bannerFor = `${AppConstants.INSTRUCTOR_ROLE} Banner`;
   }
 
   ngOnInit(){

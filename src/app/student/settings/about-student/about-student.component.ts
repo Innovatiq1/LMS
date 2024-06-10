@@ -17,7 +17,7 @@ export class AboutStudentComponent {
   breadscrums = [
     {
       title: 'Profile',
-      items: ['Student'],
+      items: [`${AppConstants.STUDENT_ROLE}`],
       active: 'Profile',
     },
   ];

@@ -59,7 +59,7 @@ export class AllStudentsComponent
     {
       title: 'Students',
       items: ['User Profile'],
-      active: 'Students',
+      active: `${AppConstants.STUDENT_ROLE}s`,
     },
   ];
   constructor(
