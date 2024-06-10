@@ -141,6 +141,7 @@ export interface Discount {
 	discountTitle: string;
 	discountType: string;
 	value: number;
+	description:string;
 	createdAt: string;
 	updatedAt: string;
 	__v: number;

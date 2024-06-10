@@ -29,7 +29,9 @@ export class UpdateDiscountComponent {
       this.discountForm = this.fb.group({
         discountTitle: ['', [Validators.required,...this.utils.validators.name]],
         discountType: ['', [Validators.required]],
-        value: ['', [Validators.required,...this.utils.validators.value]]
+        value: ['', [Validators.required,...this.utils.validators.value]],
+        description: ['', [Validators.required,...this.utils.validators.noLeadingSpace,...this.utils.validators.name]]
+
 
       });
       this.activatedRoute.queryParams.subscribe(params => {
@@ -83,7 +85,8 @@ export class UpdateDiscountComponent {
       this.discountForm.patchValue({
         discountTitle: res?.discountTitle,
         discountType: res?.discountType,
-        value:res?.value
+        value:res?.value,
+        description:res?.description
       })
     })
   }

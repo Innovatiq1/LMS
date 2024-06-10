@@ -16,6 +16,25 @@ export class InvoiceComponent {
   }
 
   submit() {
-    this.dialogRef.close(this.data); 
+      let discountedValue: number;
+      let totalValue: number;
+  
+      if (this.data.discountType === 'fixed') {
+        discountedValue = this.data.discountValue;
+        totalValue = this.data.courseFee - discountedValue;
+        this.data.discountedValue = discountedValue
+        this.data.totalValue = totalValue
+
+      } else if (this.data.discountType === 'percentage') {
+        discountedValue = (this.data.courseFee * this.data.discountValue) / 100;
+        totalValue = this.data.courseFee - discountedValue;
+        this.data.discountedValue = discountedValue
+        this.data.totalValue = totalValue
+      }
+      this.dialogRef.close(this.data); 
+
+  
+      // Send the calculated values back to the parent component
+    }
   }
-}
+

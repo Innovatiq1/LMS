@@ -6,6 +6,7 @@ import {
   HostListener,
   Inject,
   OnDestroy,
+  TemplateRef,
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -58,6 +59,8 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 export class ViewCourseComponent implements OnDestroy {
   @ViewChild('videoPlayer') videoPlayer!: ElementRef<HTMLVideoElement>;
+  @ViewChild('discountDialog') discountDialog!: TemplateRef<any>;
+
   displayedColumns: string[] = [
     'position',
     ' Class Start Date ',
@@ -138,6 +141,7 @@ export class ViewCourseComponent implements OnDestroy {
   invoiceUrl: any;
   verify = false;
   payment = false;
+  selectedDiscount:any;
 
   questionTimer: number = 60;
   defaultTab: string = 'home';
@@ -145,7 +149,11 @@ export class ViewCourseComponent implements OnDestroy {
   examAssessmentTaken!: number;
   assessmentAnswerLatest: any;
   registeredClassId: any;
+  discounts: any;
+  allDiscounts: any;
   commonRoles: any;
+  discountType: any;
+  discountValue: any;
   constructor(
     private classService: ClassService,
     private activatedRoute: ActivatedRoute,
@@ -358,38 +366,64 @@ export class ViewCourseComponent implements OnDestroy {
     this.header = video.name;
     this.commonService.setVideoDetails(video);
   }
+
+  getDiscounts(){
+    this.courseService.getDiscount().subscribe((response) => {
+      this.discounts = response.filter(item => !item.discountTitle.includes('&'));
+      this.allDiscounts = response;
+      this.openDialog(this.discountDialog)
+    })
+
+  }
+  submitDiscount(dialogRef:any){
+    var userdata = JSON.parse(localStorage.getItem('currentUser')!);
+    var studentId = localStorage.getItem('id');
+    const today = new Date();
+    const date = today.toISOString().split('T')[0];
+    let body = {
+      email: userdata.user.email,
+      name: userdata.user.name,
+      courseTitle: this.classDetails?.courseId?.title,
+      courseFee: this.classDetails?.courseId?.fee,
+      studentId: studentId,
+      classId: this.classId,
+      title: this.title,
+      coursekit: this.courseKit,
+      date: date,
+      verify:false,
+      discount:this.selectedDiscount
+    };
+
+              this.courseService
+                .saveRegisterClass(body)
+                .subscribe((response) => {
+                  Swal.fire({
+                    title: 'Thank you',
+                    text: 'We will verify details & enable payment',
+                    icon: 'success',
+                  });
+                  dialogRef.close();
+
+          
+                  this.getClassDetails();
+                  this.payment = false;
+                  this.isRegistered = true;
+                });
+  }
+
+  openDialog(templateRef: any): void {
+    const dialogRef = this.dialog.open(templateRef, {
+      width: '1000px',
+      data: {   discounts:this.discounts    },
+    });    
+}
+
   submitForVerification(classId: string) {
     var userdata = JSON.parse(localStorage.getItem('currentUser')!);
     var studentId = localStorage.getItem('id');
     if (this.paid) {
-      const today = new Date();
-      const date = today.toISOString().split('T')[0];
-      let body = {
-        email: userdata.user.email,
-        name: userdata.user.name,
-        courseTitle: this.classDetails?.courseId?.title,
-        courseFee: this.classDetails?.courseId?.fee,
-        studentId: studentId,
-        classId: this.classId,
-        title: this.title,
-        coursekit: this.courseKit,
-        date: date,
-        verify:false
-      };
-
-                this.courseService
-                  .saveRegisterClass(body)
-                  .subscribe((response) => {
-                    Swal.fire({
-                      title: 'Thank you',
-                      text: 'We will verify details & enable payment',
-                      icon: 'success',
-                    });
-            
-                    this.getClassDetails();
-                    this.payment = false;
-                    this.isRegistered = true;
-                  });
+      this.getDiscounts();
+   
     } else if (this.free) {
       let payload = {
         email: userdata.user.email,
@@ -417,6 +451,7 @@ export class ViewCourseComponent implements OnDestroy {
     var userdata = JSON.parse(localStorage.getItem('currentUser')!);
     var studentId = localStorage.getItem('id');
     if (this.paid) {
+
       const today = new Date();
       const date = today.toISOString().split('T')[0];
       let body = {
@@ -429,7 +464,9 @@ export class ViewCourseComponent implements OnDestroy {
         title: this.title,
         coursekit: this.courseKit,
         date: date,
-        discountPercentage:5
+        discountType:this.discountType,
+        discountValue:this.discountValue
+
       };
       const invoiceDialogRef = this.dialog.open(InvoiceComponent, {
         width: '1000px',
@@ -438,6 +475,7 @@ export class ViewCourseComponent implements OnDestroy {
       });
       invoiceDialogRef.afterClosed().subscribe((res) => {
         if (res) {
+          console.log('reeee',res)
           const dialogRef = this.dialog.open(PaymentDailogComponent, {
             width: '650px',
             height: '300px',
@@ -450,7 +488,7 @@ export class ViewCourseComponent implements OnDestroy {
                   email: userdata.user.email,
                   name: userdata.user.name,
                   courseTitle: this.classDetails?.courseId?.title,
-                  courseFee: this.classDetails?.courseId?.fee,
+                  courseFee:res.totalValue,
                   studentId: studentId,
                   classId: this.classId,
                   title: this.title,
@@ -469,7 +507,7 @@ export class ViewCourseComponent implements OnDestroy {
                   email: userdata.user.email,
                   name: userdata.user.name,
                   courseTitle: this.classDetails?.courseId?.title,
-                  courseFee: this.classDetails?.courseId?.fee,
+                  courseFee: res.totalValue,
                   studentId: studentId,
                   classId: this.classId,
                   title: this.title,
@@ -768,7 +806,11 @@ export class ViewCourseComponent implements OnDestroy {
       .getStudentClass(studentId, this.classId)
       .subscribe((response) => {
         this.studentClassDetails = response?.data?.docs[0];
-        this.registeredClassId = response?.data?.docs[0]?.id
+        this.registeredClassId = response?.data?.docs[0]?.id;
+        if( response.data.docs[0].discount){
+          this.discountType =  response?.data?.docs[0]?.discount.discountType;
+          this.discountValue =  response?.data?.docs[0]?.discount.value
+        }
         this.coursekitDetails = response?.data?.docs[0]?.coursekit;
         this.longDescription = this?.coursekitDetails[0]?.longDescription;
         let totalPlaybackTime = 0;

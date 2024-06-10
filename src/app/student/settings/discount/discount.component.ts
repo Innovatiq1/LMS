@@ -26,7 +26,8 @@ export class DiscountComponent {
       this.discountForm = this.fb.group({
         discountTitle: ['', [Validators.required,...this.utils.validators.noLeadingSpace,...this.utils.validators.name]],
         discountType: ['', [Validators.required]],
-        value: ['', [Validators.required,...this.utils.validators.noLeadingSpace,...this.utils.validators.value]]
+        value: ['', [Validators.required,...this.utils.validators.noLeadingSpace,...this.utils.validators.value]],
+        description: ['', [Validators.required,...this.utils.validators.noLeadingSpace,...this.utils.validators.name]]
 
       })
   }

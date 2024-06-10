@@ -72,6 +72,18 @@
                                       
                         </mat-form-field>
                   </div>
+                  <div class="col-3">
+                    <label>Description<span class="mandatory">&nbsp;*</span></label>
+                        <mat-form-field class="example-full-width " appearance="outline">
+                            <input matInput type="text" formControlName="description"
+                            class="form-control" placeholder="Enter Description"
+                            >      
+                            <mat-error *ngIf="discountForm.get('description')?.invalid ||discountForm.get('description')?.touched">
+                              {{ utils.getErrorMessage1(discountForm.get('description'), 'description') }}
+                            </mat-error>
+                                      
+                        </mat-form-field>
+                  </div>
 
 
                   <!-- <div class="col mt-5 mx-5">
@@ -98,13 +110,16 @@
                                 <th>Discount</th>
                                 <th>Discount Type</th>
                                 <th>Value</th>
+                                <th>Description</th>
+
                               </tr>
                             </thead>
                             <tbody>
                               <tr style="cursor: pointer;" *ngFor="let row of dataSource">
                                 <td (click)="update(row.id)">{{row?.discountTitle | capitalizeFirstLetter}}</td>                         
                                 <td (click)="update(row.id)">{{row?.discountType | capitalizeFirstLetter}}</td>
-                                <td (click)="update(row.id)">{{row?.value }}</td>      
+                                <td (click)="update(row.id)">{{row?.value }}</td>  
+                                <td (click)="update(row.id)">{{row?.description }}</td>          
                               </tr>
     
                             </tbody>

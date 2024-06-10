@@ -47,18 +47,25 @@
                             </tr>
                             <tr>
                                 <td colspan="3">
-                                    <h6 style="justify-content: end; display: flex;">Discount({{data.discountPercentage}}%)</h6>
+                                    <h6 style="justify-content: end; display: flex;">Discount({{data.discountValue}}{{data.discountType =='percentage'? '%':''}})</h6>
                                 </td>
-                                <td class="price">
-                                    ${{(data.courseFee * data.discountPercentage / 100) | number : '1.2-2'}}
+                                <td *ngIf="data.discountType == 'fixed'" class="price">
+                                    - ${{(data.discountValue) | number : '1.2-2'}}
                                 </td>
+                                <td *ngIf="data.discountType == 'percentage'" class="price">
+                                    - ${{(data.courseFee * data.discountValue / 100) | number : '1.2-2'}}
+                                </td>
+
                             </tr>
                             <tr>
                                 <td colspan="3">
                                     <h6 style="justify-content: end; display: flex;">Total</h6>
                                 </td>
-                                <td class="price">
-                                    ${{data.courseFee - (data.courseFee * data.discountPercentage / 100) | number : '1.2-2'}}
+                                <td *ngIf="data.discountType == 'fixed'"  class="price">
+                                    ${{data.courseFee - data.discountValue | number : '1.2-2'}}
+                                </td>
+                                <td *ngIf="data.discountType == 'percentage'" class="price">
+                                    ${{data.courseFee - (data.courseFee * data.discountValue / 100) | number : '1.2-2'}}
                                 </td>
                             </tr>
                         </tbody>

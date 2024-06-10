@@ -1804,3 +1804,33 @@
 
   <!-- </div> -->
 </div>
+
+<ng-template #discountDialog let-dialogRef="dialogRef" let-data>
+<div class="row mt-4 mx-auto">
+  <div class="col-4" *ngFor="let discount of discounts">
+  <div  class="card discount">
+        <h6 class="mt-3" style="text-align:center">{{discount.discountTitle}}</h6>
+        <h6 class="mt-3 col-green" style="text-align:center">{{discount.value}} {{discount.discountType =='percentage'?'%':''}}</h6>
+        <p class="mt-3 " style="text-align:center">{{discount?.description}}</p>
+
+      </div>
+  </div>
+</div>
+<h2 mat-dialog-title>Select Discount</h2>
+<div mat-dialog-content>
+  <mat-form-field>
+    <mat-label>Discount</mat-label>
+    <mat-select [(ngModel)]="selectedDiscount">
+      <mat-option *ngFor="let discount of allDiscounts" [value]="discount.id">{{
+        discount.discountTitle
+      }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="dialogRef.close()">Cancel</button>
+  <button mat-button (click)="submitDiscount(dialogRef)">
+    Submit
+  </button>
+</div>
+</ng-template>

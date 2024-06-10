@@ -75,6 +75,18 @@
                                       
                         </mat-form-field>
                   </div>
+                  <div class="col-3">
+                    <label>Description<span class="mandatory">&nbsp;*</span></label>
+                        <mat-form-field class="example-full-width " appearance="outline">
+                            <input matInput type="text" formControlName="description"
+                            class="form-control" placeholder="Enter Description"
+                            >      
+                            <mat-error *ngIf="discountForm.get('description')?.invalid ||discountForm.get('description')?.touched">
+                              {{ utils.getErrorMessage1(discountForm.get('description'), 'description') }}
+                            </mat-error>
+                                      
+                        </mat-form-field>
+                  </div>
 
                   <!-- <div class="col mt-5 mx-5">
                     <button  mat-flat-button color="accent" [routerLink]="['/student/settings/user-type']"   > All Roles </button>
