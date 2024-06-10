@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { LecturesService } from 'app/teacher/lectures/lectures.service';
 import { EventDetailDialogComponent } from '../program-timetable/event-detail-dialog/event-detail-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { AppConstants } from '@shared/constants/app.constants';
 @Component({
   selector: 'app-my-programs',
   templateUrl: './my-programs.component.html',
@@ -28,7 +29,7 @@ export class MyProgramsComponent {
 
   constructor(private classService: ClassService, private router: Router,public lecturesService: LecturesService,public dialog: MatDialog) {
     let userType = localStorage.getItem("user_type")
-    if(userType == "Student"){
+    if(userType == AppConstants.STUDENT_ROLE){
       this.getApprovedProgram();
     }
 
@@ -126,7 +127,7 @@ export class MyProgramsComponent {
   openDialog(event: { title: any; extendedProps: { [x: string]: any; }; }) {
     let userType = localStorage.getItem("user_type")
     var reschedule =false;
-    if(userType == "Student"){
+    if(userType == AppConstants.STUDENT_ROLE){
       reschedule = true
     }
     this.dialog.open(EventDetailDialogComponent, {

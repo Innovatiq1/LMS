@@ -25,6 +25,7 @@ import { CoursePaginationModel, MainCategory, SubCategory } from '@core/models/c
 import { ClassService } from 'app/admin/schedule-class/class.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { AppConstants } from '@shared/constants/app.constants';
 
 export type avgLecChartOptions = {
   series: ApexAxisChartSeries;
@@ -321,7 +322,7 @@ export class DashboardComponent implements OnInit {
 
   instructorData() {
     let payload = {
-      type: 'Instructor',
+      type: AppConstants.INSTRUCTOR_ROLE,
     };
     this.instructorService.getInstructors(payload).subscribe(
       (response: { data: any }) => {

@@ -176,7 +176,7 @@ export class Dashboard2Component implements OnInit,AfterViewInit {
 
   getInstructorsList() {
     let payload = {
-      type: "Instructor"
+      type: AppConstants.INSTRUCTOR_ROLE
     }
     this.instructorService.getInstructor(payload).subscribe((response: any) => {
       this.instructors = response.slice(0, 8);

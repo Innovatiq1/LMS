@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AppConstants } from '@shared/constants/app.constants';
 import { ProgramService } from 'app/admin/program/program.service';
 import { ClassService } from 'app/admin/schedule-class/class.service';
 import Swal from 'sweetalert2';
@@ -38,10 +39,10 @@ export class ViewProgramClassComponent {
   ngOnInit() {
     this.loadData()
     let userType = localStorage.getItem('user_type');
-    if (userType == 'admin') {
+    if (userType == AppConstants.ADMIN_USERTYPE) {
       this.isAdmin = true;
     }
-    if (userType == 'Instructor') {
+    if (userType == AppConstants.INSTRUCTOR_ROLE) {
       this.isInstructor = true;
     }
   }

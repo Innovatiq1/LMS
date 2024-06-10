@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { UtilsService } from '@core/service/utils.service';
+import { AppConstants } from '@shared/constants/app.constants';
 
 @Injectable()
 export class LoginGuard implements CanActivate {
@@ -13,9 +14,9 @@ export class LoginGuard implements CanActivate {
             return true;
         }
         let userType = JSON.parse(localStorage.getItem('user_data')!).user.type;
-        if(userType == 'admin' || userType =='Instructor'){
+        if(userType == AppConstants.ADMIN_USERTYPE || userType == AppConstants.INSTRUCTOR_ROLE){
         this.router.navigate(['/authentication/TMS/signin']);
-        } else if(userType == 'Student'){
+        } else if(userType == AppConstants.STUDENT_ROLE){
           this.router.navigate(['/authentication/LMS/signin']);
         } else {
           this.router.navigate(['/authentication/TMS/signin']);

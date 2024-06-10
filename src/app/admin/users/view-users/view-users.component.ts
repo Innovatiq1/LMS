@@ -10,6 +10,7 @@ import { LecturesService } from 'app/teacher/lectures/lectures.service';
 import { UserService } from '@core/service/user.service';
 import { Students } from 'app/admin/students/students.model';
 import { StudentsService } from 'app/admin/students/students.service';
+import { AppConstants } from '@shared/constants/app.constants';
 
 @Component({
   selector: 'app-view-users',
@@ -57,6 +58,7 @@ export class ViewUsersComponent implements OnInit{
   studentCompletedModel!: Partial<CoursePaginationModel>;
   subscribeParams: any;
   currentId: any;
+  commonRoles: any;
   
   constructor(private activeRoute:ActivatedRoute, 
     private StudentService:StudentsService,
@@ -88,7 +90,7 @@ export class ViewUsersComponent implements OnInit{
   }
 
   ngOnInit() {
-   
+    this.commonRoles = AppConstants
     this.userService.getUserById(this.currentId).subscribe((response: any) => {
       this.userType = response.data.data.type
       console.log("id",this.currentId)
@@ -96,7 +98,7 @@ export class ViewUsersComponent implements OnInit{
   
     // this.userType = localStorage.getItem("user_type")
 console.log("vvvvv", this.userType)
-    if(this.userType == 'Student'){
+    if(this.userType == AppConstants.STUDENT_ROLE){
       console.log("student", this.userType)
     this.loadData();
     this.getRegisteredCourse();
@@ -107,7 +109,7 @@ console.log("vvvvv", this.userType)
     this.getCompletedProgram();
     this.isStudent = true;
     }
-    if(this.userType == "Instructor"){
+    if(this.userType == AppConstants.INSTRUCTOR_ROLE){
     this.loadData1();
     this.getClassList1();
     this.getProgramList1();

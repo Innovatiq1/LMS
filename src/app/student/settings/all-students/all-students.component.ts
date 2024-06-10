@@ -27,6 +27,7 @@ import Swal from 'sweetalert2';
 import { Users } from '@core/models/user.model';
 import { Students } from 'app/admin/students/students.model';
 import { StudentsService } from 'app/admin/students/students.service';
+import { AppConstants } from '@shared/constants/app.constants';
 @Component({
   selector: 'app-all-students',
   templateUrl: './all-students.component.html',
@@ -396,7 +397,7 @@ export class ExampleDataSource extends DataSource<Students> {
       this.paginator.page,
     ];
     let payload = {
-      type: 'Student',
+      type: AppConstants.STUDENT_ROLE
     };
     this.exampleDatabase.getAllStudentss(payload);
 

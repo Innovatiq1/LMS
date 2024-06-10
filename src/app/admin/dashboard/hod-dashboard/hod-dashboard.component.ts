@@ -11,6 +11,7 @@ import { ChartOptions } from 'chart.js';
 import { DeptService } from '@core/service/dept.service';
 import { CoursePaginationModel, MainCategory, SubCategory } from '@core/models/course.model';
 import { Department } from 'app/admin/departments/department.model';
+import { AppConstants } from '@shared/constants/app.constants';
 
 export type chartOptions = {
 
@@ -124,7 +125,7 @@ export class HodDashboardComponent {
   }
   getInstructorsList() {
     let payload = {
-      type: "Instructor"
+      type: AppConstants.INSTRUCTOR_ROLE
     }
     this.instructorService.getInstructor(payload).subscribe((response: any) => {
       this.instructors = response.slice(0, 5);
@@ -168,7 +169,7 @@ export class HodDashboardComponent {
 
   getStudentsList() {
     let payload = {
-      type: "Student"
+      type: AppConstants.STUDENT_ROLE
     }
     this.instructorService.getInstructor(payload).subscribe((response: any) => {
       this.students = response.slice(0, 5)

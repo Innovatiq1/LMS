@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { LecturesService } from 'app/teacher/lectures/lectures.service';
 import { EventDetailDialogComponent } from './event-detail-dialog/event-detail-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { AppConstants } from '@shared/constants/app.constants';
 @Component({
   selector: 'app-program-timetable',
   templateUrl: './program-timetable.component.html',
@@ -42,10 +43,10 @@ export class ProgramTimetableComponent implements OnInit {
     //   this.getApprovedCourse();
     //   this.getApprovedProgram();
     // }
-    if (userType == 'admin' || userType == 'Student') {
+    if (userType == AppConstants.ADMIN_USERTYPE || userType == AppConstants.STUDENT_ROLE) {
       this.getClassesList();
     }
-    if (userType == 'Instructor') {
+    if (userType == AppConstants.INSTRUCTOR_ROLE) {
       console.log('test');
       //this.getApprovedCourse();
       // this.getInstructorApprovedProgram();

@@ -25,6 +25,7 @@ import {
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
+import { AppConstants } from '@shared/constants/app.constants';
 export type barChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -185,7 +186,7 @@ export class DashboardComponent implements OnInit {
   }
   getAnnouncementForStudents(filter?: any) {
     let payload ={
-      announcementFor:'Student'
+      announcementFor: AppConstants.STUDENT_ROLE
     }
     this.announcementService.getAnnouncementsForStudents(payload).subscribe((res: { data: { data: any[]; }; totalRecords: number; }) => {
       this.announcements = res.data

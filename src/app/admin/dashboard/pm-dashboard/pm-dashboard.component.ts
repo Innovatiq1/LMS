@@ -4,6 +4,7 @@ import { CourseService } from '@core/service/course.service';
 import { InstructorService } from '@core/service/instructor.service';
 import { StudentService } from '@core/service/student.service';
 import { UserService } from '@core/service/user.service';
+import { AppConstants } from '@shared/constants/app.constants';
 import { ProgramService } from 'app/admin/program/program.service';
 import { ClassService } from 'app/admin/schedule-class/class.service';
 import { ChartOptions } from 'chart.js';
@@ -127,7 +128,7 @@ export class PmDashboardComponent implements OnInit {
   }
   getInstructorsList() {
     let payload = {
-      type: "Instructor"
+      type: AppConstants.INSTRUCTOR_ROLE
     }
     this.instructorService.getInstructor(payload).subscribe((response: any) => {
       this.instructors = response.slice(0, 5);
@@ -171,7 +172,7 @@ export class PmDashboardComponent implements OnInit {
 
   getStudentsList() {
     let payload = {
-      type: "Student"
+      type: AppConstants.STUDENT_ROLE
     }
     this.instructorService.getInstructor(payload).subscribe((response: any) => {
       this.students = response.slice(0, 5)

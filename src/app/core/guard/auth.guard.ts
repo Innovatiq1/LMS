@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
 import { AuthService } from '../service/auth.service';
+import { AppConstants } from '@shared/constants/app.constants';
 
 @Injectable({
   providedIn: 'root',
@@ -15,9 +16,9 @@ export class AuthGuard  {
       const userRole = this.authService.currentUserValue.role;
       if (route.data['role'] && route.data['role'].indexOf(userRole) === -1) {
         let userType = JSON.parse(localStorage.getItem('user_data')!).user.type;
-        if(userType == 'admin' || userType =='Instructor'){
+        if(userType == AppConstants.ADMIN_USERTYPE || userType ==AppConstants.INSTRUCTOR_ROLE){
         this.router.navigate(['/authentication/TMS/signin']);
-        } else if(userType == 'Student'){
+        } else if(userType == AppConstants.STUDENT_ROLE){
           this.router.navigate(['/authentication/LMS/signin']);
         } else {
           this.router.navigate(['/authentication/TMS/signin']);
@@ -28,9 +29,9 @@ export class AuthGuard  {
     }
 
     let userType = JSON.parse(localStorage.getItem('user_data')!).user.type;
-    if(userType == 'admin' || userType =='Instructor'){
+    if(userType == AppConstants.ADMIN_USERTYPE || userType ==AppConstants.INSTRUCTOR_ROLE){
     this.router.navigate(['/authentication/TMS/signin']);
-    } else if(userType == 'Student'){
+    } else if(userType == AppConstants.STUDENT_ROLE){
       this.router.navigate(['/authentication/LMS/signin']);
     } else {
       this.router.navigate(['/authentication/TMS/signin']);
