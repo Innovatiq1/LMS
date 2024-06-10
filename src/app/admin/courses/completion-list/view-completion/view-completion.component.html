@@ -235,10 +235,10 @@
                             </div>
                           </div>
                         </div>
-                        <div class="header">
+                        <div *ngIf="!isDiscount"  class="header">
                           <h2>Course Details</h2>
                         </div>
-                        <div class="body">
+                        <div *ngIf="!isDiscount"  class="body">
                           <div class="row">
                             <div class="col-6">
                               <div class="px-2">
@@ -375,6 +375,119 @@
                                                          "</p> -->
                           </div>
                         </div>
+                        <div *ngIf="isDiscount" class="header">
+                          <h2>Discount Details</h2>
+                        </div>
+                        <div *ngIf="isDiscount" class="body">
+                          <div class="row">
+                            <div class="col-6">
+                              <div class="px-2">
+                                <div class="row">
+                                  <div class="col-6">
+                                    <h6>Discount</h6>
+                                  </div>
+                                  <div class="col-6">
+                                    <p>{{ discountDetails?.discountTitle }}</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-6">
+                              <div class="px-2">
+                                <div class="row">
+                                  <div class="col-6">
+                                    <h6>Discount Type</h6>
+                                  </div>
+                                  <div class="col-5">
+                                    <p>{{ discountDetails?.discountType | titlecase }}</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-6">
+                              <div class="px-2">
+                                <div class="row">
+                                  <div class="col-6">
+                                    <h6>Discount value</h6>
+                                  </div>
+                                  <div class="col-6">
+                                    <p>
+                                      {{
+                                        discountDetails?.value
+                                      }}
+                                      
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                         
+                          </div>
+
+                          
+  
+                        </div>
+                        <div *ngIf="isDiscount"  class="row">
+                          <div class="col-10 mx-auto">
+                              <div class="table-wrapper">
+                                  <div class="table-responsive">
+                                      <table class="table table-hover">
+                                          <thead>
+                                              <tr>
+                                                  <th>Item</th>
+                                                  <th>Quantity</th>
+                                                  <th>Unit Price</th>
+                                                  <th style="padding-left: 10px;">Total</th>
+                                              </tr>
+                                          </thead>
+                                          <tbody>
+                                              <tr style="cursor: pointer">
+                                                  <td style="width: 45%;">{{response.title | titlecase}}</td>
+                                                  <td>1</td>
+                                                  <td>${{ response.courseId?.fee}}.00</td>
+                                                  <td>${{ response.courseId?.fee}}.00</td>
+                                              </tr>
+                                              <tr></tr>
+                                              <tr>
+                                                  <td colspan="3">
+                                                      <h6 style="justify-content: end; display: flex;">Subtotal</h6>
+                                                  </td>
+                                                  <td class="price">
+                                                      ${{ response.courseId?.fee}}.00
+                                                  </td>
+                                              </tr>
+                                              <tr>
+                                                  <td colspan="3">
+                                                      <h6 style="justify-content: end; display: flex;">Discount({{discountDetails.value}}{{discountDetails.discountType =='percentage'? '%':''}})</h6>
+                                                  </td>
+                                                  <td *ngIf="discountDetails.discountType == 'fixed'" class="price">
+                                                      - ${{(discountDetails.value) | number : '1.2-2'}}
+                                                  </td>
+                                                  <td *ngIf="discountDetails.discountType == 'percentage'" class="price">
+                                                      - ${{( response.courseId?.fee * discountDetails.value / 100) | number : '1.2-2'}}
+                                                  </td>
+                  
+                                              </tr>
+                                              <tr>
+                                                  <td colspan="3">
+                                                      <h6 style="justify-content: end; display: flex;">Total</h6>
+                                                  </td>
+                                                  <td *ngIf="discountDetails.discountType == 'fixed'"  class="price">
+                                                      ${{ response.courseId?.fee - discountDetails.value | number : '1.2-2'}}
+                                                  </td>
+                                                  <td *ngIf="discountDetails.discountType == 'percentage'" class="price">
+                                                      ${{ response.courseId?.fee- ( response.courseId?.fee* discountDetails.value / 100) | number : '1.2-2'}}
+                                                  </td>
+                                              </tr>
+                                          </tbody>
+                                      </table>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  
                       </div>
                     </div>
                   </mat-tab>

@@ -32,6 +32,8 @@ export class ViewCompletionComponent {
   paramStatus: any;
   verify :boolean = false;
   commonRoles: any;
+  discountDetails:any;
+  isDiscount = false;
   constructor(private classService: ClassService,private courseService: CourseService,private _router: Router, private activatedRoute: ActivatedRoute,public _classService: ClassService, private assessmentService: AssessmentService) {
 
     this.studentPaginationModel = {} as StudentPaginationModel;
@@ -100,13 +102,13 @@ export class ViewCompletionComponent {
      this.courseService.getStudentClassById(id).subscribe((response: any) => {
       this.classDataById = response?._id;
       this.response = response;
-      // this.subCategory = response.subCategories;
-      // if (response && response.data && response.data._id) {
-      //   this.classDataById = response?._id;
-      //   this.response = response.data;
-      // } else {
-       
-      // }
+      if(response.discount){
+        this.isDiscount = true;
+        this.courseService.getDiscountById(response.discount).subscribe(discountResponse => {
+          this.discountDetails = discountResponse;
+        })
+      }
+  
     });
   }
 

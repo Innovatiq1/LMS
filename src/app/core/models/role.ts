@@ -1,8 +1,8 @@
 export enum Role {
   All = 'All',
   Admin = 'Admin',
-  Instructor = 'Trainer',
-  Student = 'Trainee',
+  Instructor = 'Instructor',
+  Student = 'Student',
   CourseManager = 'Course Manager',
   ProgramManager = 'Program Manager',
   TrainingCoordinator = 'Training Coordinator',
