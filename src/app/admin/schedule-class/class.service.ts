@@ -74,7 +74,7 @@ export class ClassService extends UnsubscribeOnDestroyAdapter {
   }
 
   getRegisteredClasses(page: number, limit: number, filterText? : string): Observable<any> {
-    const apiUrl = `${this.prefix}admin/studentClasses?status=registered&verify=true`;
+    const apiUrl = `${this.prefix}admin/studentClasses?status=registered&verify=true&paid=true`;
     return this.http.get<any>(apiUrl, { params: this.buildRegisteredClassesParams(page, limit, filterText) });
   }
   getPendingVerificationList(page: number, limit: number, filterText? : string): Observable<any> {
