@@ -398,7 +398,7 @@
       {{commonRoles.STUDENT_ROLE}} Analytics
     </ng-template>
     <div class="row mt-5">
-      <div class="col-lg-3 col-md-3 col-sm-12">
+      <div class="col-lg-4 col-md-4 col-sm-12">
         <div class="card card-statistic-2">
           <div class="clearfix">
             <div class="card-icon-only shadow-primary float-start">
@@ -407,7 +407,7 @@
             </div>
             <div class="card-right">
               <div>
-                <h5 class="float-end">Total {{commonRoles.STUDENT_ROLE}}s</h5>
+                <h5 class="float-end" style="margin-top: 100px;">Total {{commonRoles.STUDENT_ROLE}}s</h5>
               </div>
               <div class="col-green">
                 <h3 class="font-weight-bold float-end mb-0">{{count?.students}}</h3>
@@ -421,7 +421,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-3 col-md-3 col-sm-12">
+      <div class="col-lg-4 col-md-4 col-sm-12">
         <div class="card card-statistic-2">
           <div class="clearfix">
             <div class="card-icon-only shadow-primary float-start">
@@ -443,7 +443,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-3 col-md-3 col-sm-12">
+      <!-- <div class="col-lg-3 col-md-3 col-sm-12">
         <div class="card card-statistic-2">
           <div class="clearfix">
             <div class="card-icon-only shadow-primary float-start">
@@ -464,8 +464,8 @@
             </p>
           </div>
         </div>
-      </div>
-      <div class="col-lg-3 col-md-3 col-sm-12">
+      </div> -->
+      <div class="col-lg-4 col-md-4 col-sm-12">
         <div class="card card-statistic-2">
           <div class="clearfix">
             <div class="card-icon-only shadow-primary float-start">
@@ -473,7 +473,7 @@
             </div>
             <div class="card-right">
               <div>
-                <h5 class="float-end">Total {{commonRoles.INSTRUCTOR_ROLE}}s</h5>
+                <h5 class="float-end" style="margin-top: 100px;">Total {{commonRoles.INSTRUCTOR_ROLE}}s</h5>
               </div>
               <div class="col-green">
                 <h3 class="font-weight-bold float-end mb-0">{{count?.instructors}}</h3>
@@ -518,75 +518,6 @@
 
         </div>
       </div>
-      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-        <div class="card" style="border-radius: 31px;">
-          <div class="header mt-3">
-            <h2>{{commonRoles.STUDENT_ROLE}} Performance Chart</h2>
-          </div>
-          <div class="body" *ngIf="isBar">
-            <apx-chart [series]="performanceBarChartOptions.series!" [chart]="performanceBarChartOptions.chart!"
-              [dataLabels]="performanceBarChartOptions.dataLabels!" [labels]="performanceBarChartOptions.labels!"
-              [legend]="performanceBarChartOptions.legend!" [fill]="performanceBarChartOptions.fill!"
-              [responsive]="performanceBarChartOptions.responsive!">
-            </apx-chart>
-          </div>
-          <div class="body" *ngIf="isPie">
-            <apx-chart [series]="pieChart1Options.series!" [chart]="pieChart1Options.chart!"
-              [dataLabels]="pieChart1Options.dataLabels!" [labels]="pieChart1Options.labels!"
-              [legend]="pieChart1Options.legend!" [fill]="pieChart1Options.fill!"
-              [responsive]="pieChart1Options.responsive!">
-            </apx-chart>
-          </div>
-          <div class="body" *ngIf="isLine">
-            <apx-chart [series]="lineChartOptions.series!" [chart]="lineChartOptions.chart!"
-              [dataLabels]="lineChartOptions.dataLabels!" [labels]="lineChartOptions.labels!"
-              [legend]="lineChartOptions.legend!" [fill]="lineChartOptions.fill!"
-              [responsive]="lineChartOptions.responsive!" [xaxis]="lineChartOptions.xaxis!"
-              [yaxis]="lineChartOptions.yaxis!" [grid]="lineChartOptions.grid!" [stroke]="lineChartOptions.stroke!"
-              [markers]="lineChartOptions.markers!">
-            </apx-chart>
-          </div>
-
-        </div>
-      </div>
-    </div>
-    <div class="row clearfix">
-
-      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-        <div class="card" style="border-radius: 31px;">
-          <div class="header mt-3">
-            <h2>Average Class Attendance</h2>
-          </div>
-          <div class="float-start ms-3 me-3">
-            <h5>129 {{commonRoles.STUDENT_ROLE}}s <span class="text-muted font-12">(Average)</span></h5>
-          </div>
-          <div class="body" *ngIf="isAttendanceLine">
-            <apx-chart [series]="performanceRateChartOptions.series!" [chart]="performanceRateChartOptions.chart!"
-              [xaxis]="performanceRateChartOptions.xaxis!" [stroke]="performanceRateChartOptions.stroke!"
-              [colors]="performanceRateChartOptions.colors!" [dataLabels]="performanceRateChartOptions.dataLabels!"
-              [legend]="performanceRateChartOptions.legend!" [markers]="performanceRateChartOptions.markers!"
-              [grid]="performanceRateChartOptions.grid!" [yaxis]="performanceRateChartOptions.yaxis!"
-              [tooltip]="performanceRateChartOptions.tooltip!" [title]="performanceRateChartOptions.title!">
-            </apx-chart>
-          </div>
-          <div class="body" *ngIf="isAttendancePie">
-            <apx-chart [series]="attendancePieChartOptions.series!" [chart]="attendancePieChartOptions.chart!"
-              [labels]="attendancePieChartOptions.labels!" [colors]="attendancePieChartOptions.colors!"
-              [dataLabels]="attendancePieChartOptions.dataLabels!" [legend]="attendancePieChartOptions.legend!"
-              [tooltip]="attendancePieChartOptions.tooltip!">
-            </apx-chart>
-          </div>
-          <div class="body" *ngIf="isAttendanceBar">
-            <apx-chart [series]="attendanceBarChartOptions.series!" [chart]="attendanceBarChartOptions.chart!"
-              [xaxis]="attendanceBarChartOptions.xaxis!" [stroke]="attendanceBarChartOptions.stroke!"
-              [colors]="attendanceBarChartOptions.colors!" [dataLabels]="attendanceBarChartOptions.dataLabels!"
-              [legend]="attendanceBarChartOptions.legend!" [markers]="attendanceBarChartOptions.markers!"
-              [grid]="attendanceBarChartOptions.grid!" [yaxis]="attendanceBarChartOptions.yaxis!"
-              [tooltip]="attendanceBarChartOptions.tooltip!" [title]="attendanceBarChartOptions.title!">
-            </apx-chart>
-          </div>
-        </div>
-      </div>
       <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
         <div class="card" style="border-radius: 31px;">
           <div class="header mt-3">
@@ -623,6 +554,76 @@
           </div>
         </div>
       </div>
+      <!-- <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+        <div class="card" style="border-radius: 31px;">
+          <div class="header mt-3">
+            <h2>{{commonRoles.STUDENT_ROLE}} Performance Chart</h2>
+          </div>
+          <div class="body" *ngIf="isBar">
+            <apx-chart [series]="performanceBarChartOptions.series!" [chart]="performanceBarChartOptions.chart!"
+              [dataLabels]="performanceBarChartOptions.dataLabels!" [labels]="performanceBarChartOptions.labels!"
+              [legend]="performanceBarChartOptions.legend!" [fill]="performanceBarChartOptions.fill!"
+              [responsive]="performanceBarChartOptions.responsive!">
+            </apx-chart>
+          </div>
+          <div class="body" *ngIf="isPie">
+            <apx-chart [series]="pieChart1Options.series!" [chart]="pieChart1Options.chart!"
+              [dataLabels]="pieChart1Options.dataLabels!" [labels]="pieChart1Options.labels!"
+              [legend]="pieChart1Options.legend!" [fill]="pieChart1Options.fill!"
+              [responsive]="pieChart1Options.responsive!">
+            </apx-chart>
+          </div>
+          <div class="body" *ngIf="isLine">
+            <apx-chart [series]="lineChartOptions.series!" [chart]="lineChartOptions.chart!"
+              [dataLabels]="lineChartOptions.dataLabels!" [labels]="lineChartOptions.labels!"
+              [legend]="lineChartOptions.legend!" [fill]="lineChartOptions.fill!"
+              [responsive]="lineChartOptions.responsive!" [xaxis]="lineChartOptions.xaxis!"
+              [yaxis]="lineChartOptions.yaxis!" [grid]="lineChartOptions.grid!" [stroke]="lineChartOptions.stroke!"
+              [markers]="lineChartOptions.markers!">
+            </apx-chart>
+          </div>
+
+        </div>
+      </div> -->
+    </div>
+    <div class="row clearfix">
+
+      <!-- <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <div class="card" style="border-radius: 31px;">
+          <div class="header mt-3">
+            <h2>Average Class Attendance</h2>
+          </div>
+          <div class="float-start ms-3 me-3">
+            <h5>129 {{commonRoles.STUDENT_ROLE}}s <span class="text-muted font-12">(Average)</span></h5>
+          </div>
+          <div class="body" *ngIf="isAttendanceLine">
+            <apx-chart [series]="performanceRateChartOptions.series!" [chart]="performanceRateChartOptions.chart!"
+              [xaxis]="performanceRateChartOptions.xaxis!" [stroke]="performanceRateChartOptions.stroke!"
+              [colors]="performanceRateChartOptions.colors!" [dataLabels]="performanceRateChartOptions.dataLabels!"
+              [legend]="performanceRateChartOptions.legend!" [markers]="performanceRateChartOptions.markers!"
+              [grid]="performanceRateChartOptions.grid!" [yaxis]="performanceRateChartOptions.yaxis!"
+              [tooltip]="performanceRateChartOptions.tooltip!" [title]="performanceRateChartOptions.title!">
+            </apx-chart>
+          </div>
+          <div class="body" *ngIf="isAttendancePie">
+            <apx-chart [series]="attendancePieChartOptions.series!" [chart]="attendancePieChartOptions.chart!"
+              [labels]="attendancePieChartOptions.labels!" [colors]="attendancePieChartOptions.colors!"
+              [dataLabels]="attendancePieChartOptions.dataLabels!" [legend]="attendancePieChartOptions.legend!"
+              [tooltip]="attendancePieChartOptions.tooltip!">
+            </apx-chart>
+          </div>
+          <div class="body" *ngIf="isAttendanceBar">
+            <apx-chart [series]="attendanceBarChartOptions.series!" [chart]="attendanceBarChartOptions.chart!"
+              [xaxis]="attendanceBarChartOptions.xaxis!" [stroke]="attendanceBarChartOptions.stroke!"
+              [colors]="attendanceBarChartOptions.colors!" [dataLabels]="attendanceBarChartOptions.dataLabels!"
+              [legend]="attendanceBarChartOptions.legend!" [markers]="attendanceBarChartOptions.markers!"
+              [grid]="attendanceBarChartOptions.grid!" [yaxis]="attendanceBarChartOptions.yaxis!"
+              [tooltip]="attendanceBarChartOptions.tooltip!" [title]="attendanceBarChartOptions.title!">
+            </apx-chart>
+          </div>
+        </div>
+      </div> -->
+      
     </div>
     <div class="row clearfix">
       <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
@@ -761,13 +762,13 @@
     </ng-template>
     <app-support></app-support>
   </mat-tab>
-  <mat-tab>
+  <!-- <mat-tab>
     <ng-template mat-tab-label>
-      <!-- <mat-icon class="example-tab-icon msr-2">face</mat-icon> -->
+      <!-- <mat-icon class="example-tab-icon msr-2">face</mat-icon> --
       Finance
     </ng-template>
     <app-etms-dashboard></app-etms-dashboard>
-  </mat-tab>
+  </mat-tab> -->
   <!-- <mat-tab>
     <ng-template mat-tab-label>
       <!-- <mat-icon class="example-tab-icon msr-2">face</mat-icon> --
@@ -872,6 +873,32 @@
       <div class="col-xl-6 col-lg-6 col-md-14 col-sm-14">
         <div class="card">
           <div class="header">
+            <h2>
+              Upcoming Course Classes
+            </h2>
+          </div>
+          <div class="card-body">
+            <ng-scrollbar style="height: 270px" visibility="hover">
+              <ul class="list-unstyled user-progress list-unstyled-border list-unstyled-noborder">
+                <li *ngFor="let upcomingclass of upcomingCourseClasses" class="lecture-list">
+                  <div class="set-flex">
+                    <div class="media-title font-16">{{upcomingclass?.classId?.courseName}}</div>
+                    <div class="text-job text-muted mb-0">{{upcomingclass?.classId?.courseId?.courseCode}}</div>
+                  </div>
+                  <div class="ms-auto">
+                    <div class="media-title font-16">{{upcomingclass?.classId?.sessions[0]?.sessionStartDate | date}}
+                    </div>
+                    <!-- <div class="text-job text-muted mb-0">09:00-10:00</div> -->
+                  </div>
+                </li>
+              </ul>
+            </ng-scrollbar>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="col-xl-6 col-lg-6 col-md-14 col-sm-14">
+        <div class="card">
+          <div class="header">
             <h2>Latest Enrolled Programs</h2>
           </div>
           <div class="tableBody">
@@ -897,7 +924,7 @@
             </ng-scrollbar>
           </div>
         </div>
-      </div>
+      </div> -->
 
 
     </div>
@@ -959,8 +986,8 @@
         </div>
       </div>
     </div>
-    <div class="row clearfix">
-      <div class="col-xl-6 col-lg-6 col-md-14 col-sm-14">
+    <!-- <div class="row clearfix"> -->
+      <!-- <div class="col-xl-6 col-lg-6 col-md-14 col-sm-14">
         <div class="card">
           <div class="header">
             <h2>
@@ -978,15 +1005,15 @@
                   <div class="ms-auto">
                     <div class="media-title font-16">{{upcomingclass?.classId?.sessions[0]?.sessionStartDate | date}}
                     </div>
-                    <!-- <div class="text-job text-muted mb-0">09:00-10:00</div> -->
+                    <!-- <div class="text-job text-muted mb-0">09:00-10:00</div> --
                   </div>
                 </li>
               </ul>
             </ng-scrollbar>
           </div>
         </div>
-      </div>
-      <div class="col-xl-6 col-lg-6 col-md-14 col-sm-14">
+      </div> -->
+      <!-- <div class="col-xl-6 col-lg-6 col-md-14 col-sm-14">
         <div class="card">
           <div class="header">
             <h2>
@@ -1004,15 +1031,15 @@
                   <div class="ms-auto">
                     <div class="media-title font-16">{{upcomingclass?.classId?.sessions[0]?.sessionStartDate | date}}
                     </div>
-                    <!-- <div class="text-job text-muted mb-0">09:00-10:00</div> -->
+                    <!-- <div class="text-job text-muted mb-0">09:00-10:00</div> --
                   </div>
                 </li>
               </ul>
             </ng-scrollbar>
           </div>
         </div>
-      </div>
-    </div>
+      </div> -->
+    <!-- </div> -->
 
   </div>
 </section>
@@ -1025,7 +1052,7 @@
       </app-breadcrumb>
     </div>
     <div class="row mt-5">
-      <div class="col-lg-4 col-md-4 col-sm-12">
+      <div class="col-lg-6 col-md-6 col-sm-12">
         <div class="card card-statistic-3">
           <div class="clearfix">
             <div class="card-icon-only shadow-primary float-start">
@@ -1047,7 +1074,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-4 col-md-4 col-sm-12">
+      <div class="col-lg-6 col-md-6 col-sm-12">
         <div class="card card-statistic-3">
           <div class="clearfix">
             <div class="card-icon-only shadow-primary float-start">
@@ -1069,7 +1096,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-4 col-md-4 col-sm-12">
+      <!-- <div class="col-lg-4 col-md-4 col-sm-12">
         <div class="card card-statistic-3">
           <div class="clearfix">
             <div class="card-icon-only shadow-primary float-start">
@@ -1089,7 +1116,7 @@
             </p>
           </div>
         </div>
-      </div>
+      </div> -->
 
 
     </div>
@@ -1185,7 +1212,7 @@
         </div>
       </div>
     </div> -->
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <!-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <div class="card" style="border-radius: 31px;">
         <div class="header mt-3">
           <h2>Program Classes List</h2>
@@ -1196,12 +1223,12 @@
             <table class="table table-hover ">
               <thead>
                 <tr>
-                  <!-- <th>#</th> -->
+                  <!-- <th>#</th> --
                   <th>Program Name</th>
                   <th>Start Date</th>
                   <th>End Date</th>
                   <th>Status </th>
-                  <!-- <th>Actions </th> -->
+                  <!-- <th>Actions </th> --
                 </tr>
               </thead>
               <tbody>
@@ -1209,7 +1236,7 @@
                   [routerLink]="['/admin/courses/view-class/',class.id]">
                   <!-- <td class="table-img">
                       <img src="{{class?.courseId?.image_link}}" alt="course">
-                    </td> -->
+                    </td> --
                   <td>{{class?.programName | truncate:10}}</td>
                   <td> {{class?.sessions[0]?.sessionStartDate | date}} </td>
                   <td> {{class?.sessions[0]?.sessionEndDate | date}}</td>
@@ -1224,7 +1251,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <div class="card" style="border-radius: 31px;">
         <div class="header mt-3">
@@ -1261,6 +1288,47 @@
 
               </tbody>
             </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row clearfix">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="card" style="border-radius: 31px;">
+          <div class="header mt-3">
+            <h2>New {{commonRoles.STUDENT_ROLE}} List</h2>
+
+          </div>
+          <div class="tableBody">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>{{commonRoles.STUDENT_ROLE}} Name</th>
+                    <th>Qualification</th>
+                    <th>Date Of Joining</th>
+                    <th>Mobile</th>
+                    <!-- <th>Actions</th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let student of students" style="cursor: pointer;" (click)="aboutStudent(student.id)">
+                    <td class="table-img">
+                      <img src="{{student?.avatar || 'assets/profile.png'}}" alt="">
+                    </td>
+                    <td>{{student?.name | titlecase}}</td>
+                    <td>{{student?.education}}</td>
+                    <td>{{student?.createdAt | date}}</td>
+                    <td>
+                      {{student?.mobile}}
+                      <!-- <i class="far fa-file-pdf tbl-pdf"></i> -->
+                    </td>
+
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

@@ -26,45 +26,45 @@
                                 <th>Item</th>
                                 <th>Quantity</th>
                                 <th>Unit Price</th>
-                                <th style="padding-left: 10px;">Total</th>
+                                <th style="padding-left: 30px;">Total</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr style="cursor: pointer">
                                 <td style="width: 45%;">{{data.title | titlecase}}</td>
-                                <td>1</td>
+                                <td style="text-align: center;">1</td>
                                 <td>${{data.courseFee}}.00</td>
                                 <td>${{data.courseFee}}.00</td>
                             </tr>
                             <tr></tr>
                             <tr>
-                                <td colspan="3">
-                                    <h6 style="justify-content: end; display: flex;">Subtotal</h6>
+                                <td>
+                                    <h6>Subtotal</h6>
                                 </td>
-                                <td class="price">
+                                <td colspan="4" class="price">
                                     ${{data.courseFee}}.00
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="3">
-                                    <h6 style="justify-content: end; display: flex;">Discount({{data.discountValue}}{{data.discountType =='percentage'? '%':''}})</h6>
+                                <td>
+                                    <h6 >Discount({{data.discountValue}}{{data.discountType =='percentage'? '%':''}})</h6>
                                 </td>
-                                <td *ngIf="data.discountType == 'fixed'" class="price">
+                                <td colspan="4" *ngIf="data.discountType == 'fixed'" class="price">
                                     - ${{(data.discountValue) | number : '1.2-2'}}
                                 </td>
-                                <td *ngIf="data.discountType == 'percentage'" class="price">
+                                <td colspan="4" *ngIf="data.discountType == 'percentage'" class="price">
                                     - ${{(data.courseFee * data.discountValue / 100) | number : '1.2-2'}}
                                 </td>
 
                             </tr>
                             <tr>
-                                <td colspan="3">
-                                    <h6 style="justify-content: end; display: flex;">Total</h6>
+                                <td>
+                                    <h6>Total</h6>
                                 </td>
-                                <td *ngIf="data.discountType == 'fixed'"  class="price">
+                                <td colspan="4" *ngIf="data.discountType == 'fixed'"  class="price">
                                     ${{data.courseFee - data.discountValue | number : '1.2-2'}}
                                 </td>
-                                <td *ngIf="data.discountType == 'percentage'" class="price">
+                                <td colspan="4" *ngIf="data.discountType == 'percentage'" class="price">
                                     ${{data.courseFee - (data.courseFee * data.discountValue / 100) | number : '1.2-2'}}
                                 </td>
                             </tr>
