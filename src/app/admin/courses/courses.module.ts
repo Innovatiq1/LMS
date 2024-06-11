@@ -32,6 +32,7 @@ import { ViewCourseKitComponent } from './course-kit/view-course-kit/view-course
 import { ExamScoresComponent } from './exam-scores/exam-scores.component';
 import { StudentPendingCoursesComponent } from './student-pending-courses/student-pending-courses.component';
 import { VerificationListComponent } from './verification-list/verification-list.component';
+import { StudentCourseComponent } from './all-course/student-course/student-course.component';
 
 
 
@@ -57,7 +58,8 @@ import { VerificationListComponent } from './verification-list/verification-list
     CreateTemplateComponent,
     ExamScoresComponent,
     StudentPendingCoursesComponent,
-    VerificationListComponent
+    VerificationListComponent,
+    StudentCourseComponent
     
 
   ],

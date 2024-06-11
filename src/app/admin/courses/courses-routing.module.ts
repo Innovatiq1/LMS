@@ -21,6 +21,7 @@ import { ActiveCoursesComponent } from './active-courses/active-courses.componen
 import { InActiveCoursesComponent } from './in-active-courses/in-active-courses.component';
 import { StudentPendingCoursesComponent } from './student-pending-courses/student-pending-courses.component';
 import { VerificationListComponent } from './verification-list/verification-list.component';
+import { StudentCourseComponent } from './all-course/student-course/student-course.component';
 const routes: Routes = [
   {
     path: 'all-courses/course',
@@ -123,7 +124,11 @@ const routes: Routes = [
   {
     path:'student-courses/verification-list',
     component: VerificationListComponent,
-  }
+  },
+  {
+    path: 'student-courses/:coursename/:id',
+    component: StudentCourseComponent,
+  },
 
  
 ];

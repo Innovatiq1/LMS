@@ -1,0 +1,23 @@
+
+::ng-deep .mat-sort-header-content {
+    text-align: center !important; 
+    display: flex !important;
+    align-items: center !important;
+    white-space: nowrap;
+}
+.red-color {
+  color: red;
+}
+::ng-deep .mat-mdc-tab-body-content{
+    overflow-x: hidden !important;
+  }
+
+  .table-wrapper{
+    // width: 50%;
+    max-height: 260px; 
+    overflow-y: auto; 
+    // margin: auto;
+    // margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 40px;
+  }
