@@ -111,7 +111,7 @@
                 </ng-container>
 
                 <ng-container matColumnDef="Assessment Score">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>
+                  <mat-header-cell *matHeaderCellDef mat-sort-header class="assessment-header">
                     Assessment Score
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row" [routerLink]="row.assessmentAnswer?._id ? ['/student/test/preview', row.assessmentAnswer?._id, 'student', row.studentId._id]:null" [queryParams]="{ assessmentType: 'assessment' }">
@@ -125,7 +125,7 @@
 
                 <ng-container matColumnDef="Exam Assessment Score">
                   <mat-header-cell *matHeaderCellDef mat-sort-header
-                    >Exam Assessment Score
+                    >Exam Score
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row" [routerLink]="row?.examAssessmentAnswer?._id ? ['/student/test/preview', row.examAssessmentAnswer?._id, 'student', row.studentId._id]:null" [queryParams]="{ assessmentType: 'exam' }">
                     <span class="mobile-label">Exam Assessment Score:</span
