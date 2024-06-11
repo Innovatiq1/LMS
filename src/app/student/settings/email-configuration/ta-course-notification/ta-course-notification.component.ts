@@ -39,7 +39,7 @@ export class TaCourseNotificationComponent {
     {
       title: 'Forgot Mail',
       items: ['Email Templates'],
-      active: 'Approver 3 Training Request',
+      active: 'Payment Verification Request',
     },
   ];
   config: AngularEditorConfig = {
@@ -103,7 +103,7 @@ export class TaCourseNotificationComponent {
 
   getTaCourseNotificationTemplate() {
     this.emailConfigurationService.getForgetPasswordTemplate().subscribe( response =>{
-      this.assignData  = response?.data?.docs[0]?.training_admin_course_notification;
+      this.assignData  = response?.data?.docs[0]?.admin_payment_notification;
       this.ref.detectChanges();
     }, error => {
       // this.isLoading = false;
@@ -132,7 +132,7 @@ export class TaCourseNotificationComponent {
   updateTemplate() {
     return new Promise<void>((resolve, reject) => {
           const obj = this.taNotifForm.value;
-          obj.insertaction = 'training_admin_course_notification';
+          obj.insertaction = 'admin_payment_notification';
           this.emailConfigurationService.updateForgetPasswordTemplate(obj, this.id).subscribe(
             (res) => {
               Swal.fire({

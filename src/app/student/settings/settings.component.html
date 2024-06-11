@@ -1050,7 +1050,7 @@
           </div>
         </div>
         <div class="row py-3">
-          <div class="col-md-6 email">
+          <!-- <div class="col-md-6 email">
             <button
               id="saved"
               [routerLink]="[
@@ -1059,30 +1059,17 @@
             >
               Program Registered E-mail
             </button>
-          </div>
-          <div class="col-md-6">
+          </div> -->
+          <div class="col-md-6 email">
             <button
               id="saved"
               [routerLink]="[
                 '/student/email-configuration/settings/course-registered-email'
               ]"
             >
-              Course Registered E-mail
+              Course Registered
             </button>
           </div>
-        </div>
-        <div class="row py-3">
-          <div class="col-md-6 email">
-            <button
-              id="saved"
-              [routerLink]="[
-                '/student/email-configuration/settings/program-approval-email'
-              ]"
-            >
-              Program Approval
-            </button>
-          </div>
-
           <div class="col-md-6">
             <button
               id="saved"
@@ -1093,9 +1080,23 @@
               Course Approval
             </button>
           </div>
+
         </div>
-        <div class="row py-3">
-          <div class="col-md-6 email">
+        <!-- <div class="row py-3"> -->
+          <!-- <div class="col-md-6 email">
+            <button
+              id="saved"
+              [routerLink]="[
+                '/student/email-configuration/settings/program-approval-email'
+              ]"
+            >
+              Program Approval
+            </button>
+          </div> -->
+
+        <!-- </div> -->
+        <!-- <div class="row py-3"> -->
+          <!-- <div class="col-md-6 email">
             <button
               id="saved"
               [routerLink]="[
@@ -1104,29 +1105,22 @@
             >
               Completed Program
             </button>
-          </div>
-          <div class="col-md-6">
-            <button
-              id="saved"
-              [routerLink]="[
-                '/student/email-configuration/settings/completed-course'
-              ]"
-            >
-              Completed Course
-            </button>
-          </div>
-        </div>
-        <div class="row py-3">
-          <div class="col-md-6 email">
-            <button
+          </div> -->
+          <!-- <div class="col-md-6 email"> -->
+            <!-- <button
               id="saved"
               [routerLink]="[
                 '/student/email-configuration/settings/new-training-request'
               ]"
             >
               New Training Request
-            </button>
-          </div>
+            </button> -->
+          <!-- </div> -->
+
+          <!-- <div class="col-md-6">
+         </div> -->
+        <!-- </div> -->
+        <!-- <div class="row py-3">
           <div class="col-md-6">
             <button
               id="saved"
@@ -1137,17 +1131,26 @@
               Training Request Expiry
             </button>
           </div>
-        </div>
+        </div> -->
         <div class="row py-3">
           <div class="col-md-6 email">
             <button
+            id="saved"
+            [routerLink]="[
+              '/student/email-configuration/settings/completed-course'
+            ]"
+          >
+            Completed Course
+          </button>
+
+            <!-- <button
               id="saved"
               [routerLink]="[
                 '/student/email-configuration/settings/ro-course-notification'
               ]"
             >
               Approver 1 Training Request
-            </button>
+            </button> -->
           </div>
           <div class="col-md-6">
             <button
@@ -1156,7 +1159,7 @@
                 '/student/email-configuration/settings/director-course-notification'
               ]"
             >
-              Approver 2 Training Request
+              Discount Verification Request
             </button>
           </div>
         </div>
@@ -1168,32 +1171,31 @@
                 '/student/email-configuration/settings/trainingAdmin-course-notification'
               ]"
             >
-              Approver 3 Training Request
+              Payment Verification Request
             </button>
           </div>
 
           <div class="col-md-5">
             <button
+            id="saved"
+            [routerLink]="[
+              '/student/email-configuration/settings/director-training-request-approval'
+            ]"
+          >
+            Discount Approved
+          </button>
+
+            <!-- <button
               id="saved"
               [routerLink]="[
                 '/student/email-configuration/settings/ro-training-request-approval'
               ]"
             >
               Approver 1 Training Request Approval
-            </button>
+            </button> -->
           </div>
         </div>
-        <div class="row py-3">
-          <div class="col-md-6 email">
-            <button
-              id="saved"
-              [routerLink]="[
-                '/student/email-configuration/settings/director-training-request-approval'
-              ]"
-            >
-              Approver 2 Training Request Approval
-            </button>
-          </div>
+        <!-- <div class="row py-3">
 
           <div class="col-md-5">
             <button
@@ -1205,8 +1207,8 @@
               Approver 3 Training Request Approval
             </button>
           </div>
-        </div>
-        <div class="row py-3">
+        </div> -->
+        <!-- <div class="row py-3">
           <div class="col-md-6 email">
             <button
               id="saved"
@@ -1228,17 +1230,26 @@
               Approver 2 Training Request Rejected
             </button>
           </div>
-        </div>
+        </div> -->
         <div class="row py-3">
           <div class="col-md-6 email">
             <button
+            id="saved"
+            [routerLink]="[
+              '/student/email-configuration/settings/training-admin-budget-request'
+            ]"
+          >
+            Budget Request
+          </button>
+
+            <!-- <button
               id="saved"
               [routerLink]="[
                 '/student/email-configuration/settings/training-admin-training-request-rejected'
               ]"
             >
               Approver 3 Training Request Rejected
-            </button>
+            </button> -->
           </div>
 
           <div class="col-md-5">
@@ -1257,12 +1268,13 @@
             <button
               id="saved"
               [routerLink]="[
-                '/student/email-configuration/settings/training-admin-budget-request'
+                '/student/email-configuration/settings/budget-request-rejected'
               ]"
             >
-              Budget Request
+              Budget Request Rejected
             </button>
           </div>
+
 
           <div class="col-md-5">
             <button
@@ -1272,29 +1284,6 @@
               ]"
             >
               Budget Request Approval
-            </button>
-          </div>
-        </div>
-        <div class="row py-3">
-          <div class="col-md-6 email">
-            <button
-              id="saved"
-              [routerLink]="[
-                '/student/email-configuration/settings/budget-request-rejected'
-              ]"
-            >
-              Budget Request Rejected
-            </button>
-          </div>
-
-          <div class="col-md-5">
-            <button
-              id="saved"
-              [routerLink]="[
-                '/student/email-configuration/settings/department-budget-request-notification'
-              ]"
-            >
-              Department Budget Request Notification
             </button>
           </div>
         </div>
@@ -1314,15 +1303,26 @@
             <button
               id="saved"
               [routerLink]="[
+                '/student/email-configuration/settings/department-budget-request-notification'
+              ]"
+            >
+              Department Budget Request Notification
+            </button>
+          </div>
+        </div>
+        <div class="row py-3">
+
+          <div class="col-md-6 email">
+            <button
+              id="saved"
+              [routerLink]="[
                 '/student/email-configuration/settings/department-budget-request-approval'
               ]"
             >
               Department Budget Request Approval
             </button>
           </div>
-        </div>
-        <div class="row py-3">
-          <div class="col-md-6 email">
+          <div class="col-md-6 ">
             <button
               id="saved"
               [routerLink]="[
@@ -1332,6 +1332,9 @@
               Department Budget Request Rejected
             </button>
           </div>
+
+        </div>
+        <div class="row py-3">
         </div>
         <div class="col-md-12 py-3">
           <button

@@ -39,7 +39,7 @@ export class DirectorCourseNotificationComponent {
     {
       title: 'Forgot Mail',
       items: ['Email Templates'],
-      active: 'Approver 2 Training Request',
+      active: 'Discount Verification Request',
     },
   ];
   config: AngularEditorConfig = {
@@ -101,7 +101,7 @@ export class DirectorCourseNotificationComponent {
 
   getForgetPasswordTemplate() {
     this.emailConfigurationService.getForgetPasswordTemplate().subscribe( response =>{
-      this.assignData  = response?.data?.docs[0]?.director_course_notification;
+      this.assignData  = response?.data?.docs[0]?.admin_course_notification;
       this.ref.detectChanges();
     }, error => {
       // this.isLoading = false;
@@ -130,7 +130,7 @@ export class DirectorCourseNotificationComponent {
   updateTemplate() {
     return new Promise<void>((resolve, reject) => {
           const obj = this.updateStudentRef.value;
-          obj.insertaction = 'director_course_notification';
+          obj.insertaction = 'admin_course_notification';
           this.emailConfigurationService.updateForgetPasswordTemplate(obj, this.id).subscribe(
             (res) => {
               Swal.fire({

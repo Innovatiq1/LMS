@@ -123,7 +123,7 @@ export class InstructorAcceptCourseInviteComponent {
 
   getForgetPasswordTemplate() {
     this.emailConfigurationService.getForgetPasswordTemplate().subscribe( response =>{
-      this.assignData  = response?.data?.docs[0]?.mentor_accept_project_invite_status_template;
+      this.assignData  = response?.data?.docs[0]?.payment_approved_template;
       this.ref.detectChanges();
   }
 )}
@@ -176,7 +176,7 @@ updateTemplate(){
           const stringWithoutPTags = this.removeTagsAndSpaces(test)
           obj['email_content']=stringWithoutPTags
           console.log("stringWithoutPTags",stringWithoutPTags)
-          obj['insertaction'] = 'mentor_accept_project_invite_status_template';
+          obj['insertaction'] = 'payment_approved_template';
           this.emailConfigurationService.updateForgetPasswordTemplate(obj,this.id).subscribe(
             (res) => {
               Swal.fire({

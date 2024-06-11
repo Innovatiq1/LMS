@@ -39,7 +39,7 @@ export class DirectorCourseApprovalComponent {
     {
       title: 'Forgot Mail',
       items: ['Email Templates'],
-      active: 'Approver 2 Training Request Approval',
+      active: 'Discount Approved',
     },
   ];
   config: AngularEditorConfig = {
@@ -103,7 +103,7 @@ export class DirectorCourseApprovalComponent {
 
   getDirectorTrainingReqApproval() {
     this.emailConfigurationService.getForgetPasswordTemplate().subscribe( response =>{
-      this.assignData  = response?.data?.docs[0]?.director_course_approved_template;
+      this.assignData  = response?.data?.docs[0]?.admin_discount_verififed_template;
       this.ref.detectChanges();
     }, error => {
       // this.isLoading = false;
@@ -132,7 +132,7 @@ export class DirectorCourseApprovalComponent {
   updateTemplate() {
     return new Promise<void>((resolve, reject) => {
           const obj = this.directorCourseApprovalForm.value;
-          obj.insertaction = 'director_course_approved_template';
+          obj.insertaction = 'admin_discount_verififed_template';
           this.emailConfigurationService.updateForgetPasswordTemplate(obj, this.id).subscribe(
             (res) => {
               Swal.fire({
