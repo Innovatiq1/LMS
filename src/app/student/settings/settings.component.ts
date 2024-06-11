@@ -148,6 +148,7 @@ export class SettingsComponent {
   showBodyContent: boolean = false;
   role: string|null;
   commonRoles: any;
+  isStudent: boolean = false;
 
   constructor(
     private studentService: StudentsService,
@@ -556,7 +557,7 @@ export class SettingsComponent {
     if (role == AppConstants.ADMIN_USERTYPE) {
       this.isAdmin = true;
     } else if (role == AppConstants.STUDENT_ROLE) {
-      this.isAdmin = false;
+      this.isStudent = true;
     } else if (
       !(role == AppConstants.STUDENT_ROLE|| role == AppConstants.INSTRUCTOR_ROLE)
     ) {
