@@ -80,9 +80,17 @@
   .center-icon {
     margin: auto; 
   }
-  // ::ng-deep .mat-column-Instructorfee {
-  //   display: flex !important;
-  //   justify-content: flex-end !important;
-  //   margin-left: -20px;
-  // }
-  
+  :host ::ng-deep mat-cell{
+    min-width: 150px;
+  }
+  .payment-cell{
+    padding-right: 45px;
+  }
+  .payment{
+    padding-left: 30px;
+  }
+  ::ng-deep .mat-column-Instructorfee {
+    display: flex !important;
+    justify-content: flex-end !important;
+    margin-left: -20px;
+  }

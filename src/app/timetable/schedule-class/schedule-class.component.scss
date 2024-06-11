@@ -121,6 +121,12 @@ svg {
   ::ng-deep .mat-column-Price {
     display: flex !important;
     justify-content: flex-end !important;
-    margin-left: -20px;
+    margin-left: -60px;
+  }
+  :host ::ng-deep mat-cell{
+    min-width: 150px;
+  }
+  .payment-cell{
+    padding-right: 30px;
   }
   

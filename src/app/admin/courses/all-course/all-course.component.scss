@@ -201,9 +201,11 @@ svg{
   min-width: 154px;
 }
 .payment-cell{
-  padding-right: 73.5px;
+  padding-right: 79.5px;
+    min-width: 160px;
 }
 .payment{
-  padding-left: 40px;
+      
+      text-align: right !important;
+      padding-left: 26px;
 }
-
