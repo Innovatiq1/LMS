@@ -1776,14 +1776,15 @@ private attendanceBarChart() {
 
   private studentPieChart() {
     this.studentPieChartOptions = {
-      series: [this.registeredCourses, this.approvedCourses, this.registeredPrograms, this.approvedPrograms, this.completedCourses, this.completedPrograms],
+      series: [this.registeredCourses, this.approvedCourses, this.completedCourses],
      
       chart: {
         type: 'pie',
         height: 330,
       },
-      labels: ['Registered Courses', 'Approved Courses', 'Registered Programs', 'Approved Programs', 'Completed Courses', 'Completed Programs'],
+      labels: ['Registered Courses', 'Approved Courses', 'Completed Courses'],
       // colors: ['#25B9C1', '#4B4BCB', '#EA9022', '#9E9E9E'],
+     
       responsive: [
         {
           breakpoint: 480,
@@ -1801,10 +1802,12 @@ private attendanceBarChart() {
       series: [{
         name: 'Courses',
         data: [this.registeredCourses, this.approvedCourses, this.completedCourses]
-      }, {
-        name: 'Programs',
-        data: [this.registeredPrograms, this.approvedPrograms, this.completedPrograms]
-      }],
+      }
+      // {
+      //   name: 'Programs',
+      //   data: [this.registeredPrograms, this.approvedPrograms, this.completedPrograms]
+      // }
+    ],
       chart: {
         type: 'bar',
         height: 330,
@@ -1814,7 +1817,7 @@ private attendanceBarChart() {
       },
       yaxis: {
         title: {
-          text: 'Number of Courses/Programs'
+          text: 'Number of Courses'
         }
       },
       labels: ['Registered', 'Approved', 'Completed'],
@@ -1836,10 +1839,12 @@ private attendanceBarChart() {
       series: [{
         name: 'Courses',
         data: [this.registeredCourses, this.approvedCourses, this.completedCourses]
-      }, {
-        name: 'Programs',
-        data: [this.registeredPrograms, this.approvedPrograms, this.completedPrograms]
-      }],
+      }, 
+      // {
+      //   name: 'Programs',
+      //   data: [this.registeredPrograms, this.approvedPrograms, this.completedPrograms]
+      // }
+    ],
       chart: {
         type: 'line',
         height: 330,
@@ -1849,7 +1854,7 @@ private attendanceBarChart() {
       },
       yaxis: {
         title: {
-          text: 'Number of Courses/Programs'
+          text: 'Number of Courses'
         }
       },
       labels: ['Registered', 'Approved', 'Completed'],
