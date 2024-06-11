@@ -542,8 +542,7 @@ export class Dashboard2Component implements OnInit,AfterViewInit {
 
 private admissionPieChart() {
   this.admissionPieChartOptions = {
-      series: [
-        2, 4, 5],
+      series: [2, 4, 5],
       chart: {
           type: 'pie',
           height: 330,
