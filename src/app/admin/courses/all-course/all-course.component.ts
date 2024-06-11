@@ -381,7 +381,7 @@ export class AllCourseComponent {
     });
   }
   getAllCourses() {
-    this._courseService.getAllCoursesWithPagination().subscribe((response) => {
+    this._courseService.getAllCoursesWithPagination({...this.coursePaginationModel}).subscribe((response) => {
       this.courseData = response.data.docs;
       this.totalItems = response.data.totalDocs;
       this.coursePaginationModel.docs = response.data.docs;
