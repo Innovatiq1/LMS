@@ -928,3 +928,11 @@ mat-cell > span.truncate-text {
     width: 100px;
   }
 }
+
+.payment-cell {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 35px; 
+  box-sizing: border-box; 
+}

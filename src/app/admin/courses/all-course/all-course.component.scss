@@ -9,11 +9,6 @@
     color: deepskyblue;
     font-weight: 500;
 }
-::ng-deep .mat-column-Fees {
-  display: flex !important;
-  justify-content: flex-end !important;
-  margin-left: -50px;
-}
 // tabs for under video section
 
 // button,
@@ -202,8 +197,13 @@ svg{
 ::ng-deep .mat-mdc-tab-body-content{
   overflow-x: hidden !important;
 }
-
-
-
-
+:host ::ng-deep mat-cell{
+  min-width: 154px;
+}
+.payment-cell{
+  padding-right: 73.5px;
+}
+.payment{
+  padding-left: 40px;
+}
 
