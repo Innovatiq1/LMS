@@ -818,7 +818,7 @@ export class MainComponent implements OnInit {
     this.getClassList();
     const role = this.authenticationService.currentUserValue.user.role;
     console.log('roles', role);
-    if (role== AppConstants.ADMIN_ROLE|| role=="RO"  || role == "Director" || role == "Employee") {
+    if (role== AppConstants.ADMIN_ROLE|| role=="RO" || role=="Accessor"  || role == "Director" || role == "Employee") {
       this.isAdmin = true;
     }else if (role === AppConstants.STUDENT_ROLE) {
       this.isStudentDB = true;
@@ -855,7 +855,7 @@ export class MainComponent implements OnInit {
     } else if ( role === 'programcoordinator'|| role === 'Program manager' ) {
       this.isPCDB = true;
     }
-    if (role == AppConstants.ADMIN_ROLE) {
+    if (role == AppConstants.ADMIN_ROLE || role ==AppConstants.ACCESSOR_ROLE) {
       this.getAdminDashboard();
     } else if (role === AppConstants.STUDENT_ROLE) {
       this.getStudentDashboard();

@@ -131,7 +131,7 @@
           <mat-menu #menu="matMenu" class="horizontal-menu">
             <div class="menu-row">
               <div class="user-container">
-                <div class="user-option" *ngIf="role==='admin'" (click)="navigateToUserSettings()">
+                <div class="user-option" *ngIf="role===commonRoles.ADMIN_USERTYPE" (click)="navigateToUserSettings()">
                   <img src="assets/images/settings/role.png" alt="User" class="user-image">
                   <button mat-menu-item>
                     <h5>Manage Users</h5>
@@ -145,7 +145,7 @@
                     </button>
                   </div>
                 </div>
-                <div class="user-option" *ngIf="role==='admin'" (click)="navigateToConfigSettings()" style="margin-left: 25px;">
+                <div class="user-option" *ngIf="role===commonRoles.ADMIN_USERTYPE || role ===commonRoles.ACCESSOR_ROLE" (click)="navigateToConfigSettings()" style="margin-left: 25px;">
                   <img src="assets/images/settings/system-configuration1.png" alt="User" class="user-image">
                   <button mat-menu-item>
                     <h5>Configuration</h5>
@@ -158,7 +158,7 @@
               </div>
             </div>
 
-            <div class="menu-row" *ngIf="role==='admin'">
+            <div class="menu-row" *ngIf="role===commonRoles.ADMIN_USERTYPE">
               <div class="user-options" (click)="navigateToIntegrateSettings()">
                 <img src="assets/images/settings/integrate.jpg" alt="Custom" class="user-image">
                 <button mat-menu-item>

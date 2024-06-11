@@ -71,6 +71,7 @@ export class HeaderComponent
   totalItems: any;
   subscription!: Subscription;
   role: string | null;
+  commonRoles:any;
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private renderer: Renderer2,
@@ -157,6 +158,7 @@ export class HeaderComponent
   }
 
   ngOnInit() {
+    this.commonRoles = AppConstants
     /* getting logo details from logoservice **/
     this.subscription = this.logoService.currentData.subscribe((data) => {
       if (data) {
@@ -368,6 +370,6 @@ export class HeaderComponent
     }
   }
   checkViewSettings(role:any){
-    return role ? ['Instructor','admin'].includes(role):false;
+    return role ? AppConstants.ALLTHREEROLES.includes(role):false;
   }
 }

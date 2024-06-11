@@ -2,6 +2,10 @@ export class AppConstants {
   static readonly STUDENT_ROLE = 'Trainee';
   static readonly INSTRUCTOR_ROLE = 'Trainer';
   static readonly ADMIN_ROLE = 'Admin';
+  static readonly ACCESSOR_ROLE = 'Accessor';
+  static readonly ALLTHREEROLES= ['Trainer', 'admin', 'Accessor']
+
+
   static readonly ADMIN_USERTYPE = 'admin';
     static readonly TOAST_DISPLAY_TIME = 3000; // In milliseconds
     static readonly KEY_USER_DATA = 'user_data';

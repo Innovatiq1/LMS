@@ -10,6 +10,7 @@ export enum Role {
   Supervisor = 'Supervisor',
   TrainingAdministrator = 'Training Administrator',
   Approver = 'Approver',
+  Accessor = 'Accessor',
   TrainingCoordinatorAdministrator = 'Training Coordinator Administrator',
 
 }

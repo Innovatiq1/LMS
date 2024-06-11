@@ -136,7 +136,7 @@ export class Dashboard2Component implements OnInit,AfterViewInit {
     this.getProgramList();
     this.getAllCourse();
     const role = this.authenticationService.currentUserValue.user.role;
-    if (role == AppConstants.ADMIN_ROLE) {
+    if (role == AppConstants.ADMIN_ROLE || role ==AppConstants.ACCESSOR_ROLE) {
       this.getStudentDashboards();
     }
     this.cdr.detectChanges();
