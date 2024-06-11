@@ -77,7 +77,7 @@
                     </ng-container>
                     <ng-container matColumnDef="Budget-Allocated">
                       <mat-header-cell *matHeaderCellDef mat-sort-header>Budget Allocated</mat-header-cell>
-                      <mat-cell *matCellDef="let row" [routerLink]="['/admin/budgets/view-department-budget', row.id]">
+                      <mat-cell *matCellDef="let row" [routerLink]="['/admin/budgets/view-department-budget', row.id]" class="payment-cell">
                         <span class="mobile-label">Budget Allocated:</span><span>$</span> {{row.trainingBudget||0}}.00
                       </mat-cell>
                     </ng-container>

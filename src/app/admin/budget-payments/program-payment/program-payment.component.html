@@ -118,7 +118,7 @@
                 <!-- Amount -->
                 <ng-container matColumnDef="Amount">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Amount</mat-header-cell>
-                  <mat-cell *matCellDef="let row" (click)="view(row._id)">
+                  <mat-cell *matCellDef="let row" (click)="view(row._id)" class="payment-cell">
                     <span class="mobile-label">Amount:</span><span>$</span> {{row.price||0}}.00</mat-cell>
                 </ng-container>
                 <!-- Payment Date -->

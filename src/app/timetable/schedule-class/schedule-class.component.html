@@ -190,7 +190,7 @@
                   >
                   <mat-cell
                     *matCellDef="let row"
-                    [routerLink]="['/timetable/view-schedule-class', row.id]"
+                    [routerLink]="['/timetable/view-schedule-class', row.id]" class="payment-cell"
                   >
                     <span class="mobile-label">Amount:</span><span>$</span> {{ row.instructorCost||0 }}.00</mat-cell
                   >

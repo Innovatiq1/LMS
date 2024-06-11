@@ -97,8 +97,8 @@
                     <span class="mobile-label">Course:</span>{{row.title}} </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="Instructorfee">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>{{commonRoles?.INSTRUCTOR_ROLE}} Fee</mat-header-cell>
-                  <mat-cell *matCellDef="let row" (click)="view(row.id)">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header class="payment">{{commonRoles?.INSTRUCTOR_ROLE}} Fee</mat-header-cell>
+                  <mat-cell *matCellDef="let row" (click)="view(row.id)" class="payment-cell">
                     <span class="mobile-label">Instructor Fee:</span>
                     <span *ngIf="row.classId?.instructorCost !== null && row.classId?.instructorCost !== undefined">
                       <span >$</span> {{ row.classId?.instructorCost || 0 }}.00
