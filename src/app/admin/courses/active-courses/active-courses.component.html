@@ -173,7 +173,7 @@
                           </mat-header-cell>
                           <mat-cell
                             *matCellDef="let row"
-                            (click)="viewCourse(row.id)"
+                            (click)="viewCourse(row.id)" class="payment-cell"
                           >
                             <span class="mobile-label">Payment:</span
                             ><span>$</span> {{ row.fee || 0 }}.00
