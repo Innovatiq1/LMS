@@ -427,7 +427,7 @@ export class Dashboard2Component implements OnInit,AfterViewInit {
   private admissionLineChart() {
     this.admissionLineChartOptions = {
       series: [{
-        name: "Instructors",
+        name: `${AppConstants.INSTRUCTOR_ROLE}s`,
         data: [
           this.twelveMonthsAgoInstructors.length,
           this.tenMonthsAgoInstructors.length,
@@ -543,9 +543,7 @@ export class Dashboard2Component implements OnInit,AfterViewInit {
 private admissionPieChart() {
   this.admissionPieChartOptions = {
       series: [
-        this.oneMonthAgoInstructors.length,
-        this.weekInstructors.length,
-        this.todayInstructors.length],
+        2, 4, 5],
       chart: {
           type: 'pie',
           height: 330,
@@ -555,12 +553,8 @@ private admissionPieChart() {
       labels: [ "1 Month Ago", "This Week", "Today"],
       colors: ['#25B9C1', '#4B4BCB', '#9E9E9E'],
       legend: {
-          position: 'top',
-          horizontalAlign: 'right',
-          floating: true,
-          offsetY: -25,
-          offsetX: -5,
-      },
+        position: 'bottom',
+    },
       tooltip: { enabled: true },
       dataLabels: { enabled: false },
       responsive: [{
@@ -569,9 +563,9 @@ private admissionPieChart() {
               chart: {
                   width: 200
               },
-              legend: {
-                  position: 'bottom'
-              }
+              // legend: {
+              //     position: 'bottom'
+              // }
           }
       }]
   };
@@ -739,13 +733,13 @@ this.feesBarChartOptions = {
     })
   }
   setAdmissionChart() {
-  if (this.dashboard.content[4].viewType == 'Line Chart') {
+  if (this.dashboard?.content[4]?.viewType == 'Line Chart') {
       this.isAdmissionLine = true;
       this.admissionLineChart();
-    } else  if (this.dashboard.content[4].viewType == 'Bar Chart') {
+    } else  if (this.dashboard?.content[4].viewType == 'Bar Chart') {
       this.isAdmissionBar = true;
       this.admissionBarChart();
-    } else  if (this.dashboard.content[4].viewType == 'Pie Chart') {
+    } else  if (this.dashboard?.content[4].viewType == 'Pie Chart') {
       this.isAdmissionPie = true;
       this.admissionPieChart();
     }
