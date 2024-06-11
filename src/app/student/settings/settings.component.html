@@ -300,7 +300,7 @@
   </div>
 </section>
 
-<section class="content" *ngIf="isAdmin">
+<section class="content" *ngIf="isAdmin || isStudent">
   <div class="content-block">
     <div class="block-header" *ngFor="let breadscrum of breadscrums">
       <!-- breadcrumb -->
@@ -657,7 +657,7 @@
             </div>
             <div
               class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-2"
-              *ngIf="isApprovers || isAdmin"
+              *ngIf="!isStudent"
             >
               <div class="button-container">
                 <label>Approver 1<span class="mandatory">&nbsp;*</span></label>
@@ -685,7 +685,7 @@
             </div>
             <div
               class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-2"
-              *ngIf="isApprovers || isAdmin"
+              *ngIf="!isStudent"
             >
               <div class="button-container">
                 <label>Approver 2 <span class="mandatory">&nbsp;*</span></label>
@@ -716,7 +716,7 @@
             </div>
             <div
               class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-2"
-              *ngIf="isApprovers || isAdmin"
+              *ngIf="!isStudent"
             >
               <div class="button-container">
                 <label>Approver 3 <span class="mandatory">&nbsp;*</span></label>
