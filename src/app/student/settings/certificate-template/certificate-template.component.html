@@ -6,19 +6,171 @@
     </div>
     <div class="row clearfix">
       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+
+
         <div class="card">
+          <div class="materialTableHeader">
+            <!-- <div class="left">
+              <ul class="header-buttons-left ms-0">
+                <li class="tbl-title">
+                  <h2>Course Payments</h2>
+                </li>
+                <li class="tbl-search-box">
+                  <label for="search-input"><i class="material-icons search-icon">search</i></label>
+                  <!-- <input placeholder="Search" type="text" #filter class="browser-default search-field"
+                    aria-label="Search box"  [(ngModel)]="courseKitModel.filterText" (ngModelChange)="fetchCourseKits()"
+                    (change)="fetchCourseKits()"> --
+                    <input placeholder="Search" type="text" #filter class="browser-default search-field"
+                    aria-label="Search box"  [(ngModel)]="searchTerm" (input)="performSearch()">
+                </li>
+              </ul>
+            </div> -->
+            <div class="right">
+              <ul class="tbl-export-btn">
+                <!-- <li class="tbl-header-btn">
+                  <div class="m-l-10" matTooltip="ADD">
+                    <button mat-mini-fab color="primary"  >
+                      <mat-icon class="col-white">add</mat-icon>
+                    </button>
+                  </div>
+                </li>
+                <li class="tbl-header-btn">
+                  <div class="m-l-10" matTooltip="REFRESH">
+                    <button mat-mini-fab color="primary" >
+                      <mat-icon class="col-white">refresh</mat-icon>
+                    </button>
+                  </div>
+                </li> -->
+                <li>
+                  <ul class="header-buttons-left ms-0">
+                    <li class="tbl-search-box">
+                      <label for="search-input"><i class="material-icons search-icon">search</i></label>
+                      <!-- <input placeholder="Search" type="text" #filter class="browser-default search-field"
+                        aria-label="Search box"  [(ngModel)]="courseKitModel.filterText" (ngModelChange)="fetchCourseKits()"
+                        (change)="fetchCourseKits()"> -->
+                        <input placeholder="Search" type="text" #filter class="browser-default search-field"
+                        aria-label="Search box"  [(ngModel)]="searchTerm" (input)="performSearch()">
+                    </li>
+                    </ul>
+                </li>
+                <li class="tbl-header-btn">
+                  <div class="row" style="float: right;">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+      
+      
+                      <button mat-raised-button id="submit"  [routerLink]="['/student/settings/certificate/create']"
+                      >Create</button>
+                    </div>
+                  </div>
+                  <!-- <div class="m-l-10" [hidden]=!selection.hasValue() matTooltip="DELETE">
+                    <button mat-mini-fab color="warn" (click)="removeSelectedRows()">
+                      <mat-icon class="col-white">delete123
+                      </mat-icon>
+                    </button>
+                  </div> -->
+                </li>
+                <li>
+                  <div class="export-button m-l-10" matTooltip="XLSX" (click)="exportExcel()">
+                    <img src="assets/excel.svg" alt=""/>
+                  </div>
+                </li>
+                <li>
+                  <div class="export-button m-l-10" matTooltip="PDF" (click)="generatePdf()">
+                    <img src="assets/pdf (1).svg" alt="" />
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="body overflow-auto">
+            <div class="responsive_table">
+              <table mat-table matSort [dataSource]="dataSource" class="mat-cell advance-table">
+                <!-- Checkbox Column -->
+                <!-- Checkbox Column -->
+                <!-- <ng-container matColumnDef="select">
+                  <mat-header-cell *matHeaderCellDef [ngClass]="'tbl-col-width-per-6'">
+                    <mat-checkbox (change)="$event ? masterToggle() : null"
+                      [checked]="selection.hasValue() && isAllSelected()"
+                      [indeterminate]="selection.hasValue() && !isAllSelected()" [ngClass]="'tbl-checkbox'">
+                    </mat-checkbox>
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let row" (click)="view(row._id)" [ngClass]="'tbl-col-width-per-6'">
+                    <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                      [checked]="selection.isSelected(row)" [ngClass]="'tbl-checkbox'">
+                    </mat-checkbox>
+                  </mat-cell>
+                </ng-container> -->
+                 <!-- Course Name -->
+                 <ng-container matColumnDef="Title">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header>Title</mat-header-cell>
+                  <!-- (click)="view(row._id)"add to see the view in mat-cell -->
+                  <mat-cell *matCellDef="let row" class="name" (click)="view(row._id)">
+                    <span class="mobile-label">Student Name:</span>{{row.title}}</mat-cell>
+                </ng-container>
+              
+               
+                
+                
+                <!-- Short Description -->
+                <ng-container matColumnDef="Creation Date">
+                  <!-- (click)="view(row._id)"add to see the view in mat-cell -->
+                  <mat-header-cell *matHeaderCellDef mat-sort-header>Creation Date</mat-header-cell>
+                  <mat-cell *matCellDef="let row" (click)="view(row._id)" >
+                    <span class="mobile-label">Payment Date:</span>{{row.createdAt | date}}</mat-cell>
+                </ng-container>
+                
+              
+                <!-- actions -->
+                <!-- <ng-container matColumnDef="status">
+                  <mat-header-cell *matHeaderCellDef class="pr-0">Actions</mat-header-cell>
+                  <mat-cell *matCellDef="let row" class="pr-0">
+                    <button mat-button [matMenuTriggerFor]="menu">
+                      <svg class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"
+                      xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                      class="bi bi-three-dots rounded-circle" viewBox="0 0 16 16">
+                      <path
+                        d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+                    </svg>
+
+                    </button>
+
+                            <mat-menu #menu="matMenu" xPosition="before">
+                              <button mat-menu-item   (click)="view(row._id)">
+                                <app-feather-icons [icon]="'eye'" [class]="'tbl-fav-view'"></app-feather-icons>
+                                <span class="menu-text">View</span>
+                              </button>
+                            </mat-menu>
+                  </mat-cell>
+                </ng-container> -->
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
+                <mat-row *matRowDef="let row; columns: displayedColumns;"
+                  [style.cursor]="'pointer'" matRipple>
+                </mat-row>
+              </table>
+              <!-- Loading spinner -->
+              <!-- <div  class="tbl-spinner">
+                <mat-progress-spinner *ngIf="isLoading" color="primary" [diameter]="40" mode="indeterminate">
+                </mat-progress-spinner>
+              </div> -->
+
+              <mat-paginator #paginator [length]="totalItems" (page)="pageSizeChange($event)"
+              [pageSizeOptions]="pageSizeArr" aria-label="select pagination option">
+          </mat-paginator>
+
+            </div>
+          </div>
+        </div>
+        <!-- <div class="card">
+
+
           <div style="padding: 30px 10px">
             <div class="row" style="float: right;">
               <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
 
-                <!-- <button class="btn-space" type="button" mat-raised-button id="submit">Create</button> -->
-                <button class="icons"
-                alt="Edit"
-                mat-menu-item  [routerLink]="['/student/settings/certificate/edit']"
-                ><app-feather-icons
-                [icon]="'edit'"
-                [class]="'tbl-fav-edit'"
-              ></app-feather-icons></button>
+
+                <button mat-raised-button id="submit"  [routerLink]="['/student/settings/certificate/edit']"
+                >Edit</button>
               </div>
             </div>
             <table width="800px" style="
@@ -37,7 +189,7 @@
                     <table style="width: 100%">
                       <tr>
                         <td>
-                          <!-- <img src="../../assets/images/resources/label.png" width="96px" style="margin-bottom: 10px;" /> -->
+                          
                         </td>
                         <td style="text-align: right; padding-right: 30px;">
                           <p style="
@@ -85,7 +237,7 @@
                           line-height: 1.2;
                           font-style: italic;
                         ">
-                            <!-- {{listpdfData?.student_name}} -->
+                            
                             XYZ
                           </p>
 
@@ -97,11 +249,11 @@
                           font-style: italic;
                         ">
                             has successfully completed the <b>
-                              <!-- {{listpdfData?.student_projectname}} -->
+                            
                               XYZ
                             </b> course
                             on <b> DD/MM/YYYY
-                              <!-- {{listpdfData?.project_completed_date | date: 'dd/MM/yyyy'}}. -->
+                              
                             </b>
                           </p>
                         </td>
@@ -137,7 +289,7 @@
                           </p>
                         </td>
                         <td width="30%" style="text-align: right; vertical-align: bottom; padding-right: 30px;">
-                          <!-- <img src="/assets/certificates/stamp.png" width="140px" /> -->
+                         
                         </td>
                       </tr>
                     </table>
@@ -147,7 +299,7 @@
               </tbody>
             </table>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

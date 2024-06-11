@@ -142,6 +142,7 @@ export class ClassListComponent extends UnsubscribeOnDestroyAdapter implements O
         this.coursePaginationModel.limit = response.data.limit;
         console.log("PV", this.dataSource)
         this.mapClassList();
+        this.isLoading=false;
         
       },
       (error) => {

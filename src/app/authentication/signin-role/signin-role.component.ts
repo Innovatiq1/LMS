@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { UtilsService } from '@core/service/utils.service';
+import { AppConstants } from '@shared/constants/app.constants';
 
 @Component({
   selector: 'app-signin-role',
@@ -10,10 +11,15 @@ import { UtilsService } from '@core/service/utils.service';
 export class SigninRoleComponent {
 
   selectedUser: string = '';
+  commonRoles: any;
   constructor(
     private router: Router,
     public utils: UtilsService,
-  ) {}
+  ) {
+    this.commonRoles = AppConstants
+
+  }
+  
   images: string[] = ['/assets/images/login/Learning.jpeg', '/assets/images/login/learning2.jpg', '/assets/images/login/learning4.jpg'];
     currentIndex = 0;
 
