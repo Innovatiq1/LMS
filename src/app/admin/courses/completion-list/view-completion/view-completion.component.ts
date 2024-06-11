@@ -120,6 +120,7 @@ export class ViewCompletionComponent {
       const item = {
         classId: element?.classId?._id || null,
         studentId: element.studentId.id,
+        studentEmail: element.studentId.email,
         courseId:element.courseId._id,
         verify:true
       };
@@ -155,7 +156,7 @@ export class ViewCompletionComponent {
       });
   
     }  else {
-      const item: StudentApproval = {
+      const item = {
         approvedBy: this.getCurrentUserId(),
         approvedOn: moment().format('YYYY-MM-DD'),
         classId: element?.classId?._id || null,
@@ -163,6 +164,7 @@ export class ViewCompletionComponent {
         studentId: element.studentId.id,
         courseId:element.courseId._id,
         session: this.getSessions(element),
+        approve:true
       };
   
       Swal.fire({

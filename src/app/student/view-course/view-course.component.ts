@@ -154,6 +154,7 @@ export class ViewCourseComponent implements OnDestroy {
   commonRoles: any;
   discountType: any;
   discountValue: any;
+  totalFee: any;
   constructor(
     private classService: ClassService,
     private activatedRoute: ActivatedRoute,
@@ -383,6 +384,8 @@ export class ViewCourseComponent implements OnDestroy {
     let body = {
       email: userdata.user.email,
       name: userdata.user.name,
+      adminEmail:userdata.user.adminEmail,
+      adminName:userdata.user.adminName,
       courseTitle: this.classDetails?.courseId?.title,
       courseFee: this.classDetails?.courseId?.fee,
       studentId: studentId,
@@ -476,6 +479,7 @@ export class ViewCourseComponent implements OnDestroy {
       invoiceDialogRef.afterClosed().subscribe((res) => {
         if (res) {
           console.log('reeee',res)
+          this.totalFee=res.totalValue
           const dialogRef = this.dialog.open(PaymentDailogComponent, {
             width: '650px',
             height: '300px',
@@ -494,7 +498,10 @@ export class ViewCourseComponent implements OnDestroy {
                   title: this.title,
                   coursekit: this.courseKit,
                   paid:true,
-                  stripe:true
+                  stripe:true,
+                  adminEmail:userdata.user.adminEmail,
+                  adminName:userdata.user.adminName,
+            
                 };
 
                 this.classService
@@ -525,7 +532,7 @@ export class ViewCourseComponent implements OnDestroy {
                           const paymentOrderId = response.data.id;
                           const options: any = {
                             key: this.razorPayKey,
-                            amount: this.classDetails?.courseId?.fee,
+                            amount:this.totalFee,
                             currency: 'INR',
                             name: userdata.user.email,
                             description: this.classDetails?.courseId?.title,
@@ -557,7 +564,7 @@ export class ViewCourseComponent implements OnDestroy {
                                       courseTitle:
                                         this.classDetails?.courseId?.title,
                                       courseFee:
-                                        this.classDetails?.courseId?.fee,
+                                        this.totalFee
                                     };
                                     this.generateInvoice(body);
                                     setTimeout(() => {
@@ -568,7 +575,7 @@ export class ViewCourseComponent implements OnDestroy {
                                         courseTitle:
                                           this.classDetails?.courseId?.title,
                                         courseFee:
-                                          this.classDetails?.courseId?.fee,
+                                          this.totalFee,
                                         studentId: studentId,
                                         classId: this.classId,
                                         title: this.title,
@@ -581,7 +588,10 @@ export class ViewCourseComponent implements OnDestroy {
                                             ?.razorpay_payment_id,
                                         razorpay: true,
                                         invoiceUrl: this.invoiceUrl,
-                                        paid:true
+                                        paid:true,
+                                        adminEmail:userdata.user.adminEmail,
+                                        adminName:userdata.user.adminName,
+                                  
                                       };
                               
                                       this.classService
