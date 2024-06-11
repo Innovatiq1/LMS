@@ -826,7 +826,7 @@ export class MainComponent implements OnInit {
         {
           title: 'Dashboad',
           items: ['Dashboad'],
-          active: 'Student Dashboad',
+          active: `${AppConstants.STUDENT_ROLE} Dashboad`,
         },
       ];
     }else if (role === AppConstants.INSTRUCTOR_ROLE || role === 'Trainer' ) {
@@ -835,7 +835,7 @@ export class MainComponent implements OnInit {
         {
           title: 'Dashboad',
           items: ['Dashboad'],
-          active: 'Instructor Dashboad',
+          active: `${AppConstants.INSTRUCTOR_ROLE} Dashboad`,
         },
       ];
     }
