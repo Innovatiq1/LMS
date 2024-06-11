@@ -18,6 +18,7 @@ import { forkJoin } from 'rxjs';
 import { UserService } from '@core/service/user.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { formatDate } from '@angular/common';
+import { AppConstants } from '@shared/constants/app.constants';
 @Component({
   selector: 'app-all-course',
   templateUrl: './all-course.component.html',
@@ -42,6 +43,7 @@ export class AllCourseComponent {
     'startDate',
     'endDate',
     'Vendor',
+    'Users'
     // 'Fees',
   ];
   // displayedColumns = [
@@ -87,6 +89,7 @@ export class AllCourseComponent {
   users: any;
   selectedCreators: any = [];
   filterForm: FormGroup;
+  commonRoles: any;
 
   constructor(
     public _courseService: CourseService,
@@ -122,6 +125,7 @@ export class AllCourseComponent {
         'startDate',
         'endDate',
         'Vendor',
+        'Users'
         // 'Fees',
       ];
     }
@@ -138,6 +142,7 @@ export class AllCourseComponent {
         'startDate',
         'endDate',
         'Vendor',
+        'Users'
         // 'Fees',
       ];
     }
@@ -151,6 +156,7 @@ export class AllCourseComponent {
     }).subscribe((response) => {
       this.courseList = response.courses.reverse();
     });
+    this.commonRoles = AppConstants
   }
 
   getAllVendorsAndUsers() {

@@ -193,6 +193,16 @@
                                         class="mobile-label">Vendor:</span>{{row.vendor}}
                                     </mat-cell>
                                   </ng-container>
+                                  <ng-container matColumnDef="Users">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">{{commonRoles?.STUDENT_ROLE}}
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let row" [routerLink]="['/admin/courses/student-courses/',row.title,row.id]"> <span
+                                        class="mobile-label">Users:</span>
+                                         <button mat-icon-button class="tbl-action-btn">
+                                  <app-feather-icons [icon]="'eye'" [class]="'tbl-fav-view'"></app-feather-icons>
+                                </button>
+                                    </mat-cell>
+                                  </ng-container>
                                   <ng-container matColumnDef="startDate">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">Start Date
                                     </mat-header-cell>
