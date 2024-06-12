@@ -66,6 +66,9 @@ import {
 import { SettingsService } from '@core/service/settings.service';
 import { BarChart } from 'angular-feather/icons';
 import { AppConstants } from '@shared/constants/app.constants';
+import { StudentPaginationModel } from '@core/models/class.model';
+import { AssessmentQuestionsPaginationModel } from '@core/models/assessment-answer.model';
+import { AssessmentService } from '@core/service/assessment.service';
 export type barChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -274,6 +277,7 @@ export class MainComponent implements OnInit {
   isAdmin: boolean = false;
   isStudentDB: boolean = false;
   isInstructorDB: boolean = false;
+  isAssessorDB: boolean = false;
   isTADB: boolean = false;
   issupervisorDB: boolean = false;
   isHodDB: boolean = false;
@@ -304,6 +308,13 @@ export class MainComponent implements OnInit {
   docs: any;
   classList: any;
   commonRoles: any;
+  completedClasses: any;
+  assessmentScores: any;
+  examScores: any;
+  studentPaginationModel: StudentPaginationModel;
+  assessmentPaginationModel!: Partial<AssessmentQuestionsPaginationModel>;
+  allClasses: any;
+  allClassesCount: any;
 
   constructor(
     private courseService: CourseService,
@@ -316,6 +327,7 @@ export class MainComponent implements OnInit {
     private authenticationService:AuthenService,private leaveService: LeaveService,
     public lecturesService: LecturesService,
     private settingsService: SettingsService,
+    private assessmentService: AssessmentService
   ) {
     //constructor
     let urlPath = this.router.url.split('/')
@@ -352,6 +364,9 @@ export class MainComponent implements OnInit {
     this.studentName = user?.user?.name;
     this.getRegisteredAndApprovedCourses();
     //Student End
+
+    this.studentPaginationModel = {} as StudentPaginationModel;
+    this.assessmentPaginationModel = {};
   }
 
   getCount() {
@@ -838,6 +853,15 @@ export class MainComponent implements OnInit {
           active: `${AppConstants.INSTRUCTOR_ROLE} Dashboad`,
         },
       ];
+    }else if (role === AppConstants.ACCESSOR_ROLE || role === 'Assessor' ) {
+      this.isAssessorDB = true;
+      this.breadscrums = [
+        {
+          title: 'Dashboad',
+          items: ['Dashboad'],
+          active: `${AppConstants.ACCESSOR_ROLE} Dashboad`,
+        },
+      ];
     }
     else if (role === 'Training administrator' || role === 'training administrator' ) {
       this.isTADB = true;
@@ -878,6 +902,10 @@ export class MainComponent implements OnInit {
     this.getProgramList();
     this.getAllCourse();
     this.getCountIns();
+
+    this.getCompletedClasses();
+    this.getAllAnswers();
+    this.getAllClasses();
   }
   
   getClassList() {
@@ -2421,5 +2449,34 @@ private attendanceBarChart() {
       this.studentLineChart();
     } 
     
+  }
+  getCompletedClasses() {
+    this.classService.getSessionCompletedStudent( this.studentPaginationModel.page,this.studentPaginationModel.limit )
+      .subscribe((response: { docs: any; page: any; limit: any; totalDocs: any }) => {
+          this.completedClasses = response.docs.slice(0,5);
+        }
+      );
+  }
+  getAllAnswers() {
+    this.assessmentService.getExamAnswersV2({ ...this.assessmentPaginationModel})
+      .subscribe(res => {
+        this.assessmentScores = res.data.docs.slice(0,5);
+        this.examScores = res.data.docs;
+      })
+  }
+  getAllClasses() {
+    this.classService
+      .getClassListWithPagination({ ...this.coursePaginationModel })
+      .subscribe(
+        (response) => {
+          if (response.data) {
+            this.allClasses = response.data.docs.slice(0,5);
+            this.allClassesCount = response.data.totalDocs;
+          }
+        },
+        (error) => {
+          console.log('error', error);
+        }
+      );
   }
 }

@@ -142,7 +142,7 @@ export class EditTeacherComponent {
   // }
   onSubmit() {
     console.log('Form Value', this.proForm.value);
-
+    let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     // Check if the form is valid
     if (this.proForm.valid) {
       // Create userData object with form values
@@ -153,11 +153,14 @@ export class EditTeacherComponent {
 
       userData.type = AppConstants.INSTRUCTOR_ROLE;
       userData.role = AppConstants.INSTRUCTOR_ROLE;
+      userData.adminId = user.user.id;
+      userData.adminEmail = user.user.email;
+      userData.adminName = user.user.name;
 
       // Call the updateInstructor function with userData
       Swal.fire({
         title: 'Are you sure?',
-        text: 'Do You want to update this `${AppConstants.INSTRUCTOR_ROLE}`!',
+        text: 'Do You want to update this Trainer',
         icon: 'warning',
         confirmButtonText: 'Yes',
         showCancelButton: true,
@@ -175,7 +178,7 @@ export class EditTeacherComponent {
       () => {
         Swal.fire({
           title: 'Successful',
-          text: '`${AppConstants.INSTRUCTOR_ROLE}` updated successfully',
+          text: 'Trainer updated successfully',
           icon: 'success',
         });
         //this.fileDropEl.nativeElement.value = "";
@@ -185,7 +188,7 @@ export class EditTeacherComponent {
       },
       (error: { message: any; error: any }) => {
         Swal.fire(
-          'Failed to update `${AppConstants.INSTRUCTOR_ROLE}`',
+          'Failed to update Trainer',
           error.message || error.error,
           'error'
         );

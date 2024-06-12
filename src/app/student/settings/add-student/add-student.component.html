@@ -9,7 +9,8 @@
       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
         <div class="card">
           <div class="header">
-            <h2>{{ edit ? "Edit {{commonRoles.STUDENT_ROLE}}" : "Create {{commonRoles.STUDENT_ROLE}}" }}</h2>
+            <h2 *ngIf="!edit">Create {{commonRoles?.STUDENT_ROLE}}</h2>
+            <h2 *ngIf="edit">Edit {{commonRoles?.STUDENT_ROLE}}</h2>
           </div>
           <div class="body">
             <form class="m-4" [formGroup]="stdForm">
@@ -117,7 +118,7 @@
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <label>Education <span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <input matInput formControlName="name" required />
+                    <input matInput formControlName="education" required />
                     <mat-error *ngIf="
                       stdForm.get('education')?.invalid &&
                       stdForm.get('education')?.touched

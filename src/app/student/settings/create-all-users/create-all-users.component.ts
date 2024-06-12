@@ -174,16 +174,18 @@ export class CreateAllUsersComponent {
 
   // }
   addBlog(formObj: any) {
+   
+    let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     console.log('Form Value', formObj);
-
-
     if (!formObj.invalid) {
-      // Process form data without uploading anything
-      // Additional logic can be added here as needed
       console.log('======', formObj.type);
       formObj['Active'] = this.status;
-      formObj['role'] = formObj.type;
+      formObj['type'] = formObj.type;
+      formObj['role'] = formObj.role;
       formObj['isLogin'] = true;
+      formObj['adminId'] = user.user.id;
+      formObj['adminEmail'] = user.user.email;
+      formObj['adminName'] = user.user.name;
 
       const userData: Users = formObj;
       userData.avatar = this.avatar;
@@ -338,11 +340,16 @@ export class CreateAllUsersComponent {
   // }
   updateBlog(formObj: any) {
     console.log('Form Value', formObj);
+    let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     if (!formObj.invalid) {
       // Prepare user data for update
       formObj['Active'] = this.status;
-      formObj['role'] = formObj.type;
+      formObj['type'] = formObj.type;
+      formObj['role'] = formObj.role;
       formObj['isLogin'] = true;
+      formObj['adminId'] = user.user.id;
+      formObj['adminEmail'] = user.user.email;
+      formObj['adminName'] = user.user.name;
 
       const userData: Users = formObj;
 
