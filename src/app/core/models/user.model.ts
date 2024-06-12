@@ -50,7 +50,10 @@ export interface Student {
     Active: any;
     menuItems: [];
     last_name:any;
-    
+    adminId: string;
+    adminEmail: string;
+    adminName: string;
+
     isLogin:boolean;
     phone:{
 			countryCode:String,
@@ -95,7 +98,10 @@ export interface Student {
     filename:string
     education:string;
     isLogin:boolean;
-    data:any
+    data:any;
+    adminId: string;
+    adminEmail: string;
+    adminName: string;
 
   }
   export interface StudentDetail extends Users {

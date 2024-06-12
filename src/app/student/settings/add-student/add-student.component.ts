@@ -171,6 +171,7 @@ export class AddStudentComponent {
   //   }
   // }
   onSubmit() {
+    let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     if (!this.stdForm.invalid) {
         const userData: Student = this.stdForm.value;
         
@@ -180,10 +181,13 @@ export class AddStudentComponent {
         userData.type = AppConstants.STUDENT_ROLE;
         userData.role = AppConstants.STUDENT_ROLE;
         userData.isLogin = true;
+        userData.adminId = user.user.id;
+        userData.adminEmail = user.user.email;
+        userData.adminName = user.user.name;
 
         Swal.fire({
           title: 'Are you sure?',
-          text: 'Do You want to create a `${AppConstants.STUDENT_ROLE}` profile!',
+          text: 'Do You want to create a trainee profile!',
           icon: 'warning',
           confirmButtonText: 'Yes',
           showCancelButton: true,
@@ -207,7 +211,7 @@ export class AddStudentComponent {
       () => {
         Swal.fire({
           title: 'Successful',
-          text: '`${AppConstants.STUDENT_ROLE}` created successfully',
+          text: 'Trainee created successfully',
           icon: 'success',
         });
         //this.fileDropEl.nativeElement.value = "";
@@ -217,7 +221,7 @@ export class AddStudentComponent {
       },
       (error) => {
         Swal.fire(
-          'Failed to create `${AppConstants.STUDENT_ROLE}`',
+          'Failed to create user',
           error.message || error.error,
           'error'
         );
@@ -366,7 +370,7 @@ getDepartment(){
   // }
   update() {
     console.log('Form Value', this.stdForm.value);
-
+    let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     // Check if the form is valid
     if (this.stdForm.valid) {
       // Create userData object with form values
@@ -377,12 +381,15 @@ getDepartment(){
 
       userData.type = AppConstants.STUDENT_ROLE;
       userData.role = AppConstants.STUDENT_ROLE;
+      userData.adminId = user.user.id;
+        userData.adminEmail = user.user.email;
+        userData.adminName = user.user.name;
 
       // Call the updateInstructor function with userData
 
       Swal.fire({
         title: 'Are you sure?',
-        text: 'Do You want to update this `${AppConstants.STUDENT_ROLE}` profile!',
+        text: 'Do You want to update this trainee profile!',
         icon: 'warning',
         confirmButtonText: 'Yes',
         showCancelButton: true,
@@ -403,7 +410,7 @@ getDepartment(){
       () => {
         Swal.fire({
           title: 'Successful',
-          text: '`${AppConstants.STUDENT_ROLE}` details update successfully',
+          text: 'Trainee details update successfully',
           icon: 'success',
         });
         //this.fileDropEl.nativeElement.value = "";
@@ -414,7 +421,7 @@ getDepartment(){
       },
       (error: { message: any; error: any }) => {
         Swal.fire(
-          'Failed to update `${AppConstants.STUDENT_ROLE}`',
+          'Failed to update trainee',
           error.message || error.error,
           'error'
         );

@@ -150,6 +150,7 @@ export class AddTeacherComponent {
   // }
   onSubmit() {
     console.log('Form Value', this.proForm.value);
+    let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     if (!this.proForm.invalid) {
         const userData: Users = this.proForm.value;
         
@@ -159,6 +160,9 @@ export class AddTeacherComponent {
         userData.type = AppConstants.INSTRUCTOR_ROLE;
         userData.role = AppConstants.INSTRUCTOR_ROLE;
         userData.isLogin = true;
+        userData.adminId = user.user.id;
+        userData.adminEmail = user.user.email;
+        userData.adminName = user.user.name;
 
         this.createInstructor(userData);
     }else{
@@ -199,7 +203,7 @@ export class AddTeacherComponent {
 
     Swal.fire({
       title: 'Are you sure?',
-      text: 'Do You want to create a `${AppConstants.INSTRUCTOR_ROLE}`!',
+      text: 'Do You want to create a Trainer!',
       icon: 'warning',
       confirmButtonText: 'Yes',
       showCancelButton: true,
@@ -210,7 +214,7 @@ export class AddTeacherComponent {
           () => {
             Swal.fire({
               title: "Successful",
-              text: "`${AppConstants.INSTRUCTOR_ROLE}` created successfully",
+              text: "Trainer created successfully",
               icon: "success",
             });
             //this.fileDropEl.nativeElement.value = "";
@@ -220,7 +224,7 @@ export class AddTeacherComponent {
           },
           (error) => {
             Swal.fire(
-              "Failed to create `${AppConstants.INSTRUCTOR_ROLE}`",
+              "Failed to create Trainer",
               error.message || error.error,
               "error"
             );
