@@ -21,6 +21,7 @@ import { NgxGaugeModule } from 'ngx-gauge';
 import { NgChartsModule } from 'ng2-charts';
 import { TrainingApprovalTabComponent } from './training-approval-tab/training-approval-tab.component';
 import { EtmsDashboardComponent } from './etms-dashboard/etms-dashboard.component';
+import { SuperAdminComponent } from 'app/superAdmin/super-admin/super-admin.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { EtmsDashboardComponent } from './etms-dashboard/etms-dashboard.componen
     SupportComponent,
     EtmsDashboardComponent,
     TrainingApprovalTabComponent,
+    SuperAdminComponent
   ],
   imports: [
     CommonModule,
