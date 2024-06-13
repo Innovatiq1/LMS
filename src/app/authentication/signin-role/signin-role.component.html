@@ -9,10 +9,6 @@
             </div>
         </div>
         <div class="col-6 auth-form-section border">
-            <div class="" (click)="openUrl('super admin')">
-                <p class="d-flex justify-content-end mt-3 font-semibold"  >Super Admin --> </p>
-            </div>
-            
             <div class="section">
                 <!-- <div class="auth-wrapper"> -->
                 <h2 class="welcome-msg">Login as</h2>
@@ -21,7 +17,7 @@
                 <div class="row mt-5">
                     <div class="col-6">
                         <div class="card login" [class.selected]="selectedUser === 'staff'"
-                            (click)="openUrl('staff')">
+                            (click)="selectUser('staff')">
                             <img src="/assets/images/login/admin.png" class="mx-auto"
                                 style="width: 150px; height: 150px; margin-top: 10px;">
                             <h5 style="text-align: center;margin-top: 10px;">Staff</h5>
@@ -32,7 +28,7 @@
                     </div>
                     <div class="col-6">
                         <div class="card login" [class.selected]="selectedUser === 'student'"
-                            (click)="openUrl('student')">
+                            (click)="selectUser('student')">
                             <img src="/assets/images/login/student-login.png" class="mx-auto"
                                 style="width: 150px; height: 150px; margin-top: 10px;">
                             <h5 style="text-align: center; margin-top: 10px;">{{commonRoles.STUDENT_ROLE}}</h5>
@@ -42,11 +38,11 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="row mt-4">
+                <div class="row mt-4">
                     <div class="col-12">
                         <button mat-raised-button id="submit" (click)="openUrl()">Next</button>
                     </div>
-                </div> -->
+                </div>
 
                 <div class="footer">
                     <div class="row">
