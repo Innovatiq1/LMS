@@ -481,7 +481,7 @@ export class ViewCourseComponent implements OnDestroy {
           console.log('reeee',res)
           this.totalFee=res.totalValue
           const dialogRef = this.dialog.open(PaymentDailogComponent, {
-            width: '650px',
+            width: '450px',
             height: '300px',
             data: { payment: '' },
           });
