@@ -1716,87 +1716,58 @@
             margin-top: 40px;
           "
         >
-          <div class="table-responsive">
-            <table class="table table-hover">
+        <div class="table-responsive">
+          <table class="table table-hover">
               <thead>
-                <tr>
-                  <th>Item</th>
-                  <th>Quantity</th>
-                  <th>Unit Price</th>
-                  <th style="padding-left: 10px">Total</th>
-                </tr>
+                  <tr>
+                      <th>Item</th>
+                      <th style="text-align: center;">Quantity</th>
+                      <th style="text-align: right;">Unit Price</th>
+                      <th style="text-align: right;">Total</th>
+                  </tr>
               </thead>
               <tbody>
-                <tr style="cursor: pointer">
-                  <td style="width: 45%">{{ listpdfData?.title }}</td>
-                  <td>1</td>
-                  <td
-                    style="
-                      text-align: right !important;
-                      padding-left: 0;
-                      padding-right: 45px;
-                    "
-                  >
-                    ${{ listpdfData?.courseFee }}.00
-                  </td>
-                  <td
-                    style="
-                      text-align: right !important;
-                      padding-left: 0;
-                      padding-right: 45px;
-                    "
-                  >
-                    ${{ listpdfData?.courseFee }}.00
-                  </td>
-                </tr>
-                <tr></tr>
-                <tr>
-                  <td colspan="3">
-                    <h6 style="justify-content: end; display: flex">
-                      Subtotal
-                    </h6>
-                  </td>
-                  <td
-                    style="
-                      text-align: right !important;
-                      padding-left: 0;
-                      padding-right: 45px;
-                    "
-                  >
-                    ${{ listpdfData?.courseFee }}.00
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="3">
-                    <h6 style="justify-content: end; display: flex">Tax(0%)</h6>
-                  </td>
-                  <td
-                    style="
-                      text-align: right !important;
-                      padding-left: 0;
-                      padding-right: 45px;
-                    "
-                  >
-                    $0.00
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="3">
-                    <h6 style="justify-content: end; display: flex">Total</h6>
-                  </td>
-                  <td
-                    style="
-                      text-align: right !important;
-                      padding-left: 0;
-                      padding-right: 45px;
-                    "
-                  >
-                    ${{ listpdfData?.courseFee }}.00
-                  </td>
-                </tr>
+                  <tr style="cursor: pointer">
+                      <td style="width: 45%;">{{listpdfData?.title | titlecase}}</td>
+                      <td style="text-align: center;">1</td>
+                      <td>${{listpdfData.courseFee}}.00</td>
+                      <td>${{listpdfData.courseFee}}.00</td>
+                  </tr>
+                  <tr></tr>
+                  <tr>
+                      <td>
+                          <h6>Subtotal</h6>
+                      </td>
+                      <td colspan="4" class="price">
+                          ${{listpdfData.courseFee}}.00
+                      </td>
+                  </tr>
+                  <tr>
+                      <td>
+                          <h6 >Discount({{discountValue}}{{discountType =='percentage'? '%':''}})</h6>
+                      </td>
+                      <td colspan="4" *ngIf="discountType == 'fixed'" class="price">
+                          - ${{(discountValue) | number : '1.2-2'}}
+                      </td>
+                      <td colspan="4" *ngIf="discountType == 'percentage'" class="price">
+                          - ${{(listpdfData.courseFee * discountValue / 100) | number : '1.2-2'}}
+                      </td>
+
+                  </tr>
+                  <tr>
+                      <td>
+                          <h6>Total</h6>
+                      </td>
+                      <td colspan="4" *ngIf="discountType == 'fixed'"  class="price">
+                          ${{listpdfData.courseFee - discountValue | number : '1.2-2'}}
+                      </td>
+                      <td colspan="4" *ngIf="discountType == 'percentage'" class="price">
+                          ${{listpdfData.courseFee - (listpdfData.courseFee * discountValue / 100) | number : '1.2-2'}}
+                      </td>
+                  </tr>
               </tbody>
-            </table>
-          </div>
+          </table>
+      </div>
         </div>
       </div>
     </div>

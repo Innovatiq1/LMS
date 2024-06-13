@@ -564,7 +564,7 @@ export class ViewCourseComponent implements OnDestroy {
                                       courseTitle:
                                         this.classDetails?.courseId?.title,
                                       courseFee:
-                                        this.totalFee
+                                      this.classDetails?.courseId?.fee
                                     };
                                     this.generateInvoice(body);
                                     setTimeout(() => {
