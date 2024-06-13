@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import {  map } from 'rxjs/operators';
-import { Observable,throwError} from 'rxjs';
+import { BehaviorSubject, Observable,throwError} from 'rxjs';
 import { ApiResponse } from '../models/general.response';
 import { Logger } from './logger.service';
 import { catchError } from 'rxjs/operators';
@@ -19,8 +19,15 @@ export class UserService {
   
   private defaultUrl: string = environment['apiUrl'];
     prefix: any;
+    dataChange: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(
+      []
+    );
   constructor(private http: HttpClient) {}
-  
+
+  dialogData!: any;
+  getDialogData() {
+    return this.dialogData;
+  }
    private buildParams(filter?: Partial<CoursePaginationModel>): HttpParams {
     let params = new HttpParams();
     if (filter) {

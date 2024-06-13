@@ -31,8 +31,7 @@ export class SigninRoleComponent {
   selectUser(userType: string) {
     this.selectedUser = userType;
   }
-  openUrl(userType: string) {
-    this.selectedUser = userType;
+  openUrl() {
     if (this.selectedUser === 'staff' || this.selectedUser === 'super admin') {
     
       this.router.navigate(['/authentication/TMS/signin']);

@@ -12,8 +12,7 @@ import { LoginGuard } from '@core/guard/login.guard';
 import { ViewComponent } from './student/leave-request/view/view.component';
 
 const routes: Routes = [
-  // {path: 'admin/create-super-admin', component: CreateSuperAdminComponent},
-  // {path: 'edit-super-admin', component: EditSuperAdminComponent},
+ 
   {
     path: '',
     component: MainLayoutComponent,
@@ -24,6 +23,12 @@ const routes: Routes = [
         path: 'admin',
         loadChildren: () =>
           import('./admin/admin.module').then((m) => m.AdminModule),
+        canActivate: [LoginGuard],
+      },
+      {
+        path: 'super-admin',
+        loadChildren: () =>
+          import('./superAdmin/super-admi-r.module').then((m) => m.SuperAdmiRModule),
         canActivate: [LoginGuard],
       },
       {
