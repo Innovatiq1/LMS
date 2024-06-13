@@ -488,6 +488,8 @@ export class ViewCourseComponent implements OnDestroy {
           dialogRef.afterClosed().subscribe((result) => {
             if (result) {
               if (result.payment === 'card') {
+                this.generateInvoice(body);
+                setTimeout(() => {
                 let payload = {
                   email: userdata.user.email,
                   name: userdata.user.name,
@@ -501,14 +503,15 @@ export class ViewCourseComponent implements OnDestroy {
                   stripe:true,
                   adminEmail:userdata.user.adminEmail,
                   adminName:userdata.user.adminName,
-            
-                };
+                  invoiceUrl:this.invoiceUrl
+                }
 
                 this.classService
                 .saveApprovedClasses(this.registeredClassId,payload).subscribe((response) => {
                     this.document.location.href = response.data.session.url;
                     this.getClassDetails();
-                  });
+                  });                },5000)
+
               } else if (result.payment === 'other') {
                 let payload = {
                   email: userdata.user.email,
@@ -664,7 +667,7 @@ export class ViewCourseComponent implements OnDestroy {
       // title: "Updated",
       // text: "Course Kit updated successfully",
       // icon: "success",
-      title: 'Sending Invoice...',
+      title: 'Loading Payment Screen...',
       text: 'Please wait...',
       allowOutsideClick: false,
       timer: 24000,
