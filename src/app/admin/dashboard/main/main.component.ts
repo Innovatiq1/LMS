@@ -279,6 +279,7 @@ export class MainComponent implements OnInit {
   isInstructorDB: boolean = false;
   isAssessorDB: boolean = false;
   isTADB: boolean = false;
+  superAdmin: boolean = false;
   issupervisorDB: boolean = false;
   isHodDB: boolean = false;
   isTCDB: boolean = false;
@@ -833,7 +834,17 @@ export class MainComponent implements OnInit {
     this.getClassList();
     const role = this.authenticationService.currentUserValue.user.role;
     console.log('roles', role);
-    if (role== AppConstants.ADMIN_ROLE|| role=="RO" || role=="Accessor"  || role == "Director" || role == "Employee") {
+    if(role === 'Super Admin'){
+      this.superAdmin = true;
+      this.breadscrums = [
+        {
+          title: 'Dashboad',
+          items: ['Dashboad'],
+          active: 'Super Admin Dashboad',
+        },
+      ];
+    }
+    else if (role== AppConstants.ADMIN_ROLE|| role=="RO"  || role == "Director" || role == "Employee") {
       this.isAdmin = true;
     }else if (role === AppConstants.STUDENT_ROLE) {
       this.isStudentDB = true;

@@ -46,6 +46,8 @@ import { ChatbotComponent } from './apps/chatbot/chatbot.component';
 import { TicketComponent } from './ticket/ticket.component';
 import { StudentsService } from './admin/students/students.service';
 import { UsersModule } from './admin/users/users.module';
+import { CreateSuperAdminComponent } from './superAdmin/create-super-admin/create-super-admin.component';
+import { EditSuperAdminComponent } from './superAdmin/edit-super-admin/edit-super-admin.component';
 // import { ChangeBgDirective } from './change-bg.directive';
 
 export function createTranslateLoader(http: HttpClient) {
@@ -65,7 +67,9 @@ export function createTranslateLoader(http: HttpClient) {
     LeaveRequestComponent,
     ChatbotComponent,
     TicketComponent,
-    ViewComponent
+    ViewComponent,
+    CreateSuperAdminComponent,
+    EditSuperAdminComponent,
     // ChangeBgDirective
 
   ],

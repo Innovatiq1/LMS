@@ -10,7 +10,10 @@ import { InstructorSettingsComponent } from './teacher/settings/settings.compone
 import { InstructorLeaveRequestComponent } from './teacher/leave-request/leave-request.component';
 import { LoginGuard } from '@core/guard/login.guard';
 import { ViewComponent } from './student/leave-request/view/view.component';
+
 const routes: Routes = [
+  // {path: 'admin/create-super-admin', component: CreateSuperAdminComponent},
+  // {path: 'edit-super-admin', component: EditSuperAdminComponent},
   {
     path: '',
     component: MainLayoutComponent,
