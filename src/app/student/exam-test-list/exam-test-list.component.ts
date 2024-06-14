@@ -146,6 +146,8 @@ export class ExamTestListComponent {
       title: courseDetails.title,
       coursekit: courseKit,
       date: date,
+      discountType:'percentage',
+      discountValue:0
     };
     const invoiceDialogRef = this.dialog.open(InvoiceComponent, {
       width: '1000px',
@@ -171,6 +173,8 @@ export class ExamTestListComponent {
                 classId: classDetails.id,
                 title: courseDetails?.title,
                 coursekit: courseKit,
+                paid: true,
+                verify: true,
               };
 
               this.courseService
@@ -398,7 +402,7 @@ export class ExamTestListComponent {
     examAssessmentAnswer: any
   ) {
     const courseId = courseDetails._id ||courseDetails.id;
-    const examAssessmentId = courseDetails.examAssessment?._id || courseDetails.examAssessment;
+    const examAssessmentId = courseDetails.exam_assessment?._id || courseDetails.exam_assessment;
     this.router.navigate(
       [
         '/student/exam-questions/',
