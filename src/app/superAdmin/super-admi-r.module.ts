@@ -7,10 +7,12 @@ import { EditSuperAdminComponent } from './edit-super-admin/edit-super-admin.com
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ComponentsModule } from '@shared/components/components.module';
 import { SharedModule } from '@shared';
+import { ViewadminComponent } from './viewadmin/viewadmin.component';
+import { AdminListComponent } from './admin-list/admin-list.component';
 
 
 @NgModule({
-  declarations: [CreateSuperAdminComponent,EditSuperAdminComponent],
+  declarations: [CreateSuperAdminComponent,EditSuperAdminComponent, ViewadminComponent, AdminListComponent],
   imports: [
     CommonModule,
     SuperAdmiRRoutingModule,

@@ -5,23 +5,17 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { CreateSuperAdminComponent } from '../create-super-admin/create-super-admin.component';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { UtilsService } from '@core/service/utils.service';
 import { UserService } from '@core/service/user.service';
 import { CourseService } from '@core/service/course.service';
 import { SelectionModel } from '@angular/cdk/collections';
-import { CourseModel, CoursePaginationModel } from '@core/models/course.model';
+import { CourseModel } from '@core/models/course.model';
 import Swal from 'sweetalert2';
 import { MatPaginator } from '@angular/material/paginator';
 import {
-  TableElement,
-  TableExportUtil,
   UnsubscribeOnDestroyAdapter,
 } from '@shared';
-import jsPDF from 'jspdf';
-import { Direction } from '@angular/cdk/bidi';
-import { RoleDailogComponent } from 'app/student/settings/all-users/role-dailog/role-dailog.component';
 import { Users } from '@core/models/user.model';
 
 @Component({
@@ -37,26 +31,12 @@ export class SuperAdminComponent extends UnsubscribeOnDestroyAdapter {
       active: 'Super Admin Dashboard',
     },
   ];
-  displayedColumns: string[] = [
-    // 'select',
-    'img',
-    'Name',
-    'User Type',
-    'gender',
-    'Qualification',
-    'Mobile',
-    'Email',
-    'Status',
-    // 'Actions'
-  ];
-  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
-  @ViewChild('filter', { static: true }) filter!: ElementRef;
-  selection = new SelectionModel<CourseModel>(true, []);
-  // coursePaginationModel!: Partial<CoursePaginationModel>;
-  searchTerm: string = '';
+
+ 
   dataSource: any[] = [];
   filteredData: any[] = [];
   isLoading: boolean = true;
+  searchResults: Users[] = [];
   totalItems: number = 0;
   pageSizeArr = this.utils.pageSizeArr;
   coursePaginationModel = {
@@ -65,12 +45,12 @@ export class SuperAdminComponent extends UnsubscribeOnDestroyAdapter {
     docs: [] as Users[], //
   };
   id: any;
+  activeCount: number = 0;
+  inactiveCount: number = 0;
   constructor(
-    private dialog: MatDialog,
     public utils: UtilsService,
     private alluserService: UserService,
     private ref: ChangeDetectorRef,
-    private courseService: CourseService,
     public router: Router
   ) {
     super();
@@ -90,10 +70,8 @@ export class SuperAdminComponent extends UnsubscribeOnDestroyAdapter {
 
   fetchData(page?: number) {
     this.resetData()
-    let filterText = this.searchTerm;
     this.alluserService
       .getUserList({
-        filterText,
         page,
         limit: this.coursePaginationModel.limit,
       })
@@ -131,13 +109,14 @@ export class SuperAdminComponent extends UnsubscribeOnDestroyAdapter {
     this.filteredData = this.dataSource.filter(
       (data) => data.type === 'Admin' || data.type === 'admin'
     );
+    let active = this.filteredData.filter(data => data.Active === true);
+    this.activeCount = active.length;
+    let in_active = this.filteredData.filter(data => data.Active === false);
+    this.inactiveCount = in_active.length;
     this.totalItems = this.filteredData.length;
     console.log('Filtered Data', this.filteredData);
     this.updateDisplayedData();
   }
-  // createAdmin() {
-  //   this.dialog.open(CreateSuperAdminComponent);
-  // }
   resetData() {
     this.dataSource = [];
     this.filteredData = [];
@@ -145,122 +124,10 @@ export class SuperAdminComponent extends UnsubscribeOnDestroyAdapter {
     this.coursePaginationModel.page = 1;
   }
 
-  createAdmin() {
-    this.router.navigate(['super-admin/create-super-admin']);
-  }
 
-  removeSelectedRows() {
-    const totalSelect = this.selection.selected.length;
 
-    Swal.fire({
-      title: 'Confirm Deletion',
-      text: 'Are you sure you want to delete selected records?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Delete',
-      cancelButtonText: 'Cancel',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.selection.selected.forEach((item) => {
-          const index: number = this.dataSource.findIndex(
-            (d: CourseModel) => d === item
-          );
+ 
+  
 
-          this.courseService?.dataChange.value.splice(index, 1);
-          this.refreshTable();
-          this.selection = new SelectionModel<CourseModel>(true, []);
-        });
-        Swal.fire({
-          title: 'Success',
-          text: 'Record Deleted Successfully...!!!',
-          icon: 'success',
-          // confirmButtonColor: '#526D82',
-        });
-      }
-    });
-  }
-  private refreshTable() {
-    this.paginator._changePageSize(this.paginator.pageSize);
-  }
-  performSearch() {
-    this.getAllData();
-  }
-  exportExcel() {
-    //k//ey name with space add in brackets
-    const exportData: Partial<TableElement>[] = this.dataSource.map(
-      (user: any) => ({
-        Name: user.name,
-        Role: user.type,
-        Gender: user.gender,
-        Qualification: user.qualification,
-        Mobile: user.mobile,
-        Email: user.email,
-        Status: user.Active ? 'Active' : 'Inactive',
-      })
-    );
-    TableExportUtil.exportToExcel(exportData, 'AllUsers-list');
-  }
-  addNew(type: any) {
-    let tempDirection: Direction;
-    if (localStorage.getItem('isRtl') === 'true') {
-      tempDirection = 'rtl';
-    } else {
-      tempDirection = 'ltr';
-    }
-    const dialogRef = this.dialog.open(RoleDailogComponent, {
-      data: {
-        typeName: type,
-      },
-      direction: tempDirection,
-    });
-  }
-  generatePdf() {
-    const doc = new jsPDF();
-    const headers = [
-      [
-        'Name       ',
-        'Role       ',
-        'Gender',
-        'Qualification',
-        'Mobile',
-        'Email',
-        'Status',
-      ],
-    ];
-    const data = this.dataSource.map((user: any) => [
-      user.name,
-      user.type,
-      user.gender,
-      user.qualification,
-      user.mobile,
-      user.email,
-      user.Active ? 'Active' : 'Inactive',
-    ]);
-    //const columnWidths = [60, 80, 40];
-    const columnWidths = [20, 20, 20, 20, 20, 20, 20, 20, 20, 20];
 
-    // Add a page to the document (optional)
-    //doc.addPage();
-
-    // Generate the table using jspdf-autotable
-    (doc as any).autoTable({
-      head: headers,
-      body: data,
-      startY: 20,
-      headStyles: {
-        fontSize: 10,
-        cellWidth: 'wrap',
-      },
-    });
-
-    // Save or open the PDF
-    doc.save('AllUsers-list.pdf');
-  }
-  pageSizeChange($event: any) {
-    this.coursePaginationModel.page = $event?.pageIndex + 1;
-    this.coursePaginationModel.limit = $event?.pageSize;
-    this.fetchData(); // Call method to update displayed data
-  }
 }
