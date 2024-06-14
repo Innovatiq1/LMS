@@ -5,39 +5,7 @@
         <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
         </app-breadcrumb>
       </div>
-      <div class="row clearfix">
-        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-          <div class="card">
-            <div class="header">
-              <h2>Total Admin</h2>
-            </div>
-            <div class="body">
-              <h3>{{totalItems}}</h3>
-            </div>
-          </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-          <div class="card">
-            <div class="header">
-              <h2>Active Admin</h2>
-            </div>
-            <div class="body">
-              <h3>{{activeCount}}</h3>
-            </div>
-          </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-          <div class="card">
-            <div class="header">
-              <h2>In-active Admin</h2>
-            </div>
-            <div class="body">
-              <h3>{{inactiveCount}}</h3>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- <div class="row">
+      <div class="row">
             <ng-template mat-tab-label>
               <i class="material-icons-two-tone psr-3">list_alt</i>
               List View
@@ -121,7 +89,7 @@
                         matSort
                         [dataSource]="filteredData"
                         class="mat-cell advance-table"
-                      > -->
+                      >
                         <!-- <ng-container matColumnDef="img">
                           <mat-header-cell
                             mat-header-cell
@@ -141,7 +109,7 @@
                             />
                           </mat-cell>
                         </ng-container> -->
-                        <!-- <ng-container matColumnDef="Name">
+                        <ng-container matColumnDef="Name">
                           <mat-header-cell *matHeaderCellDef mat-sort-header
                            >Name</mat-header-cell
                           >
@@ -152,9 +120,9 @@
                             <span class="mobile-label">Name:</span
                             >{{ row.name | capitalizeFirstLetter }}</mat-cell
                           >
-                        </ng-container> -->
+                        </ng-container>
                         <!-- Course Code -->
-                        <!-- <ng-container matColumnDef="User Type">
+                        <ng-container matColumnDef="User Type">
                           <mat-header-cell *matHeaderCellDef mat-sort-header
                             >Role
                           </mat-header-cell>
@@ -192,9 +160,9 @@
                               >
                             </div>
                           </mat-cell>
-                        </ng-container> -->
+                        </ng-container>
                         <!-- Main Category -->
-                        <!-- <ng-container matColumnDef="Qualification">
+                        <ng-container matColumnDef="Qualification">
                           <mat-header-cell *matHeaderCellDef mat-sort-header
                             >Education
                           </mat-header-cell>
@@ -217,9 +185,9 @@
                             <span class="mobile-label">Mobile:</span
                             >{{ row.mobile }}</mat-cell
                           >
-                        </ng-container> -->
+                        </ng-container>
                         <!-- Sub Category -->
-                        <!-- <ng-container matColumnDef="Email">
+                        <ng-container matColumnDef="Email">
                           <mat-header-cell *matHeaderCellDef mat-sort-header
                             >Email</mat-header-cell
                           >
@@ -269,9 +237,9 @@
                           matRipple
                         >
                         </mat-row>
-                      </table> -->
+                      </table>
                       <!-- Loading spinner -->
-                      <!-- <div class="tbl-spinner">
+                      <div class="tbl-spinner">
                         <mat-progress-spinner
                           *ngIf="isLoading"
                           color="primary"
@@ -294,6 +262,6 @@
                 </div>
               </div>
             </div>
-      </div> -->
+      </div>
     </div>
   </section>

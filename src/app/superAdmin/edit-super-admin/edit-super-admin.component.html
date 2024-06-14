@@ -1,1 +1,235 @@
-<p>edit-super-admin works!</p>
+<section class="content">
+    <div class="content-block">
+      <div class="block-header" *ngFor="let breadscrum of breadscrums">
+        <!-- breadcrumb -->
+        <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
+        </app-breadcrumb>
+      </div>
+      <div class="row clearfix">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <div class="card">
+            <div class="header">
+              <h2>Create Admin</h2>
+            </div>
+            <div class="body">
+              <form [formGroup]="userForm" >
+                <div class="body m-4">
+                    <div class="row">
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                          <label>First name <span class="mandatory">&nbsp;*</span></label>
+                          <mat-form-field
+                            class="example-full-width mb-3"
+                            appearance="outline"
+                          >
+                            <input matInput formControlName="name" required />
+                            <mat-error *ngIf="userForm.get('name')?.hasError('required')">
+                              Enter First Name
+                            </mat-error>
+                          </mat-form-field>
+                        </div>
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" >
+                          <label>Last name</label>
+                          <mat-form-field
+                            class="example-full-width mb-3"
+                            appearance="outline"
+                          >
+                            <input matInput formControlName="last_name" />
+                          </mat-form-field>
+                        </div>
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                          <label>Roll No <span class="mandatory">&nbsp;*</span></label>
+                          <mat-form-field
+                            class="example-full-width mb-3"
+                            appearance="outline"
+                          >
+                            <input matInput formControlName="rollNo" />
+                            <mat-error *ngIf="userForm.get('rollNo')?.invalid ||userForm.get('rollNo')?.touched">
+                              {{ utils.getErrorMessage1(userForm.get('rollNo'), 'roll_no') }}
+                            </mat-error> 
+                          </mat-form-field>
+                        </div>
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                          <label>Email<span class="mandatory">&nbsp;*</span></label>
+                          <mat-form-field class="example-full-width mb-3" appearance="outline">
+                              <input matInput type="text" formControlName="email"
+                                  class="form-control" required>
+                              <mat-error *ngIf="userForm.get('email')?.hasError('required')">
+                                  Enter Email
+                              </mat-error>
+                              <mat-error  *ngIf="userForm.get('email')?.hasError('pattern') && userForm.get('email')?.touched">
+                                  Enter a valid Email   
+                                 </mat-error>
+                          </mat-form-field>
+                      </div>
+        
+                      <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                        <label>Gender<span class="mandatory">&nbsp;*</span></label>
+                        <mat-form-field class="example-full-width mb-3" appearance="outline">
+                            <mat-select formControlName="gender" required>
+                                <mat-option [value]="'male'"> Male </mat-option>
+                                <mat-option [value]="'female'"> Female </mat-option>
+                                <mat-option [value]="'other'"> Other </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="userForm.get('gender')?.hasError('required')">
+                                Select Gender
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+        
+                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                      <label>Mobile<span class="mandatory">&nbsp;*</span></label>
+                      <mat-form-field
+                        class="example-full-width mb-3"
+                        appearance="outline"
+                      >
+                        <input
+                          matInput
+                          formControlName="mobile"
+                          type="number"
+                          
+                        />
+                        <mat-error *ngIf="userForm.get('mobile')?.invalid ||userForm.get('mobile')?.touched">
+                          {{ utils.getErrorMessage1(userForm.get('mobile'), 'mobile') }}
+                        </mat-error>
+                      </mat-form-field>
+                  </div>
+                  <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                    <label>Education <span class="mandatory">&nbsp;*</span></label>
+                    <mat-form-field
+                      class="example-full-width mb-3"
+                      appearance="outline"
+                    >
+                      <input matInput formControlName="education">
+                      <mat-error
+                      *ngIf="userForm.get('education')?.hasError('required')"
+                    >
+                      Enter Education 
+                    </mat-error>
+                    </mat-form-field>
+                  </div>
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                          <label>Date of Birth  <span class="mandatory">&nbsp;*</span></label>
+                          <mat-form-field
+                            class="example-full-width mb-3"
+                            appearance="outline"
+                          >
+                            <input
+                              matInput
+                              [matDatepicker]="picker"
+                              formControlName="dob"
+        
+                            />
+                            <mat-datepicker-toggle
+                              matSuffix
+                              [for]="picker"
+                            ></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                            <mat-error *ngIf="userForm.get('dob')?.invalid ||userForm.get('dob')?.touched">
+                              {{ utils.getErrorMessage1(userForm.get('dob'), 'dob') }}
+                            </mat-error> 
+                          </mat-form-field>
+                        </div>
+                    <!-- </div>
+        
+                    <div class="row"> -->
+        
+                        
+                    <!-- </div>
+                 
+                      <div class="row"> -->
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
+                          <label>Registration Date <span class="mandatory">&nbsp;*</span></label>
+                          <mat-form-field
+                            class="example-full-width mb-3"
+                            appearance="outline"
+                          >
+                            <input
+                              matInput
+                              [matDatepicker]="rpicker"
+                              formControlName="joiningDate"
+                              required
+                            />
+                            <mat-datepicker-toggle
+                              matSuffix
+                              [for]="rpicker"
+                            ></mat-datepicker-toggle>
+                            <mat-datepicker #rpicker></mat-datepicker>
+                            <mat-error
+                              *ngIf="userForm.get('joiningDate')?.hasError('required')"
+                            >
+                              Select date
+                            </mat-error>
+                          </mat-form-field>
+                        </div>
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                          <div class="button-container">
+                            <label>Department <span class="mandatory">&nbsp;*</span></label>
+                            <mat-icon class="cursor-pointer" (click)="openDialog()">add</mat-icon>
+                          </div>
+                          <mat-form-field
+                            class="example-full-width mb-3"
+                            appearance="outline">
+                            <mat-select formControlName="department" required >
+                              <mat-option [value]="dept.department" *ngFor="let dept of dept">
+                               {{dept.department }}
+                              </mat-option>
+                            </mat-select>
+                            <mat-error
+                              *ngIf="userForm.get('department')?.hasError('required')"
+                            >
+                              Select Department
+                            </mat-error>
+                          </mat-form-field>
+                        </div>
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                          <div class="button-container">
+                            <label class="self-end">Role<span class="mandatory">&nbsp;*</span></label>
+                            <!-- <button type="button" mat-flat-button color="primary" class="px-4 py-2">+</button> -->
+                            <mat-icon class="cursor-pointer" (click)="openRoleModal()">add</mat-icon>
+                          </div>
+                          <mat-form-field class="example-full-width mb-3 test" appearance="outline">
+                              <mat-select required formControlName="type">
+                                  <mat-option [value]="'admin'" disabled> Admin </mat-option>
+                                </mat-select>
+                              <mat-error *ngIf="userForm.get('type')?.hasError('required')">
+                                  Select role
+                              </mat-error>
+                          </mat-form-field>
+                      </div>
+                      <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                        <label>Password <span class="mandatory">&nbsp;*</span></label>
+                        <mat-form-field class="example-full-width mb-3" appearance="outline">
+                            <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" required>
+                            <mat-error *ngIf="userForm.get('password')?.hasError('required')">
+                                Enter Password
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                       
+                      <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" >
+                        <label>Address </label>
+                        <mat-form-field
+                          class="example-full-width mb-3"
+                          appearance="outline"
+                        >
+                          <textarea matInput formControlName="address"></textarea>
+                        </mat-form-field>
+                      </div>
+                      </div>
+                </div>
+            </form>
+                  <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                      <div class="example-button-row">
+                        <button  mat-raised-button color="primary" (click)="update()"  [mat-dialog-close]="1"
+                         >Save</button>
+                        <button mat-raised-button color="warn" (click)="onNoClick()" tabindex="-1">Cancel</button>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

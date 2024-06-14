@@ -1,5 +1,10 @@
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import {
   MAT_DIALOG_DATA,
   MatDialog,
@@ -38,16 +43,32 @@ export class CreateSuperAdminComponent {
   status = true;
   constructor(
     public _fb: FormBuilder,
-    public dialog: MatDialog, private router: Router,
-    private StudentService: StudentsService,private logoService: LogoService,private adminService: AdminService,public utils: UtilsService, private userService: UserService,
+    public dialog: MatDialog,
+    private router: Router,
+    private StudentService: StudentsService,
+    private logoService: LogoService,
+    private adminService: AdminService,
+    public utils: UtilsService,
+    private userService: UserService
   ) {}
   ngOnInit() {
     this.userForm = this._fb.group({
-      name: new FormControl('', [Validators.required, Validators.pattern(/[a-zA-Z0-9]+/),...this.utils.validators.noLeadingSpace]),
+      name: new FormControl('', [
+        Validators.required,
+        Validators.pattern(/[a-zA-Z0-9]+/),
+        ...this.utils.validators.noLeadingSpace,
+      ]),
       last_name: new FormControl('', []),
-      rollNo: new FormControl('', [Validators.required, ...this.utils.validators.noLeadingSpace,...this.utils.validators.roll_no]),
+      rollNo: new FormControl('', [
+        Validators.required,
+        ...this.utils.validators.noLeadingSpace,
+        ...this.utils.validators.roll_no,
+      ]),
       gender: new FormControl('', [Validators.required]),
-      mobile: new FormControl('', [Validators.required,...this.utils.validators.mobile]),
+      mobile: new FormControl('', [
+        Validators.required,
+        ...this.utils.validators.mobile,
+      ]),
       qualification: new FormControl('', []),
       department: new FormControl('', []),
       address: new FormControl('', []),
@@ -62,15 +83,14 @@ export class CreateSuperAdminComponent {
         Validators.minLength(2),
       ]),
       type: new FormControl('admin', [Validators.required]),
-      dob: new FormControl('', [Validators.required,...this.utils.validators.dob]),
+      dob: new FormControl('', [
+        Validators.required,
+        ...this.utils.validators.dob,
+      ]),
       joiningDate: new FormControl('', [Validators.required]),
-     
     });
     this.getDepartment();
     this.getUserTypeList();
-  }
-  
-  createAdmin() {
   }
 
   openDialog(): void {
@@ -177,13 +197,11 @@ export class CreateSuperAdminComponent {
       return res;
     });
   }
-  
+
   checkChecked(items: any[], id: string) {
     return items?.find((v) => v.id === id);
   }
   update() {
-    console.log(this.userForm.value,"+++++++++++++++++++++++++");
- 
     if (this.userForm.valid) {
       // if (this.editUrl) {
       //   Swal.fire({
@@ -198,32 +216,31 @@ export class CreateSuperAdminComponent {
       //       this.updateBlog(this.userForm.value);
       //     }
       //   });
-        
-      // } 
+
+      // }
       // else {
-        Swal.fire({
-          title: 'Are you sure?',
-          text: 'Do you want to create user!',
-          icon: 'warning',
-          confirmButtonText: 'Yes',
-          showCancelButton: true,
-          cancelButtonColor: '#d33',
-        }).then((result) => {
-          if (result.isConfirmed) {
-            this.addBlog(this.userForm.value);
-          }
-        });
-        
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'Do you want to create user!',
+        icon: 'warning',
+        confirmButtonText: 'Yes',
+        showCancelButton: true,
+        cancelButtonColor: '#d33',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.addBlog(this.userForm.value);
+        }
+      });
+
       // }
     } else {
-      this.userForm.markAllAsTouched(); 
+      this.userForm.markAllAsTouched();
       this.isSubmitted = true;
     }
   }
 
   addBlog(formObj: any) {
-    console.log(formObj,"dtaattaaaa");
-  
+
     let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     console.log('Form Value', formObj);
     if (!formObj.invalid) {
@@ -238,15 +255,12 @@ export class CreateSuperAdminComponent {
 
       const userData: Users = formObj;
       userData.avatar = this.avatar;
-      console.log(userData,"dtaattaaaa12312312");
-
 
       this.createUser(userData);
-    
     }
   }
   private createUser(userData: Users): void {
-    console.log("create",userData)
+    console.log('create', userData);
     this.userService.saveUsers(userData).subscribe(
       () => {
         Swal.fire({
@@ -256,7 +270,7 @@ export class CreateSuperAdminComponent {
         });
         //this.fileDropEl.nativeElement.value = "";
         this.userForm.reset();
-        this.router.navigateByUrl('/dashboard/dashboard');
+        this.router.navigateByUrl('/super-admin/admin-list');
       },
       (error) => {
         Swal.fire(
@@ -267,7 +281,7 @@ export class CreateSuperAdminComponent {
       }
     );
   }
-  onNoClick(){
-    this.router.navigateByUrl('/dashboard/dashboard');
+  onNoClick() {
+    this.router.navigateByUrl('/super-admin/admin-list');
   }
 }

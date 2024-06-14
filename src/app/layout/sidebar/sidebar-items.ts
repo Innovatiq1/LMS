@@ -2370,3 +2370,42 @@ export const SettingsMenu: MenuItem[] = [
   //   ]
   // }
 ]
+
+export const SuperAdminMenu: MenuItem[] = [
+  {
+    path:'',
+    title:'Super Admin',
+    id:'super-admin',
+    iconType:'img',
+    icon:'assets/images/settings/role.png',
+    class:'menu-toggle',
+    badge:'',
+    iconsrc:'',
+    badgeClass:'',
+    groupTitle:false,
+    open:false,
+    role:['Admin'],
+    children: [
+      {
+        iconsrc:'',
+        path: '/super-admin/super-admin',
+        title: 'Admin List',
+        iconType: '',
+        icon: '',
+        id:'all-users',
+        class: 'ml-menu',
+        groupTitle: false,
+        badge: '',
+        badgeClass: '',
+        role: [''],
+        open:false,
+
+        children: [],
+      },
+    ]
+  }
+];
+    
+
+
+  

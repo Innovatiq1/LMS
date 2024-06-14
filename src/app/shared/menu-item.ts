@@ -219,6 +219,21 @@ MENU_LIST = [
     ]
 },
 {
+    id: "super-admin",
+    title: "Super Admin",
+    iconsrc: "/assets/course-icon.svg",
+    icon:'school',
+    children: [
+        {
+            id: "admin-list",
+            title: "Create Admin",
+            type: "none"
+        },
+        
+
+    ]
+},
+{
     id: "instructor",
     title: "Lectures",
     iconsrc: "/assets/announcement-icon.svg",

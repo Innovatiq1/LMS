@@ -218,18 +218,20 @@
                       </mat-form-field>
                     </div>
                     </div>
-              </div>
-          </form>
-                <div class="row">
-                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
-                    <div class="example-button-row">
-                      <button  mat-raised-button color="primary" (click)="update()"  [mat-dialog-close]="1"
-                       >Save</button>
-                      <button mat-raised-button color="warn" (click)="onNoClick()" tabindex="-1">Cancel</button>
+                    <div class="row">
+                      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                        <div class="example-button-row">
+                          <button mat-raised-button color="warn" (click)="onNoClick()" tabindex="-1">Cancel</button>
+                          
+                          <button  mat-raised-button color="primary" (click)="update()"  [mat-dialog-close]="1"
+                           >Save</button>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-
+              </div>
+              
+          </form>
+                
           </div>
         </div>
       </div>
