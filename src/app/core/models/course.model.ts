@@ -278,6 +278,7 @@ export interface CoursePaginationModel extends Pagination {
   	userGroupId:string;
   	isAll:boolean;
 	filterName: string;
+	adminId:string;
 }
 
 export interface ProgramCourse {

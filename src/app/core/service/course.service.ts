@@ -154,7 +154,9 @@ export class CourseService {
   getAllCoursesWithPagination(
     filter?: Partial<CoursePaginationModel>
   ): Observable<ApiResponse> {
-    const apiUrl = this.defaultUrl+'admin/courses-new?status=active&status=inactive';
+    let userId = localStorage.getItem('id')
+    const apiUrl = `${this.prefix}admin/courses-new?adminId=${userId}&status=active&status=inactive`;
+
     return this._Http.get<ApiResponse>(apiUrl, {
       params: this.buildParams(filter),
     });
