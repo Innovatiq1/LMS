@@ -87,7 +87,8 @@ export class ExamTestListComponent {
 
   navToExam(data: any) {
     const isPaid = data.courseId?.feeType == 'paid';
-    if (isPaid) {
+    const isPaymentCompleted = data?.studentClass?.paid;
+    if (isPaid && !isPaymentCompleted) {
       this.paidDirectExamFlow(data)
     }else {
       const courseDetails = data.courseId;
