@@ -672,6 +672,8 @@ this.courseService.uploadCourseThumbnail(formData).subscribe((data: any) =>{
     if(this.firstFormGroup.valid){
       const courseData = this.firstFormGroup.value;
       let creator = JSON.parse(localStorage.getItem('user_data')!).user.name;
+      let userId = localStorage.getItem('id') 
+
       let payload = {
 
         title: courseData.title,
@@ -706,7 +708,8 @@ this.courseService.uploadCourseThumbnail(formData).subscribe((data: any) =>{
         website_link:courseData?.website_link,
         feeType:courseData?.feeType,
         isFeedbackRequired: courseData?.isFeedbackRequired,
-        examType: courseData?.examType
+        examType: courseData?.examType,
+        adminId:userId
       }
 
       Swal.fire({
