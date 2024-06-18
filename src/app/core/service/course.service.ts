@@ -122,7 +122,8 @@ export class CourseService {
   getAllCourses(
     filter?: Partial<CoursePaginationModel>
   ): Observable<ApiResponse> {
-    const apiUrl = this.defaultUrl+'admin/courses-new';
+    let userId = localStorage.getItem('id')
+    const apiUrl = `${this.prefix}admin/courses-new?adminId=${userId}`;
     return this._Http.get<ApiResponse>(apiUrl, {
       params: this.buildParams(filter),
     });
@@ -241,7 +242,8 @@ export class CourseService {
     return this._Http.put<any>(apiUrl, payload).pipe(map((response) => response));
   }
   getVendor(): Observable<FundingGrant[]> {
-    const apiUrl = `${this.prefix}admin/vendor/`;
+        let userId = localStorage.getItem('id')
+    const apiUrl = `${this.prefix}admin/vendor?adminId=${userId}`;
     return this._Http.get<any>(apiUrl).pipe(map((response:any) => response.data));
   }
   getVendorById(id:string): Observable<Vendor> {
