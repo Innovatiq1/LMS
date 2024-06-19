@@ -220,7 +220,8 @@ export class CourseService {
     return this._Http.put<any>(apiUrl, payload).pipe(map((response) => response));
   }
   getFundingGrant(): Observable<FundingGrant[]> {
-    const apiUrl = `${this.prefix}admin/funding-grant/`;
+    let userId = localStorage.getItem('id');
+    const apiUrl = `${this.prefix}admin/funding-grant?adminId=${userId}`;
     return this._Http.get<any>(apiUrl).pipe(map((response:any) => response.data));
   }
   getFundingGrantById(id:string): Observable<FundingGrant[]> {
@@ -266,7 +267,8 @@ export class CourseService {
     return this._Http.put<any>(apiUrl, payload).pipe(map((response) => response));
   }
   getDiscount(): Observable<Discount[]> {
-    const apiUrl = `${this.prefix}admin/discount/`;
+    let userId = localStorage.getItem('id');
+    const apiUrl = `${this.prefix}admin/discount?adminId=${userId}`;
     return this._Http.get<any>(apiUrl).pipe(map((response:any) => response.data));
   }
   getDiscountById(id:string): Observable<Discount> {
@@ -294,7 +296,8 @@ export class CourseService {
       .pipe(map((response:any) => response.data?.docs));
   }
   getCourseKit(filter?: Partial<CoursePaginationModel>): Observable<ApiResponse> {
-    const apiUrl = `${this.prefix}admin/course-kit/`;
+    let userId = localStorage.getItem('id');
+    const apiUrl = `${this.prefix}admin/course-kit?adminId=${userId}`;
     return this._Http
       .get<ApiResponse>(apiUrl, { params: this.buildParams(filter) })
       .pipe(
@@ -326,7 +329,8 @@ export class CourseService {
       .pipe(map((response) => response));
   }
   getMainCategoriesWithPagination(filter?:Partial<CoursePaginationModel>): Observable<ApiResponse> {
-    const apiUrl = `${this.prefix}admin/main-category/`;
+    let userId = localStorage.getItem('id')
+    const apiUrl = `${this.prefix}admin/main-category?adminId=${userId}`;
     return this._Http
       .get<ApiResponse>(apiUrl,{
         params: this.buildParams(filter),

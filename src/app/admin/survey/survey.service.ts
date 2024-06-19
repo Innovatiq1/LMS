@@ -97,7 +97,8 @@ export class SurveyService extends UnsubscribeOnDestroyAdapter {
       .pipe(map((response) => response));
   }
   getSurvey( filter?: Partial<CoursePaginationModel>): Observable<ApiResponse> {
-    const apiUrl = `${this.prefix}admin/survey`;
+    let userId = localStorage.getItem('id');
+    const apiUrl = `${this.prefix}admin/survey?adminId=${userId}`;
     return this.httpClient.get<any>(apiUrl, {
       params: this.buildParams(filter),
     });

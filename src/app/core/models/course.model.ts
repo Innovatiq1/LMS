@@ -1,6 +1,7 @@
 import { Pagination } from "./pagination.model";
 
 export interface CourseKit {
+  adminId: string | null;
 	_id: string;
 	name: string;
 	docs: CourseKit[];
@@ -236,6 +237,7 @@ export interface User_id {
 	id: string;
 }
 export interface CourseKit {
+	adminId: string | null;
 	_id: string;
 	name: string;
 	docs: CourseKit[];
@@ -347,7 +349,8 @@ export interface DepartmentModel {
   }
 
   export interface CourseKitModel extends Pagination {
-	status: string;
+	   status: string;
+	  
 	  data: CourseKit[];
 	  totalCount: number;
 	  filterText: string;

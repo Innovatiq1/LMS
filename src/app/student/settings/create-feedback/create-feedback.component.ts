@@ -221,7 +221,10 @@ export class CreateFeedbackComponent  {
 
   save() {
     if (this.feedbackForm.valid) {
-      const payload = this.feedbackForm.value;
+     // const payload = this.feedbackForm.value;
+      let userId = localStorage.getItem('id');
+      const payload = {...this.feedbackForm.value, adminId : userId}
+      console.log(payload);
       payload.questions = payload?.questions.map((v: any) => {
         const data = v;
         if (!['select', 'radio'].includes(v.type)) {

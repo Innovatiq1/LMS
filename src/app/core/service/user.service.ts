@@ -231,7 +231,9 @@ export class UserService {
   }
 
   getUserGroups(filter?: Partial<CoursePaginationModel>): Observable<any> {
-    const apiUrl = this.defaultUrl + 'admin/user-group';
+    let userId = localStorage.getItem('id');
+   // const apiUrl = this.defaultUrl + 'admin/user-group';
+   const apiUrl = this.defaultUrl + `admin/user-group?adminId=${userId}`;
     return this.http
       .get<ApiResponse>(apiUrl, {
         params: this.buildParams(filter),

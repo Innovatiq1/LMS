@@ -53,6 +53,8 @@ export class CreateDepartmentComponent {
 
   onSubmit() {
     if (this.departmentForm.valid) {
+      let userId = localStorage.getItem('id');
+      this.departmentForm.value.adminId=userId;
       Swal.fire({
         title: 'Are you sure?',
         text: 'Do you want to create department!',

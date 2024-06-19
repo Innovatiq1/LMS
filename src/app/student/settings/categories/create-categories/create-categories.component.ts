@@ -110,9 +110,9 @@ export class CreateCategoriesComponent implements OnInit{
     if (this.mainCategoryForm.invalid) {
       return;
     }
-
-    const mainCategoryData = this.mainCategoryForm.value;
-
+    let userId = localStorage.getItem('id');
+   // const mainCategoryData = this.mainCategoryForm.value;
+    const mainCategoryData = {...this.mainCategoryForm.value, adminId : userId}
     Swal.fire({
       title: 'Are you sure?',
       text: 'Do you want to Main category!',
@@ -122,6 +122,7 @@ export class CreateCategoriesComponent implements OnInit{
       cancelButtonColor: '#d33',
     }).then((result) => {
       if (result.isConfirmed){
+
     this.courseService.createMainCategory(mainCategoryData).subscribe(
       (response) => {
         Swal.fire('Success', 'Main category created successfully!', 'success');
@@ -181,6 +182,7 @@ export class CreateCategoriesComponent implements OnInit{
     // if (this.subCategoryForm.invalid) {
     //   return;
     // }
+    
 
     this.subCategoryData = this.subcategories.value;
     this.subCategoryData.forEach(subcategory => {

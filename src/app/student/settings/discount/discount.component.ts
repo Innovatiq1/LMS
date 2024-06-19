@@ -38,6 +38,8 @@ export class DiscountComponent {
 
   onSubmit() {
     if(this.discountForm.valid){
+      let userId = localStorage.getItem('id');
+      this.discountForm.value.adminId=userId
     Swal.fire({
       title: 'Are you sure?',
       text: 'Do you want to create Discount!',

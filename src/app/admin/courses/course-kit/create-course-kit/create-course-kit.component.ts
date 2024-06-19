@@ -185,6 +185,7 @@ export class CreateCourseKitComponent implements OnInit {
     
   }
   private createCourseKit(courseKitData: CourseKit): void {
+    let userId = localStorage.getItem('id');
     Swal.fire({
       title: 'Are you sure?',
       text: 'You want to create a course kit!',
@@ -194,6 +195,7 @@ export class CreateCourseKitComponent implements OnInit {
       cancelButtonColor: '#d33',
     }).then((result) => {
       if (result.isConfirmed) {
+         courseKitData.adminId=userId;
         this.courseService.createCourseKit(courseKitData).subscribe(
           (res) => {
             console.log('res', res);

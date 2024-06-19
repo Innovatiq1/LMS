@@ -56,13 +56,14 @@ export class CreateUserRoleComponent {
   createUserType(): any {
     console.log("createUserType", this.userTypeFormGroup);
     if(this.userTypeFormGroup.valid){
-    
+      let userId = localStorage.getItem('id');
       let formData = this.userTypeFormGroup.getRawValue();
       let selectedMenuItems = []
       selectedMenuItems = this.getCheckedItems(this.dataSourceArray).filter((v: any) => v);
       formData.menuItems = selectedMenuItems;
   
       return new Promise((resolve, reject) => {
+        formData.adminId=userId;
         this.adminService.createUserType(formData).subscribe(
           (response: unknown) => {
             this.isLoading = false;

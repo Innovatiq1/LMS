@@ -36,6 +36,8 @@ export class FundingComponent {
 
   onSubmit() {
     if(this.fundingForm.valid){
+      let userId = localStorage.getItem('id');
+      this.fundingForm.value.adminId=userId;
     Swal.fire({
       title: 'Are you sure?',
       text: 'Do you want to create funding grant!',

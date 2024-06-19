@@ -411,6 +411,7 @@ export class CreateClassComponent {
   }
 
   saveProgramClass() {
+    let userId = localStorage.getItem('id');
     console.log(this.classForm)
     if(this.classForm.valid) {
     if (!this.editUrl) {
@@ -420,6 +421,7 @@ export class CreateClassComponent {
         this.classForm.value.sessions = sessions;
         this.classForm.value.programName = this.courseTitle;
         this.isSubmitted = true;
+       this.classForm.value.adminId=userId;
 
         Swal.fire({
           title: 'Are you sure?',

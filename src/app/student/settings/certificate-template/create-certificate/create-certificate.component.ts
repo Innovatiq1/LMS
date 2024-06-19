@@ -188,11 +188,13 @@ export class CreateCertificateComponent implements OnInit {
     console.log(this.certificateForm);
     if (this.certificateForm.valid) {
       if (!this.editUrl) {
+        let userId = localStorage.getItem('id');
         //let sessions = this.getSession();
         // if (sessions) {
         //  this.certificateForm.value.sessions = sessions;
         //  this.certificateForm.value.programName = this.courseTitle;
         this.isSubmitted = true;
+        this.certificateForm.value.adminId=userId;
 
         Swal.fire({
           title: 'Are you sure?',

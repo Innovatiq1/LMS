@@ -63,7 +63,9 @@ export class DeptService {
   getAllDepartments(
     filter?: Partial<CoursePaginationModel>
   ): Observable<ApiResponse> {
-    const apiUrl = this.defaultUrl + 'admin/department';
+    let userId = localStorage.getItem('id');
+    //const apiUrl = this.defaultUrl + 'admin/department';
+    const apiUrl = this.defaultUrl + `admin/department?adminId=${userId}`;
     return this._Http.get<ApiResponse>(apiUrl, {
       params: this.buildParams(filter),
     });
