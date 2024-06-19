@@ -242,7 +242,8 @@ getStudentsApprovedClasses(): Observable<any> {
 
 getClassListWithPagination(
   filter?:Partial<CoursePaginationModel>): Observable<ApiResponse> {
-  const apiUrl = `${this.prefix}admin/class/`;
+    let userId = localStorage.getItem('id');
+  const apiUrl = `${this.prefix}admin/class?adminId=${userId}`;
   return this.http.get<ApiResponse>(apiUrl, { params: this.buildParams(filter) })
 }
 
