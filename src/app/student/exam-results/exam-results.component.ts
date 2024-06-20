@@ -15,7 +15,7 @@ export class ExamResultsComponent {
   displayedColumns: string[] = [
     'Course Title',
     'Exam Name',
-    'Exam Assessment Score',
+    'Exam Score',
     'Submitted At',
     'Retakes left',
     'Exam'

@@ -15,7 +15,7 @@ import { CourseService } from '@core/service/course.service';
 })
 export class ExamComponent {
   displayedColumns: string[] = [
-    'Assessment Name',
+    // 'Assessment Name',
     'Course Name',
     'Submitted Date',
     'Score',
