@@ -31,7 +31,18 @@ export class SuperAdminComponent extends UnsubscribeOnDestroyAdapter {
       active: 'Super Admin Dashboard',
     },
   ];
-
+  displayedColumns: string[] = [
+    // 'select',
+    // 'img',
+    'Name',
+    'User Type',
+    'gender',
+    'Qualification',
+    'Mobile',
+    'Email',
+    'Status',
+    // 'Actions'
+  ];
  
   dataSource: any[] = [];
   filteredData: any[] = [];
@@ -125,9 +136,10 @@ export class SuperAdminComponent extends UnsubscribeOnDestroyAdapter {
   }
 
 
-
+  pageSizeChange($event: any) {
+    this.coursePaginationModel.page = $event?.pageIndex + 1;
+    this.coursePaginationModel.limit = $event?.pageSize;
+    this.fetchData(); // Call method to update displayed data
+  }
  
-  
-
-
 }

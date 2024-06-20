@@ -247,7 +247,7 @@ export class CreateSuperAdminComponent {
       console.log('======', formObj.type);
       formObj['Active'] = this.status;
       formObj['type'] = formObj.type;
-      formObj['role'] = formObj.role;
+      formObj['role'] = 'Admin';
       formObj['isLogin'] = true;
       formObj['adminId'] = user.user.id;
       formObj['adminEmail'] = user.user.email;
