@@ -28,11 +28,11 @@
                     <div class="responsive_table">
                         <table mat-table [dataSource]="dataSource" matSort class="mat-cell advance-table">
                  
-                            <ng-container matColumnDef="Assessment Name">
+                            <!-- <ng-container matColumnDef="Assessment Name">
                               <mat-header-cell *matHeaderCellDef mat-sort-header>Assessment Name
                               </mat-header-cell>
                               <mat-cell *matCellDef="let row"><span class="mobile-label">Name:</span> {{row.assessmentId?.name }}</mat-cell>
-                            </ng-container>
+                            </ng-container> -->
                             <ng-container matColumnDef="Course Name">
                               <mat-header-cell *matHeaderCellDef mat-sort-header>Course Name</mat-header-cell>
                               <mat-cell *matCellDef="let row"><span class="mobile-label">Course Name:</span>{{row.courseId?.title}}</mat-cell>
