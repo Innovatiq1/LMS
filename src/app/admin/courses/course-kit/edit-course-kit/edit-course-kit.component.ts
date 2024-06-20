@@ -343,11 +343,17 @@ export class EditCourseKitComponent {
   }
   fileBrowseHandler(event: any) {
     const file = event.target.files[0];
-    this.videoLink = file;
-    console.log(this.videoLink,"90"); 
-    this.videoSrc = this.videoLink.name;
-    console.log(this.videoSrc,"000"); 
-  }
+    if(file.size <= 10000000){
+      this.videoLink = file;
+      this.videoSrc = this.videoLink.name;
+      } else {
+        Swal.fire({
+          title: 'Error',
+          text: 'Failed to upload media.Please upload less than 10mb.',
+          icon: 'error',
+        });
+      }
+    }
   onFileUpload(event: any) {
     const file = event.target.files[0];
     this.docs = file;
