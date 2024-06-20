@@ -349,6 +349,10 @@ const routes: Routes = [
     component: CreatAnnouncementComponent,
   },
   {
+    path: 'settings/create-announcement',
+    component: CreatAnnouncementComponent,
+  },
+  {
     path: 'settings/edit-announcement/:id',
     component: CreatAnnouncementComponent,
   },
