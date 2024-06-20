@@ -196,6 +196,16 @@ export class EditCourseKitComponent {
       formdata.append('files', this.videoLink);
       formdata.append('video_filename', this.videoSrc);
       formdata.append('doc_filename', this.uploadedDocument);
+      Swal.fire({
+        title: 'Uploading...',
+        text: 'Please wait...',
+        allowOutsideClick: false,
+        timer: 90000,
+        timerProgressBar: true,
+        // onBeforeOpen: () => {
+        //   Swal.showLoading();
+        //  },
+      });
       // Swal.fire({
       //   // title: "Updated",
       //   // text: "Course Kit updated successfully",
@@ -262,7 +272,6 @@ export class EditCourseKitComponent {
 
   // }
   cancel() {
-
     window.history.back();
   }
   getData() {
