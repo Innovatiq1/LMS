@@ -184,13 +184,12 @@ export class EditCourseKitComponent {
   submitCourseKit(): void {
     // const courseKitData: CourseKit = this.courseKitForm.value;
     // courseKitData.documentLink = this.documentLink;
-    console.log('sday', this.courseKitForm.value);
-    if (this.courseKitForm.valid) {
+    // console.log('sday', this.courseKitForm.value);
+
       // const updatedCourseKit: CourseKit = {
       //   id: this.courseId,
       //   ...this.courseKitForm.value,
       // };
-
       const formdata = new FormData();
       formdata.append('files', this.docs);
       formdata.append('files', this.videoLink);
@@ -264,9 +263,8 @@ export class EditCourseKitComponent {
       // );
     } 
 
-    else {
-      this.isSubmitted=true;    }
-  }
+    
+  
   // toggleList() {
   //   this.router.navigateByUrl("Course/Course Kit")
 
@@ -291,6 +289,8 @@ export class EditCourseKitComponent {
         // let endTime=response?.course?.endDate.split("T")[1];
         // let endingTime=endTime?.split(".")[0];
         this.documentLink = response.course?.documentLink;
+        this.docs = response.course?.documentLink;
+        this.videoLink = response.course?.videoLink;
         // this.uploaded=this.documentLink.split('/')
         // this.uploadedDocument = this.uploaded.pop();
 
@@ -302,9 +302,9 @@ export class EditCourseKitComponent {
           name: response?.course?.name,
           shortDescription: response?.course?.shortDescription,
           longDescription: response?.course?.longDescription,
-          videoLink: response?.course?.videoLink
-            ? response?.course?.videoLink[0].video_url
-            : null,
+          // videoLink: response?.course?.videoLink
+          //   ? response?.course?.videoLink[0].video_url
+          //   : null,
           // startDate:this.courseKitForm.get('startDate')?.patchValue(startingDate),
           // moment(startingDate).format("MM/DD/YYYY,h:mm A"),
           // endDate:this.courseKitForm.get('endDate')?.patchValue(endingDate),
