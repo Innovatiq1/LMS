@@ -395,9 +395,12 @@ export class ExampleDataSource extends DataSource<Students> {
       this._sort.sortChange,
       this.filterChange,
       this.paginator.page,
+      
     ];
+    let userId = localStorage.getItem('id')
     let payload = {
-      type: AppConstants.STUDENT_ROLE
+      type: AppConstants.STUDENT_ROLE,
+      adminId:userId
     };
     this.exampleDatabase.getAllStudentss(payload);
 

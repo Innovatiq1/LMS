@@ -206,10 +206,12 @@ export class SidemenuComponent {
   update() {
     console.log("update",this.sideMenuForm.value)
     if (this.sideMenuForm.valid) {
+      let userId = localStorage.getItem('id');
       const payload = {
         MENU_LIST: this.sideMenuForm.value.sidemenu.map((menulist: any) => ({
           title: menulist.title,
           id: menulist.id,
+          adminId:userId,
           iconsrc: menulist.iconsrc,
           class:menulist.class,
           children: menulist.submenu.map((submenus: any) => ({
@@ -219,6 +221,7 @@ export class SidemenuComponent {
             children: submenus.submenu.map((submenu: any) => ({
               title: submenu.title,
               id: submenu.id,
+              
               class:submenu.class
             }))
           }))

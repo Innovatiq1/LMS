@@ -95,10 +95,17 @@ export class AdminService {
     );
   }
 
-  getUserTypeList(filter: any): Observable<any> {
-    let userId = localStorage.getItem('id');
+  getUserTypeList(filter: any,id?:any): Observable<any> {
+    //let userId = localStorage.getItem('id');
     //const apiUrl = this.defaultUrl + 'userType';
-     const apiUrl = `${this.defaultUrl}userType?adminId=${userId}`;
+    console.log("filter",filter);
+    let apiUrl;
+    if(id){
+      apiUrl = `${this.defaultUrl}userType?adminId=${id}`;
+    }
+    else{
+     apiUrl = `${this.defaultUrl}userType`;
+    }
     const params = {
       ...filter,
     };

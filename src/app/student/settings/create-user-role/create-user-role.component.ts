@@ -43,7 +43,8 @@ export class CreateUserRoleComponent {
   // this.router.navigate(['/Users/Type/edit'],{queryParams:{id:id}});
   }
   getAllUserTypes(filters?: any) {
-    this.adminService.getUserTypeList({ 'allRows':true }).subscribe(
+    let userId = localStorage.getItem('id');
+    this.adminService.getUserTypeList({ 'allRows':true },userId).subscribe(
       (response: any) => {
         this.userTypeNames = response;
         console.log("types", this.userTypeNames)

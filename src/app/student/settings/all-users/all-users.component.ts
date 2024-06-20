@@ -71,8 +71,9 @@ export class AllUsersComponent {
 @ViewChild('filter', { static: true }) filter!: ElementRef;
 
 getBlogsList(filters?:any) {
-  let filterText = this.searchTerm
-  this.alluserService.getUserList({filterText,...this.coursePaginationModel}).subscribe((response: any) => {
+  let filterText = this.searchTerm;
+  let userId = localStorage.getItem('id');
+  this.alluserService.getUserList({filterText,...this.coursePaginationModel},userId).subscribe((response: any) => {
     this.dataSource = response.data.data;
     this.isLoading = false;
     this.ref.detectChanges();

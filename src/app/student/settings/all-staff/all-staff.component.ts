@@ -306,7 +306,8 @@ export class ExampleDataSource extends DataSource<Staff> {
     let payload = {
       status:'active'
     }
-    this.exampleDatabase.getAllStaffs();
+    let userId = localStorage.getItem('id')
+    this.exampleDatabase.getAllStaffs(userId);
     return merge(...displayDataChanges).pipe(
       map(() => {
         // Filter data

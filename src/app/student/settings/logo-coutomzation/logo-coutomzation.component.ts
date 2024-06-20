@@ -96,6 +96,7 @@ export class LogoCoutomzationComponent {
   /* update logo api call **/
 
   updateLogo() {
+    
     Swal.fire({
       title: 'Are you sure?',
       text: 'Do you want to update this logo!',
@@ -109,8 +110,10 @@ export class LogoCoutomzationComponent {
         if(this.logoFile){
           formdata.append('files', this.logoFile);
         }
+        let userId:any = localStorage.getItem('id');
         formdata.append('title', this.LogoForm.value.title);
         formdata.append('filename', this.logoImg);
+        formdata.append('adminId',userId)
         this.logoService
           .updateLogo(this.patchId, formdata)
           .subscribe((data) => {

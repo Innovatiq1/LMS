@@ -60,8 +60,10 @@ export class UserService {
     }
     return params;
   }
-  getUserList(filter?: Partial<CoursePaginationModel>): Observable<any> {
-    const apiUrl = this.defaultUrl + 'admin/adminUserListing';
+  getUserList(filter?: Partial<CoursePaginationModel>,id?:any): Observable<any> {
+   
+   // const apiUrl = this.defaultUrl + 'admin/adminUserListing';
+   const apiUrl = this.defaultUrl + `admin/adminUserListing?adminId=${id}`;
     return this.http
       .get<ApiResponse>(apiUrl, {
         params: this.buildParams(filter),

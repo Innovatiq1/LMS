@@ -70,6 +70,7 @@ export class StudentsService extends UnsubscribeOnDestroyAdapter {
 
   /** CRUD METHODS */
   getAllStudentss(body:any): void {
+    
     const apiUrl = `${this.defaultUrl}auth/instructorList/`;
     this.subs.sink = this.httpClient.post<Students>(apiUrl,body).subscribe({
       next: (response) => {
