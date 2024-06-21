@@ -109,8 +109,8 @@ export class CourseService {
   }
 
 
-  saveRegisterClass(payload:any) {
-    const apiUrl = `${this.prefix}admin/studentClasses`;
+  saveRegisterClass(payload:any,id?:any) {
+    const apiUrl = `${this.prefix}admin/studentClasses?adminId=${id}`;
     return this._Http.post<any>(apiUrl, payload).pipe(map((response) => response));
   }
 
@@ -266,9 +266,9 @@ export class CourseService {
     const apiUrl = `${this.prefix}admin/discount/${id}`;
     return this._Http.put<any>(apiUrl, payload).pipe(map((response) => response));
   }
-  getDiscount(): Observable<Discount[]> {
-    let userId = localStorage.getItem('id');
-    const apiUrl = `${this.prefix}admin/discount?adminId=${userId}`;
+  getDiscount(id:any): Observable<Discount[]> {
+   
+    const apiUrl = `${this.prefix}admin/discount?adminId=${id}`;
     return this._Http.get<any>(apiUrl).pipe(map((response:any) => response.data));
   }
   getDiscountById(id:string): Observable<Discount> {

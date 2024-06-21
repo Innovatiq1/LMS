@@ -87,7 +87,8 @@ getAllCourse(){
   if(this.userGroupIds){
     payload.userGroupId=this.userGroupIds
   }
-  this.classService.getClassListWithPagination(payload).subscribe(response =>{
+  let adminId= JSON.parse(localStorage.getItem('user_data')!).user.adminId;
+  this.classService.getClassListWithPagination(payload,adminId).subscribe(response =>{
    this.classesData = response.data.docs;
    this.totalItems = response.data.totalDocs
    this.coursePaginationModel.docs = response.data.docs;

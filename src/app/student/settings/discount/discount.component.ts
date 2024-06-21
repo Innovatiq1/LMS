@@ -74,7 +74,8 @@ export class DiscountComponent {
   }
 }
 getAllDiscounts(){
-  this.courseService.getDiscount().subscribe((response:any) =>{
+  var adminId = localStorage.getItem('id');
+  this.courseService.getDiscount(adminId).subscribe((response:any) =>{
    this.dataSource = response.reverse();
   })
 }

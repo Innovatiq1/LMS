@@ -368,8 +368,8 @@ export class ViewCourseComponent implements OnDestroy {
     this.commonService.setVideoDetails(video);
   }
 
-  getDiscounts(){
-    this.courseService.getDiscount().subscribe((response) => {
+  getDiscounts(id:any){
+    this.courseService.getDiscount(id).subscribe((response) => {
       this.discounts = response.filter(item => !item.discountTitle.includes('&'));
       this.allDiscounts = response;
       this.openDialog(this.discountDialog)
@@ -396,9 +396,10 @@ export class ViewCourseComponent implements OnDestroy {
       verify:false,
       discount:this.selectedDiscount
     };
-
+    let adminId= JSON.parse(localStorage.getItem('user_data')!).user.adminId;
+    //console.log("Message",adminId)
               this.courseService
-                .saveRegisterClass(body)
+                .saveRegisterClass(body,adminId)
                 .subscribe((response) => {
                   Swal.fire({
                     title: 'Thank you',
@@ -425,7 +426,7 @@ export class ViewCourseComponent implements OnDestroy {
     var userdata = JSON.parse(localStorage.getItem('currentUser')!);
     var studentId = localStorage.getItem('id');
     if (this.paid) {
-      this.getDiscounts();
+      this.getDiscounts(userdata.user.adminId);
    
     } else if (this.free) {
       let payload = {
