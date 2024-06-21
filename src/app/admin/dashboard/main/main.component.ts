@@ -864,13 +864,13 @@ export class MainComponent implements OnInit {
           active: `${AppConstants.INSTRUCTOR_ROLE} Dashboad`,
         },
       ];
-    }else if (role === AppConstants.ACCESSOR_ROLE || role === 'Assessor' ) {
+    }else if (role === AppConstants.ASSESSOR_ROLE || role === 'Assessor' ) {
       this.isAssessorDB = true;
       this.breadscrums = [
         {
           title: 'Dashboad',
           items: ['Dashboad'],
-          active: `${AppConstants.ACCESSOR_ROLE} Dashboad`,
+          active: `${AppConstants.ASSESSOR_ROLE} Dashboad`,
         },
       ];
     }
@@ -890,7 +890,7 @@ export class MainComponent implements OnInit {
     } else if ( role === 'programcoordinator'|| role === 'Program manager' ) {
       this.isPCDB = true;
     }
-    if (role == AppConstants.ADMIN_ROLE || role ==AppConstants.ACCESSOR_ROLE) {
+    if (role == AppConstants.ADMIN_ROLE || role ==AppConstants.ASSESSOR_ROLE) {
       this.getAdminDashboard();
     } else if (role === AppConstants.STUDENT_ROLE) {
       this.getStudentDashboard();

@@ -2,8 +2,8 @@ export class AppConstants {
   static readonly STUDENT_ROLE = 'Trainee';
   static readonly INSTRUCTOR_ROLE = 'Trainer';
   static readonly ADMIN_ROLE = 'Admin';
-  static readonly ACCESSOR_ROLE = 'Assessor';
-  static readonly ALLTHREEROLES= ['Trainer', 'admin', 'Accessor']
+  static readonly ASSESSOR_ROLE = 'Assessor';
+  static readonly ALLTHREEROLES= ['Trainer', 'admin', 'Assessor']
 
 
   static readonly ADMIN_USERTYPE = 'admin';

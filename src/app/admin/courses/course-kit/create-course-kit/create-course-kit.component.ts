@@ -244,8 +244,16 @@ export class CreateCourseKitComponent implements OnInit {
   //videoUpload
   fileBrowseHandler(event: any) {
     const file = event.target.files[0];
+    if(file.size <= 10000000){
     this.videoLink = file;
     this.videoSrc = this.videoLink.name;
+    } else {
+      Swal.fire({
+        title: 'Error',
+        text: 'Failed to upload media.Please upload less than 10mb.',
+        icon: 'error',
+      });
+    }
   }
 
   // fileBrowseHandler(event: any) {
