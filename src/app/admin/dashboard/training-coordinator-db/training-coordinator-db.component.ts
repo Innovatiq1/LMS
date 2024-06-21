@@ -111,7 +111,8 @@ export class TrainingCoordinatorDbComponent {
   }
 
   getCount() {
-    this.courseService.getCount().subscribe(response => {
+    let userId = localStorage.getItem('id');
+    this.courseService.getCount(userId).subscribe(response => {
       this.count = response?.data;
       this.instructorCount = this.count?.instructors;
       this.adminCount = this.count?.admins
@@ -363,8 +364,9 @@ export class TrainingCoordinatorDbComponent {
     this.getAllCourse();
   }
   getClassList() {
+    let userId = localStorage.getItem('id');
     this.classService
-      .getClassListWithPagination()
+      .getClassListWithPagination({},userId)
       .subscribe(
         (response) => {
           

@@ -111,8 +111,9 @@ export class ApproveListComponent {
   }
 
   getRegisteredClasses() {
+    let userId = localStorage.getItem('id');
     this._classService
-      .getApprovedClasses(
+      .getApprovedClasses(userId,
         this.studentPaginationModel.page,
         this.studentPaginationModel.limit,
         this.studentPaginationModel.filterText

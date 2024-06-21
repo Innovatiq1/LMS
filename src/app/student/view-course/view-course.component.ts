@@ -386,6 +386,7 @@ export class ViewCourseComponent implements OnDestroy {
       name: userdata.user.name,
       adminEmail:userdata.user.adminEmail,
       adminName:userdata.user.adminName,
+      adminId:userdata.user.adminId,
       courseTitle: this.classDetails?.courseId?.title,
       courseFee: this.classDetails?.courseId?.fee,
       studentId: studentId,
@@ -396,10 +397,8 @@ export class ViewCourseComponent implements OnDestroy {
       verify:false,
       discount:this.selectedDiscount
     };
-    let adminId= JSON.parse(localStorage.getItem('user_data')!).user.adminId;
-    //console.log("Message",adminId)
               this.courseService
-                .saveRegisterClass(body,adminId)
+                .saveRegisterClass(body)
                 .subscribe((response) => {
                   Swal.fire({
                     title: 'Thank you',
@@ -407,9 +406,6 @@ export class ViewCourseComponent implements OnDestroy {
                     icon: 'success',
                   });
                   dialogRef.close();
-
-          
-                  this.getClassDetails();
                   this.payment = false;
                   this.isRegistered = true;
                 });

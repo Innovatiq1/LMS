@@ -158,8 +158,11 @@ export class CreateClassComponent {
       this.addNewRow();
     }
     this.loadForm();
+    let userId = localStorage.getItem('id');
     let payload = {
       type: AppConstants.INSTRUCTOR_ROLE,
+      adminId:userId
+
     };
 
     this.instructorService.getInstructor(payload).subscribe((res) => {

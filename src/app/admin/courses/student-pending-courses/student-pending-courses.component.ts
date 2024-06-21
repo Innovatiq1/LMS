@@ -94,8 +94,9 @@ export class StudentPendingCoursesComponent {
   }
 
   getRegisteredClasses() {
+    let userId = localStorage.getItem('id');
     this._classService
-      .getRegisteredClasses(this.studentPaginationModel.page, this.studentPaginationModel.limit, this.studentPaginationModel.filterText)
+      .getRegisteredClasses(userId,this.studentPaginationModel.page, this.studentPaginationModel.limit, this.studentPaginationModel.filterText)
       .subscribe((response: { data: StudentPaginationModel; }) => {
       this.isLoading = false;
         this.studentPaginationModel = response.data;

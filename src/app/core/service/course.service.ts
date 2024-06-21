@@ -109,8 +109,8 @@ export class CourseService {
   }
 
 
-  saveRegisterClass(payload:any,id?:any) {
-    const apiUrl = `${this.prefix}admin/studentClasses?adminId=${id}`;
+  saveRegisterClass(payload:any) {
+    const apiUrl = `${this.prefix}admin/studentClasses`;
     return this._Http.post<any>(apiUrl, payload).pipe(map((response) => response));
   }
 
@@ -196,10 +196,10 @@ export class CourseService {
   }
 
 
-  getCount(
+  getCount(id:any,
     filter?: Partial<CoursePaginationModel>
   ): Observable<ApiResponse> {
-    const apiUrl = this.defaultUrl+'admin/courses-new/count';
+    const apiUrl = `${this.prefix}admin/courses-new/count?adminId=${id}`;
     return this._Http.get<ApiResponse>(apiUrl);
   }
   getMainCategories(): Observable<MainCategory[]> {

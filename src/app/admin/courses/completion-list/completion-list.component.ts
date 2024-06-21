@@ -116,8 +116,10 @@ export class CompletionListComponent {
     }
   }
   getCompletedClasses() {
+    let userId = localStorage.getItem('id');
     this.classService
       .getSessionCompletedStudent(
+        userId,
         this.studentPaginationModel.page,
         this.studentPaginationModel.limit
       )

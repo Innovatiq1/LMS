@@ -371,7 +371,8 @@ export class MainComponent implements OnInit {
   }
 
   getCount() {
-    this.courseService.getCount().subscribe((response) => {
+    let userId = localStorage.getItem('id');
+    this.courseService.getCount(userId).subscribe((response) => {
       this.count = response?.data;
       this.instructorCount = this.count?.instructors;
       this.adminCount = this.count?.admins;
@@ -920,7 +921,8 @@ export class MainComponent implements OnInit {
   }
   
   getClassList() {
-    this.classService.getClassListWithPagination().subscribe(
+    let userId = localStorage.getItem('id');
+    this.classService.getClassListWithPagination({},userId).subscribe(
       (response) => {
         if (response.data) {
           this.classesList = response.data.docs.slice(0, 5).sort();
@@ -2308,8 +2310,9 @@ private attendanceBarChart() {
   
   }
   getClassListIns() {
+    let userId = localStorage.getItem('id');
     this.classService
-      .getClassListWithPagination()
+      .getClassListWithPagination({},userId)
       .subscribe(
         (response) => {
           
@@ -2366,7 +2369,8 @@ private attendanceBarChart() {
     });
   }
   getCountIns() {
-    this.courseService.getCount().subscribe(response => {
+    let userId = localStorage.getItem('id');
+    this.courseService.getCount(userId).subscribe(response => {
       this.count = response?.data;
       this.instructorCount=this.count?.instructors;
       this.adminCount=this.count?.admins
@@ -2462,7 +2466,8 @@ private attendanceBarChart() {
     
   }
   getCompletedClasses() {
-    this.classService.getSessionCompletedStudent( this.studentPaginationModel.page,this.studentPaginationModel.limit )
+    let userId = localStorage.getItem('id');
+    this.classService.getSessionCompletedStudent( userId,this.studentPaginationModel.page,this.studentPaginationModel.limit )
       .subscribe((response: { docs: any; page: any; limit: any; totalDocs: any }) => {
           this.completedClasses = response.docs.slice(0,5);
         }
@@ -2476,8 +2481,9 @@ private attendanceBarChart() {
       })
   }
   getAllClasses() {
+    let userId = localStorage.getItem('id');
     this.classService
-      .getClassListWithPagination({ ...this.coursePaginationModel })
+      .getClassListWithPagination({ ...this.coursePaginationModel },userId)
       .subscribe(
         (response) => {
           if (response.data) {
