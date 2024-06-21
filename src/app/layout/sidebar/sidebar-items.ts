@@ -2132,7 +2132,24 @@ export const SettingsMenu: MenuItem[] = [
         open:false,
         role:[],
         children:[]
+      },
+      {
+        path:'student/settings/passing-criteria',
+        title:'Passing Criteria',
+        id:'passing-criteria',
+        iconType:'img',
+        icon:'',
+        class:'ml-menu',
+        badge:'',
+        iconsrc:'',
+        badgeClass:'',
+        groupTitle:false,
+        open:false,
+        role:[],
+        children:[]
       }
+
+
 
     ]
   },
