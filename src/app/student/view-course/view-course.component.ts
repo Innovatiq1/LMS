@@ -501,6 +501,7 @@ export class ViewCourseComponent implements OnDestroy {
                   stripe:true,
                   adminEmail:userdata.user.adminEmail,
                   adminName:userdata.user.adminName,
+                  adminId:userdata.user.adminId,
                   invoiceUrl:this.invoiceUrl
                 }
 

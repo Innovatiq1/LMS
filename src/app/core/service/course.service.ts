@@ -518,7 +518,8 @@ export class CourseService {
   getAllPayments(
     filter?: Partial<CoursePaginationModel>
   ): Observable<ApiResponse> {
-    const apiUrl = this.defaultUrl+'paymentHistory/userPaymentHistory';
+    let id = localStorage.getItem('id');
+    const apiUrl = `${this.prefix}paymentHistory/userPaymentHistory?adminId=${id}`;
     return this._Http.get<ApiResponse>(apiUrl, {
       params: this.buildParams(filter),
     });
