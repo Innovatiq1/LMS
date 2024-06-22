@@ -186,6 +186,7 @@ export class CreateAllUsersComponent {
       formObj['adminId'] = user.user.id;
       formObj['adminEmail'] = user.user.email;
       formObj['adminName'] = user.user.name;
+      formObj['companyId'] = user.user.companyId;
 
       const userData: Users = formObj;
       userData.avatar = this.avatar;
@@ -339,7 +340,6 @@ export class CreateAllUsersComponent {
   //   }
   // }
   updateBlog(formObj: any) {
-    console.log('Form Value', formObj);
     let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     if (!formObj.invalid) {
       // Prepare user data for update
@@ -350,7 +350,6 @@ export class CreateAllUsersComponent {
       formObj['adminId'] = user.user.id;
       formObj['adminEmail'] = user.user.email;
       formObj['adminName'] = user.user.name;
-
       const userData: Users = formObj;
 
       // Ensure that the avatar property contains the correct URL
@@ -468,8 +467,8 @@ export class CreateAllUsersComponent {
   }
 
   getForms(): void {
-    let userId = localStorage.getItem('id');    
-    this.formService
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.formService
       .getAllForms(userId,'User Creation Form')
       .subscribe((forms) => {
         this.forms = forms;

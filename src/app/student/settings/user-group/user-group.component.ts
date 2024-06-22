@@ -64,13 +64,13 @@ export class UserGroupComponent {
   submit() {
     if (this.userTypeFormGroup.valid) {
       const courseData = this.userTypeFormGroup.value;
-      let userId = localStorage.getItem('id')
+      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
 
       let payload = {
         group_name: courseData?.typeName,
         shortDes: courseData?.shortDes,
         userId: courseData?.userId,
-        adminId:userId
+        companyId:userId
       };
 
       Swal.fire({

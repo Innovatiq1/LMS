@@ -31,8 +31,8 @@ export class FormCustomizationComponent {
   }
 
   getForms(): void {
-    let userId = localStorage.getItem('id');
-    const formName = this.formName;
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+            const formName = this.formName;
     this.formService.getAllForms(userId,formName).subscribe(forms => {
       this.forms = forms;
     });
@@ -69,8 +69,8 @@ export class FormCustomizationComponent {
   }
 
   updateLabels(): void {
-    let userId = localStorage.getItem('id');
-    this.labelChanges.forEach(change => {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.labelChanges.forEach(change => {
       this.formService.updateLabelStatus(userId,change.formId, change.labelName, change.checked).subscribe(updatedForm => {
         this.openModalPopup();
       }, error => {

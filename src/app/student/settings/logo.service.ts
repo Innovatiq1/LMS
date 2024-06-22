@@ -23,7 +23,7 @@ export class LogoService {
 
   /* Get logos */
   getLogo(id:any): Observable<any> {
-    const apiUrl = `${this.defaultUrl}admin/logo?adminId=${id}`;
+    const apiUrl = `${this.defaultUrl}admin/logo?companyId=${id}`;
     return this.http.get(apiUrl).pipe(
       map(response => {
         this.updateData(response); // Pass the response to updateData
@@ -45,7 +45,7 @@ export class LogoService {
       }
     // get all sidemenu
       getSidemenu(id:any): Observable<any> {
-        const apiUrl = `${this.defaultUrl}admin/sidemenu?adminId=${id}`;
+        const apiUrl = `${this.defaultUrl}admin/sidemenu?companyId=${id}`;
         return this.http.get(apiUrl).pipe(
           map(response => {
              // Pass the response to updateData

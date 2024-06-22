@@ -6,6 +6,7 @@ export interface Student {
     classId: any;
     docs: Users[];
     totalDocs: number;
+    companyId:string;
   }
   export interface Instructor {
     data: Users[];
@@ -53,7 +54,7 @@ export interface Student {
     adminId: string;
     adminEmail: string;
     adminName: string;
-
+    companyId:string;
     isLogin:boolean;
     phone:{
 			countryCode:String,

@@ -110,9 +110,9 @@ export class CreateCategoriesComponent implements OnInit{
     if (this.mainCategoryForm.invalid) {
       return;
     }
-    let userId = localStorage.getItem('id');
-   // const mainCategoryData = this.mainCategoryForm.value;
-    const mainCategoryData = {...this.mainCategoryForm.value, adminId : userId}
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+       // const mainCategoryData = this.mainCategoryForm.value;
+    const mainCategoryData = {...this.mainCategoryForm.value, companyId : userId}
     Swal.fire({
       title: 'Are you sure?',
       text: 'Do you want to Main category!',

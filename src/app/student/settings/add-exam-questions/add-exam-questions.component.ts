@@ -275,14 +275,14 @@ export class AddExamQuestionsComponent {
 
   save() {
     if (this.questionFormTab2.valid) {
-      let userId = localStorage.getItem('id');
-      const payload = {
+      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+            const payload = {
         name: this.questionFormTab2.value.name,
         timer: this.questionFormTab2.value.timer,
         retake: this.questionFormTab2.value.retake,
         scoreAlgorithm: this.questionFormTab2.value.scoreAlgorithm,
         status: 'open',
-        adminId:userId,
+        companyId:userId,
         questions: this.questionFormTab2.value.questions.map((v: any) => ({
           options: v.options,
           questionText: v.questionText,

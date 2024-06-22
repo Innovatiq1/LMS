@@ -72,7 +72,7 @@ export class AllUsersComponent {
 
 getBlogsList(filters?:any) {
   let filterText = this.searchTerm;
-  let userId = localStorage.getItem('id');
+  let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
   this.alluserService.getUserList({filterText,...this.coursePaginationModel},userId).subscribe((response: any) => {
     this.dataSource = response.data.data;
     this.isLoading = false;

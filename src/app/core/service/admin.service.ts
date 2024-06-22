@@ -101,7 +101,7 @@ export class AdminService {
     console.log("filter",filter);
     let apiUrl;
     if(id){
-      apiUrl = `${this.defaultUrl}userType?adminId=${id}`;
+      apiUrl = `${this.defaultUrl}userType?companyId=${id}`;
     }
     else{
      apiUrl = `${this.defaultUrl}userType`;

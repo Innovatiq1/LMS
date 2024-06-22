@@ -151,8 +151,8 @@ export class UserTypeComponent {
   }
 
   getUserTypeList(filters?: any) {
-    let userId = localStorage.getItem('id');
-    this.adminService
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.adminService
       .getUserTypeList({ ...this.coursePaginationModel },userId)
       .subscribe(
         (response: any) => {

@@ -87,8 +87,8 @@ getAllCourse(){
   if(this.userGroupIds){
     payload.userGroupId=this.userGroupIds
   }
-  let adminId= JSON.parse(localStorage.getItem('user_data')!).user.adminId;
-  this.classService.getClassListWithPagination(payload,adminId).subscribe(response =>{
+  let companyId= JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+  this.classService.getClassListWithPagination(payload,companyId).subscribe(response =>{
    this.classesData = response.data.docs;
    this.totalItems = response.data.totalDocs
    this.coursePaginationModel.docs = response.data.docs;
@@ -186,7 +186,7 @@ private mapCategories(): void {
 }
 getFreeCoursesList() {
   let userId = JSON.parse(localStorage.getItem('user_data') || '');
-  let id=userId.user.adminId
+  let id=userId.user.companyId
   this._courseService.getAllCourses(id,{ ...this.coursePaginationModel, status: 'active' ,feeType:'free'})
     .subscribe(response => {
       this.dataSource = response.data.docs;

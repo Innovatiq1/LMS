@@ -36,8 +36,8 @@ export class LogoCoutomzationComponent {
     this.getLogo();
   }
   getLogo() {
-    let userId = localStorage.getItem('id');
-    this.logoService.getLogo(userId).subscribe((logo) => {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.logoService.getLogo(userId).subscribe((logo) => {
       this.Logos = logo?.data?.docs;
     });
   }
@@ -110,10 +110,10 @@ export class LogoCoutomzationComponent {
         if(this.logoFile){
           formdata.append('files', this.logoFile);
         }
-        let userId:any = localStorage.getItem('id');
-        formdata.append('title', this.LogoForm.value.title);
+        let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+                formdata.append('title', this.LogoForm.value.title);
         formdata.append('filename', this.logoImg);
-        formdata.append('adminId',userId)
+        formdata.append('companyId',userId)
         this.logoService
           .updateLogo(this.patchId, formdata)
           .subscribe((data) => {

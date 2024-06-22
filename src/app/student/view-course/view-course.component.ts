@@ -387,7 +387,7 @@ export class ViewCourseComponent implements OnDestroy {
       name: userdata.user.name,
       adminEmail:userdata.user.adminEmail,
       adminName:userdata.user.adminName,
-      adminId:userdata.user.adminId,
+      companyId:userdata.user.companyId,
       courseTitle: this.classDetails?.courseId?.title,
       courseFee: this.classDetails?.courseId?.fee,
       studentId: studentId,
@@ -423,7 +423,7 @@ export class ViewCourseComponent implements OnDestroy {
     var userdata = JSON.parse(localStorage.getItem('currentUser')!);
     var studentId = localStorage.getItem('id');
     if (this.paid) {
-      this.getDiscounts(userdata.user.adminId);
+      this.getDiscounts(userdata.user.companyId);
    
     } else if (this.free) {
       let payload = {
@@ -501,7 +501,7 @@ export class ViewCourseComponent implements OnDestroy {
                   stripe:true,
                   adminEmail:userdata.user.adminEmail,
                   adminName:userdata.user.adminName,
-                  adminId:userdata.user.adminId,
+                  companyId:userdata.user.companyId,
                   invoiceUrl:this.invoiceUrl
                 }
 
@@ -650,7 +650,7 @@ export class ViewCourseComponent implements OnDestroy {
         coursekit: this.courseKit,
         feeType: 'free',
         courseId: this.courseDetails.id,
-        adminId:userdata.user.adminId,
+        companyId:userdata.user.companyId,
         verify:true,
         paid:true
       };
@@ -1216,7 +1216,7 @@ export class ViewCourseComponent implements OnDestroy {
       studentFirstName,
       studentLastName,
       courseName: this.title,
-      adminId:userData.user.adminId
+      companyId:userData.user.companyId
     };
     this.surveyService.addSurveyBuilder(payload).subscribe(
       (response) => {

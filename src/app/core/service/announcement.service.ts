@@ -30,8 +30,8 @@ export class AnnouncementService {
   }
 
   getAnnouncementList = (filter: any): Observable<any> => {
-    let userId = localStorage.getItem('id');    
-    const endpoint = `${this.defaultUrl}admin/announcement?adminId=${userId}`;
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        const endpoint = `${this.defaultUrl}admin/announcement?companyId=${userId}`;
     return this.http.get(endpoint, { params: filter }).pipe(
       map((response) => {
         Logging.debug(response);

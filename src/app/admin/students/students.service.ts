@@ -192,8 +192,8 @@ export class StudentsService extends UnsubscribeOnDestroyAdapter {
     }
 
     getAllDepartments(): Observable<ApiResponse> {
-      let userId = localStorage.getItem('id');
-      const apiUrl = `${this.defaultUrl}admin/department?adminId=${userId}`;
+      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+            const apiUrl = `${this.defaultUrl}admin/department?companyId=${userId}`;
       return this.httpClient.get<ApiResponse>(apiUrl);
     }
     getDepartmentsForSuperAdmin(): Observable<ApiResponse> {

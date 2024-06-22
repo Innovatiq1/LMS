@@ -27,7 +27,7 @@ export class StaffService extends UnsubscribeOnDestroyAdapter {
   // const apiUrl = this.defaultUrl + 'admin/adminUserListing';
   getAllStaffs(id:any): void {
    // let userId = localStorage.getItem('id');
-    const apiUrl = `${this.prefix}admin/adminUserListing?adminId=${id}`;
+    const apiUrl = `${this.prefix}admin/adminUserListing?companyId=${id}`;
     this.subs.sink = this.httpClient.get<Staff>(apiUrl).subscribe({
       next: (data) => {
         this.isTblLoading = false;

@@ -205,8 +205,8 @@ export class SidemenuComponent {
   // }
   update() {
     if (this.sideMenuForm.valid) {
-      let userId = localStorage.getItem('id');
-      const payload = {
+      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+            const payload = {
         MENU_LIST: this.sideMenuForm.value.sidemenu.map((menulist: any) => ({
           title: menulist.title,
           id: menulist.id,
@@ -225,7 +225,7 @@ export class SidemenuComponent {
           }))
         })),
         id: this.sidemenuId,
-        adminId:userId,
+        companyId:userId,
 
       };
       

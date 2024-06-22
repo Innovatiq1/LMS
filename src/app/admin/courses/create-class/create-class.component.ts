@@ -158,10 +158,10 @@ export class CreateClassComponent {
       this.addNewRow();
     }
     this.loadForm();
-    let userId = localStorage.getItem('id');
-    let payload = {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        let payload = {
       type: AppConstants.INSTRUCTOR_ROLE,
-      adminId:userId
+      companyId:userId
 
     };
 
@@ -199,8 +199,8 @@ export class CreateClassComponent {
   }
 
   getForms(): void {
-    let userId = localStorage.getItem('id');    
-    this.formService
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.formService
       .getAllForms(userId,'Course Class Creation Form')
       .subscribe((forms) => {
         this.forms = forms;
@@ -471,8 +471,8 @@ console.log('sessions',sessions)
         // this.inProgress = false;
         // this.isSubmitted = true;
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        let userId = localStorage.getItem('id');
-        this.classForm.value.adminId=userId;
+        let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+                this.classForm.value.companyId=userId;
 
         Swal.fire({
           title: 'Are you sure?',

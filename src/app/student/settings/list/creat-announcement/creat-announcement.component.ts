@@ -161,13 +161,13 @@ cancel(){
     if (!this.editUrl) {
       if (this.announcementForm.valid) {
         const formData = this.announcementForm.getRawValue();
-        let userId = localStorage.getItem('id');    
-        let payload = {
+        let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+                let payload = {
           subject: formData?.subject,
           details: formData?.details.replace(/<\/?span[^>]*>/g, ""),
           announcementFor: formData?.announcementFor.toString().replace(',',' / '),
           isActive: formData?.isActive,
-          adminId:userId
+          companyId:userId
         }
         // 
         Swal.fire({
@@ -310,8 +310,8 @@ cancel(){
   }
 
   getForms(): void {
-    let userId = localStorage.getItem('id');    
-    this.formService.getAllForms(userId,'Announcement Form').subscribe(forms => {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.formService.getAllForms(userId,'Announcement Form').subscribe(forms => {
       this.forms = forms;
     });
   }

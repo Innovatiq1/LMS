@@ -185,8 +185,8 @@ export class CreateCourseKitComponent implements OnInit {
     
   }
   private createCourseKit(courseKitData: CourseKit): void {
-    let userId = localStorage.getItem('id');
-    Swal.fire({
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        Swal.fire({
       title: 'Are you sure?',
       text: 'You want to create a course kit!',
       icon: 'warning',
@@ -195,7 +195,7 @@ export class CreateCourseKitComponent implements OnInit {
       cancelButtonColor: '#d33',
     }).then((result) => {
       if (result.isConfirmed) {
-         courseKitData.adminId=userId;
+         courseKitData.companyId=userId;
         this.courseService.createCourseKit(courseKitData).subscribe(
           (res) => {
             console.log('res', res);
@@ -222,8 +222,8 @@ export class CreateCourseKitComponent implements OnInit {
   }
 
   getForms(): void {
-    let userId = localStorage.getItem('id');    
-    this.formService
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.formService
       .getAllForms(userId,'Course Kit Creation Form')
       .subscribe((forms) => {
         this.forms = forms;

@@ -1,7 +1,8 @@
 import { Pagination } from "./pagination.model";
 
 export interface CourseKit {
-  adminId: string | null;
+  companyId: string | null;
+  adminId:string | null;
 	_id: string;
 	name: string;
 	docs: CourseKit[];
@@ -237,7 +238,8 @@ export interface User_id {
 	id: string;
 }
 export interface CourseKit {
-	adminId: string | null;
+	companyId: string | null;
+	adminId:string | null;
 	_id: string;
 	name: string;
 	docs: CourseKit[];
@@ -281,6 +283,7 @@ export interface CoursePaginationModel extends Pagination {
   	isAll:boolean;
 	filterName: string;
 	adminId:string;
+	companyId:string;
 }
 
 export interface ProgramCourse {

@@ -36,8 +36,8 @@ export class VendorComponent {
 
   onSubmit() {
     if(this.vendorForm.valid){
-      let userId = localStorage.getItem('id');
-      this.vendorForm.value.adminId=userId;
+      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+            this.vendorForm.value.companyId=userId;
     Swal.fire({
       title: 'Are you sure?',
       text: 'Do you want to create Vendor!',

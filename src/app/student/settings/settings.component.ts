@@ -708,14 +708,14 @@ export class SettingsComponent {
     this.currentContent = contentId;
   }
   getSidemenu() {
-    let userId = localStorage.getItem('id');    
-    this.logoService.getSidemenu(userId).subscribe((response) => {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.logoService.getSidemenu(userId).subscribe((response) => {
       this.sidemenu = response?.data?.docs;
     });
   }
   getStudentDb() {
-    let userId = localStorage.getItem('id');
-    this.settingsService.getStudentDashboard(userId).subscribe((response) => {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.settingsService.getStudentDashboard(userId).subscribe((response) => {
       this.studentDb = response?.data?.docs;
     });
   }
@@ -1034,8 +1034,8 @@ export class SettingsComponent {
         cancelButtonColor: '#d33',
       }).then((result) => {
         if (result.isConfirmed) {
-          let userId = localStorage.getItem('id');
-      this.courseService.createCurrency({ value: selectedCurrency ,adminId:userId}).subscribe(
+          let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+                this.courseService.createCurrency({ value: selectedCurrency ,companyId:userId}).subscribe(
         (response) => {
           Swal.fire({
             title: 'Successful',
@@ -1065,8 +1065,8 @@ export class SettingsComponent {
         cancelButtonColor: '#d33',
       }).then((result) => {
         if (result.isConfirmed) {
-          let userId = localStorage.getItem('id');
-      this.courseService.createTimer({ value: selectedTimer ,adminId:userId}).subscribe(
+          let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+                this.courseService.createTimer({ value: selectedTimer ,companyId:userId}).subscribe(
         (response) => {
           Swal.fire({
             title: 'Successful',
@@ -1095,9 +1095,9 @@ export class SettingsComponent {
         showCancelButton: true,
         cancelButtonColor: '#d33',
       }).then((result) => {
-        let userId = localStorage.getItem('id');
-        if (result.isConfirmed) {
-      this.courseService.createExamTimer({ value: selectedExamTimer,adminId:userId }).subscribe(
+        let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+                if (result.isConfirmed) {
+      this.courseService.createExamTimer({ value: selectedExamTimer,companyId:userId }).subscribe(
         (response) => {
           Swal.fire({
             title: 'Successful',
@@ -1127,9 +1127,9 @@ export class SettingsComponent {
         cancelButtonColor: '#d33',
       }).then((result) => {
         if (result.isConfirmed) {
-          let userId = localStorage.getItem('id');
-      this.courseService
-        .createAssessment({ value: selectedAssessmentRetake ,adminId:userId})
+          let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+                this.courseService
+        .createAssessment({ value: selectedAssessmentRetake ,companyId:userId})
         .subscribe(
           (response) => {
             Swal.fire({
@@ -1160,9 +1160,9 @@ export class SettingsComponent {
         cancelButtonColor: '#d33',
       }).then((result) => {
         if (result.isConfirmed) {
-          let userId = localStorage.getItem('id');
-      this.courseService
-        .createExamAssessment({ value: selectedExamAssessmentRetake,adminId:userId })
+          let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+                this.courseService
+        .createExamAssessment({ value: selectedExamAssessmentRetake,companyId:userId })
         .subscribe(
           (response) => {
             Swal.fire({
@@ -1185,12 +1185,12 @@ export class SettingsComponent {
   }else if(value == 'scoreAlgorithm'){
       const selectedAssessmentAlgorithm= this.selectedAssessmentAlgorithm;
       const selectedExamAlgorithm= this.selectedExamAlgorithm;
-      let userId = localStorage.getItem('id');
-      forkJoin(
+      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+            forkJoin(
         this.courseService
-        .createAssessmentAlgorithm({ value: selectedAssessmentAlgorithm,adminId:userId }),
+        .createAssessmentAlgorithm({ value: selectedAssessmentAlgorithm,companyId:userId }),
         this.courseService
-        .createExamAlgorithm({ value: selectedExamAlgorithm ,adminId:userId})
+        .createExamAlgorithm({ value: selectedExamAlgorithm ,companyId:userId})
       ).subscribe(
           (response) => {
             Swal.fire({

@@ -43,8 +43,8 @@ export class CreateUserRoleComponent {
   // this.router.navigate(['/Users/Type/edit'],{queryParams:{id:id}});
   }
   getAllUserTypes(filters?: any) {
-    let userId = localStorage.getItem('id');
-    this.adminService.getUserTypeList({ 'allRows':true },userId).subscribe(
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.adminService.getUserTypeList({ 'allRows':true },userId).subscribe(
       (response: any) => {
         this.userTypeNames = response;
         console.log("types", this.userTypeNames)
@@ -57,14 +57,14 @@ export class CreateUserRoleComponent {
   createUserType(): any {
     console.log("createUserType", this.userTypeFormGroup);
     if(this.userTypeFormGroup.valid){
-      let userId = localStorage.getItem('id');
-      let formData = this.userTypeFormGroup.getRawValue();
+      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+            let formData = this.userTypeFormGroup.getRawValue();
       let selectedMenuItems = []
       selectedMenuItems = this.getCheckedItems(this.dataSourceArray).filter((v: any) => v);
       formData.menuItems = selectedMenuItems;
   
       return new Promise((resolve, reject) => {
-        formData.adminId=userId;
+        formData.companyId=userId;
         this.adminService.createUserType(formData).subscribe(
           (response: unknown) => {
             this.isLoading = false;

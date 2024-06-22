@@ -285,8 +285,8 @@ export class CreateClassComponent {
   }
 
   getForms(): void {
-    let userId = localStorage.getItem('id');    
-    this.formService
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.formService
       .getAllForms(userId,'Program Class Creation Form')
       .subscribe((forms) => {
         this.forms = forms;
@@ -412,8 +412,7 @@ export class CreateClassComponent {
   }
 
   saveProgramClass() {
-    let userId = localStorage.getItem('id');
-    console.log(this.classForm)
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     if(this.classForm.valid) {
     if (!this.editUrl) {
       
@@ -422,7 +421,7 @@ export class CreateClassComponent {
         this.classForm.value.sessions = sessions;
         this.classForm.value.programName = this.courseTitle;
         this.isSubmitted = true;
-       this.classForm.value.adminId=userId;
+       this.classForm.value.companyId=userId;
 
         Swal.fire({
           title: 'Are you sure?',

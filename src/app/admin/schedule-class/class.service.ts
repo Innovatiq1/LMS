@@ -74,16 +74,16 @@ export class ClassService extends UnsubscribeOnDestroyAdapter {
   }
 
   getRegisteredClasses(id:any,page: number, limit: number, filterText? : string): Observable<any> {
-    const apiUrl = `${this.prefix}admin/studentClasses?adminId=${id}&status=registered&verify=true&paid=true`;
+    const apiUrl = `${this.prefix}admin/studentClasses?companyId=${id}&status=registered&verify=true&paid=true`;
     return this.http.get<any>(apiUrl, { params: this.buildRegisteredClassesParams(page, limit, filterText) });
   }
   getPendingVerificationList(id:any,page: number, limit: number, filterText? : string): Observable<any> {
-    const apiUrl = `${this.prefix}admin/studentClasses?status=registered&verify=false&adminId=${id}`;
+    const apiUrl = `${this.prefix}admin/studentClasses?status=registered&verify=false&companyId=${id}`;
     return this.http.get<any>(apiUrl, { params: this.buildRegisteredClassesParams(page, limit, filterText) });
   }
 
   getApprovedClasses(id:any,page: number, limit: number, filterText? : string): Observable<any> {
-    const apiUrl = `${this.prefix}admin/studentClasses?status=approved&adminId=${id}`;
+    const apiUrl = `${this.prefix}admin/studentClasses?status=approved&companyId=${id}`;
     return this.http.get<any>(apiUrl, { params: this.buildRegisteredClassesParams(page, limit, filterText) });
   }
   getAttendedStudents(body:any): Observable<any> {
@@ -148,8 +148,8 @@ export class ClassService extends UnsubscribeOnDestroyAdapter {
   }
 //getAllTitle
 getAllCoursesTitle(status: string): Observable<CourseTitleModel[]> {
-  let userId = localStorage.getItem('id');
-  const apiUrl = `${this.prefix}admin/courses-new/title?status=${status}&adminId=${userId}`;
+  let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    const apiUrl = `${this.prefix}admin/courses-new/title?status=${status}&companyId=${userId}`;
   return this.http.get<ApiResponse>(apiUrl).pipe(map((response) => response.data));
 }
 getAllCourses(): Observable<CourseTitleModel[]> {
@@ -216,7 +216,7 @@ saveClass(formData: any): Observable<ApiResponse> {
 
 
 getSessionCompletedStudent(id:any,page: number, limit: number): Observable<any> {
-  const apiUrl = `${this.prefix}admin/studentClasses/students/completed?adminId=${id}`;
+  const apiUrl = `${this.prefix}admin/studentClasses/students/completed?companyId=${id}`;
   return this.http.get<any>(apiUrl, { params: this.buildRegisteredClassesParams(page, limit) });
 }
 getProgramCompletedStudent(page: number, limit: number): Observable<any> {
@@ -243,8 +243,8 @@ getStudentsApprovedClasses(): Observable<any> {
 
 getClassListWithPagination(
   filter?:Partial<CoursePaginationModel>,id?:any): Observable<ApiResponse> {
-   
-  const apiUrl = `${this.prefix}admin/class?adminId=${id}`;
+  
+  const apiUrl = `${this.prefix}admin/class?companyId=${id}`;
   return this.http.get<ApiResponse>(apiUrl, { params: this.buildParams(filter) })
 }
 

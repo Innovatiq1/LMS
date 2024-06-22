@@ -83,9 +83,9 @@ export class CertificateService {
   getAllCertificate(
     filter?: Partial<CoursePaginationModel>
   ): Observable<ApiResponse> {
-      let userId = localStorage.getItem('id');
-    //const apiUrl = this.defaultUrl+'admin/certificate-builder';
-    const apiUrl = this.defaultUrl+`admin/certificate-builder?adminId=${userId}`;
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        //const apiUrl = this.defaultUrl+'admin/certificate-builder';
+    const apiUrl = this.defaultUrl+`admin/certificate-builder?companyId=${userId}`;
     return this.http.get<ApiResponse>(apiUrl, {
       params: this.buildParams(filter),
     });

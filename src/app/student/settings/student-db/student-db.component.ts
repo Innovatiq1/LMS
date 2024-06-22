@@ -67,15 +67,15 @@ export class StudentDbComponent {
 
   update() {
     if (this.dbForm.valid) {
-      let userId = localStorage.getItem('id');
-      const payload = {
+      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+            const payload = {
         content: this.dbForm.value.studentDb.map((menulist: any) => ({
           title: menulist?.title,
           viewType: menulist?.viewType,
           // percentage: menulist?.percentage,
         })),
         id: this.dashboardId,
-        adminId:userId
+        companyId:userId
 
       };
 

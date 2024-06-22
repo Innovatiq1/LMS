@@ -371,10 +371,10 @@ export class ExampleDataSource extends DataSource<Teachers> {
       this.filterChange,
       this.paginator.page,
     ];
-    let userId = localStorage.getItem('id')
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     let payload = {
       type: AppConstants.INSTRUCTOR_ROLE,
-      adminId:userId
+      companyId:userId
     };
     this.exampleDatabase.getAllTeacherss(payload);
     this.rowData = this.exampleDatabase.data;

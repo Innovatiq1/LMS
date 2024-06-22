@@ -38,8 +38,8 @@ export class DiscountComponent {
 
   onSubmit() {
     if(this.discountForm.valid){
-      let userId = localStorage.getItem('id');
-      this.discountForm.value.adminId=userId
+      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+            this.discountForm.value.companyId=userId
     Swal.fire({
       title: 'Are you sure?',
       text: 'Do you want to create Discount!',
@@ -74,8 +74,8 @@ export class DiscountComponent {
   }
 }
 getAllDiscounts(){
-  var adminId = localStorage.getItem('id');
-  this.courseService.getDiscount(adminId).subscribe((response:any) =>{
+  let companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+  this.courseService.getDiscount(companyId).subscribe((response:any) =>{
    this.dataSource = response.reverse();
   })
 }

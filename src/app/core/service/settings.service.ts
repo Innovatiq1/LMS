@@ -72,7 +72,7 @@ export class SettingsService {
   getStudentDashboard(id?:any,filter?: Partial<CoursePaginationModel>): Observable<ApiResponse> {
     let apiUrl
     if(id){
-    apiUrl = `${this.prefix}admin/dashboard?adminId=${id}`;
+    apiUrl = `${this.prefix}admin/dashboard?companyId=${id}`;
     } else {
       apiUrl = `${this.prefix}admin/dashboard`;
 

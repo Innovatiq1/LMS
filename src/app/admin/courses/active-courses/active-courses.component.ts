@@ -74,8 +74,8 @@ export class ActiveCoursesComponent {
     this.setup();
   }
   getAllCourse() {
-    let userId = localStorage.getItem('id')
-    this._courseService
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this._courseService
       .getAllCourses(userId,{ ...this.coursePaginationModel, status: 'active' })
       .subscribe((response) => {
         this.courseData = response.data.docs;

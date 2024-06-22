@@ -88,8 +88,8 @@ export class ViewCompletionComponent {
     }
 
   getCompletedClasses() {
-    let userId = localStorage.getItem('id');
-    this.classService
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.classService
       .getSessionCompletedStudent(userId,this.studentPaginationModel.page, this.studentPaginationModel.limit)
       .subscribe((response: { docs: any; page: any; limit: any; totalDocs: any; }) => {
         this.completedData = response.docs;
