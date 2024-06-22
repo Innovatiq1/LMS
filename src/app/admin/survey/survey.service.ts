@@ -59,7 +59,8 @@ export class SurveyService extends UnsubscribeOnDestroyAdapter {
 
 
   getAllSurvey(): void {
-    const apiUrl = `${this.prefix}admin/survey-builder`;
+    let userId = localStorage.getItem('id');
+    const apiUrl = `${this.prefix}admin/survey-builder?adminId=${userId}`;
     this.subs.sink = this.httpClient.get<SurveyBuilderModel>(apiUrl).subscribe({
       next: (response) => {
         this.isTblLoading = false;

@@ -1216,6 +1216,7 @@ export class ViewCourseComponent implements OnDestroy {
       studentFirstName,
       studentLastName,
       courseName: this.title,
+      adminId:userData.user.adminId
     };
     this.surveyService.addSurveyBuilder(payload).subscribe(
       (response) => {
