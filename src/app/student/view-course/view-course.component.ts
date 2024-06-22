@@ -178,6 +178,7 @@ export class ViewCourseComponent implements OnDestroy {
       this.free = true;
       this.subscribeParams = this.activatedRoute.params.subscribe((params) => {
         this.courseDetailsId = params['id'];
+        this.getCourseKitDetails(this.courseDetailsId);
         this.getAssessmentAnswerCount(this.courseDetailsId);
         this.getExamAssessmentAnswerCount(this.courseDetailsId);
       });
@@ -648,6 +649,9 @@ export class ViewCourseComponent implements OnDestroy {
         coursekit: this.courseKit,
         feeType: 'free',
         courseId: this.courseDetails.id,
+        adminId:userdata.user.adminId,
+        verify:true,
+        paid:true
       };
       this.courseService.saveRegisterClass(payload).subscribe((response) => {
         Swal.fire({

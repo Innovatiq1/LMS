@@ -66,7 +66,8 @@ export class CustomizationExamAssessmentRetakeComponent {
       cancelButtonColor: '#d33',
     }).then((result) => {
       if (result.isConfirmed) {
-    this.courseService.createExamAssessment({ value: selectedRetake }).subscribe(
+        let userId = localStorage.getItem('id');    
+    this.courseService.createExamAssessment({ value: selectedRetake ,adminId:userId}).subscribe(
       response => {
         Swal.fire({
           title: 'Successful',

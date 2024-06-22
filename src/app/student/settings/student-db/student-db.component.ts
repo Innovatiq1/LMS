@@ -72,10 +72,11 @@ export class StudentDbComponent {
         content: this.dbForm.value.studentDb.map((menulist: any) => ({
           title: menulist?.title,
           viewType: menulist?.viewType,
-          adminId:userId
           // percentage: menulist?.percentage,
         })),
         id: this.dashboardId,
+        adminId:userId
+
       };
 
       Swal.fire({

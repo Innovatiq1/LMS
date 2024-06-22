@@ -76,8 +76,9 @@ export class CourseViewComponent {
   }
 /*Get active courses */
   getAllCourse() {
+    let userId = localStorage.getItem('id')
     this._courseService
-      .getAllCourses({ ...this.coursePaginationModel, status: 'active' })
+      .getAllCourses(userId,{ ...this.coursePaginationModel, status: 'active' })
       .subscribe((response) => {
         if (response) {
           this.courseData = response.data.docs;
@@ -86,8 +87,9 @@ export class CourseViewComponent {
   }
 /*Get in-active courses */
 getAllInActiveCourse() {
+  let userId = localStorage.getItem('id')
   this._courseService
-    .getAllCourses({ ...this.coursePaginationModel, status: 'inactive' })
+    .getAllCourses(userId,{ ...this.coursePaginationModel, status: 'inactive' })
     .subscribe((response) => {
       if (response) {
         this.courseData = response.data.docs;

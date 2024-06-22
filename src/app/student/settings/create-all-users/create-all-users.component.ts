@@ -468,8 +468,9 @@ export class CreateAllUsersComponent {
   }
 
   getForms(): void {
+    let userId = localStorage.getItem('id');    
     this.formService
-      .getAllForms('User Creation Form')
+      .getAllForms(userId,'User Creation Form')
       .subscribe((forms) => {
         this.forms = forms;
       });
@@ -587,7 +588,8 @@ back(){
 }
 
   openRoleModal() {
-    this.logoService.getSidemenu().subscribe((response: any) => {
+    let userId = localStorage.getItem('id');
+    this.logoService.getSidemenu(userId).subscribe((response: any) => {
       let MENU_LIST = response.data.docs[0].MENU_LIST;
       const items = this.convertToMenuV2(MENU_LIST, null);
       const dataSourceArray: MenuItemModel[] = [];

@@ -74,8 +74,9 @@ export class ActiveCoursesComponent {
     this.setup();
   }
   getAllCourse() {
+    let userId = localStorage.getItem('id')
     this._courseService
-      .getAllCourses({ ...this.coursePaginationModel, status: 'active' })
+      .getAllCourses(userId,{ ...this.coursePaginationModel, status: 'active' })
       .subscribe((response) => {
         this.courseData = response.data.docs;
         this.totalItems = response.data.totalDocs;
@@ -126,8 +127,9 @@ export class ActiveCoursesComponent {
     });
   }
   getCoursesList() {
+    let userId = localStorage.getItem('id')
     this._courseService
-      .getAllCourses({ ...this.coursePaginationModel, status: 'active' })
+      .getAllCourses(userId,{ ...this.coursePaginationModel, status: 'active' })
       .subscribe(
         (response) => {
           this.dataSource = response.data.docs;

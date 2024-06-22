@@ -121,7 +121,8 @@ export class EmailConfigService {
 
 
   getForgetPasswordTemplate = (data?:any): Observable<any> => {
-    const endpoint = environment.apiUrl+'admin/emailConfiguration/getForgetPasswordTemplate';
+    let userId = localStorage.getItem('id');
+    const endpoint = `${this.prefix}admin/emailConfiguration/getForgetPasswordTemplate?adminId=${userId}`;
     return this.http.get(endpoint).pipe(
       catchError((err) => {
         return throwError(err);

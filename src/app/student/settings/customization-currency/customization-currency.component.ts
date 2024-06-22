@@ -68,7 +68,8 @@ export class CustomizationCurrencyComponent {
       cancelButtonColor: '#d33',
     }).then((result) => {
       if (result.isConfirmed) {
-    this.courseService.createCurrency({ value: selectedCurrency }).subscribe(
+        let userId = localStorage.getItem('id');    
+    this.courseService.createCurrency({ value: selectedCurrency,adminId:userId }).subscribe(
       response => {
         Swal.fire({
           title: 'Successful',

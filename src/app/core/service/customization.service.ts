@@ -15,12 +15,14 @@ export class FormService {
 
   constructor(private http: HttpClient) { }
 
-  getAllForms(name?:String): Observable<any[]> {
-    const apiUrl = `${this.prefix}admin/forms/`+(name? `?name=${name}`:'');
+  getAllForms(id:any,name?:String): Observable<any[]> {
+    const apiUrl = `${this.prefix}admin/forms?adminId=${id}`+(name? `&name=${name}`:'');
+
     return this.http.get<any>(apiUrl).pipe(map((response) => response));
   }
 
-  updateLabelStatus(formId: string, labelName: string, checked: boolean): Observable<any> {
-    return this.http.put<any>(`${this.prefix}admin/forms/${formId}`, { labelName, checked });
+
+  updateLabelStatus(adminId:any,formId: string, labelName: string, checked: boolean): Observable<any> {
+    return this.http.put<any>(`${this.prefix}admin/forms/${formId}`, { adminId,labelName, checked });
   }
 }

@@ -249,7 +249,8 @@ export class CreateUserTypeComponent {
   }
 
   initMenuItemsV2() {
-    this.logoService.getSidemenu().subscribe((response: any) => {
+    let userId = localStorage.getItem('id');
+    this.logoService.getSidemenu(userId).subscribe((response: any) => {
       let MENU_LIST = response.data.docs[0].MENU_LIST;
       const items = this.convertToMenuV2(MENU_LIST, this.userType?.menuItems);
       items?.forEach((item, index) => {

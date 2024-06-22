@@ -285,8 +285,9 @@ export class CreateClassComponent {
   }
 
   getForms(): void {
+    let userId = localStorage.getItem('id');    
     this.formService
-      .getAllForms('Program Class Creation Form')
+      .getAllForms(userId,'Program Class Creation Form')
       .subscribe((forms) => {
         this.forms = forms;
       });

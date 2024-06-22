@@ -162,6 +162,7 @@ export class AddStaffComponent {
   //   }
   addBlog(formObj: any) {
     console.log('Form Value', formObj.value);
+    let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     if (!formObj.invalid) {
       // Process form data without uploading anything
       // Additional logic can be added here as needed
@@ -169,6 +170,8 @@ export class AddStaffComponent {
       formObj['Active'] = this.status;
       formObj['role'] = formObj.type;
       formObj['isLogin'] = true;
+      formObj['adminId'] = user.user.id;
+
 
       const userData: Users = formObj;
       userData.avatar = this.avatar;
@@ -192,6 +195,7 @@ export class AddStaffComponent {
   }
 
   createUser(userData: Users) {
+    let userId = localStorage.getItem('id');    
     this.userService.saveUsers(userData).subscribe(
       (response: any) => {
         this.isLoading = false;
@@ -379,8 +383,9 @@ export class AddStaffComponent {
   }
 
   getForms(): void {
+    let userId = localStorage.getItem('id');    
     this.formService
-      .getAllForms('Staff Creation Form')
+      .getAllForms(userId,'Staff Creation Form')
       .subscribe((forms) => {
         this.forms = forms;
       });

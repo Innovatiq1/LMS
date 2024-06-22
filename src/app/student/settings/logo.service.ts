@@ -22,8 +22,8 @@ export class LogoService {
   }
 
   /* Get logos */
-  getLogo(): Observable<any> {
-    const apiUrl = `${this.defaultUrl}admin/logo`;
+  getLogo(id:any): Observable<any> {
+    const apiUrl = `${this.defaultUrl}admin/logo?adminId=${id}`;
     return this.http.get(apiUrl).pipe(
       map(response => {
         this.updateData(response); // Pass the response to updateData
@@ -44,7 +44,16 @@ export class LogoService {
         return this.http.put<any>(apiUrl, data).pipe(map((response) => response));
       }
     // get all sidemenu
-      getSidemenu(): Observable<any> {
+      getSidemenu(id:any): Observable<any> {
+        const apiUrl = `${this.defaultUrl}admin/sidemenu?adminId=${id}`;
+        return this.http.get(apiUrl).pipe(
+          map(response => {
+             // Pass the response to updateData
+            return response; 
+          })
+        );
+      }
+      getSuperAdminSidemenu(): Observable<any> {
         const apiUrl = `${this.defaultUrl}admin/sidemenu`;
         return this.http.get(apiUrl).pipe(
           map(response => {
@@ -53,6 +62,7 @@ export class LogoService {
           })
         );
       }
+
       getSidemenuById(id?: string){
         const apiUrl = `${this.defaultUrl}admin/sidemenu/${id}`;
         return this.http.get<ApiResponse>(apiUrl).pipe(map((response) => response));

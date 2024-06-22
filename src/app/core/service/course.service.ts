@@ -119,11 +119,10 @@ export class CourseService {
     return this._Http.post<any>(apiUrl, payload).pipe(map((response) => response));
   }
 
-  getAllCourses(
-    filter?: Partial<CoursePaginationModel>
+  getAllCourses(id:any,filter?: Partial<CoursePaginationModel>
   ): Observable<ApiResponse> {
-    let userId = localStorage.getItem('id')
-    const apiUrl = `${this.prefix}admin/courses-new?adminId=${userId}`;
+    console.log('id',id)
+    const apiUrl = `${this.prefix}admin/courses-new?adminId=${id}`;
     return this._Http.get<ApiResponse>(apiUrl, {
       params: this.buildParams(filter),
     });

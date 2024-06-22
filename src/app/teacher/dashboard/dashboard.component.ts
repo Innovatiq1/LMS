@@ -480,7 +480,8 @@ export class DashboardComponent implements OnInit {
     );
   }
   getAllCourse(){
-    this.courseService.getAllCourses({status:'active'}).subscribe(response =>{
+    let userId = localStorage.getItem('id')
+    this.courseService.getAllCourses(userId,{status:'active'}).subscribe(response =>{
      this.courseData = response.data.docs.slice(0,5);
      const currentDate = new Date();
         const currentMonth = currentDate.getMonth();
@@ -495,7 +496,8 @@ export class DashboardComponent implements OnInit {
     })
   }
   getCoursesList() {
-    this.courseService.getAllCourses({status:'active'})
+    let userId = localStorage.getItem('id')
+    this.courseService.getAllCourses(userId,{status:'active'})
       .subscribe(response => {
         this.dataSource = response.data.docs;
         this.mapCategories();

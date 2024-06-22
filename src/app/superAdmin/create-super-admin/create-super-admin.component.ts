@@ -114,7 +114,7 @@ export class CreateSuperAdminComponent {
   }
 
   openRoleModal() {
-    this.logoService.getSidemenu().subscribe((response: any) => {
+    this.logoService.getSuperAdminSidemenu().subscribe((response: any) => {
       let MENU_LIST = response.data.docs[0].MENU_LIST;
       const items = this.convertToMenuV2(MENU_LIST, null);
       const dataSourceArray: MenuItemModel[] = [];

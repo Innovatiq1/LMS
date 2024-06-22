@@ -144,7 +144,7 @@ cancel(){
 
     this.announcementForm = this.formBuilder.group({
       subject: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0-9]/)]),
-      details: new FormControl('', [Validators.required, ...this.utils.validators.noLeadingSpace]),
+      details: new FormControl('', [ ...this.utils.validators.noLeadingSpace]),
       announcementFor: new FormControl('', [Validators.required,]),
       'isActive': [true],
     });
@@ -161,12 +161,13 @@ cancel(){
     if (!this.editUrl) {
       if (this.announcementForm.valid) {
         const formData = this.announcementForm.getRawValue();
-
+        let userId = localStorage.getItem('id');    
         let payload = {
           subject: formData?.subject,
           details: formData?.details.replace(/<\/?span[^>]*>/g, ""),
           announcementFor: formData?.announcementFor.toString().replace(',',' / '),
           isActive: formData?.isActive,
+          adminId:userId
         }
         // 
         Swal.fire({
@@ -298,7 +299,8 @@ cancel(){
   }
 
   getAllUserTypes(filters?: any) {
-    this.adminService.getUserTypeList({ 'allRows':true }).subscribe(
+    let userId = localStorage.getItem('id');    
+    this.adminService.getUserTypeList({ 'allRows':true },userId).subscribe(
       (response: any) => {
         this.userTypeNames = response;
       },
@@ -308,7 +310,8 @@ cancel(){
   }
 
   getForms(): void {
-    this.formService.getAllForms('Announcement Form').subscribe(forms => {
+    let userId = localStorage.getItem('id');    
+    this.formService.getAllForms(userId,'Announcement Form').subscribe(forms => {
       this.forms = forms;
     });
   }

@@ -36,8 +36,8 @@ export class LogoCoutomzationComponent {
     this.getLogo();
   }
   getLogo() {
-    /* get all logos **/
-    this.logoService.getLogo().subscribe((logo) => {
+    let userId = localStorage.getItem('id');
+    this.logoService.getLogo(userId).subscribe((logo) => {
       this.Logos = logo?.data?.docs;
     });
   }

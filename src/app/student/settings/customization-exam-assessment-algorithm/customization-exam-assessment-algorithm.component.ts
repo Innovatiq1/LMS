@@ -54,11 +54,12 @@ export class CustomizationExamAssessmentAlgorithmComponent {
   updateScoreAlgo(){
     const selectedAssessmentAlgorithm= this.selectedAssessmentAlgorithm;
     const selectedExamAlgorithm= this.selectedExamAlgorithm;
+    let userId = localStorage.getItem('id');    
     forkJoin(
       this.courseService
-      .createAssessmentAlgorithm({ value: selectedAssessmentAlgorithm }),
+      .createAssessmentAlgorithm({ value: selectedAssessmentAlgorithm,adminId:userId }),
       this.courseService
-      .createExamAlgorithm({ value: selectedExamAlgorithm })
+      .createExamAlgorithm({ value: selectedExamAlgorithm,adminId:userId })
     ).subscribe(
         (response) => {
           Swal.fire({

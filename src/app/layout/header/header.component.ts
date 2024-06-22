@@ -151,7 +151,8 @@ export class HeaderComponent
   //   },
   // ];
   callLogo() {
-    this.logoService.getLogo().subscribe((data) => {
+    let userId = localStorage.getItem('id');
+    this.logoService.getLogo(userId).subscribe((data) => {
       this.logoTitle = data?.data.docs[0].title;
       this.logoImage = data?.data.docs[0].image;
     });

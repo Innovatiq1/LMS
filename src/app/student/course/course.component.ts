@@ -185,7 +185,9 @@ private mapCategories(): void {
 
 }
 getFreeCoursesList() {
-  this._courseService.getAllCourses({ ...this.coursePaginationModel, status: 'active' ,feeType:'free'})
+  let userId = JSON.parse(localStorage.getItem('user_data') || '');
+  let id=userId.user.adminId
+  this._courseService.getAllCourses(id,{ ...this.coursePaginationModel, status: 'active' ,feeType:'free'})
     .subscribe(response => {
       this.dataSource = response.data.docs;
       this.totalFreeItems = response.data.totalDocs

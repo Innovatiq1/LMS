@@ -708,13 +708,14 @@ export class SettingsComponent {
     this.currentContent = contentId;
   }
   getSidemenu() {
-    /* get all logos **/
-    this.logoService.getSidemenu().subscribe((response) => {
+    let userId = localStorage.getItem('id');    
+    this.logoService.getSidemenu(userId).subscribe((response) => {
       this.sidemenu = response?.data?.docs;
     });
   }
   getStudentDb() {
-    this.settingsService.getStudentDashboard().subscribe((response) => {
+    let userId = localStorage.getItem('id');
+    this.settingsService.getStudentDashboard(userId).subscribe((response) => {
       this.studentDb = response?.data?.docs;
     });
   }
@@ -1033,7 +1034,8 @@ export class SettingsComponent {
         cancelButtonColor: '#d33',
       }).then((result) => {
         if (result.isConfirmed) {
-      this.courseService.createCurrency({ value: selectedCurrency }).subscribe(
+          let userId = localStorage.getItem('id');
+      this.courseService.createCurrency({ value: selectedCurrency ,adminId:userId}).subscribe(
         (response) => {
           Swal.fire({
             title: 'Successful',
@@ -1063,7 +1065,8 @@ export class SettingsComponent {
         cancelButtonColor: '#d33',
       }).then((result) => {
         if (result.isConfirmed) {
-      this.courseService.createTimer({ value: selectedTimer }).subscribe(
+          let userId = localStorage.getItem('id');
+      this.courseService.createTimer({ value: selectedTimer ,adminId:userId}).subscribe(
         (response) => {
           Swal.fire({
             title: 'Successful',
@@ -1092,8 +1095,9 @@ export class SettingsComponent {
         showCancelButton: true,
         cancelButtonColor: '#d33',
       }).then((result) => {
+        let userId = localStorage.getItem('id');
         if (result.isConfirmed) {
-      this.courseService.createExamTimer({ value: selectedExamTimer }).subscribe(
+      this.courseService.createExamTimer({ value: selectedExamTimer,adminId:userId }).subscribe(
         (response) => {
           Swal.fire({
             title: 'Successful',
@@ -1123,8 +1127,9 @@ export class SettingsComponent {
         cancelButtonColor: '#d33',
       }).then((result) => {
         if (result.isConfirmed) {
+          let userId = localStorage.getItem('id');
       this.courseService
-        .createAssessment({ value: selectedAssessmentRetake })
+        .createAssessment({ value: selectedAssessmentRetake ,adminId:userId})
         .subscribe(
           (response) => {
             Swal.fire({
@@ -1155,8 +1160,9 @@ export class SettingsComponent {
         cancelButtonColor: '#d33',
       }).then((result) => {
         if (result.isConfirmed) {
+          let userId = localStorage.getItem('id');
       this.courseService
-        .createExamAssessment({ value: selectedExamAssessmentRetake })
+        .createExamAssessment({ value: selectedExamAssessmentRetake,adminId:userId })
         .subscribe(
           (response) => {
             Swal.fire({
@@ -1179,11 +1185,12 @@ export class SettingsComponent {
   }else if(value == 'scoreAlgorithm'){
       const selectedAssessmentAlgorithm= this.selectedAssessmentAlgorithm;
       const selectedExamAlgorithm= this.selectedExamAlgorithm;
+      let userId = localStorage.getItem('id');
       forkJoin(
         this.courseService
-        .createAssessmentAlgorithm({ value: selectedAssessmentAlgorithm }),
+        .createAssessmentAlgorithm({ value: selectedAssessmentAlgorithm,adminId:userId }),
         this.courseService
-        .createExamAlgorithm({ value: selectedExamAlgorithm })
+        .createExamAlgorithm({ value: selectedExamAlgorithm ,adminId:userId})
       ).subscribe(
           (response) => {
             Swal.fire({

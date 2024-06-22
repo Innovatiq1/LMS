@@ -222,8 +222,9 @@ export class CreateCourseKitComponent implements OnInit {
   }
 
   getForms(): void {
+    let userId = localStorage.getItem('id');    
     this.formService
-      .getAllForms('Course Kit Creation Form')
+      .getAllForms(userId,'Course Kit Creation Form')
       .subscribe((forms) => {
         this.forms = forms;
       });

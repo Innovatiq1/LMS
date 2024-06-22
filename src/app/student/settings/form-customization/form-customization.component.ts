@@ -13,9 +13,9 @@ export class FormCustomizationComponent {
   labelChanges: { formId: string, labelName: string, checked: boolean }[] = [];
   breadscrums = [
     {
-      title: 'Form Customization',
-      items: ['student'],
-      active: 'Form Customization',
+      title: 'Form Configuration',
+      items: ['Configuration'],
+      active: 'Form Configuration',
     },
   ];
   formName!: string;
@@ -31,8 +31,9 @@ export class FormCustomizationComponent {
   }
 
   getForms(): void {
+    let userId = localStorage.getItem('id');
     const formName = this.formName;
-    this.formService.getAllForms(formName).subscribe(forms => {
+    this.formService.getAllForms(userId,formName).subscribe(forms => {
       this.forms = forms;
     });
   }
@@ -68,8 +69,9 @@ export class FormCustomizationComponent {
   }
 
   updateLabels(): void {
+    let userId = localStorage.getItem('id');
     this.labelChanges.forEach(change => {
-      this.formService.updateLabelStatus(change.formId, change.labelName, change.checked).subscribe(updatedForm => {
+      this.formService.updateLabelStatus(userId,change.formId, change.labelName, change.checked).subscribe(updatedForm => {
         this.openModalPopup();
       }, error => {
         Swal.fire({

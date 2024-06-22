@@ -381,8 +381,11 @@ export class MainComponent implements OnInit {
     });
   }
   getInstructorsList() {
+    let userId = localStorage.getItem('id');
     let payload = {
       type: AppConstants.INSTRUCTOR_ROLE,
+      adminId:userId
+
     };
     this.instructorService.getInstructor(payload).subscribe(
       (response: any) => {
@@ -598,9 +601,13 @@ export class MainComponent implements OnInit {
   // public doughnutChartData!: ChartData<'doughnut'>
   // public doughnutChartType: ChartType = 'doughnut';
   //End Student Information
+  
   getStudentsList() {
+    let userId = localStorage.getItem('id');
     let payload = {
       type: AppConstants.STUDENT_ROLE,
+      adminId:userId
+
     };
     this.instructorService.getInstructor(payload).subscribe(
       (response: any) => {
@@ -2276,7 +2283,8 @@ private attendanceBarChart() {
     );
   }
   getAllCourse(){
-    this.courseService.getAllCourses({status:'active'}).subscribe(response =>{
+    let userId = localStorage.getItem('id')
+    this.courseService.getAllCourses(userId,{status:'active'}).subscribe(response =>{
      this.courseData = response.data.docs.slice(0,5);
      const currentDate = new Date();
         const currentMonth = currentDate.getMonth();
@@ -2291,7 +2299,8 @@ private attendanceBarChart() {
     })
   }
   getCoursesList() {
-    this.courseService.getAllCourses({status:'active'})
+    let userId = localStorage.getItem('id')
+    this.courseService.getAllCourses(userId,{status:'active'})
       .subscribe(response => {
         this.dataSource = response.data.docs;
         this.mapCategories();
@@ -2379,7 +2388,8 @@ private attendanceBarChart() {
        
   }
   getAdminDashboard(){
-    this.settingsService.getStudentDashboard().subscribe(response => {
+  let userId = localStorage.getItem('id');
+    this.settingsService.getStudentDashboard(userId).subscribe(response => {
     
       this.dashboard = response?.data?.docs[1];
   
@@ -2446,7 +2456,8 @@ private attendanceBarChart() {
   }
 
   getStudentDashboard(){
-    this.settingsService.getStudentDashboard().subscribe(response => {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.adminId;
+    this.settingsService.getStudentDashboard(userId).subscribe(response => {
       this.studentDashboard = response.data.docs[0];
       this.setStudentsChart();
     })
