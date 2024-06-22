@@ -34,6 +34,7 @@ export class SuperAdminComponent extends UnsubscribeOnDestroyAdapter {
   displayedColumns: string[] = [
     // 'select',
     // 'img',
+    'Company',
     'Name',
     'User Type',
     'gender',
@@ -82,7 +83,7 @@ export class SuperAdminComponent extends UnsubscribeOnDestroyAdapter {
   fetchData(page?: number) {
     this.resetData()
     this.alluserService
-      .getUserList({
+      .getAdminsList({
         page,
         limit: this.coursePaginationModel.limit,
       })

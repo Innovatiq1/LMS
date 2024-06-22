@@ -70,6 +70,17 @@ export class UserService {
       })
       .pipe(map((response) => response));
   }
+  getAdminsList(filter?: Partial<CoursePaginationModel>,id?:any): Observable<any> {
+   
+    // const apiUrl = this.defaultUrl + 'admin/adminUserListing';
+    const apiUrl = this.defaultUrl + `admin/adminUserListing`;
+     return this.http
+       .get<ApiResponse>(apiUrl, {
+         params: this.buildParams(filter),
+       })
+       .pipe(map((response) => response));
+   }
+ 
   getAllStudents(filter?: Partial<CoursePaginationModel>): Observable<any> {
     const apiUrl = this.defaultUrl + 'admin/adminUserListing?isAll=true';
     return this.http

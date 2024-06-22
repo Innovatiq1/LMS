@@ -40,6 +40,7 @@ export class AdminListComponent  extends UnsubscribeOnDestroyAdapter{
   displayedColumns: string[] = [
     // 'select',
     // 'img',
+    'Company',
     'Name',
     'User Type',
     'gender',
@@ -95,7 +96,7 @@ export class AdminListComponent  extends UnsubscribeOnDestroyAdapter{
     this.resetData()
     let filterText = this.searchTerm;
     this.alluserService
-      .getUserList({
+      .getAdminsList({
         filterText,
         page,
         limit: this.coursePaginationModel.limit,

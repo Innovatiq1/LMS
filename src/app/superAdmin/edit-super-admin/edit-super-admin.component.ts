@@ -56,6 +56,7 @@ export class EditSuperAdminComponent {
       last_name: new FormControl('', []),
       rollNo: new FormControl('', [Validators.required, ...this.utils.validators.noLeadingSpace,...this.utils.validators.roll_no]),
       gender: new FormControl('', [Validators.required]),
+      company: new FormControl('', [Validators.required]),
       mobile: new FormControl('', [Validators.required,...this.utils.validators.mobile]),
       qualification: new FormControl('', []),
       department: new FormControl('', []),
@@ -95,7 +96,7 @@ export class EditSuperAdminComponent {
   }
 
   getDepartment() {
-    this.StudentService.getAllDepartments().subscribe((response: any) => {
+    this.StudentService.getDepartmentsForSuperAdmin().subscribe((response: any) => {
       this.dept = response.data.docs;
     });
   }
@@ -294,6 +295,7 @@ export class EditSuperAdminComponent {
             joiningDate: this.data?.joiningDate,
             blood_group: this.data?.blood_group,
             address: this.data?.address,
+            company:this.data?.company
           });
         }
       },

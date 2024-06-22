@@ -196,6 +196,11 @@ export class StudentsService extends UnsubscribeOnDestroyAdapter {
       const apiUrl = `${this.defaultUrl}admin/department?adminId=${userId}`;
       return this.httpClient.get<ApiResponse>(apiUrl);
     }
+    getDepartmentsForSuperAdmin(): Observable<ApiResponse> {
+      const apiUrl = `${this.defaultUrl}admin/department`;
+      return this.httpClient.get<ApiResponse>(apiUrl);
+    }
+
 
 
     submitAssessment(data: any): Observable<ApiResponse> {

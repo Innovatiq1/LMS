@@ -69,6 +69,7 @@ export class CreateSuperAdminComponent {
         Validators.required,
         ...this.utils.validators.mobile,
       ]),
+      company: new FormControl('', [Validators.required]),
       qualification: new FormControl('', []),
       department: new FormControl('', []),
       address: new FormControl('', []),
@@ -108,7 +109,7 @@ export class CreateSuperAdminComponent {
   }
 
   getDepartment() {
-    this.StudentService.getAllDepartments().subscribe((response: any) => {
+    this.StudentService.getDepartmentsForSuperAdmin().subscribe((response: any) => {
       this.dept = response.data.docs;
     });
   }
@@ -242,9 +243,7 @@ export class CreateSuperAdminComponent {
   addBlog(formObj: any) {
 
     let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    console.log('Form Value', formObj);
     if (!formObj.invalid) {
-      console.log('======', formObj.type);
       formObj['Active'] = this.status;
       formObj['type'] = formObj.type;
       formObj['role'] = 'Admin';
@@ -260,7 +259,6 @@ export class CreateSuperAdminComponent {
     }
   }
   private createUser(userData: Users): void {
-    console.log('create', userData);
     this.userService.saveUsers(userData).subscribe(
       () => {
         Swal.fire({
