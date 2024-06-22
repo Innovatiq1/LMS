@@ -10,6 +10,7 @@ import {
   MatDialog,
   MatDialogRef,
 } from '@angular/material/dialog';
+import { v4 as uuidv4 } from 'uuid';
 import { Router } from '@angular/router';
 import { MenuItemModel, UserType, Users } from '@core/models/user.model';
 import { AdminService } from '@core/service/admin.service';
@@ -244,6 +245,10 @@ export class CreateSuperAdminComponent {
 
     let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     if (!formObj.invalid) {
+      const uniqueId = uuidv4();
+      console.log('id',uniqueId)
+          // Assign the unique ID to userData (assuming userData has an 'id' property)
+      
       formObj['Active'] = this.status;
       formObj['type'] = formObj.type;
       formObj['role'] = 'Admin';
@@ -251,6 +256,7 @@ export class CreateSuperAdminComponent {
       formObj['adminId'] = user.user.id;
       formObj['adminEmail'] = user.user.email;
       formObj['adminName'] = user.user.name;
+      formObj['companyId'] = uniqueId;
 
       const userData: Users = formObj;
       userData.avatar = this.avatar;
@@ -258,7 +264,7 @@ export class CreateSuperAdminComponent {
       this.createUser(userData);
     }
   }
-  private createUser(userData: Users): void {
+  private createUser(userData: Users): void {    
     this.userService.saveUsers(userData).subscribe(
       () => {
         Swal.fire({
