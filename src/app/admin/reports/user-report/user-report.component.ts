@@ -71,8 +71,9 @@ export class UserReportComponent {
 @ViewChild('filter', { static: true }) filter!: ElementRef;
 
 getBlogsList(filters?:any) {
+  let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
   let filterText = this.searchTerm
-  this.alluserService.getUserList({filterText,...this.coursePaginationModel}).subscribe((response: any) => {
+  this.alluserService.getUserList({filterText,...this.coursePaginationModel},userId).subscribe((response: any) => {
     this.dataSource = response.data.data;
     this.isLoading = false;
     this.ref.detectChanges();
