@@ -96,9 +96,6 @@ export class AdminService {
   }
 
   getUserTypeList(filter: any,id?:any): Observable<any> {
-    //let userId = localStorage.getItem('id');
-    //const apiUrl = this.defaultUrl + 'userType';
-    console.log("filter",filter);
     let apiUrl;
     if(id){
       apiUrl = `${this.defaultUrl}userType?companyId=${id}`;

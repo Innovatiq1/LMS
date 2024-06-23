@@ -480,8 +480,8 @@ export class DashboardComponent implements OnInit {
     );
   }
   getAllCourse(){
-    let userId = localStorage.getItem('id')
-    this.courseService.getAllCourses(userId,{status:'active'}).subscribe(response =>{
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.courseService.getAllCourses(userId,{status:'active'}).subscribe(response =>{
      this.courseData = response.data.docs.slice(0,5);
      const currentDate = new Date();
         const currentMonth = currentDate.getMonth();
@@ -496,8 +496,8 @@ export class DashboardComponent implements OnInit {
     })
   }
   getCoursesList() {
-    let userId = localStorage.getItem('id')
-    this.courseService.getAllCourses(userId,{status:'active'})
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.courseService.getAllCourses(userId,{status:'active'})
       .subscribe(response => {
         this.dataSource = response.data.docs;
         this.mapCategories();
@@ -574,8 +574,8 @@ export class DashboardComponent implements OnInit {
     });
   }
   getCount() {
-    let userId = localStorage.getItem('id');
-    this.courseService.getCount(userId).subscribe(response => {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.courseService.getCount(userId).subscribe(response => {
       this.count = response?.data;
       this.instructorCount=this.count?.instructors;
       this.adminCount=this.count?.admins

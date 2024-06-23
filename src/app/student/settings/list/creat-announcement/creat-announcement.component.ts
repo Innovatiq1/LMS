@@ -299,8 +299,8 @@ cancel(){
   }
 
   getAllUserTypes(filters?: any) {
-    let userId = localStorage.getItem('id');    
-    this.adminService.getUserTypeList({ 'allRows':true },userId).subscribe(
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.adminService.getUserTypeList({ 'allRows':true },userId).subscribe(
       (response: any) => {
         this.userTypeNames = response;
       },

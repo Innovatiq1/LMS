@@ -91,7 +91,9 @@ export class UserService {
   }
 
   getAllUsers(filter?: Partial<CoursePaginationModel>): Observable<any> {
-    const apiUrl = this.defaultUrl + 'admin/adminUserListing?isAllUsers=true';
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    const apiUrl = `${this.defaultUrl}admin/adminUserListing?isAllUsers=true&companyId=${userId}`;
+
     return this.http
       .get<ApiResponse>(apiUrl, {
         params: this.buildParams(filter),
@@ -261,7 +263,6 @@ export class UserService {
 
 
   updateUserGroup(id:string, data:any){
-    console.log("userIDservice",id)
     const apiUrl = `${this.defaultUrl}admin/user-group/${id}`;
     return this.http.put<ApiResponse>(apiUrl, data).pipe(
       map((response) => {

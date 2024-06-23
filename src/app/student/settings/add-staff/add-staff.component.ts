@@ -193,7 +193,6 @@ export class AddStaffComponent {
   }
 
   createUser(userData: Users) {
-    let userId = localStorage.getItem('id');    
     this.userService.saveUsers(userData).subscribe(
       (response: any) => {
         this.isLoading = false;

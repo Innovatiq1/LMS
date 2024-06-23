@@ -204,7 +204,10 @@ export class StudentsService extends UnsubscribeOnDestroyAdapter {
 
 
     submitAssessment(data: any): Observable<ApiResponse> {
-      const apiUrl = this.defaultUrl + 'admin/assesment-answers';
+      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+      data.companyId = userId
+      const apiUrl = `${this.defaultUrl}admin/assesment-answers`;
+
       return this.httpClient.post<ApiResponse>(apiUrl, data).pipe(
         map(response => response)
       );

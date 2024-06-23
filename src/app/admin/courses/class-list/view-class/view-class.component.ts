@@ -59,8 +59,8 @@ export class ViewClassComponent {
   }
 
   getClassList() {
-    let userId = localStorage.getItem('id');
-    this._classService
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this._classService
       .getClassListWithPagination({ ...this.coursePaginationModel },userId)
       .subscribe(
         (response) => {

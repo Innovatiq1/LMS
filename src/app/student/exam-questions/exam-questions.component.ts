@@ -199,12 +199,14 @@ export class ExamQuestionsComponent {
       }
 
       submitAnswers() {
+        let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
         const requestBody = {
           studentId: this.studentId,
           examAssessmentId: this.examAssessmentId,
           assessmentAnswerId: this.answerAssessmentId,
           courseId: this.courseId,
           answers: this.answers,
+          companyId:userId
         };
     
         this.assessmentService.submitAssessment(requestBody).subscribe(
@@ -228,9 +230,12 @@ export class ExamQuestionsComponent {
       }
 
       updateAnswers() {
+        let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
         const requestBody = {
           answers: this.answers,
-          id: this.answerAssessmentId
+          id: this.answerAssessmentId,
+          companyId:userId
+
         };
         this.assessmentService.updateAssessment(requestBody).subscribe(
           (response: any) => {

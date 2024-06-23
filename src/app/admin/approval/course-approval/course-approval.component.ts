@@ -98,8 +98,8 @@ export class CourseApprovalComponent {
    }
  
   getCoursesList(){
-    let userId = localStorage.getItem('id')
-    this.courseService.getAllCourses(userId,{...this.coursePaginationModel, status: 'inactive' })
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.courseService.getAllCourses(userId,{...this.coursePaginationModel, status: 'inactive' })
         .subscribe(response => {
           this.isLoading = false;
           this.coursePaginationModel.docs = response.data.docs;
