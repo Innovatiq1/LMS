@@ -69,8 +69,14 @@ export class SettingsService {
       .pipe(map((response) => {}));
   }
 
-  getStudentDashboard(filter?: Partial<CoursePaginationModel>): Observable<ApiResponse> {
-    const apiUrl = this.defaultUrl + 'admin/dashboard';
+  getStudentDashboard(id?:any,filter?: Partial<CoursePaginationModel>): Observable<ApiResponse> {
+    let apiUrl
+    if(id){
+    apiUrl = `${this.prefix}admin/dashboard?companyId=${id}`;
+    } else {
+      apiUrl = `${this.prefix}admin/dashboard`;
+
+    }
     return this._Http.get<ApiResponse>(apiUrl, {
       params: this.buildParams(filter),
     });

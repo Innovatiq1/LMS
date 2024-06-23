@@ -264,9 +264,10 @@ export class CourseTimetableComponent implements OnInit {
   // }
 
   getClassList() {
-    // let studentId=localStorage.getItem('id')
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        // let studentId=localStorage.getItem('id')
     // const payload = { studentId: studentId, status: 'approved' ,isAll:true};
-    this.classService.getClassListWithPagination().subscribe((response) => {
+    this.classService.getClassListWithPagination({},userId).subscribe((response) => {
       this.allClasses = response.data.docs;
       const currentDate = new Date();
       const currentMonth = currentDate.getMonth();

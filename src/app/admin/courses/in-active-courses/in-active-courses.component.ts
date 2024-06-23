@@ -132,8 +132,9 @@ export class InActiveCoursesComponent {
   }
 
   getCoursesList() {
-    this.courseService
-      .getAllCourses({ ...this.coursePaginationModel, status: 'inactive' })
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.courseService
+      .getAllCourses(userId,{ ...this.coursePaginationModel, status: 'inactive' })
       .subscribe(
         (response) => {
           this.isLoading = false;

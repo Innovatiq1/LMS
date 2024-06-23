@@ -116,11 +116,13 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
       cancelButtonText: 'Cancel',
     }).then((result) => {
       if (result.isConfirmed) {
+        let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
         const submissionPayload = {
           answers: this.answers,
           courseId: this.courseId,
           is_tutorial: false,
-          classId: this.classId
+          classId: this.classId,
+          companyId:userId
         };
         this.submitAnswers.next(submissionPayload);
         clearInterval(this.interval);

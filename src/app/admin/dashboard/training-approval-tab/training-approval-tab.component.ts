@@ -371,8 +371,8 @@ import { EditRequestComponent } from '../../../admin/approval/training-approval-
     }
   
     getCount(){
-      let userId = localStorage.getItem('id');
-      let userRole = localStorage.getItem('user_type');
+      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+            let userRole = localStorage.getItem('user_type');
   
   
   if(userRole === "RO"){

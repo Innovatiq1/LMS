@@ -94,8 +94,9 @@ export class VerificationListComponent {
   }
 
   getPendingVerificationList() {
-    this._classService
-      .getPendingVerificationList(this.studentPaginationModel.page, this.studentPaginationModel.limit, this.studentPaginationModel.filterText)
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this._classService
+      .getPendingVerificationList(userId,this.studentPaginationModel.page, this.studentPaginationModel.limit, this.studentPaginationModel.filterText)
       .subscribe((response: { data: StudentPaginationModel; }) => {
       this.isLoading = false;
         this.studentPaginationModel = response.data;

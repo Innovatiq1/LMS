@@ -60,14 +60,27 @@ export class UserService {
     }
     return params;
   }
-  getUserList(filter?: Partial<CoursePaginationModel>): Observable<any> {
-    const apiUrl = this.defaultUrl + 'admin/adminUserListing';
+  getUserList(filter?: Partial<CoursePaginationModel>,id?:any): Observable<any> {
+   
+   // const apiUrl = this.defaultUrl + 'admin/adminUserListing';
+   const apiUrl = this.defaultUrl + `admin/adminUserListing?companyId=${id}`;
     return this.http
       .get<ApiResponse>(apiUrl, {
         params: this.buildParams(filter),
       })
       .pipe(map((response) => response));
   }
+  getAdminsList(filter?: Partial<CoursePaginationModel>,id?:any): Observable<any> {
+   
+    // const apiUrl = this.defaultUrl + 'admin/adminUserListing';
+    const apiUrl = this.defaultUrl + `admin/adminUserListing`;
+     return this.http
+       .get<ApiResponse>(apiUrl, {
+         params: this.buildParams(filter),
+       })
+       .pipe(map((response) => response));
+   }
+ 
   getAllStudents(filter?: Partial<CoursePaginationModel>): Observable<any> {
     const apiUrl = this.defaultUrl + 'admin/adminUserListing?isAll=true';
     return this.http
@@ -78,7 +91,9 @@ export class UserService {
   }
 
   getAllUsers(filter?: Partial<CoursePaginationModel>): Observable<any> {
-    const apiUrl = this.defaultUrl + 'admin/adminUserListing?isAllUsers=true';
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    const apiUrl = `${this.defaultUrl}admin/adminUserListing?isAllUsers=true&companyId=${userId}`;
+
     return this.http
       .get<ApiResponse>(apiUrl, {
         params: this.buildParams(filter),
@@ -231,7 +246,9 @@ export class UserService {
   }
 
   getUserGroups(filter?: Partial<CoursePaginationModel>): Observable<any> {
-    const apiUrl = this.defaultUrl + 'admin/user-group';
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+       // const apiUrl = this.defaultUrl + 'admin/user-group';
+   const apiUrl = this.defaultUrl + `admin/user-group?companyId=${userId}`;
     return this.http
       .get<ApiResponse>(apiUrl, {
         params: this.buildParams(filter),
@@ -246,7 +263,6 @@ export class UserService {
 
 
   updateUserGroup(id:string, data:any){
-    console.log("userIDservice",id)
     const apiUrl = `${this.defaultUrl}admin/user-group/${id}`;
     return this.http.put<ApiResponse>(apiUrl, data).pipe(
       map((response) => {

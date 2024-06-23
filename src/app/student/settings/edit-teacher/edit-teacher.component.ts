@@ -141,7 +141,6 @@ export class EditTeacherComponent {
   //   }
   // }
   onSubmit() {
-    console.log('Form Value', this.proForm.value);
     let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     // Check if the form is valid
     if (this.proForm.valid) {
@@ -150,12 +149,13 @@ export class EditTeacherComponent {
 
       // Set the avatar path to the existing avatar URL
       userData.avatar = this.avatar;
-
       userData.type = AppConstants.INSTRUCTOR_ROLE;
       userData.role = AppConstants.INSTRUCTOR_ROLE;
       userData.adminId = user.user.id;
       userData.adminEmail = user.user.email;
       userData.adminName = user.user.name;
+      userData.companyId = user.user.companyId;
+
 
       // Call the updateInstructor function with userData
       Swal.fire({

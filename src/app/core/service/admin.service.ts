@@ -95,8 +95,14 @@ export class AdminService {
     );
   }
 
-  getUserTypeList(filter: any): Observable<any> {
-    const apiUrl = this.defaultUrl + 'userType';
+  getUserTypeList(filter: any,id?:any): Observable<any> {
+    let apiUrl;
+    if(id){
+      apiUrl = `${this.defaultUrl}userType?companyId=${id}`;
+    }
+    else{
+     apiUrl = `${this.defaultUrl}userType`;
+    }
     const params = {
       ...filter,
     };

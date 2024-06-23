@@ -110,8 +110,9 @@ export class ClassListComponent extends UnsubscribeOnDestroyAdapter implements O
   }
 
   getClassList() {
-    this._classService
-      .getClassListWithPagination({ ...this.coursePaginationModel })
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this._classService
+      .getClassListWithPagination({ ...this.coursePaginationModel },userId)
       .subscribe(
         (response) => {
           if (response.data) {

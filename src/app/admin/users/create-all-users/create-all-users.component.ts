@@ -534,7 +534,8 @@ back(){
 }
 
   openRoleModal() {
-    this.logoService.getSidemenu().subscribe((response: any) => {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.logoService.getSidemenu(userId).subscribe((response: any) => {
       let MENU_LIST = response.data.docs[0].MENU_LIST;
       const items = this.convertToMenuV2(MENU_LIST, null);
       const dataSourceArray: MenuItemModel[] = [];

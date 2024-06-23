@@ -78,8 +78,8 @@ export class CreateBudgetComponent {
     }
 }
 getUserId() {
-  let userId = localStorage.getItem('id');
-  this.etmsService.getUserId(userId).subscribe((response: any) => {
+  let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    this.etmsService.getUserId(userId).subscribe((response: any) => {
     
     this.directorId = response.director,
     this.employeName=response?.name +

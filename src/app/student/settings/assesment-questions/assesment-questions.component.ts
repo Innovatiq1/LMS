@@ -291,7 +291,8 @@ export class AssesmentQuestionsComponent {
   }
 
   save() {
-    if (this.questionFormTab3.valid) {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        if (this.questionFormTab3.valid) {
       const payload = {
         name: this.questionFormTab3.value.name,
         timer: this.questionFormTab3.value.timer,
@@ -299,6 +300,7 @@ export class AssesmentQuestionsComponent {
         scoreAlgorithm: this.questionFormTab3.value.scoreAlgorithm,
         resultAfterFeedback: this.questionFormTab3.value.resultAfterFeedback,
         status: 'open',
+        companyId:userId,
         questions: this.questionFormTab3.value.questions.map((v: any) => ({
           options: v.options,
           questionText: v.questionText,

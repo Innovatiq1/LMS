@@ -67,8 +67,9 @@ export class CustomizationAssessmentRetakeComponent {
       showCancelButton: true,
       cancelButtonColor: '#d33',
     }).then((result) => {
-      if (result.isConfirmed) {
-    this.courseService.createAssessment({ value: selectedRetake }).subscribe(
+      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+            if (result.isConfirmed) {
+    this.courseService.createAssessment({ value: selectedRetake ,companyId:userId}).subscribe(
       response => {
         Swal.fire({
           title: 'Successful',

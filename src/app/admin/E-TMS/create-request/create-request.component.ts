@@ -137,8 +137,8 @@ export class CreateRequestComponent implements OnInit {
   }
   getUserId() {
     
-    let userId = localStorage.getItem('id');
-    this.etmsService.getUserId(userId).subscribe(
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.etmsService.getUserId(userId).subscribe(
       (response: any) => {
         this.dataSource = response;
         this.employeeID = response._id;
@@ -421,8 +421,8 @@ export class CreateRequestComponent implements OnInit {
 
 
   getData() {
-    let userId = localStorage.getItem('id');
-    this.etmsService.getRequestById(this._id).subscribe((response: any) => {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.etmsService.getRequestById(this._id).subscribe((response: any) => {
       if (response) {
         this.dataSource = response;
         this.employeeID = response.employeeId;

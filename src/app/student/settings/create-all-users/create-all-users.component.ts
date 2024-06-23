@@ -186,6 +186,7 @@ export class CreateAllUsersComponent {
       formObj['adminId'] = user.user.id;
       formObj['adminEmail'] = user.user.email;
       formObj['adminName'] = user.user.name;
+      formObj['companyId'] = user.user.companyId;
 
       const userData: Users = formObj;
       userData.avatar = this.avatar;
@@ -339,7 +340,6 @@ export class CreateAllUsersComponent {
   //   }
   // }
   updateBlog(formObj: any) {
-    console.log('Form Value', formObj);
     let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     if (!formObj.invalid) {
       // Prepare user data for update
@@ -350,7 +350,6 @@ export class CreateAllUsersComponent {
       formObj['adminId'] = user.user.id;
       formObj['adminEmail'] = user.user.email;
       formObj['adminName'] = user.user.name;
-
       const userData: Users = formObj;
 
       // Ensure that the avatar property contains the correct URL
@@ -468,8 +467,9 @@ export class CreateAllUsersComponent {
   }
 
   getForms(): void {
-    this.formService
-      .getAllForms('User Creation Form')
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.formService
+      .getAllForms(userId,'User Creation Form')
       .subscribe((forms) => {
         this.forms = forms;
       });
@@ -587,7 +587,8 @@ back(){
 }
 
   openRoleModal() {
-    this.logoService.getSidemenu().subscribe((response: any) => {
+    let userId = localStorage.getItem('id');
+    this.logoService.getSidemenu(userId).subscribe((response: any) => {
       let MENU_LIST = response.data.docs[0].MENU_LIST;
       const items = this.convertToMenuV2(MENU_LIST, null);
       const dataSourceArray: MenuItemModel[] = [];

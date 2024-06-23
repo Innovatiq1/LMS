@@ -116,7 +116,8 @@ export class PmDashboardComponent implements OnInit {
   }
 
   getCount() {
-    this.courseService.getCount().subscribe(response => {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.courseService.getCount(userId).subscribe(response => {
       this.count = response?.data;
       this.instructorCount=this.count?.instructors;
       this.adminCount=this.count?.admins

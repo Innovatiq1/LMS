@@ -68,7 +68,8 @@ export class CustomizationExamTimerComponent {
       cancelButtonColor: '#d33',
     }).then((result) => {
       if (result.isConfirmed) {
-    this.courseService.createExamTimer({ value: selectedTimer }).subscribe(
+        let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+            this.courseService.createExamTimer({ value: selectedTimer,companyId:userId }).subscribe(
       response => {
         Swal.fire({
           title: 'Successful',

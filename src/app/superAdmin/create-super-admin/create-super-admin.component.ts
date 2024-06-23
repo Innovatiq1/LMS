@@ -10,6 +10,7 @@ import {
   MatDialog,
   MatDialogRef,
 } from '@angular/material/dialog';
+import { v4 as uuidv4 } from 'uuid';
 import { Router } from '@angular/router';
 import { MenuItemModel, UserType, Users } from '@core/models/user.model';
 import { AdminService } from '@core/service/admin.service';
@@ -69,6 +70,7 @@ export class CreateSuperAdminComponent {
         Validators.required,
         ...this.utils.validators.mobile,
       ]),
+      company: new FormControl('', [Validators.required]),
       qualification: new FormControl('', []),
       department: new FormControl('', []),
       address: new FormControl('', []),
@@ -108,13 +110,13 @@ export class CreateSuperAdminComponent {
   }
 
   getDepartment() {
-    this.StudentService.getAllDepartments().subscribe((response: any) => {
+    this.StudentService.getDepartmentsForSuperAdmin().subscribe((response: any) => {
       this.dept = response.data.docs;
     });
   }
 
   openRoleModal() {
-    this.logoService.getSidemenu().subscribe((response: any) => {
+    this.logoService.getSuperAdminSidemenu().subscribe((response: any) => {
       let MENU_LIST = response.data.docs[0].MENU_LIST;
       const items = this.convertToMenuV2(MENU_LIST, null);
       const dataSourceArray: MenuItemModel[] = [];
@@ -242,9 +244,11 @@ export class CreateSuperAdminComponent {
   addBlog(formObj: any) {
 
     let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    console.log('Form Value', formObj);
     if (!formObj.invalid) {
-      console.log('======', formObj.type);
+      const uniqueId = uuidv4();
+      console.log('id',uniqueId)
+          // Assign the unique ID to userData (assuming userData has an 'id' property)
+      
       formObj['Active'] = this.status;
       formObj['type'] = formObj.type;
       formObj['role'] = 'Admin';
@@ -252,6 +256,7 @@ export class CreateSuperAdminComponent {
       formObj['adminId'] = user.user.id;
       formObj['adminEmail'] = user.user.email;
       formObj['adminName'] = user.user.name;
+      formObj['companyId'] = uniqueId;
 
       const userData: Users = formObj;
       userData.avatar = this.avatar;
@@ -259,8 +264,7 @@ export class CreateSuperAdminComponent {
       this.createUser(userData);
     }
   }
-  private createUser(userData: Users): void {
-    console.log('create', userData);
+  private createUser(userData: Users): void {    
     this.userService.saveUsers(userData).subscribe(
       () => {
         Swal.fire({
