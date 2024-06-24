@@ -15,6 +15,7 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
   @Input() answersResult!: any;
   @Input() totalTime!: number;
   @Input() isAnswersSubmitted:boolean = false;
+  @Input() autoSubmit:boolean = false;
   @Output() submitAnswers: EventEmitter<any> = new EventEmitter<any>();
   
 
@@ -69,7 +70,15 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
         this.totalTime--;
       } else {
         clearInterval(this.interval);
-        // this.submitAnswers();
+        if(this.autoSubmit){
+          const submissionPayload = {
+            answers: this.answers,
+            courseId: this.courseId,
+            is_tutorial: false,
+            classId: this.classId
+          };
+          this.submitAnswers.next(submissionPayload);
+        }
       }
     }, 1000);
   }
