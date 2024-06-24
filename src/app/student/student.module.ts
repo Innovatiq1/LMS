@@ -123,6 +123,7 @@ import { CreateCertificateComponent } from './settings/certificate-template/crea
 import { CustomizationExamAssessmentAlgorithmComponent } from './settings/customization-exam-assessment-algorithm/customization-exam-assessment-algorithm.component';
 import { CustomizationExamTimerComponent } from './settings/customization-exam-timer/customization-exam-timer.component';
 import { PassingCriteriaComponent } from './settings/passing-criteria/passing-criteria.component';
+import { UpdatePassingCriteriaComponent } from './settings/passing-criteria/update-passing-criteria/update-passing-criteria.component';
 
 @NgModule({
   declarations: [
@@ -225,6 +226,7 @@ import { PassingCriteriaComponent } from './settings/passing-criteria/passing-cr
     CustomizationExamAssessmentAlgorithmComponent,
     CustomizationExamTimerComponent,
     PassingCriteriaComponent,
+    UpdatePassingCriteriaComponent,
   
     // CourseKitComponent,
     // VideoPlayerComponent,
