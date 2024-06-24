@@ -1,1 +1,94 @@
-<p>passing-criteria works!</p>
+
+
+
+<section class="content">
+  <div class="content-block">
+    <div class="block-header" *ngFor="let breadscrum of breadscrums">
+      <!-- breadcrumb -->
+      <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
+      </app-breadcrumb>
+    </div>
+    <div class="row clearfix">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="card" style="height: fit-content;">
+          <div class="header">
+            <h2>Create Passing Criteria</h2>
+          </div>
+          <div class="body">
+        
+              <form [formGroup]="passingCriteriaForm">
+
+              <div class="row">
+                <div class="col-3">
+                  <label>Passing Criteria  <span class="mandatory">&nbsp;*</span></label>
+                      <mat-form-field class="example-full-width " appearance="outline">
+                          <input matInput type="text" formControlName="value"
+                          class="form-control" placeholder="Enter New Passing Criteria"
+                          >      
+                          <mat-error *ngIf="passingCriteriaForm.get('value')?.invalid ||passingCriteriaForm.get('value')?.touched">
+                            {{ utils.getErrorMessage1(passingCriteriaForm.get('value'), 'value') }}
+                          </mat-error>
+                                    
+                      </mat-form-field>
+                </div>
+                <!-- <div class="col-3">
+                  <label>Description <span class="mandatory">&nbsp;*</span></label>
+                      <mat-form-field class="example-full-width " appearance="outline">
+                          <input matInput type="text" formControlName="description"
+                          class="form-control" placeholder="Enter Description"
+                          >      
+                          <mat-error *ngIf="fundingForm.get('description')?.invalid ||fundingForm.get('description')?.touched">
+                            {{ utils.getErrorMessage1(fundingForm.get('description'), 'description') }}
+                          </mat-error>
+                                    
+                      </mat-form-field>
+                </div> -->
+
+                <!-- <div class="col mt-5 mx-5">
+                  <button  mat-flat-button color="accent" [routerLink]="['/student/settings/user-type']"   > All Roles </button>
+                </div> -->
+              </div>
+              </form>
+              <hr/>
+              <div class="float-end">
+                  <div class="d-grid gap-3 d-md-flex">
+                  <button  mat-raised-button  id="submit" (click)="onSubmit()" > Create </button>
+                  </div>
+                </div>
+                <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
+                  <!-- <div class="card" style="border-radius: 31px;"> -->
+                    <div class="header mt-3">
+                      <h2>Passing Criteria Listing</h2>
+                    </div>
+                    <div class="table-wrapper">
+                      <div class="table-responsive">
+                        <table class="table table-hover ">
+                          <thead>
+                            <tr>
+                              <th>Passing Criteria</th>
+                             
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <!-- <tr style="cursor: pointer;" >
+                              <td >{{dataSource}}</td>                         
+                              
+                            </tr> -->
+                            <tr style="cursor: pointer;" *ngFor="let row of dataSource">
+                              <td (click)="update(row)">{{row.value | capitalizeFirstLetter}}</td>                         
+                              
+                            </tr>
+  
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  <!-- </div> -->
+                </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
