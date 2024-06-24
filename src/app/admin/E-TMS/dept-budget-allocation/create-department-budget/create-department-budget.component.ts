@@ -170,8 +170,8 @@ export class CreateDepartmentBudgetComponent implements OnInit {
   //   })
   // }
   getUserId() {
-    let userId = localStorage.getItem('id');
-
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    
     this.etmsService.getUserId(userId).subscribe((response: any) => {
       
       this.directorId = response.director,

@@ -62,6 +62,39 @@ export class SettingsService {
       .pipe(map((response) => {}));
   }
 
+  savePassingCriteriya(passingCriteria: any) {
+    const apiUrl = `${this.prefix}admin/passingCriteria`;
+    return this._Http
+      .post<ApiResponse>(apiUrl, passingCriteria)
+      .pipe(map((response) => {}));
+  }
+  getPassingCriteria(filter?: Partial<CoursePaginationModel>): Observable<ApiResponse> {
+    //let userId = localStorage.getItem('id');
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    const apiUrl = this.defaultUrl + `admin/passingCriteria?companyId=${userId}`;
+   // const apiUrl = this.defaultUrl + 'admin/passingCriteria';
+    return this._Http.get<ApiResponse>(apiUrl, {
+      params: this.buildParams(filter),
+    });
+  }
+  getPassingCriteriaById(id: string) {
+    const apiUrl = `${this.prefix}admin/passingCriteria/${id}`;
+    return this._Http.get<any>(apiUrl).pipe(map((response) => response));
+  }
+  updatePassingCriteria(id: string, data: any) {
+    const apiUrl = `${this.prefix}admin/passingCriteria/${id}`;
+    return this._Http
+      .put<ApiResponse>(apiUrl, data)
+      .pipe(map((response) => {}));
+  }
+  deletePassingCriteria(id: string) {
+    const apiUrl = `${this.prefix}admin/passingCriteria/${id}`;
+    return this._Http
+      .delete<CourseModel>(apiUrl)
+      .pipe(map((response) => response));
+  }
+
+  
   saveStudentDashboard(data: any) {
     const apiUrl = `${this.prefix}admin/dashboard`;
     return this._Http
@@ -69,8 +102,14 @@ export class SettingsService {
       .pipe(map((response) => {}));
   }
 
-  getStudentDashboard(filter?: Partial<CoursePaginationModel>): Observable<ApiResponse> {
-    const apiUrl = this.defaultUrl + 'admin/dashboard';
+  getStudentDashboard(id?:any,filter?: Partial<CoursePaginationModel>): Observable<ApiResponse> {
+    let apiUrl
+    if(id){
+    apiUrl = `${this.prefix}admin/dashboard?companyId=${id}`;
+    } else {
+      apiUrl = `${this.prefix}admin/dashboard`;
+
+    }
     return this._Http.get<ApiResponse>(apiUrl, {
       params: this.buildParams(filter),
     });

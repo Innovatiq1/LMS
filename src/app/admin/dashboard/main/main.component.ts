@@ -371,7 +371,8 @@ export class MainComponent implements OnInit {
   }
 
   getCount() {
-    this.courseService.getCount().subscribe((response) => {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.courseService.getCount(userId).subscribe((response) => {
       this.count = response?.data;
       this.instructorCount = this.count?.instructors;
       this.adminCount = this.count?.admins;
@@ -380,8 +381,11 @@ export class MainComponent implements OnInit {
     });
   }
   getInstructorsList() {
-    let payload = {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        let payload = {
       type: AppConstants.INSTRUCTOR_ROLE,
+      companyId:userId
+
     };
     this.instructorService.getInstructor(payload).subscribe(
       (response: any) => {
@@ -597,9 +601,13 @@ export class MainComponent implements OnInit {
   // public doughnutChartData!: ChartData<'doughnut'>
   // public doughnutChartType: ChartType = 'doughnut';
   //End Student Information
+  
   getStudentsList() {
-    let payload = {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        let payload = {
       type: AppConstants.STUDENT_ROLE,
+      companyId:userId
+
     };
     this.instructorService.getInstructor(payload).subscribe(
       (response: any) => {
@@ -864,13 +872,13 @@ export class MainComponent implements OnInit {
           active: `${AppConstants.INSTRUCTOR_ROLE} Dashboad`,
         },
       ];
-    }else if (role === AppConstants.ACCESSOR_ROLE || role === 'Assessor' ) {
+    }else if (role === AppConstants.ASSESSOR_ROLE || role === 'Assessor' ) {
       this.isAssessorDB = true;
       this.breadscrums = [
         {
           title: 'Dashboad',
           items: ['Dashboad'],
-          active: `${AppConstants.ACCESSOR_ROLE} Dashboad`,
+          active: `${AppConstants.ASSESSOR_ROLE} Dashboad`,
         },
       ];
     }
@@ -890,7 +898,7 @@ export class MainComponent implements OnInit {
     } else if ( role === 'programcoordinator'|| role === 'Program manager' ) {
       this.isPCDB = true;
     }
-    if (role == AppConstants.ADMIN_ROLE || role ==AppConstants.ACCESSOR_ROLE) {
+    if (role == AppConstants.ADMIN_ROLE || role ==AppConstants.ASSESSOR_ROLE) {
       this.getAdminDashboard();
     } else if (role === AppConstants.STUDENT_ROLE) {
       this.getStudentDashboard();
@@ -920,7 +928,8 @@ export class MainComponent implements OnInit {
   }
   
   getClassList() {
-    this.classService.getClassListWithPagination().subscribe(
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.classService.getClassListWithPagination({},userId).subscribe(
       (response) => {
         if (response.data) {
           this.classesList = response.data.docs.slice(0, 5).sort();
@@ -2274,7 +2283,8 @@ private attendanceBarChart() {
     );
   }
   getAllCourse(){
-    this.courseService.getAllCourses({status:'active'}).subscribe(response =>{
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.courseService.getAllCourses(userId,{status:'active'}).subscribe(response =>{
      this.courseData = response.data.docs.slice(0,5);
      const currentDate = new Date();
         const currentMonth = currentDate.getMonth();
@@ -2289,7 +2299,8 @@ private attendanceBarChart() {
     })
   }
   getCoursesList() {
-    this.courseService.getAllCourses({status:'active'})
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.courseService.getAllCourses(userId,{status:'active'})
       .subscribe(response => {
         this.dataSource = response.data.docs;
         this.mapCategories();
@@ -2308,8 +2319,9 @@ private attendanceBarChart() {
   
   }
   getClassListIns() {
-    this.classService
-      .getClassListWithPagination()
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.classService
+      .getClassListWithPagination({},userId)
       .subscribe(
         (response) => {
           
@@ -2366,7 +2378,8 @@ private attendanceBarChart() {
     });
   }
   getCountIns() {
-    this.courseService.getCount().subscribe(response => {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.courseService.getCount(userId).subscribe(response => {
       this.count = response?.data;
       this.instructorCount=this.count?.instructors;
       this.adminCount=this.count?.admins
@@ -2375,7 +2388,8 @@ private attendanceBarChart() {
        
   }
   getAdminDashboard(){
-    this.settingsService.getStudentDashboard().subscribe(response => {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.settingsService.getStudentDashboard(userId).subscribe(response => {
     
       this.dashboard = response?.data?.docs[1];
   
@@ -2442,7 +2456,8 @@ private attendanceBarChart() {
   }
 
   getStudentDashboard(){
-    this.settingsService.getStudentDashboard().subscribe(response => {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    this.settingsService.getStudentDashboard(userId).subscribe(response => {
       this.studentDashboard = response.data.docs[0];
       this.setStudentsChart();
     })
@@ -2462,7 +2477,8 @@ private attendanceBarChart() {
     
   }
   getCompletedClasses() {
-    this.classService.getSessionCompletedStudent( this.studentPaginationModel.page,this.studentPaginationModel.limit )
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.classService.getSessionCompletedStudent( userId,this.studentPaginationModel.page,this.studentPaginationModel.limit )
       .subscribe((response: { docs: any; page: any; limit: any; totalDocs: any }) => {
           this.completedClasses = response.docs.slice(0,5);
         }
@@ -2476,8 +2492,9 @@ private attendanceBarChart() {
       })
   }
   getAllClasses() {
-    this.classService
-      .getClassListWithPagination({ ...this.coursePaginationModel })
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.classService
+      .getClassListWithPagination({ ...this.coursePaginationModel },userId)
       .subscribe(
         (response) => {
           if (response.data) {

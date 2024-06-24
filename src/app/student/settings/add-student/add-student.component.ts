@@ -93,8 +93,9 @@ export class AddStudentComponent {
   }
 
   getForms(): void {
-    this.formService
-      .getAllForms('Student Creation Form')
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.formService
+      .getAllForms(userId,'Student Creation Form')
       .subscribe((forms) => {
         this.forms = forms;
       });
@@ -184,7 +185,7 @@ export class AddStudentComponent {
         userData.adminId = user.user.id;
         userData.adminEmail = user.user.email;
         userData.adminName = user.user.name;
-
+        userData.companyId = user.user.companyId;
         Swal.fire({
           title: 'Are you sure?',
           text: 'Do You want to create a trainee profile!',
@@ -369,7 +370,6 @@ getDepartment(){
   //   }
   // }
   update() {
-    console.log('Form Value', this.stdForm.value);
     let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     // Check if the form is valid
     if (this.stdForm.valid) {
@@ -384,6 +384,7 @@ getDepartment(){
       userData.adminId = user.user.id;
         userData.adminEmail = user.user.email;
         userData.adminName = user.user.name;
+        userData.companyId = user.user.companyId;
 
       // Call the updateInstructor function with userData
 

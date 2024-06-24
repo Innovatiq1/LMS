@@ -53,6 +53,8 @@ export class CreateDepartmentComponent {
 
   onSubmit() {
     if (this.departmentForm.valid) {
+      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+            this.departmentForm.value.companyId=userId;
       Swal.fire({
         title: 'Are you sure?',
         text: 'Do you want to create department!',

@@ -36,8 +36,8 @@ export class LogoCoutomzationComponent {
     this.getLogo();
   }
   getLogo() {
-    /* get all logos **/
-    this.logoService.getLogo().subscribe((logo) => {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.logoService.getLogo(userId).subscribe((logo) => {
       this.Logos = logo?.data?.docs;
     });
   }
@@ -96,6 +96,7 @@ export class LogoCoutomzationComponent {
   /* update logo api call **/
 
   updateLogo() {
+    
     Swal.fire({
       title: 'Are you sure?',
       text: 'Do you want to update this logo!',
@@ -109,8 +110,10 @@ export class LogoCoutomzationComponent {
         if(this.logoFile){
           formdata.append('files', this.logoFile);
         }
-        formdata.append('title', this.LogoForm.value.title);
+        let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+                formdata.append('title', this.LogoForm.value.title);
         formdata.append('filename', this.logoImg);
+        formdata.append('companyId',userId)
         this.logoService
           .updateLogo(this.patchId, formdata)
           .subscribe((data) => {

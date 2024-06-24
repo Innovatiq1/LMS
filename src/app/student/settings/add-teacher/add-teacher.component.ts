@@ -163,6 +163,7 @@ export class AddTeacherComponent {
         userData.adminId = user.user.id;
         userData.adminEmail = user.user.email;
         userData.adminName = user.user.name;
+        userData.companyId = user.user.companyId;
 
         this.createInstructor(userData);
     }else{
@@ -178,8 +179,9 @@ export class AddTeacherComponent {
   }
 
   getForms(): void {
-    this.formService
-      .getAllForms('Instructor Creation Form')
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.formService
+      .getAllForms(userId,'Instructor Creation Form')
       .subscribe((forms) => {
         this.forms = forms;
       });

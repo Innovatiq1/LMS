@@ -136,7 +136,7 @@ export class Dashboard2Component implements OnInit,AfterViewInit {
     this.getProgramList();
     this.getAllCourse();
     const role = this.authenticationService.currentUserValue.user.role;
-    if (role == AppConstants.ADMIN_ROLE || role ==AppConstants.ACCESSOR_ROLE) {
+    if (role == AppConstants.ADMIN_ROLE || role ==AppConstants.ASSESSOR_ROLE) {
       this.getStudentDashboards();
     }
     this.cdr.detectChanges();
@@ -177,8 +177,11 @@ export class Dashboard2Component implements OnInit,AfterViewInit {
   }
 
   getInstructorsList() {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     let payload = {
-      type: AppConstants.INSTRUCTOR_ROLE
+      type: AppConstants.INSTRUCTOR_ROLE,
+      companyId:userId
+
     }
     this.instructorService.getInstructor(payload).subscribe((response: any) => {
       this.instructors = response.slice(0, 8);
@@ -362,7 +365,8 @@ export class Dashboard2Component implements OnInit,AfterViewInit {
     );
   }
   getAllCourse(){
-    this.courseService.getAllCourses({status:'active'}).subscribe(response =>{
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    this.courseService.getAllCourses(userId,{status:'active'}).subscribe(response =>{
      this.courseData = response.data.docs.slice(0,5);
      const currentDate = new Date();
         const currentMonth = currentDate.getMonth();

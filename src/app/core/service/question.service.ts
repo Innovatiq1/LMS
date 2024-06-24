@@ -126,7 +126,8 @@ export class QuestionService {
   }
 
   getExamAssessmentsAndAssesments( filter?: Partial<CoursePaginationModel>): Observable<ApiResponse> {
-    const apiUrl = `${this.defaultUrl}admin/exam-assessment/assessments`;
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        const apiUrl = `${this.defaultUrl}admin/exam-assessment/assessments?companyId=${userId}`;
     return this.http.get<any>(apiUrl, {
       params: this.buildParams(filter),
     });

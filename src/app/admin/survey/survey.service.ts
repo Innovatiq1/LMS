@@ -59,7 +59,8 @@ export class SurveyService extends UnsubscribeOnDestroyAdapter {
 
 
   getAllSurvey(): void {
-    const apiUrl = `${this.prefix}admin/survey-builder`;
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        const apiUrl = `${this.prefix}admin/survey-builder?companyId=${userId}`;
     this.subs.sink = this.httpClient.get<SurveyBuilderModel>(apiUrl).subscribe({
       next: (response) => {
         this.isTblLoading = false;
@@ -97,7 +98,8 @@ export class SurveyService extends UnsubscribeOnDestroyAdapter {
       .pipe(map((response) => response));
   }
   getSurvey( filter?: Partial<CoursePaginationModel>): Observable<ApiResponse> {
-    const apiUrl = `${this.prefix}admin/survey`;
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        const apiUrl = `${this.prefix}admin/survey?companyId=${userId}`;
     return this.httpClient.get<any>(apiUrl, {
       params: this.buildParams(filter),
     });

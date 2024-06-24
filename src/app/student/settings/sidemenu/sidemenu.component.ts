@@ -204,9 +204,9 @@ export class SidemenuComponent {
   
   // }
   update() {
-    console.log("update",this.sideMenuForm.value)
     if (this.sideMenuForm.valid) {
-      const payload = {
+      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+            const payload = {
         MENU_LIST: this.sideMenuForm.value.sidemenu.map((menulist: any) => ({
           title: menulist.title,
           id: menulist.id,
@@ -219,11 +219,14 @@ export class SidemenuComponent {
             children: submenus.submenu.map((submenu: any) => ({
               title: submenu.title,
               id: submenu.id,
+              
               class:submenu.class
             }))
           }))
         })),
         id: this.sidemenuId,
+        companyId:userId,
+
       };
       
       Swal.fire({

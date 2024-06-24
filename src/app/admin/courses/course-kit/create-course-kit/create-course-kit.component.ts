@@ -185,7 +185,8 @@ export class CreateCourseKitComponent implements OnInit {
     
   }
   private createCourseKit(courseKitData: CourseKit): void {
-    Swal.fire({
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        Swal.fire({
       title: 'Are you sure?',
       text: 'You want to create a course kit!',
       icon: 'warning',
@@ -194,6 +195,7 @@ export class CreateCourseKitComponent implements OnInit {
       cancelButtonColor: '#d33',
     }).then((result) => {
       if (result.isConfirmed) {
+         courseKitData.companyId=userId;
         this.courseService.createCourseKit(courseKitData).subscribe(
           (res) => {
             console.log('res', res);
@@ -220,8 +222,9 @@ export class CreateCourseKitComponent implements OnInit {
   }
 
   getForms(): void {
-    this.formService
-      .getAllForms('Course Kit Creation Form')
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.formService
+      .getAllForms(userId,'Course Kit Creation Form')
       .subscribe((forms) => {
         this.forms = forms;
       });
@@ -242,8 +245,16 @@ export class CreateCourseKitComponent implements OnInit {
   //videoUpload
   fileBrowseHandler(event: any) {
     const file = event.target.files[0];
+    if(file.size <= 10000000){
     this.videoLink = file;
     this.videoSrc = this.videoLink.name;
+    } else {
+      Swal.fire({
+        title: 'Error',
+        text: 'Failed to upload media.Please upload less than 10mb.',
+        icon: 'error',
+      });
+    }
   }
 
   // fileBrowseHandler(event: any) {

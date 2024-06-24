@@ -167,13 +167,15 @@ export class FeedbackComponent {
     const userData = this.userDetails;
     const studentFirstName = userData?.user?.name;
     const studentLastName = userData?.user?.last_name;
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     const payload = {
       ...event,
       studentId,
       courseId: this.courseId,
       studentFirstName,
       studentLastName,
-      courseName:this.courseName
+      courseName:this.courseName,
+      companyId:userId
     };
     this.submit(payload)
   }
@@ -295,7 +297,8 @@ skipCallback(){
     );
   }
   getAllUserTypes(filters?: any) {
-    this.adminService.getUserTypeList({ 'allRows':true }).subscribe(
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    this.adminService.getUserTypeList({ 'allRows':true },userId).subscribe(
       (response: any) => {
         this.data = response.filter((item:any) =>item.typeName !== 'admin');
       },

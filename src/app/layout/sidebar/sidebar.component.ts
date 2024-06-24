@@ -71,6 +71,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
         if (!event.url.includes('settings')) {
           this.isSettings = false;
           this.menuitem = this.orgMenuItems;
+          console.log('menu',this.orgMenuItems)
         } else {
           if (this.userType === AppConstants.ADMIN_ROLE) {
             this.isSettings = true;
@@ -109,7 +110,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
     }
   }
   getUserTypeList(filters?: any) {
-    this.adminService.getUserTypeList({ allRows: true }).subscribe(
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    this.adminService.getUserTypeList({ allRows: true },userId).subscribe(
       (response: any) => {
         let userType = localStorage.getItem('user_type');
         let data = response.filter((item: any) => item.typeName === userType);

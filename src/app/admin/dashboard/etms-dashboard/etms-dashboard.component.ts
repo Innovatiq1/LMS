@@ -991,7 +991,8 @@ export class EtmsDashboardComponent implements OnInit {
 // }
 
   getStudentDashboard(){
-    this.settingsService.getStudentDashboard().subscribe(response => {
+    let userId = localStorage.getItem('id');
+    this.settingsService.getStudentDashboard(userId).subscribe(response => {
       this.dashboard = response.data.docs[1];
       this.setBudgetChart();
       this.setActualChart();

@@ -332,7 +332,8 @@ isInputDisabled(): boolean {
 // }
 
 getForms(): void {
-  this.formService.getAllForms('Course Creation Form').subscribe(forms => {
+  let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    this.formService.getAllForms(userId,'Course Creation Form').subscribe(forms => {
     this.forms = forms;
   });
 }
@@ -672,10 +673,8 @@ this.courseService.uploadCourseThumbnail(formData).subscribe((data: any) =>{
     if(this.firstFormGroup.valid){
       const courseData = this.firstFormGroup.value;
       let creator = JSON.parse(localStorage.getItem('user_data')!).user.name;
-      let userId = localStorage.getItem('id') 
-
+      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
       let payload = {
-
         title: courseData.title,
         courseCode: courseData?.courseCode,
         main_category: courseData?.main_category,
@@ -709,7 +708,7 @@ this.courseService.uploadCourseThumbnail(formData).subscribe((data: any) =>{
         feeType:courseData?.feeType,
         isFeedbackRequired: courseData?.isFeedbackRequired,
         examType: courseData?.examType,
-        adminId:userId
+        companyId:userId
       }
 
       Swal.fire({

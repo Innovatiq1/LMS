@@ -9,6 +9,7 @@ import { Mentor } from '../models/mentor';
 import { UserType } from '../models/user.model';
 import { CoursePaginationModel } from '../models/course.model';
 import { MenuItem } from 'app/layout/sidebar/sidebar.metadata';
+import { AppConstants } from '@shared/constants/app.constants';
 
 const Logging = new Logger('AdminService');
 
@@ -95,8 +96,14 @@ export class AdminService {
     );
   }
 
-  getUserTypeList(filter: any): Observable<any> {
-    const apiUrl = this.defaultUrl + 'userType';
+  getUserTypeList(filter: any,id?:any): Observable<any> {
+    let apiUrl;
+    if(id){
+      apiUrl = `${this.defaultUrl}userType?companyId=${id}`;
+    }
+    else{
+     apiUrl = `${this.defaultUrl}userType`;
+    }
     const params = {
       ...filter,
     };

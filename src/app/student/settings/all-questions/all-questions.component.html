@@ -72,7 +72,7 @@
                             [class]="row?.status === 'approved' ? 'badge badge-solid-green' : row?.status === 'open' ? 'badge badge-solid-red' : ''">
                             <span
                               [class]="row?.status === 'approved' ? 'status-dot' : row?.status === 'open' ? 'status-red' : ''"></span>
-                            {{row.status ==='approved'? 'Approved':' Open' | titlecase}}</span>
+                            {{row.status ==='approved'? 'Published':'Draft' | titlecase}}</span>
                     </mat-cell>
                   </ng-container>
                   

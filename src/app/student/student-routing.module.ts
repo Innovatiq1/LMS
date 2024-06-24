@@ -89,6 +89,8 @@ import { CustomizationExamAssessmentAlgorithmComponent } from './settings/custom
 import { CustomizationExamTimerComponent } from './settings/customization-exam-timer/customization-exam-timer.component';
 import { DiscountComponent } from './settings/discount/discount.component';
 import { UpdateDiscountComponent } from './settings/discount/update-discount/update-discount.component';
+import { PassingCriteriaComponent } from './settings/passing-criteria/passing-criteria.component';
+import { UpdatePassingCriteriaComponent } from './settings/passing-criteria/update-passing-criteria/update-passing-criteria.component';
 
 
 const routes: Routes = [
@@ -317,6 +319,11 @@ const routes: Routes = [
     path: 'settings/vendor',
     component: VendorComponent
   },
+  {
+    path: 'settings/passing-criteria',
+    component: PassingCriteriaComponent
+  },
+
 
   {
     path: 'settings/discount',
@@ -346,6 +353,10 @@ const routes: Routes = [
   },
   {
     path: 'settings/customization-forms/create-announcement',
+    component: CreatAnnouncementComponent,
+  },
+  {
+    path: 'settings/create-announcement',
     component: CreatAnnouncementComponent,
   },
   {
@@ -621,6 +632,10 @@ const routes: Routes = [
   {
     path: 'settings/update-vendor',
     component: UpdateVendorComponent
+  },
+  {
+    path: 'settings/update-passing-criteria',
+    component: UpdatePassingCriteriaComponent
   },
 
   {

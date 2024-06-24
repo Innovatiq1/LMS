@@ -150,8 +150,9 @@ export class CreateProgramComponent {
     this.getForms();
   }
   getForms(): void {
-    this.formService
-      .getAllForms('Program Creation Form')
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.formService
+      .getAllForms(userId,'Program Creation Form')
       .subscribe((forms) => {
         this.forms = forms;
       });

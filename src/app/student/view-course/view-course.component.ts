@@ -178,6 +178,7 @@ export class ViewCourseComponent implements OnDestroy {
       this.free = true;
       this.subscribeParams = this.activatedRoute.params.subscribe((params) => {
         this.courseDetailsId = params['id'];
+        this.getCourseKitDetails(this.courseDetailsId);
         this.getAssessmentAnswerCount(this.courseDetailsId);
         this.getExamAssessmentAnswerCount(this.courseDetailsId);
       });
@@ -368,8 +369,8 @@ export class ViewCourseComponent implements OnDestroy {
     this.commonService.setVideoDetails(video);
   }
 
-  getDiscounts(){
-    this.courseService.getDiscount().subscribe((response) => {
+  getDiscounts(id:any){
+    this.courseService.getDiscount(id).subscribe((response) => {
       this.discounts = response.filter(item => !item.discountTitle.includes('&'));
       this.allDiscounts = response;
       this.openDialog(this.discountDialog)
@@ -386,6 +387,7 @@ export class ViewCourseComponent implements OnDestroy {
       name: userdata.user.name,
       adminEmail:userdata.user.adminEmail,
       adminName:userdata.user.adminName,
+      companyId:userdata.user.companyId,
       courseTitle: this.classDetails?.courseId?.title,
       courseFee: this.classDetails?.courseId?.fee,
       studentId: studentId,
@@ -396,7 +398,6 @@ export class ViewCourseComponent implements OnDestroy {
       verify:false,
       discount:this.selectedDiscount
     };
-
               this.courseService
                 .saveRegisterClass(body)
                 .subscribe((response) => {
@@ -406,9 +407,6 @@ export class ViewCourseComponent implements OnDestroy {
                     icon: 'success',
                   });
                   dialogRef.close();
-
-          
-                  this.getClassDetails();
                   this.payment = false;
                   this.isRegistered = true;
                 });
@@ -425,7 +423,7 @@ export class ViewCourseComponent implements OnDestroy {
     var userdata = JSON.parse(localStorage.getItem('currentUser')!);
     var studentId = localStorage.getItem('id');
     if (this.paid) {
-      this.getDiscounts();
+      this.getDiscounts(userdata.user.companyId);
    
     } else if (this.free) {
       let payload = {
@@ -503,6 +501,7 @@ export class ViewCourseComponent implements OnDestroy {
                   stripe:true,
                   adminEmail:userdata.user.adminEmail,
                   adminName:userdata.user.adminName,
+                  companyId:userdata.user.companyId,
                   invoiceUrl:this.invoiceUrl
                 }
 
@@ -651,6 +650,9 @@ export class ViewCourseComponent implements OnDestroy {
         coursekit: this.courseKit,
         feeType: 'free',
         courseId: this.courseDetails.id,
+        companyId:userdata.user.companyId,
+        verify:true,
+        paid:true
       };
       this.courseService.saveRegisterClass(payload).subscribe((response) => {
         Swal.fire({
@@ -1214,6 +1216,7 @@ export class ViewCourseComponent implements OnDestroy {
       studentFirstName,
       studentLastName,
       courseName: this.title,
+      companyId:userData.user.companyId
     };
     this.surveyService.addSurveyBuilder(payload).subscribe(
       (response) => {

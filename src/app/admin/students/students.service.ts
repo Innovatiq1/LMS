@@ -70,6 +70,7 @@ export class StudentsService extends UnsubscribeOnDestroyAdapter {
 
   /** CRUD METHODS */
   getAllStudentss(body:any): void {
+    
     const apiUrl = `${this.defaultUrl}auth/instructorList/`;
     this.subs.sink = this.httpClient.post<Students>(apiUrl,body).subscribe({
       next: (response) => {
@@ -191,13 +192,22 @@ export class StudentsService extends UnsubscribeOnDestroyAdapter {
     }
 
     getAllDepartments(): Observable<ApiResponse> {
-      const apiUrl = this.defaultUrl+'admin/department';
+      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+            const apiUrl = `${this.defaultUrl}admin/department?companyId=${userId}`;
+      return this.httpClient.get<ApiResponse>(apiUrl);
+    }
+    getDepartmentsForSuperAdmin(): Observable<ApiResponse> {
+      const apiUrl = `${this.defaultUrl}admin/department`;
       return this.httpClient.get<ApiResponse>(apiUrl);
     }
 
 
+
     submitAssessment(data: any): Observable<ApiResponse> {
-      const apiUrl = this.defaultUrl + 'admin/assesment-answers';
+      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+      data.companyId = userId
+      const apiUrl = `${this.defaultUrl}admin/assesment-answers`;
+
       return this.httpClient.post<ApiResponse>(apiUrl, data).pipe(
         map(response => response)
       );

@@ -156,6 +156,8 @@ import { ApiResponse } from '@core/models/general.response';
     }
 
     submitAssessment(data: any): Observable<ApiResponse> {
+      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+      data.companyId =userId
       const apiUrl = this.defaultUrl + 'admin/exam-assesment-answers';
       return this.http.post<ApiResponse>(apiUrl, data).pipe(
         map(response => response)
@@ -164,6 +166,9 @@ import { ApiResponse } from '@core/models/general.response';
 
 
     updateAssessment(data: any): Observable<any> {
+      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+      data.companyId =userId
+
       const apiUrl = `${this.defaultUrl}admin/exam-assesment-answers/${data.id}`;
       return this.http.put<ApiResponse>(apiUrl, data).pipe(
         map(response => response)
