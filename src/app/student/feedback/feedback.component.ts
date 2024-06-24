@@ -199,7 +199,7 @@ export class FeedbackComponent {
               this.classService
                 .saveApprovedClasses(this.classId, payload)
                 .subscribe((response) => {
-                  this.router.navigate(['/student/view-course/'+ this.classId]);
+                  this.router.navigate(['/student/exams/exam-results']);
                 });
             } else if(this.isFree){
               let payload = {
@@ -212,7 +212,7 @@ export class FeedbackComponent {
               this.classService
                 .saveApprovedClasses(this.classId, payload)
                 .subscribe((response) => {
-                  this.router.navigate(['/student/view-freecourse/'+ this.courseId]);
+                  this.router.navigate(['/student/exams/exam-results']);
                 });
             }
 
@@ -233,7 +233,7 @@ skipCallback(){
     .saveApprovedClasses(this.classId, payload)
     .subscribe((response) => {
       setTimeout(() => {
-        this.router.navigate(['/student/view-course/'+ this.classId]);
+        this.router.navigate(['/student/exams/exam-results']);
       }, 4000);
 
     });
