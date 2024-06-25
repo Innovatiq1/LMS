@@ -316,19 +316,25 @@ export class ViewCourseComponent implements OnDestroy {
                 // console.log("enterd", this.studentClassDetails);
                 if (this.studentClassDetails.status == 'approved') {
                   if (this.paid) {
-                    this.router.navigate([
-                      '/student/questions/',
-                      classId,
-                      studentId,
-                      this.courseId,
-                    ]);
+                    const targetURL = `/student/questions/${classId}/${studentId}/${this.courseId}`;
+                    if(this.router.url!=targetURL){
+                      this.router.navigate([
+                        '/student/questions/',
+                        classId,
+                        studentId,
+                        this.courseId,
+                      ]);
+                    }
                   } else if (this.free) {
-                    this.router.navigate([
-                      '/student/questions/freecourse/',
-                      classId,
-                      studentId,
-                      this.courseId,
-                    ]);
+                    const targetURL = `/student/questions/freecourse/${classId}/${studentId}/${this.courseId}`;
+                    if(this.router.url!=targetURL){
+                      this.router.navigate([
+                        '/student/questions/freecourse/',
+                        classId,
+                        studentId,
+                        this.courseId,
+                      ]);
+                    }
                   }
                 } else {
                 }
