@@ -34,6 +34,22 @@ export class AssesmentQuestionsComponent {
   configurationSubscription!: Subscription;
   defaultTimer: string = '';
   defaultRetake: string = '';
+  currencyCodes: string[] = [
+    'USD',
+    'SGD',
+    'NZD',
+    'YEN',
+    'GBP',
+    'KWN',
+    'IDR',
+    'TWD',
+    'MYR',
+    'AUD',
+  ];
+  timerValues: string[] = ['15', '30', '45', '60', '90', '120', '150'];
+  retakeCodesAssessment: string[] = ['1', '2', '3', '4', '5'];
+  scoreAlgo: number[] = [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
+
 
   constructor(
     private formBuilder: FormBuilder,
