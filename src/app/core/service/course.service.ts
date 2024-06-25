@@ -134,8 +134,8 @@ export class CourseService {
     return this._Http.post<any>(apiUrl, payload).pipe(map((response) => response));
   }
 
-  getCourseProgram(filter?: Partial<Program>): Observable<ApiResponse> {
-    const apiUrl = `${this.prefix}admin/courseprogram`;
+  getCourseProgram(filter?: Partial<Program>,id?:any): Observable<ApiResponse> {
+    const apiUrl = `${this.prefix}admin/courseprogram?companyId=${id}`;
     return this._Http
       .get<ApiResponse>(apiUrl, { params: this.buildParams(filter)})
       .pipe(
@@ -162,8 +162,8 @@ export class CourseService {
     });
   }
 
-  getAllPrograms(filter?: Partial<Program>): Observable<ApiResponse> {
-    const apiUrl = `${this.prefix}admin/courseprogram?status=active&status=inactive`;
+  getAllPrograms(filter?: Partial<Program>,id?:any): Observable<ApiResponse> {
+    const apiUrl = `${this.prefix}admin/courseprogram?companyId=${id}&status=active&status=inactive`;
     return this._Http
       .get<ApiResponse>(apiUrl, { params: this.buildParams(filter)})
       .pipe(
@@ -183,8 +183,8 @@ export class CourseService {
         })
       );
   }
-  getAllProgramsWithoutPagination(filter?: Partial<Program>): Observable<ApiResponse> {
-    const apiUrl = `${this.prefix}admin/courseprogram?status=active&status=inactive`;
+  getAllProgramsWithoutPagination(filter?: Partial<Program>,id?:any): Observable<ApiResponse> {
+    const apiUrl = `${this.prefix}admin/courseprogram?status=active&status=inactive&companyId=${id}`;
     return this._Http
       .get<ApiResponse>(apiUrl, { params: this.buildParams(filter)})
       .pipe(

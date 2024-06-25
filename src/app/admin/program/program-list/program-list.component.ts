@@ -254,8 +254,9 @@ getFilterData(filters?: any) {
   getProgramList(filters?: any) {
     this.isLoading = true;
     this.isNoMoreData = false;
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     // let filterText = this.filterName
-    this.courseService.getAllPrograms({...this.coursePaginationModel}).subscribe(
+    this.courseService.getAllPrograms({...this.coursePaginationModel},userId).subscribe(
       (response: any) => {
         this.isLoading = false;
         this.programData = response.docs;
@@ -322,8 +323,9 @@ getFilterData(filters?: any) {
     this.getProgramList();
     this.getFilterData();
     this.getAllVendorsAndUsers();
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     forkJoin({
-      courses: this.courseService.getAllProgramsWithoutPagination({ ...this.coursePaginationModel}),
+      courses: this.courseService.getAllProgramsWithoutPagination({ ...this.coursePaginationModel},userId),
     }).subscribe((response) => {
       this.programList = response.courses;
     });
