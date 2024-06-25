@@ -83,7 +83,7 @@ export class CourseComponent {
   }
 getAllCourse(){
   let filterText = this.filterName
-  const payload = { filterText,...this.coursePaginationModel, status: 'open' ,department:this.department, userGroupId: this.userGroupIds}
+  const payload = { filterText,...this.coursePaginationModel, status: 'open' ,role:'Student',department:this.department, userGroupId: this.userGroupIds}
   if(this.userGroupIds){
     payload.userGroupId=this.userGroupIds
   }

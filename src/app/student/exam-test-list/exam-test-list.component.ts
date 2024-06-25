@@ -87,8 +87,7 @@ export class ExamTestListComponent {
 
   navToExam(data: any) {
     const isPaid = data.courseId?.feeType == 'paid';
-    const isPaymentCompleted = data?.studentClass?.paid;
-    if (isPaid && !isPaymentCompleted) {
+    if (isPaid) {
       this.paidDirectExamFlow(data)
     }else {
       const courseDetails = data.courseId;
@@ -103,19 +102,7 @@ export class ExamTestListComponent {
 
     this.courseService.getCourseById(courseId).subscribe((response) => {
       const courseDetails = response;
-      this.classService.getClassesByCourseId(courseId).subscribe((res) => {
-        const classDetails = res.data[0];
-        if(classDetails){
-          this.paidDialogEvent(courseDetails, classDetails, data);
-        }else {
-          Swal.fire({
-            title: 'Error',
-            text: 'Failed in Get Class Details.',
-            icon: 'error',
-            // confirmButtonColor: '#526D82',
-          });
-        }
-      });
+      this.paidDialogEvent(courseDetails, null, data);
     });
   }
 
@@ -143,7 +130,7 @@ export class ExamTestListComponent {
       courseTitle: courseDetails?.title,
       courseFee: courseDetails?.fee,
       studentId: studentId,
-      classId: classDetails.id,
+      classId: null,
       title: courseDetails.title,
       coursekit: courseKit,
       date: date,
@@ -165,29 +152,13 @@ export class ExamTestListComponent {
         dialogRef.afterClosed().subscribe((result) => {
           if (result) {
             if (result.payment === 'card') {
-              let payload = {
-                email: userdata.user.email,
-                name: userdata.user.name,
-                courseTitle: courseDetails?.title,
-                courseFee: courseDetails?.fee,
-                studentId: studentId,
-                classId: classDetails.id,
-                title: courseDetails?.title,
-                coursekit: courseKit,
-                paid: true,
-                verify: true,
-              };
 
-              this.courseService
-                .saveRegisterClass(payload)
-                .subscribe((response) => {
-                  //redirect to exam
-                  this.redirectToExam(
-                    courseDetails,
-                    studentId,
-                    null
-                  );
-                });
+              //redirect to exam
+              this.redirectToExam(
+                courseDetails,
+                studentId,
+                null
+              );
             } else if (result.payment === 'other') {
               let payload = {
                 email: userdata.user.email,
@@ -195,7 +166,7 @@ export class ExamTestListComponent {
                 courseTitle: courseDetails?.title,
                 courseFee: courseDetails?.fee,
                 studentId: studentId,
-                classId: classDetails?.id,
+                classId: null,
                 title: courseDetails?.title,
                 coursekit: courseKit,
               };
@@ -246,7 +217,7 @@ export class ExamTestListComponent {
                                   courseTitle: courseDetails?.title,
                                   courseFee: courseDetails?.fee,
                                   studentId: studentId,
-                                  classId: classDetails?.id,
+                                  classId: null,
                                   title: courseDetails?.title,
                                   coursekit: courseKit,
                                   orderId:
@@ -257,16 +228,11 @@ export class ExamTestListComponent {
                                   razorpay: true,
                                   invoiceUrl: this.invoiceUrl,
                                 };
-
-                                this.courseService
-                                  .saveRegisterClass(payload)
-                                  .subscribe((res) => {
-                                    //redirect to exam
-                                    this.redirectToExam(
-                                      courseDetails,
-                                      studentId, null
-                                    );
-                                  });
+                                //redirect to exam
+                                this.redirectToExam(
+                                  courseDetails,
+                                  studentId, null
+                                );
                               }, 5000);
                             });
                         }

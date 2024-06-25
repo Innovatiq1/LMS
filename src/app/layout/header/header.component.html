@@ -131,7 +131,7 @@
           <mat-menu #menu="matMenu" class="horizontal-menu">
             <div class="menu-row">
               <div class="user-container">
-                <div class="user-option" *ngIf="role===commonRoles.ADMIN_USERTYPE" (click)="navigateToUserSettings()">
+                <div class="user-option" *ngIf="role===commonRoles.ADMIN_USERTYPE ||'Super Admin'" (click)="navigateToUserSettings()">
                   <img src="assets/images/settings/role.png" alt="User" class="user-image">
                   <button mat-menu-item>
                     <h5>Manage Users</h5>

@@ -153,7 +153,8 @@ export class SigninComponent
       });    
   }
   getUserTypeList() {
-    this.adminService.getUserTypeList({ allRows: true }).subscribe(
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    this.adminService.getUserTypeList({ allRows: true },userId).subscribe(
       (response: any) => {
         this.userTypes = response;
       },

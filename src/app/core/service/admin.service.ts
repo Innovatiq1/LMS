@@ -9,6 +9,7 @@ import { Mentor } from '../models/mentor';
 import { UserType } from '../models/user.model';
 import { CoursePaginationModel } from '../models/course.model';
 import { MenuItem } from 'app/layout/sidebar/sidebar.metadata';
+import { AppConstants } from '@shared/constants/app.constants';
 
 const Logging = new Logger('AdminService');
 

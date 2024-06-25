@@ -489,7 +489,8 @@ export class CreateAllUsersComponent {
 
 
   getUserTypeList(filters?: any, typeName?: any) {
-    this.adminService.getUserTypeList({ allRows: true }).subscribe(
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    this.adminService.getUserTypeList({ allRows: true },userId).subscribe(
       (response: any) => {
         this.userTypes = response;
         if (typeName) {
