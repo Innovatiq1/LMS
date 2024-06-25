@@ -393,8 +393,9 @@ this.getRegisteredClasses();
 this.getProgramList();
   }
   getClassList() {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     this._programService
-      .getProgramClassListWithPagination()
+      .getProgramClassListWithPagination(userId)
       .subscribe(
         (response) => {
             this.classesList = response.data.docs.slice(0,5).sort();

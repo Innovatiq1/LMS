@@ -129,8 +129,9 @@ export class ScheduleClassComponent {
   }
 
   getClassList() {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     this.courseService
-      .getProgramClassListWithPagination({ ...this.coursePaginationModel })
+      .getProgramClassListWithPagination(userId,{ ...this.coursePaginationModel })
       .subscribe(
         (response) => {
           this.dataSource = response.data.docs;

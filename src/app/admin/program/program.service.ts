@@ -37,9 +37,9 @@ export class ProgramService {
 
 
   /** CRUD METHODS */
-getProgramClassListWithPagination(
+getProgramClassListWithPagination(id:any,
   filter?:Partial<CoursePaginationModel>): Observable<ApiResponse> {
-  const apiUrl = `${this.prefix}admin/program-class/`;
+  const apiUrl = `${this.prefix}admin/program-class?companyId=${id}`;
   return this.httpClient.get<ApiResponse>(apiUrl, { params: this.buildParams(filter) })
 }
 

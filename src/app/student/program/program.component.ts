@@ -82,7 +82,7 @@ getClassList() {
   if(this.userGroupIds){
     payload.userGroupId=this.userGroupIds
   }
-  this.classService.getProgramClassListWithPagination(payload,userId).subscribe(
+  this.classService.getProgramClassListWithPagination(userId,payload).subscribe(
     (response) => {
       this.dataSource = response.data.docs;
       this.totalItems = response.data.totalDocs

@@ -1,7 +1,7 @@
 
 import { Inject, Injectable, PLATFORM_ID } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
-import { BehaviorSubject, Observable, map } from "rxjs";
+import { BehaviorSubject, ConnectableObservable, Observable, map } from "rxjs";
 import { ApiResponse } from "@core/models/response";
 import { environment } from "environments/environment";
 import { CourseKit, CourseModel, CoursePaginationModel, Discount, Program, Vendor } from "@core/models/course.model";
@@ -115,6 +115,7 @@ export class CourseService {
   }
 
   registerProgramClass(payload:any) {
+    console.log('pr',payload)
     const apiUrl = `${this.prefix}admin/studentClasses/registerProgram`;
     return this._Http.post<any>(apiUrl, payload).pipe(map((response) => response));
   }
@@ -526,9 +527,9 @@ export class CourseService {
     });
   }
   getAllProgramsPayments(
-    filter?: Partial<CoursePaginationModel>
+    filter?: Partial<CoursePaginationModel>,id?:any
   ): Observable<ApiResponse> {
-    const apiUrl = this.defaultUrl+'paymentHistory/programsPaymentHistory';
+    const apiUrl = `${this.prefix}paymentHistory/programsPaymentHistory?companyId=${id}`;
     return this._Http.get<ApiResponse>(apiUrl, {
       params: this.buildParams(filter),
     });
