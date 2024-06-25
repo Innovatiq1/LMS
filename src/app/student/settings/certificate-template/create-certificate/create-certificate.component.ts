@@ -12,6 +12,8 @@ import { CertificateService } from 'app/core/service/certificate.service';
 import { forkJoin } from 'rxjs';
 import { text } from 'd3';
 import { CourseService } from '@core/service/course.service';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 @Component({
   selector: 'app-create-certificate',
   templateUrl: './create-certificate.component.html',
@@ -40,13 +42,45 @@ export class CreateCertificateComponent implements OnInit {
   image_link: any;
   uploaded: any;
   uploadedImage: any;
+
+  config: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    height: '15rem',
+    minHeight: '5rem',
+    placeholder: 'Enter text here...',
+    translate: 'no',
+    defaultParagraphSeparator: 'p',
+    defaultFontName: 'Arial',
+    sanitize: false,
+    toolbarHiddenButtons: [
+      ['strikethrough']
+      ],
+    customClasses: [
+      {
+        name: "quote",
+        class: "quote",
+      },
+      {
+        name: 'redText',
+        class: 'redText'
+      },
+      {
+        name: "titleText",
+        class: "titleText",
+        tag: "h1",
+      },
+    ]
+  };
+  
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private _activeRoute: ActivatedRoute,
     private certificateService: CertificateService,
     private courseService: CourseService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private sanitizer: DomSanitizer
   ) {
     this._activeRoute.queryParams.subscribe((params) => {
       this.classId = params['id'];
@@ -92,17 +126,17 @@ export class CreateCertificateComponent implements OnInit {
   ngOnInit() {
     this.certificateForm = this.fb.group({
       title: [''],
-      user: [''],
-      course: [''],
-      completionDate: [''],
+      // user: [''],
+      // course: [''],
+      // completionDate: [''],
       text1: [''],
-      text2: [''],
-      text3: [''],
-      text4: [''],
-      text5: [''],
-      text6: [''],
-      text7: [''],
-      text8: [''],
+      // text2: [''],
+      // text3: [''],
+      // text4: [''],
+      // text5: [''],
+      // text6: [''],
+      // text7: [''],
+      // text8: [''],
     });
   }
   // ngOnInit(){
@@ -121,7 +155,9 @@ export class CreateCertificateComponent implements OnInit {
   //     text8: ['', Validators.required],
 
   //   });  }
-
+  getSafeHtml(html: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(html);
+  }
   onFileUpload(event: any) {
     const file = event.target.files[0];
 
@@ -308,17 +344,17 @@ export class CreateCertificateComponent implements OnInit {
 
       this.certificateForm.patchValue({
         title: this.course?.title,
-        user: this.course?.user,
-        course: this.course?.course,
-        completionDate: this.course?.completionDate,
+        // user: this.course?.user,
+        // course: this.course?.course,
+        // completionDate: this.course?.completionDate,
         text1: this.course?.text1,
-        text2: this.course?.text2,
-        text3: this.course?.text3,
-        text4: this.course?.text4,
-        text5: this.course?.text5,
-        text6: this.course?.text6,
-        text7: this.course?.text7,
-        text8: this.course?.text8
+        // text2: this.course?.text2,
+        // text3: this.course?.text3,
+        // text4: this.course?.text4,
+        // text5: this.course?.text5,
+        // text6: this.course?.text6,
+        // text7: this.course?.text7,
+        // text8: this.course?.text8
       });
     });
   }

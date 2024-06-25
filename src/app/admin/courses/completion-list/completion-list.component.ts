@@ -1,7 +1,7 @@
 import { MatTableDataSource } from '@angular/material/table';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Component, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import {
   ClassModel,
   Session,
@@ -25,6 +25,8 @@ import { Router } from '@angular/router';
 import { formatDate } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { AppConstants } from '@shared/constants/app.constants';
+import { CertificateService } from '@core/service/certificate.service';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-completion-list',
@@ -69,11 +71,14 @@ export class CompletionListComponent {
   // @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild(MatSort) matSort!: MatSort;
   commonRoles: any;
+  certificateDetails: any;
   upload() {
     document.getElementById('input')?.click();
   }
+  @ViewChild('backgroundTable') backgroundTable!: ElementRef;
 
-  constructor(private classService: ClassService, public router: Router, public dialog: MatDialog) {
+  constructor(private classService: ClassService, public router: Router, public dialog: MatDialog,
+    private certificateService: CertificateService,  private sanitizer: DomSanitizer) {
     this.studentPaginationModel = {} as StudentPaginationModel;
   }
 
@@ -301,6 +306,38 @@ export class CompletionListComponent {
     );
     TableExportUtil.exportToExcel(exportData, 'Student Completed-list');
   }
+  getSafeHtml(html: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(html);
+  }
+  // generateCertificate(element: Student) {
+  //   Swal.fire({
+  //     // title: "Updated",
+  //     // text: "Course Kit updated successfully",
+  //     // icon: "success",
+  //     title: 'Certificate Generating...',
+  //     text: 'Please wait...',
+  //     allowOutsideClick: false,
+  //     timer: 24000,
+  //     timerProgressBar: true,
+  //   });
+  //   this.dafaultGenratepdf = true;
+  //   this.pdfData = [];
+  //   let pdfObj = {
+  //     title: element?.courseId?.title,
+  //     name: element?.studentId?.name,
+  //     //project_week: project_week,
+  //     completdDate: moment().format('DD ddd MMM YYYY'),
+  //   };
+  //   this.pdfData.push(pdfObj);
+  //   var convertIdDynamic = 'contentToConvert';
+  //   const dashboard = document.getElementById('contentToConvert');
+  //   //this.generatePdf1(dashboard, element?.studentId._id, element?.courseId._id,"course");
+  //   this.genratePdf3(
+  //     convertIdDynamic,
+  //     element?.studentId._id,
+  //     element?.courseId._id
+  //   );
+  // }
   generateCertificate(element: Student) {
     Swal.fire({
       // title: "Updated",
@@ -312,6 +349,20 @@ export class CompletionListComponent {
       timer: 24000,
       timerProgressBar: true,
     });
+    if(element){
+      console.log("pp", element)
+    this.certificateService.getCertificateById(element.courseId.certificate_template_id).subscribe((response: any) => {
+    this.certificateDetails = response;
+    console.log("PVK", this.certificateDetails)
+    let imageUrl;
+    imageUrl = response.image.replace(/\\/g, '/');
+    imageUrl = encodeURI(imageUrl);
+    this.setBackgroundImage(imageUrl);
+ 
+  })
+    }
+       
+   
     this.dafaultGenratepdf = true;
     this.pdfData = [];
     let pdfObj = {
@@ -330,7 +381,13 @@ export class CompletionListComponent {
       element?.courseId._id
     );
   }
-
+  private setBackgroundImage(imageUrl: string) {  
+    this.backgroundTable.nativeElement.style.backgroundImage = `url("${imageUrl}")`;
+    setTimeout(() => {
+      const computedStyle = window.getComputedStyle(this.backgroundTable.nativeElement);
+    }, 1000);
+  }
+ 
   genratePdf3(convertIdDynamic: any, memberId: any, memberProgrmId: any) {
     this.dafaultGenratepdf = true;
     setTimeout(() => {
@@ -338,13 +395,13 @@ export class CompletionListComponent {
       if (dashboard != null) {
         const dashboardHeight = dashboard.clientHeight;
         const dashboardWidth = dashboard.clientWidth;
-
+ 
         const options = {
           background: 'white',
           width: dashboardWidth,
           height: dashboardHeight,
         };
-
+ 
         DomToImage.toPng(dashboard, options).then((imgData) => {
           const doc = new jsPDF(
             dashboardWidth > dashboardHeight ? 'l' : 'p',
@@ -354,12 +411,12 @@ export class CompletionListComponent {
           const imgProps = doc.getImageProperties(imgData);
           const pdfWidth = doc.internal.pageSize.getWidth();
           const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
+ 
           doc.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
           const currentDateTime = moment();
           const randomString = this.generateRandomString(10);
-
-
+ 
+ 
           const pdfData = new File(
             [doc.output('blob')],
             randomString + 'courseCertificate.pdf',
@@ -383,6 +440,58 @@ export class CompletionListComponent {
       }
     }, 1000);
   }
+  // genratePdf3(convertIdDynamic: any, memberId: any, memberProgrmId: any) {
+  //   this.dafaultGenratepdf = true;
+  //   setTimeout(() => {
+  //     const dashboard = document.getElementById(convertIdDynamic);
+  //     if (dashboard != null) {
+  //       const dashboardHeight = dashboard.clientHeight;
+  //       const dashboardWidth = dashboard.clientWidth;
+
+  //       const options = {
+  //         background: 'white',
+  //         width: dashboardWidth,
+  //         height: dashboardHeight,
+  //       };
+
+  //       DomToImage.toPng(dashboard, options).then((imgData) => {
+  //         const doc = new jsPDF(
+  //           dashboardWidth > dashboardHeight ? 'l' : 'p',
+  //           'mm',
+  //           [dashboardWidth, dashboardHeight]
+  //         );
+  //         const imgProps = doc.getImageProperties(imgData);
+  //         const pdfWidth = doc.internal.pageSize.getWidth();
+  //         const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+  //         doc.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+  //         const currentDateTime = moment();
+  //         const randomString = this.generateRandomString(10);
+
+
+  //         const pdfData = new File(
+  //           [doc.output('blob')],
+  //           randomString + 'courseCertificate.pdf',
+  //           {
+  //             type: 'application/pdf',
+  //           }
+  //         );
+  //         this.classService.uploadFileApi(pdfData).subscribe(
+  //           (data: any) => {
+  //             let objpdf = {
+  //               pdfurl: data.inputUrl,
+  //               memberId: memberId,
+  //               CourseId: memberProgrmId,
+  //             };
+  //             this.updateCertificte(objpdf);
+  //           },
+  //           (err) => {}
+  //         );
+  //       });
+  //       this.dafaultGenratepdf = false;
+  //     }
+  //   }, 1000);
+  // }
   generateRandomString(length: number) {
     const characters =
       'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';

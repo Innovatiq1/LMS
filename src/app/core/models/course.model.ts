@@ -96,6 +96,7 @@ export interface CourseModel {
 	certificates: number;
 	course_description: string;
 	course_detailed_description: string;
+	certificate_template_id:any;
 	banner_image_link: string;
 	course_instructor: string;
 	vendor: string;
