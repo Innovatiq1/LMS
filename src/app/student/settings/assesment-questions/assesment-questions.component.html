@@ -53,7 +53,7 @@
             </div>
             <div class="row">
               <div class="col-md-4">
-                <label>Bulk Upload <span style="margin-left: 160px;"><a href="assets/Assessment Sheet.xlsx" target="_blank"> <img src="assets/excel.svg" alt="" /></a> </span></label>
+                <label>Bulk Upload <span ><a href="assets/Assessment Sheet.xlsx" target="_blank"> <img src="assets/excel.svg" alt="" /></a> </span></label>
                 <div class="file-drop-area">
                   <div class="file">
                     <button mat-raised-button color="primary" class="btn">
@@ -87,6 +87,27 @@
                   />
                 </mat-form-field>
               </div>
+              <div class="col-md-4">
+                <h6>
+                  Passing Criteria <span class="mandatory">&nbsp;*</span>
+                </h6>
+               
+                <mat-form-field class="example-full-width mb-3" appearance="outline">
+                  <mat-select formControlName="passingCriteria" required>
+                    <mat-option [value]="row.value" *ngFor="let row of dataSource">
+                      
+                      {{ row.value }}
+                       
+                    </mat-option>
+                  </mat-select>
+                  <mat-error  *ngIf="questionFormTab3.get('passingCriteria')?.hasError('required')">
+                    
+                    Select Passing Criteria
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
               <div class="col-md-4">
                 <h6>
                   Display Result <span class="mandatory">&nbsp;*</span>

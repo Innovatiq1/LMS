@@ -12,6 +12,7 @@ import { QuestionService } from '@core/service/question.service';
 import { Subscription } from 'rxjs';
 import * as XLSX from 'xlsx';
 import { StudentsService } from 'app/admin/students/students.service';
+import { SettingsService } from '@core/service/settings.service';
 import { MatDialog } from '@angular/material/dialog';
 import { TestPreviewComponent } from '@shared/components/test-preview/test-preview.component';
 
@@ -29,6 +30,7 @@ export class AddExamQuestionsComponent {
   questionId!: string;
   subscribeParams: any;
   studentId: any;
+  dataSource:any;
   configuration: any;
   configurationSubscription!: Subscription;
   defaultTimer: string = '';
@@ -41,6 +43,7 @@ export class AddExamQuestionsComponent {
     private activatedRoute: ActivatedRoute,
     private questionService: QuestionService,
     private studentsService: StudentsService,
+    private SettingsService:SettingsService,
     private dialog: MatDialog
   ) {
     let urlPath = this.router.url.split('/');
@@ -56,6 +59,7 @@ export class AddExamQuestionsComponent {
       name: ['', Validators.required],
       timer: [''],
       retake:[''],
+      passingCriteria:['', Validators.required],
       scoreAlgorithm:[1, [Validators.required,Validators.min(0.1)]],
       questions: this.formBuilder.array([]),
     });
@@ -72,6 +76,7 @@ export class AddExamQuestionsComponent {
   ngOnInit(): void { 
     this.getTimer()
     this.getRetakes()
+    this.getAllPassingCriteria()
     if(!this.editUrl){
       this.getAlgorithm()
     }
@@ -83,7 +88,12 @@ export class AddExamQuestionsComponent {
     this.studentsService.getStudentById(this.studentId).subscribe(res => {
     })
   }
-  
+  getAllPassingCriteria(){
+    this.SettingsService.getPassingCriteria().subscribe((response:any) =>{
+      this.dataSource=response.data.docs;
+     //this.dataSource = response.reverse();
+    })
+  }
   getTimer() : any {
     this.configurationSubscription = this.studentsService.configuration$.subscribe(configuration => {
       this.configuration = configuration;
@@ -280,6 +290,7 @@ export class AddExamQuestionsComponent {
         name: this.questionFormTab2.value.name,
         timer: this.questionFormTab2.value.timer,
         retake: this.questionFormTab2.value.retake,
+        passingCriteria:this.questionFormTab2.value.passingCriteria,
         scoreAlgorithm: this.questionFormTab2.value.scoreAlgorithm,
         status: 'open',
         companyId:userId,

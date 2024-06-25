@@ -3,55 +3,95 @@
     <div class="card mt-4">
       <div class="table-container">
         <form [formGroup]="questionFormTab2">
-            <div class="name-container">
-              <div class="input-container">
+          <div class="w-100">
+            <div class="row">
+              <div class="col-md-4">
               <h6>Name <span class="mandatory">&nbsp;*</span></h6>
-              <mat-form-field appearance="outline" style="width: 100%">
+              <mat-form-field appearance="outline" class="w-100">
                 <input class="form-control" matInput type="text" formControlName="name" placeholder="Name" required />
                 <mat-error *ngIf="questionFormTab2.get('name')?.hasError('required')">
                   Name cannot be empty
                 </mat-error>
               </mat-form-field>
-            </div>
-            <div class="input-container">
+             </div>
+            <div class="col-md-4">
               <h6 style="margin-left: 20px;">Time (Seconds per question)<span class="mandatory">&nbsp;*</span></h6>
-              <mat-form-field appearance="outline" style="width: 100%; margin-left: 20px;">
+              <mat-form-field appearance="outline" class="w-100">
                 <input matInput formControlName="timer" type="number" placeholder="Enter time in seconds"
                 [readonly]="true">
               </mat-form-field>
-              <div class="bupload">
-                <label>Bulk Upload <span><a href="assets/Assessment Sheet.xlsx" target="_blank"> <img src="assets/excel.svg" alt="" /></a> </span></label>
-                <div class="file-drop-area">
-                  <div class="file">
-                    <button mat-raised-button color="primary" class="btn">Choose file <input
-                        formControlName="image_link" (change)="onFileSelected($event)" accept=".xlsx, .xls"
-                        class="file-input" type="file"></button>
-                    <span class="file-msg">
-                      <h6>Drag and Drop File Here</h6>
-                    </span>
-  
-                  </div>
-                </div>
-              </div>
+              
+              
+             
+              
               <!-- <h6>Bulk Upload</h6>
               <input type="file" (change)="onFileSelected($event)" accept=".xlsx, .xls"> -->
             </div>
 
-            <div class="input-container">
+            <div class="col-md-4">
               <h6 style="margin-left: 25px;">No of Retake's <span class="mandatory">&nbsp;*</span></h6>
-              <mat-form-field appearance="outline" style="width: 100%; margin-left: 30px;">
+              <mat-form-field appearance="outline" class="w-100">
                 <input matInput formControlName="retake" type="number" placeholder="Enter No of Retakes"
                 [readonly]="true">
               </mat-form-field>
 
-              <div class="question-alogo">
-                <h6 style="margin-left: 25px;">Score (per question) <span class="mandatory">&nbsp;*</span></h6>
-                <mat-form-field appearance="outline" style="width: 100%; margin-left: 25px;">
-                  <input matInput formControlName="scoreAlgorithm" type="number" placeholder="Enter Score" min="0.5" step="0.5">
-                </mat-form-field>
-              </div>
+             
+            </div>
             </div>
 
+
+            <div class="row">
+              <div class="col-md-4">
+                
+                  <label>Bulk Upload <span ><a href="assets/Assessment Sheet.xlsx" target="_blank"> <img src="assets/excel.svg" alt="" /></a> </span></label>
+                  <div class="file-drop-area">
+                    <div class="file">
+                      <button mat-raised-button color="primary" class="btn">Choose file <input
+                          formControlName="image_link" (change)="onFileSelected($event)" accept=".xlsx, .xls"
+                          class="file-input" type="file"></button>
+                      <span class="file-msg">
+                        <h6>Drag and Drop File Here</h6>
+                      </span>
+    
+                    </div>
+                  </div>
+                
+              </div>
+              <div class="col-md-4">
+                    <h6>
+                      Passing Criteria <span class="mandatory">&nbsp;*</span>
+                    </h6>
+                   
+                    <mat-form-field class="w-100" appearance="outline">
+                      <mat-select formControlName="passingCriteria" required>
+                        <mat-option [value]="row.value" *ngFor="let row of dataSource">
+                          
+                          {{ row.value }}
+                           
+                        </mat-option>
+                      </mat-select>
+                      <mat-error  *ngIf="questionFormTab2.get('passingCriteria')?.hasError('required')">
+                        
+                        Select Passing Criteria
+                      </mat-error>
+                    </mat-form-field>
+
+              </div>
+              <div class="col-md-4">
+                <div class="question-alogo">
+                  <h6 style="margin-left: 25px;">Score (per question) <span class="mandatory">&nbsp;*</span></h6>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <input matInput formControlName="scoreAlgorithm" type="number" placeholder="Enter Score" min="0.5" step="0.5">
+                  </mat-form-field>
+                </div>
+
+              </div>
+
+            </div>
+
+            
+
+            
 
           </div>
           <div class="table-responsive">
