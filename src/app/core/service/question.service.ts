@@ -59,6 +59,10 @@ export class QuestionService {
       if(filter.filterName) {
         params = params.set('name', filter.filterName)
       }
+      if(filter.companyId) {
+        params = params.set('companyId', filter.companyId)
+      }
+
     }
     return params;
   }

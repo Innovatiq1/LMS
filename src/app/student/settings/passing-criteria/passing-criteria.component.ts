@@ -25,7 +25,7 @@ export class PassingCriteriaComponent {
   constructor(private fb: FormBuilder,private router:Router,
     private activatedRoute:ActivatedRoute,private SettingsService:SettingsService,public utils:UtilsService) {
       this.passingCriteriaForm = this.fb.group({
-        value: ['', [Validators.required,...this.utils.validators.name,...this.utils.validators.noLeadingSpace]],
+        value: ['', [Validators.required,...this.utils.validators.noLeadingSpace]],
         // description: ['', [Validators.required,...this.utils.validators.name, ...this.utils.validators.noLeadingSpace]]
 
       })

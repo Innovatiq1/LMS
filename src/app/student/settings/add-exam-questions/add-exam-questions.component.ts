@@ -12,6 +12,7 @@ import { QuestionService } from '@core/service/question.service';
 import { Subscription } from 'rxjs';
 import * as XLSX from 'xlsx';
 import { StudentsService } from 'app/admin/students/students.service';
+import { SettingsService } from '@core/service/settings.service';
 import { MatDialog } from '@angular/material/dialog';
 import { TestPreviewComponent } from '@shared/components/test-preview/test-preview.component';
 
@@ -29,10 +30,27 @@ export class AddExamQuestionsComponent {
   questionId!: string;
   subscribeParams: any;
   studentId: any;
+  dataSource:any;
   configuration: any;
   configurationSubscription!: Subscription;
   defaultTimer: string = '';
   defaultRetake: string = '';
+  currencyCodes: string[] = [
+    'USD',
+    'SGD',
+    'NZD',
+    'YEN',
+    'GBP',
+    'KWN',
+    'IDR',
+    'TWD',
+    'MYR',
+    'AUD',
+  ];
+  timerValues: string[] = ['15', '30', '45', '60', '90', '120', '150'];
+  retakeCodesAssessment: string[] = ['1', '2', '3', '4', '5'];
+  scoreAlgo: number[] = [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
+
 
 
   constructor(
@@ -41,6 +59,7 @@ export class AddExamQuestionsComponent {
     private activatedRoute: ActivatedRoute,
     private questionService: QuestionService,
     private studentsService: StudentsService,
+    private SettingsService:SettingsService,
     private dialog: MatDialog
   ) {
     let urlPath = this.router.url.split('/');
@@ -54,8 +73,9 @@ export class AddExamQuestionsComponent {
 
     this.questionFormTab2 = this.formBuilder.group({
       name: ['', Validators.required],
-      timer: [''],
-      retake:[''],
+      timer: [15],
+      retake:[1],
+      passingCriteria:['', Validators.required],
       scoreAlgorithm:[1, [Validators.required,Validators.min(0.1)]],
       questions: this.formBuilder.array([]),
     });
@@ -66,14 +86,16 @@ export class AddExamQuestionsComponent {
       }
     } else {
       this.getData();
+          this.getTimer()
+    this.getRetakes()
+
     }
   }
 
   ngOnInit(): void { 
-    this.getTimer()
-    this.getRetakes()
+    this.getAllPassingCriteria()
     if(!this.editUrl){
-      this.getAlgorithm()
+      // this.getAlgorithm()
     }
     this.loadData()
    }
@@ -83,7 +105,12 @@ export class AddExamQuestionsComponent {
     this.studentsService.getStudentById(this.studentId).subscribe(res => {
     })
   }
-  
+  getAllPassingCriteria(){
+    this.SettingsService.getPassingCriteria().subscribe((response:any) =>{
+      this.dataSource=response.data.docs;
+     //this.dataSource = response.reverse();
+    })
+  }
   getTimer() : any {
     this.configurationSubscription = this.studentsService.configuration$.subscribe(configuration => {
       this.configuration = configuration;
@@ -110,19 +137,19 @@ export class AddExamQuestionsComponent {
     });
   }
 
-  getAlgorithm(): any {
-    this.configurationSubscription =
-      this.studentsService.configuration$.subscribe((configuration) => {
-        this.configuration = configuration;
-        const config = this.configuration.find((v:any)=> v.field === 'examAlgorithm');
-        if (config) {
-          const assessmentAlgo = config.value;
-          this.questionFormTab2.patchValue({
-            scoreAlgorithm: assessmentAlgo,
-          });
-        }
-      });
-  }
+  // getAlgorithm(): any {
+  //   this.configurationSubscription =
+  //     this.studentsService.configuration$.subscribe((configuration) => {
+  //       this.configuration = configuration;
+  //       const config = this.configuration.find((v:any)=> v.field === 'examAlgorithm');
+  //       if (config) {
+  //         const assessmentAlgo = config.value;
+  //         this.questionFormTab2.patchValue({
+  //           scoreAlgorithm: assessmentAlgo,
+  //         });
+  //       }
+  //     });
+  // }
 
   getData() {
     if (this.questionId) {
@@ -130,9 +157,13 @@ export class AddExamQuestionsComponent {
         .getAnswerQuestionById(this.questionId)
         .subscribe((response: any) => {
           if (response && response.questions) {
+            console.log('res',response)
             this.questionFormTab2.patchValue({
               name: response.name,
-              scoreAlgorithm: response.scoreAlgorithm
+              passingCriteria:response?.passingCriteria,
+              retake:response?.retake,
+              scoreAlgorithm:response?.scoreAlgorithm,
+              timer:response?.timer
             });
 
             const questionsArray = this.questionFormTab2.get(
@@ -280,6 +311,7 @@ export class AddExamQuestionsComponent {
         name: this.questionFormTab2.value.name,
         timer: this.questionFormTab2.value.timer,
         retake: this.questionFormTab2.value.retake,
+        passingCriteria:this.questionFormTab2.value.passingCriteria,
         scoreAlgorithm: this.questionFormTab2.value.scoreAlgorithm,
         status: 'open',
         companyId:userId,

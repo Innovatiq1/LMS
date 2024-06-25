@@ -202,7 +202,8 @@ export class CourseService {
     return this._Http.get<ApiResponse>(apiUrl);
   }
   getMainCategories(): Observable<MainCategory[]> {
-    const apiUrl = `${this.prefix}admin/main-category/`;
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    const apiUrl = `${this.prefix}admin/main-category?companyId=${userId}`;
     return this._Http.get<any>(apiUrl).pipe(map((response:any) => response.data.docs));
 
   }

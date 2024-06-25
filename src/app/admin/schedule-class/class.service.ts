@@ -40,6 +40,7 @@ export class ClassService extends UnsubscribeOnDestroyAdapter {
       if (filter.department) params = params.set("department", filter.department);
       if (filter.userGroupId) params = params.set("userGroupId", filter.userGroupId);
       if (filter.isAll) params = params.set("isAll", filter.isAll);
+      if (filter.role) params = params.set("role", filter.role);
 
     }
     return params;
@@ -229,8 +230,6 @@ getProgramRegisteredClasses(page: number, limit: number, filterText? : string): 
   return this.http.get<any>(apiUrl, { params: this.buildRegisteredClassesParams(page, limit, filterText) });
 }
 getApprovedProgramClasses(page: number, limit: number, filterText? : string): Observable<any> {
-  console.log("page", page)
-  console.log("lmit", limit)
   const apiUrl = `${this.prefix}admin/studentClasses/studentApproveList?status=approved`;
   return this.http.get<any>(apiUrl, { params: this.buildRegisteredClassesParams(page, limit, filterText) });
 }
@@ -243,7 +242,6 @@ getStudentsApprovedClasses(): Observable<any> {
 
 getClassListWithPagination(
   filter?:Partial<CoursePaginationModel>,id?:any): Observable<ApiResponse> {
-  
   const apiUrl = `${this.prefix}admin/class?companyId=${id}`;
   return this.http.get<ApiResponse>(apiUrl, { params: this.buildParams(filter) })
 }

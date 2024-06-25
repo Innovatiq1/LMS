@@ -12,6 +12,7 @@ import { QuestionService } from '@core/service/question.service';
 import { number } from 'echarts';
 import { Subscription } from 'rxjs';
 import { StudentsService } from 'app/admin/students/students.service';
+import { SettingsService } from '@core/service/settings.service';
 import * as XLSX from 'xlsx';
 import { TestPreviewComponent } from '@shared/components/test-preview/test-preview.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -28,10 +29,27 @@ export class AssesmentQuestionsComponent {
   questionId!: string;
   subscribeParams: any;
   studentId: any;
+  dataSource:any;
   configuration: any;
   configurationSubscription!: Subscription;
   defaultTimer: string = '';
   defaultRetake: string = '';
+  currencyCodes: string[] = [
+    'USD',
+    'SGD',
+    'NZD',
+    'YEN',
+    'GBP',
+    'KWN',
+    'IDR',
+    'TWD',
+    'MYR',
+    'AUD',
+  ];
+  timerValues: string[] = ['15', '30', '45', '60', '90', '120', '150'];
+  retakeCodesAssessment: string[] = ['1', '2', '3', '4', '5'];
+  scoreAlgo: number[] = [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -39,6 +57,7 @@ export class AssesmentQuestionsComponent {
     private activatedRoute: ActivatedRoute,
     private questionService: QuestionService,
     private studentsService: StudentsService,
+    private SettingsService:SettingsService,
     private dialog: MatDialog
   ) {
     let urlPath = this.router.url.split('/');
@@ -54,6 +73,7 @@ export class AssesmentQuestionsComponent {
       name: ['', Validators.required],
       timer: [''],
       retake: [''],
+      passingCriteria:['', Validators.required],
       scoreAlgorithm: [1, [Validators.required, Validators.min(0.1)]],
       resultAfterFeedback: [null, [Validators.required]],
       questions: this.formBuilder.array([]),
@@ -65,15 +85,18 @@ export class AssesmentQuestionsComponent {
       }
     } else {
       this.getData();
+      this.getRetakes();
+      this.getTimer();
+
+
     }
   }
 
   ngOnInit(): void {
-    this.getTimer();
-    this.getRetakes();
     this.loadData();
+    this.getAllPassingCriteria();
     if (!this.editUrl) {
-      this.getAlgorithm();
+      // this.getAlgorithm();
     }
   }
 
@@ -96,6 +119,12 @@ export class AssesmentQuestionsComponent {
         }
       });
   }
+  getAllPassingCriteria(){
+    this.SettingsService.getPassingCriteria().subscribe((response:any) =>{
+      this.dataSource=response.data.docs;
+     //this.dataSource = response.reverse();
+    })
+  }
 
   getRetakes(): any {
     this.configurationSubscription =
@@ -112,21 +141,21 @@ export class AssesmentQuestionsComponent {
       });
   }
 
-  getAlgorithm(): any {
-    this.configurationSubscription =
-      this.studentsService.configuration$.subscribe((configuration) => {
-        this.configuration = configuration;
-        const config = this.configuration.find(
-          (v: any) => v.field === 'assessmentAlgorithm'
-        );
-        if (config) {
-          const assessmentAlgo = config.value;
-          this.questionFormTab3.patchValue({
-            scoreAlgorithm: assessmentAlgo,
-          });
-        }
-      });
-  }
+  // getAlgorithm(): any {
+  //   this.configurationSubscription =
+  //     this.studentsService.configuration$.subscribe((configuration) => {
+  //       this.configuration = configuration;
+  //       const config = this.configuration.find(
+  //         (v: any) => v.field === 'assessmentAlgorithm'
+  //       );
+  //       if (config) {
+  //         const assessmentAlgo = config.value;
+  //         this.questionFormTab3.patchValue({
+  //           scoreAlgorithm: assessmentAlgo,
+  //         });
+  //       }
+  //     });
+  // }
 
   getData() {
     if (this.questionId) {
@@ -137,7 +166,10 @@ export class AssesmentQuestionsComponent {
             this.questionFormTab3.patchValue({
               name: response.name,
               scoreAlgorithm: response.scoreAlgorithm,
-              resultAfterFeedback: response.resultAfterFeedback
+              resultAfterFeedback: response.resultAfterFeedback,
+              passingCriteria:response?.passingCriteria,
+              // retake:response.retake,
+              // timer:response?.timer
             });
 
             const questionsArray = this.questionFormTab3.get(
@@ -280,9 +312,12 @@ export class AssesmentQuestionsComponent {
 
   update() {
     if (this.questionFormTab3.valid) {
+      console.log("FormTab3 Value",this.questionFormTab3.value);
       if (this.editUrl) {
+        
         this.updateAssesment();
       } else {
+        
         this.save();
       }
     } else {
@@ -292,11 +327,13 @@ export class AssesmentQuestionsComponent {
 
   save() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    
         if (this.questionFormTab3.valid) {
       const payload = {
         name: this.questionFormTab3.value.name,
         timer: this.questionFormTab3.value.timer,
         retake: this.questionFormTab3.value.retake,
+        passingCriteria:this.questionFormTab3.value.passingCriteria,
         scoreAlgorithm: this.questionFormTab3.value.scoreAlgorithm,
         resultAfterFeedback: this.questionFormTab3.value.resultAfterFeedback,
         status: 'open',
