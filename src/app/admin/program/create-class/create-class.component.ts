@@ -187,7 +187,7 @@ export class CreateClassComponent {
         courses: this.courseService.getPrograms({
           ...this.coursePaginationModel,
           status: 'active',
-        }),
+        },userId),
         instructors: this.instructorService.getInstructor({
           type: this.commonRoles?.INSTRUCTOR_ROLE,
           companyId:userId
@@ -204,13 +204,15 @@ export class CreateClassComponent {
     }
 
     if (this.editUrl) {
+      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
       forkJoin({
         courses: this.courseService.getCourseProgram({
           ...this.coursePaginationModel,
           status: 'active',
-        }),
+        },userId),
         instructors: this.instructorService.getInstructor({
-          type: 'Instructor',
+          type: this.commonRoles?.INSTRUCTOR_ROLE,
+          companyId:userId
         }),
         // labs: this._classService.getAllLaboratory(),
         class: this._classService.getProgramClassById(this.classId),

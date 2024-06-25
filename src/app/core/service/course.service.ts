@@ -173,8 +173,8 @@ export class CourseService {
       );
   }
 
-  getPrograms(filter?: Partial<Program>): Observable<ApiResponse> {
-    const apiUrl = `${this.prefix}admin/courseprogram`;
+  getPrograms(filter?: Partial<Program>,id?:any): Observable<ApiResponse> {
+    const apiUrl = `${this.prefix}admin/courseprogram?companyId=${id}`;
     return this._Http
       .get<ApiResponse>(apiUrl, { params: this.buildParams(filter)})
       .pipe(

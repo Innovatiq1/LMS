@@ -76,12 +76,13 @@ export class ProgramComponent {
 
 
 getClassList() {
+  let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
   let filterProgram = this.filterName
   const payload = { filterProgram,...this.coursePaginationModel, status: 'open' ,department:this.department};
   if(this.userGroupIds){
     payload.userGroupId=this.userGroupIds
   }
-  this.classService.getProgramClassListWithPagination(payload).subscribe(
+  this.classService.getProgramClassListWithPagination(payload,userId).subscribe(
     (response) => {
       this.dataSource = response.data.docs;
       this.totalItems = response.data.totalDocs
