@@ -247,8 +247,8 @@ getClassListWithPagination(
 }
 
 
-getProgramClassListWithPagination(
-  filter?:Partial<CoursePaginationModel>,id?:any): Observable<ApiResponse> {
+getProgramClassListWithPagination(id:any,
+  filter?:Partial<CoursePaginationModel>): Observable<ApiResponse> {
   const apiUrl = `${this.prefix}admin/program-class?companyId=${id}`;
   return this.http.get<ApiResponse>(apiUrl, { params: this.buildParams(filter) })
 }
