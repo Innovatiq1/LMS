@@ -85,16 +85,18 @@ export class AssesmentQuestionsComponent {
       }
     } else {
       this.getData();
+      this.getRetakes();
+      this.getTimer();
+
+
     }
   }
 
   ngOnInit(): void {
-    this.getTimer();
-    this.getRetakes();
     this.loadData();
     this.getAllPassingCriteria();
     if (!this.editUrl) {
-      this.getAlgorithm();
+      // this.getAlgorithm();
     }
   }
 
@@ -139,21 +141,21 @@ export class AssesmentQuestionsComponent {
       });
   }
 
-  getAlgorithm(): any {
-    this.configurationSubscription =
-      this.studentsService.configuration$.subscribe((configuration) => {
-        this.configuration = configuration;
-        const config = this.configuration.find(
-          (v: any) => v.field === 'assessmentAlgorithm'
-        );
-        if (config) {
-          const assessmentAlgo = config.value;
-          this.questionFormTab3.patchValue({
-            scoreAlgorithm: assessmentAlgo,
-          });
-        }
-      });
-  }
+  // getAlgorithm(): any {
+  //   this.configurationSubscription =
+  //     this.studentsService.configuration$.subscribe((configuration) => {
+  //       this.configuration = configuration;
+  //       const config = this.configuration.find(
+  //         (v: any) => v.field === 'assessmentAlgorithm'
+  //       );
+  //       if (config) {
+  //         const assessmentAlgo = config.value;
+  //         this.questionFormTab3.patchValue({
+  //           scoreAlgorithm: assessmentAlgo,
+  //         });
+  //       }
+  //     });
+  // }
 
   getData() {
     if (this.questionId) {
@@ -164,7 +166,10 @@ export class AssesmentQuestionsComponent {
             this.questionFormTab3.patchValue({
               name: response.name,
               scoreAlgorithm: response.scoreAlgorithm,
-              resultAfterFeedback: response.resultAfterFeedback
+              resultAfterFeedback: response.resultAfterFeedback,
+              passingCriteria:response?.passingCriteria,
+              // retake:response.retake,
+              // timer:response?.timer
             });
 
             const questionsArray = this.questionFormTab3.get(

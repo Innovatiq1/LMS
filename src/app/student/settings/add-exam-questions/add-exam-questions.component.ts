@@ -73,8 +73,8 @@ export class AddExamQuestionsComponent {
 
     this.questionFormTab2 = this.formBuilder.group({
       name: ['', Validators.required],
-      timer: [''],
-      retake:[''],
+      timer: [15],
+      retake:[1],
       passingCriteria:['', Validators.required],
       scoreAlgorithm:[1, [Validators.required,Validators.min(0.1)]],
       questions: this.formBuilder.array([]),
@@ -86,15 +86,16 @@ export class AddExamQuestionsComponent {
       }
     } else {
       this.getData();
+          this.getTimer()
+    this.getRetakes()
+
     }
   }
 
   ngOnInit(): void { 
-    this.getTimer()
-    this.getRetakes()
     this.getAllPassingCriteria()
     if(!this.editUrl){
-      this.getAlgorithm()
+      // this.getAlgorithm()
     }
     this.loadData()
    }
@@ -136,19 +137,19 @@ export class AddExamQuestionsComponent {
     });
   }
 
-  getAlgorithm(): any {
-    this.configurationSubscription =
-      this.studentsService.configuration$.subscribe((configuration) => {
-        this.configuration = configuration;
-        const config = this.configuration.find((v:any)=> v.field === 'examAlgorithm');
-        if (config) {
-          const assessmentAlgo = config.value;
-          this.questionFormTab2.patchValue({
-            scoreAlgorithm: assessmentAlgo,
-          });
-        }
-      });
-  }
+  // getAlgorithm(): any {
+  //   this.configurationSubscription =
+  //     this.studentsService.configuration$.subscribe((configuration) => {
+  //       this.configuration = configuration;
+  //       const config = this.configuration.find((v:any)=> v.field === 'examAlgorithm');
+  //       if (config) {
+  //         const assessmentAlgo = config.value;
+  //         this.questionFormTab2.patchValue({
+  //           scoreAlgorithm: assessmentAlgo,
+  //         });
+  //       }
+  //     });
+  // }
 
   getData() {
     if (this.questionId) {
@@ -156,9 +157,13 @@ export class AddExamQuestionsComponent {
         .getAnswerQuestionById(this.questionId)
         .subscribe((response: any) => {
           if (response && response.questions) {
+            console.log('res',response)
             this.questionFormTab2.patchValue({
               name: response.name,
-              scoreAlgorithm: response.scoreAlgorithm
+              passingCriteria:response?.passingCriteria,
+              retake:response?.retake,
+              scoreAlgorithm:response?.scoreAlgorithm,
+              timer:response?.timer
             });
 
             const questionsArray = this.questionFormTab2.get(
