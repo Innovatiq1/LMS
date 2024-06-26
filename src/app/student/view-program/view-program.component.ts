@@ -96,7 +96,8 @@ export class ViewProgramComponent {
       programFee: this.classDetails?.courseId?.courseFee,
       studentId: studentId,
       classId: this.classId,
-      title: this.title
+      title: this.title,
+      companyId:userdata.user.companyId
     }
     // console.log('data',data)
     // let studentId=localStorage.getItem('id')

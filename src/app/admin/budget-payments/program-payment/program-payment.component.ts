@@ -68,7 +68,8 @@ export class ProgramPaymentComponent {
    this.getAllPrograms();
   }
   getAllPrograms(){
-    this.courseService.getAllProgramsPayments({ ...this.coursePaginationModel}).subscribe(response =>{
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    this.courseService.getAllProgramsPayments({ ...this.coursePaginationModel},userId).subscribe(response =>{
      this.dataSource = response.data.docs;
      this.ref.detectChanges();
      this.totalItems = response.data.totalDocs;

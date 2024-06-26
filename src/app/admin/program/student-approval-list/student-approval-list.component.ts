@@ -73,8 +73,9 @@ export class StudentApprovalListComponent {
     }
 
   getRegisteredClasses() {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     this.classService
-      .getApprovedProgramClasses(this.studentPaginationModel.page, this.studentPaginationModel.limit)
+      .getApprovedProgramClasses(this.studentPaginationModel.page, this.studentPaginationModel.limit,userId)
       .subscribe((response: { data: StudentPaginationModel; }) => {
         this.isLoading = false;
         // 

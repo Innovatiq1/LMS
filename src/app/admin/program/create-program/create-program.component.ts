@@ -278,6 +278,7 @@ export class CreateProgramComponent {
   save() {
     if (this.programFormGroup.valid) {
       let creator = JSON.parse(localStorage.getItem('user_data')!).user.name;
+      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
       if (this.editPermission) {
         let payload = {
           title: this.programFormGroup.value.course,
@@ -299,6 +300,7 @@ export class CreateProgramComponent {
           electiveprogramCourse: this.electivePrograms.value,
           image_link: this.image_link,
           id: this.courseId,
+          companyId:userId
           // programKit: this.programFormGroup.value.programKit ? this.programFormGroup.value.programKit : null
         }
 
@@ -334,6 +336,7 @@ export class CreateProgramComponent {
 
       }
       else {
+        let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
         let payload = {
           title: this.programFormGroup.value.course,
           courseCode: this.programFormGroup.value.programCode,
@@ -355,6 +358,7 @@ export class CreateProgramComponent {
           image_link: this.image_link,
           creator:creator,
           id: this.courseId,
+          companyId:userId
           // programKit: this.programFormGroup.value.programKit ? this.programFormGroup.value.programKit : null
         }
 

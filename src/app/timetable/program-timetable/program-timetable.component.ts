@@ -155,8 +155,9 @@ export class ProgramTimetableComponent implements OnInit {
   getClassesList() {
     // let studentId=localStorage.getItem('id')
     // const payload = { studentId: studentId, status: 'approved',isAll:true };
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     this.classService
-      .getProgramClassListWithPagination()
+      .getProgramClassListWithPagination(userId,{})
       .subscribe((response) => {
         this.allProgramClasses = response.data.docs;
         const currentDate = new Date();

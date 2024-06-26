@@ -99,7 +99,8 @@ export class PendingProgramsComponent {
    }
 
   getProgramList(filters?: any) {
-    this.courseService.getCourseProgram({...this.coursePaginationModel,status:'inactive'}).subscribe(
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    this.courseService.getCourseProgram({...this.coursePaginationModel,status:'inactive'},userId).subscribe(
       (response: any) => {
         console.log("page",response)
         this.totalItems = response.totalDocs;

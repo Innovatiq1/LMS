@@ -654,6 +654,8 @@ this.courseService.uploadCourseThumbnail(formData).subscribe((data: any) =>{
     }
    }
   setup() {
+    var userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+
     forkJoin({
       mainCategory: this.courseService.getMainCategories(),
       subCategory: this.courseService.getSubCategories(),
@@ -661,8 +663,8 @@ this.courseService.uploadCourseThumbnail(formData).subscribe((data: any) =>{
       // survey: this.courseService.getSurvey(),
       // instructor: this.courseService.getInstructors(),
       courseKit: this.courseService.getCourseKit(),
-      assessment: this.questionService.getQuestionJson({ status: 'approved' }),
-      exam_assessment: this.questionService.getExamQuestionJson(),
+      assessment: this.questionService.getQuestionJson({ status: 'approved' ,companyId:userId}),
+      exam_assessment: this.questionService.getExamQuestionJson({companyId:userId}),
       survey: this.surveyService.getSurvey(),
       // certificates: this.certificateService.getcertificateBuilders(),
 
