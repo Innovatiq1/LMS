@@ -138,20 +138,20 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
           classId: this.classId,
           companyId:userId
         };
-        this.getQuestionsById()
+        // this.getQuestionsById()
         this.submitAnswers.next(submissionPayload);
         clearInterval(this.interval);
       }
     });
   }
-  getQuestionsById(){
-    console.log("this.sult",this.answersResult)
-      console.log("this.getAssessmentId",this.getAssessmentId);
-    this.questionService.getQuestionsById("667bf7d5b0b47928d08d1360").subscribe((res:any)=>{
+  // getQuestionsById(){
+  //   console.log("this.sult",this.answersResult)
+  //     console.log("this.getAssessmentId",this.getAssessmentId);
+  //   this.questionService.getQuestionsById("667bf7d5b0b47928d08d1360").subscribe((res:any)=>{
      
-      console.log("getQuestionsById==",res);
-    })
-  }
+  //     console.log("getQuestionsById==",res);
+  //   })
+  // }
   
   getClassDetails(){
     this.classService.getClassById(this.classId).subscribe((response)=>{
@@ -163,10 +163,7 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
 
 
   navigate() {
-    //this.isQuizCompleted = true;
-    // console.log("this.sult is in native",this.answersResult.score);
-    // console.log("this is in native passing Criteria:",this.answersResult.assessmentId.passingCriteria    )
-    //   console.log("this.getAssessmentId is in native" ,this.getAssessmentId);
+    
       const score=this.answersResult.score;
       const passingCriteria=this.answersResult.assessmentId.passingCriteria;
        if (score >= passingCriteria) {
@@ -185,16 +182,7 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
     } else {
       this.isQuizFailed = true;
     }
-    //this.isQuizFailed=true;
-    // const passingCriteria = this.assessmentId.passingCriteria; // Assuming passingCriteria is the score threshold
-    // const score = this.answersResult.score; // Assuming answersResult contains the score
-    // console.log("PassingCriteriya",passingCriteria)
-    // console.log("naswerResult",this.answerResult)
-    // if (score >= passingCriteria) {
-    //   this.isQuizCompleted = true;
-    // } else {
-    //   this.isQuizFailed = true;
-    // }
+    
   }
 
   correctAnswers(value: any) {

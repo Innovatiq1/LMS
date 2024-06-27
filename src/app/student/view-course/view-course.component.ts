@@ -226,7 +226,7 @@ export class ViewCourseComponent implements OnDestroy {
           this.videoPlayer.nativeElement.duration) *
         100;
       this.array.push(progress);
-      // console.log("gettime:array: " + this.array);
+      
       this.commonService.setProgress(this.array);
     });
     this.videoPlayer.nativeElement.addEventListener('loadedmetadata', () => {
@@ -297,7 +297,7 @@ export class ViewCourseComponent implements OnDestroy {
       .getStudentClass(studentId, classId)
       .subscribe((response) => {
         this.studentClassDetails = response.data.docs[0].coursekit;
-        // console.log("payload",response)
+        
         if (
           this.studentClassDetails.playbackTime !== 100 ||
           !this.studentClassDetails.playbackTime
@@ -1181,8 +1181,7 @@ export class ViewCourseComponent implements OnDestroy {
     this.isFeedBackSubmitted = false;
     
     this.studentService.getAnswerById(answerId).subscribe((res: any) => {
-      console.log("Res==",res)
-      console.log("this.getAssessmentId==",res.assessmentAnswer.assessmentId.id);
+  
       this.getAssessmentId=res.assessmentAnswer.assessmentId.id;
       this.isAnswersSubmitted = true;
       this.answersResult = res.assessmentAnswer;
