@@ -124,6 +124,7 @@ export class ViewCourseComponent implements OnDestroy {
   isFeedBackSubmitted: boolean = false;
   questionList: any = [];
   answersResult!: any;
+  getAssessmentId!:any;
   feedbackInfo!: any;
   freeCourse: boolean;
   paidCourse: boolean;
@@ -225,7 +226,7 @@ export class ViewCourseComponent implements OnDestroy {
           this.videoPlayer.nativeElement.duration) *
         100;
       this.array.push(progress);
-      // console.log("gettime:array: " + this.array);
+      
       this.commonService.setProgress(this.array);
     });
     this.videoPlayer.nativeElement.addEventListener('loadedmetadata', () => {
@@ -296,7 +297,7 @@ export class ViewCourseComponent implements OnDestroy {
       .getStudentClass(studentId, classId)
       .subscribe((response) => {
         this.studentClassDetails = response.data.docs[0].coursekit;
-        // console.log("payload",response)
+        
         if (
           this.studentClassDetails.playbackTime !== 100 ||
           !this.studentClassDetails.playbackTime
@@ -911,7 +912,7 @@ export class ViewCourseComponent implements OnDestroy {
   updateCompletionStatus() {
     const studentId = localStorage.getItem('id') || '';
     let payload = {
-      status: 'completed',
+     
       studentId: studentId,
       classId: this.classId,
       playbackTime: 100,
@@ -1178,11 +1179,15 @@ export class ViewCourseComponent implements OnDestroy {
 
   getAnswerById(answerId: string) {
     this.isFeedBackSubmitted = false;
+    
     this.studentService.getAnswerById(answerId).subscribe((res: any) => {
+  
+      this.getAssessmentId=res.assessmentAnswer.assessmentId.id;
       this.isAnswersSubmitted = true;
       this.answersResult = res.assessmentAnswer;
       const assessmentAnswer = res.assessmentAnswer;
       const assessmentId = assessmentAnswer.assessmentId;
+      
       this.questionList = assessmentId.questions.map((question: any) => {
         const answer = assessmentAnswer.answers.find(
           (ans: any) => ans.questionText === question.questionText
