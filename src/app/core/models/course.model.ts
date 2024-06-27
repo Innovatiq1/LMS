@@ -285,6 +285,7 @@ export interface CoursePaginationModel extends Pagination {
 	adminId:string;
 	companyId:string;
 	role:string;
+	datefilter:string;
 }
 
 export interface ProgramCourse {

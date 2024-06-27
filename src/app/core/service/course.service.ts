@@ -52,6 +52,10 @@ export class CourseService {
       if (filter.feeType) {
         params = params.set("feeType", filter.feeType);
       }
+      if (filter.datefilter) {
+        params = params.set("datefilter", filter.datefilter);
+      }
+
       if (filter.status && filter.status === "active") {
         params = params.set("status", "active");
       } else if (filter.status && filter.status === "inactive") {
@@ -122,7 +126,6 @@ export class CourseService {
 
   getAllCourses(id:any,filter?: Partial<CoursePaginationModel>
   ): Observable<ApiResponse> {
-    console.log('id',id)
     const apiUrl = `${this.prefix}admin/courses-new?companyId=${id}`;
     return this._Http.get<ApiResponse>(apiUrl, {
       params: this.buildParams(filter),

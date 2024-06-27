@@ -459,7 +459,6 @@ export class ViewCourseComponent implements OnDestroy {
     var userdata = JSON.parse(localStorage.getItem('currentUser')!);
     var studentId = localStorage.getItem('id');
     if (this.paid) {
-
       const today = new Date();
       const date = today.toISOString().split('T')[0];
       let body = {
@@ -473,8 +472,9 @@ export class ViewCourseComponent implements OnDestroy {
         coursekit: this.courseKit,
         date: date,
         discountType:this.discountType,
-        discountValue:this.discountValue
-
+        discountValue:this.discountValue,
+        courseStartDate:this.classDetails?.courseId?.sessionStartDate,
+        courseEndDate:this.classDetails?.courseId?.sessionEndDate
       };
       const invoiceDialogRef = this.dialog.open(InvoiceComponent, {
         width: '1000px',
@@ -509,7 +509,10 @@ export class ViewCourseComponent implements OnDestroy {
                   adminEmail:userdata.user.adminEmail,
                   adminName:userdata.user.adminName,
                   companyId:userdata.user.companyId,
-                  invoiceUrl:this.invoiceUrl
+                  invoiceUrl:this.invoiceUrl,
+                  courseStartDate:this.classDetails?.courseId?.sessionStartDate,
+                  courseEndDate:this.classDetails?.courseId?.sessionEndDate
+          
                 }
 
                 this.classService
@@ -600,6 +603,9 @@ export class ViewCourseComponent implements OnDestroy {
                                         paid:true,
                                         adminEmail:userdata.user.adminEmail,
                                         adminName:userdata.user.adminName,
+                                        courseStartDate:this.classDetails?.courseId?.sessionStartDate,
+                                        courseEndDate:this.classDetails?.courseId?.sessionEndDate
+                                
                                   
                                       };
                               
@@ -657,6 +663,8 @@ export class ViewCourseComponent implements OnDestroy {
         coursekit: this.courseKit,
         feeType: 'free',
         courseId: this.courseDetails.id,
+        courseStartDate:this.courseDetails?.sessionStartDate,
+        courseEndDate:this.courseDetails?.sessionEndDate,
         companyId:userdata.user.companyId,
         verify:true,
         paid:true

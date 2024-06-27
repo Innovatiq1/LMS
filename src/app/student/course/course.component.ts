@@ -83,7 +83,7 @@ export class CourseComponent {
   }
 getAllCourse(){
   let filterText = this.filterName
-  const payload = { filterText,...this.coursePaginationModel, status: 'open' ,department:this.department, userGroupId: this.userGroupIds}
+  const payload = { filterText,...this.coursePaginationModel, status: 'open' ,department:this.department, datefilter:'yes',userGroupId: this.userGroupIds}
   if(this.userGroupIds){
     payload.userGroupId=this.userGroupIds
   }
@@ -104,7 +104,7 @@ getAllCourse(){
 getRegisteredCourse(){
   let studentId=localStorage.getItem('id')
   let filterRegisteredCourse = this.filterRegistered
-  const payload = {  filterRegisteredCourse,studentId: studentId, status: 'registered' ,...this.coursePaginationModel};
+  const payload = {  filterRegisteredCourse,studentId: studentId,datefilter:'yes', status: 'registered' ,...this.coursePaginationModel};
   this.classService.getStudentRegisteredClasses(payload).subscribe(response =>{
    this.studentRegisteredClasses = response.data.docs;
    this.totalRegisteredItems = response.data.totalDocs
@@ -117,7 +117,7 @@ getRegisteredCourse(){
 getApprovedCourse(){
   let studentId=localStorage.getItem('id')
   let filterApprovedCourse = this.filterApproved
-  const payload = {  filterApprovedCourse,studentId: studentId, status: 'approved' ,...this.coursePaginationModel};
+  const payload = {  filterApprovedCourse,studentId: studentId,datefilter:'yes', status: 'approved' ,...this.coursePaginationModel};
   this.classService.getStudentRegisteredClasses(payload).subscribe(response =>{
    this.studentApprovedClasses = response.data.docs;
    this.totalApprovedItems = response.data.totalDocs
@@ -187,7 +187,7 @@ private mapCategories(): void {
 getFreeCoursesList() {
   let userId = JSON.parse(localStorage.getItem('user_data') || '');
   let id=userId.user.companyId
-  this._courseService.getAllCourses(id,{ ...this.coursePaginationModel, status: 'active' ,feeType:'free'})
+  this._courseService.getAllCourses(id,{ ...this.coursePaginationModel, datefilter:'yes',status: 'active' ,feeType:'free'})
     .subscribe(response => {
       this.dataSource = response.data.docs;
       this.totalFreeItems = response.data.totalDocs
