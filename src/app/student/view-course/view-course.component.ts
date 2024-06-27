@@ -124,6 +124,7 @@ export class ViewCourseComponent implements OnDestroy {
   isFeedBackSubmitted: boolean = false;
   questionList: any = [];
   answersResult!: any;
+  getAssessmentId!:any;
   feedbackInfo!: any;
   freeCourse: boolean;
   paidCourse: boolean;
@@ -911,7 +912,7 @@ export class ViewCourseComponent implements OnDestroy {
   updateCompletionStatus() {
     const studentId = localStorage.getItem('id') || '';
     let payload = {
-      status: 'completed',
+     
       studentId: studentId,
       classId: this.classId,
       playbackTime: 100,
@@ -1178,11 +1179,16 @@ export class ViewCourseComponent implements OnDestroy {
 
   getAnswerById(answerId: string) {
     this.isFeedBackSubmitted = false;
+    
     this.studentService.getAnswerById(answerId).subscribe((res: any) => {
+      console.log("Res==",res)
+      console.log("this.getAssessmentId==",res.assessmentAnswer.assessmentId.id);
+      this.getAssessmentId=res.assessmentAnswer.assessmentId.id;
       this.isAnswersSubmitted = true;
       this.answersResult = res.assessmentAnswer;
       const assessmentAnswer = res.assessmentAnswer;
       const assessmentId = assessmentAnswer.assessmentId;
+      
       this.questionList = assessmentId.questions.map((question: any) => {
         const answer = assessmentAnswer.answers.find(
           (ans: any) => ans.questionText === question.questionText
