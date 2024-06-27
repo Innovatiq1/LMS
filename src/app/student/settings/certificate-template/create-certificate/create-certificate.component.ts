@@ -210,7 +210,6 @@ export class CreateCertificateComponent implements OnInit {
   // }
 
   private setBackgroundImage(imageUrl: string) {
-    console.log('setBackgroundImage');
     this.backgroundTable.nativeElement.style.backgroundImage = `url("${imageUrl}")`;
     setTimeout(() => {
       const computedStyle = window.getComputedStyle(

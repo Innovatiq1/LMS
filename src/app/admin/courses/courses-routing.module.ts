@@ -77,6 +77,11 @@ const routes: Routes = [
     component: CompletionListComponent,
   },
   {
+    path: 'student-courses/completed-courses/edit',
+    component: CompletionListComponent,
+  },
+
+  {
     path: 'view-class/:id',
     component: ViewClassComponent,
   },
