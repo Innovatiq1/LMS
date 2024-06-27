@@ -69,9 +69,11 @@ export class ProgramTimetableComponent implements OnInit{
   }
 
   getClassesList(){
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    
     // let studentId=localStorage.getItem('id')
     // const payload = { studentId: studentId, status: 'approved',isAll:true };
-    this.classService.getProgramClassListWithPagination().subscribe(response =>{
+    this.classService.getProgramClassListWithPagination(userId).subscribe(response =>{
      this.allProgramClasses= response.data.docs;
      console.log()
      const currentDate = new Date();

@@ -72,8 +72,9 @@ export class ProgaramCompletionListComponent {
   }
 
   getCompletedClasses() {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     this.classService
-      .getProgramCompletedStudent(this.studentPaginationModel.page, this.studentPaginationModel.limit)
+      .getProgramCompletedStudent(this.studentPaginationModel.page, this.studentPaginationModel.limit,userId)
       .subscribe((response: { docs: any; page: any; limit: any; totalDocs: any; }) => {
         this.isLoading = false;
         this.studentPaginationModel.docs = response.docs;
