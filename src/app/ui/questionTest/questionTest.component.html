@@ -1,6 +1,6 @@
 <div class="content-block">
   <div class="card border shadow card-height border-radius mb-1 mt-1 p-2">
-    <ng-container *ngIf="!isQuizCompleted">
+    <ng-container *ngIf="!isQuizCompleted && !isQuizFailed">
       <div class="row p-3 d-flex justify-content-between">
         <div class="col-lg-7 col-md-12 col-sm-12 col-12 flex-start">
           <div class="text-left font-weight-bold mt-3">
@@ -128,9 +128,41 @@
           </p>
           <p class="mb-1">
             Your Score : <b>{{ answersResult.score }} Points </b>
+           
           </p>
         </div>
       </div>
     </ng-container>
+    <ng-container *ngIf="isQuizFailed">
+      <div class="row d-flex justify-content-between align-items-center">
+        <img
+          style="width: 150px; height: 150px"
+          class="img-fluid col-sm-12 mx-auto"
+          src="/assets/images/failed3.jpg"
+          alt=""
+        />
+        <div class="result text-center col-md-6 col-sm-12 mt-3">
+          <h5 class="mb-5">
+            Sorry!!
+            <span class="d-block">You have failed the quiz.  </span>
+            <span class="d-block">Please retake the test.</span>
+            <span class="d-block">Below is your result:</span>
+          </h5>
+          <p class="mb-1">
+            Total Question Attempted : <b>{{ questionList.length }}</b>
+          </p>
+          <p class="mb-1">
+            Total Correct Answered : <b>{{ correctAnswers(true) }}</b>
+          </p>
+          <p class="mb-1">
+            Total Wrong Answered : <b>{{ correctAnswers(false) }}</b>
+          </p>
+          <p class="mb-1">
+            Your Score : <b>{{ answersResult.score }} Points </b>
+          </p>
+        </div>
+      </div>
+    </ng-container>
+    
   </div>
 </div>
