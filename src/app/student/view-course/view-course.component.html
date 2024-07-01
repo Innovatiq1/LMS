@@ -489,6 +489,7 @@
                       [totalTime]="questionList.length * questionTimer"
                       (submitAnswers)="submitAnswers($event)"
                       [isAnswersSubmitted]="isAnswersSubmitted"
+                      [isCertificate] = "isCertificate"
                     ></app-questions>
                   </div>
                   <div
@@ -1325,6 +1326,7 @@
                         [totalTime]="questionList.length * questionTimer"
                         (submitAnswers)="submitAnswers($event)"
                         [isAnswersSubmitted]="isAnswersSubmitted"
+                        [isCertificate] = "isCertificate"
                         [autoSubmit]="true"
                       ></app-questions>
                     </ng-container>

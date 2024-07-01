@@ -156,6 +156,8 @@ export class ViewCourseComponent implements OnDestroy {
   discountType: any;
   discountValue: any;
   totalFee: any;
+  isCertificate: string = '';
+
   constructor(
     private classService: ClassService,
     private activatedRoute: ActivatedRoute,
@@ -207,7 +209,7 @@ export class ViewCourseComponent implements OnDestroy {
     });
     this.commonRoles = AppConstants
   }
-
+ 
   getClassDetails() {
     this.classService.getClassById(this.classId).subscribe((response) => {
       this.classDetails = response;
@@ -218,6 +220,7 @@ export class ViewCourseComponent implements OnDestroy {
       this.getExamAssessmentAnswerCount(this.courseId);
     });
   }
+ 
   onTimeUpdate(event: any) {
     let time = this.commonService.getPlayBackTime();
     this.videoPlayer.nativeElement.addEventListener('timeupdate', () => {
@@ -895,7 +898,9 @@ export class ViewCourseComponent implements OnDestroy {
         ) {
           this.isRegistered == true;
           this.isCompleted = true;
+          this.isCertificate = "Yes";
           this.certificateIssued = true;
+          console.log("cert", this.isCertificate)
         }
         if (this.studentClassDetails.status == 'cancel') {
           this.isRegistered == true;

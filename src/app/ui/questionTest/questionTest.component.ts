@@ -18,6 +18,7 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
   @Input() totalTime!: number;
   @Input() isAnswersSubmitted:boolean = false;
   @Input() autoSubmit:boolean = false;
+  @Input() isCertificate: string = '';
   @Output() submitAnswers: EventEmitter<any> = new EventEmitter<any>();
   
 
@@ -39,6 +40,7 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
   isExamStarted:boolean=false;
   courseId!: string;
   assessmentId: any;
+  isCertIssued: boolean = false;
 
 
   constructor(
@@ -50,7 +52,8 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
     
   )  {
     let urlPath = this.router.url.split('/');
-
+    console.log("questionList", this.questionList)
+   
   }
 
   ngOnInit() {
@@ -61,8 +64,16 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
     this.user_name = this.authenService.currentUserValue.user.name
     let urlPath = this.router.url.split('/');
     this.classId = urlPath[urlPath.length - 1];
-    this.getClassDetails()
+    this.getClassDetails() ;
+    if (this.isCertificate) {
+      this.isCertIssued = true;
+      console.log("QuestionComponent - isCertificate:", this.isCertificate);
+    } else {
+      this.isCertIssued = false;
+    }
   }
+
+ 
 
   startTimer() {
     if (!this.totalTime) {
