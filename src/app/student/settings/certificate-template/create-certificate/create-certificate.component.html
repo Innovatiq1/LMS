@@ -10,48 +10,59 @@
 
             <form [formGroup]="certificateForm" style="display: flex; flex-wrap: wrap; gap: 20px;">
               <div *ngIf="!viewUrl"  style="display: flex; width: 100%; gap: 20px;">
+                <label>Title</label>
                 <mat-form-field class="example-full-width" appearance="outline" style="flex: 1;">
-                  <mat-label>Title</mat-label>
                   <input matInput formControlName="title">
                   <!-- <mat-error *ngIf="certificateForm.get('title')?.hasError('required')">
                     Enter title
                   </mat-error> -->
                 </mat-form-field>
-                <mat-form-field class="example-full-width" appearance="outline" style="flex: 1;">
+                <!-- <mat-form-field class="example-full-width" appearance="outline" style="flex: 1;">
                   <mat-label>Text1</mat-label>
                   <input matInput formControlName="text1" >
                   <!-- required add into input -->
                   <!-- <mat-error *ngIf="certificateForm.get('text1')?.hasError('required')">
                     Enter text1
-                  </mat-error> -->
-                </mat-form-field>
+                  </mat-error> --
+                </mat-form-field> -->
 
-                <mat-form-field class="example-full-width" appearance="outline" style="flex: 1;">
+                <!-- <mat-form-field class="example-full-width" appearance="outline" style="flex: 1;">
                   <mat-label>Text2</mat-label>
                   <input matInput formControlName="text2" >
                    <!-- required add into input -->
                   <!-- <mat-error *ngIf="certificateForm.get('text2')?.hasError('required')">
                     Enter Text 2
-                  </mat-error> -->
-                </mat-form-field>
+                  </mat-error> --
+                </mat-form-field> -->
 
                 
               </div>
 
               <div *ngIf="!viewUrl" style="display: flex; width: 100%; gap: 20px;">
-                <mat-form-field class="example-full-width" appearance="outline" style="flex: 1;">
-                  <mat-label>Text3</mat-label>
-                  <input matInput formControlName="text3" >
-                  <!-- <mat-error *ngIf="certificateForm.get('text3')?.hasError('required')">
-                    Enter Text3
+                <!-- <mat-form-field class="example-full-width" appearance="outline" style="flex: 1;"> -->
+                  <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                      <label>Text 1</label>
+                      <!-- <ckeditor [editor]="Editor" id="editor" formControlName="course_detailed_description" ></ckeditor> -->
+                      <angular-editor
+                        placeholder="Enter text..."
+                        id="editor"
+                        formControlName="text1"
+                        [config]="config"
+                      ></angular-editor>
+                    </div>
+                  </div>
+                  <!-- required add into input -->
+                  <!-- <mat-error *ngIf="certificateForm.get('text1')?.hasError('required')">
+                    Enter text1
                   </mat-error> -->
-                </mat-form-field>
-                <mat-form-field class="example-full-width" appearance="outline" style="flex: 1;">
+                <!-- </mat-form-field> -->
+                <!-- <mat-form-field class="example-full-width" appearance="outline" style="flex: 1;">
                   <mat-label>Text4</mat-label>
                   <input matInput formControlName="text4" >
                   <!-- <mat-error *ngIf="certificateForm.get('text4')?.hasError('required')">
                     Enter Text4
-                  </mat-error> -->
+                  </mat-error> --
                 </mat-form-field>
 
                 <mat-form-field class="example-full-width" appearance="outline" style="flex: 1;">
@@ -59,25 +70,25 @@
                   <input matInput formControlName="text5" >
                   <!-- <mat-error *ngIf="certificateForm.get('text5')?.hasError('required')">
                     Enter Completion Text
-                  </mat-error> -->
-                </mat-form-field>
+                  </mat-error> --
+                </mat-form-field> -->
 
                 
               </div>
-              <div *ngIf="!viewUrl" style="display: flex; width: 100%; gap: 20px;">
+              <!-- <div *ngIf="!viewUrl" style="display: flex; width: 100%; gap: 20px;">
                 <mat-form-field class="example-full-width" appearance="outline" style="flex: 1;">
                   <mat-label>Text6</mat-label>
                   <input matInput formControlName="text6" >
                   <!-- <mat-error *ngIf="certificateForm.get('text6')?.hasError('required')">
                     Enter Text6
-                  </mat-error> -->
+                  </mat-error> --
                 </mat-form-field>
                 <mat-form-field class="example-full-width" appearance="outline" style="flex: 1;">
                   <mat-label>Text7</mat-label>
                   <input matInput formControlName="text7" >
                   <!-- <mat-error *ngIf="certificateForm.get('text7')?.hasError('required')">
                     Enter Text7
-                  </mat-error> -->
+                  </mat-error> --
                 </mat-form-field>
 
                 <mat-form-field class="example-full-width" appearance="outline" style="flex: 1;">
@@ -85,49 +96,49 @@
                   <input matInput formControlName="text8" >
                   <!-- <mat-error *ngIf="certificateForm.get('text8')?.hasError('required')">
                     Enter Text8
-                  </mat-error> -->
+                  </mat-error> --
                 </mat-form-field>
 
                
-              </div>
+              </div> -->
 
-
+<!-- 
               <div *ngIf="!viewUrl" style="display: flex; width: 100%; gap: 20px;">
                 <mat-form-field class="example-full-width" appearance="outline" style="flex: 1;">
                   <mat-label>User</mat-label>
                   <input matInput formControlName="user" >
                   <!-- <mat-error *ngIf="certificateForm.get('user')?.hasError('required')">
                     Enter Student Name
-                  </mat-error> -->
+                  </mat-error> --
                 </mat-form-field>
                 <mat-form-field class="example-full-width" appearance="outline" style="flex: 1;">
                   <mat-label>Course Name</mat-label>
                   <input matInput formControlName="course" >
                   <!-- <mat-error *ngIf="certificateForm.get('course')?.hasError('required')">
                     Enter Course Name
-                  </mat-error> -->
+                  </mat-error> --
                 </mat-form-field>
                 <mat-form-field class="example-full-width" appearance="outline" style="flex: 1;">
                   <mat-label>Completion Date</mat-label>
                   <input matInput formControlName="completionDate" type="date" >
                   <!-- <mat-error *ngIf="certificateForm.get('completionDate')?.hasError('required')">
                     Enter Completion Date
-                  </mat-error> -->
-                </mat-form-field>
+                  </mat-error> --
+                </mat-form-field> -->
 
              
                 
 
 
                 
-              </div>
+              <!-- </div> -->
               <div *ngIf="!viewUrl" style="display: flex; width: 100%; gap: 20px;">
               
                 <div
                 class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
                 
               >
-                <label>Thumbnail</label>
+                <label>Background Image</label>
                 <div class="file-drop-area">
                   <div class="file">
                     <button mat-raised-button color="primary" class="btn">
@@ -162,8 +173,42 @@
             <button class="icons" *ngIf="viewUrl" (click)="edit()" >
               <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
           </button>
-
-            <table #backgroundTable
+          <table #backgroundTable
+            style="margin: 0 auto;
+                   background-repeat: no-repeat;
+                   background-position: center right;
+                   background-size: 100% 100%;
+                   border: 0.5px solid lightgray;
+                   height: 700px;
+                   width: 800px;">
+              <tbody>
+                <tr>
+                  <td width="11%"></td>
+                  <td width="59%" style="padding: 30px 0">
+          
+            <p
+              class="text-default"
+              [innerHTML]="
+                
+                getSafeHtml(certificateForm.get('text1')?.value)
+                  
+              "
+            ></p>
+          </td>
+          <td width="30%"></td>
+        </tr>
+      </tbody>
+    </table>
+            <table width="800px" [style.background-image]="'url(' + this.image_link + ')'" style="
+            margin: 0 auto;
+            background-repeat: no-repeat;
+            background-position: center right;
+            background-size: 100% 100%;
+            border: 0.5px solid lightgray;
+            height: fit-content;
+          "> </table>
+         
+            <!-- <table #backgroundTable
             style="margin: 0 auto;
                    background-repeat: no-repeat;
                    background-position: center right;
@@ -194,7 +239,7 @@
                             line-height: 1.2;
                           ">
                           {{ certificateForm.get('text2')?.value || ' India | Singapore' }}
-                            <!-- India | Singapore -->
+                            <!-- India | Singapore --
                           </p>
                         </td>
                       </tr>
@@ -264,7 +309,7 @@
                             text-transform: uppercase;
                           ">
                            {{ certificateForm.get('text7')?.value || 'tms inc.' }}
-                            <!-- lms inc. -->
+                            <!-- lms inc. --
                           </p>
                           <p style="
                             font-weight: normal;
@@ -273,11 +318,11 @@
                             line-height: 1.2;
                           ">
                           {{ certificateForm.get('text8')?.value || 'Mountbatten Road, Mountbatten Square, Singapore | Hyderabad, TS, India' }}
-                            <!-- Mountbatten Road, Mountbatten Square, Singapore | Hyderabad, TS, India -->
+                            <!-- Mountbatten Road, Mountbatten Square, Singapore | Hyderabad, TS, India --
                           </p>
                         </td>
                         <td width="30%" style="text-align: right; vertical-align: bottom; padding-right: 30px;">
-                          <!-- <img src="/assets/certificates/stamp.png" width="140px" /> -->
+                          <!-- <img src="/assets/certificates/stamp.png" width="140px" /> --
                         </td>
                       </tr>
                     </table>
@@ -285,7 +330,7 @@
                   <td width="30%"></td>
                 </tr>
               </tbody>
-            </table>
+            </table> -->
             <!-- <table width="800px" [style.background-image]="'url(' + this.image_link + ')'" style="
             margin: 0 auto;
             background-repeat: no-repeat;

@@ -6,6 +6,7 @@ import { ClassService } from 'app/admin/schedule-class/class.service';
 import { VideoPlayerComponent } from '../../course-kit/video-player/video-player.component';
 import { BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import Swal from 'sweetalert2';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-course-view',
@@ -37,6 +38,7 @@ export class CourseViewComponent {
     private classService: ClassService,
     private activatedRoute: ActivatedRoute,
     private modalServices: BsModalService,
+    private sanitizer: DomSanitizer
   ) {
     // constructor
     this.coursePaginationModel = {};
@@ -73,6 +75,9 @@ export class CourseViewComponent {
       this.getAllInActiveCourse();
     }
 
+  }
+  getSafeHtml(html: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(html);
   }
 /*Get active courses */
   getAllCourse() {

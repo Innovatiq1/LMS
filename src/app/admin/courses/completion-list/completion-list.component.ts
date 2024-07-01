@@ -1,7 +1,5 @@
 import { MatTableDataSource } from '@angular/material/table';
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, TemplateRef, ViewChild } from '@angular/core';
 import {
   ClassModel,
   Session,
@@ -21,10 +19,15 @@ import DomToImage from 'dom-to-image';
 import { number } from 'echarts';
 import { StudentService } from '@core/service/student.service';
 import { dA } from '@fullcalendar/core/internal-common';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { formatDate } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { AppConstants } from '@shared/constants/app.constants';
+import { CertificateService } from '@core/service/certificate.service';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { CourseService } from '@core/service/course.service';
 
 @Component({
   selector: 'app-completion-list',
@@ -55,6 +58,8 @@ export class CompletionListComponent {
       active: 'Completion Course',
     },
   ];
+  @ViewChild('certificateDialog') certificateDialog!: TemplateRef<any>;
+
   pdfData: any = [];
   dafaultGenratepdf: boolean = false;
   element: any;
@@ -69,17 +74,78 @@ export class CompletionListComponent {
   // @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild(MatSort) matSort!: MatSort;
   commonRoles: any;
+  certificateDetails: any;
+  certificateUrl: any;
+  isCertificate: boolean = false;
+  certificateId: any;
+
+  image_link: any;
+  uploaded: any;
+  uploadedImage: any;
+  certificateForm!: FormGroup;
+
+  config: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    height: '15rem',
+    minHeight: '5rem',
+    placeholder: 'Enter text here...',
+    translate: 'no',
+    defaultParagraphSeparator: 'p',
+    defaultFontName: 'Arial',
+    sanitize: false,
+    toolbarHiddenButtons: [
+      ['strikethrough']
+      ],
+    customClasses: [
+      {
+        name: "quote",
+        class: "quote",
+      },
+      {
+        name: 'redText',
+        class: 'redText'
+      },
+      {
+        name: "titleText",
+        class: "titleText",
+        tag: "h1",
+      },
+    ]
+  };
+  thumbnail: any;
+  studentData: any;
+  dialogRef: any;
+  
+
   upload() {
     document.getElementById('input')?.click();
   }
+  @ViewChild('backgroundTable') backgroundTable!: ElementRef;
 
-  constructor(private classService: ClassService, public router: Router, public dialog: MatDialog) {
+  constructor(private classService: ClassService, private changeDetectorRef: ChangeDetectorRef,public router: Router, public dialog: MatDialog,
+    private certificateService: CertificateService,  private sanitizer: DomSanitizer,private _activeRouter: ActivatedRoute,
+    private courseService: CourseService,private fb: FormBuilder,) {
     this.studentPaginationModel = {} as StudentPaginationModel;
+    let urlPath = this.router.url.split('/')
+    this.certificateUrl = urlPath.includes('edit');
+    this.isCertificate = this.certificateUrl;
+    if(this.certificateUrl===true){
+      this.isCertificate = true;
+    }else{
+      this.isCertificate = false;
+    }
+    
   }
 
   ngOnInit(): void {
     this.commonRoles = AppConstants
     this.getCompletedClasses();
+      this.certificateForm = this.fb.group({
+        text1: [''],
+        // image_link: ['']
+      });
+
   }
 
   pageSizeChange($event: any) {
@@ -136,6 +202,28 @@ export class CompletionListComponent {
         }
       );
   }
+
+  getCertificates() {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.classService
+      .getSessionCompletedStudent(
+        userId,1,
+       this.studentPaginationModel.limit
+      )
+      .subscribe(
+        (response: { docs: any; page: any; limit: any; totalDocs: any }) => {
+          this.isLoading = false;
+          this.studentPaginationModel.docs = response.docs;
+          this.studentPaginationModel.page = response.page;
+          this.studentPaginationModel.limit = response.limit;
+          this.totalItems = response.totalDocs;
+          this.dataSource = response.docs;
+          this.dataSource.sort = this.matSort;
+          this.mapClassList();
+        }
+      );
+  }
+
 
   view(id: string) {
     this.router.navigate(['/admin/courses/view-completion-list'], {
@@ -222,23 +310,6 @@ export class CompletionListComponent {
     }
   }
 
-  // openDialog(event: { title: any; extendedProps: { [x: string]: any; }; }) {
-  //   console.log("event",event);
-  //   this.dialog.open(EventDetailDialogComponent, {
-  //     width: '700px',
-  //     data: {
-  //       title: event.title,
-  //       sessionStartTime: event.extendedProps['sessionStartTime'],
-  //       sessionEndTime: event.extendedProps['sessionEndTime'],
-  //       courseCode: event.extendedProps['courseCode'],
-  //       status: event.extendedProps['status'],
-  //       sessionStartDate: event.extendedProps['sessionStartDate'],
-  //       sessionEndDate: event.extendedProps['sessionEndDate'],
-  //       deliveryType: event.extendedProps['deliveryType'],
-  //       instructorCost: event.extendedProps['instructorCost']
-  //     }
-  //   });
-  // }
   getSessions(element: { classId: { sessions: any[] } }) {
     const sessions = element.classId?.sessions?.map((_: any, index: number) => {
       const session: Session = {} as Session;
@@ -301,50 +372,86 @@ export class CompletionListComponent {
     );
     TableExportUtil.exportToExcel(exportData, 'Student Completed-list');
   }
+  getSafeHtml(html: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(html);
+  }
+  openDialog(templateRef: any): void {
+    this.certificateService.getCertificateById(this.studentData.courseId.certificate_template_id).subscribe((response: any) => {
+      this.certificateDetails = response;
+      let imageUrl = this.certificateDetails?.image;
+      imageUrl = imageUrl.replace(/\\/g, '/');
+      imageUrl = encodeURI(imageUrl);
+      this.setBackgroundImage(imageUrl);
+      
+      this.uploaded = imageUrl?.split('/');
+      let image = this.uploaded?.pop();
+      this.uploaded = image?.split('\\');
+      this.uploadedImage = this.uploaded?.pop();
+
+
+            this.certificateForm.patchValue({
+            title: response.title,
+            text1: response.text1,
+          })
+    })
+  
+    this.dialogRef = this.dialog.open(templateRef, {
+      width: '1000px',
+      data: {   certificate:this.certificateDetails  },
+    });    
+}
+
   generateCertificate(element: Student) {
+    this.studentData = element
+    this.openDialog(this.certificateDialog)
+  }
+  update(){
     Swal.fire({
-      // title: "Updated",
-      // text: "Course Kit updated successfully",
-      // icon: "success",
       title: 'Certificate Generating...',
       text: 'Please wait...',
       allowOutsideClick: false,
       timer: 24000,
       timerProgressBar: true,
     });
-    this.dafaultGenratepdf = true;
-    this.pdfData = [];
-    let pdfObj = {
-      title: element?.courseId?.title,
-      name: element?.studentId?.name,
-      //project_week: project_week,
-      completdDate: moment().format('DD ddd MMM YYYY'),
-    };
-    this.pdfData.push(pdfObj);
-    var convertIdDynamic = 'contentToConvert';
-    const dashboard = document.getElementById('contentToConvert');
-    //this.generatePdf1(dashboard, element?.studentId._id, element?.courseId._id,"course");
-    this.genratePdf3(
-      convertIdDynamic,
-      element?.studentId._id,
-      element?.courseId._id
-    );
-  }
+       this.dafaultGenratepdf = true;
+       var convertIdDynamic = 'contentToConvert';
+       this.genratePdf3(
+            convertIdDynamic,
+            this.studentData?.studentId._id,
+            this.studentData?.courseId._id
+          );
+          this.dialogRef.close(); // Close the dialog
 
+  
+  }
+  private setBackgroundImage(imageUrl: string) {  
+    console.log('setBackgroundImage',imageUrl);
+
+    this.backgroundTable.nativeElement.style.backgroundImage = `url("${imageUrl}")`;
+    setTimeout(() => {
+      const computedStyle = window.getComputedStyle(this.backgroundTable.nativeElement);
+      console.log('Computed background image:', computedStyle.backgroundImage);
+
+    }, 1000);
+
+  }
+ 
   genratePdf3(convertIdDynamic: any, memberId: any, memberProgrmId: any) {
+    console.log('convertIdDynamic - ',convertIdDynamic,'memberId -',memberId,'memberProgrmId',memberProgrmId)
+    console.log('convertIdDynamic - ',convertIdDynamic,'memberId -',)
     this.dafaultGenratepdf = true;
     setTimeout(() => {
       const dashboard = document.getElementById(convertIdDynamic);
       if (dashboard != null) {
         const dashboardHeight = dashboard.clientHeight;
         const dashboardWidth = dashboard.clientWidth;
-
+ 
         const options = {
           background: 'white',
           width: dashboardWidth,
           height: dashboardHeight,
         };
-
+ 
         DomToImage.toPng(dashboard, options).then((imgData) => {
           const doc = new jsPDF(
             dashboardWidth > dashboardHeight ? 'l' : 'p',
@@ -354,12 +461,12 @@ export class CompletionListComponent {
           const imgProps = doc.getImageProperties(imgData);
           const pdfWidth = doc.internal.pageSize.getWidth();
           const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
+ 
           doc.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
           const currentDateTime = moment();
           const randomString = this.generateRandomString(10);
-
-
+ 
+ 
           const pdfData = new File(
             [doc.output('blob')],
             randomString + 'courseCertificate.pdf',
@@ -383,6 +490,58 @@ export class CompletionListComponent {
       }
     }, 1000);
   }
+  // genratePdf3(convertIdDynamic: any, memberId: any, memberProgrmId: any) {
+  //   this.dafaultGenratepdf = true;
+  //   setTimeout(() => {
+  //     const dashboard = document.getElementById(convertIdDynamic);
+  //     if (dashboard != null) {
+  //       const dashboardHeight = dashboard.clientHeight;
+  //       const dashboardWidth = dashboard.clientWidth;
+
+  //       const options = {
+  //         background: 'white',
+  //         width: dashboardWidth,
+  //         height: dashboardHeight,
+  //       };
+
+  //       DomToImage.toPng(dashboard, options).then((imgData) => {
+  //         const doc = new jsPDF(
+  //           dashboardWidth > dashboardHeight ? 'l' : 'p',
+  //           'mm',
+  //           [dashboardWidth, dashboardHeight]
+  //         );
+  //         const imgProps = doc.getImageProperties(imgData);
+  //         const pdfWidth = doc.internal.pageSize.getWidth();
+  //         const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+  //         doc.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+  //         const currentDateTime = moment();
+  //         const randomString = this.generateRandomString(10);
+
+
+  //         const pdfData = new File(
+  //           [doc.output('blob')],
+  //           randomString + 'courseCertificate.pdf',
+  //           {
+  //             type: 'application/pdf',
+  //           }
+  //         );
+  //         this.classService.uploadFileApi(pdfData).subscribe(
+  //           (data: any) => {
+  //             let objpdf = {
+  //               pdfurl: data.inputUrl,
+  //               memberId: memberId,
+  //               CourseId: memberProgrmId,
+  //             };
+  //             this.updateCertificte(objpdf);
+  //           },
+  //           (err) => {}
+  //         );
+  //       });
+  //       this.dafaultGenratepdf = false;
+  //     }
+  //   }, 1000);
+  // }
   generateRandomString(length: number) {
     const characters =
       'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -413,8 +572,10 @@ export class CompletionListComponent {
             if (response.data.certifiacteUrl) {
               this.certifiacteUrl = true;
             }
+                this.changeDetectorRef.detectChanges();
 
-            this.getCompletedClasses();
+
+            this.getCertificates();
             //let certifiacteUrl =response.data.certifiacteUrl
             Swal.fire({
               title: 'Updated',
@@ -426,5 +587,29 @@ export class CompletionListComponent {
         );
       }
     });
+  }
+
+  onFileUpload(event: any) {
+    const file = event.target.files[0];
+
+    if (file) {
+      this.thumbnail = file;
+      const formData = new FormData();
+      formData.append('files', this.thumbnail);
+
+      this.courseService.uploadCourseThumbnail(formData).subscribe((data: any) => {
+        let imageUrl = data.data.thumbnail;
+        this.image_link = data.data.thumbnail
+        imageUrl = imageUrl.replace(/\\/g, '/');
+        imageUrl = encodeURI(imageUrl);
+        this.setBackgroundImage(imageUrl);
+        this.uploaded=imageUrl?.split('/')
+      let image  = this.uploaded?.pop();
+      this.uploaded= image?.split('\\');
+      this.uploadedImage = this.uploaded?.pop();
+      }, (error) => {
+        console.error('Upload error:', error);
+      });
+    }
   }
 }

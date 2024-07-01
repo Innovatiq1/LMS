@@ -102,8 +102,9 @@ export class AddCourseComponent implements OnInit {
     translate: 'no',
     defaultParagraphSeparator: 'p',
     defaultFontName: 'Arial',
+    sanitize: false,
     toolbarHiddenButtons: [
-      ['bold']
+      ['strikethrough']
       ],
     customClasses: [
       {
@@ -122,6 +123,7 @@ export class AddCourseComponent implements OnInit {
     ]
   };
   vendors: any;
+  certificates: any;
 
   constructor(private router: Router,private fb: FormBuilder, private _formBuilder: FormBuilder,
     private courseService: CourseService,
@@ -192,7 +194,8 @@ export class AddCourseComponent implements OnInit {
         course_kit: new FormControl('', [Validators.required]),
         vendor: new FormControl('',[ Validators.maxLength(100)]),
         isFeedbackRequired: new FormControl(null, [Validators.required]),
-        examType: new FormControl(null, [Validators.required])
+        examType: new FormControl(null, [Validators.required]),
+        certificate_temp: new FormControl(null, [Validators.required]),
       });
       // this.secondFormGroup = this._formBuilder.group({
 
@@ -215,6 +218,7 @@ export class AddCourseComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getAllCertificates();
     this.getCurrency();
     this. getAllVendors();
     this.mainCategoryControl = this.firstFormGroup.get('main_category') as FormControl;
@@ -335,6 +339,14 @@ getForms(): void {
   let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     this.formService.getAllForms(userId,'Course Creation Form').subscribe(forms => {
     this.forms = forms;
+  });
+}
+getAllCertificates(){
+  this.certificateService.getAllCertificate().subscribe((response: { data: { docs: any; }; }) =>{
+   this.certificates = response.data.docs;
+   console.log("ertificate",this.certificates.title)
+ 
+  }, () => {
   });
 }
 
@@ -558,6 +570,10 @@ this.courseService.uploadCourseThumbnail(formData).subscribe((data: any) =>{
     fileReader.readAsArrayBuffer(file);
   }
   save() {
+    let certicate_temp_id = this.certificates.filter((certificate: any) => 
+    certificate.title === this.firstFormGroup.value.certificate_temp 
+  );
+  console.log(certicate_temp_id,"temp");
     if(this.firstFormGroup.valid){
     const courseData = this.firstFormGroup.value;
     let creator = JSON.parse(localStorage.getItem('user_data')!).user.name;
@@ -594,8 +610,11 @@ this.courseService.uploadCourseThumbnail(formData).subscribe((data: any) =>{
       creator:creator,
       id:this.courseId,
       isFeedbackRequired: courseData?.isFeedbackRequired,
-      examType: courseData?.examType
+      examType: courseData?.examType,
+      certificate_template:courseData?.certificate_temp,
+      certificate_template_id:certicate_temp_id[0].id,
     }
+    
         this.firstFormGroup.value?.course_kit?.map((item:any) => item.id);
     this.firstFormGroup.value?.assessment
     this.firstFormGroup.value?.exam_assessment
@@ -625,6 +644,7 @@ this.courseService.uploadCourseThumbnail(formData).subscribe((data: any) =>{
     this.firstFormGroup.markAsUntouched();
     this.isWbsSubmitted = true;
   }
+ 
   }
   onSelect(event: any){
     if(event.value == 'paid'){
@@ -671,7 +691,10 @@ this.courseService.uploadCourseThumbnail(formData).subscribe((data: any) =>{
 
 
   submit() {
-
+    let certicate_temp_id = this.certificates.filter((certificate: any) => 
+    certificate.title === this.firstFormGroup.value.certificate_temp 
+  );
+  console.log(certicate_temp_id,"temppppp");
     if(this.firstFormGroup.valid){
       const courseData = this.firstFormGroup.value;
       let creator = JSON.parse(localStorage.getItem('user_data')!).user.name;
@@ -710,6 +733,8 @@ this.courseService.uploadCourseThumbnail(formData).subscribe((data: any) =>{
         feeType:courseData?.feeType,
         isFeedbackRequired: courseData?.isFeedbackRequired,
         examType: courseData?.examType,
+        certificate_template:courseData?.certificate_temp,
+        certificate_template_id:certicate_temp_id[0].id,
         companyId:userId
       }
 
@@ -815,7 +840,8 @@ this.courseService.uploadCourseThumbnail(formData).subscribe((data: any) =>{
         uploadedImage:this.course?.image_link,
         vendor: this.course?.vendor,
         isFeedbackRequired: this.course?.isFeedbackRequired,
-        examType: this.course?.examType
+        examType: this.course?.examType,
+        certificate_temp:this.course?.certificate_template ,
       });
       this.mainCategoryChange();
       this.cd.detectChanges();
