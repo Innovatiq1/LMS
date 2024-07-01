@@ -28,7 +28,7 @@ export class ProgramPaymentComponent {
     'Payment Date',
     'Amount',
     'Payment Status',
-    // 'status',
+    // 'Amount',
     
   ];
   // dataSource1 = [

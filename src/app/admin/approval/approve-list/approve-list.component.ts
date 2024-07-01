@@ -51,13 +51,13 @@ export class ApproveListComponent {
     'studentname',
     'status',
     'coursename',
-    'programFee',
-    'instructorFee',
+    // 'programFee',
+    // 'instructorFee',
     'classstartDate',
     'classendDate',
     'registeredDate',
-    // 'programFee',
-    // 'instructorFee',
+    'programFee',
+    'instructorFee',
   ];
 
   breadscrums = [

@@ -71,18 +71,11 @@
  //   margin-right: 8px; / Adjust spacing as needed /
  //   vertical-align: middle; / Align icon vertically with text /
  // }
- ::ng-deep .mat-sort-header-content {
-   text-align: center !important; 
-   display: flex !important;
-   align-items: center !important;
-   white-space: nowrap;
- }
+ 
  .center-icon {
    margin: auto; 
  }
- :host ::ng-deep mat-cell{
-   min-width: 150px;
- }
+
  .payment-cell{
    padding-right: 45px;
  }

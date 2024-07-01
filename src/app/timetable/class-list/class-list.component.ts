@@ -41,14 +41,14 @@ export class ClassListComponent extends UnsubscribeOnDestroyAdapter implements O
     // 'Instructor',
     'Course',
     'Code',
-    'Price',
+    // 'Price',
     'Department',
     'Start Date',
     'End Date',
     'Class',
     'Minimum Students',
     'Maximum Students',
-    // 'Price',
+    'Price',
   ];
 
   breadscrums = [

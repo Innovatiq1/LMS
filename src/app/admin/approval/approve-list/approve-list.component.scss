@@ -28,29 +28,16 @@ svg {
   display: inline-block;
   margin-right: 5px; // Space between dot and text
 }
-::ng-deep .mat-sort-header-content {
-  text-align: center !important; 
-  display: flex !important;
-  align-items: center !important;
+
+.amount{
+  padding-right: 80px !important;
   white-space: nowrap;
 }
-.compulsory-count-header {
-  min-width: 150px;
-}
 
-:host ::ng-deep mat-cell{
-  min-width: 150px;   
-}
 .payment-cell{
-  padding-right: 60px;
-}
-::ng-deep .mat-column-programFee {
-  white-space: nowrap;
+  padding-right: 100px !important;
 }
 
-::ng-deep .mat-column-instructorFee {
-  white-space: nowrap;
-}
 ::ng-deep .mat-column-registeredDate {
   white-space: nowrap;
 }

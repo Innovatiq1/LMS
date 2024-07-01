@@ -178,7 +178,7 @@
                 </ng-container>
                 <ng-container matColumnDef="Price">
                   <mat-header-cell *matHeaderCellDef mat-sort-header
-                    >Amount</mat-header-cell
+                    class="amount">Amount</mat-header-cell
                   >
                   <mat-cell
                     *matCellDef="let row"
@@ -246,7 +246,7 @@
                 </ng-container>
                 <ng-container matColumnDef="Minimum Students">
                   <mat-header-cell *matHeaderCellDef mat-sort-header
-                    >Minimum {{commonRoles.STUDENT_ROLE}}s
+                    >Min {{commonRoles.STUDENT_ROLE}}s
                   </mat-header-cell>
                   <mat-cell
                     *matCellDef="let row"
@@ -258,7 +258,7 @@
                 </ng-container>
                 <ng-container matColumnDef="Maximum Students">
                   <mat-header-cell *matHeaderCellDef mat-sort-header
-                    >Maximum {{commonRoles.STUDENT_ROLE}}s
+                    >Max {{commonRoles.STUDENT_ROLE}}s
                   </mat-header-cell>
                   <mat-cell
                     *matCellDef="let row"
