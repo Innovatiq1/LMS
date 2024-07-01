@@ -33,13 +33,13 @@ export class VerificationListComponent {
     'studentname',
     'status',
     'coursename',
-    'programFee',
-    'instructorFee',
+    // 'programFee',
+    // 'instructorFee',
     'classstartDate',
     'classendDate',
     'registeredDate',
-    // 'programFee',
-    // 'instructorFee',
+    'programFee',
+    'instructorFee',
     
   ];
 

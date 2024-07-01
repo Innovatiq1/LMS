@@ -24,15 +24,24 @@
     display: inline-block;
     margin-right: 5px; // Space between dot and text
   }
+  mat-cell, mat-header-cell{ 
+    min-width: 130px !important;
+  }
+  .amount{
+    padding-right: 100px !important;
+  }
+  .payment-cell{
+    padding-right: 110px !important;
+  }
   // ::ng-deep .mat-column-Fees {
   //   display: flex !important;
   //   justify-content: flex-end !important;
   //   margin-left: -20px;
   // }
-  :host ::ng-deep mat-cell{
-    min-width: 154px;
-  }
-  .payment-cell{
-    padding-right: 87.5px;
-  }
+  // :host ::ng-deep mat-cell{
+  //   min-width: 154px;
+  // }
+  // .payment-cell{
+  //   padding-right: 87.5px;
+  // }
  

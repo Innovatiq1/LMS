@@ -393,26 +393,35 @@ export class CompletionListComponent {
     });
        this.dafaultGenratepdf = true;
        var convertIdDynamic = 'contentToConvert';
-       this.genratePdf3(
-            convertIdDynamic,
-            this.studentData?.studentId._id,
-            this.studentData?.courseId._id
-          );
-          this.dialogRef.close(); // Close the dialog
+       this.setBackgroundImage(this.image_link);  // Ensure background is set
+    setTimeout(() => {
+        this.genratePdf3(convertIdDynamic, this.studentData?.studentId._id, this.studentData?.courseId._id);
+        this.dialogRef.close();
+    }, 1000);
+      //  this.genratePdf3(
+      //       convertIdDynamic,
+      //       this.studentData?.studentId._id,
+      //       this.studentData?.courseId._id
+      //     );
+      //     this.dialogRef.close(); // Close the dialog
 
   
   }
-  private setBackgroundImage(imageUrl: string) {  
-    console.log('setBackgroundImage',imageUrl);
-
+  private setBackgroundImage(imageUrl: string) {
+    console.log('setBackgroundImage', imageUrl);
     this.backgroundTable.nativeElement.style.backgroundImage = `url("${imageUrl}")`;
-    setTimeout(() => {
-      const computedStyle = window.getComputedStyle(this.backgroundTable.nativeElement);
-      console.log('Computed background image:', computedStyle.backgroundImage);
+}
+  // private setBackgroundImage(imageUrl: string) {  
+  //   console.log('setBackgroundImage',imageUrl);
 
-    }, 1000);
+  //   this.backgroundTable.nativeElement.style.backgroundImage = `url("${imageUrl}")`;
+  //   setTimeout(() => {
+  //     const computedStyle = window.getComputedStyle(this.backgroundTable.nativeElement);
+  //     console.log('Computed background image:', computedStyle.backgroundImage);
 
-  }
+  //   }, 1000);
+
+  // }
  
   genratePdf3(convertIdDynamic: any, memberId: any, memberProgrmId: any) {
     console.log('convertIdDynamic - ',convertIdDynamic,'memberId -',memberId,'memberProgrmId',memberProgrmId)
@@ -545,6 +554,8 @@ export class CompletionListComponent {
       cancelButtonColor: '#d33',
     }).then((result) => {
       if (result.isConfirmed) {
+        this.certificateForm.value.image_link = this.uploadedImage;
+        console.log("images", this.uploadedImage)
         this.classService.updateCertificateUser(objpdf).subscribe(
           (response) => {
             if (response.data.certifiacteUrl) {

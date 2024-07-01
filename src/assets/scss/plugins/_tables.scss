@@ -14,6 +14,7 @@
         border-top: 1px solid #eee;
         border-bottom: 1px solid #eee;
         vertical-align: middle;
+        font-size: 16px;
 
         ul {
           margin: 0;
@@ -71,6 +72,7 @@
         background-color: #f5f5f5;
         color: #666;
         font-weight: 500;
+        font-size: 16px;
         border: none;
       }
     }
@@ -928,11 +930,21 @@ mat-cell > span.truncate-text {
     width: 100px;
   }
 }
+ mat-cell, mat-header-cell{
+  font-size: 15px !important;  
+  min-width: 155px;
+}
+::ng-deep .mat-sort-header-content {
+  white-space: nowrap;
+}
+.amount{
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 40px !important
+}
 
 .payment-cell {
   display: flex;
   justify-content: flex-end;
-  align-items: center;
-  padding-right: 35px; 
-  box-sizing: border-box; 
+  padding-right: 50px !important;
 }

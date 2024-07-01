@@ -73,16 +73,11 @@ svg {
     display: inline-block;
     margin-right: 5px; // Space between dot and text
   }
-  ::ng-deep .mat-sort-header-content {
-    text-align: center !important; 
-    display: flex !important;
-    align-items: center !important;
-    white-space: nowrap;
-}
+
 ::ng-deep .mat-column-Budget-Allocated {
   display: flex !important;
   justify-content: flex-end !important;
-  margin-left: -110px;
+  // margin-left: -110px;
 }
 .payment-cell{
   padding-right: 40px;
