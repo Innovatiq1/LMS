@@ -1,5 +1,5 @@
 import { MatTableDataSource } from '@angular/material/table';
-import { Component, ElementRef, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, TemplateRef, ViewChild } from '@angular/core';
 import {
   ClassModel,
   Session,
@@ -123,7 +123,7 @@ export class CompletionListComponent {
   }
   @ViewChild('backgroundTable') backgroundTable!: ElementRef;
 
-  constructor(private classService: ClassService, public router: Router, public dialog: MatDialog,
+  constructor(private classService: ClassService, private changeDetectorRef: ChangeDetectorRef,public router: Router, public dialog: MatDialog,
     private certificateService: CertificateService,  private sanitizer: DomSanitizer,private _activeRouter: ActivatedRoute,
     private courseService: CourseService,private fb: FormBuilder,) {
     this.studentPaginationModel = {} as StudentPaginationModel;
@@ -202,6 +202,28 @@ export class CompletionListComponent {
         }
       );
   }
+
+  getCertificates() {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.classService
+      .getSessionCompletedStudent(
+        userId,1,
+       this.studentPaginationModel.limit
+      )
+      .subscribe(
+        (response: { docs: any; page: any; limit: any; totalDocs: any }) => {
+          this.isLoading = false;
+          this.studentPaginationModel.docs = response.docs;
+          this.studentPaginationModel.page = response.page;
+          this.studentPaginationModel.limit = response.limit;
+          this.totalItems = response.totalDocs;
+          this.dataSource = response.docs;
+          this.dataSource.sort = this.matSort;
+          this.mapClassList();
+        }
+      );
+  }
+
 
   view(id: string) {
     this.router.navigate(['/admin/courses/view-completion-list'], {
@@ -550,8 +572,10 @@ export class CompletionListComponent {
             if (response.data.certifiacteUrl) {
               this.certifiacteUrl = true;
             }
+                this.changeDetectorRef.detectChanges();
 
-            this.getCompletedClasses();
+
+            this.getCertificates();
             //let certifiacteUrl =response.data.certifiacteUrl
             Swal.fire({
               title: 'Updated',
