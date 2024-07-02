@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { StudentsService } from 'app/admin/students/students.service';
+import { QuestionService } from '@core/service/question.service';
 import Swal from 'sweetalert2';
 import { AuthenService } from '@core/service/authen.service';
 import { Router } from '@angular/router';
@@ -13,9 +14,11 @@ import { ClassService } from 'app/admin/schedule-class/class.service';
 export class QuestionTestComponent implements OnInit, OnDestroy {
   @Input() questionList: any = [];
   @Input() answersResult!: any;
+  @Input() getAssessmentId!:any;
   @Input() totalTime!: number;
   @Input() isAnswersSubmitted:boolean = false;
   @Input() autoSubmit:boolean = false;
+  @Input() isCertificate: string = '';
   @Output() submitAnswers: EventEmitter<any> = new EventEmitter<any>();
   
 
@@ -23,6 +26,7 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
   public answers: any = [];
   user_name!: string;
   isQuizCompleted: boolean = false;
+  isQuizFailed: boolean=false;
   minutes: number = 0;
   seconds: number = 0;
   interval: any;
@@ -35,17 +39,21 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
   answerResult!: any;
   isExamStarted:boolean=false;
   courseId!: string;
+  assessmentId: any;
+  isCertIssued: boolean = false;
 
 
   constructor(
     private studentService: StudentsService,
     private authenService:AuthenService,
+    private questionService:QuestionService,
     private router: Router,
     private classService : ClassService
     
   )  {
     let urlPath = this.router.url.split('/');
-
+    console.log("questionList", this.questionList)
+   
   }
 
   ngOnInit() {
@@ -56,8 +64,16 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
     this.user_name = this.authenService.currentUserValue.user.name
     let urlPath = this.router.url.split('/');
     this.classId = urlPath[urlPath.length - 1];
-    this.getClassDetails()
+    this.getClassDetails() ;
+    if (this.isCertificate) {
+      this.isCertIssued = true;
+      console.log("QuestionComponent - isCertificate:", this.isCertificate);
+    } else {
+      this.isCertIssued = false;
+    }
   }
+
+ 
 
   startTimer() {
     if (!this.totalTime) {
@@ -133,22 +149,51 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
           classId: this.classId,
           companyId:userId
         };
+        // this.getQuestionsById()
         this.submitAnswers.next(submissionPayload);
         clearInterval(this.interval);
       }
     });
   }
-
+  // getQuestionsById(){
+  //   console.log("this.sult",this.answersResult)
+  //     console.log("this.getAssessmentId",this.getAssessmentId);
+  //   this.questionService.getQuestionsById("667bf7d5b0b47928d08d1360").subscribe((res:any)=>{
+     
+  //     console.log("getQuestionsById==",res);
+  //   })
+  // }
+  
   getClassDetails(){
     this.classService.getClassById(this.classId).subscribe((response)=>{
-      this.courseId=response.courseId.id
+      this.courseId=response.courseId.id;
+     
     })
   }
 
 
 
   navigate() {
-    this.isQuizCompleted = true;
+    
+      const score=this.answersResult.score;
+      const passingCriteria=this.answersResult.assessmentId.passingCriteria;
+       if (score >= passingCriteria) {
+      this.isQuizCompleted = true;
+      const studentId = localStorage.getItem('id') || '';
+      let payload = {
+        status:"completed",
+        studentId: studentId,
+        classId: this.classId,
+        playbackTime: 100,
+      };
+      this.classService
+        .saveApprovedClasses(this.classId, payload)
+        .subscribe((response) => {});
+    
+    } else {
+      this.isQuizFailed = true;
+    }
+    
   }
 
   correctAnswers(value: any) {

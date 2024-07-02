@@ -120,17 +120,12 @@ svg{
 .menu-text{
     padding-left: 20px;
 }
-::ng-deep .mat-sort-header-content {
-    text-align: center !important; 
-    display: flex !important;
-    align-items: center !important;
-    white-space: nowrap;
-}
-::ng-deep .mat-column-Payment {
-  display: flex !important;
-  justify-content: flex-end !important;
-  margin-left: -20px;
-}
+
+// ::ng-deep .mat-column-Payment {
+//   display: flex !important;
+//   justify-content: flex-end !important;
+//   margin-left: -20px;
+// }
 // .compulsory-count-header {
 //     min-width: 150px;
 //   }

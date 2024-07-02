@@ -1,80 +1,112 @@
-import { Component, OnInit } from '@angular/core';
+
+
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CoursePaginationModel } from '@core/models/course.model';
-import { DeptService } from '@core/service/dept.service';
-import { Department } from 'app/admin/departments/department.model';
-import Swal from 'sweetalert2';
+import { UserService } from '@core/service/user.service';
+import { UtilsService } from '@core/service/utils.service';
 
 @Component({
   selector: 'app-view-department',
   templateUrl: './view-department.component.html',
   styleUrls: ['./view-department.component.scss']
 })
-export class ViewDepartmentComponent implements OnInit{
+export class ViewDepartmentComponent{
+  displayedColumns: string[] = [
+    // 'select',
+    'img',
+    'User Type',
+    'Name',
+    // 'gender',
+    // 'Qualification',
+    // 'Mobile',
+    // 'Email',
+    // 'Status',
+    // 'Actions'
+  ];
   breadscrums = [
     {
-      title: 'Blank',
-      items: ['Department Profile'],
-      active: 'View Department Profile',
+      title: 'Department',
+      items: ['Department'],
+      active: 'Department',
     },
   ];
 
-  aboutData1!: any;
+  dataSource: any;
+  isLoading = true;
+  coursePaginationModel!: Partial<CoursePaginationModel>;
+  totalItems: any;
+  pageSizeArr = this.utils.pageSizeArr;
   subscribeParams: any;
-  departmentId: any;
-  id?: number;
-  department?: Department;
-  
-  constructor(
-    private activatedRoute:ActivatedRoute,
-    private deptService:DeptService,
-    private router: Router,
+  type: any;
+
+  constructor(private router: Router,
+    public utils: UtilsService,
+    private alluserService: UserService,
+    private activatedRoute: ActivatedRoute,
+
   ) {
-    
+
     this.subscribeParams = this.activatedRoute.params.subscribe((params:any) => {
-      this.departmentId = params.id;
+      this.type = params.id;
+      console.log("paramas here",params)
+      this.breadscrums = [
+        {
+          title: this.type,
+          items: ['Department'],
+          active: this.type,
+        },
+      ];
+    
+    
     });
-  }
-  ngOnInit() {
-    // this.loadData();
-    this.loadData()
-  }
-
-  loadData(){
-  this.deptService.getDepartmentById(this.departmentId).subscribe((response:any)=>{
-    this.aboutData1 = response;
+    this.coursePaginationModel = {};
    
-
-  })
-}
-delete(id: string) {
-  // this.classService.getClassList({ courseId: id }).subscribe((classList: any) => {
-  //   const matchingClasses = classList.docs.filter((classItem: any) => {
-  //     return classItem.courseId && classItem.courseId.id === id;
-  //   });
-    // if (matchingClasses.length > 0) {
-    //   Swal.fire({
-    //     title: 'Error',
-    //     text: 'Classes have been registered with this course. Cannot delete.',
-    //     icon: 'error',
-    //   });
-    //   return;
-    // }
-    this.deptService.deleteDepartment(id).subscribe(() => {
-      this.loadData();
-      this.router.navigate(['/student/settings/all-departments'])
-      Swal.fire({
-        title: 'Success',
-        text: 'Department deleted successfully.',
-        icon: 'success',
-      });
-    });
-  // });
-}
-editCall(row: Department) {
-  this.id = row.id;
-  this.router.navigate(['/student/settings/edit-department/' + this.id])
-
 }
 
+@ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
+@ViewChild('filter', { static: true }) filter!: ElementRef;
+
+ngOnInit(): void {
+  this.getUsersDepartmentList();
 }
+
+getUsersDepartmentList(filters?:any) {
+  let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+  this.alluserService.getUsersByDepartment(this.type,userId, {...this.coursePaginationModel}).subscribe((response: any) => {
+    this.dataSource = response.results;
+    this.isLoading = false;
+    this.totalItems = response.results.totalDocs;
+    this.coursePaginationModel.docs = response.results.docs;
+    this.coursePaginationModel.page = response.results.page;
+    this.coursePaginationModel.limit = response.results.limit;
+
+    console.log("data sourese",response.results)
+
+  }, error => {
+  });
+}
+
+
+
+pageSizeChange($event: any) {
+  this.coursePaginationModel.page = $event?.pageIndex + 1;
+  this.coursePaginationModel.limit = $event?.pageSize;
+  this.getUsersDepartmentList()
+
+}
+
+ 
+
+}
+
+
+
+
+
+
+
+
+
+

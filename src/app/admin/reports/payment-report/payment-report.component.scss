@@ -34,20 +34,15 @@ svg {
     margin-right: 5px; // Space between dot and text
 }
 
-::ng-deep .mat-sort-header-content {
-    text-align: center !important; 
-    display: flex !important;
-    align-items: center !important;
-    white-space: nowrap;
-}
-::ng-deep .mat-column-Amount {
-    display: flex !important;
-    justify-content: flex-end !important;
-    margin-left: -20px;
-  }
+
+// ::ng-deep .mat-column-Amount {
+//     display: flex !important;
+//     justify-content: flex-end !important;
+//     margin-left: -20px;
+//   }
   :host ::ng-deep mat-cell{
     min-width: 150px;
   }
-  .payment-cell{
-    padding-right: 35px;
-  }
+//   .payment-cell{
+//     padding-right: 35px;
+//   }

@@ -124,6 +124,7 @@ export class ViewCourseComponent implements OnDestroy {
   isFeedBackSubmitted: boolean = false;
   questionList: any = [];
   answersResult!: any;
+  getAssessmentId!:any;
   feedbackInfo!: any;
   freeCourse: boolean;
   paidCourse: boolean;
@@ -155,6 +156,8 @@ export class ViewCourseComponent implements OnDestroy {
   discountType: any;
   discountValue: any;
   totalFee: any;
+  isCertificate: string = '';
+
   constructor(
     private classService: ClassService,
     private activatedRoute: ActivatedRoute,
@@ -206,7 +209,7 @@ export class ViewCourseComponent implements OnDestroy {
     });
     this.commonRoles = AppConstants
   }
-
+ 
   getClassDetails() {
     this.classService.getClassById(this.classId).subscribe((response) => {
       this.classDetails = response;
@@ -217,6 +220,7 @@ export class ViewCourseComponent implements OnDestroy {
       this.getExamAssessmentAnswerCount(this.courseId);
     });
   }
+ 
   onTimeUpdate(event: any) {
     let time = this.commonService.getPlayBackTime();
     this.videoPlayer.nativeElement.addEventListener('timeupdate', () => {
@@ -225,7 +229,7 @@ export class ViewCourseComponent implements OnDestroy {
           this.videoPlayer.nativeElement.duration) *
         100;
       this.array.push(progress);
-      // console.log("gettime:array: " + this.array);
+      
       this.commonService.setProgress(this.array);
     });
     this.videoPlayer.nativeElement.addEventListener('loadedmetadata', () => {
@@ -296,7 +300,7 @@ export class ViewCourseComponent implements OnDestroy {
       .getStudentClass(studentId, classId)
       .subscribe((response) => {
         this.studentClassDetails = response.data.docs[0].coursekit;
-        // console.log("payload",response)
+        
         if (
           this.studentClassDetails.playbackTime !== 100 ||
           !this.studentClassDetails.playbackTime
@@ -458,7 +462,6 @@ export class ViewCourseComponent implements OnDestroy {
     var userdata = JSON.parse(localStorage.getItem('currentUser')!);
     var studentId = localStorage.getItem('id');
     if (this.paid) {
-
       const today = new Date();
       const date = today.toISOString().split('T')[0];
       let body = {
@@ -472,8 +475,9 @@ export class ViewCourseComponent implements OnDestroy {
         coursekit: this.courseKit,
         date: date,
         discountType:this.discountType,
-        discountValue:this.discountValue
-
+        discountValue:this.discountValue,
+        courseStartDate:this.classDetails?.courseId?.sessionStartDate,
+        courseEndDate:this.classDetails?.courseId?.sessionEndDate
       };
       const invoiceDialogRef = this.dialog.open(InvoiceComponent, {
         width: '1000px',
@@ -508,7 +512,10 @@ export class ViewCourseComponent implements OnDestroy {
                   adminEmail:userdata.user.adminEmail,
                   adminName:userdata.user.adminName,
                   companyId:userdata.user.companyId,
-                  invoiceUrl:this.invoiceUrl
+                  invoiceUrl:this.invoiceUrl,
+                  courseStartDate:this.classDetails?.courseId?.sessionStartDate,
+                  courseEndDate:this.classDetails?.courseId?.sessionEndDate
+          
                 }
 
                 this.classService
@@ -599,6 +606,9 @@ export class ViewCourseComponent implements OnDestroy {
                                         paid:true,
                                         adminEmail:userdata.user.adminEmail,
                                         adminName:userdata.user.adminName,
+                                        courseStartDate:this.classDetails?.courseId?.sessionStartDate,
+                                        courseEndDate:this.classDetails?.courseId?.sessionEndDate
+                                
                                   
                                       };
                               
@@ -656,6 +666,8 @@ export class ViewCourseComponent implements OnDestroy {
         coursekit: this.courseKit,
         feeType: 'free',
         courseId: this.courseDetails.id,
+        courseStartDate:this.courseDetails?.sessionStartDate,
+        courseEndDate:this.courseDetails?.sessionEndDate,
         companyId:userdata.user.companyId,
         verify:true,
         paid:true
@@ -886,7 +898,9 @@ export class ViewCourseComponent implements OnDestroy {
         ) {
           this.isRegistered == true;
           this.isCompleted = true;
+          this.isCertificate = "Yes";
           this.certificateIssued = true;
+          console.log("cert", this.isCertificate)
         }
         if (this.studentClassDetails.status == 'cancel') {
           this.isRegistered == true;
@@ -911,7 +925,7 @@ export class ViewCourseComponent implements OnDestroy {
   updateCompletionStatus() {
     const studentId = localStorage.getItem('id') || '';
     let payload = {
-      status: 'completed',
+     
       studentId: studentId,
       classId: this.classId,
       playbackTime: 100,
@@ -1178,11 +1192,15 @@ export class ViewCourseComponent implements OnDestroy {
 
   getAnswerById(answerId: string) {
     this.isFeedBackSubmitted = false;
+    
     this.studentService.getAnswerById(answerId).subscribe((res: any) => {
+  
+      this.getAssessmentId=res.assessmentAnswer.assessmentId.id;
       this.isAnswersSubmitted = true;
       this.answersResult = res.assessmentAnswer;
       const assessmentAnswer = res.assessmentAnswer;
       const assessmentId = assessmentAnswer.assessmentId;
+      
       this.questionList = assessmentId.questions.map((question: any) => {
         const answer = assessmentAnswer.answers.find(
           (ans: any) => ans.questionText === question.questionText

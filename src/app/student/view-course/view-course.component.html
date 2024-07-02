@@ -485,9 +485,11 @@
                       *ngIf="questionList.length"
                       [questionList]="questionList"
                       [answersResult]="answersResult"
+                      [getAssessmentId]="getAssessmentId"
                       [totalTime]="questionList.length * questionTimer"
                       (submitAnswers)="submitAnswers($event)"
                       [isAnswersSubmitted]="isAnswersSubmitted"
+                      [isCertificate] = "isCertificate"
                     ></app-questions>
                   </div>
                   <div
@@ -1320,9 +1322,11 @@
                         *ngIf="questionList.length"
                         [questionList]="questionList"
                         [answersResult]="answersResult"
+                        [getAssessmentId]="getAssessmentId"
                         [totalTime]="questionList.length * questionTimer"
                         (submitAnswers)="submitAnswers($event)"
                         [isAnswersSubmitted]="isAnswersSubmitted"
+                        [isCertificate] = "isCertificate"
                         [autoSubmit]="true"
                       ></app-questions>
                     </ng-container>

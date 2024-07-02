@@ -287,8 +287,9 @@
                         <p
                           class="text-default"
                           [innerHTML]="
-                            sourceData?.course_detailed_description
-                              | bulletPoints
+                            
+                            getSafeHtml(sourceData?.course_detailed_description)
+                              
                           "
                         ></p>
                       </div>

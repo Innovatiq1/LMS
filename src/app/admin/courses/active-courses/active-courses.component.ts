@@ -39,10 +39,10 @@ export class ActiveCoursesComponent {
     'Days',
     'Training Hours',
     'Vendor',
-    'Fees',
+    // 'Fees',
     'startDate',
     'endDate',
-    // 'Fees',
+    'Fees',
   ];
   coursePaginationModel: Partial<CoursePaginationModel>;
   courseData: any;
