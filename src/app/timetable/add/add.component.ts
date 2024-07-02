@@ -104,7 +104,7 @@ export class AddComponent {
   
   
     cancel(){
-      if(this.userType === AppConstants.ADMIN_USERTYPE || this.userType === AppConstants.INSTRUCTOR_ROLE){
+      if(this.userType === AppConstants.ADMIN_USERTYPE ||  AppConstants.ADMIN_ROLE|| this.userType === AppConstants.INSTRUCTOR_ROLE){
         this.router.navigate(['/timetable/course-exam']);
       }else if(this.userType === AppConstants.STUDENT_ROLE){
         this.router.navigate(['/student/exams/courses']);
@@ -150,7 +150,7 @@ export class AddComponent {
                text: 'Exam schdeule add successfully',
                icon: 'success',
              });
-             if(this.userType === AppConstants.ADMIN_USERTYPE || this.userType === AppConstants.INSTRUCTOR_ROLE){
+             if(this.userType === AppConstants.ADMIN_USERTYPE ||  AppConstants.ADMIN_ROLE|| this.userType === AppConstants.INSTRUCTOR_ROLE){
                this.router.navigate(['/timetable/course-exam']);
              }else if(this.userType === AppConstants.STUDENT_ROLE){
                this.router.navigate(['/student/exams/courses']);

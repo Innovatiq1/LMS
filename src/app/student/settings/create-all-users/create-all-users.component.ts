@@ -181,7 +181,7 @@ export class CreateAllUsersComponent {
       console.log('======', formObj.type);
       formObj['Active'] = this.status;
       formObj['type'] = formObj.type;
-      formObj['role'] = formObj.role;
+      formObj['role'] = formObj.type;
       formObj['isLogin'] = true;
       formObj['adminId'] = user.user.id;
       formObj['adminEmail'] = user.user.email;
@@ -345,7 +345,6 @@ export class CreateAllUsersComponent {
       // Prepare user data for update
       formObj['Active'] = this.status;
       formObj['type'] = formObj.type;
-      formObj['role'] = formObj.role;
       formObj['isLogin'] = true;
       formObj['adminId'] = user.user.id;
       formObj['adminEmail'] = user.user.email;

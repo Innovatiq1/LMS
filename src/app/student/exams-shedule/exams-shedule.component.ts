@@ -60,7 +60,7 @@ constructor(
 
 ngOnInit() {
   this.userType = localStorage.getItem('user_type');
-  if(this.userType === AppConstants.ADMIN_USERTYPE) { 
+  if(this.userType === AppConstants.ADMIN_USERTYPE || AppConstants.ADMIN_ROLE) { 
     this.student = true;
   }
   this.loadData();

@@ -104,7 +104,7 @@ export class ScheduleClassComponent {
   ngOnInit(): void {
     this.commonRoles = AppConstants
     let userType = localStorage.getItem('user_type');
-    if (userType == AppConstants.ADMIN_USERTYPE) {
+    if (userType == AppConstants.ADMIN_USERTYPE ||  AppConstants.ADMIN_ROLE) {
       this.isAdmin = true;
       this.getClassList();
     }
@@ -118,7 +118,7 @@ export class ScheduleClassComponent {
     this.coursePaginationModel.page = $event?.pageIndex + 1;
     this.coursePaginationModel.limit = $event?.pageSize;
     let userType = localStorage.getItem('user_type');
-    if (userType == AppConstants.ADMIN_USERTYPE) {
+    if (userType == AppConstants.ADMIN_USERTYPE ||  AppConstants.ADMIN_ROLE) {
       this.isAdmin = true;
       this.getClassList();
     }

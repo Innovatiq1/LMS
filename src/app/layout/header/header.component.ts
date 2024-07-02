@@ -242,7 +242,7 @@ export class HeaderComponent
   }
   onClick() {
     let role = localStorage.getItem('user_type');
-    if (role == AppConstants.ADMIN_USERTYPE) {
+    if (role == AppConstants.ADMIN_USERTYPE || AppConstants.ADMIN_ROLE) {
       this.router.navigate(['/settings/admin-settings']);
     } else if (role == AppConstants.STUDENT_ROLE) {
       this.router.navigate(['/settings/student-settings']);
@@ -344,7 +344,7 @@ export class HeaderComponent
     this.subs.sink = this.authService.logout().subscribe((res) => {
       if (!res.success) {
         let userType = JSON.parse(localStorage.getItem('user_data')!).user.type;
-        if (userType == AppConstants.ADMIN_USERTYPE || userType == AppConstants.INSTRUCTOR_ROLE) {
+        if (userType == AppConstants.ADMIN_USERTYPE || AppConstants.ADMIN_ROLE || userType == AppConstants.INSTRUCTOR_ROLE) {
           this.router.navigate(['/authentication/TMS/signin']);
         } else if (userType == AppConstants.STUDENT_ROLE) {
           this.router.navigate(['/authentication/LMS/signin']);

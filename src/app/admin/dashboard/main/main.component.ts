@@ -1850,7 +1850,7 @@ private attendanceBarChart() {
       series: [{
         name: 'Courses',
         data: [this.registeredCourses, this.approvedCourses, this.completedCourses]
-      }
+      },
       // {
       //   name: 'Programs',
       //   data: [this.registeredPrograms, this.approvedPrograms, this.completedPrograms]

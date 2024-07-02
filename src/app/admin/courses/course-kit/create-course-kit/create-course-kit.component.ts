@@ -159,7 +159,7 @@ export class CreateCourseKitComponent implements OnInit {
         title: 'Uploading...',
         text: 'Please wait...',
         allowOutsideClick: false,
-        timer: 30000,
+        timer: 90000,
         timerProgressBar: true,
         // onBeforeOpen: () => {
         //   Swal.showLoading();

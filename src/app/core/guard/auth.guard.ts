@@ -16,7 +16,7 @@ export class AuthGuard  {
       const userRole = this.authService.currentUserValue.role;
       if (route.data['role'] && route.data['role'].indexOf(userRole) === -1) {
         let userType = JSON.parse(localStorage.getItem('user_data')!).user.type;
-        if(userType == AppConstants.ADMIN_USERTYPE || userType ==AppConstants.INSTRUCTOR_ROLE){
+        if(userType == AppConstants.ADMIN_USERTYPE || AppConstants.ADMIN_ROLE|| userType ==AppConstants.INSTRUCTOR_ROLE){
         this.router.navigate(['/authentication/TMS/signin']);
         } else if(userType == AppConstants.STUDENT_ROLE){
           this.router.navigate(['/authentication/LMS/signin']);
@@ -29,7 +29,7 @@ export class AuthGuard  {
     }
 
     let userType = JSON.parse(localStorage.getItem('user_data')!).user.type;
-    if(userType == AppConstants.ADMIN_USERTYPE || userType ==AppConstants.INSTRUCTOR_ROLE){
+    if(userType == AppConstants.ADMIN_USERTYPE || AppConstants.ADMIN_ROLE|| userType ==AppConstants.INSTRUCTOR_ROLE){
     this.router.navigate(['/authentication/TMS/signin']);
     } else if(userType == AppConstants.STUDENT_ROLE){
       this.router.navigate(['/authentication/LMS/signin']);

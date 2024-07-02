@@ -50,7 +50,7 @@ export class ViewClassComponent {
       });
     }
     let userType = localStorage.getItem('user_type');
-    if (userType == AppConstants.ADMIN_USERTYPE) {
+    if (userType == AppConstants.ADMIN_USERTYPE || AppConstants.ADMIN_ROLE) {
       this.isAdmin = true;
     }
     if (userType == AppConstants.INSTRUCTOR_ROLE) {

@@ -554,7 +554,7 @@ export class SettingsComponent {
     this.getAllUsers();
     this.commonRoles = AppConstants
     let role = localStorage.getItem('user_type');
-    if (role == AppConstants.ADMIN_USERTYPE) {
+    if (role == AppConstants.ADMIN_USERTYPE ||  AppConstants.ADMIN_ROLE) {
       this.isAdmin = true;
     } else if (role == AppConstants.STUDENT_ROLE) {
       this.isStudent = true;

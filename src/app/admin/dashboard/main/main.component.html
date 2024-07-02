@@ -896,7 +896,8 @@
           </div>
         </div>
       </div>
-      <!-- <div class="col-xl-6 col-lg-6 col-md-14 col-sm-14">
+      <!-- <div class="row">
+      <div class="col-xl-6 col-lg-6 col-md-14 col-sm-14">
         <div class="card">
           <div class="header">
             <h2>Latest Enrolled Programs</h2>
@@ -924,7 +925,34 @@
             </ng-scrollbar>
           </div>
         </div>
-      </div> -->
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-14 col-sm-14">
+        <div class="card">
+          <div class="header">
+            <h2>
+              Upcoming Program Classes
+            </h2>
+          </div>
+          <div class="card-body">
+            <ng-scrollbar style="height: 270px" visibility="hover">
+              <ul class="list-unstyled user-progress list-unstyled-border list-unstyled-noborder">
+                <li *ngFor="let upcomingclass of upcomingProgramClasses" class="lecture-list">
+                  <div class="set-flex">
+                    <div class="media-title font-16">{{upcomingclass?.classId?.courseId?.title}}</div>
+                    <div class="text-job text-muted mb-0">{{upcomingclass?.classId?.courseId?.courseCode}}</div>
+                  </div>
+                  <div class="ms-auto">
+                    <div class="media-title font-16">{{upcomingclass?.classId?.sessions[0]?.sessionStartDate | date}}
+                    </div>
+                    <!-- <div class="text-job text-muted mb-0">09:00-10:00</div> --
+                  </div>
+                </li>
+              </ul>
+            </ng-scrollbar>
+          </div>
+        </div>
+        </div>
+        </div> -->
 
 
     </div>

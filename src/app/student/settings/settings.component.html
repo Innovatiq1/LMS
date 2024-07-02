@@ -1665,7 +1665,7 @@
         </div>
       </div>
       <div class="body">
-        <div class="row px-4" *ngIf="role === commonRoles.ADMIN_USERTYPE ">
+        <div class="row px-4" *ngIf="role ==commonRoles.ADMIN_USERTYPE || commonRoles.ADMIN_ROLE ">
           <div class="col-md-6 banner">
             <button id="saved" [routerLink]="['/student/settings/sidemenu']">
               Sidemenu
@@ -1677,7 +1677,7 @@
             </button>
           </div>
         </div>
-        <div class="row px-4 py-4" *ngIf="role === commonRoles.ADMIN_USERTYPE">
+        <div class="row px-4 py-4" *ngIf="role == commonRoles.ADMIN_USERTYPE || commonRoles.ADMIN_ROLE ">
           <div class="col-md-6 banner">
             <button
               id="saved"
@@ -1701,7 +1701,7 @@
               Survey
             </button>
           </div>
-          <div class="col-md-5" *ngIf="role === commonRoles.ADMIN_USERTYPE">
+          <div class="col-md-5" *ngIf="role == commonRoles.ADMIN_USERTYPE || commonRoles.ADMIN_ROLE ">
             <button
               id="saved"
               routerLink="/student/settings/logo-customization"
@@ -1710,13 +1710,13 @@
             </button>
           </div>
         </div>
-        <div class="row px-4 py-4" *ngIf="role === commonRoles.ADMIN_USERTYPE">
+        <div class="row px-4 py-4" *ngIf="role == commonRoles.ADMIN_USERTYPE || commonRoles.ADMIN_ROLE ">
           <div class="col-md-6 banner">
             <button id="saved" (click)="navigateToEmailSettings()">
               Email Templates
             </button>
           </div>
-          <div class="col-md-5" *ngIf="role === commonRoles.ADMIN_USERTYPE">
+          <div class="col-md-5" *ngIf="role == commonRoles.ADMIN_USERTYPE || commonRoles.ADMIN_ROLE ">
             <button id="saved" (click)="navigateToStudentDbSettings()">
               Dashboards
             </button>
