@@ -112,6 +112,15 @@ export class UserService {
       .pipe(map((response) => response));
   }
 
+  getUsersByDepartment(type:any,filter?: Partial<any>): Observable<any> {
+    const apiUrl = `${this.defaultUrl}admin/adminUserListing/user/department?department=${type}`;
+    return this.http
+      .get<ApiResponse>(apiUrl, {
+        params: this.buildParams(filter),
+      })
+      .pipe(map((response) => response));
+  }
+
   getUserRole(typeName:string,filter?: Partial<any>) {
     const apiUrl = `${this.defaultUrl}userType?typeName=${typeName}`;
     return this.http
