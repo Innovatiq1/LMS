@@ -69,11 +69,12 @@ export class ViewDepartmentComponent{
 @ViewChild('filter', { static: true }) filter!: ElementRef;
 
 ngOnInit(): void {
-  this.getUsersRoleList();
+  this.getUsersDepartmentList();
 }
 
-getUsersRoleList(filters?:any) {
-  this.alluserService.getUsersByDepartment(this.type, {...this.coursePaginationModel}).subscribe((response: any) => {
+getUsersDepartmentList(filters?:any) {
+  let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+  this.alluserService.getUsersByDepartment(this.type,userId, {...this.coursePaginationModel}).subscribe((response: any) => {
     this.dataSource = response.results;
     this.isLoading = false;
     this.totalItems = response.results.totalDocs;
@@ -92,7 +93,7 @@ getUsersRoleList(filters?:any) {
 pageSizeChange($event: any) {
   this.coursePaginationModel.page = $event?.pageIndex + 1;
   this.coursePaginationModel.limit = $event?.pageSize;
-  this.getUsersRoleList()
+  this.getUsersDepartmentList()
 
 }
 

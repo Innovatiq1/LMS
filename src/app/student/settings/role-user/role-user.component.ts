@@ -70,7 +70,8 @@ ngOnInit(): void {
 }
 
 getUsersRoleList(filters?:any) {
-  this.alluserService.getUsersListByRole(this.type, {...this.coursePaginationModel}).subscribe((response: any) => {
+  let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+  this.alluserService.getUsersListByRole(this.type,userId, {...this.coursePaginationModel}).subscribe((response: any) => {
     this.dataSource = response.results.docs;
     this.isLoading = false;
     this.totalItems = response.results.totalDocs;
