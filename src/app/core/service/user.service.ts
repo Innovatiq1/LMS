@@ -103,8 +103,9 @@ export class UserService {
 
 
   
-  getUsersListByRole(type:any,filter?: Partial<any>): Observable<any> {
-    const apiUrl = `${this.defaultUrl}admin/adminUserListing/user/role?type=${type}`;
+  getUsersListByRole(type:any,userId:any,filter?: Partial<any>): Observable<any> {
+   
+    const apiUrl = `${this.defaultUrl}admin/adminUserListing/user/role?type=${type}&companyId=${userId}`;
     return this.http
       .get<ApiResponse>(apiUrl, {
         params: this.buildParams(filter),
@@ -112,8 +113,8 @@ export class UserService {
       .pipe(map((response) => response));
   }
 
-  getUsersByDepartment(type:any,filter?: Partial<any>): Observable<any> {
-    const apiUrl = `${this.defaultUrl}admin/adminUserListing/user/department?department=${type}`;
+  getUsersByDepartment(type:any,userId:any,filter?: Partial<any>): Observable<any> {
+    const apiUrl = `${this.defaultUrl}admin/adminUserListing/user/department?department=${type}&companyId=${userId}`;
     return this.http
       .get<ApiResponse>(apiUrl, {
         params: this.buildParams(filter),
