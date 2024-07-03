@@ -1,0 +1,89 @@
+<section class="content">
+    <div class="content-block">
+      <div class="block-header" *ngFor="let breadscrum of breadscrums">
+        <!-- breadcrumb -->
+        <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
+        </app-breadcrumb>
+      </div>
+      <div class="row clearfix">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <div class="card">
+            <div class="header">
+              <h2>Edit Package</h2>
+            </div>
+            <div class="body">
+              <form [formGroup]="userForm" >
+                <div class="body m-4">
+                    <div class="row">
+                      <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                        <label>Company <span class="mandatory">&nbsp;*</span></label>
+                        <mat-form-field
+                          class="example-full-width mb-3"
+                          appearance="outline"
+                        >
+                          <input matInput formControlName="company" required readonly/>
+                          <mat-error *ngIf="userForm.get('company')?.hasError('required')">
+                            Enter Company
+                          </mat-error>
+                        </mat-form-field>
+                      </div>  
+                       
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                          <label>Users <span class="mandatory">&nbsp;*</span></label>
+                          <mat-form-field
+                            class="example-full-width mb-3"
+                            appearance="outline"
+                          >
+                            <input matInput type="number" formControlName="users" />
+                            <mat-error *ngIf="userForm.get('users')?.invalid ||userForm.get('users')?.touched">
+                                {{ utils.getErrorMessage1(userForm.get('users'), 'roll_no') }}
+                              </mat-error> 
+                          </mat-form-field>
+                        </div>
+        
+                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                      <label>Courses<span class="mandatory">&nbsp;*</span></label>
+                      <mat-form-field
+                        class="example-full-width mb-3"
+                        appearance="outline"
+                      >
+                        <input
+                          matInput
+                          formControlName="courses"
+                          type="number"
+                          
+                        />
+                        <mat-error *ngIf="userForm.get('courses')?.invalid ||userForm.get('courses')?.touched">
+                            {{ utils.getErrorMessage1(userForm.get('courses'), 'roll_no') }}
+                          </mat-error>
+                      </mat-form-field>
+                  </div>
+
+                  <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2 d-none">
+                    <label>Password <span class="mandatory">&nbsp;*</span></label>
+                    <mat-form-field class="example-full-width mb-3" appearance="outline">
+                        <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
+                        <mat-error *ngIf="userForm.get('password')?.hasError('required')">
+                            Enter Password
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                 
+                      </div>
+                </div>
+            </form>
+                  <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                      <div class="example-button-row">
+                        <button  mat-raised-button id="submit" (click)="update()"  [mat-dialog-close]="1"
+                         >Update</button>
+                        <button mat-raised-button color="warn" (click)="onNoClick()" tabindex="-1">Cancel</button>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

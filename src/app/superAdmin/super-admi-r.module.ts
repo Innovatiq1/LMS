@@ -9,10 +9,12 @@ import { ComponentsModule } from '@shared/components/components.module';
 import { SharedModule } from '@shared';
 import { ViewadminComponent } from './viewadmin/viewadmin.component';
 import { AdminListComponent } from './admin-list/admin-list.component';
+import { PackageListComponent } from './package-list/package-list.component';
+import { EditPackageComponent } from './edit-package/edit-package.component';
 
 
 @NgModule({
-  declarations: [CreateSuperAdminComponent,EditSuperAdminComponent, ViewadminComponent, AdminListComponent],
+  declarations: [CreateSuperAdminComponent,EditSuperAdminComponent, ViewadminComponent, AdminListComponent, PackageListComponent, EditPackageComponent],
   imports: [
     CommonModule,
     SuperAdmiRRoutingModule,
