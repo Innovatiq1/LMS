@@ -15,8 +15,8 @@
             <div class="m-b-20">
               <div class="contact-grid">
                 <div class="profile-header bg-dark">
-                  <div class="user-name">{{ aboutData1?.name }}</div>
-                  <div class="name-center">{{ aboutData1?.type | titlecase }}</div>
+                  <div class="user-name">{{ aboutData1?.company }}</div>
+                  <div class="name-center">{{ aboutData1?.name | titlecase }}</div>
                 </div>
                 <img
                   src="{{ aboutData1?.avatar || 'assets/profile.png' }}"
@@ -34,13 +34,21 @@
                 </div>
               </div>
             </div>
-            <button
+            <button *ngIf="!viewPackageUrl"
               type="button"
               mat-raised-button
               color="warn"
               [routerLink]="['/super-admin/admin-list']"
             >
               Back to Admin List
+            </button>
+            <button *ngIf="viewPackageUrl"
+              type="button"
+              mat-raised-button
+              color="warn"
+              [routerLink]="['/super-admin/admin-list']"
+            >
+              Back to List
             </button>
           </div>
          
@@ -49,9 +57,12 @@
           <div class="col-lg-8 col-md-12">
             <div class="card">
               <div class="card-container">
-                <button class="icons" alt="Edit" (click)="edit()">
+                <button class="icons" alt="Edit" *ngIf="!viewPackageUrl" (click)="edit()">
                     <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
                 </button>
+                <button class="icons" alt="Edit" *ngIf="viewPackageUrl" (click)="editPackage()">
+                  <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
+              </button>
                 <button class="icons" alt="Delete" mat-menu-item (click)="deleteItem(aboutData1)">
                   <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
               </button>
@@ -64,15 +75,25 @@
                 </ng-template>
                 <div class="col-lg-12 col-md-12 col-sm-12">
                   <div class="project_widget">
-                    <!-- <div class="header">
-                        <h2><strong>About</strong></h2>
-                      </div> -->
+                    <div class="header">
+                        <h2><strong>Profile details</strong></h2>
+                      </div>
                     <div class="body">
                       <div class="row">
+                        <div class="col-md-4 col-6 b-r">
+                          <strong>Company Name</strong>
+                          <br />
+                          <p>{{ aboutData1?.company }}</p>
+                        </div>
                         <div class="col-md-4 col-6 b-r">
                           <strong>Full Name</strong>
                           <br />
                           <p>{{ aboutData1?.name }}</p>
+                        </div>
+                        <div class="col-md-4 col-6 b-r">
+                          <strong>Company Website</strong>
+                          <br />
+                          <p>{{ aboutData1?.website }}</p>
                         </div>
                         <div class="col-md-4 col-6 b-r">
                           <strong>Mobile</strong>
@@ -84,50 +105,6 @@
                           <br />
                           <p>{{ aboutData1?.email }}</p>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                  <div class="project_widget">
-                    <!-- <div class="header">
-                        <h2><strong>About</strong></h2>
-                      </div> -->
-                    <div class="body">
-                      <div class="row">
-                        <div class="col-md-4 col-6">
-                          <strong>Education</strong>
-                          <br />
-                          <p>{{ aboutData1?.education }}</p>
-                        </div>
-                        <div class="col-md-4 col-6 b-r">
-                          <strong>Gender</strong>
-                          <br />
-                          <p>
-                            {{ aboutData1?.gender | titlecase }}
-                          </p>
-                        </div>
-                        <div class="col-md-4 col-6 b-r">
-                          <strong>Date of birth</strong>
-                          <br />
-                          <p>{{ aboutData1?.dob | date }}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                  <div class="project_widget">
-                    <!-- <div class="header">
-                        <h2><strong>About</strong></h2>
-                      </div> -->
-                    <div class="body">
-                      <div class="row">
-                        <div class="col-md-4 col-6 b-r">
-                          <strong>Department</strong>
-                          <br />
-                          <p>{{ aboutData1?.department }}</p>
-                        </div>
                         <div class="col-md-4 col-6">
                           <strong>Registration Date</strong>
                           <br />
@@ -135,10 +112,61 @@
                             {{ aboutData1?.joiningDate | date }}
                           </p>
                         </div>
+                        <div class="col-md-4 col-6">
+                          <strong>Address</strong>
+                          <br />
+                          <p>
+                            {{ aboutData1?.address }}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="header">
+                      <h2><strong>Package details</strong></h2>
+                    </div>
+                    <div class="body">
+                      <div class="row">
+                      <div class="col-md-4 col-6">
+                        <strong>Users</strong>
+                        <br />
+                        <p>
+                          {{ aboutData1?.users }}
+                        </p>
+                      </div>
+                      <div class="col-md-4 col-6">
+                        <strong>Courses</strong>
+                        <br />
+                        <p>
+                          {{ aboutData1?.courses }}
+                        </p>
+                      </div>
                       </div>
                     </div>
                   </div>
                 </div>
+                <!-- <div class="col-lg-12 col-md-12 col-sm-12">
+                  <div class="project_widget">
+                    <!-- <div class="header">
+                        <h2><strong>About</strong></h2>
+                      </div> --
+                    <div class="body">
+                      <div class="row">
+                        <!-- <div class="col-md-4 col-6 b-r">
+                          <strong>Department</strong>
+                          <br />
+                          <p>{{ aboutData1?.department }}</p>
+                        </div> --
+                        <!-- <div class="col-md-4 col-6">
+                          <strong>Registration Date</strong>
+                          <br />
+                          <p>
+                            {{ aboutData1?.joiningDate | date }}
+                          </p>
+                        </div> --
+                      </div>
+                    </div>
+                  </div>
+                </div> -->
               </mat-tab>
             </mat-tab-group>
           </div>

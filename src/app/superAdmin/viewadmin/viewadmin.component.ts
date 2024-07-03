@@ -19,6 +19,9 @@ export class ViewadminComponent {
   ];
   currentId: any;
   aboutData1: any;
+  viewPackageUrl: any;
+  
+  // mode: string = 'viewPackageUrl';
 
   constructor(
     private activeRoute: ActivatedRoute,
@@ -30,6 +33,21 @@ export class ViewadminComponent {
       this.currentId = params['id'];
       console.log(this.currentId);
     });
+
+    
+    let urlPath = this.router.url.split('/')
+    this.viewPackageUrl = urlPath.includes('view-package-details');
+
+
+    if(this.viewPackageUrl == true){
+      this.breadscrums = [
+        {
+          title: 'Profile',
+          items: ['Super Admin'],
+          active: 'View Package',
+        },
+      ];
+    }
   }
 ngOnInit(){
   this.loadData();
@@ -81,6 +99,13 @@ ngOnInit(){
   }
   edit(){
     this.router.navigate(['/super-admin/edit-admin'], {
+      queryParams: {
+        id: this.currentId,
+      },
+    });
+  }
+  editPackage(){
+    this.router.navigate(['/super-admin/edit-package-details'], {
       queryParams: {
         id: this.currentId,
       },
