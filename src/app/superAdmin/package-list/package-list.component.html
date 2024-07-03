@@ -114,7 +114,7 @@
                             >Users
                           </mat-header-cell>
                           <mat-cell
-                            *matCellDef="let row"
+                            *matCellDef="let row" (click)="viewPackage(row.id)"
                           >
                             <span class="mobile-label">Users Count:</span
                             >{{row.users}}</mat-cell
@@ -125,7 +125,7 @@
                             >Courses
                           </mat-header-cell>
                           <mat-cell
-                            *matCellDef="let row"
+                            *matCellDef="let row" (click)="viewPackage(row.id)"
                           >
                             <span class="mobile-label">Courses Count:</span
                             >{{row.courses}}</mat-cell
