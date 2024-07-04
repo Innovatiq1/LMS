@@ -215,7 +215,7 @@ export class EditSuperAdminComponent {
   }
 
   updateBlog(formObj: any) {
-    console.log('Form Value', formObj);
+    //console.log('Form Value', formObj);
     let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     if (!formObj.invalid) {
       // Prepare user data for update
@@ -270,7 +270,6 @@ export class EditSuperAdminComponent {
 
     this.userService.getUserById(this.currentId).subscribe(
       (response: any) => {
-        console.log('listing user', response);
         this.data = response.data.data;
         // this.fileName = this.data.filename
         this.avatar = this.data?.avatar;
