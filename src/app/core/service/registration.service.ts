@@ -27,6 +27,16 @@ export class RegistrationService {
             })
           );
       }
+      socialLoginRegisterUser(course:any): Observable<ApiResponse> {
+        const apiUrl = `${this.prefix}auth/socialLoginUserCreate`;
+        return this.http
+          .post<ApiResponse>(apiUrl, course)
+          .pipe(
+            map((res) => {
+              return res;
+            })
+          );
+      }
     
     // registerUser(course: any) {
     //     const apiUrl = `${this.prefix}auth/UserCreate`;

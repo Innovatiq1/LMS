@@ -48,6 +48,8 @@ const routes: Routes = [
     path: 'singpass-login',
     component: SingpassLoginPageComponent,
   },
+  { path: 'auth/linkedin/redirect', 
+  component: SigninComponent },
 
   {
     path: 'locked',
