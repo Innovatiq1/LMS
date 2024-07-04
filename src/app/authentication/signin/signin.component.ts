@@ -170,12 +170,8 @@ export class SigninComponent
             const accessToken = response.access_token;
             this.authenticationService.getProfileData(accessToken).subscribe(
               (profile: any) => {
-                this.accountDetails = profile
-                console.log('LinkedIn Profile:', profile);
-                const name = profile.name;
+                this.accountDetails = profile;
                 const email = profile.email;
-                console.log('Name:', name);
-                console.log('Email:', email);
                 this.authenticationService.socialLogin({ email:email, social_type:'LINKEDIN', social_id: profile.sub }).subscribe(
                   (user: any) => { 
             
