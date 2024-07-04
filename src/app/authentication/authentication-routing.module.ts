@@ -7,6 +7,7 @@ import { LockedComponent } from './locked/locked.component';
 import { Page404Component } from './page404/page404.component';
 import { Page500Component } from './page500/page500.component';
 import { SigninRoleComponent } from './signin-role/signin-role.component';
+import { SingpassLoginPageComponent } from './singpass-login-page/singpass-login-page.component';
 const routes: Routes = [
   {
     path: '',
@@ -42,6 +43,10 @@ const routes: Routes = [
   {
     path: 'LMS/forgot-password',
     component: ForgotPasswordComponent,
+  },
+  {
+    path: 'singpass-login',
+    component: SingpassLoginPageComponent,
   },
 
   {

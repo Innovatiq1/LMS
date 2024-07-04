@@ -13,6 +13,7 @@ import { SigninComponent } from './signin/signin.component';
 //import {Ng2TelInputModule} from 'ng2-tel-input';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 import { SigninRoleComponent } from './signin-role/signin-role.component';
+import { SingpassLoginPageComponent } from './singpass-login-page/singpass-login-page.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { SigninRoleComponent } from './signin-role/signin-role.component';
     LockedComponent,
     ForgotPasswordComponent,
     SigninRoleComponent,
+    SingpassLoginPageComponent
   ],
   imports: [
     CommonModule,
