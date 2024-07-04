@@ -186,6 +186,8 @@ export class AddStudentComponent {
         userData.adminEmail = user.user.email;
         userData.adminName = user.user.name;
         userData.companyId = user.user.companyId;
+        userData.users = user.user.users;
+        userData.courses = user.user.courses;
         Swal.fire({
           title: 'Are you sure?',
           text: 'Do You want to create a trainee profile!',
@@ -208,6 +210,7 @@ export class AddStudentComponent {
 
 
   private createInstructor(userData: Student): void {
+    console.log("usdfs", userData)
     this.StudentService.CreateStudent(userData).subscribe(
       () => {
         Swal.fire({
@@ -222,7 +225,7 @@ export class AddStudentComponent {
       },
       (error) => {
         Swal.fire(
-          'Failed to create user',
+          error,
           error.message || error.error,
           'error'
         );

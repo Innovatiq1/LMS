@@ -164,6 +164,9 @@ export class AddTeacherComponent {
         userData.adminEmail = user.user.email;
         userData.adminName = user.user.name;
         userData.companyId = user.user.companyId;
+        userData.users = user.user.users;
+        userData.courses = user.user.courses;
+        
 
         this.createInstructor(userData);
     }else{
@@ -226,7 +229,7 @@ export class AddTeacherComponent {
           },
           (error) => {
             Swal.fire(
-              "Failed to create Trainer",
+              error,
               error.message || error.error,
               "error"
             );
