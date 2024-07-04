@@ -34,7 +34,7 @@ export class AdminListComponent  extends UnsubscribeOnDestroyAdapter{
     {
       title: 'Dashboard',
       items: ['Super Admin'],
-      active: 'Admin List',
+      active: 'Companies List',
     },
   ];
   displayedColumns: string[] = [
@@ -42,9 +42,10 @@ export class AdminListComponent  extends UnsubscribeOnDestroyAdapter{
     // 'img',
     'Company',
     'Name',
+    'Website',
     'User Type',
-    'gender',
-    'Qualification',
+   // 'gender',
+   // 'Qualification',
     'Mobile',
     'Email',
     'Status',

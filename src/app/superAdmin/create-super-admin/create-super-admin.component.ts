@@ -32,7 +32,7 @@ export class CreateSuperAdminComponent {
     {
       title: 'Blank',
       items: ['Super Admin'],
-      active: 'Create Admin',
+      active: 'Create Company',
     },
   ];
   userForm!: FormGroup;
@@ -59,20 +59,21 @@ export class CreateSuperAdminComponent {
         Validators.pattern(/[a-zA-Z0-9]+/),
         ...this.utils.validators.noLeadingSpace,
       ]),
-      last_name: new FormControl('', []),
-      rollNo: new FormControl('', [
-        Validators.required,
-        ...this.utils.validators.noLeadingSpace,
-        ...this.utils.validators.roll_no,
-      ]),
-      gender: new FormControl('', [Validators.required]),
+      website: new FormControl('', []),
+     // last_name: new FormControl('', []),
+      // rollNo: new FormControl('', [
+      //   Validators.required,
+      //   ...this.utils.validators.noLeadingSpace,
+      //   ...this.utils.validators.roll_no,
+      // ]),
+      // gender: new FormControl('', [Validators.required]),
       mobile: new FormControl('', [
         Validators.required,
         ...this.utils.validators.mobile,
       ]),
       company: new FormControl('', [Validators.required]),
       qualification: new FormControl('', []),
-      department: new FormControl('', []),
+      // department: new FormControl('', []),
       address: new FormControl('', []),
       email: new FormControl('', [
         Validators.required,
@@ -80,15 +81,15 @@ export class CreateSuperAdminComponent {
       ]),
       password: new FormControl('', [Validators.required]),
       re_passwords: new FormControl('', []),
-      education: new FormControl('', [
-        Validators.required,
-        Validators.minLength(2),
-      ]),
+      // education: new FormControl('', [
+      //   Validators.required,
+      //   Validators.minLength(2),
+      // ]),
       type: new FormControl('admin', [Validators.required]),
-      dob: new FormControl('', [
-        Validators.required,
-        ...this.utils.validators.dob,
-      ]),
+      // dob: new FormControl('', [
+      //   Validators.required,
+      //   ...this.utils.validators.dob,
+      // ]),
       joiningDate: new FormControl('', [Validators.required]),
     });
     this.getDepartment();

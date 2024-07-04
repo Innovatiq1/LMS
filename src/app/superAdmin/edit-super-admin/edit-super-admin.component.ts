@@ -25,7 +25,7 @@ export class EditSuperAdminComponent {
     {
       title: 'Blank',
       items: ['Super Admin'],
-      active: 'Create Admin',
+      active: 'Edit Company',
     },
   ];
   userForm!: FormGroup;
@@ -54,8 +54,10 @@ export class EditSuperAdminComponent {
     this.userForm = this._fb.group({
       name: new FormControl('', [Validators.required, Validators.pattern(/[a-zA-Z0-9]+/),...this.utils.validators.noLeadingSpace]),
       last_name: new FormControl('', []),
+      website:new FormControl('', []),
       rollNo: new FormControl('', [Validators.required, ...this.utils.validators.noLeadingSpace,...this.utils.validators.roll_no]),
       gender: new FormControl('', [Validators.required]),
+      status: new FormControl('', [Validators.required]),
       company: new FormControl('', [Validators.required]),
       mobile: new FormControl('', [Validators.required,...this.utils.validators.mobile]),
       qualification: new FormControl('', []),
@@ -285,6 +287,7 @@ export class EditSuperAdminComponent {
             type: this.data?.type,
             fileName: this.data?.avatar,
             last_name: this.data?.last_name,
+            website:this.data.website,
             rollNo: this.data?.rollNo,
             gender: this.data?.gender,
             mobile: this.data?.mobile,

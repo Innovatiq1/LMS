@@ -120,7 +120,7 @@
                             <span class="mobile-label">Company:</span
                             >{{ row?.company | capitalizeFirstLetter }}</mat-cell
                           >
-                        </ng-container>    
+                        </ng-container>  
                         <ng-container matColumnDef="Name">
                           <mat-header-cell *matHeaderCellDef mat-sort-header
                            >Name</mat-header-cell
@@ -133,6 +133,18 @@
                             >{{ row.name | capitalizeFirstLetter }}</mat-cell
                           >
                         </ng-container>
+                        <ng-container matColumnDef="Website">
+                          <mat-header-cell class="mat_col" *matHeaderCellDef mat-sort-header>
+                           Company Website</mat-header-cell>
+                          
+                          <mat-cell
+                            *matCellDef="let row"
+                            
+                            (click)="editAdmin(row.id)" >
+                            <span class="mobile-label">Name:</span
+                            >{{ row.website  }}</mat-cell
+                          >
+                        </ng-container>  
                         <!-- Course Code -->
                         <ng-container matColumnDef="User Type">
                           <mat-header-cell *matHeaderCellDef mat-sort-header
@@ -146,7 +158,7 @@
                             >{{ row.type | titlecase }}</mat-cell
                           >
                         </ng-container>
-                        <ng-container matColumnDef="gender">
+                        <!-- <ng-container matColumnDef="gender">
                           <mat-header-cell *matHeaderCellDef mat-sort-header>
                             Gender
                           </mat-header-cell>
@@ -172,9 +184,9 @@
                               >
                             </div>
                           </mat-cell>
-                        </ng-container>
+                        </ng-container> -->
                         <!-- Main Category -->
-                        <ng-container matColumnDef="Qualification">
+                        <!-- <ng-container matColumnDef="Qualification">
                           <mat-header-cell *matHeaderCellDef mat-sort-header
                             >Education
                           </mat-header-cell>
@@ -185,7 +197,7 @@
                             <span class="mobile-label">Education:</span
                             >{{ row.education | capitalizeFirstLetter }}</mat-cell
                           >
-                        </ng-container>
+                        </ng-container> -->
                         <ng-container matColumnDef="Mobile">
                           <mat-header-cell *matHeaderCellDef mat-sort-header
                             >Mobile
