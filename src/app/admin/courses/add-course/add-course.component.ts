@@ -699,6 +699,7 @@ this.courseService.uploadCourseThumbnail(formData).subscribe((data: any) =>{
       const courseData = this.firstFormGroup.value;
       let creator = JSON.parse(localStorage.getItem('user_data')!).user.name;
       let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+      let courses = JSON.parse(localStorage.getItem('user_data')!).user.courses;
       let payload = {
         title: courseData.title,
         courseCode: courseData?.courseCode,
@@ -735,7 +736,8 @@ this.courseService.uploadCourseThumbnail(formData).subscribe((data: any) =>{
         examType: courseData?.examType,
         certificate_template:courseData?.certificate_temp,
         certificate_template_id:certicate_temp_id[0].id,
-        companyId:userId
+        companyId:userId,
+        courses: courses,
       }
 
       Swal.fire({
@@ -753,9 +755,17 @@ this.courseService.uploadCourseThumbnail(formData).subscribe((data: any) =>{
               text: 'Course created successfully',
               icon: 'success',
             });
+            
             this.courseAdded=true;
             this.router.navigate(['/admin/courses/submitted-courses/pending-courses'])
 
+          },
+          (error) => {
+            Swal.fire(
+              error,
+              error.message || error.error,
+              "error"
+            );
           });
         }
       });

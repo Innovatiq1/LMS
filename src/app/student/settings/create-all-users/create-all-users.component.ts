@@ -187,6 +187,8 @@ export class CreateAllUsersComponent {
       formObj['adminEmail'] = user.user.email;
       formObj['adminName'] = user.user.name;
       formObj['companyId'] = user.user.companyId;
+      formObj['users'] = user.user.users;
+      formObj['courses'] = user.user.courses;
 
       const userData: Users = formObj;
       userData.avatar = this.avatar;
@@ -227,7 +229,7 @@ export class CreateAllUsersComponent {
       },
       (error) => {
         Swal.fire(
-          'Failed to create user',
+          error,
           error.message || error.error,
           'error'
         );
