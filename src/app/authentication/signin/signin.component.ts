@@ -45,6 +45,9 @@ export class SigninComponent
   lmsUrl: boolean;
   accountDetails: any;
   userTypes: any;
+  http: any;
+  linkedinUrl: boolean;
+
   constructor(
     private formBuilder: UntypedFormBuilder,
     private route: ActivatedRoute,
@@ -64,6 +67,7 @@ export class SigninComponent
     let urlPath = this.router.url.split('/');
     this.tmsUrl = urlPath.includes('TMS');
     this.lmsUrl = urlPath.includes('LMS');
+    this.linkedinUrl = urlPath.includes('linkedin');
 
     this.authForm = this.formBuilder.group({
       email: [
@@ -86,6 +90,10 @@ export class SigninComponent
 
   ngOnInit() {
     this.startSlideshow();
+    if(this.linkedinUrl){
+ //Linkedin
+ this.handleLinkedIn();
+    }else{
     google.accounts.id.initialize({
       client_id:'254303785853-4av7vt4kjc2fus3rgf01e3ltnp2icad0.apps.googleusercontent.com',
       callback: (res:any) => {
@@ -100,6 +108,9 @@ export class SigninComponent
     })
   }
 
+   
+    
+  }
   handleGmailLogin(data:any){
     if(data){
       const payload = this.decodeGmailToken(data.credential)
@@ -146,6 +157,68 @@ export class SigninComponent
     }
 
   }
+  loginLinkedIn(): void {
+    this.authenticationService.loginWithLinkedIn();
+  }
+
+  handleLinkedIn(): void {
+    this.route.queryParams.subscribe(params => {
+      const code = params['code'];
+      if (code) {
+        this.authenticationService.AccessToken(code).subscribe(
+          (response: any) => {
+            const accessToken = response.access_token;
+            this.authenticationService.getProfileData(accessToken).subscribe(
+              (profile: any) => {
+                this.accountDetails = profile
+                console.log('LinkedIn Profile:', profile);
+                const name = profile.name;
+                const email = profile.email;
+                console.log('Name:', name);
+                console.log('Email:', email);
+                this.authenticationService.socialLogin({ email:email, social_type:'LINKEDIN', social_id: profile.sub }).subscribe(
+                  (user: any) => { 
+            
+                    if(user){
+                      setTimeout(() => {
+                        this.router.navigate(['/dashboard/dashboard']);
+                        this.loading = false;
+                      }, 100);
+                      this.authenticationService.saveUserInfo(user);
+              
+                    }
+                  },
+                  (err: any) => { 
+                    if(err == "user not found!"){
+                      this.getUserTypeList();
+                      this.profileForm = this.formBuilder.group({
+                        role: ['', Validators.required],
+                        email: [this.accountDetails.email,[Validators.required,Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)] ],
+                        name: [this.accountDetails.name, Validators.required],
+                        password: [''],
+                      })
+                  
+                      this.openDialog(this.profileDialog)
+                      
+                    } else {
+                      console.log('err',err)
+                    }
+                  }
+                  )
+              },
+              (error) => {
+                console.error('Error fetching LinkedIn profile data:', error);
+              }
+            );
+          },
+          (error) => {
+            console.error('Error fetching LinkedIn access token:', error);
+          }
+        );
+      }
+    });
+  }
+
   openDialog(templateRef: any): void {
       const dialogRef = this.dialog.open(templateRef, {
         width: '1000px',
@@ -178,7 +251,7 @@ export class SigninComponent
             this.profileForm.value.type = this.profileForm.value.role;
             this.profileForm.value.isLogin = true;   
             this.profileForm.value.avatar =   this.accountDetails.picture
-            this.registration.registerUser(this.profileForm.value).subscribe(
+            this.registration.socialLoginRegisterUser(this.profileForm.value).subscribe(
               () => {
                 Swal.fire({
                   title: 'Successful',
@@ -191,7 +264,7 @@ export class SigninComponent
               },
               (error) => {
                 Swal.fire(
-                  'Failed to create user',
+                  error,
                   error.message || error.error,
                   'error'
                 );
@@ -205,22 +278,22 @@ export class SigninComponent
     }
   }
 
-  private linkedInCredentials = {
-    response_type: "code",
-    clientId: "86ggwpa949d3u5", //77u10423gsm7cx
-    //redirectUrl: `${DEFAULT_CONFIG.frontEndUrl}linkedInLogin`,
-    redirectUrl: "http%3A%2F%2F54.254.159.3%2FlinkedInLogin",
-    state: 23101992,
-    scope: "r_liteprofile%20r_emailaddress%20w_member_social",
-  };
+  // private linkedInCredentials = {
+  //   response_type: "code",
+  //   clientId: "86ggwpa949d3u5", //77u10423gsm7cx
+  //   //redirectUrl: `${DEFAULT_CONFIG.frontEndUrl}linkedInLogin`,
+  //   redirectUrl: "http%3A%2F%2F54.254.159.3%2FlinkedInLogin",
+  //   state: 23101992,
+  //   scope: "r_liteprofile%20r_emailaddress%20w_member_social",
+  // };
 
 
-  loginWithlinkedin()
-  { 
-    window.location.href = `https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id=${
-      this.linkedInCredentials.clientId
-    }&redirect_uri=${this.linkedInCredentials.redirectUrl}&scope=${this.linkedInCredentials.scope}`;
-  } 
+  // loginWithlinkedin()
+  // { 
+  //   window.location.href = `https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id=${
+  //     this.linkedInCredentials.clientId
+  //   }&redirect_uri=${this.linkedInCredentials.redirectUrl}&scope=${this.linkedInCredentials.scope}`;
+  // } 
   
 
   private decodeGmailToken(token:string){
