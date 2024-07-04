@@ -151,7 +151,7 @@ private linkedInCredentials = {
   redirect_uri: 'http://localhost:4200/authentication/auth/linkedin/redirect',
   clientSecret: 'ZgFGOi8fXTy9zjoS',
   state: 'randomstring',
-  scope: "openid email profile", // Adjust scope as needed
+  scope: "openid email profile",
 };
 
 
@@ -167,24 +167,7 @@ loginWithLinkedIn(): void {
   window.location.href = authUrl;
 }
 
-// AccessToken(code: string): Observable<any> {
-//   const body = new HttpParams()
-//     .set('grant_type', 'authorization_code')
-//     .set('code', code)
-//     .set('redirect_uri', this.linkedInCredentials.redirect_uri)
-//     .set('client_id', this.linkedInCredentials.clientId)
-//     .set('client_secret', this.linkedInCredentials.clientSecret);
 
-//   return this.http.post('https://www.linkedin.com/oauth/v2/accessToken', body.toString(), {
-//     headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-//   });
-// }
-
-// getProfileData(accessToken: string): Observable<any> {
-//   return this.http.get('https://api.linkedin.com/v2/userinfo', {
-//     headers: { Authorization: `Bearer ${accessToken}` }
-//   });
-// }
 getProfileData(accessToken: string): Observable<any> {
   const loginUrl =this.defaultUrl + 'auth/linkedinauthorize';
   return this.http.get(`${loginUrl}?accessToken=${accessToken}`);
