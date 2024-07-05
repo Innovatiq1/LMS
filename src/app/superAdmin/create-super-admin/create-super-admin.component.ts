@@ -258,6 +258,8 @@ export class CreateSuperAdminComponent {
       formObj['adminEmail'] = user.user.email;
       formObj['adminName'] = user.user.name;
       formObj['companyId'] = uniqueId;
+      formObj['superAdmin'] = true;
+
 
       const userData: Users = formObj;
       userData.avatar = this.avatar;
