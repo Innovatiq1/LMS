@@ -40,7 +40,7 @@ export class LeaveRequestComponent
     // 'select',
     'class',
     'applyDate',
-    'fromDate',
+    // 'fromDate',
     'toDate',
     'reason',
     'status',
@@ -181,15 +181,12 @@ export class LeaveRequestComponent
 
     this.subs.sink = dialogRef.afterClosed().subscribe((result) => {
       if (result === 1) {
-        // When using an edit things are little different, firstly we find record inside DataService by id
         const foundIndex = this.exampleDatabase?.dataChange.value.findIndex(
           (x) => x.id === this.id
         );
-        // Then you update that record using data from dialogData (values you enetered)
         if (foundIndex != null && this.exampleDatabase) {
           this.exampleDatabase.dataChange.value[foundIndex] =
             this.leaveRequestService.getDialogData();
-          // And lastly refresh table
           this.refreshTable();
          
         }

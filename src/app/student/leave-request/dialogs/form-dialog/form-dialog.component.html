@@ -81,7 +81,29 @@
             </mat-error>
           </mat-form-field>
         </div>
+        
         <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-2">
+          <label>Reschedule date<span class="mandatory">&nbsp;*</span></label>
+          <mat-form-field class="example-full-width" appearance="outline">
+            <input
+              matInput
+              [matDatepicker]="picker3"
+              formControlName="toDate"
+              required
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker3"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker3></mat-datepicker>
+            <mat-error
+              *ngIf="leaveRequestForm.get('toDate')?.hasError('required')"
+            >
+              Please select date
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <!-- <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-2">
           <label>From date<span class="mandatory">&nbsp;*</span></label>
           <mat-form-field class="example-full-width" appearance="outline">
             <input
@@ -101,7 +123,7 @@
               Please select date
             </mat-error>
           </mat-form-field>
-        </div>
+        </div> -->
 
         <!-- <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
           <mat-form-field class="example-full-width" appearance="outline">
@@ -135,9 +157,9 @@
             </mat-error>
           </mat-form-field>
         </div> -->
-
+<!-- 
         <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-2">
-          <label>To date<span class="mandatory">&nbsp;*</span></label>
+          <label>Reschedule date<span class="mandatory">&nbsp;*</span></label>
           <mat-form-field class="example-full-width" appearance="outline">
             <input
               matInput
@@ -156,7 +178,7 @@
               Please select date
             </mat-error>
           </mat-form-field>
-        </div>
+        </div> -->
         <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-2">
           <label>Reason<span class="mandatory">&nbsp;*</span></label>
           <mat-form-field class="example-full-width mb-3" appearance="outline">
