@@ -124,6 +124,7 @@ import { CustomizationExamAssessmentAlgorithmComponent } from './settings/custom
 import { CustomizationExamTimerComponent } from './settings/customization-exam-timer/customization-exam-timer.component';
 import { PassingCriteriaComponent } from './settings/passing-criteria/passing-criteria.component';
 import { UpdatePassingCriteriaComponent } from './settings/passing-criteria/update-passing-criteria/update-passing-criteria.component';
+import { RescheduledCoursesComponent } from './rescheduled-courses/rescheduled-courses.component';
 
 @NgModule({
   declarations: [
@@ -227,6 +228,7 @@ import { UpdatePassingCriteriaComponent } from './settings/passing-criteria/upda
     CustomizationExamTimerComponent,
     PassingCriteriaComponent,
     UpdatePassingCriteriaComponent,
+    RescheduledCoursesComponent,
   
     // CourseKitComponent,
     // VideoPlayerComponent,

@@ -14,10 +14,10 @@
     <div mat-dialog-content>
       <form class="register-form m-4" [formGroup]="leaveRequestForm" (ngSubmit)="submit">
         <div class="row">
-          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
-            <label>Class Name<span class="mandatory">&nbsp;*</span></label>
+          <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-2">
+            <label>Class<span class="mandatory">&nbsp;*</span></label>
             <mat-form-field class="example-full-width" appearance="outline">
-            <input matInput formControlName="className" required>
+            <input matInput formControlName="className" required readonly>
             <mat-icon class="material-icons-two-tone color-icon p-3" matSuffix>person</mat-icon>
             
               <mat-error *ngIf="leaveRequestForm.get('className')?.hasError('required')">
@@ -25,13 +25,24 @@
               </mat-error>
             </mat-form-field>
           </div>
-          <div class=" col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+          <div class=" col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-2">
             <label>Apply Date<span class="mandatory">&nbsp;*</span></label>
             <mat-form-field class="example-full-width" appearance="outline">
-              <input matInput [matDatepicker]="picker1" formControlName="applyDate" required>
+              <input matInput [matDatepicker]="picker1" formControlName="applyDate" required readonly>
               <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
               <mat-datepicker #picker1></mat-datepicker>
               <mat-error *ngIf="leaveRequestForm.get('applyDate')?.hasError('required')">
+                Please select date
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class=" col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-2">
+            <label>Reschedule Date<span class="mandatory">&nbsp;*</span></label>
+            <mat-form-field class="example-full-width" appearance="outline">
+              <input matInput [matDatepicker]="picker3" formControlName="toDate" required readonly>
+              <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+              <mat-datepicker #picker3></mat-datepicker>
+              <mat-error *ngIf="leaveRequestForm.get('toDate')?.hasError('required')">
                 Please select date
               </mat-error>
             </mat-form-field>
@@ -48,7 +59,7 @@
           </div> -->
         </div>
         <div class="row">
-          <div class=" col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+          <!-- <div class=" col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
             <label>From Date<span class="mandatory">&nbsp;*</span></label>
             <mat-form-field class="example-full-width" appearance="outline">
               <input matInput [matDatepicker]="picker2" formControlName="fromDate" required>
@@ -58,19 +69,19 @@
                 Please select date
               </mat-error>
             </mat-form-field>
-          </div>
+          </div> -->
   
-          <div class=" col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
-            <label>To Date<span class="mandatory">&nbsp;*</span></label>
+          <!-- <div class=" col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+            <label>Rescheduled Date<span class="mandatory">&nbsp;*</span></label>
             <mat-form-field class="example-full-width" appearance="outline">
-              <input matInput [matDatepicker]="picker3" formControlName="toDate" required>
+              <input matInput [matDatepicker]="picker3" formControlName="toDate" required readonly>
               <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
               <mat-datepicker #picker3></mat-datepicker>
               <mat-error *ngIf="leaveRequestForm.get('toDate')?.hasError('required')">
                 Please select date
               </mat-error>
             </mat-form-field>
-          </div>
+          </div> -->
         </div>
         <div class="row">
           <!-- <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
@@ -94,12 +105,12 @@
           <div class=" col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
             <label>Reason<span class="mandatory">&nbsp;*</span></label>
             <mat-form-field class="example-full-width mb-3" appearance="outline">
-              <textarea matInput formControlName="reason"></textarea>
+              <textarea matInput formControlName="reason" readonly></textarea>
             </mat-form-field>
           </div>
         </div>
         <div class="row">
-            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-2">
               <label>Status<span class="mandatory">&nbsp;*</span></label>
               <mat-form-field class="example-full-width mb-3" appearance="outline">
                 <mat-select formControlName="status" required>

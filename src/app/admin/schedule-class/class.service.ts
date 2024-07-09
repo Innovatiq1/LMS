@@ -42,6 +42,7 @@ export class ClassService extends UnsubscribeOnDestroyAdapter {
       if (filter.isAll) params = params.set("isAll", filter.isAll);
       if (filter.role) params = params.set("role", filter.role);
       if (filter.datefilter) params = params.set("datefilter", filter.datefilter);
+      if (filter.rescheduledDate) params = params.set("rescheduledDate", filter.rescheduledDate);
 
     }
     return params;

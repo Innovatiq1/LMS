@@ -15,6 +15,7 @@ export class LeaveRequest {
   data:any;
   docs:any;
   studentId: any;
+  classId: any;
   constructor(leaveRequest: LeaveRequest) {
     {
       this.id = leaveRequest.id || this.getRandomID();

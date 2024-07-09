@@ -17,8 +17,8 @@ export class ViewComponent {
   breadscrums = [
     {
       title: 'Blank',
-      items: ['Program'],
-      active: 'View Program',
+      items: ['Course'],
+      active: 'View Course',
     },
   ];
   SourceData: any;
