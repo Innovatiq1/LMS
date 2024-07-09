@@ -268,6 +268,23 @@ export class ExamQuestionsComponent {
         );
       }
 
+      updateClassCompleted() {
+          const studentId = localStorage.getItem('id') || '';
+          const classId=this.classDetails.id;
+          let payload = {
+            status: 'completed',
+            studentId: studentId,
+            playbackTime: 100,
+            classId
+          };
+          
+          this.classService
+            .saveApprovedClasses(classId, payload)
+            .subscribe((response) => {
+            });
+        
+      }
+
       updateRetakes() {
         if (this.retakeNo >= 1) {
           const newRetakeNo = this.retakeNo - 1;

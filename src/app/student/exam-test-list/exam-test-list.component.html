@@ -92,3 +92,93 @@
     </div>
   </div>
 </section>
+<section>
+  <div class="container" *ngFor="let listpdfData of pdfData; let i = index">
+    <!-- <div class="container"> -->
+    <div *ngIf="isInvoice" id="contentToConvert">
+      <div class="container-fluid"
+        style="cursor: pointer; height: 700px;width: 70%;margin: auto;background-color: rgb(255, 248, 238);border-radius: 10px;">
+      
+      <div class="row my-3">
+        <div class="col-5 m-3">
+          <img src="/assets/images/logo/innovatiq-logo-index.png" style="height: 80px; width: 80px" />
+        </div>
+        <div class="col-6">
+          <h3 style="justify-content: end; display: flex; margin-top: 40px">
+            INVOICE SUMMARY
+          </h3>
+        </div>
+      </div>
+  
+      <div class="row">
+        <div class="col-11 mt-4">
+          <h6 style="justify-content: end; display: flex">
+            {{ listpdfData?.invoiceDate }}
+          </h6>
+        </div>
+      </div>
+  
+      <div class="row">
+        <div class="col-10 mx-auto">
+          <div class="table-wrapper" >
+            <div class="table-responsive" style="margin-bottom: 40px;margin-top: 40px;max-height: 260px;overflow: hidden;">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th style="text-align: center;">Quantity</th>
+                    <th style="text-align: right;">Unit Price</th>
+                    <th style="text-align: right; padding-right: 15px">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="cursor: pointer">
+                    <td style="width: 45%;">{{listpdfData?.title | titlecase}}</td>
+                    <td style="text-align: center;">1</td>
+                    <td style=" text-align: right">${{listpdfData.courseFee}}.00</td>
+                    <td style=" text-align: right;">${{listpdfData.courseFee}}.00</td>
+                  </tr>
+                  <tr></tr>
+                  <tr>
+                    <td>
+                      <h6>Subtotal</h6>
+                    </td>
+                    <td colspan="4" style=" text-align: right" class="price">
+                      ${{listpdfData.courseFee}}.00
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <h6>Discount({{discountValue}}{{discountType =='percentage'? '%':''}})</h6>
+                    </td>
+                    <td colspan="4" style=" text-align: right" *ngIf="discountType == 'fixed'" class="price">
+                      - ${{(discountValue) | number : '1.2-2'}}
+                    </td>
+                    <td colspan="4" style=" text-align: right" *ngIf="discountType == 'percentage'" class="price">
+                      - ${{(listpdfData.courseFee * discountValue / 100) | number : '1.2-2'}}
+                    </td>
+  
+                  </tr>
+                  <tr>
+                    <td>
+                      <h6>Total</h6>
+                    </td>
+                    <td colspan="4" style=" text-align: right; padding-right: 15px" *ngIf="discountType == 'fixed'"
+                      class="price">
+                      ${{listpdfData.courseFee - discountValue | number : '1.2-2'}}
+                    </td>
+                    <td colspan="4" style=" text-align: right; padding-right: 15px" *ngIf="discountType == 'percentage'"
+                      class="price">
+                      ${{listpdfData.courseFee - (listpdfData.courseFee * discountValue / 100) | number : '1.2-2'}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
