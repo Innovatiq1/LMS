@@ -9,6 +9,7 @@ export interface Student {
     companyId:string;
     users: number;
     courses: number;
+    attemptCalculation: number;
   }
   export interface Instructor {
     data: Users[];
@@ -73,6 +74,7 @@ export interface Student {
     avatar:string;
     filename:string
     education:string;
+    attemptCalculation: number;
 
   }
   export interface Student {

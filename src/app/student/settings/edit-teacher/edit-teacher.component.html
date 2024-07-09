@@ -145,7 +145,26 @@
                     </mat-error>
                   </mat-form-field>
                 </div> -->
-
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                  <label>Status </label>
+                  <mat-form-field
+                      class="example-full-width mb-3"
+                      appearance="outline">
+                      <mat-select formControlName="attemptBlock" required >
+                        <mat-option [value]="true">
+                        Block
+                        </mat-option>
+                        <mat-option [value]="false">
+                          Unblock
+                          </mat-option>
+                      </mat-select>
+                      <mat-error
+                        *ngIf="proForm.get('attemptBlock')?.hasError('attemptBlock')"
+                      >
+                        Select Status
+                      </mat-error>
+                    </mat-form-field>
+                </div>
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <label>Address</label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
