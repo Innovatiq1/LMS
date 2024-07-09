@@ -79,6 +79,7 @@ export class AddStudentComponent {
       avatar: [''],
       blood_group: [''],
       conformPassword: ['', []],
+      attemptBlock: ['', []],
 
     },{
       // validator: ConfirmedValidator('password', 'conformPassword')
@@ -280,6 +281,7 @@ getDepartment(){
           blood_group: this.editData.blood_group,
           address: this.editData.address,
           fileName: this.fileName,
+          attemptBlock: this.editData?.attemptBlock 
         },
         );
       });
@@ -388,6 +390,7 @@ getDepartment(){
         userData.adminEmail = user.user.email;
         userData.adminName = user.user.name;
         userData.companyId = user.user.companyId;
+        userData.attemptCalculation = 1;
 
       // Call the updateInstructor function with userData
 

@@ -46,7 +46,7 @@ export class InstructorLeaveRequestComponent
     'toDate',
     'status',
     'reason',
-    'actions',
+    // 'actions',
   ];
   exampleDatabase?: InstructorLeaveRequestService;
   dataSource!: ExampleDataSource;
