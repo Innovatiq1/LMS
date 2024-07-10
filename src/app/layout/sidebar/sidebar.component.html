@@ -18,7 +18,7 @@
             </div>
           </li>
           <li *ngFor="let sidebarItem of menuitem"
-          [ngClass]="(isSettings ? router.url.includes(sidebarItem.id):router.url.startsWith('/'+sidebarItem.id)) ? (sidebarItem.children.length > 0 ? 'active':'active-top'): ''">
+          [ngClass]="(router.url.startsWith('/'+sidebarItem.id)) ? (sidebarItem.children.length > 0 ? 'active':'active-top'): ''">
             <a *ngIf="sidebarItem.children.length !== 0"
               (click)="callToggleMenu($event, sidebarItem.children.length)"
               class="menu-top menu-toggle">
@@ -37,16 +37,16 @@
               <li *ngFor="let sidebarSubItem of sidebarItem.children"
                 [routerLinkActive]="sidebarSubItem.children.length > 0 ? '' : 'active'">
 
-                <a  *ngIf=!isSettings (click)="callToggleMenu($event, sidebarItem.children.length)"  (click)="navigateTo(sidebarItem.id,sidebarSubItem.id)"
+                <a   (click)="callToggleMenu($event, sidebarItem.children.length)"  (click)="navigateTo(sidebarItem.id,sidebarSubItem.id)"
                 [routerLink]="sidebarSubItem.children.length > 0 ? null :[sidebarItem.id +'/'+sidebarSubItem.id]"
                   [ngClass]="sidebarSubItem.class">
                   {{sidebarSubItem.title}}
                  </a>
 
-                 <a *ngIf=isSettings [routerLink]="sidebarSubItem.children.length > 0 ? null : [sidebarSubItem.path]" (click)="navigateTo(sidebarSubItem.path)"
+                 <!-- <a *ngIf=isSettings [routerLink]="sidebarSubItem.children.length > 0 ? null : [sidebarSubItem.path]" (click)="navigateTo(sidebarSubItem.path)"
                   (click)="callToggleMenu($event,sidebarItem.children.length)" [ngClass]="[sidebarSubItem.class]">
                   {{sidebarSubItem.title | translate}}
-                </a>
+                </a> -->
                  <ul class="ml-menu-2" *ngIf="sidebarSubItem.children.length > 0">
                   <li *ngFor="let sidebarSubItem2 of sidebarSubItem.children|sideMenuFilter:false"
                     [routerLinkActive]="sidebarSubItem2.children.length > 0 ? '' : 'active'">
