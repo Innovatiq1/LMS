@@ -351,6 +351,7 @@ export class CreateAllUsersComponent {
       formObj['adminId'] = user.user.id;
       formObj['adminEmail'] = user.user.email;
       formObj['adminName'] = user.user.name;
+      formObj['attemptCalculation'] = 1;
       const userData: Users = formObj;
 
       // Ensure that the avatar property contains the correct URL
@@ -433,6 +434,7 @@ export class CreateAllUsersComponent {
       qualification: new FormControl('', []),
       department: new FormControl('', []),
       address: new FormControl('', []),
+      attemptBlock: new FormControl('', []),
       email: new FormControl('', [
         Validators.required,
         Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/),
@@ -560,6 +562,7 @@ export class CreateAllUsersComponent {
             joiningDate: this.data?.joiningDate,
             blood_group: this.data?.blood_group,
             address: this.data?.address,
+            attemptBlock: this.data?.attemptBlock 
           });
         }
       },

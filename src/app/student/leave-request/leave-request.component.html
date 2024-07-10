@@ -59,14 +59,14 @@
                     <span class="mobile-label">Apply Date:</span>{{row.applyDate | date}}
                   </mat-cell>
                 </ng-container>
-                <ng-container matColumnDef="fromDate">
+                <!-- <ng-container matColumnDef="fromDate">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>From Date</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="viewCall(row.id)" (contextmenu)="onContextMenu($event, row)">
                     <span class="mobile-label">From Date:</span> {{row.fromDate | date}}
                   </mat-cell>
-                </ng-container>
+                </ng-container> -->
                 <ng-container matColumnDef="toDate">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>To Date</mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef mat-sort-header>Reschedule Date</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="viewCall(row.id)" (contextmenu)="onContextMenu($event, row)">
                     <span class="mobile-label">To Date:</span> {{row.toDate | date}}
                   </mat-cell>

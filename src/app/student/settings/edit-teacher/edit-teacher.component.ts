@@ -78,6 +78,7 @@ export class EditTeacherComponent {
       joiningDate: ['', [Validators.required]],
 
       avatar: [''],
+      attemptBlock: [''],
     });
   }
   // onSubmit() {
@@ -154,7 +155,8 @@ export class EditTeacherComponent {
       userData.adminId = user.user.id;
       userData.adminEmail = user.user.email;
       userData.adminName = user.user.name;
-      userData.companyId = user.user.companyId;
+      userData.companyId = user.user.companyId; 
+      userData.attemptCalculation = 1;
 
 
       // Call the updateInstructor function with userData
@@ -241,6 +243,7 @@ export class EditTeacherComponent {
           department: response?.course?.department,
           joiningDate: response?.course?.joiningDate,
           fileName: this.fileName,
+          attemptBlock: response?.course?.attemptBlock 
         });
       }
     });

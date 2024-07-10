@@ -82,7 +82,7 @@ export class FormDialogComponent {
       id: [this.leaveRequest.id],
       className: [this.leaveRequest.className, [Validators.required]],
       applyDate: [this.leaveRequest.applyDate, [Validators.required]],
-      fromDate: [this.leaveRequest.fromDate, [Validators.required]],
+      // fromDate: [this.leaveRequest.fromDate, [Validators.required]],
       toDate: [this.leaveRequest.toDate, [Validators.required]],
       reason: [this.leaveRequest.reason, [Validators.required]],
     });
@@ -100,7 +100,7 @@ export class FormDialogComponent {
         ? this.leaveRequestForm.value?.className
         : this.leaveRequestForm.value?.className?.classId?.courseId?.title,
       applyDate: this.leaveRequestForm.value?.applyDate,
-      fromDate: this.leaveRequestForm.value?.fromDate,
+      // fromDate: this.leaveRequestForm.value?.fromDate,
       toDate: this.leaveRequestForm.value?.toDate,
       reason: this.leaveRequestForm.value?.reason,
       instructorId:

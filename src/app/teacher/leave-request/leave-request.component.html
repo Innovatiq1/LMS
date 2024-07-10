@@ -81,24 +81,24 @@
                   <mat-cell mat-cell *matCellDef="let row" (click)="editCall(row)" class="table-img tbl-col-width-per-5"> 
                     
                     <span
-                    class="mobile-label">Image:</span><img [src]="row.studentId?.avatar" />
+                    class="mobile-label">Image:</span><img [src]="row.studentId?.avatar || 'assets/profile.png' " />
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="className">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>Class Name</mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef mat-sort-header>Class</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="editCall(row)"> <span class="mobile-label">Class Name:</span>{{row.className}}
                   </mat-cell>
                 </ng-container>
                 
                 
-                <ng-container matColumnDef="rNo">
+                <!-- <ng-container matColumnDef="rNo">
                   <mat-header-cell *matHeaderCellDef mat-sort-header class="psl-3 tbl-col-width-per-8">Roll No
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="editCall(row)" class="psl-3 tbl-col-width-per-8"><span class="mobile-label">Roll
                       No:</span> {{row.studentId?.rollNo}}</mat-cell>
-                </ng-container>
+                </ng-container> -->
                 <ng-container matColumnDef="name">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>Student Name</mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef mat-sort-header>{{commonRoles.STUDENT_ROLE}}</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="editCall(row)"> <span class="mobile-label">Student Name:</span>{{row.studentId?.name}}
                   </mat-cell>
                 </ng-container>
@@ -108,14 +108,14 @@
                     {{row.applyDate | date }}
                   </mat-cell>
                 </ng-container>
-                <ng-container matColumnDef="fromDate">
+                <!-- <ng-container matColumnDef="fromDate">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>From Date</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="editCall(row)"><span class="mobile-label">From Date:</span>
                     {{row.fromDate | date }}
                   </mat-cell>
-                </ng-container>
+                </ng-container> -->
                 <ng-container matColumnDef="toDate">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>To Date</mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef mat-sort-header>Reschedule Date</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="editCall(row)"><span class="mobile-label">To Date:</span>
                     {{row.toDate | date }}
                   </mat-cell>
@@ -159,7 +159,7 @@
                   </mat-cell>
                 </ng-container>
                 <!-- actions -->
-                <ng-container matColumnDef="actions">
+                <!-- <ng-container matColumnDef="actions">
                   <mat-header-cell *matHeaderCellDef class="pr-0">Actions</mat-header-cell>
                   <mat-cell *matCellDef="let row" class="pr-0">
                     <button mat-button [matMenuTriggerFor]="menu">
@@ -179,11 +179,11 @@
                               <!-- <button mat-menu-item (click)="deleteItem(row)">
                                 <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
                                 <span class="menu-text">Delete</span>
-                              </button> -->
+                              </button> --
                             </mat-menu>
                   </mat-cell>
                   
-                </ng-container>
+                </ng-container> -->
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                 <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
                 <mat-row *matRowDef="let row; columns: displayedColumns;" [style.cursor]="'pointer'" matRipple>

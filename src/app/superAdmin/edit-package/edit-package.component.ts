@@ -56,6 +56,7 @@ export class EditPackageComponent {
       users: new FormControl('', [Validators.required]),
       company: new FormControl('', [Validators.required]),
       courses: new FormControl('', [Validators.required]),
+      expiryDate: new FormControl('', [Validators.required]),
       password: new FormControl(''),
     });
     this.getBlogsList();
@@ -199,6 +200,7 @@ export class EditPackageComponent {
             users: this.data?.users,
             courses: this.data?.courses,
             company:this.data?.company,
+            expiryDate: this.data?.expiryDate,
             password: this.data?.password
           });
         }

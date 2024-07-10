@@ -21,6 +21,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { formatDate } from '@angular/common';
 import jsPDF from 'jspdf';
 import Swal from 'sweetalert2';
+import { AppConstants } from '@shared/constants/app.constants';
 
 
 
@@ -38,29 +39,32 @@ export class InstructorLeaveRequestComponent
     // 'select',
     'img',
     "className",
-    'rNo',
+    // 'rNo',
     'name',
     'applyDate',
-    'fromDate',
+    // 'fromDate',
     'toDate',
     'status',
     'reason',
-    'actions',
+    // 'actions',
   ];
   exampleDatabase?: InstructorLeaveRequestService;
   dataSource!: ExampleDataSource;
   selection = new SelectionModel<LeaveRequest>(true, []);
   index?: number;
   id?: number;
+  studentId?: number;
+  clId?: number;
   leaveRequest?: LeaveRequest;
 
   breadscrums = [
     {
       title: 'Leave Request',
-      items: ['Instructor'],
-      active: 'Leave Request',
+      items: ['Reschedule'],
+      active: 'Reschedule Requests',
     },
   ];
+  commonRoles: any;
 
   constructor(
     public httpClient: HttpClient,
@@ -75,6 +79,7 @@ export class InstructorLeaveRequestComponent
   @ViewChild('filter', { static: true }) filter!: ElementRef;
 
   ngOnInit() {
+    this.commonRoles = AppConstants
     this.loadData();
   }
   /** Whether the number of selected elements matches the total number of rows. */
@@ -94,6 +99,9 @@ export class InstructorLeaveRequestComponent
   }
   editCall(row: LeaveRequest) {
     this.id = row.id;
+    this.studentId = row.studentId._id;
+    // this.clId = row?.classId;
+    console.log("row", row)
     let tempDirection: Direction;
     if (localStorage.getItem('isRtl') === 'true') {
       tempDirection = 'rtl';
@@ -107,40 +115,53 @@ export class InstructorLeaveRequestComponent
       },
       direction: tempDirection,
     });
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'Do you want to update this user!',
-      icon: 'warning',
-      confirmButtonText: 'Yes',
-      showCancelButton: true,
-      cancelButtonColor: '#d33',
-    }).then((result) => {
-      if (result.isConfirmed){
-        this.subs.sink = dialogRef.afterClosed().subscribe((result) => {
-          if (result === 1) {
-            // When using an edit things are little different, firstly we find record inside DataService by id
-            const foundIndex = this.exampleDatabase?.dataChange.value.findIndex(
-              (x) => x.id === this.id
-            );
-            // Then you update that record using data from dialogData (values you enetered)
-            if (foundIndex != null && this.exampleDatabase) {
-              this.exampleDatabase.dataChange.value[foundIndex] =
-                this.leaveRequestService.getDialogData();
-                //this.ro
-              // And lastly refresh table
-              this.loadData();
-              this.refreshTable();
-              Swal.fire({
-                title: 'Success',
-                text: 'Edit Record Successfully...!!!',
-                icon: 'success',
-                // confirmButtonColor: '#526D82',
-              });
+    this.subs.sink = dialogRef.afterClosed().subscribe((result) => {
+            if (result === 1) {
+              const foundIndex = this.exampleDatabase?.dataChange.value.findIndex(
+                (x) => x.id === this.id
+              );
+              if (foundIndex != null && this.exampleDatabase) {
+                this.exampleDatabase.dataChange.value[foundIndex] =
+                  this.leaveRequestService.getDialogData();
+                this.loadData();
+                this.refreshTable();
+              }
             }
-          }
-        });
-      }
-    });
+              })
+    // Swal.fire({
+    //   title: 'Are you sure?',
+    //   text: 'Do you want to update this user!',
+    //   icon: 'warning',
+    //   confirmButtonText: 'Yes',
+    //   showCancelButton: true,
+    //   cancelButtonColor: '#d33',
+    // }).then((result) => {
+    //   if (result.isConfirmed){
+    //     this.subs.sink = dialogRef.afterClosed().subscribe((result) => {
+    //       if (result === 1) {
+    //         // When using an edit things are little different, firstly we find record inside DataService by id
+    //         const foundIndex = this.exampleDatabase?.dataChange.value.findIndex(
+    //           (x) => x.id === this.id
+    //         );
+    //         // Then you update that record using data from dialogData (values you enetered)
+    //         if (foundIndex != null && this.exampleDatabase) {
+    //           this.exampleDatabase.dataChange.value[foundIndex] =
+    //             this.leaveRequestService.getDialogData();
+    //             //this.ro
+    //           // And lastly refresh table
+    //           this.loadData();
+    //           this.refreshTable();
+    //           Swal.fire({
+    //             title: 'Success',
+    //             text: 'Edit Record Successfully...!!!',
+    //             icon: 'success',
+    //             // confirmButtonColor: '#526D82',
+    //           });
+    //         }
+    //       }
+    //     });
+    //   }
+    // });
    
   }
 
@@ -216,10 +237,10 @@ export class InstructorLeaveRequestComponent
     const exportData: Partial<TableElement>[] =
       this.dataSource.filteredData.map((x) => ({
       'Class Name': x.className,
-      "Roll No": x.studentId?.rollNo,
+      // "Roll No": x.studentId?.rollNo,
       "Student Name": x.studentId?.name,
       "Apply Date":formatDate(new Date(x.applyDate), 'yyyy-MM-dd', 'en') || '',
-      "From Date":formatDate(new Date(x.fromDate), 'yyyy-MM-dd', 'en') || '',
+      // "From Date":formatDate(new Date(x.fromDate), 'yyyy-MM-dd', 'en') || '',
       "To Date":formatDate(new Date(x.toDate), 'yyyy-MM-dd', 'en') || '',
       "Status": x.status,
       "Reason": x.reason,
@@ -272,10 +293,10 @@ export class InstructorLeaveRequestComponent
     
     const data = this.dataSource.filteredData.map((user:any) =>
       [user.className,
-        user.studentId?.rollNo, 
+        // user.studentId?.rollNo, 
       user.studentId?.name, 
       formatDate(new Date(user.applyDate), 'yyyy-MM-dd', 'en') || '',
-      formatDate(new Date(user.fromDate), 'yyyy-MM-dd', 'en') || '',
+      // formatDate(new Date(user.fromDate), 'yyyy-MM-dd', 'en') || '',
       formatDate(new Date(user.toDate), 'yyyy-MM-dd', 'en') || '',
       user.status,
       user.reason
@@ -342,10 +363,8 @@ export class ExampleDataSource extends DataSource<LeaveRequest> {
           .slice()
           .filter((leaveRequest: LeaveRequest) => {
             const searchStr = (
-              leaveRequest.rollNo +
               leaveRequest.className +
               leaveRequest.studentId.name +
-              leaveRequest.fromDate +
               leaveRequest.toDate +
               leaveRequest.status +
               leaveRequest.reason
@@ -382,15 +401,15 @@ export class ExampleDataSource extends DataSource<LeaveRequest> {
           case 'className':
           [propertyA, propertyB] = [a.className, b.className];
           break;
-          case 'rNo':
-          [propertyA, propertyB] = [a.studentId.rollNo, b.studentId.rollNo];
-          break;
+          // case 'rNo':
+          // [propertyA, propertyB] = [a.studentId.rollNo, b.studentId.rollNo];
+          // break;
         case 'name':
           [propertyA, propertyB] = [a.studentId.name, b.studentId.name];
           break;
-        case 'fromDate':
-          [propertyA, propertyB] = [a.fromDate, b.fromDate];
-          break;
+        // case 'fromDate':
+        //   [propertyA, propertyB] = [a.fromDate, b.fromDate];
+        //   break;
         case 'toDate':
           [propertyA, propertyB] = [a.toDate, b.toDate];
           break;

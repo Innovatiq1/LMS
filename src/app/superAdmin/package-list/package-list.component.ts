@@ -42,6 +42,7 @@ export class PackageListComponent extends UnsubscribeOnDestroyAdapter {
     'Name',
     'Users count',
     'Courses count',
+    'Expiry Date',
     'Status',
   ];
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
