@@ -1752,6 +1752,22 @@ export const SettingsMenu: MenuItem[] = [
         children:[]
       },
       {
+        path:'student/settings/settings-sidemenu',
+        title:'Setting Side menu',
+        id:'settings-sidemenu',
+        iconType:'img',
+        icon:'',
+        class:'ml-menu',
+        badge:'',
+        iconsrc:'',
+        badgeClass:'',
+        groupTitle:false,
+        open:false,
+        role:[],
+        children:[]
+      },
+      
+      {
         path:'student/settings/customization-forms',
         title:'Forms',
         id:'customization-forms',

@@ -71,6 +71,7 @@ export class SettingsComponent {
   configUrl: any;
   formsUrl: any;
   sidemenuUrl: any;
+  settingsSidemenuUrl:any;
   studentDbUrl: any;
   allUsersUrl: any;
   customFormsUrl: any;
@@ -96,6 +97,7 @@ export class SettingsComponent {
   showConfig: boolean = false;
   showForms: boolean = false;
   showSidemenu: boolean = false;
+  showSettingsSidemenu:boolean=false;
   showCustomForms: boolean = false;
   showCourseForms: boolean = false;
   showProgramForms: boolean = false;
@@ -134,6 +136,7 @@ export class SettingsComponent {
   selectedAssessmentAlgorithm: number = 1;
   selectedExamAlgorithm: number = 1;
   sidemenu: any;
+  settingsSidemenu:any;
   studentDb: any;
   dept: any;
   ro: any;
@@ -186,6 +189,7 @@ export class SettingsComponent {
     this.configUrl = urlPath.includes('configuration');
     this.formsUrl = urlPath.includes('forms');
     this.sidemenuUrl = urlPath.includes('sidemenu');
+    this.settingsSidemenuUrl=urlPath.includes('settings-sidemenu');
     this.allUsersUrl = urlPath.includes('all-user');
     this.customFormsUrl = urlPath.includes('customization-forms');
     this.faUrl = urlPath.includes('2-factor-authentication');
@@ -405,6 +409,16 @@ export class SettingsComponent {
       ];
       this.isAdmin = true;
     }
+    if (this.settingsSidemenuUrl === true) {
+      this.breadscrums = [
+        {
+          title: 'Sidemenu Settings',
+          items: ['Customize'],
+          active: 'Sidemenu Setings',
+        },
+      ];
+      this.isAdmin = true;
+    }
     if (this.studentDbUrl === true) {
       this.breadscrums = [
         {
@@ -550,6 +564,7 @@ export class SettingsComponent {
   ngOnInit() {
     this.getUserProfile();
     this.getSidemenu();
+    this.getSettingsSidemenu();
     this.getStudentDb();
     this.getAllUsers();
     this.commonRoles = AppConstants
@@ -601,6 +616,9 @@ export class SettingsComponent {
     }
     if (this.sidemenuUrl) {
       this.showSidemenu = true;
+    }
+    if (this.settingsSidemenuUrl) {
+      this.showSettingsSidemenu = true;
     }
     if (this.studentDbUrl) {
       this.showStudentDb = true;
@@ -679,6 +697,9 @@ export class SettingsComponent {
   navigateToSidemenuSettings() {
     this.router.navigate(['/student/settings/sidemenu']);
   }
+  navigateToSettingsSidemenuSettings() {
+    this.router.navigate(['/student/settings/settings-sidemenu']);
+  }
   navigateToStudentDbSettings() {
     this.router.navigate(['/student/settings/student-dashboard']);
   }
@@ -711,6 +732,12 @@ export class SettingsComponent {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
         this.logoService.getSidemenu(userId).subscribe((response) => {
       this.sidemenu = response?.data?.docs;
+    });
+  }
+  getSettingsSidemenu() {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.logoService.getSettingsSidemenu(userId).subscribe((response) => {
+      this.settingsSidemenu = response?.data?.docs;
     });
   }
   getStudentDb() {

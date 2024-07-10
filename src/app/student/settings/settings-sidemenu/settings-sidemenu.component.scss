@@ -1,0 +1,53 @@
+label{
+    font-size: 16px;
+    font-weight: 500;
+}
+.mandatory{
+     color: red;
+}
+.file-drop-area {
+    border: 1px solid #828284;
+    border-radius: 5px;
+    position: relative;
+    max-width: 100%;
+    height: fit-content;
+    padding: 7px 0px 9px;
+    transition: 0.2s;
+  }
+  .file-drop-area button{
+    border-radius: 10px;
+  }
+  .file{
+   text-align: center;
+//    margin-top: -15px;
+  }
+  .file-input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 50%;
+    width: 100%;
+    cursor: pointer;
+    opacity: 0;
+  }
+  .file-msg {
+    display: inline-block;
+    margin-left: 20px;
+    vertical-align: middle;
+    font-size: 12px;
+    font-weight: 500;
+    // color: #5b5bff;
+  }
+//   .submenu-container {
+//     display: flex;
+//     flex-wrap: nowrap; /* Ensure items stay in a single row */
+ 
+// }
+
+// .submenu {
+//   flex: 0 0 calc(25% - 20px); 
+//   margin-right: 20px;
+//   margin-bottom: 20px;
+// }
+
+

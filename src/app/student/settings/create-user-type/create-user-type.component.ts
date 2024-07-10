@@ -41,9 +41,16 @@ export class CreateUserTypeComponent {
   isEdit: boolean = false;
   dataSource!: MatTableDataSource<MenuItemModel>;
   dataSourceArray: MenuItemModel[] = [];
+
+  settingsMenuDS!: MatTableDataSource<MenuItemModel>;
+  settingsMenuDSArray: MenuItemModel[] = [];
   chilData: any[] = [];
   options: any[] = [];
   allMenus = {
+    checked: false,
+    indeterminate: false,
+  };
+  allSettingMenus = {
     checked: false,
     indeterminate: false,
   };
@@ -68,6 +75,7 @@ export class CreateUserTypeComponent {
     private logoService: LogoService, private userService: UserService,
   ) {
     this.initMenuItemsV2();
+    this.initMenuItemsSettings();
     this.router.queryParams.subscribe((params) => {
       if (params['id']) {
         this.paramId = params['id'];
@@ -116,6 +124,7 @@ export class CreateUserTypeComponent {
             //   this.changeMenuChecked(res.checked, res.id);
             // });
             this.populateCheckbox(this.data.menuItems)
+            this.populateSettingsMenuCheckbox(this.data.settingsMenuItems)
           }
 
           this.cd.detectChanges();
@@ -134,9 +143,22 @@ export class CreateUserTypeComponent {
    });
   }
 
+  populateSettingsMenuCheckbox(settingsMenuItems: any[]){
+    settingsMenuItems.forEach((element:any) => {
+     if(element.checked){
+       this.changeSettingMenuChecked(element.checked, element.id);
+     }else if(element.indeterminate&& element.children){
+       this.populateSettingsMenuCheckbox(element.children);
+     }
+    });
+   }
+
   ngOnInit() {
     this.dataSource = new MatTableDataSource<MenuItemModel>(
       this.dataSourceArray
+    );
+    this.settingsMenuDS = new MatTableDataSource<MenuItemModel>(
+      this.settingsMenuDSArray
     );
     this.getAllUserTypes();
   }
@@ -150,6 +172,22 @@ export class CreateUserTypeComponent {
       (v: any) => v
     );
     formData.menuItems = selectedMenuItems;
+
+    this.updateUserType(formData)
+      .then((response: any) => {})
+      .catch((e: any) => {});
+  }
+
+  onSubmitSettingMenuForm() {
+    this.submitted = true;
+    this.userTypeFormGroup.markAllAsTouched();
+    let formData = this.userTypeFormGroup.getRawValue();
+    this.isLoading = true;
+    let selectedMenuItems = [];
+    selectedMenuItems = this.getCheckedItems(this.settingsMenuDSArray).filter(
+      (v: any) => v
+    );
+    formData.settingsMenuItems = selectedMenuItems;
 
     this.updateUserType(formData)
       .then((response: any) => {})
@@ -270,6 +308,26 @@ export class CreateUserTypeComponent {
     });
   }
 
+  initMenuItemsSettings() {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.logoService.getSettingsSidemenu(userId).subscribe((response: any) => {
+      let MENU_LIST = response.data.docs[0].MENU_LIST;
+      const items = this.convertToMenuV2(MENU_LIST, this.userType?.settingsMenuItems);
+      items?.forEach((item, index) => {
+        if (!this.settingsMenuDSArray.some((v) => v.id === item.id))
+          this.settingsMenuDSArray.push(item);
+      });
+      this.settingsMenuDS = new MatTableDataSource<MenuItemModel>(
+        this.settingsMenuDSArray
+      );
+      if (this.isEdit) {
+        this.getUserTypeList();
+      }
+
+      this.cd.detectChanges();
+    });
+  }
+
   updateMenuItem(item: { checked: any; id: any; children: any[] }) {
     if (typeof item === 'object' && item.checked) {
       this.changeMenuChecked(item.checked, item.id);
@@ -277,6 +335,17 @@ export class CreateUserTypeComponent {
     if (item?.children?.length) {
       item.children.forEach((element: any) => {
         this.updateMenuItem(element);
+      });
+    }
+  }
+
+  updateSettingMenuItem(item: { checked: any; id: any; children: any[] }) {
+    if (typeof item === 'object' && item.checked) {
+      this.changeSettingMenuChecked(item.checked, item.id);
+    }
+    if (item?.children?.length) {
+      item.children.forEach((element: any) => {
+        this.updateSettingMenuItem(element);
       });
     }
   }
@@ -357,6 +426,21 @@ export class CreateUserTypeComponent {
     this.cd.detectChanges();
   }
 
+  changeSettingMenuChecked(checked?: any, id?: any) {
+    this.settingsMenuDSArray = this.setChecked(this.settingsMenuDSArray, {
+      menu_id: id,
+      checked,
+    });
+    const indeterminate = this.settingsMenuDSArray.some((v) => !v.checked);
+    this.allSettingMenus = {
+      checked: indeterminate ? false : checked,
+      indeterminate,
+    };
+    this.settingsMenuDS = new MatTableDataSource<MenuItemModel>(
+      this.settingsMenuDSArray
+    );
+    this.cd.detectChanges();
+  }
   setChecked(
     obj: any[],
     data: { isAllCheck?: any; checked: any; menu_id?: any },
