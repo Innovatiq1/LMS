@@ -229,6 +229,7 @@ export interface Student {
     _id: string;
     typeName?: string;
     menuItems: [];
+    settingsMenuItems:[];
     isAdmin: Boolean;
     createdAt?: Date;
     updatedAt?: Date;
