@@ -75,7 +75,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
         } else {
           if (this.userType === AppConstants.ADMIN_ROLE) {
             this.isSettings = true;
-            this.menuitem = SettingsMenu;
+            this.menuitem = this.orgMenuItems;;
           } else {
             this.isSettings = false;
             this.menuitem = this.orgMenuItems;
@@ -118,8 +118,15 @@ export class SidebarComponent implements OnInit, OnDestroy {
         const items = data[0].menuItems.filter(
           (item: any) => item.title !== 'Support'
         );
+        const settingsItems = data[0].settingsMenuItems.filter(
+          (item: any) => item.title !== 'Support'
+        );
         this.orgMenuItems = items;
+        this.orgMenuItems = settingsItems;
         if (!this.isSettings) {
+          this.menuitem = this.orgMenuItems;
+        }
+        if (this.isSettings) {
           this.menuitem = this.orgMenuItems;
         }
         let limit = filters?.limit ? filters?.limit : 10;
@@ -134,11 +141,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.menuItemClick.emit();
     let userType = localStorage.getItem('user_type');
     console.log(userType,"userType");
-    if (this.isSettings) {
-      this.router.navigateByUrl(menu);
-    } else {
       this.router.navigateByUrl(menu + '/' + url);
-    }
   }
   navigateToMian(url: string, menu: string) {
     console.log(url);
