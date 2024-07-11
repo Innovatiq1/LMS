@@ -25,6 +25,8 @@ export class PreviewTestAnswersheetComponent {
       active: 'Preview',
     },
   ];
+  
+  isShowCongrats: boolean = false;
 
   constructor(
     private studentService: StudentsService,
@@ -36,6 +38,7 @@ export class PreviewTestAnswersheetComponent {
     const studentId = this.route.snapshot.paramMap.get('studentId') || '';
     const assessmentType =
       this.route.snapshot.queryParamMap.get('assessmentType');
+    this.isShowCongrats = (this.route.snapshot.queryParamMap.get('showCongrats')||'')=='true';
     this.student(studentId);
     if (assessmentType === 'assessment') this.getAnswerById(answerId);
     else this.getExamAnswerById(answerId);

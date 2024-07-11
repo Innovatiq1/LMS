@@ -160,11 +160,11 @@ const routes: Routes = [
   // },
 
   {
-    path: 'feedback/courses/:id/:id/:id',
+    path: 'feedback/courses/:classId/:studentId/:courseId',
     component: FeedbackComponent,
   },
   {
-    path: 'feedback/freecourse/:id/:id/:id',
+    path: 'feedback/freecourse/:classId/:studentId/:courseId',
     component: FeedbackComponent,
   },
 

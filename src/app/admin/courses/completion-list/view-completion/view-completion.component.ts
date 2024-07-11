@@ -287,7 +287,8 @@ export class ViewCompletionComponent {
           text: "Exam Assigned Successfully!",
           icon: "success"
         });
-      this.getCompletedClasses()
+        this.getCategoryByID(courseId);
+        this.getCompletedClasses();
       },
       (error: any) => {
         console.error('Error:', error);

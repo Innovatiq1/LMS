@@ -514,8 +514,8 @@ export class ViewCourseComponent implements OnDestroy {
                   companyId:userdata.user.companyId,
                   invoiceUrl:this.invoiceUrl,
                   courseStartDate:this.classDetails?.courseId?.sessionStartDate,
-                  courseEndDate:this.classDetails?.courseId?.sessionEndDate
-          
+                  courseEndDate:this.classDetails?.courseId?.sessionEndDate,
+                  status: 'registered'
                 }
 
                 this.classService
