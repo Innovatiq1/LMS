@@ -130,13 +130,13 @@
                 <div class="p-4">
                     <ul class="list-group list-group-unbordered">
                         <li class="list-group-item">
-                          <b class="badge badge-solid-orange">Compulsory Course </b>
+                          <b class="badge badge-solid-orange">Core Course </b>
                         </li>
-                        <li class="list-group-item" *ngFor="let core of programDetails?.coreprogramCourse">{{core.coreProgramName.title | titlecase}}</li>
+                        <li class="list-group-item"  style="cursor: pointer;" [routerLink]="['/student/view-programcourse', core.coreProgramName.id]"*ngFor="let core of programDetails?.coreprogramCourse">{{core.coreProgramName.title | titlecase}}</li>
                         <li class="list-group-item">
                           <b class="badge badge-solid-blue">Elective Course </b>
                         </li>
-                        <li class="list-group-item" *ngFor="let elective of programDetails?.electiveprogramCourse">{{elective?.electiveProgramName?.title | titlecase}}</li>
+                        <li class="list-group-item" style="cursor: pointer;"  [routerLink]="['/student/view-programcourse', elective.electiveProgramName.id]" *ngFor="let elective of programDetails?.electiveprogramCourse">{{elective?.electiveProgramName?.title | titlecase}}</li>
 
                     
                         <!-- <li class="list-group-item">
@@ -250,7 +250,7 @@
                         <table class="table table-hover js-basic-example contact_list">
                           <thead>
                             <tr>
-                              <th class="center">Compulsory Course </th>
+                              <th class="center">Core Course </th>
                               <th class="center"> Completed </th>
                             </tr>
                           </thead>

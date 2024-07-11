@@ -744,7 +744,7 @@
     </div>
   </div>
 </section>
-<section *ngIf="paid" class="content">
+<section *ngIf="paid || program" class="content">
   <div class="content-block">
     <div class="block-header" *ngFor="let breadscrum of breadscrums">
       <app-breadcrumb

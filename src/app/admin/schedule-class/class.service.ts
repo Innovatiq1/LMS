@@ -43,6 +43,8 @@ export class ClassService extends UnsubscribeOnDestroyAdapter {
       if (filter.role) params = params.set("role", filter.role);
       if (filter.datefilter) params = params.set("datefilter", filter.datefilter);
       if (filter.rescheduledDate) params = params.set("rescheduledDate", filter.rescheduledDate);
+      if (filter.program) params = params.set("program", filter.program);
+      if (filter.courseId) params = params.set("courseId", filter.courseId);
 
     }
     return params;
@@ -121,6 +123,7 @@ export class ClassService extends UnsubscribeOnDestroyAdapter {
     return this.http.put<ApiResponse>(apiUrl, item);
   }
   getClassList(filter?:any): Observable<ClassListingModel> {
+    console.log('file',filter)
     const apiUrl = `${this.prefix}admin/class/`;
     return this.http.get<ApiResponse>(apiUrl, { params: this.buildParams(filter) }).pipe(
       map((response:any) => {

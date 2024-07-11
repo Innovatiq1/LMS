@@ -109,6 +109,12 @@ const routes: Routes = [
   },
 
   {
+    path: 'view-programcourse/:id',
+    component: ViewCourseComponent,
+  },
+
+
+  {
     path: 'sucess-course/:id',
     component: SucessCourseComponent,
   },

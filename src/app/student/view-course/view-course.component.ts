@@ -130,6 +130,7 @@ export class ViewCourseComponent implements OnDestroy {
   paidCourse: boolean;
   free = false;
   paid = false;
+  program = false;
   courseDetails: any;
   courseDetailsId: any;
   razorPayKey: any;
@@ -157,6 +158,7 @@ export class ViewCourseComponent implements OnDestroy {
   discountValue: any;
   totalFee: any;
   isCertificate: string = '';
+  paidProgram: boolean;
 
   constructor(
     private classService: ClassService,
@@ -177,6 +179,8 @@ export class ViewCourseComponent implements OnDestroy {
     let urlPath = this.router.url.split('/');
     this.paidCourse = urlPath.includes('view-course');
     this.freeCourse = urlPath.includes('view-freecourse');
+    this.paidProgram = urlPath.includes('view-programcourse');
+
     if (this.freeCourse) {
       this.free = true;
       this.subscribeParams = this.activatedRoute.params.subscribe((params) => {
@@ -199,6 +203,13 @@ export class ViewCourseComponent implements OnDestroy {
           this.getRegisteredClassDetails();
         });
       this.getRegisteredClassDetails();
+    }  else if (this.paidProgram) {
+      this.paid = true;
+      this.subscribeParams = this.activatedRoute.params.subscribe((params) => {
+        this.courseDetailsId = params['id'];
+        this.getCourseKitDetails(this.courseDetailsId);
+        
+      });
     }
   }
   ngOnInit() {
@@ -215,7 +226,9 @@ export class ViewCourseComponent implements OnDestroy {
       this.classDetails = response;
       this.courseId = this.classDetails.courseId.id;
       this.dataSource = this.classDetails.sessions;
+      if(!this.paidProgram){
       this.getCourseKitDetails(this.courseId);
+      }
       this.getAssessmentAnswerCount(this.courseId);
       this.getExamAssessmentAnswerCount(this.courseId);
     });
@@ -806,6 +819,22 @@ export class ViewCourseComponent implements OnDestroy {
         url: kit?.videoLink[0]?.url,
         playbackTime: 0,
       }));
+      if(this.paidProgram){
+        this.classService.getClassList({courseId:this.courseDetails.id,program:'yes'}).subscribe((response) => {
+          console.log('res',response)
+          this.classId = response.docs[0].id
+          localStorage.setItem('classId', this.classId);
+          this.getClassDetails();    
+          this.commonService.notifyVideoObservable$
+          .pipe(takeUntil(this.unsubscribe$))
+          .subscribe(() => {
+            this.getRegisteredClassDetails();
+          });
+        this.getRegisteredClassDetails();
+  
+        })
+
+      }
 
       this.documentLink = this.courseKitDetails[0].documentLink;
       const uploadedDocument = this.documentLink?.split('/');
