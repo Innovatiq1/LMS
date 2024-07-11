@@ -53,6 +53,15 @@ export class LogoService {
           })
         );
       }
+      getSettingsSidemenu(id:any): Observable<any> {
+        const apiUrl = `${this.defaultUrl}admin/sidemenu/settings/sidemenu?companyId=${id}`;
+        return this.http.get(apiUrl).pipe(
+          map(response => {
+             // Pass the response to updateData
+            return response; 
+          })
+        );
+      }
       getSuperAdminSidemenu(): Observable<any> {
         const apiUrl = `${this.defaultUrl}admin/sidemenu`;
         return this.http.get(apiUrl).pipe(
@@ -67,9 +76,21 @@ export class LogoService {
         const apiUrl = `${this.defaultUrl}admin/sidemenu/${id}`;
         return this.http.get<ApiResponse>(apiUrl).pipe(map((response) => response));
       }
+
+      getSettingSidemenuById(id?: string){
+        const apiUrl = `${this.defaultUrl}admin/sidemenu/settings/sidemenu/${id}`;
+        return this.http.get<ApiResponse>(apiUrl).pipe(map((response) => response));
+      }
      
       updateSidemenu(sidemenu:any) {
         const apiUrl = `${this.defaultUrl}admin/sidemenu/${sidemenu.id}`;
+        return this.http
+          .put<any>(apiUrl, sidemenu)
+          .pipe(map((response) => {response }));
+      }
+
+      updateSettingSidemenu(sidemenu:any) {
+        const apiUrl = `${this.defaultUrl}admin/sidemenu/settings/sidemenu/${sidemenu.id}`;
         return this.http
           .put<any>(apiUrl, sidemenu)
           .pipe(map((response) => {response }));

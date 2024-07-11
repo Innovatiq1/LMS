@@ -47,6 +47,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   userProfile: any;
   studentId: any;
   orgMenuItems: MenuItem[] = [];
+  orgMenuItem: MenuItem[] = [];
   isSettings: boolean = false;
   submenu :boolean = false;
   constructor(
@@ -73,9 +74,10 @@ export class SidebarComponent implements OnInit, OnDestroy {
           this.menuitem = this.orgMenuItems;
           console.log('menu',this.orgMenuItems)
         } else {
-          if (this.userType === AppConstants.ADMIN_ROLE) {
+          if (this.userType == AppConstants.ADMIN_ROLE || AppConstants.INSTRUCTOR_ROLE) {
             this.isSettings = true;
             this.menuitem = SettingsMenu;
+            this.menuitem = this.orgMenuItem;
           } else {
             this.isSettings = false;
             this.menuitem = this.orgMenuItems;
@@ -115,12 +117,20 @@ export class SidebarComponent implements OnInit, OnDestroy {
       (response: any) => {
         let userType = localStorage.getItem('user_type');
         let data = response.filter((item: any) => item.typeName === userType);
-        const items = data[0].menuItems.filter(
+        const items = data[0].menuItems?.filter(
           (item: any) => item.title !== 'Support'
         );
+        const settingsItems = data[0].settingsMenuItems?.filter(
+          (item: any) => item.title !== 'Support'
+        );
+        console.log("ssettings", settingsItems)
         this.orgMenuItems = items;
+        this.orgMenuItem = settingsItems;
         if (!this.isSettings) {
           this.menuitem = this.orgMenuItems;
+        }
+        if (this.isSettings) {
+          this.menuitem = this.orgMenuItem;
         }
         let limit = filters?.limit ? filters?.limit : 10;
         if (response.totalDocs <= limit || response.totalDocs <= 0) {
@@ -134,11 +144,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.menuItemClick.emit();
     let userType = localStorage.getItem('user_type');
     console.log(userType,"userType");
-    if (this.isSettings) {
-      this.router.navigateByUrl(menu);
-    } else {
       this.router.navigateByUrl(menu + '/' + url);
-    }
   }
   navigateToMian(url: string, menu: string) {
     console.log(url);

@@ -22,6 +22,7 @@ import { QuestionComponent } from './question/question.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { LogoCoutomzationComponent } from './settings/logo-coutomzation/logo-coutomzation.component';
 import { SidemenuComponent } from './settings/sidemenu/sidemenu.component';
+import { SettingsSidemenuComponent } from './settings/settings-sidemenu/settings-sidemenu.component';
 import { FormCustomizationComponent } from './settings/form-customization/form-customization.component'
 import { AllUsersComponent } from './settings/all-users/all-users.component';
 import { AllStudentsComponent } from './settings/all-students/all-students.component';
@@ -288,6 +289,10 @@ const routes: Routes = [
     component: LogoCoutomzationComponent,
   },
   {
+    path: 'settings/settings-sidemenu',
+    component: SettingsComponent,
+  },
+  {
     path: 'settings/sidemenu',
     component: SettingsComponent,
   },
@@ -462,6 +467,10 @@ const routes: Routes = [
   {
     path: 'settings/side-menu/:id',
     component: SidemenuComponent,
+  },
+  {
+    path: 'settings/settings-sidemenu/:id',
+    component: SettingsSidemenuComponent,
   },
   {
     path: 'settings/form-customization',

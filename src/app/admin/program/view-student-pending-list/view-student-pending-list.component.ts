@@ -78,11 +78,15 @@ export class ViewStudentPendingListComponent {
   return JSON.parse(localStorage.getItem("user_data")!).user.id;
 }
  changeStatus(element: Student, status:string) {
-  let item: StudentApproval = {
+  let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+  let item: any = {
     approvedBy: this.getCurrentUserId(),
     approvedOn: moment().format("YYYY-MM-DD"),
     classId: element.classId._id,
     status,
+    companyId:userId,
+    coreprogramCourse:element.programId.coreprogramCourse,
+    electiveprogramCourse:element.programId.electiveprogramCourse,
     studentId: element.studentId.id,
     session: this.getSessions(element)
   };
@@ -120,7 +124,7 @@ export class ViewStudentPendingListComponent {
 }
 
 Status(element: Student, status:string) {
-  let item: StudentApproval = {
+  let item: any = {
     approvedBy: this.getCurrentUserId(),
     approvedOn: moment().format("YYYY-MM-DD"),
     classId: element.classId._id,
