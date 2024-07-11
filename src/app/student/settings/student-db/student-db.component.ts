@@ -96,7 +96,7 @@ export class StudentDbComponent {
                 text: 'Dashboard updated successfully',
                 icon: 'success',
               });
-              this.router.navigate(['/student/settings/student-dashboard']);
+              window.history.back();
             });
 
         }

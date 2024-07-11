@@ -206,7 +206,7 @@ export class CreateCategoriesComponent implements OnInit{
               this.subCategoryForm.reset();
               this.initSubCategoryForm();
               this.addSubCategoryField();
-              this.router.navigate(['/student/settings/categories'])
+              window.history.back();
             },
             (error) => {
               Swal.fire('Error', 'Failed to create subcategories!', 'error');

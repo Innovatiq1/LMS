@@ -96,7 +96,7 @@ export class ViewApprovalWorkflowComponent {
             });
             
             // this.fetchSubCategories();
-            this.router.navigateByUrl("/student/settings/approval-workflow") 
+           window.history.back();
           },
           (error: { message: any; error: any; }) => {
             Swal.fire(

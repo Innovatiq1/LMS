@@ -186,7 +186,7 @@ cancel(){
               text: "Announcement Created Successfully",
               icon: 'success',
             });
-            this.router.navigateByUrl('/student/settings/announcement')
+            window.history.back();
             // this.router.navigateByUrl(['/admin/announcement/list'])
           },
           (err) => {
@@ -232,7 +232,7 @@ cancel(){
               text: 'Updated Announcement Successfully',
               icon: 'success',
             });
-            this.router.navigateByUrl('/student/settings/announcement')
+            window.history.back();
 
           },
           (err) => {

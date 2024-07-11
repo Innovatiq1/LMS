@@ -129,63 +129,18 @@
             <app-feather-icons [icon]="'settings'" [class]="'user-menu-icons'"></app-feather-icons>
           </button>
           <mat-menu #menu="matMenu" class="horizontal-menu">
-            <div class="menu-row">
+            <div class="menu-row" [ngClass]="{'single-item': settingsItems.length === 1, 'two-items': settingsItems.length === 2}">
               <div class="user-container">
-                <div class="user-option" *ngIf="role==commonRoles.ADMIN_ROLE || role==commonRoles.ADMIN_USERTYPE ||'Super Admin'" (click)="navigateToUserSettings()">
-                  <img src="assets/images/settings/role.png" alt="User" class="user-image">
+                <div class="user-options" *ngFor="let menu of settingsItems" [routerLink]="[menu.id, menu.children?.[0]?.id]">
+                  <img src={{menu.icon}} alt="User" class="user-image">
                   <button mat-menu-item>
-                    <h5>Manage Users</h5>
+                    <div >
+                    <h5 class="menu-title">{{menu.title}}</h5>
+                    </div>
                   </button>
                 </div>
-                <div class="user-container">
-                  <div class="user-option" (click)="navigateToCustomsSettings()" style="margin-left: 10px;">
-                    <img src="assets/images/settings/custom.png" alt="Custom" class="user-image">
-                    <button mat-menu-item>
-                      <h5>Customize</h5>
-                    </button>
-                  </div>
-                </div>
-                <div class="user-option" *ngIf="role==commonRoles.ADMIN_ROLE || role==commonRoles.ADMIN_USERTYPE || role===commonRoles.ASSESSOR_ROLE" (click)="navigateToConfigSettings()" style="margin-left: 25px;">
-                  <img src="assets/images/settings/system-configuration1.png" alt="User" class="user-image">
-                  <button mat-menu-item>
-                    <h5>Configuration</h5>
-                  </button>
-
-                  <!-- <img src="assets/images/settings/lms.png" alt="Custom" class="user-image">
-                  <button mat-menu-item><h5>LMS TAE</h5></button> -->
-                </div>
-                
               </div>
             </div>
-
-            <div class="menu-row" *ngIf="role==commonRoles.ADMIN_ROLE || role==commonRoles.ADMIN_USERTYPE ">
-              <div class="user-options" (click)="navigateToIntegrateSettings()">
-                <img src="assets/images/settings/integrate.jpg" alt="Custom" class="user-image">
-                <button mat-menu-item>
-                  <h5>Integration</h5>
-                </button>
-              </div>
-              <div class="user-options" (click)="navigateToProfileSettings()">
-                <img src="assets/images/settings/security1.png" alt="User" class="user-image">
-                <button mat-menu-item>
-                  <h5>Security</h5>
-                </button>
-              </div>
-              <div class="user-options" (click)="navigateToAutomateSettings()">
-                <img src="assets/images/settings/automate1.png" alt="User" class="user-image">
-                <button mat-menu-item>
-                  <h5>Automation</h5>
-                </button>
-              </div>
-            </div>
-            <!-- <div class="menu-row">
-              <div class="user-container" (click)="navigateToConfigSettings()">
-                <div class="user-option">
-                  <img src="assets/images/settings/system-configuration1.png" alt="User" class="user-image">
-                  <button mat-menu-item><h5>Configuration</h5></button>
-                </div>
-              </div>
-            </div> -->
           </mat-menu>
           <!-- <button mat-menu-item class="user-item-list" (click)="onClick()" >
             <app-feather-icons [icon]="'settings'" [class]="'user-menu-icons'"></app-feather-icons>

@@ -82,7 +82,7 @@ export class UpdateFundingComponent {
             };
           }
         })
-        this.router.navigate(['student/settings/funding-grant'])
+        window.history.back();
       }
     });
   }else{
@@ -110,7 +110,7 @@ export class UpdateFundingComponent {
         icon: 'success',
         // confirmButtonColor: '#526D82',
       });
-      this.router.navigate(['/student/settings/funding-grant']);
+      window.history.back();
     });
   }
 });

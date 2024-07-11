@@ -397,7 +397,7 @@ export class AssesmentQuestionsComponent {
           icon: 'success',
         });
         // if (this.approved) {
-        this.router.navigate(['/student/settings/all-questions']);
+          window.history.back();
         // }
       },
       (err: any) => {
@@ -441,7 +441,7 @@ export class AssesmentQuestionsComponent {
           text: 'Question created successfully',
           icon: 'success',
         });
-        this.router.navigate(['/student/settings/all-questions']);
+        window.history.back();
       },
       (err: any) => {
         Swal.fire('Failed to create Question', 'error');
@@ -461,7 +461,7 @@ export class AssesmentQuestionsComponent {
           text: 'Assessment approved successfully',
           icon: 'success',
         });
-        this.router.navigate(['/student/settings/all-questions']);
+        window.history.back();
       },
       (err: any) => {
         Swal.fire('Failed to update Question', 'error');

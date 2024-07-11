@@ -211,11 +211,11 @@ const routes: Routes = [
     component: SettingsComponent,
   },
   {
-    path: 'settings/2-factor-authentication',
+    path: 'settings/security/2-factor-authentication',
     component: SettingsComponent,
   },
   {
-    path: 'settings/banners',
+    path: 'settings/customize/banners',
     component: SettingsComponent,
   },
   {
@@ -243,22 +243,22 @@ const routes: Routes = [
     component: SettingsComponent,
   },
   {
-    path: 'settings/configuration',
+    path: 'settings/config',
     component: SettingsComponent,
   },
   {
-    path: 'settings/forms',
+    path: 'settings/configuration/forms',
     component: SettingsComponent,
   },
   {
-    path: 'settings/email-configuration',
+    path: 'settings/customize/email-configuration',
     component: SettingsComponent,
   },
   {
     path: 'settings/customization-settings',
     component: SettingsComponent,
   },
-  {path: 'settings/currency',
+  {path: 'settings/configuration/currency',
   component: CustomizationCurrencyComponent},
   {
     path: 'settings/timer',
@@ -281,35 +281,35 @@ const routes: Routes = [
     component: CustomizationExamAssessmentAlgorithmComponent
   },
   {
-    path: 'settings/customization-forms',
+    path: 'settings/customize/customization-forms',
     component: SettingsComponent,
   },
   {
-    path: 'settings/logo-customization',
+    path: 'settings/customize/logo-customization',
     component: LogoCoutomzationComponent,
   },
   {
-    path: 'settings/settings-sidemenu',
+    path: 'settings/customize/settings-sidemenu',
     component: SettingsComponent,
   },
   {
-    path: 'settings/sidemenu',
+    path: 'settings/customize/sidemenu',
     component: SettingsComponent,
   },
   {
-    path: 'settings/all-users',
+    path: 'settings/all-user/all-users',
     component: AllUsersComponent,
   },
   {
-    path: 'settings/all-students',
+    path: 'settings/all-user/all-students',
     component: AllStudentsComponent,
   },
   {
-    path: 'settings/all-instructors',
+    path: 'settings/all-user/all-instructors',
     component: AllTeachersComponent,
   },
   {
-    path: 'settings/all-staff',
+    path: 'settings/all-user/all-staff',
     component: AllstaffComponent
   },
   {
@@ -317,27 +317,27 @@ const routes: Routes = [
     component: AllDepartmentsComponent
   },
   {
-    path: 'settings/funding-grant',
+    path: 'settings/configuration/funding-grant',
     component: FundingComponent
   },
   {
-    path: 'settings/vendor',
+    path: 'settings/configuration/vendor',
     component: VendorComponent
   },
   {
-    path: 'settings/passing-criteria',
+    path: 'settings/configuration/passing-criteria',
     component: PassingCriteriaComponent
   },
 
 
   {
-    path: 'settings/discount',
+    path: 'settings/configuration/discount',
     component: DiscountComponent
   },
 
 
   {
-    path: 'settings/certificate/template',
+    path: 'settings/customize/certificate/template',
     component: CertificateTemplateComponent
   },
   {
@@ -353,11 +353,11 @@ const routes: Routes = [
     component: CreateCertificateComponent
   },
   {
-    path: 'settings/announcement',
+    path: 'settings/automation/announcement',
     component: ListComponent,
   },
   {
-    path: 'settings/customization-forms/create-announcement',
+    path: 'settings/customize/customization-forms/create-announcement',
     component: CreatAnnouncementComponent,
   },
   {
@@ -373,11 +373,11 @@ const routes: Routes = [
     component: ViewAnnouncementComponent,
   },
   {
-    path: 'settings/all-questions',
+    path: 'settings/configuration/all-questions',
     component: AllQuestionsComponent,
 },
 {
-  path: 'settings/all-exam-questions',
+  path: 'settings/configuration/all-exam-questions',
   component: AllExamQuestionsComponent,
 },
 {
@@ -409,7 +409,7 @@ const routes: Routes = [
   component: UserTypeComponent,
 },
 {
-  path: 'settings/categories',
+  path: 'settings/configuration/categories',
   component: CategoriesComponent
 },
 {
@@ -429,7 +429,7 @@ const routes: Routes = [
   component:ViewCategoriesComponent
 },
  {
-    path:"settings/create-feedback",
+    path:"settings/customize/create-feedback",
     component: CreateFeedbackComponent
   },
   {
@@ -550,23 +550,23 @@ const routes: Routes = [
     component: EditStaffComponent
   },
   {
-    path: 'settings/customization-forms/course-forms',
+    path: 'settings/customize/customization-forms/course-forms',
     component: SettingsComponent,
   },
   {
-    path: 'settings/customization-forms/program-forms',
+    path: 'settings/customize/customization-forms/program-forms',
     component: SettingsComponent,
   },
   {
-    path: 'settings/customization-forms/users-forms',
+    path: 'settings/customize/customization-forms/users-forms',
     component: SettingsComponent,
   },
   {
-    path: 'settings/customization-forms/finance-forms',
+    path: 'settings/customize/customization-forms/finance-forms',
     component: SettingsComponent,
   },
   {
-    path: 'settings/customization-forms/banner-forms',
+    path: 'settings/customize/customization-forms/banner-forms',
     component: SettingsComponent,
   },
   {
@@ -574,7 +574,7 @@ const routes: Routes = [
     component: SettingsComponent,
   },
   {
-    path: 'settings/student-dashboard',
+    path: 'settings/customize/student-dashboard',
     component: SettingsComponent,
   },
   {
@@ -583,23 +583,23 @@ const routes: Routes = [
   },
 
   {
-    path: 'settings/smtp',
+    path: 'settings/integration/smtp',
     component: SmtpComponent,
   },
   {
-    path: 'settings/3rd-party-integrations',
+    path: 'settings/integration/3rd-party-integrations',
     component: ThirdPartyToolsComponent,
   },
   {
-    path: 'settings/singpass',
+    path: 'settings/integration/singpass',
     component: SingpassComponent,
   },
   {
-    path: 'settings/payment-gateway',
+    path: 'settings/integration/payment-gateway',
     component: PaymentGatewayComponent,
   },
   {
-    path: 'settings/approval-workflow',
+    path: 'settings/automation/approval-workflow',
     component: ApprovalWorkflowComponent,
   },
   {

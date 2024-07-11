@@ -105,7 +105,7 @@ export class ViewCategoriesComponent {
             });
             
             this.fetchSubCategories();
-            this.router.navigateByUrl("/student/settings/categories") 
+            window.history.back();
             // this.getCategoryByID(id);
           },
           (error: { message: any; error: any; }) => {
