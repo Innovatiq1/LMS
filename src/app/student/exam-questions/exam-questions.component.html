@@ -86,7 +86,7 @@
                         <p>Your Score : {{ answerResult.score }} Points </p>
                     </div>
                     <div class="border-dotted-bottom mt-3 mb-3 text-center">
-                        <button mat-flat-button color="primary" *ngIf="courseDetails.isFeedbackRequired" (click)="submitFeedback()" class="mr-2">Feedback</button>
+                        <button mat-flat-button color="primary" *ngIf="courseDetails.isFeedbackRequired" (click)="submitFeedback(answerAssessmentId)" class="mr-2">Feedback</button>
 
                         <button mat-flat-button color="primary" *ngIf="!courseDetails.isFeedbackRequired" (click)="routingButton()" class="mr-2">{{ titleRoute() }}</button>
                     </div>

@@ -1,6 +1,6 @@
 import { Component, VERSION } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CourseTitleModel } from '@core/models/class.model';
 import { AdminService } from '@core/service/admin.service';
 import { CourseService } from '@core/service/course.service';
@@ -86,6 +86,7 @@ export class FeedbackComponent {
     private courseService: CourseService,
     private adminService: AdminService,
     private router: Router,
+    private route: ActivatedRoute,
     private fb:FormBuilder,
     private surveyService: SurveyService,
     private classService: ClassService
@@ -180,6 +181,8 @@ export class FeedbackComponent {
     this.submit(payload)
   }
   submit(payload:any) {
+    const isDirect = this.route.snapshot.queryParamMap.get('examType') === 'direct';
+    const examAssessmentAnswerId =this.route.snapshot.queryParamMap.get('examAssessmentAnswerId');
     this.surveyService.addSurveyBuilder(payload).subscribe(
         (response) => {
             Swal.fire(
@@ -189,28 +192,29 @@ export class FeedbackComponent {
             ).then((r) => {
                 this.feedbackForm.reset();
             });
-            if(this.isPaid){
+            if(this.isPaid && !isDirect){
               let payload = {
                 status: 'completed',
                 studentId: this.studentId,
                 playbackTime: 100,
-                classId:this.path
+                classId:this.classId
               };
               this.classService
                 .saveApprovedClasses(this.classId, payload)
                 .subscribe((response) => {
                   this.router.navigate(['/student/exams/exam-results']);
                 });
-            } else if(this.isFree){
+            } else if(this.isFree || isDirect){
+              const userdata = JSON.parse(localStorage.getItem('currentUser')!);
               let payload = {
                 status: 'completed',
                 studentId: this.studentId,
                 playbackTime: 100,
-                courseId:this.path
-
+                courseId:this.courseId,
+                companyId:userdata.user.companyId,
               };
               this.classService
-                .saveApprovedClasses(this.classId, payload)
+                .saveApprovedClasses(this.courseId, payload)
                 .subscribe((response) => {
                   this.router.navigate(['/student/exams/exam-results']);
                 });
@@ -308,10 +312,10 @@ skipCallback(){
   }
 
   getCourseDetails(){
-    let urlPath = this.router.url.split('/')
-    this.courseId = urlPath[urlPath.length - 1];
-    this.studentId = urlPath[urlPath.length - 2];
-    this.classId = urlPath[urlPath.length - 3];
+    let urlPath = this.router.url.split('/')    
+    this.courseId = this.route.snapshot.paramMap.get('courseId') || '';
+    this.studentId = this.route.snapshot.paramMap.get('studentId')|| '';
+    this.classId = this.route.snapshot.paramMap.get('studentId') || '';
 
     this.courseService.getCourseById(this.courseId).subscribe((response) => {
       this.isFeedbackRequired =response.isFeedbackRequired;

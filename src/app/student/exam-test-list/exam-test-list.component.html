@@ -65,9 +65,12 @@
                         [routerLink]="['/student/exam-questions/',  row._id, row?.studentId, row?.courseId?._id, row?.examAssessmentId?._id]" [queryParams]="{ retake: true, submitted: false }" mat-flat-button color="primary" >
                       Take Exam
                     </button>
-                    <button *ngIf="!row.isAssigned" (click)="navToExam(row)" mat-flat-button color="primary" >
-                    Take Exam
+                    <button *ngIf="!row.isAssigned && getLabel(row) != 'Approval Pending'" (click)="navToExam(row)" mat-flat-button color="primary" >
+                      {{getLabel(row) }}
                     </button>
+                    <span class="badge badge-solid-red" *ngIf="!row.isAssigned && getLabel(row) == 'Approval Pending'">
+                      <span class="status-dot"></span>
+                      {{ 'Pending' | titlecase}}</span>
                     </mat-cell>
               </ng-container>
 

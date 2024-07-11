@@ -93,24 +93,59 @@ export class ExamTestListComponent {
   }
 
   navToExam(data: any) {
-    const isPaid = data.courseId?.feeType == 'paid';
-    if (isPaid) {
-      this.paidDirectExamFlow(data)
-    }else {
+    const studentClasses = data.studentClassId||[];
+    if(studentClasses.length && studentClasses.some((v:any)=>v.status =='approved')){
       const courseDetails = data.courseId;
       const studentId = localStorage.getItem('id');
       const examAssessment = data.courseId.exam_assessment._id;
       this.redirectToExam(courseDetails, studentId, null)
+    }else{
+      this.paidDirectExamFlow(data)
     }
+  }
+
+  getLabel(data:any):string{
+    const course = data.courseId;
+    const isApproved = data.studentClassId.some((v:any)=>v.status == 'approved');
+    if(course.feeType == 'free' || isApproved){
+      return 'Take Exam'
+    }
+    return data.studentClassId.length ? 'Approval Pending' : 'Pay'
   }
 
   paidDirectExamFlow(data: any) {
     const courseId = data?.courseId?._id;
-
+    const isPaid = data.courseId?.feeType == 'paid';
     this.courseService.getCourseById(courseId).subscribe((response) => {
       const courseDetails = response;
-      this.paidDialogEvent(courseDetails, null, data);
+      if(isPaid){
+        this.paidDialogEvent(courseDetails, null, data);
+      }else {
+        this.freeExamFlow(courseDetails, data)
+      }
     });
+  }
+
+  async freeExamFlow(courseDetails: any, data:any){
+    const courseKitDetails = courseDetails?.course_kit;
+    const courseKit = courseKitDetails.map((kit: any) => ({
+      shortDescription: kit.shortDescription,
+      longDescription: kit.longDescription,
+      documentLink: kit.documentLink,
+      name: kit.name,
+      filename: kit?.videoLink[0]?.doc_filename,
+      videoId: kit?.videoLink[0]?.id,
+      inputUrl: kit?.videoLink[0]?.video_url,
+      url: kit?.videoLink[0]?.url,
+      playbackTime: 0,
+    }));
+    const studentClass =await firstValueFrom(this.registerClass(courseDetails, courseKit));
+    if(studentClass.success){
+      const courseDetailInfo = data.courseId;
+      const studentId = localStorage.getItem('id');
+      const examAssessment = data.courseId.exam_assessment._id;
+      this.redirectToExam(courseDetailInfo, studentId, null)
+    }
   }
 
   paidDialogEvent(courseDetails: any, classDetails: any, rawData: any) {
@@ -173,7 +208,7 @@ export class ExamTestListComponent {
                     classId: null,
                     title: courseDetails?.title,
                     coursekit: courseKit,
-                    paid:false,
+                    paid: true,
                     stripe:true,
                     adminEmail:userdata.user.adminEmail,
                     adminName:userdata.user.adminName,
@@ -182,9 +217,7 @@ export class ExamTestListComponent {
                     courseStartDate:courseDetails?.sessionStartDate,
                     courseEndDate:courseDetails?.sessionEndDate,
                     courseId: courseDetails.id,
-                    successURL: this.getRedirectURL(courseDetails,
-                      studentId,
-                      null),
+                    successURL: this.getCurrentUrl(),
                     failURL: this.getCurrentUrl(),
                     isDirectExam: true,
                   }
@@ -305,6 +338,7 @@ export class ExamTestListComponent {
   registerClass(courseDetails:any, courseKit:any, courseFee:number=0){
     let userdata = JSON.parse(localStorage.getItem('currentUser')!);
     let studentId = localStorage.getItem('id');
+    const companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     let payload = {
       email: userdata.user.email,
       name: userdata.user.name,
@@ -317,7 +351,8 @@ export class ExamTestListComponent {
       feeType: courseFee ? 'paid':'free',
       courseId: courseDetails.id,
       verify:true,
-      paid: courseFee ? false: true
+      paid: courseFee ? false: true,
+      companyId: companyId
     };
     return this.courseService.saveRegisterClass(payload)
   }

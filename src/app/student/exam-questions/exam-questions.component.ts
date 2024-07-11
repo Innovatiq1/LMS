@@ -221,7 +221,7 @@ export class ExamQuestionsComponent {
             }
           this.answerId = response.response;
           // this.getAnswerById();
-          this.submitFeedback();
+          this.submitFeedback(response.response);
           },
           (error: any) => {
             console.error('Error:', error);
@@ -246,7 +246,7 @@ export class ExamQuestionsComponent {
             });
           this.answerId = this.answerAssessmentId;
           // this.getAnswerById()
-          this.submitFeedback();
+          this.submitFeedback(this.answerAssessmentId);
           // if(this.retake) {
           //   this.updateRetakes()
           // }
@@ -385,21 +385,22 @@ export class ExamQuestionsComponent {
           }
         }
 
-        submitFeedback(){
-
+        submitFeedback(examAssessmentAnswerId:any){
+          let isDirect = this.courseDetails?.examType === 'direct';
           let urlPath = this.router.url.split('/');
           const examId = urlPath[urlPath.length - 1];
           this.examAssessmentId = examId.split('?')[0]; 
           this.courseId = urlPath[urlPath.length - 2];
           this.studentId = urlPath[urlPath.length - 3];
           this.answerAssessmentId = urlPath[urlPath.length - 4];
-          this.classId = this.classDetails.id;
+          this.classId = isDirect? this.courseId: this.classDetails.id;
 
           const isPaid =  this.courseDetails?.feeType === 'paid';
+          const queryParam = this.courseDetails?.examType ? {examType:this.courseDetails?.examType}: {}
           if(isPaid){
-            this.router.navigate(['/student/feedback/courses', this.classId, this.studentId, this.courseId]);
+            this.router.navigate(['/student/feedback/courses', this.classId, this.studentId, this.courseId], {queryParams: {...queryParam, examAssessmentAnswerId}});
           } else{
-            this.router.navigate(['/student/feedback/freecourse', this.classId, this.studentId, this.courseId]);
+            this.router.navigate(['/student/feedback/freecourse', this.classId, this.studentId, this.courseId], {queryParams: {...queryParam,examAssessmentAnswerId}});
           }
         }
 
