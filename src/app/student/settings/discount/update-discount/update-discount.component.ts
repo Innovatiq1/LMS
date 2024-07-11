@@ -72,7 +72,7 @@ export class UpdateDiscountComponent {
             };
           }
         })
-        this.router.navigate(['/student/settings/discount']);
+        window.history.back();
       }
     });
   }
@@ -110,7 +110,7 @@ export class UpdateDiscountComponent {
             icon: 'success',
             // confirmButtonColor: '#526D82',
           });
-          this.router.navigate(['/student/settings/discount']);
+          window.history.back();
         });
       }
     });

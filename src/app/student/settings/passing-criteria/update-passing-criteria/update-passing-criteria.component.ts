@@ -79,7 +79,7 @@ export class UpdatePassingCriteriaComponent {
             };
           }
         })
-        this.router.navigate(['student/settings/passing-criteria'])
+        window.history.back();
       }
     });
   }else{
@@ -107,7 +107,7 @@ export class UpdatePassingCriteriaComponent {
         icon: 'success',
         // confirmButtonColor: '#526D82',
       });
-      this.router.navigate(['/student/settings/passing-criteria']);
+      window.history.back();
     });
   }
 });

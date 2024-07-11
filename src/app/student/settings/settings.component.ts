@@ -186,7 +186,7 @@ export class SettingsComponent {
     this.automateUrl = urlPath.includes('automation');
     this.customsUrl = urlPath.includes('customization');
     this.lmsUrl = urlPath.includes('LMS-TAE');
-    this.configUrl = urlPath.includes('configuration');
+    this.configUrl = urlPath.includes('config');
     this.formsUrl = urlPath.includes('forms');
     this.sidemenuUrl = urlPath.includes('sidemenu');
     this.settingsSidemenuUrl=urlPath.includes('settings-sidemenu');
@@ -659,10 +659,10 @@ export class SettingsComponent {
     this.router.navigate(['/student/settings/security-settings']);
   }
   navigateToEmailSettings() {
-    this.router.navigate(['/student/settings/email-configuration']);
+    this.router.navigate(['/student/settings/customize/email-configuration']);
   }
   navigateToBannerSettings() {
-    this.router.navigate(['/student/settings/banners']);
+    this.router.navigate(['/student/settings/customize/banners']);
   }
   navigateToUserSettings() {
     this.router.navigate(['/student/settings/users']);
@@ -674,7 +674,7 @@ export class SettingsComponent {
     this.router.navigate(['/student/settings/integration']);
   }
   navigateToCustomFormsSettings() {
-    this.router.navigate(['/student/settings/customization-forms']);
+    this.router.navigate(['/student/settings/customize/customization-forms']);
   }
   navigateToAutomateSettings() {
     this.router.navigate(['/student/settings/automation']);
@@ -689,7 +689,7 @@ export class SettingsComponent {
     this.router.navigate(['/student/configuration']);
   }
   navigateToFormSettings() {
-    this.router.navigate(['/student/settings/forms']);
+    this.router.navigate(['/student/settings/configuration/forms']);
   }
   navigateToCustomSettings() {
     this.router.navigate(['/student/customization-settings']);
@@ -701,22 +701,22 @@ export class SettingsComponent {
     this.router.navigate(['/student/settings/settings-sidemenu']);
   }
   navigateToStudentDbSettings() {
-    this.router.navigate(['/student/settings/student-dashboard']);
+    this.router.navigate(['/student/settings/customize/student-dashboard']);
   }
   navigateToCourseFormsSettings() {
-    this.router.navigate(['/student/settings/customization-forms/course-forms']);
+    this.router.navigate(['/student/settings/customize/customization-forms/course-forms']);
   }
   navigateToProgramFormsSettings() {
-    this.router.navigate(['/student/settings/customization-forms/program-forms']);
+    this.router.navigate(['/student/settings/customize/customization-forms/program-forms']);
   }
   navigateToUsersFormsSettings() {
-    this.router.navigate(['/student/settings/customization-forms/users-forms']);
+    this.router.navigate(['/student/settings/customize/customization-forms/users-forms']);
   }
   navigateToFinanceFormsSettings() {
-    this.router.navigate(['/student/settings/customization-forms/finance-forms']);
+    this.router.navigate(['/student/settings/customize/customization-forms/finance-forms']);
   }
   navigateToBannerFormsSettings() {
-    this.router.navigate(['/student/settings/customization-forms/banner-forms']);
+    this.router.navigate(['/student/settings/customize/customization-forms/banner-forms']);
   }
   navigateToDashboardSettings() {
     this.router.navigate(['/student/settings/dashboards']);

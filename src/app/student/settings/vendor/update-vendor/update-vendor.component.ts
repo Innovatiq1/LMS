@@ -69,7 +69,7 @@ export class UpdateVendorComponent {
             };
           }
         })
-        this.router.navigate(['/student/settings/vendor']);
+        window.history.back();
       }
     });
   }
@@ -105,7 +105,7 @@ export class UpdateVendorComponent {
             icon: 'success',
             // confirmButtonColor: '#526D82',
           });
-          this.router.navigate(['/student/settings/vendor']);
+          window.history.back();
         });
       }
     });

@@ -107,7 +107,7 @@ export class UpdateUsergroupComponent {
             };
           }
         })
-        this.router.navigate(['/student/settings/user-group']);
+        window.history.back();
       }
     });
   }else{
@@ -134,7 +134,7 @@ export class UpdateUsergroupComponent {
         icon: 'success',
         // confirmButtonColor: '#526D82',
       });
-      this.router.navigate(['/student/settings/user-group']);
+      window.history.back();
     });
   }
 });

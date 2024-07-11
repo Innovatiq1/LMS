@@ -1509,14 +1509,14 @@
       <div class="body">
         <div class="row px-4 py-4">
           <div class="col-md-6 banner">
-            <button id="saved" [routerLink]="['/student/settings/all-users']">
+            <button id="saved" [routerLink]="['/student/settings/all-user/all-users']">
               All Users
             </button>
           </div>
           <div class="col-md-5">
             <button
               id="saved"
-              [routerLink]="['/student/settings/all-students']"
+              [routerLink]="['/student/settings/all-user/all-students']"
             >
             {{commonRoles.STUDENT_ROLE}}s
             </button>
@@ -1526,13 +1526,13 @@
           <div class="col-md-6 banner">
             <button
               id="saved"
-              [routerLink]="['/student/settings/all-instructors']"
+              [routerLink]="['/student/settings/all-user/all-instructors']"
             >
             {{commonRoles?.INSTRUCTOR_ROLE}}s
             </button>
           </div>
           <div class="col-md-5">
-            <button id="saved" [routerLink]="['/student/settings/all-staff']">
+            <button id="saved" [routerLink]="['/student/settings/all-user/all-staff']">
               Staff
             </button>
           </div>
@@ -1575,27 +1575,27 @@
           <div class="col-md-6 banner">
             <button
               id="saved"
-              [routerLink]="['/student/settings/3rd-party-integrations']"
+              [routerLink]="['/student/settings/integration/3rd-party-integrations']"
             >
               Third Party Integration
             </button>
           </div>
           <div class="col-md-5">
-            <button id="saved" [routerLink]="['/student/settings/smtp']">
+            <button id="saved" [routerLink]="['/student/settings/integration/smtp']">
               SMTP
             </button>
           </div>
         </div>
         <div class="row px-4 py-4">
           <div class="col-md-6 banner">
-            <button id="saved" [routerLink]="['/student/settings/singpass']">
+            <button id="saved" [routerLink]="['/student/settings/integration/singpass']">
               SingPass
             </button>
           </div>
           <div class="col-md-5">
             <button
               id="saved"
-              [routerLink]="['/student/settings/payment-gateway']"
+              [routerLink]="['/student/settings/integration/payment-gateway']"
             >
               Payment Gateway
             </button>
@@ -1629,7 +1629,7 @@
           <div class="col-md-6 banner">
             <button
               id="saved"
-              [routerLink]="['/student/settings/announcement']"
+              [routerLink]="['/student/settings/automation/announcement']"
             >
               Announcement
             </button>
@@ -1642,7 +1642,7 @@
           <div class="col-md-6 banner">
             <button
               id="saved"
-              [routerLink]="['/student/settings/approval-workflow']"
+              [routerLink]="['/student/settings/automation/approval-workflow']"
             >
               Approval Workflow
             </button>
@@ -1652,7 +1652,7 @@
     </div>
     <div
       class="card"
-      style="margin: auto; height: 350px; width: 65%"
+      style="margin: auto; height: 400px; width: 65%"
       *ngIf="showCustoms"
     >
       <div class="row">
@@ -1669,60 +1669,75 @@
       <div class="body">
         <div class="row px-4" *ngIf="role ==commonRoles.ADMIN_USERTYPE || commonRoles.ADMIN_ROLE ">
           <div class="col-md-6 banner">
-            <button id="saved" [routerLink]="['/student/settings/sidemenu']">
+            <button id="saved" [routerLink]="['/student/settings/customize/sidemenu']">
               Sidemenu
             </button>
           </div>
           <div class="col-md-5">
-            <button id="saved" (click)="navigateToCustomFormsSettings()">
-              Forms
+            <button id="saved" [routerLink]="['/student/settings/customize/settings-sidemenu']">
+              Settings Sidemenu
             </button>
           </div>
+          
         </div>
         <div class="row px-4 py-4" *ngIf="role == commonRoles.ADMIN_USERTYPE || commonRoles.ADMIN_ROLE ">
           <div class="col-md-6 banner">
-            <button
-              id="saved"
-              [routerLink]="['/student/settings/certificate/template']"
-            >
-              Certificates
+            <button id="saved" (click)="navigateToCustomFormsSettings()">
+              Forms
             </button>
+          
           </div>
           <div class="col-md-5">
-            <button id="saved" (click)="navigateToBannerSettings()">
-              Banners
-            </button>
+            <button
+            id="saved"
+            [routerLink]="['/student/settings/customize/certificate/template']"
+          >
+            Certificates
+          </button>
+           
           </div>
         </div>
         <div class="row px-4">
           <div class="col-md-6 banner">
-            <button
-              id="saved"
-              [routerLink]="['/student/settings/create-feedback']"
-            >
-              Survey
+            <button id="saved" (click)="navigateToBannerSettings()">
+              Banners
             </button>
+           
           </div>
           <div class="col-md-5" *ngIf="role == commonRoles.ADMIN_USERTYPE || commonRoles.ADMIN_ROLE ">
             <button
-              id="saved"
-              routerLink="/student/settings/logo-customization"
-            >
-              Logo
-            </button>
+            id="saved"
+            [routerLink]="['/student/settings/customize/create-feedback']"
+          >
+            Survey
+          </button>
+           
           </div>
         </div>
         <div class="row px-4 py-4" *ngIf="role == commonRoles.ADMIN_USERTYPE || commonRoles.ADMIN_ROLE ">
           <div class="col-md-6 banner">
+            <button
+            id="saved"
+            routerLink="/student/settings/customize/logo-customization"
+          >
+            Logo
+          </button>
+           
+          </div>
+          <div class="col-md-5" *ngIf="role == commonRoles.ADMIN_USERTYPE || commonRoles.ADMIN_ROLE ">
             <button id="saved" (click)="navigateToEmailSettings()">
               Email Templates
             </button>
           </div>
-          <div class="col-md-5" *ngIf="role == commonRoles.ADMIN_USERTYPE || commonRoles.ADMIN_ROLE ">
-            <button id="saved" (click)="navigateToStudentDbSettings()">
-              Dashboards
-            </button>
+        </div>
+        <div class="row px-4" *ngIf="role == commonRoles.ADMIN_USERTYPE || commonRoles.ADMIN_ROLE ">
+          <div class="col-md-6 banner">
+          <button id="saved" (click)="navigateToStudentDbSettings()">
+            Dashboards
+          </button>
+           
           </div>
+        
         </div>
       </div>
     </div>
@@ -1814,7 +1829,7 @@
             <button
               id="saved"
               [routerLink]="[
-                '/student/settings/customization-forms',
+                '/student/settings/customize/customization-forms',
                 'create-announcement'
               ]"
             >
@@ -1971,7 +1986,7 @@
           <button
             mat-raised-button
             id="back"
-            [routerLink]="['/student/settings/customization-forms']"
+            [routerLink]="['/student/settings/customize/customization-forms']"
           >
             Back
           </button>
@@ -2020,7 +2035,7 @@
           <button
             mat-raised-button
             id="back"
-            [routerLink]="['/student/settings/customization-forms']"
+            [routerLink]="['/student/settings/customize/customization-forms']"
           >
             Back
           </button>
@@ -2079,7 +2094,7 @@
           <button
             mat-raised-button
             id="back"
-            [routerLink]="['/student/settings/customization-forms']"
+            [routerLink]="['/student/settings/customize/customization-forms']"
           >
             Back
           </button>
@@ -2130,7 +2145,7 @@
           <button
             mat-raised-button
             id="back"
-            [routerLink]="['/student/settings/customization-forms']"
+            [routerLink]="['/student/settings/customize/customization-forms']"
           >
             Back
           </button>
@@ -2179,7 +2194,7 @@
           <button
             mat-raised-button
             id="back"
-            [routerLink]="['/student/settings/customization-forms']"
+            [routerLink]="['/student/settings/customize/customization-forms']"
           >
             Back
           </button>
@@ -2341,7 +2356,7 @@
           <button
             mat-raised-button
             id="back"
-            [routerLink]="['/student/settings/configuration']"
+            [routerLink]="['/student/settings/config']"
           >
             Back
           </button>
@@ -2367,7 +2382,7 @@
       <div class="body">
         <div class="row px-4 py-4">
           <div class="col-md-6 banner">
-            <button id="saved" [routerLink]="['/student/settings/categories']">
+            <button id="saved" [routerLink]="['/student/settings/configuration/categories']">
               Categories
             </button>
           </div>
@@ -2378,14 +2393,14 @@
         </div>
         <div class="row px-4">
           <div class="col-md-6 banner">
-            <button id="saved" [routerLink]="['/student/settings/vendor']">
+            <button id="saved" [routerLink]="['/student/settings/configuration/vendor']">
               Vendor
             </button>
           </div>
           <div class="col-md-5">
             <button
               id="saved"
-              [routerLink]="['/student/settings/funding-grant']"
+              [routerLink]="['/student/settings/configuration/funding-grant']"
             >
               Funding/Grant
             </button>
@@ -2395,7 +2410,7 @@
           <div class="col-md-6 banner">
             <button
               id="saved"
-              [routerLink]="['/student/settings/all-questions']"
+              [routerLink]="['/student/settings/configuration/all-questions']"
             >
               Assessment Configuration
             </button>
@@ -2461,13 +2476,13 @@
           <div class="col-md-6 banner">
             <button
               id="saved"
-              [routerLink]="['/student/settings/passing-criteria']"            >
+              [routerLink]="['/student/settings/configuration/passing-criteria']"            >
               Passing Criteria
             </button>
           </div>
           <div class="col-md-5">
             <button
-              id="saved" [routerLink]="['/student/settings/discount']"
+              id="saved" [routerLink]="['/student/settings/configuration/discount']"
             >
               Discount
             </button>

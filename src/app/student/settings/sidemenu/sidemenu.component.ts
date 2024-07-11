@@ -248,7 +248,7 @@ export class SidemenuComponent {
                 text: 'Sidemenu Updated successfully',
                 icon: 'success',
               });
-              this.router.navigate(['/student/settings/sidemenu']);
+             window.history.back();
             },
             (err: any) => {
               console.error("Failed to update sidemenu", err);

@@ -195,7 +195,7 @@ export class EditCategoriesComponent {
               this.subCategoryForm.reset();
               this.initSubCategoryForm();
               this.addSubCategoryField();
-              this.router.navigateByUrl('/student/settings/categories');
+              window.history.back();
               //this.list = !this.list;
               //this.create = !this.create;
               // this.list = !this.list;

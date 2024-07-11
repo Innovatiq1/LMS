@@ -112,7 +112,7 @@ export class CreateApprovalWorkflowComponent implements OnInit{
                 text: 'Approval flow created successfully',
                 icon: 'success',
               });
-              this.router.navigate(['/student/settings/approval-workflow']);
+              window.history.back();
             });
 
         }

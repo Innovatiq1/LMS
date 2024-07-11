@@ -28,6 +28,7 @@ import { Subscription } from 'rxjs';
 import { StudentsService } from 'app/admin/students/students.service';
 import { AppConstants } from '@shared/constants/app.constants';
 import { AnyComponent } from '@fullcalendar/core/preact';
+import { AdminService } from '@core/service/admin.service';
 
 interface Notifications {
   message: string;
@@ -72,6 +73,7 @@ export class HeaderComponent
   subscription!: Subscription;
   role: string | null;
   commonRoles:any;
+  settingsItems: any;
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private renderer: Renderer2,
@@ -84,6 +86,7 @@ export class HeaderComponent
     private authenService: AuthenService,
     private translate: LanguageService,
     private logoService: LogoService,
+    private adminService: AdminService,
 
     private announcementService: AnnouncementService,
     private dialogModel: MatDialog,
@@ -159,6 +162,14 @@ export class HeaderComponent
   }
 
   ngOnInit() {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    this.adminService.getUserTypeList({ allRows: true },userId).subscribe(
+      (response: any) => {
+        let userType = localStorage.getItem('user_type');
+        let data = response.filter((item: any) => item.typeName === userType);
+         this.settingsItems = data[0].settingsMenuItems
+        console.log("data", data)
+      })
     this.commonRoles = AppConstants
     /* getting logo details from logoservice **/
     this.subscription = this.logoService.currentData.subscribe((data) => {
@@ -232,13 +243,13 @@ export class HeaderComponent
     this.router.navigate(['/student/settings/customization']);
   }
   navigateToProfileSettings() {
-    this.router.navigate(['/student/settings/2-factor-authentication']);
+    this.router.navigate(['/student/settings/security/2-factor-authentication']);
   }
   navigateToLmsSettings() {
     this.router.navigate(['/student/settings/all-questions']);
   }
   navigateToConfigSettings() {
-    this.router.navigate(['/student/settings/configuration']);
+    this.router.navigate(['/student/settings/config']);
   }
   onClick() {
     let role = localStorage.getItem('user_type');
