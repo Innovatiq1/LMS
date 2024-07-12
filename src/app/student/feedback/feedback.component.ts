@@ -312,10 +312,10 @@ skipCallback(){
   }
 
   getCourseDetails(){
-    let urlPath = this.router.url.split('/')    
+    let urlPath = this.router.url.split('/'); 
     this.courseId = this.route.snapshot.paramMap.get('courseId') || '';
     this.studentId = this.route.snapshot.paramMap.get('studentId')|| '';
-    this.classId = this.route.snapshot.paramMap.get('studentId') || '';
+    this.classId = this.route.snapshot.paramMap.get('classId') || '';
 
     this.courseService.getCourseById(this.courseId).subscribe((response) => {
       this.isFeedbackRequired =response.isFeedbackRequired;
