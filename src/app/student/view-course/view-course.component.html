@@ -1303,20 +1303,13 @@
                       class="text-center text-muted"
                       *ngIf="
                         assessmentTaken != undefined &&
-                        assessmentTaken >= assessmentInfo?.retake
+                        assessmentTaken >= assessmentInfo?.retake && !assessmentTempInfo
                       "
                     >
                       Max No. of Retake Reached
                     </p>
                     <ng-container
-                      *ngIf="
-                        assessmentTaken != undefined &&
-                        assessmentTaken < assessmentInfo.retake &&
-                        (assessmentInfo.resultAfterFeedback &&
-                        isAnswersSubmitted
-                          ? isAnswersSubmitted && isFeedBackSubmitted
-                          : true)
-                      "
+                      *ngIf="isShowAssessmentQuestions"
                     >
                       <app-questions
                         *ngIf="questionList.length"
@@ -1325,6 +1318,7 @@
                         [getAssessmentId]="getAssessmentId"
                         [totalTime]="questionList.length * questionTimer"
                         (submitAnswers)="submitAnswers($event)"
+                        (navigate)="openFeedBack($event)"
                         [isAnswersSubmitted]="isAnswersSubmitted"
                         [isCertificate] = "isCertificate"
                         [autoSubmit]="true"
@@ -1334,11 +1328,11 @@
                       *ngIf="
                         questionList.length &&
                         isAnswersSubmitted &&
-                        assessmentInfo.resultAfterFeedback &&
+                        (isShowFeedback) &&
                         !isFeedBackSubmitted
                       "
                     >
-                      <p class="text-danger">
+                      <p class="text-danger" *ngIf="assessmentInfo.resultAfterFeedback">
                         Please Submit the Feedback to view the result
                       </p>
                       <app-feedbackcommon

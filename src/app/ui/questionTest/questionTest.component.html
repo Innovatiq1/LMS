@@ -1,6 +1,6 @@
 <div class="content-block">
   <div class="card border shadow card-height border-radius mb-1 mt-1 p-2">
-    <ng-container *ngIf="!isQuizCompleted && !isQuizFailed && !isCertIssued">
+    <ng-container *ngIf="(!isQuizCompleted || !isAnswersSubmitted )&& !isQuizFailed && !isCertIssued">
       <div class="row p-3 d-flex justify-content-between">
         <div class="col-lg-7 col-md-12 col-sm-12 col-12 flex-start">
           <div class="text-left font-weight-bold mt-3">
@@ -94,7 +94,7 @@
               mat-flat-button
               color="accent"
               class="mls-2"
-              (click)="navigate()"
+              (click)="navigateContinue(false)"
             >
               Continue
             </button>
@@ -103,7 +103,7 @@
       </div>
     </ng-container>
 
-    <ng-container *ngIf="isQuizCompleted">
+    <ng-container *ngIf="isQuizCompleted && isAnswersSubmitted">
       <div class="row d-flex justify-content-between align-items-center">
         <img
           style="width: 150px; height: 150px"
@@ -130,6 +130,19 @@
             Your Score : <b>{{ answersResult.score }} Points </b>
            
           </p>
+          <div
+            class="border-dotted-bottom mt-3 mb-3 text-center"
+            *ngIf="isAnswersSubmitted"
+          >
+            <button
+              mat-flat-button
+              color="accent"
+              class="mls-2"
+              (click)="navigateContinue(true)"
+            >
+              Continue
+            </button>
+          </div>
         </div>
       </div>
     </ng-container>

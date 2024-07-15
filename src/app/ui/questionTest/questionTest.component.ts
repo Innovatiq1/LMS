@@ -20,6 +20,7 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
   @Input() autoSubmit:boolean = false;
   @Input() isCertificate: string = '';
   @Output() submitAnswers: EventEmitter<any> = new EventEmitter<any>();
+  @Output() navigate: EventEmitter<any> = new EventEmitter<any>();
   
 
 
@@ -173,8 +174,7 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
 
 
 
-  navigate() {
-    
+  navigateContinue(data:boolean) {
       const score=this.answersResult.score;
       const passingCriteria=this.answersResult.assessmentId.passingCriteria;
        if (score >= passingCriteria) {
@@ -188,7 +188,10 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
       };
       this.classService
         .saveApprovedClasses(this.classId, payload)
-        .subscribe((response) => {});
+        .subscribe((response) => {
+          if(data)
+          this.navigate.next(true);
+        });
     
     } else {
       this.isQuizFailed = true;

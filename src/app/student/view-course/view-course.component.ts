@@ -159,6 +159,9 @@ export class ViewCourseComponent implements OnDestroy {
   totalFee: any;
   isCertificate: string = '';
   paidProgram: boolean;
+  assessmentTempInfo: any= null;
+  isShowFeedback: boolean = false;
+  isShowAssessmentQuestions: boolean = false;
 
   constructor(
     private classService: ClassService,
@@ -844,6 +847,7 @@ export class ViewCourseComponent implements OnDestroy {
       this.questionList = response?.assessment?.questions || [];
       this.questionTimer = this.assessmentInfo.timer;
       this.examAssessmentInfo = response?.exam_assessment;
+      this.updateShowAssessmentQuestions();
       const survey = response?.survey;
       this.feedbackInfo = survey
         ? {
@@ -944,6 +948,7 @@ export class ViewCourseComponent implements OnDestroy {
       .getAssessmentAnswerCount(studentId, courseId)
       .subscribe((response: any) => {
         this.assessmentTaken = response['count'];
+        this.updateShowAssessmentQuestions();
         this.assessmentAnswerLatest = response['latestRecord'];
         if (this.assessmentTaken >= 1) {
           this.updateCompletionStatus();
@@ -951,17 +956,51 @@ export class ViewCourseComponent implements OnDestroy {
       });
   }
 
+  updateShowAssessmentQuestions(){
+    if(this.assessmentTempInfo && !this.assessmentInfo.resultAfterFeedback && this.isFeedBackSubmitted){
+      this.assessmentTempInfo = null;
+      this.isAnswersSubmitted = false;
+      this.answersResult = null;
+      this.questionList = this.assessmentInfo?.questions || [];
+    }
+    if(this.assessmentTaken < this.assessmentInfo.retake){
+      if(this.assessmentTempInfo == null || (this.isAnswersSubmitted && !this.isFeedBackSubmitted)){
+        if(this.assessmentInfo.resultAfterFeedback && this.isAnswersSubmitted && !this.isFeedBackSubmitted){
+          this.isShowAssessmentQuestions =  false;
+          this.isShowFeedback = true;
+        }else if(this.isShowFeedback){
+          this.isShowAssessmentQuestions = false;
+        }else{
+          this.isShowAssessmentQuestions = true;
+          this.isShowFeedback = false;
+        }
+        this.isFeedBackSubmitted = false;
+      }else if(this.assessmentInfo.resultAfterFeedback && this.isAnswersSubmitted && this.isFeedBackSubmitted){
+        this.isShowAssessmentQuestions = true;
+        this.isShowFeedback = false;
+        this.assessmentTempInfo = null;
+      }else{
+        this.isShowAssessmentQuestions = true;
+        this.isFeedBackSubmitted = false;
+      }
+    }else{
+      this.isShowAssessmentQuestions = false;
+    }
+    
+  }
+
   updateCompletionStatus() {
     const studentId = localStorage.getItem('id') || '';
     let payload = {
-     
       studentId: studentId,
       classId: this.classId,
       playBackTime: 100,
     };
     this.classService
       .saveApprovedClasses(this.classId, payload)
-      .subscribe((response) => {});
+      .subscribe((response) => {
+        
+      });
   }
 
   getExamAssessmentAnswerCount(courseId: string) {
@@ -1210,6 +1249,8 @@ export class ViewCourseComponent implements OnDestroy {
           text: 'Your answers were submitted.',
           icon: 'success',
         });
+        this.isAnswersSubmitted = true;
+        this.assessmentTempInfo = requestBody;
         this.getAssessmentAnswerCount(payload.courseId);
         this.getAnswerById(response.response);
       },
@@ -1218,6 +1259,20 @@ export class ViewCourseComponent implements OnDestroy {
       }
     );
   }
+
+  openFeedBack(payload:any) {
+    if(!this.assessmentInfo.resultAfterFeedback) {
+      this.isShowFeedback=true
+    }else{
+      this.isShowFeedback =false;
+      this.questionList = this.assessmentInfo?.questions || [];
+      this.assessmentTempInfo = null;
+      this.isAnswersSubmitted = false;
+    }
+    this.updateShowAssessmentQuestions();
+  }
+
+
 
   getAnswerById(answerId: string) {
     this.isFeedBackSubmitted = false;
@@ -1257,6 +1312,8 @@ export class ViewCourseComponent implements OnDestroy {
   }
 
   submitFeedback(event: any) {
+    console.log('submitting feedback..');
+    
     this.isFeedBackSubmitted = false;
     const studentId = localStorage.getItem('id');
     const userData = JSON.parse(localStorage.getItem('user_data') || '');
@@ -1281,8 +1338,11 @@ export class ViewCourseComponent implements OnDestroy {
         });
         const feedbackInfo = { ...this.feedbackInfo };
         this.feedbackInfo = feedbackInfo;
+        this.isShowFeedback= false;
+        this.updateShowAssessmentQuestions();
       },
       (error) => {
+        this.assessmentTempInfo = null;
         Swal.fire({
           title: 'Failed to submit Feedback',
           text: error.message || error.error,
@@ -1293,5 +1353,7 @@ export class ViewCourseComponent implements OnDestroy {
   }
   skipFeedback() {
     this.isFeedBackSubmitted = true;
+    this.isShowFeedback= false;
+    this.updateShowAssessmentQuestions();
   }
 }
