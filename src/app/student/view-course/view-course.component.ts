@@ -957,7 +957,7 @@ export class ViewCourseComponent implements OnDestroy {
      
       studentId: studentId,
       classId: this.classId,
-      playbackTime: 100,
+      playBackTime: 100,
     };
     this.classService
       .saveApprovedClasses(this.classId, payload)
