@@ -229,7 +229,6 @@ export class ViewCourseComponent implements OnDestroy {
     this.classService.getClassById(this.classId).subscribe((response) => {
       this.classDetails = response;
   this.feeType=this.classDetails.courseId.feeType;
-  console.log("free type=",this.feeType);
       this.courseId = this.classDetails.courseId.id;
       this.dataSource = this.classDetails.sessions;
       if(!this.paidProgram){
@@ -330,13 +329,12 @@ export class ViewCourseComponent implements OnDestroy {
           const allUnmatchedCompleted = unmatchedDocuments.every(
             (doc: { playbackTime: number }) => doc.playbackTime === 100
           );
-          // console.log("reached",allUnmatchedCompleted);
+         
           if (allUnmatchedCompleted) {
             this.courseService
               .getStudentClass(studentId, this.classId)
               .subscribe((response) => {
                 this.studentClassDetails = response.data.docs[0];
-                // console.log("enterd", this.studentClassDetails);
                 if (this.studentClassDetails.status == 'approved') {
                   if (this.paid) {
                     const targetURL = `/student/questions/${classId}/${studentId}/${this.courseId}`;
@@ -399,7 +397,6 @@ export class ViewCourseComponent implements OnDestroy {
   }
 
   getDiscounts(id:any){
-  //  console.log("Get discount here")
     this.courseService.getDiscount(id).subscribe((response) => {
       this.discounts = response.filter(item => !item.discountTitle.includes('&'));
       this.allDiscounts = response;
@@ -452,9 +449,6 @@ export class ViewCourseComponent implements OnDestroy {
   submitForVerification(classId: string) {
     var userdata = JSON.parse(localStorage.getItem('currentUser')!);
     var studentId = localStorage.getItem('id');
-    console.log("this is submitVerification")
-    console.log("this.free",this.free,"this.feeType",this.feeType)
-    console.log("this.paid",this.paid,"this.feeType",this.feeType)
     if (this.paid && this.feeType=="paid") {
       this.getDiscounts(userdata.user.companyId);
    
@@ -496,11 +490,9 @@ export class ViewCourseComponent implements OnDestroy {
   registerClass(classId: string) {
     var userdata = JSON.parse(localStorage.getItem('currentUser')!);
     var studentId = localStorage.getItem('id');
-    //console.log("here is registerclass ==",this.freeType);
     if (this.paid) {
 if(this.feeType=="paid")
 {
-  console.log("this is fee type ",this.feeType)
   const today = new Date();
   const date = today.toISOString().split('T')[0];
   let body = {
@@ -525,7 +517,7 @@ if(this.feeType=="paid")
   });
   invoiceDialogRef.afterClosed().subscribe((res) => {
     if (res) {
-      console.log('reeee',res)
+    
       this.totalFee=res.totalValue
       const dialogRef = this.dialog.open(PaymentDailogComponent, {
         width: '450px',
@@ -695,7 +687,7 @@ if(this.feeType=="paid")
   });
 }
 else if(this.feeType=="free"){
-  console.log("this.feeType")
+  //console.log("this.feeType")
   let payload = {
     email: userdata.user.email,
     name: userdata.user.name,
@@ -723,7 +715,7 @@ else if(this.feeType=="free"){
   });
 }
     } else if (this.free ) {
-      console.log("this is paid type ",this.feeType)
+     // console.log("this is paid type ",this.feeType)
       let payload = {
         email: userdata.user.email,
         name: userdata.user.name,
@@ -877,7 +869,7 @@ else if(this.feeType=="free"){
       }));
       if(this.paidProgram){
         this.classService.getClassList({courseId:this.courseDetails.id,program:'yes'}).subscribe((response) => {
-          console.log('res',response)
+        //  console.log('res',response)
           this.classId = response.docs[0].id
           localStorage.setItem('classId', this.classId);
           this.getClassDetails();    
@@ -986,7 +978,7 @@ else if(this.feeType=="free"){
           this.isCompleted = true;
           this.isCertificate = "Yes";
           this.certificateIssued = true;
-          console.log("cert", this.isCertificate)
+         // console.log("cert", this.isCertificate)
         }
         if (this.studentClassDetails.status == 'cancel') {
           this.isRegistered == true;
@@ -1365,7 +1357,7 @@ else if(this.feeType=="free"){
   }
 
   submitFeedback(event: any) {
-    console.log('submitting feedback..');
+   // console.log('submitting feedback..');
     
     this.isFeedBackSubmitted = false;
     const studentId = localStorage.getItem('id');
