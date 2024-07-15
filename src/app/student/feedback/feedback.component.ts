@@ -227,20 +227,39 @@ export class FeedbackComponent {
     );
 }
 
-skipCallback(){
-  let payload = {
-    status: 'completed',
-    studentId: this.studentId,
-    playbackTime: 100,
-  };
-  this.classService
-    .saveApprovedClasses(this.classId, payload)
-    .subscribe((response) => {
-      setTimeout(() => {
+saveApprovedClass(){
+    const isDirect = this.route.snapshot.queryParamMap.get('examType') === 'direct';
+    if(this.isPaid && !isDirect){
+    let payload = {
+      status: 'completed',
+      studentId: this.studentId,
+      playbackTime: 100,
+      classId:this.classId
+    };
+    this.classService
+      .saveApprovedClasses(this.classId, payload)
+      .subscribe((response) => {
         this.router.navigate(['/student/exams/exam-results']);
-      }, 4000);
+      });
+  } else if(this.isFree || isDirect){
+    const userdata = JSON.parse(localStorage.getItem('currentUser')!);
+    let payload = {
+      status: 'completed',
+      studentId: this.studentId,
+      playbackTime: 100,
+      courseId:this.courseId,
+      companyId:userdata.user.companyId,
+    };
+    this.classService
+      .saveApprovedClasses(this.courseId, payload)
+      .subscribe((response) => {
+        this.router.navigate(['/student/exams/exam-results']);
+      });
+  }
+}
 
-    });
+skipCallback(){
+  this.saveApprovedClass()
 }
 
   submitAnswer(questionId: any, selectedOption: any) {
