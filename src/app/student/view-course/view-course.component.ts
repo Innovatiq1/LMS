@@ -1268,6 +1268,7 @@ export class ViewCourseComponent implements OnDestroy {
       this.questionList = this.assessmentInfo?.questions || [];
       this.assessmentTempInfo = null;
       this.isAnswersSubmitted = false;
+      this.router.navigate(['/student/enrollment/exam']);
     }
     this.updateShowAssessmentQuestions();
   }
@@ -1339,7 +1340,11 @@ export class ViewCourseComponent implements OnDestroy {
         const feedbackInfo = { ...this.feedbackInfo };
         this.feedbackInfo = feedbackInfo;
         this.isShowFeedback= false;
-        this.updateShowAssessmentQuestions();
+        if(!this.assessmentInfo.resultAfterFeedback){
+          this.router.navigate(['/student/enrollment/exam']);
+        }else {
+          this.updateShowAssessmentQuestions();
+        }
       },
       (error) => {
         this.assessmentTempInfo = null;
