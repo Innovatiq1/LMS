@@ -1313,6 +1313,7 @@ else if(this.feeType=="free"){
       this.questionList = this.assessmentInfo?.questions || [];
       this.assessmentTempInfo = null;
       this.isAnswersSubmitted = false;
+      this.router.navigate(['/student/enrollment/exam']);
     }
     this.updateShowAssessmentQuestions();
   }
@@ -1384,7 +1385,11 @@ else if(this.feeType=="free"){
         const feedbackInfo = { ...this.feedbackInfo };
         this.feedbackInfo = feedbackInfo;
         this.isShowFeedback= false;
-        this.updateShowAssessmentQuestions();
+        if(!this.assessmentInfo.resultAfterFeedback){
+          this.router.navigate(['/student/enrollment/exam']);
+        }else {
+          this.updateShowAssessmentQuestions();
+        }
       },
       (error) => {
         this.assessmentTempInfo = null;
