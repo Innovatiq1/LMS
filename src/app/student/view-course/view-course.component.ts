@@ -456,7 +456,7 @@ export class ViewCourseComponent implements OnDestroy {
     else if (this.free || this.feeType=="free") {
       let payload = {
         
-       
+  
         studentId: studentId,
         classId: this.classId,
         title: this.title,
