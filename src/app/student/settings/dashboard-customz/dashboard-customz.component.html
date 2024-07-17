@@ -1,0 +1,348 @@
+<div class="dashboard">
+    <div class="row">
+        <div *ngIf="selectedComponents['TOTAL TRAINEES']" class="col-lg-6 col-md-6 col-sm-12" >
+            <div class="card card-statistic-2">
+              <div class="clearfix">
+                <div class="card-icon-only shadow-primary float-start">
+                  <img src="assets/images/banner/New Students.jpg" alt="" style="margin-left: -21px;">
+    
+                </div>
+                <div class="card-right">
+                  <div>
+                    <h5 class="float-end" style="margin-top: 100px;">Total Trainees</h5>
+                  </div>
+                  <div class="col-green">
+                    <h3 class="font-weight-bold float-end mb-0">72</h3>
+                  </div>
+                </div>
+              </div>
+              <div class="card-content msl-4 mb-3">
+                <p class="m-b-0 d-flex"><i class="material-icons col-green psr-2">trending_up</i> 10% Higher Then Last
+                  Month
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="selectedComponents['ALL COURSES']" class="col-lg-6 col-md-6 col-sm-12">
+            <div class="card card-statistic-2">
+              <div class="clearfix">
+                <div class="card-icon-only shadow-primary float-start">
+                    <img src="assets/images/banner/img3.png" alt="">
+    
+                </div>
+                <div class="card-right">
+                  <div>
+                    <h5 class="float-end" style="margin-top: 100px;">All Courses</h5>
+                  </div>
+                  <div class="col-green">
+                    <h3 class="font-weight-bold float-end mb-0">72</h3>
+                  </div>
+                </div>
+              </div>
+              <div class="card-content msl-4 mb-3">
+                <p class="m-b-0 d-flex"><i class="material-icons col-green psr-2">trending_up</i> 10% Higher Then Last
+                  Month
+                </p>
+              </div>
+            </div>
+          </div>
+   
+    <!-- #END# Widgets -->
+    <!-- <div class="row"> -->
+        <div *ngIf="selectedComponents['TOTAL TRAINERS']" class="col-lg-6 col-md-6 col-sm-12">
+            <div class="card card-statistic-2">
+              <div class="clearfix">
+                <div class="card-icon-only shadow-primary float-start">
+                    <img src="assets/images/banner/img2.png" alt="" style="margin-left: -21px;">
+    
+                </div>
+                <div class="card-right">
+                  <div>
+                    <h5 class="float-end" style="margin-top: 100px;">Total Trainers</h5>
+                  </div>
+                  <div class="col-green">
+                    <h3 class="font-weight-bold float-end mb-0">72</h3>
+                  </div>
+                </div>
+              </div>
+              <div class="card-content msl-4 mb-3">
+                <p class="m-b-0 d-flex"><i class="material-icons col-green psr-2">trending_up</i> 10% Higher Then Last
+                  Month
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12">
+
+          </div>
+    <!-- </div> -->
+    <!-- <div class="row"> -->
+      <div *ngIf="selectedComponents['TRAINER SURVEY']" class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+        <div class="card">
+          <div class="header">
+            <h2>
+              Trainess Survay</h2>
+            <button mat-icon-button [matMenuTriggerFor]="menu" class="header-dropdown">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item>
+                <mat-icon>add_circle_outline</mat-icon>
+                <span>Add</span>
+              </button>
+              <button mat-menu-item disabled>
+                <mat-icon>delete_outline</mat-icon>
+                <span>Delete</span>
+              </button>
+              <button mat-menu-item>
+                <mat-icon>refresh</mat-icon>
+                <span>Refresh</span>
+              </button>
+            </mat-menu>
+          </div>
+          <div class="body">
+            <apx-chart [series]="areaChartOptions.series!" [chart]="areaChartOptions.chart!"
+              [xaxis]="areaChartOptions.xaxis!" [yaxis]="areaChartOptions.yaxis!" [colors]="areaChartOptions.colors!"
+              [stroke]="areaChartOptions.stroke!" [legend]="areaChartOptions.legend!" [grid]="areaChartOptions.grid!"
+              [tooltip]="areaChartOptions.tooltip!" [dataLabels]="areaChartOptions.dataLabels!"></apx-chart>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="selectedComponents['USERS']"  class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+        <div class="card">
+          <div class="header">
+            <h2>Users</h2>
+            <button mat-icon-button [matMenuTriggerFor]="menu" class="header-dropdown">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item>
+                <mat-icon>add_circle_outline</mat-icon>
+                <span>Add</span>
+              </button>
+              <button mat-menu-item disabled>
+                <mat-icon>delete_outline</mat-icon>
+                <span>Delete</span>
+              </button>
+              <button mat-menu-item>
+                <mat-icon>refresh</mat-icon>
+                <span>Refresh</span>
+              </button>
+            </mat-menu>
+          </div>
+          <div class="body">
+            <apx-chart [series]="barChartOptions.series!" [chart]="barChartOptions.chart!"
+              [dataLabels]="barChartOptions.dataLabels!" [plotOptions]="barChartOptions.plotOptions!"
+              [grid]="barChartOptions.grid!" [yaxis]="barChartOptions.yaxis!" [xaxis]="barChartOptions.xaxis!"
+              [fill]="barChartOptions.fill!">
+            </apx-chart>
+          </div>
+        </div>
+      </div>
+    <!-- </div> -->
+    <!-- <div class="row clearfix"> -->
+      <div *ngIf="selectedComponents['CLASSES LIST']" class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+        <div class="card">
+          <div class="header">
+            <h2>Class List</h2>
+            <button mat-icon-button [matMenuTriggerFor]="menu" class="header-dropdown">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item>
+                <mat-icon>add_circle_outline</mat-icon>
+                <span>Add</span>
+              </button>
+              <button mat-menu-item disabled>
+                <mat-icon>delete_outline</mat-icon>
+                <span>Delete</span>
+              </button>
+              <button mat-menu-item>
+                <mat-icon>refresh</mat-icon>
+                <span>Refresh</span>
+              </button>
+            </mat-menu>
+          </div>
+          <div class="tableBody">
+            <div class="table-responsive">
+              <table class="table table-hover ">
+                <thead>
+                  <tr>
+                    <th>Course Name</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Status </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Test 1</td>
+                    <td>Jul 23 2024 </td>
+                    <td>Sep 23 2024 </td>
+                    
+                    <td>
+                      <div class="badge col-green">Active</div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Test 1</td>
+                    <td> Jul 23 2024 </td>
+                    <td>Sep 23 2024 </td>
+                    
+                    <td>
+                      <div class="badge col-red">Pending</div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Test 1</td>
+                    <td> Jul 23 2024 </td>
+                    <td>Sep 23 2024 </td>
+                    
+                    <td>
+                      <div class="badge col-green">Active</div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Test 1</td>
+                    <td> Jul 23 2024 </td>
+                    <td>Sep 23 2024 </td>
+                    
+                    <td>
+                      <div class="badge col-green">Active</div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="selectedComponents['TRAINERS LIST']" class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <div class="card">
+          <div class="header">
+            <h2>Trainers List</h2>
+            <button mat-icon-button [matMenuTriggerFor]="menu" class="header-dropdown">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item>
+                <mat-icon>add_circle_outline</mat-icon>
+                <span>Add</span>
+              </button>
+              <button mat-menu-item disabled>
+                <mat-icon>delete_outline</mat-icon>
+                <span>Delete</span>
+              </button>
+              <button mat-menu-item>
+                <mat-icon>refresh</mat-icon>
+                <span>Refresh</span>
+              </button>
+            </mat-menu>
+          </div>
+          <div class="tableBody">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Teacher Name</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <div class="media-title"><a href="mailto:test@gmail.com"> Trainer
+                        </a></div>
+                    </td>
+                    <td>
+                      <div class="badge badge-solid-green">Active</div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="media-title"><a href="mailto:test@gmail.com"> Trainer 1
+                        </a></div>
+                    </td>
+                    <td>
+                      <div class="badge badge-solid-green">Active</div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="media-title"><a href="mailto:test@gmail.com"> Trainer 2
+                        </a></div>
+                    </td>
+                    <td>
+                      <div class="badge badge-solid-red">In-Active</div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="media-title"><a href="mailto:test@gmail.com"> Trainer 3
+                        </a></div>
+                    </td>
+                    <td>
+                      <div class="badge badge-solid-green">Active</div>
+                    </td>
+                  </tr>
+                  
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- </div> -->
+    <!-- <div class="row clearfix"> -->
+      <div *ngIf="selectedComponents['NEW TRAINEES LIST']" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="card">
+          <div class="header">
+            <h2>New Traines List</h2>
+            <button mat-icon-button [matMenuTriggerFor]="menu" class="header-dropdown">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item>
+                <mat-icon>add_circle_outline</mat-icon>
+                <span>Add</span>
+              </button>
+              <button mat-menu-item disabled>
+                <mat-icon>delete_outline</mat-icon>
+                <span>Delete</span>
+              </button>
+              <button mat-menu-item>
+                <mat-icon>refresh</mat-icon>
+                <span>Refresh</span>
+              </button>
+            </mat-menu>
+          </div>
+          <div class="tableBody">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Trainee Name</th>
+                    <th>Qualification</th>
+                    <th>Date Of Joining</th>
+                    <th>Mobile</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Tranine 23</td>
+                    <td>M.Com</td>
+                    <td>12-08-2019</td>
+                    <td>
+                      727290902389
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+<!-- </div> -->
