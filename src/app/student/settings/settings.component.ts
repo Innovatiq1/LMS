@@ -31,6 +31,11 @@ export class SettingsComponent {
   stdForm: UntypedFormGroup;
   stdForm1: UntypedFormGroup;
   profileForm: FormGroup;
+  dropdownVisible = false;
+  selectedDashboard!: string;
+  component!: string ;
+  selectedComponents: { [key: string]: boolean } = {};
+
   breadscrums = [
     {
       title: 'Settings',
@@ -38,6 +43,28 @@ export class SettingsComponent {
       active: 'Settings',
     },
   ];
+
+  Traineecomponents: string[] = [
+    "TOTAL TRAINEES",
+    'ALL COURSES',
+    'TOTAL TRAINERS',
+    "TRAINER SURVEY",
+    'USERS',
+    'CLASSES LIST',
+    'TRAINERS LIST',
+    'NEW TRAINEES LIST'
+  ];
+  TrainerComponents: string[] = [
+    "TRAINER LIST",
+    'UPCOMING COURSES',
+  ];
+
+  SupportComponents: string[] = [
+    "TOTAL TICKETS",
+    'RESOLVE',
+    'PENDING',
+  ];
+
   editData: any;
   studentId: any;
   hide = true;
@@ -201,6 +228,9 @@ export class SettingsComponent {
     this.dashboardsUrl = urlPath.includes('dashboards');
     this.studentDbUrl = urlPath.includes('student-dashboard');
 
+    this.Traineecomponents.forEach(component => {
+      this.selectedComponents[component] = false;
+    });
     const formURLs = [this.courseFormsUrl, this.programFormsUrl, this.usersFormsUrl, this.financeFormsUrl, this.bannerFormsUrl]
     if(formURLs.includes(true))
       this.customFormsUrl = false;
@@ -1306,7 +1336,17 @@ export class SettingsComponent {
       });
     }
   }
+  toggleDropdown() {
+    this.dropdownVisible = !this.dropdownVisible;
+  }
+  onDashboardSelectionChange(value: string) {
+    this.selectedDashboard = value;
+  }
 
+  updateVisibility() {
+    // This method can be used to perform additional actions when a checkbox is toggled
+    console.log(this.selectedComponents);
+  }
   onSelect(currencyCode: string, dialogRef: any) {
     dialogRef.close(currencyCode);
   }
