@@ -7,6 +7,15 @@
 // .sub-menu{
 //     margin-bottom: -15px;
 // }
+// .sub-menu-container {
+//     display: grid;
+//     grid-template-columns: repeat(4, 1fr);
+// }
+.sub-menu-container {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
 
 .sub{
     width: 50%;
@@ -45,3 +54,7 @@
     margin-right: 25px;
     margin-top: 20px;
     }
+    ::ng-deep .mat-mdc-tab-body-content{
+        overflow-x: auto !important;
+      }
+      

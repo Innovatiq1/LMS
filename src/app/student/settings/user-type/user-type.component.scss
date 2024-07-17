@@ -76,5 +76,5 @@ svg {
     margin-right: 5px; // Space between dot and text
   }
   ::ng-deep .mat-mdc-tab-body-content{
-    overflow-x: hidden !important;
+    overflow-x: auto !important;
   }  
