@@ -14,6 +14,7 @@ import { TableElement, TableExportUtil } from '@shared';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { AdminService } from '@core/service/admin.service';
+import { AuthenService } from '@core/service/authen.service';
 
 @Component({
   selector: 'app-course-kit',
@@ -49,6 +50,10 @@ export class CourseKitComponent implements OnInit{
   currentDate: Date;
   searchTerm: string = '';
   actionItems: any[] = [];
+  create = false;
+  edit = false;
+  view = false;
+  delete =false;
 
   constructor(
     private router: Router,
@@ -57,7 +62,8 @@ export class CourseKitComponent implements OnInit{
     private snackBar: MatSnackBar,
     private courseService: CourseService,
     private modalServices: BsModalService,
-    private adminService: AdminService
+    private adminService: AdminService,
+    private authenService: AuthenService
   ) {
     this.currentDate = new Date();
     this.courseKitModel = {};
@@ -70,6 +76,31 @@ export class CourseKitComponent implements OnInit{
   @ViewChild('filter', { static: true }) filter!: ElementRef;
 
   ngOnInit(){
+    const roleDetails =this.authenService.getRoleDetails()[0].menuItems
+    let urlPath = this.router.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}`;
+    const childId =  urlPath[urlPath.length - 1];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let actions = childData[0].actions
+    let createAction = actions.filter((item:any) => item.title == 'Create')
+    let editAction = actions.filter((item:any) => item.title == 'Edit')
+    let viewAction = actions.filter((item:any) => item.title == 'View')
+    let deleteAction = actions.filter((item:any) => item.title == 'Delete')
+
+    if(createAction.length > 0){
+      this.create = true
+    }
+    if(editAction.length > 0){
+      this.edit = true;
+    }
+    if(viewAction.length >0){
+      this.view = true;
+    }
+    if(deleteAction.length >0){
+      this.delete = true;
+    }
+
     this.fetchCourseKits();
     this.getJobTemplates();
   }

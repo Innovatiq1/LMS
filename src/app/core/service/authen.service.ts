@@ -130,6 +130,16 @@ export class AuthenService {
     localStorage.setItem('user_type',info.user.type);
 
 }
+
+getRoleDetails() {
+  return JSON.parse(localStorage.getItem('roleDetails')||'{}');
+}
+
+saveRoleDetails(data:any) {
+  localStorage.setItem('roleDetails', JSON.stringify(data));
+
+}
+
 private userProfile: any = {
 
   // Initialize with default user data

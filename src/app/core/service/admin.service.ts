@@ -153,7 +153,7 @@ export class AdminService {
     return menuItems?.menuItems || []
   }
 
-  private filterById(id: string, data: any[]): any {
+  public filterById(id: string, data: any[]): any {
     if(!data){
       return null
     }
