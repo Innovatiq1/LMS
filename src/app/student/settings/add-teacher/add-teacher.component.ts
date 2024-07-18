@@ -226,7 +226,7 @@ export class AddTeacherComponent {
             //this.fileDropEl.nativeElement.value = "";
           this.proForm.reset();
           //this.toggleList()
-          this.router.navigateByUrl('/student/settings/all-instructors');
+          this.router.navigateByUrl('/student/settings/all-user/all-instructors');
           },
           (error) => {
             Swal.fire(
