@@ -92,7 +92,9 @@ export class ViewCompletionComponent {
         this.classService
       .getSessionCompletedStudent(userId,this.studentPaginationModel.page, this.studentPaginationModel.limit)
       .subscribe((response: { docs: any; page: any; limit: any; totalDocs: any; }) => {
+        console.log("studentClasses==",response)
         this.completedData = response.docs;
+
       })
   }
   getCategories(id: string): void {
@@ -253,6 +255,7 @@ export class ViewCompletionComponent {
   }
 
   assignExam() {
+    console.log("getting the response dddd=",this.response._id)
     Swal.fire({
       title: 'Are you sure?',
       text: 'Do you want to assign Exam!',
@@ -269,6 +272,8 @@ export class ViewCompletionComponent {
   }
 
   addEmptyRecord(){
+    console.log("getting the response dddd=",this.response._id)
+    const studentClassId=this.response._id;
     const studentId = this.response.studentId._id;
     const examAssessmentId = this.response.courseId.exam_assessment;
     const assessmentAnswerId = this.response.assessmentAnswer._id;
@@ -277,6 +282,7 @@ export class ViewCompletionComponent {
       studentId,
       examAssessmentId,
       assessmentAnswerId,
+      studentClassId,
       courseId
     };
 

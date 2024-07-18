@@ -119,6 +119,13 @@ import { ApiResponse } from '@core/models/general.response';
       });
     }
 
+    getAssignedExamAnswersByStudentId(studentId:any, filter?: Partial<AssessmentQuestionsPaginationModel>): Observable<ApiResponse> {
+      const apiUrl = `${this.defaultUrl}admin/exam-assesment-answers/assignedExams/v2?studentId=${studentId}`;
+      return this.http.get<any>(apiUrl, {
+        params: this.buildParams(filter),
+      });
+    }
+
     assignExamAssessment(data: any): Observable<ApiResponse> {
       const apiUrl = this.defaultUrl + 'admin/exam-assesment-answers/assignedExams';
       return this.http.post<ApiResponse>(apiUrl, data).pipe(
