@@ -189,6 +189,7 @@ export class CreateAllUsersComponent {
       formObj['companyId'] = user.user.companyId;
       formObj['users'] = user.user.users;
       formObj['courses'] = user.user.courses;
+      formObj['attemptBlock'] = false;
 
       const userData: Users = formObj;
       userData.avatar = this.avatar;
@@ -225,7 +226,7 @@ export class CreateAllUsersComponent {
         //this.fileDropEl.nativeElement.value = "";
         this.userForm.reset();
         //this.toggleList()
-        this.router.navigateByUrl('/student/settings/all-users');
+        this.router.navigateByUrl('/student/settings/all-user/all-users');
       },
       (error) => {
         Swal.fire(
@@ -377,7 +378,7 @@ export class CreateAllUsersComponent {
           }).then(() => {
             resolve(response);
           });
-          this.router.navigate(['/student/settings/all-users']);
+          this.router.navigate(['/student/settings/all-user/all-users']);
         },
         (error) => {
           this.isLoading = false;

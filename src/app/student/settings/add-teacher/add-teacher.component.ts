@@ -152,7 +152,7 @@ export class AddTeacherComponent {
     console.log('Form Value', this.proForm.value);
     let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     if (!this.proForm.invalid) {
-        const userData: Users = this.proForm.value;
+        const userData: any = this.proForm.value;
         
         // Set the avatar path to the URL received during file upload
         userData.avatar = this.avatar;
@@ -166,7 +166,8 @@ export class AddTeacherComponent {
         userData.companyId = user.user.companyId;
         userData.users = user.user.users;
         userData.courses = user.user.courses;
-        
+        userData.attemptBlock =  false;
+
 
         this.createInstructor(userData);
     }else{
