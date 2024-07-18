@@ -90,19 +90,19 @@
                  <!-- Course Name -->
                 <ng-container matColumnDef="Course">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Course Kit</mat-header-cell>
-                  <mat-cell *matCellDef="let row" class="name" [routerLink]="checkActionAccess('view')?['/admin/courses/view-course-kit/',row.id]:null">
+                  <mat-cell *matCellDef="let row" class="name" [routerLink]="view?['/admin/courses/course-kit/',row.id]:null">
                     <span class="mobile-label">Course Name:</span>{{row.name}}</mat-cell>
                 </ng-container>
                 <!-- Short Description -->
                 <ng-container matColumnDef="Short Description">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Short Description</mat-header-cell>
-                  <mat-cell *matCellDef="let row" [routerLink]="view?['/admin/courses/view-course-kit/',row.id]:null">
+                  <mat-cell *matCellDef="let row" [routerLink]="view?['/admin/courses/course-kit/',row.id]:null">
                     <span class="mobile-label">Short Description:</span>{{row.shortDescription}}</mat-cell>
                 </ng-container>
                  <!-- Long Description -->
                  <ng-container matColumnDef="Long Description">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Long Description</mat-header-cell>
-                  <mat-cell *matCellDef="let row" [routerLink]="checkActionAccess('view')?['/admin/courses/view-course-kit/',row.id]:null">
+                  <mat-cell *matCellDef="let row" [routerLink]="view?['/admin/courses/course-kit/',row.id]:null">
                     <span class="mobile-label">Long Description:</span>{{row.longDescription}}</mat-cell>
                 </ng-container>
                 <!-- Video Link -->
@@ -127,7 +127,7 @@
                 <!-- Document Link -->
                 <ng-container matColumnDef="Document Link">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Document Link</mat-header-cell>
-                  <mat-cell *matCellDef="let row" [routerLink]="checkActionAccess('view')?['/admin/courses/view-course-kit/',row.id]:null">
+                  <mat-cell *matCellDef="let row" [routerLink]="view?['/admin/courses/course-kit/',row.id]:null">
                     <span class="mobile-label">Document Link:</span><a *ngFor="let doc of row.videoLink; let i = index" href="{{doc.document}}" target="_blank" class="dl-container">{{doc.doc_filename |filename |truncate:10}}</a></mat-cell>
                 </ng-container>
                 <!-- actions -->

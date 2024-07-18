@@ -110,7 +110,7 @@ const routes: Routes = [
     component: CreateTemplateComponent,
   },
   {
-    path: 'view-course-kit/:id',
+    path: 'course-kit/:id',
     component: ViewCourseKitComponent,
   },
   {

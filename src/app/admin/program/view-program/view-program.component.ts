@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import { BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { VideoPlayerComponent } from 'app/admin/courses/course-kit/video-player/video-player.component';
+import { AuthenService } from '@core/service/authen.service';
 
 
 @Component({
@@ -30,9 +31,11 @@ export class ViewProgramComponent {
   image: any;
   status: string = '';
   button: boolean = false;
+  edit = false;
+  isDelete = false;
   constructor(private courseService: CourseService, private activatedRoute: ActivatedRoute,
     private router: Router, private classService: ClassService, 
-    private modalServices: BsModalService,
+    private modalServices: BsModalService, private authenService: AuthenService
   ) {
     // constructor
 
@@ -92,6 +95,24 @@ export class ViewProgramComponent {
   }
 
   ngOnInit() {
+    const roleDetails =this.authenService.getRoleDetails()[0].menuItems
+    let urlPath = this.router.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}`;
+    const childId =  urlPath[urlPath.length - 3];
+    const subChildId =  urlPath[urlPath.length - 2];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let subChildData = childData[0].children.filter((item: any) => item.id == subChildId);
+    let actions = subChildData[0].actions
+
+    let editAction = actions.filter((item:any) => item.title == 'Edit')
+    let deleteAction = actions.filter((item:any) => item.title == 'Delete')
+    if(editAction.length >0){
+      this.edit = true;
+    }
+    if(deleteAction.length >0){
+      this.isDelete = true;
+    }
     if(this.status === 'active') { 
       this.getProgramLists();
     } else if(this.status === 'pending') {

@@ -6,6 +6,7 @@ import { VideoPlayerComponent } from '../video-player/video-player.component';
 import { BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import Swal from 'sweetalert2';
 import { AdminService } from '@core/service/admin.service';
+import { AuthenService } from '@core/service/authen.service';
 
 @Component({
   selector: 'app-view-course-kit',
@@ -30,14 +31,16 @@ export class ViewCourseKitComponent {
   templates: any[] = [];
   course: any;
   actionItems: any[] = [];
-
+  edit = false;
+  delete =false;
 
   constructor(
     private _router: Router,
     private courseService: CourseService,
     private activatedRoute: ActivatedRoute,
     private modalServices: BsModalService,
-    private adminService: AdminService
+    private adminService: AdminService,
+    private authenService: AuthenService
   ) {
     this.currentDate = new Date();
     this.courseKitModel = {};
@@ -56,6 +59,23 @@ export class ViewCourseKitComponent {
   }
 
   ngOnInit(){
+    const roleDetails =this.authenService.getRoleDetails()[0].menuItems
+    let urlPath = this._router.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}`;
+    const childId =  urlPath[urlPath.length - 2];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let actions = childData[0].actions
+    let editAction = actions.filter((item:any) => item.title == 'Edit')
+    let deleteAction = actions.filter((item:any) => item.title == 'Delete')
+    
+    if(editAction.length > 0){
+      this.edit = true;
+    }
+    if(deleteAction.length >0){
+      this.delete = true;
+    }
+
     this.fetchCourseKits();
     this.getJobTemplates();
     if (this.courseId) {

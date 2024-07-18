@@ -85,32 +85,32 @@
                                 <ng-container matColumnDef="Student Name">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header>{{commonRoles.STUDENT_ROLE}}
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let row" class="name" [routerLink]="['/admin/program/view-pending-program/',row.id]">
+                                    <mat-cell *matCellDef="let row" class="name" [routerLink]="view ? ['/admin/program/student-program/pending-program/view-pending-program/',row.id] : null">
                                         <span class="mobile-label">Student Name:</span>{{row.student_name |
                                         capitalizeFirstLetter }} </mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="Program Name">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header>Program</mat-header-cell>
-                                    <mat-cell *matCellDef="let row" [routerLink]="['/admin/program/view-pending-program/',row.id]">
+                                    <mat-cell *matCellDef="let row" [routerLink]="view ? ['/admin/program/student-program/pending-program/view-pending-program/',row.id] : null">
                                         <span class="mobile-label">Program Name:</span> {{row.programTitle |
                                         capitalizeFirstLetter}}</mat-cell>
                                 </ng-container>
                                 <!-- Student Name -->
                                 <ng-container matColumnDef="Program-Fee">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header>Program Fee</mat-header-cell>
-                                    <mat-cell *matCellDef="let row" [routerLink]="['/admin/program/view-pending-program/',row.id]">
+                                    <mat-cell *matCellDef="let row" [routerLink]="view ? ['/admin/program/student-program/pending-program/view-pending-program/',row.id] : null">
                                         <span class="mobile-label">Program Fee:</span><span >$</span> {{row.classId.courseId.courseFee||0}}.00</mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="Instructor-Fee">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header>{{commonRoles?.INSTRUCTOR_ROLE}} Fee</mat-header-cell>
-                                    <mat-cell *matCellDef="let row" [routerLink]="['/admin/program/view-pending-program/',row.id]">
+                                    <mat-cell *matCellDef="let row" [routerLink]="view ? ['/admin/program/student-program/pending-program/view-pending-program/',row.id] : null">
                                         <span class="mobile-label">Instructor Fee:</span><span >$</span> {{row.classId.instructorCost||0 }}.00</mat-cell>
                                 </ng-container>
                                 <!-- Class Start Date -->
                                 <ng-container matColumnDef="Class Start Date">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header>Start Date
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let row" [routerLink]="['/admin/program/view-pending-program/',row.id]">
+                                    <mat-cell *matCellDef="let row" [routerLink]="view ? ['/admin/program/student-program/pending-program/view-pending-program/',row.id] : null">
                                         <span class="mobile-label">Class Start Date:</span>{{row?.classId?.sessions[0]?.sessionStartDate |
                                         date}}</mat-cell>
                                 </ng-container>
@@ -118,7 +118,7 @@
                                 <ng-container matColumnDef="Class End Date">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header>End Date
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let row" [routerLink]="['/admin/program/view-pending-program/',row.id]">
+                                    <mat-cell *matCellDef="let row" [routerLink]="view ? ['/admin/program/student-program/pending-program/view-pending-program/',row.id] : null">
                                         <span class="mobile-label">Class End Date:</span>{{row?.classId?.sessions[0]?.sessionEndDate  |
                                         date}}</mat-cell>
                                 </ng-container>
@@ -126,12 +126,12 @@
                                 <ng-container matColumnDef="Registered Date">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header>Registered Date
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let row" [routerLink]="['/admin/program/view-pending-program/',row.id]">
+                                    <mat-cell *matCellDef="let row" [routerLink]="view ? ['/admin/program/student-program/pending-program/view-pending-program/',row.id] : null">
                                         <span class="mobile-label">Fees:</span>{{row.registeredOn | date}}</mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="status">
                                     <mat-header-cell *matHeaderCellDef class="pr-0">Status</mat-header-cell>
-                                    <mat-cell *matCellDef="let row" class="pr-0" [routerLink]="['/admin/program/view-pending-program/',row.id]">
+                                    <mat-cell *matCellDef="let row" class="pr-0" [routerLink]="view ? ['/admin/program/student-program/pending-program/view-pending-program/',row.id] : null">
                                       <span
                                         [class]="row?.status === 'approved' ? 'badge badge-solid-green' : row?.status === 'registered' ? 'badge badge-solid-red' : ''">
                                         <span

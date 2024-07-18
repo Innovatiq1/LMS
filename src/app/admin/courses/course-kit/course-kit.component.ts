@@ -51,9 +51,7 @@ export class CourseKitComponent implements OnInit{
   searchTerm: string = '';
   actionItems: any[] = [];
   create = false;
-  edit = false;
   view = false;
-  delete =false;
 
   constructor(
     private router: Router,
@@ -84,21 +82,13 @@ export class CourseKitComponent implements OnInit{
     let childData = parentData[0].children.filter((item: any) => item.id == childId);
     let actions = childData[0].actions
     let createAction = actions.filter((item:any) => item.title == 'Create')
-    let editAction = actions.filter((item:any) => item.title == 'Edit')
     let viewAction = actions.filter((item:any) => item.title == 'View')
-    let deleteAction = actions.filter((item:any) => item.title == 'Delete')
 
     if(createAction.length > 0){
       this.create = true
     }
-    if(editAction.length > 0){
-      this.edit = true;
-    }
     if(viewAction.length >0){
       this.view = true;
-    }
-    if(deleteAction.length >0){
-      this.delete = true;
     }
 
     this.fetchCourseKits();

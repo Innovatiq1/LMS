@@ -21,6 +21,7 @@ import { forkJoin } from 'rxjs';
 import { UserService } from '@core/service/user.service';
 import { DatePipe } from '@core/service/date.pipe';
 import { formatDate } from '@angular/common';
+import { AuthenService } from '@core/service/authen.service';
 
 @Component({
   selector: 'app-program-list',
@@ -89,6 +90,8 @@ export class ProgramListComponent {
 
 row: any;
   programsData: any;
+  create = false;
+  view = false;
 
   constructor(
   
@@ -100,7 +103,8 @@ row: any;
     private route :Router,
     private dialog: MatDialog,
     private fb: FormBuilder,
-    private userService: UserService
+    private userService: UserService,
+    private authenService: AuthenService
   ) { this.coursePaginationModel = {};
   let urlPath = this.route.url.split('/')
   // this.editUrl = urlPath.includes('edit-program');
@@ -320,6 +324,24 @@ getFilterData(filters?: any) {
   }
 
   ngOnInit(): void {
+    const roleDetails =this.authenService.getRoleDetails()[0].menuItems
+    let urlPath = this.route.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}`;
+    const childId =  urlPath[urlPath.length - 2];
+    const subChildId =  urlPath[urlPath.length - 1];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let subChildData = childData[0].children.filter((item: any) => item.id == subChildId);
+    let actions = subChildData[0].actions
+    let createAction = actions.filter((item:any) => item.title == 'Create')
+    let viewAction = actions.filter((item:any) => item.title == 'View')
+
+    if(createAction.length > 0){
+      this.create = true
+    }
+    if(viewAction.length >0){
+      this.view = true;
+    }
     this.getProgramList();
     this.getFilterData();
     this.getAllVendorsAndUsers();

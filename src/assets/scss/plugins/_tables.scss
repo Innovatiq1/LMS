@@ -948,3 +948,6 @@ mat-cell > span.truncate-text {
   justify-content: flex-end;
   padding-right: 50px !important;
 }
+::ng-deep .mat-mdc-tab-body-content{
+  overflow-x: hidden !important;
+}

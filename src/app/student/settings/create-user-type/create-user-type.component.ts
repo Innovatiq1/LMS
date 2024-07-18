@@ -403,7 +403,6 @@ console.log("form", formData)
         res = {
           ...res,
           children,
-          actions,
           isAction: false,
         };
         res.children = res.children.map((c: any) => ({
