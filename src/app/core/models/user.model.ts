@@ -255,4 +255,5 @@ export interface Student {
       checked: boolean;
       indeterminate: boolean;
       iconsrc: string;
+      actions: MenuItemModel[];
     }

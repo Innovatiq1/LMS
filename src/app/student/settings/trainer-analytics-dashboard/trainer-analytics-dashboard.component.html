@@ -1,0 +1,73 @@
+<div class="dashboard">
+    <div class="row clearfix">
+      <div *ngIf="selectedComponents['TRAINER LIST']" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="card">
+          <div class="header">
+            <h2>Class List</h2>
+            <button mat-icon-button [matMenuTriggerFor]="menu" class="header-dropdown">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item>
+                <mat-icon>add_circle_outline</mat-icon>
+                <span>Add</span>
+              </button>
+              <button mat-menu-item disabled>
+                <mat-icon>delete_outline</mat-icon>
+                <span>Delete</span>
+              </button>
+              <button mat-menu-item>
+                <mat-icon>refresh</mat-icon>
+                <span>Refresh</span>
+              </button>
+            </mat-menu>
+          </div>
+          <div class="tableBody">
+            <div class="table-responsive">
+              <table class="table table-hover ">
+                <thead>
+                  <tr>
+                    <th>Trainer Name</th>
+                    <th>Department</th>
+                    <th>Gender</th>
+                    <th>Degree </th>
+                    <th>Email </th>
+                    <th>Mobile </th>
+                    <th>Joining Date </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Test 1</td>
+                    <td> IT </td>
+                    <td>MAle</td>
+                    <td><div class="badge col-green">Active</div></td>
+                    <td>test@example.com</td>
+                    <td>9876543210</td>
+                    <td>Sep 23 2024 </td>
+                    
+                  </tr>
+                  
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div *ngIf="selectedComponents['UPCOMING COURSES']" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="card">
+            <div class="header mt-3">
+              <h2>Upcoming Courses</h2>
+            </div>
+            <div class="body">
+              <div class="card-block">
+                <div class="text-center">
+                  <button mat-stroked-button [routerLink]="['/admin/program/program-list']" color="primary">View More</button>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+</div>

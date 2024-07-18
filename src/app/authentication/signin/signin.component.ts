@@ -355,6 +355,17 @@ export class SigninComponent
             this.loading = false;
           }, 100);
           this.authenticationService.saveUserInfo(user);
+                    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+                    this.adminService.getUserTypeList({ allRows: true },userId).subscribe(
+                      (response: any) => {
+                        let userType = localStorage.getItem('user_type');
+                        let data = response.filter((item: any) => item.typeName === userType);
+                
+                        this.authenticationService.saveRoleDetails(data);
+          
+                      })
+                
+          
         },
         (error) => {
           this.isLoading = false;

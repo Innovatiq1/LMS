@@ -18,7 +18,7 @@
     !showConfig &&
     !showForms &&
     !showSidemenu &&
-    !showSettingsSidemenu&&
+    !showSettingsSidemenu &&
     !showStudentDb &&
     !showCourseForms &&
     !showProgramForms &&
@@ -333,7 +333,7 @@
         !showConfig &&
         !showForms &&
         !showSidemenu &&
-        !showSettingsSidemenu&&
+        !showSettingsSidemenu &&
         !showStudentDb &&
         !showCourseForms &&
         !showProgramForms &&
@@ -1509,14 +1509,14 @@
       <div class="body">
         <div class="row px-4 py-4">
           <div class="col-md-6 banner">
-            <button id="saved" [routerLink]="['/student/settings/all-user/all-users']">
+            <button id="saved" [routerLink]="['/student/settings/all-users']">
               All Users
             </button>
           </div>
           <div class="col-md-5">
             <button
               id="saved"
-              [routerLink]="['/student/settings/all-user/all-students']"
+              [routerLink]="['/student/settings/all-students']"
             >
             {{commonRoles.STUDENT_ROLE}}s
             </button>
@@ -1526,13 +1526,13 @@
           <div class="col-md-6 banner">
             <button
               id="saved"
-              [routerLink]="['/student/settings/all-user/all-instructors']"
+              [routerLink]="['/student/settings/all-instructors']"
             >
             {{commonRoles?.INSTRUCTOR_ROLE}}s
             </button>
           </div>
           <div class="col-md-5">
-            <button id="saved" [routerLink]="['/student/settings/all-user/all-staff']">
+            <button id="saved" [routerLink]="['/student/settings/all-staff']">
               Staff
             </button>
           </div>
@@ -1575,27 +1575,27 @@
           <div class="col-md-6 banner">
             <button
               id="saved"
-              [routerLink]="['/student/settings/integration/3rd-party-integrations']"
+              [routerLink]="['/student/settings/3rd-party-integrations']"
             >
               Third Party Integration
             </button>
           </div>
           <div class="col-md-5">
-            <button id="saved" [routerLink]="['/student/settings/integration/smtp']">
+            <button id="saved" [routerLink]="['/student/settings/smtp']">
               SMTP
             </button>
           </div>
         </div>
         <div class="row px-4 py-4">
           <div class="col-md-6 banner">
-            <button id="saved" [routerLink]="['/student/settings/integration/singpass']">
+            <button id="saved" [routerLink]="['/student/settings/singpass']">
               SingPass
             </button>
           </div>
           <div class="col-md-5">
             <button
               id="saved"
-              [routerLink]="['/student/settings/integration/payment-gateway']"
+              [routerLink]="['/student/settings/payment-gateway']"
             >
               Payment Gateway
             </button>
@@ -1629,7 +1629,7 @@
           <div class="col-md-6 banner">
             <button
               id="saved"
-              [routerLink]="['/student/settings/automation/announcement']"
+              [routerLink]="['/student/settings/announcement']"
             >
               Announcement
             </button>
@@ -1642,7 +1642,7 @@
           <div class="col-md-6 banner">
             <button
               id="saved"
-              [routerLink]="['/student/settings/automation/approval-workflow']"
+              [routerLink]="['/student/settings/approval-workflow']"
             >
               Approval Workflow
             </button>
@@ -1652,7 +1652,7 @@
     </div>
     <div
       class="card"
-      style="margin: auto; height: 400px; width: 65%"
+      style="margin: auto; height: 350px; width: 65%"
       *ngIf="showCustoms"
     >
       <div class="row">
@@ -1669,75 +1669,60 @@
       <div class="body">
         <div class="row px-4" *ngIf="role ==commonRoles.ADMIN_USERTYPE || commonRoles.ADMIN_ROLE ">
           <div class="col-md-6 banner">
-            <button id="saved" [routerLink]="['/student/settings/customize/sidemenu']">
+            <button id="saved" [routerLink]="['/student/settings/sidemenu']">
               Sidemenu
             </button>
           </div>
           <div class="col-md-5">
-            <button id="saved" [routerLink]="['/student/settings/customize/settings-sidemenu']">
-              Settings Sidemenu
-            </button>
-          </div>
-          
-        </div>
-        <div class="row px-4 py-4" *ngIf="role == commonRoles.ADMIN_USERTYPE || commonRoles.ADMIN_ROLE ">
-          <div class="col-md-6 banner">
             <button id="saved" (click)="navigateToCustomFormsSettings()">
               Forms
             </button>
-          
+          </div>
+        </div>
+        <div class="row px-4 py-4" *ngIf="role == commonRoles.ADMIN_USERTYPE || commonRoles.ADMIN_ROLE ">
+          <div class="col-md-6 banner">
+            <button
+              id="saved"
+              [routerLink]="['/student/settings/certificate/template']"
+            >
+              Certificates
+            </button>
           </div>
           <div class="col-md-5">
-            <button
-            id="saved"
-            [routerLink]="['/student/settings/customize/certificate/template']"
-          >
-            Certificates
-          </button>
-           
+            <button id="saved" (click)="navigateToBannerSettings()">
+              Banners
+            </button>
           </div>
         </div>
         <div class="row px-4">
           <div class="col-md-6 banner">
-            <button id="saved" (click)="navigateToBannerSettings()">
-              Banners
+            <button
+              id="saved"
+              [routerLink]="['/student/settings/create-feedback']"
+            >
+              Survey
             </button>
-           
           </div>
           <div class="col-md-5" *ngIf="role == commonRoles.ADMIN_USERTYPE || commonRoles.ADMIN_ROLE ">
             <button
-            id="saved"
-            [routerLink]="['/student/settings/customize/create-feedback']"
-          >
-            Survey
-          </button>
-           
+              id="saved"
+              routerLink="/student/settings/logo-customization"
+            >
+              Logo
+            </button>
           </div>
         </div>
         <div class="row px-4 py-4" *ngIf="role == commonRoles.ADMIN_USERTYPE || commonRoles.ADMIN_ROLE ">
           <div class="col-md-6 banner">
-            <button
-            id="saved"
-            routerLink="/student/settings/customize/logo-customization"
-          >
-            Logo
-          </button>
-           
-          </div>
-          <div class="col-md-5" *ngIf="role == commonRoles.ADMIN_USERTYPE || commonRoles.ADMIN_ROLE ">
             <button id="saved" (click)="navigateToEmailSettings()">
               Email Templates
             </button>
           </div>
-        </div>
-        <div class="row px-4" *ngIf="role == commonRoles.ADMIN_USERTYPE || commonRoles.ADMIN_ROLE ">
-          <div class="col-md-6 banner">
-          <button id="saved" (click)="navigateToStudentDbSettings()">
-            Dashboards
-          </button>
-           
+          <div class="col-md-5" *ngIf="role == commonRoles.ADMIN_USERTYPE || commonRoles.ADMIN_ROLE ">
+            <button id="saved" (click)="navigateToStudentDbSettings()">
+              Dashboards
+            </button>
           </div>
-        
         </div>
       </div>
     </div>
@@ -1829,7 +1814,7 @@
             <button
               id="saved"
               [routerLink]="[
-                '/student/settings/customize/customization-forms',
+                '/student/settings/customization-forms',
                 'create-announcement'
               ]"
             >
@@ -1986,7 +1971,7 @@
           <button
             mat-raised-button
             id="back"
-            [routerLink]="['/student/settings/customize/customization-forms']"
+            [routerLink]="['/student/settings/customization-forms']"
           >
             Back
           </button>
@@ -2035,7 +2020,7 @@
           <button
             mat-raised-button
             id="back"
-            [routerLink]="['/student/settings/customize/customization-forms']"
+            [routerLink]="['/student/settings/customization-forms']"
           >
             Back
           </button>
@@ -2094,7 +2079,7 @@
           <button
             mat-raised-button
             id="back"
-            [routerLink]="['/student/settings/customize/customization-forms']"
+            [routerLink]="['/student/settings/customization-forms']"
           >
             Back
           </button>
@@ -2145,7 +2130,7 @@
           <button
             mat-raised-button
             id="back"
-            [routerLink]="['/student/settings/customize/customization-forms']"
+            [routerLink]="['/student/settings/customization-forms']"
           >
             Back
           </button>
@@ -2194,7 +2179,7 @@
           <button
             mat-raised-button
             id="back"
-            [routerLink]="['/student/settings/customize/customization-forms']"
+            [routerLink]="['/student/settings/customization-forms']"
           >
             Back
           </button>
@@ -2356,7 +2341,7 @@
           <button
             mat-raised-button
             id="back"
-            [routerLink]="['/student/settings/config']"
+            [routerLink]="['/student/settings/configuration']"
           >
             Back
           </button>
@@ -2382,7 +2367,7 @@
       <div class="body">
         <div class="row px-4 py-4">
           <div class="col-md-6 banner">
-            <button id="saved" [routerLink]="['/student/settings/configuration/categories']">
+            <button id="saved" [routerLink]="['/student/settings/categories']">
               Categories
             </button>
           </div>
@@ -2393,14 +2378,14 @@
         </div>
         <div class="row px-4">
           <div class="col-md-6 banner">
-            <button id="saved" [routerLink]="['/student/settings/configuration/vendor']">
+            <button id="saved" [routerLink]="['/student/settings/vendor']">
               Vendor
             </button>
           </div>
           <div class="col-md-5">
             <button
               id="saved"
-              [routerLink]="['/student/settings/configuration/funding-grant']"
+              [routerLink]="['/student/settings/funding-grant']"
             >
               Funding/Grant
             </button>
@@ -2410,7 +2395,7 @@
           <div class="col-md-6 banner">
             <button
               id="saved"
-              [routerLink]="['/student/settings/configuration/all-questions']"
+              [routerLink]="['/student/settings/all-questions']"
             >
               Assessment Configuration
             </button>
@@ -2476,13 +2461,13 @@
           <div class="col-md-6 banner">
             <button
               id="saved"
-              [routerLink]="['/student/settings/configuration/passing-criteria']"            >
+              [routerLink]="['/student/settings/passing-criteria']"            >
               Passing Criteria
             </button>
           </div>
           <div class="col-md-5">
             <button
-              id="saved" [routerLink]="['/student/settings/configuration/discount']"
+              id="saved" [routerLink]="['/student/settings/discount']"
             >
               Discount
             </button>
@@ -2571,49 +2556,149 @@
       </div>
     </div>
     <div *ngIf="showStudentDb">
-      <div class="content-block">
-        <div class="row clearfix">
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <div class="card">
-              <div class="header">
-                <h2>Dashboard Customization</h2>
-              </div>
-              <div class="body">
-                <div class="row">
-                  <!-- Logo List section -->
-                  <div class="col-md-4">
-                    <ul
-                      class="list-unstyled user-progress list-unstyled-border list-unstyled-noborder"
-                      *ngFor="let row of studentDb"
-                    >
-                      <li
-                        class="lecture-list cursor-pointer"
-                        [routerLink]="[
-                          '/student/settings/student-dashboard',
-                          row.id
-                        ]"
+      <mat-tab-group>
+        <mat-tab label="First">
+          <div class="content-block">
+          <div class="row clearfix">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <div class="card">
+                <div class="header">
+                  <h2>Dashboard Customization</h2>
+                </div>
+                <div class="body">
+                  <div class="row">
+                    <!-- Logo List section -->
+                    <div class="col-md-4">
+                      <ul
+                        class="list-unstyled user-progress list-unstyled-border list-unstyled-noborder"
+                        *ngFor="let row of studentDb"
                       >
-                        <div class="set-flex">
-                          <div class="media-title font-20">
-                            {{ row.dashboard }}
-                          </div>
-                        </div>
-                        <div class="ms-auto">
-                          <div class="container">
-                            <div class="checkmark checkmark--inverted">
-                              <div class="check"></div>
+                        <li
+                          class="lecture-list cursor-pointer"
+                          [routerLink]="[
+                            '/student/settings/student-dashboard',
+                            row.id
+                          ]"
+                        >
+                          <div class="set-flex">
+                            <div class="media-title font-20">
+                              {{ row.dashboard }}
                             </div>
                           </div>
-                        </div>
-                      </li>
-                    </ul>
+                          <div class="ms-auto">
+                            <div class="container">
+                              <div class="checkmark checkmark--inverted">
+                                <div class="check"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </div> 
+      </mat-tab>
+      <mat-tab label="Second">
+        <div class="content-block">
+              <div class="card" style="min-height: 745px;">
+                <div class="header">
+                  <h2>Dashboard Customization</h2>
+                </div>
+                <div class="body">
+                  <div class="row">
+                    <div class="col-3">
+                      <div class="dashboard">
+                        <div class="d-flex justify-content-between" (click)="toggleDropdown()">
+                          <div class="dashboard-icon">
+                            <h6 >Dashboard </h6>
+                          </div>
+                          <div >
+                            <i class="material-icons">{{ dropdownVisible ? 'keyboard_arrow_down' : 'keyboard_arrow_right' }}</i>
+                          </div>
+                        </div>
+
+                        <!-- <h6 (click)="toggleDropdown()">Dashboard   <i class="material-icons">{{ dropdownVisible ? 'keyboard_arrow_down' : 'keyboard_arrow_right' }}</i>
+                        </h6> -->
+                       
+                        <div *ngIf="dropdownVisible">
+                          <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Select Dashboard</mat-label>
+                            <mat-select (selectionChange)="onDashboardSelectionChange($event.value)">
+                              <mat-option value="Trainee Analytics">Trainee Analytics</mat-option>
+                              <mat-option value="Trainer Analytics">Trainer Analytics</mat-option>
+                              <mat-option value="Support">Support</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                          <div [ngSwitch]="selectedDashboard">
+                            <div *ngSwitchCase="'Trainee Analytics'">
+                              <h6>Select Component</h6>
+                                <div *ngFor="let component of Traineecomponents">
+                                  <mat-checkbox
+                                  class="example-margin"
+                                  [(ngModel)]="selectedComponents[component]"
+                                  (change)="updateVisibility()"
+                                >
+                                  <p class="menu mb-0">{{ component }}</p>
+                                </mat-checkbox>
+                                </div>
+                            </div>
+                            <div *ngSwitchCase="'Trainer Analytics'">
+                              <h6>Select Component</h6>
+                                <div *ngFor="let component of TrainerComponents" >
+                                  <mat-checkbox
+                                  class="example-margin"
+                                  [(ngModel)]="selectedComponents[component]"
+                                  (change)="updateVisibility()"
+                                >
+                                  <p class="menu mb-0">{{ component }}</p>
+                                </mat-checkbox>
+                                </div>
+                            </div>
+                            <div *ngSwitchCase="'Support'">
+                              <h6>Select Component</h6>
+                                <div *ngFor="let component of SupportComponents" >
+                                  <mat-checkbox
+                                  class="example-margin"
+                                  [(ngModel)]="selectedComponents[component]"
+                                  (change)="updateVisibility()"
+                                >
+                                  <p class="menu mb-0">{{ component }}</p>
+                                </mat-checkbox>
+                                </div>
+                            </div>
+                            <div *ngSwitchDefault>
+                            </div>
+                          </div>
+                        </div>
+                        <hr>
+                      </div>
+                    </div>
+                    <div class="col-9">
+                      <div [ngSwitch]="selectedDashboard">
+                        <div *ngSwitchCase="'Trainee Analytics'">
+                          <app-dashboard-customz [selectedComponents]="selectedComponents"></app-dashboard-customz>
+                        </div>
+                        <div *ngSwitchCase="'Trainer Analytics'">
+                          <app-trainer-analytics-dashboard [selectedComponents]="selectedComponents"></app-trainer-analytics-dashboard>
+                        </div>
+                        <div *ngSwitchCase="'Support'">
+                          <app-support-dashboard [selectedComponents]="selectedComponents"></app-support-dashboard>
+                        </div>
+                        <div *ngSwitchDefault>
+                          <h2>Select Dashboard</h2>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+      </mat-tab>
+    </mat-tab-group>
     </div>
     <div class="card" *ngIf="showCustomSettings">
       <div class="header">

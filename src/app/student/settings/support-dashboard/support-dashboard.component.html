@@ -1,0 +1,70 @@
+<div class="row mt-5">
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="card">
+          <div class="header">
+            <h2> Support Tickets
+            </h2>
+          </div>
+          <div class="body">
+            <div class="row">
+              <div *ngIf="selectedComponents['TOTAL TICKETS']" class="col-lg-4 col-sm-6">
+                <div class="info-box7 bg-c-blue order-info-box7">
+                  <div class="info-box7-block">
+                    <h4 class="m-b-20">Total Tickets</h4>
+                    <h2 class="text-end"><i class="fas fa-ticket-alt float-start"></i><span>16</span></h2>
+                    <p class="m-b-0">18% Higher Then Last Month</p>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="selectedComponents['RESOLVE']" class="col-lg-4 col-sm-6">
+                <div class="info-box7 bg-c-yellow order-info-box7">
+                  <div class="info-box7-block">
+                    <h4 class="m-b-20">Resolve</h4>
+                    <h2 class="text-end"><i class="fas fa-clipboard-check float-start"></i><span>8</span></h2>
+                    <p class="m-b-0">37% Higher Then Last Month</p>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="selectedComponents['PENDING']" class="col-lg-4 col-sm-6">
+                <div class="info-box7 bg-c-pink order-info-box7">
+                  <div class="info-box7-block">
+                    <h4 class="m-b-20">Pending</h4>
+                    <h2 class="text-end"><i class="fas fa-clipboard-list float-start"></i><span>8</span></h2>
+                    <p class="m-b-0">10% Higher Then Last Month</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table mat-table  class="w-100" >
+                <ng-container matColumnDef="name">
+                  <th mat-header-cell *matHeaderCellDef width="10%"> Opened By </th>
+                  <td mat-cell *matCellDef="let element" >  </td>
+                </ng-container>
+                <ng-container matColumnDef="ticket">
+                  <th mat-header-cell *matHeaderCellDef width="8%"> Tickets </th>
+                  <td mat-cell *matCellDef="let element">  </td>
+                </ng-container>
+                <ng-container matColumnDef="status">
+                  <th mat-header-cell *matHeaderCellDef width="8%"> Status </th>
+                 
+                </ng-container>
+                <ng-container matColumnDef="date">
+                  <th mat-header-cell *matHeaderCellDef width="10%"> Date </th>
+                  <td mat-cell *matCellDef="let element"> {{element.messages[0].date | date}} </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+              <!-- <mat-paginator #paginator [length]="totalItems" (page)="pageSizeChange($event)"
+              [pageSizeOptions]="pageSizeArr" aria-label="select pagination option">
+            </mat-paginator> -->
+              <!-- <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+              </mat-paginator> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

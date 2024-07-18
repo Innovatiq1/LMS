@@ -126,3 +126,38 @@ h5{
   border: none;
   color: #FFF;
 }
+
+
+.dashboard {
+  padding: 8px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  // height: 640px;
+  // box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+
+}
+
+.mat-form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+h5 {
+  margin-top: 0;
+  cursor: pointer;
+}
+
+.mat-checkbox {
+  margin-bottom: 8px;
+}
+
+.menu{
+  font-size: 12px;
+  font-weight: 400;
+  // padding-top: 15px;
+}
+.material-icons {
+  vertical-align: middle;
+  // margin-left: 111px; 
+  cursor: pointer;  
+}

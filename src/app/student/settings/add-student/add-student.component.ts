@@ -175,7 +175,7 @@ export class AddStudentComponent {
   onSubmit() {
     let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     if (!this.stdForm.invalid) {
-        const userData: Student = this.stdForm.value;
+        const userData: any = this.stdForm.value;
         
         // Set the avatar path to the URL received during file upload
         userData.avatar = this.avatar;
@@ -189,6 +189,9 @@ export class AddStudentComponent {
         userData.companyId = user.user.companyId;
         userData.users = user.user.users;
         userData.courses = user.user.courses;
+        userData.attemptBlock = false;
+
+
         Swal.fire({
           title: 'Are you sure?',
           text: 'Do You want to create a trainee profile!',
@@ -222,7 +225,7 @@ export class AddStudentComponent {
         //this.fileDropEl.nativeElement.value = "";
         this.stdForm.reset();
         //this.toggleList()
-        this.router.navigateByUrl('/student/settings/all-students');
+        this.router.navigateByUrl('/student/settings/all-user/all-students');
       },
       (error) => {
         Swal.fire(

@@ -46,6 +46,9 @@ import { ChatbotComponent } from './apps/chatbot/chatbot.component';
 import { TicketComponent } from './ticket/ticket.component';
 import { StudentsService } from './admin/students/students.service';
 import { UsersModule } from './admin/users/users.module';
+import { DashboardCustomzComponent } from './student/settings/dashboard-customz/dashboard-customz.component';
+import { TrainerAnalyticsDashboardComponent } from './student/settings/trainer-analytics-dashboard/trainer-analytics-dashboard.component';
+import { SupportDashboardComponent } from './student/settings/support-dashboard/support-dashboard.component';
 
 // import { ChangeBgDirective } from './change-bg.directive';
 
@@ -67,6 +70,9 @@ export function createTranslateLoader(http: HttpClient) {
     ChatbotComponent,
     TicketComponent,
     ViewComponent,
+    DashboardCustomzComponent,
+    TrainerAnalyticsDashboardComponent,
+    SupportDashboardComponent,
     // ChangeBgDirective
 
   ],
