@@ -86,11 +86,35 @@ const routes: Routes = [
     component: ViewClassComponent,
   },
   {
+    path: 'timetable/class-list/view-class/:id',
+    component: ViewClassComponent,
+  },
+  {
     path: 'view-completion-list',
     component: ViewCompletionComponent,
   },
   {
+    path: 'student-courses/approved-courses/view-completion-list',
+    component: ViewCompletionComponent,
+  },
+  {
+    path: 'student-courses/verification-list/view-completion-list',
+    component: ViewCompletionComponent,
+  },
+  {
+    path: 'student-courses/completed-courses/view-completion-list',
+    component: ViewCompletionComponent,
+  },
+  {
+    path: 'student-courses/pending-courses/view-completion-list',
+    component: ViewCompletionComponent,
+  },
+  {
     path: 'course-view',
+    component: CourseViewComponent,
+  },
+  {
+    path: 'submitted-courses/pending-courses/course-view',
     component: CourseViewComponent,
   },
   {
@@ -110,7 +134,7 @@ const routes: Routes = [
     component: CreateTemplateComponent,
   },
   {
-    path: 'view-course-kit/:id',
+    path: 'course-kit/:id',
     component: ViewCourseKitComponent,
   },
   {

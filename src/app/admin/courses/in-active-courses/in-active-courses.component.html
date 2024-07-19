@@ -117,7 +117,7 @@
                       <mat-cell
                             class="name"
                             *matCellDef="let row"
-                            (click)="viewCourse(row.id)"
+                            (click)="view ? viewCourse(row.id) : null"
                             ><span class="mobile-label">Course:</span>
                             <span>{{ row.title | titlecase }}</span>
                           </mat-cell>
@@ -133,7 +133,7 @@
                       </mat-header-cell>
                       <mat-cell
                         *matCellDef="let row"
-                        (click)="viewCourse(row.id)"
+                        (click)="view ? viewCourse(row.id) : null"
                       >
                         <span class="mobile-label">Course Code:</span
                         >{{ row.courseCode }}
@@ -153,7 +153,7 @@
                       </mat-header-cell>
                       <mat-cell
                         *matCellDef="let row"
-                        (click)="viewCourse(row.id)"
+                        (click)="view ? viewCourse(row.id) : null"
                       >
                         <span class="mobile-label">Main Category:</span
                         >{{ row.main_category_text }}</mat-cell
@@ -166,7 +166,7 @@
                       </mat-header-cell>
                       <mat-cell
                         *matCellDef="let row"
-                        (click)="viewCourse(row.id)"
+                        (click)="view ? viewCourse(row.id) : null"
                       >
                         <span class="mobile-label">Days:</span
                         >{{ row?.course_duration_in_days }} Days</mat-cell
@@ -179,7 +179,7 @@
                       </mat-header-cell>
                       <mat-cell
                         *matCellDef="let row"
-                        (click)="viewCourse(row.id)"
+                        (click)="view ? viewCourse(row.id) : null"
                       >
                         <span class="mobile-label">Hours:</span
                         >{{ row?.training_hours }} Hours</mat-cell
@@ -192,7 +192,7 @@
                       </mat-header-cell>
                       <mat-cell
                         *matCellDef="let row"
-                        (click)="viewCourse(row.id)"
+                        (click)="view ? viewCourse(row.id) : null"
                       >
                         <span class="mobile-label">Vendor:</span
                         >{{ row.vendor }}</mat-cell
@@ -206,7 +206,7 @@
                       </mat-header-cell>
                       <mat-cell
                         *matCellDef="let row"
-                        (click)="viewCourse(row.id)" class="payment-cell"
+                        (click)="view ? viewCourse(row.id) : null" class="payment-cell"
                       >
                         <span class="mobile-label">Payment:</span
                         ><span >$</span> {{ row.fee||0 }}.00</mat-cell
@@ -219,7 +219,7 @@
                       </mat-header-cell>
                       <mat-cell
                         *matCellDef="let row"
-                        (click)="viewCourse(row.id)"
+                        (click)="view ? viewCourse(row.id) : null"
                       >
                         <span class="mobile-label">Start Date:</span
                         >{{ row.sessionStartDate | date }}</mat-cell
@@ -232,7 +232,7 @@
                       </mat-header-cell>
                       <mat-cell
                         *matCellDef="let row"
-                        (click)="viewCourse(row.id)"
+                        (click)="view ? viewCourse(row.id) : null"
                       >
                         <span class="mobile-label">End Date:</span
                         >{{ row.sessionEndDate | date }}</mat-cell
@@ -251,7 +251,7 @@
                       </mat-header-cell>
                       <mat-cell
                         *matCellDef="let row"
-                        (click)="viewCourse(row.id)"
+                        (click)="view ? viewCourse(row.id) : null"
                       >
                         <span class="mobile-label">Status:</span>
                         <span class="badge badge-solid-red">

@@ -108,6 +108,11 @@ const routes: Routes = [
         component: ViewComponent,
         canActivate: [LoginGuard],
       },
+      {
+        path: 'reschedule/courses/programs-view',
+        component: ViewComponent,
+        canActivate: [LoginGuard],
+      },
       
       {
         path: 'settings/instructor-settings',

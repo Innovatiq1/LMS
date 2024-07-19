@@ -25,6 +25,7 @@ import 'jspdf-autotable';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { AppConstants } from '@shared/constants/app.constants';
+import { AuthenService } from '@core/service/authen.service';
 @Component({
   selector: 'app-survey-list',
   templateUrl: './survey-list.component.html',
@@ -54,12 +55,14 @@ export class SurveyListComponent
     },
   ];
   commonRoles: any;
+  isView = false;
   constructor(
     public httpClient: HttpClient,
     public dialog: MatDialog,
     public surveyService: SurveyService,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private authenService: AuthenService
   ) {
     super();
   }
@@ -71,6 +74,18 @@ export class SurveyListComponent
   contextMenuPosition = { x: '0px', y: '0px' };
 
   ngOnInit() {
+    const roleDetails =this.authenService.getRoleDetails()[0].menuItems
+    let urlPath = this.router.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}`;
+    const childId =  urlPath[urlPath.length - 1];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let actions = childData[0].actions
+    let viewAction = actions.filter((item:any) => item.title == 'View')
+
+    if(viewAction.length >0){
+      this.isView = true;
+    }
     this.commonRoles = AppConstants
     this.loadData();
   }
@@ -78,7 +93,7 @@ export class SurveyListComponent
     this.loadData();
   }
   editCall(row: SurveyBuilderModel) {
-    this.router.navigate(['/admin/survey/view-survey'], {
+    this.router.navigate(['/admin/survey/feedbacks-list/view-survey'], {
       queryParams: { id: row },
     });
     // this.id = row.id;

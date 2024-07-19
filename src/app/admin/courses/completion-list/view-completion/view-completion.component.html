@@ -54,7 +54,7 @@
                         <div class="header">
                           <h2>{{commonRoles.STUDENT_ROLE}} Details</h2>
                           <div class="buttons" *ngIf="status && !verify">
-                            <button
+                            <button *ngIf="edit"
                               (click)="changeStatus(response, 'approved')"
                               mat-icon-button
                               matTooltip="approve"
@@ -66,7 +66,7 @@
                                 alt="approve"
                               />
                             </button>
-                            <button
+                            <button *ngIf="delete"
                               mat-icon-button
                               matTooltip="Withdraw"
                               class="tbl-action-btn"
@@ -80,7 +80,7 @@
                             </button>
                           </div>
                           <div class="buttons" *ngIf="status && verify">
-                            <button
+                            <button *ngIf="edit"
                               (click)="changeStatus(response, 'verified')"
                               mat-icon-button
                               matTooltip="Verify"

@@ -6,6 +6,7 @@ import { LeaveRequestService } from '../leave-request.service';
 import { Direction } from '@angular/cdk/bidi';
 import { FormDialogComponent } from '../dialogs/form-dialog/form-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { AuthenService } from '@core/service/authen.service';
 
 @Component({
   selector: 'app-view',
@@ -23,12 +24,32 @@ export class ViewComponent {
   ];
   SourceData: any;
   id: any;
-  constructor( private activatedRoute: ActivatedRoute,public leaveRequestService: LeaveRequestService,public router:Router, public dialog: MatDialog,) {
+  edit = false;
+  isDelete = false;
+
+  constructor( private activatedRoute: ActivatedRoute,public leaveRequestService: LeaveRequestService,public router:Router, public dialog: MatDialog,
+    private authenService: AuthenService) {
 
     this.activatedRoute.queryParams.subscribe((params: any) => {
       console.log(params['id']);
       this.loadData(params['id'])
     })
+    const roleDetails =this.authenService.getRoleDetails()[0].menuItems
+    let urlPath = this.router.url.split('/');
+    const parentId = urlPath[urlPath.length - 3];
+    const childId =  urlPath[urlPath.length - 2];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let actions = childData[0].actions
+    let editAction = actions.filter((item:any) => item.title == 'Edit')
+    let deleteAction = actions.filter((item:any) => item.title == 'Delete')
+
+    if(editAction.length >0){
+      this.edit = true;
+    }
+    if(deleteAction.length >0){
+      this.isDelete = true;
+    }
   }
   deleteItem(row_id: any) {
     Swal.fire({

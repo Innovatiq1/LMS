@@ -11,7 +11,7 @@
             <div class="d-flex justify-content-end">
                 <div class="d-flex">
                     <button
-                      alt="Edit"
+                      alt="Edit" *ngIf="edit"
                       mat-menu-item
                       (click)="editCall(SourceData)"
                     >
@@ -21,7 +21,7 @@
                       ></app-feather-icons>
                     </button>
                     <button
-                      alt="Delete"
+                      alt="Delete" *ngIf="isDelete"
                       mat-menu-item
                       (click)="deleteItem(SourceData.id)"
                     >

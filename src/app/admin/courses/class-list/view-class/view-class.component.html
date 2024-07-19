@@ -41,10 +41,10 @@
                         <div class="header">
                             <h6>Course Class</h6>
                         </div>
-                        <button class="icons" alt="Edit" *ngIf="isAdmin && !isInstructor" mat-menu-item (click)="editClass(response.id)">
+                        <button class="icons" alt="Edit" *ngIf="isAdmin && !isInstructor && edit" mat-menu-item (click)="editClass(response.id)">
                             <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
                         </button>
-                        <button class="icons" alt="Delete" *ngIf="isAdmin && !isInstructor" mat-menu-item (click)="delete(response.id)">
+                        <button class="icons" alt="Delete" *ngIf="isAdmin && !isInstructor && isDelete" mat-menu-item (click)="delete(response.id)">
                             <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
                         </button>
                     </div>

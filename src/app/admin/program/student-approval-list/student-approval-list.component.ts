@@ -3,9 +3,11 @@ import { formatDate } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar, MatSnackBarVerticalPosition, MatSnackBarHorizontalPosition } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { StudentPaginationModel, StudentApproval, Session } from '@core/models/class.model';
 import { CourseModel, CoursePaginationModel } from '@core/models/course.model';
 import { Student } from '@core/models/user.model';
+import { AuthenService } from '@core/service/authen.service';
 import { CourseService } from '@core/service/course.service';
 import { UtilsService } from '@core/service/utils.service';
 import { TableElement, TableExportUtil } from '@shared';
@@ -51,7 +53,7 @@ export class StudentApprovalListComponent {
   coursePaginationModel!: Partial<CoursePaginationModel>;
   searchTerm:string = '';
   commonRoles: any;
-
+  view = false;
 
   upload() {
     document.getElementById('input')?.click();
@@ -59,7 +61,7 @@ export class StudentApprovalListComponent {
 
   constructor(private classService: ClassService,
     private courseService: CourseService,
-    private snackBar: MatSnackBar,
+    private snackBar: MatSnackBar, private authenService: AuthenService,private route :Router,
     private utils:UtilsService) {
     // this.displayedColumns = ["title", "studentName", "classStartDate", "classEndDate",  "action"];
     this.studentPaginationModel = {} as StudentPaginationModel;
@@ -68,6 +70,20 @@ export class StudentApprovalListComponent {
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
 
     ngOnInit(): void {
+      const roleDetails =this.authenService.getRoleDetails()[0].menuItems
+      let urlPath = this.route.url.split('/');
+      const parentId = `${urlPath[1]}/${urlPath[2]}`;
+      const childId =  urlPath[urlPath.length - 2];
+      const subChildId =  urlPath[urlPath.length - 1];
+      let parentData = roleDetails.filter((item: any) => item.id == parentId);
+      let childData = parentData[0].children.filter((item: any) => item.id == childId);
+      let subChildData = childData[0].children.filter((item: any) => item.id == subChildId);
+      let actions = subChildData[0].actions
+  
+      let viewAction = actions.filter((item:any) => item.title == 'View')
+      if(viewAction.length >0){
+        this.view = true;
+      }
       this.commonRoles = AppConstants
       this.getRegisteredClasses();
     }

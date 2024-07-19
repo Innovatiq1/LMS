@@ -59,7 +59,7 @@
               </div>
             </div>  
             <mat-tab-group (selectedTabChange)="tabChanged($event)">
-              <mat-tab>  
+              <mat-tab *ngIf="allPrograms">  
                 <ng-template mat-tab-label>
                   <div class="course mx-4">All Programs</div>                  
                 </ng-template>
@@ -118,7 +118,7 @@
           aria-label="select pagination option">
         </mat-paginator>
       </mat-tab>
-      <mat-tab>  
+      <mat-tab *ngIf="register">  
         <ng-template mat-tab-label>
           <!-- <mat-icon class="example-tab-icon msr-2">face</mat-icon> -->
           Registered Programs
@@ -172,7 +172,7 @@
       aria-label="select pagination option">
     </mat-paginator>
   </mat-tab>
-  <mat-tab>  
+  <mat-tab *ngIf="approve">  
     <ng-template mat-tab-label>
       <!-- <mat-icon class="example-tab-icon msr-2">face</mat-icon> -->
       Approved Programs
@@ -208,7 +208,7 @@
   aria-label="select pagination option">
 </mat-paginator>
 </mat-tab>
-<mat-tab>  
+<mat-tab *ngIf="complete">  
   <ng-template mat-tab-label>
     <!-- <mat-icon class="example-tab-icon msr-2">face</mat-icon> -->
     Completed Programs
