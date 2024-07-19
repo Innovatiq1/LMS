@@ -61,7 +61,7 @@
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Exam
                 </mat-header-cell>
                 <mat-cell *matCellDef="let row" class="name" (click)="view(row.id)">
-                    <button *ngIf="row.isAssigned"
+                    <button *ngIf="row.isAssigned && !row.isSubmitted"
                         [routerLink]="['/student/exam-questions/',studentClassId, row._id, row?.studentId, row?.courseId?._id, row?.examAssessmentId?._id]" [queryParams]="{ retake: true, submitted: false }" mat-flat-button color="primary" >
                       Take Exam
                     </button>
