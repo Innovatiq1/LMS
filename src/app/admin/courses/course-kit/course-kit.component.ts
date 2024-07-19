@@ -80,24 +80,24 @@ export class CourseKitComponent implements OnInit{
     let urlPath = this.router.url.split('/');
     const parentId = `${urlPath[1]}/${urlPath[2]}`;
     const childId =  urlPath[urlPath.length - 1];
-    let parentData = roleDetails.filter((item: any) => item.id == parentId);
-    let childData = parentData[0].children.filter((item: any) => item.id == childId);
-    let actions = childData[0].actions
-    let createAction = actions.filter((item:any) => item.title == 'Create')
-    let editAction = actions.filter((item:any) => item.title == 'Edit')
-    let viewAction = actions.filter((item:any) => item.title == 'View')
-    let deleteAction = actions.filter((item:any) => item.title == 'Delete')
+    let parentData = roleDetails?.filter((item: any) => item.id == parentId);
+    let childData = parentData[0]?.children?.filter((item: any) => item.id == childId);
+    let actions = childData[0]?.actions
+    let createAction = actions?.filter((item:any) => item.title == 'Create')
+    let editAction = actions?.filter((item:any) => item.title == 'Edit')
+    let viewAction = actions?.filter((item:any) => item.title == 'View')
+    let deleteAction = actions?.filter((item:any) => item.title == 'Delete')
 
-    if(createAction.length > 0){
+    if(createAction?.length > 0){
       this.create = true
     }
-    if(editAction.length > 0){
+    if(editAction?.length > 0){
       this.edit = true;
     }
-    if(viewAction.length >0){
+    if(viewAction?.length >0){
       this.view = true;
     }
-    if(deleteAction.length >0){
+    if(deleteAction?.length >0){
       this.delete = true;
     }
 

@@ -96,7 +96,7 @@
                 <!-- Short Description -->
                 <ng-container matColumnDef="Short Description">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Short Description</mat-header-cell>
-                  <mat-cell *matCellDef="let row" [routerLink]="view?['/admin/courses/view-course-kit/',row.id]:null">
+                  <mat-cell *matCellDef="let row" [routerLink]="checkActionAccess('view')?['/admin/courses/view-course-kit/',row.id]:null">
                     <span class="mobile-label">Short Description:</span>{{row.shortDescription}}</mat-cell>
                 </ng-container>
                  <!-- Long Description -->
