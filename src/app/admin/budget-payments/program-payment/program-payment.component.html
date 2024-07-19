@@ -94,13 +94,13 @@
                 <!-- Name Column -->
                 <ng-container matColumnDef="Student Name">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>{{commonRoles.STUDENT_ROLE}}</mat-header-cell>
-                  <mat-cell *matCellDef="let row" (click)="view(row._id)" class="name">
+                  <mat-cell *matCellDef="let row" (click)="isView ? view(row._id) : null" class="name">
                     <span class="mobile-label">Student:</span>{{row.name}}</mat-cell>
                 </ng-container>
                 <!-- email -->
                 <ng-container matColumnDef="email">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
-                  <mat-cell *matCellDef="let row" (click)="view(row._id)">
+                  <mat-cell *matCellDef="let row" (click)="isView ? view(row._id) : null">
                     <span class="mobile-label">Email:</span>
                     <img src="assets/images/gmail.png" alt="Email Icon" class="email-icon">
                     <!-- Replace "email-icon.png" with the filename of your PNG icon -->
@@ -112,26 +112,26 @@
                 <!-- Program Name -->
                 <ng-container matColumnDef="Program Name">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Program</mat-header-cell>
-                  <mat-cell *matCellDef="let row" (click)="view(row._id)">
+                  <mat-cell *matCellDef="let row" (click)="isView ? view(row._id) : null">
                     <span class="mobile-label">Name:</span>{{row.program}}</mat-cell>
                 </ng-container>
                 <!-- Amount -->
                 <ng-container matColumnDef="Amount">
                   <mat-header-cell *matHeaderCellDef mat-sort-header class="amount">Amount</mat-header-cell>
-                  <mat-cell *matCellDef="let row" (click)="view(row._id)" class="payment-cell">
+                  <mat-cell *matCellDef="let row" (click)="isView ? view(row._id) : null" class="payment-cell">
                     <span class="mobile-label">Amount:</span><span>$</span> {{row.price||0}}.00</mat-cell>
                 </ng-container>
                 <!-- Payment Date -->
                 <ng-container matColumnDef="Payment Date">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Payment Date</mat-header-cell>
-                  <mat-cell *matCellDef="let row" (click)="view(row._id)">
+                  <mat-cell *matCellDef="let row" (click)="isView ? view(row._id) : null">
                     <span class="mobile-label">Payment Date:</span>{{row.createdAt | date}}</mat-cell>
                 </ng-container>
 
                 <!-- Payment status -->
                 <ng-container matColumnDef="Payment Status">
                   <mat-header-cell *matHeaderCellDef mat-sort-header> Status</mat-header-cell>
-                  <mat-cell *matCellDef="let row" (click)="view(row._id)" [ngClass]="getStatusClass(row.status)">
+                  <mat-cell *matCellDef="let row" (click)="isView ? view(row._id) : null" [ngClass]="getStatusClass(row.status)">
                     <div class="status-container">
                       <span class="status-dot"></span>
                       <span class="status-text">{{row.status | titlecase}}</span>

@@ -29,6 +29,7 @@ import 'jspdf-autotable';
 import { formatDate } from '@angular/common';
 import { LecturesService } from 'app/teacher/lectures/lectures.service';
 import { AppConstants } from '@shared/constants/app.constants';
+import { AuthenService } from '@core/service/authen.service';
 
 @Component({
   selector: 'app-class-list',
@@ -69,13 +70,16 @@ export class ClassListComponent extends UnsubscribeOnDestroyAdapter implements O
   isAdmin: boolean = false;
   isInstructor: boolean = false;
   commonRoles: any;
+  create = false;
+  isView = false;
 
   constructor(
     public _classService: ClassService,
     private snackBar: MatSnackBar,
     private _router: Router,
     public lecturesService: LecturesService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private authenService: AuthenService
   ) {
     super();
     this.coursePaginationModel = {};
@@ -95,6 +99,22 @@ export class ClassListComponent extends UnsubscribeOnDestroyAdapter implements O
   @ViewChild('filter', { static: true }) filter!: ElementRef;
 
   ngOnInit(): void {
+    const roleDetails =this.authenService.getRoleDetails()[0].menuItems
+    let urlPath = this._router.url.split('/');
+    const parentId = urlPath[urlPath.length - 2];
+    const childId =  urlPath[urlPath.length - 1];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let actions = childData[0].actions
+    let createAction = actions.filter((item:any) => item.title == 'Create')
+    let viewAction = actions.filter((item:any) => item.title == 'View')
+
+    if(createAction.length >0){
+      this.create = true;
+    }
+    if(viewAction.length >0){
+      this.isView = true;
+    }
     this.commonRoles = AppConstants
     let userType = localStorage.getItem('user_type');
     if (userType == AppConstants.ADMIN_USERTYPE || AppConstants.ADMIN_ROLE) {

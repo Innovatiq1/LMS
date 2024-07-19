@@ -7,6 +7,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import {CourseKitModel, CourseModel, CoursePaginationModel } from '@core/models/course.model';
+import { AuthenService } from '@core/service/authen.service';
 import { CourseService } from '@core/service/course.service';
 import { UtilsService } from '@core/service/utils.service';
 import { TableElement, TableExportUtil } from '@shared';
@@ -48,11 +49,11 @@ export class CoursePaymentComponent {
   coursePaginationModel!: Partial<CoursePaginationModel>;
   searchTerm: string = '';
   commonRoles: any;
- 
+  isView = false;
 
   constructor(private router: Router, private formBuilder: FormBuilder,
     public utils: UtilsService, private courseService: CourseService,
-    private snackBar: MatSnackBar,private ref: ChangeDetectorRef,
+    private snackBar: MatSnackBar,private ref: ChangeDetectorRef,  private authenService: AuthenService
   ) {
     this.coursePaginationModel = {};
   }
@@ -62,6 +63,18 @@ export class CoursePaymentComponent {
 
   
   ngOnInit(): void {
+    const roleDetails =this.authenService.getRoleDetails()[0].menuItems
+    let urlPath = this.router.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}`;
+    const childId =  urlPath[urlPath.length - 1];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let actions = childData[0].actions
+    let viewAction = actions.filter((item:any) => item.title == 'View')
+
+    if(viewAction.length >0){
+      this.isView = true;
+    }
     this.commonRoles = AppConstants
    this.getAllCourse();
   }

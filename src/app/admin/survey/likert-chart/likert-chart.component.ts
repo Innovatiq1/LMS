@@ -24,6 +24,8 @@ import { SurveyService } from '../survey.service';
 import { TableElement, TableExportUtil } from '@shared';
 import jsPDF from 'jspdf';
 import { formatDate } from '@angular/common';
+import { Router } from '@angular/router';
+import { AuthenService } from '@core/service/authen.service';
 
 @Component({
   selector: 'app-likert-chart',
@@ -57,6 +59,9 @@ export class LikertChartComponent {
   totalItems: any;
   pageSizeArr = this.utils.pageSizeArr;
   selection = new SelectionModel<any>(true, []);
+  create = false;
+  isView = false;
+
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild('filter', { static: true }) filter!: ElementRef;
   // instructorList: any = [];
@@ -99,12 +104,30 @@ export class LikertChartComponent {
     private adminService: AdminService,
     public utils: UtilsService,
     public surveyService: SurveyService,
+    private router: Router,
+    private authenService: AuthenService
   ) {
     this.coursePaginationModel = {};
     // constructor
   }
 
   ngOnInit() {
+    const roleDetails =this.authenService.getRoleDetails()[0].menuItems
+    let urlPath = this.router.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}`;
+    const childId =  urlPath[urlPath.length - 1];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let actions = childData[0].actions
+    let createAction = actions.filter((item:any) => item.title == 'Create')
+    let viewAction = actions.filter((item:any) => item.title == 'View')
+
+    if(createAction.length >0){
+      this.create = true;
+    }
+    if(viewAction.length >0){
+      this.isView = true;
+    }
     this.getAllSurveys();
   }
   getAllSurveys() {

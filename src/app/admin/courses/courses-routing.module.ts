@@ -86,6 +86,10 @@ const routes: Routes = [
     component: ViewClassComponent,
   },
   {
+    path: 'timetable/class-list/view-class/:id',
+    component: ViewClassComponent,
+  },
+  {
     path: 'view-completion-list',
     component: ViewCompletionComponent,
   },
