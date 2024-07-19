@@ -45,6 +45,7 @@ export class ExamTestListComponent {
   invoiceUrl: any;
   discountValue: any;
   discountType: string = 'percentage';
+  studentClassId:any;
 
   constructor(
     public utils: UtilsService,
@@ -71,6 +72,9 @@ export class ExamTestListComponent {
     this.assessmentService
       .getAssignedExamAnswers({ ...this.assessmentPaginationModel, studentId })
       .subscribe((res) => {
+       // console.log("this is response id from ==",res.data.docs[0].studentClassId[0]._id)
+        this.studentClassId=res?.data?.docs[0]?.studentClassId[0]?._id;
+       // console.log("this.student ",this.studentClassId)
         this.isLoading = false;
         this.dataSource = res.data.docs;
         this.totalItems = res.data.totalDocs;
@@ -489,6 +493,7 @@ export class ExamTestListComponent {
     this.router.navigate(
       [
         '/student/exam-questions/',
+        this.studentClassId,
         examAssessmentId,
         studentId,
         courseId,

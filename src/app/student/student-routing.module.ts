@@ -201,7 +201,7 @@ const routes: Routes = [
   },
 
   {
-    path: 'exam-questions/:id/:id/:id/:id', // 1.assessmentAnswerId, 2.studentId, 3.courseId, 4.examAssessmentId
+    path: 'exam-questions/:id/:id/:id/:id/:id', // 1.assessmentAnswerId, 2.studentId, 3.courseId, 4.examAssessmentId
     component: ExamQuestionsComponent,
   },
   {

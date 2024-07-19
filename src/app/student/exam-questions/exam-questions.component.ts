@@ -51,6 +51,7 @@ export class ExamQuestionsComponent {
   retakeNo: number = 0;
   courseDetails:any;
   classDetails:any;
+  studentClassId:any;
   public examAssessmentId!: any;
   public answerAssessmentId!: any;
 
@@ -138,7 +139,26 @@ export class ExamQuestionsComponent {
         this.examAssessmentId = examId.split('?')[0]; 
         this.courseId = urlPath[urlPath.length - 2];
         this.studentId = urlPath[urlPath.length - 3];
+        
         this.answerAssessmentId = urlPath[urlPath.length - 4];
+        this.studentClassId=urlPath[urlPath.length-5]
+        // this.assessmentService.getAssignedExamAnswers().subscribe((response)=>{
+        //   console.log("getAssignedExamAnswers response ",response)
+        //   console.log("this getAss==",response.data.docs[0].studentClassId[0]._id)
+
+        // })
+        // this.assessmentService.getLatestExamAnswers().subscribe((response)=>{
+        //   console.log("this is getLatestExamAnswers",response);
+        // })
+        
+        // this.assessmentService.getAssignedExamAnswersByStudentId(this.studentId).subscribe((response)=>{
+        //   console.log("responce data:",response)
+
+        //   console.log("resopnse data is here",response.data.docs[0].studentClassId[0]._id);
+        //   this.studentClassId=response.data.docs[0].studentClassId[0]._id;
+        //   //console.log("resopnse data is here",response);
+
+        // })
       
         this.assessmentService.getAnswerQuestionById(this.examAssessmentId).subscribe((response) => {
           this.questionList = response?.questions;
@@ -199,6 +219,7 @@ export class ExamQuestionsComponent {
       }
 
       submitAnswers() {
+       // console.log("Submit Answer ",this.studentClassId);
         let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
         const requestBody = {
           studentId: this.studentId,
@@ -206,7 +227,8 @@ export class ExamQuestionsComponent {
           assessmentAnswerId: this.answerAssessmentId,
           courseId: this.courseId,
           answers: this.answers,
-          companyId:userId
+          companyId:userId,
+          studentClassId:this.studentClassId
         };
     
         this.assessmentService.submitAssessment(requestBody).subscribe(
@@ -290,7 +312,7 @@ export class ExamQuestionsComponent {
           const newRetakeNo = this.retakeNo - 1;
           const requestBody = {
             id: this.examAssessmentId,
-            retake: newRetakeNo
+            retake: newRetakeNo,
           };
           this.assessmentService.updateRetakes(requestBody).subscribe(
             (response: any) => {
