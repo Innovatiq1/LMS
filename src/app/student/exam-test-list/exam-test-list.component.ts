@@ -191,7 +191,7 @@ export class ExamTestListComponent {
     invoiceDialogRef.afterClosed().subscribe((res) => {
       if (res) {
         const dialogRef = this.dialog.open(PaymentDailogComponent, {
-          width: '650px',
+          width: '450px',
           height: '300px',
           data: { payment: '' },
         });
