@@ -106,6 +106,7 @@ export class CreateUserTypeComponent {
         (response: any) => {
 
           this.typesList = response;
+          console.log("typelist", this.typesList)
           this. data = this.typesList.find((id: any) => id._id === this.paramId);
           if (this.data) {
             this.type = this.data.typeName;
@@ -139,6 +140,8 @@ export class CreateUserTypeComponent {
       this.changeMenuChecked(element.checked, element.id);
     }else if(element.indeterminate&& element.children){
       this.populateCheckbox(element.children);
+    }else if(element.indeterminate&& element.actions){
+      this.populateCheckbox(element.actions);
     }
    });
   }
@@ -172,7 +175,7 @@ export class CreateUserTypeComponent {
       (v: any) => v
     );
     formData.menuItems = selectedMenuItems;
-
+console.log("form", formData)
     this.updateUserType(formData)
       .then((response: any) => {})
       .catch((e: any) => {});
@@ -328,7 +331,7 @@ export class CreateUserTypeComponent {
     });
   }
 
-  updateMenuItem(item: { checked: any; id: any; children: any[] }) {
+  updateMenuItem(item: { checked: any; id: any; children: any[]; actions: any[] }) {
     if (typeof item === 'object' && item.checked) {
       this.changeMenuChecked(item.checked, item.id);
     }
@@ -337,6 +340,12 @@ export class CreateUserTypeComponent {
         this.updateMenuItem(element);
       });
     }
+    if (item?.actions?.length) {
+      item.actions.forEach((element: any) => {
+        this.updateMenuItem(element);
+      });
+    }
+    
   }
 
   updateSettingMenuItem(item: { checked: any; id: any; children: any[] }) {
@@ -361,11 +370,29 @@ export class CreateUserTypeComponent {
         v?.children && v?.children.length
           ? this.convertToMenuV2(v.children, menu_item?.children)
           : [];
+          const actions =
+      v?.actions && v?.actions.length
+        ? v.actions.map((action: any) => {
+            const actionChecked = this.checkChecked(
+              menu_item?.actions,
+              action.id
+            );
+            return {
+              title: action.title,
+              id: action.id,
+              checked: actionChecked?.checked || false,
+              indeterminate: actionChecked?.indeterminate || false,
+              isLeaf: true,
+              isAction: true,
+            };
+          })
+        : [];
       const defaultCheck = this.checkChecked(value, v.id);
       let res: any = {
         title: v?.title,
         id: v?.id,
-        children: [],
+        children: children,
+        actions: actions,
         isAction: false,
         checked: defaultCheck?.checked || false,
         indeterminate: defaultCheck?.indeterminate || false,
@@ -376,6 +403,7 @@ export class CreateUserTypeComponent {
         res = {
           ...res,
           children,
+          actions,
           isAction: false,
         };
         res.children = res.children.map((c: any) => ({
@@ -384,38 +412,48 @@ export class CreateUserTypeComponent {
           isAction: false,
         }));
       }
-      if (v?.actions && v?.actions?.length) {
-        const actionChild = v?.actions.map((action: any) => {
-          const actionChecked = this.checkChecked(
-            menu_item?.children,
-            `${v.id}__${action.id}`
-          );
-          return {
-            title: action.action_name,
-            id: `${v.id}__${action.id}`,
-            isAction: true,
-            isLeaf: true,
-            checked: actionChecked?.checked || false,
-            indeterminate: actionChecked?.indeterminate || false,
-            icon: actionChecked?.iconsrc,
-            class: actionChecked?.class,
-          };
-        });
-        res = {
-          ...res,
-          children: actionChild,
-        };
+      if (actions && actions.length) {
+        res.actions = res.actions.map((a: any) => ({
+          ...a,
+          isLeaf: true,
+          isAction: true,
+        }));
       }
+      // if (v?.actions && v?.actions?.length) {
+      //   const actionChild = v?.actions.map((action: any) => {
+      //     const actionChecked = this.checkChecked(
+      //       menu_item?.children,
+      //       `${v.id}__${action.id}`
+      //     );
+      //     return {
+      //       title: action.action_name,
+      //       id: `${v.id}__${action.id}`,
+      //       isAction: true,
+      //       isLeaf: true,
+      //       checked: actionChecked?.checked || false,
+      //       indeterminate: actionChecked?.indeterminate || false,
+      //       icon: actionChecked?.iconsrc,
+      //       class: actionChecked?.class,
+      //     };
+      //   });
+      //   res = {
+      //     ...res,
+      //     children: actionChild,
+      //   };
+      // }
       return res;
     });
   }
 
   changeMenuChecked(checked?: any, id?: any) {
+    console.log("check",checked)
+    console.log("id",id)
     this.dataSourceArray = this.setChecked(this.dataSourceArray, {
       menu_id: id,
       checked,
     });
     const indeterminate = this.dataSourceArray.some((v) => !v.checked);
+    console.log("indeter", indeterminate)
     this.allMenus = {
       checked: indeterminate ? false : checked,
       indeterminate,
@@ -470,11 +508,13 @@ export class CreateUserTypeComponent {
         v?.children && v?.children.length
           ? this.setChecked(v.children, { menu_id, checked }, res)
           : [];
+        
       if (children && children.length) {
         res = {
           ...res,
           children,
         };
+       
         const anyChildUnChecked = children.some(
           (child: { checked: any }) => !child.checked
         );
@@ -490,12 +530,37 @@ export class CreateUserTypeComponent {
           (anyChildChecked && anyChildUnChecked) || anyChildIndeterminate;
         if (res.indeterminate) res.checked = false;
       }
+      const actions =
+      v?.actions && v?.actions.length
+        ? this.setChecked(v.actions, { menu_id, checked }, res)
+        : [];
+      if (actions && actions.length) {
+        res = {
+          ...res,
+          actions,
+        };
+       
+        const anyChildUnChecked = actions.some(
+          (child: { checked: any }) => !child.checked
+        );
+        const anyChildChecked = actions.some(
+          (child: { checked: any }) => child.checked
+        );
+        const anyChildIndeterminate = actions.some(
+          (child: { indeterminate: any }) => child.indeterminate
+        );
+        if (v.id != menu_id && !res.checked)
+          res.checked = !anyChildUnChecked ? true : false;
+        res.indeterminate =
+          (anyChildChecked && anyChildUnChecked) || anyChildIndeterminate;
+        if (res.indeterminate) res.checked = false;
+      }
       return res;
     });
   }
 
   getCheckedItems(obj: any) {
-    return obj.map((item: { checked: any; children: string | any[], isAction: boolean }) => {
+    return obj.map((item: { checked: any; children: string | any[], actions: string | any[], isAction: boolean }) => {
       if (item.checked) return item;
       if (item?.children?.length) {
         const children = this.getCheckedItems(item.children).filter(
@@ -505,6 +570,16 @@ export class CreateUserTypeComponent {
           return {
             ...item,
             children,
+          };
+      }
+      if (item?.actions?.length) {
+        const actions = this.getCheckedItems(item.actions).filter(
+          (v: any) => v
+        );
+        if (actions.length)
+          return {
+            ...item,
+            actions,
           };
       }
       return null;
