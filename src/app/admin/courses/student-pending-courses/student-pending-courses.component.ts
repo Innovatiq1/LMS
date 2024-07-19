@@ -20,6 +20,7 @@ import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { formatDate } from '@angular/common';
 import { AppConstants } from '@shared/constants/app.constants';
+import { AuthenService } from '@core/service/authen.service';
 
 @Component({
   selector: 'app-student-pending-courses',
@@ -61,16 +62,33 @@ export class StudentPendingCoursesComponent {
   isLoading = true;
   dataSource!: any;
   commonRoles: any;
+  isView = false;
+
   constructor(
     public _classService: ClassService,
     private snackBar: MatSnackBar,
-    public router: Router
+    public router: Router,
+    private authenService: AuthenService
   ) {
     this.studentPaginationModel = {} as StudentPaginationModel;
     // super();
   }
 
   ngOnInit(): void {
+    const roleDetails =this.authenService.getRoleDetails()[0].menuItems
+    let urlPath = this.router.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}`;
+    const childId =  urlPath[urlPath.length - 2];
+    const subChildId =  urlPath[urlPath.length - 1];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let subChildData = childData[0].children.filter((item: any) => item.id == subChildId);
+    let actions = subChildData[0].actions
+    let viewAction = actions.filter((item:any) => item.title == 'View')
+
+    if(viewAction.length >0){
+      this.isView = true;
+    }
     this.commonRoles = AppConstants
     this.getRegisteredClasses();
   }
@@ -113,7 +131,7 @@ export class StudentPendingCoursesComponent {
   }
 
   view(id:string){
-    this.router.navigate(['/admin/courses/view-completion-list'],{queryParams: {id:id, status:'pending'}});
+    this.router.navigate(['/admin/courses/student-courses/pending-courses/view-completion-list'],{queryParams: {id:id, status:'pending'}});
   }
 
   mapClassList() {

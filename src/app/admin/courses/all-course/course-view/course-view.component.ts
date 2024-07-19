@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CourseModel, CoursePaginationModel } from '@core/models/course.model';
 import { CourseService } from '@core/service/course.service';
 import { ClassService } from 'app/admin/schedule-class/class.service';
@@ -7,6 +7,7 @@ import { VideoPlayerComponent } from '../../course-kit/video-player/video-player
 import { BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import Swal from 'sweetalert2';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { AuthenService } from '@core/service/authen.service';
 
 @Component({
   selector: 'app-course-view',
@@ -32,13 +33,17 @@ export class CourseViewComponent {
   status: any;
   button: boolean = false;
   coursekitData: any;
+  edit = false;
+  isDelete = false;
 
   constructor(
     public _courseService: CourseService,
     private classService: ClassService,
     private activatedRoute: ActivatedRoute,
     private modalServices: BsModalService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private router: Router,
+    private authenService: AuthenService
   ) {
     // constructor
     this.coursePaginationModel = {};
@@ -68,6 +73,24 @@ export class CourseViewComponent {
   }
 
   ngOnInit() {
+    const roleDetails =this.authenService.getRoleDetails()[0].menuItems
+    let urlPath = this.router.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}`;
+    const childId =  urlPath[urlPath.length - 3];
+    const subChildId =  urlPath[urlPath.length - 2];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let subChildData = childData[0].children.filter((item: any) => item.id == subChildId);
+    let actions = subChildData[0].actions
+    let editAction = actions.filter((item:any) => item.title == 'Edit')
+    let deleteAction = actions.filter((item:any) => item.title == 'Delete')
+
+    if(editAction.length >0){
+      this.edit = true;
+    }
+    if(deleteAction.length >0){
+      this.isDelete = true;
+    }
     if (this.courseId &&  this.status === 'active') {
       this.getAllCourse();
     }

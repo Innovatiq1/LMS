@@ -26,6 +26,7 @@ import { TableElement, TableExportUtil } from '@shared';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { formatDate } from '@angular/common';
+import { AuthenService } from '@core/service/authen.service';
 
 @Component({
   selector: 'app-in-active-courses',
@@ -67,12 +68,14 @@ export class InActiveCoursesComponent {
   isLoading = true;
   selection = new SelectionModel<CourseModel>(true, []);
   searchTerm: string = '';
+  view = false;
 
   constructor(
     private router: Router,
     private courseService: CourseService,
     private cd: ChangeDetectorRef,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private authenService: AuthenService
   ) {
     this.coursePaginationModel = {};
     this.coursePaginationModel.main_category = '0';
@@ -89,6 +92,20 @@ export class InActiveCoursesComponent {
   }
 
   ngOnInit(): void {
+    const roleDetails =this.authenService.getRoleDetails()[0].menuItems
+    let urlPath = this.router.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}`;
+    const childId =  urlPath[urlPath.length - 2];
+    const subChildId =  urlPath[urlPath.length - 1];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let subChildData = childData[0].children.filter((item: any) => item.id == subChildId);
+    let actions = subChildData[0].actions
+    let viewAction = actions.filter((item:any) => item.title == 'View')
+
+    if(viewAction.length >0){
+      this.view = true;
+    }
     this.setup();
   }
   private setup(): void {
@@ -332,7 +349,7 @@ export class InActiveCoursesComponent {
     doc.save('Pending Course List.pdf');
   }
   viewCourse(id: string) {
-    this.router.navigate(['/admin/courses/course-view/'], {
+    this.router.navigate(['/admin/courses/submitted-courses/pending-courses/course-view/'], {
       queryParams: { id: id, status: 'in-active' },
     });
   }

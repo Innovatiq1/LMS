@@ -90,7 +90,27 @@ const routes: Routes = [
     component: ViewCompletionComponent,
   },
   {
+    path: 'student-courses/approved-courses/view-completion-list',
+    component: ViewCompletionComponent,
+  },
+  {
+    path: 'student-courses/verification-list/view-completion-list',
+    component: ViewCompletionComponent,
+  },
+  {
+    path: 'student-courses/completed-courses/view-completion-list',
+    component: ViewCompletionComponent,
+  },
+  {
+    path: 'student-courses/pending-courses/view-completion-list',
+    component: ViewCompletionComponent,
+  },
+  {
     path: 'course-view',
+    component: CourseViewComponent,
+  },
+  {
+    path: 'submitted-courses/pending-courses/course-view',
     component: CourseViewComponent,
   },
   {

@@ -79,12 +79,12 @@
                 <ng-container matColumnDef="Student">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>{{commonRoles.STUDENT_ROLE}}
                   </mat-header-cell>
-                  <mat-cell *matCellDef="let row" class="name" (click)="view(row.id)">
+                  <mat-cell *matCellDef="let row" class="name" (click)="isView ? view(row.id) : null">
                     <span class="mobile-label">Student:</span> {{row.studentId?.name }}</mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="email">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
-                  <mat-cell *matCellDef="let row" (click)="view(row.id)">
+                  <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
                     <span class="mobile-label">Email:</span>
                     <img src="assets/images/gmail.png" alt="Email Icon" class="email-icon">
                     <!-- Replace "email-icon.png" with the filename of your PNG icon -->
@@ -93,13 +93,13 @@
                 </ng-container>
                 <ng-container matColumnDef="Course">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Course</mat-header-cell>
-                  <mat-cell *matCellDef="let row" (click)="view(row.id)">
+                  <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
                     <span class="mobile-label">Course:</span>{{row.title}} </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="Instructorfee">
                   <mat-header-cell *matHeaderCellDef mat-sort-header class="payment">{{commonRoles?.INSTRUCTOR_ROLE}}
                     Fee</mat-header-cell>
-                  <mat-cell *matCellDef="let row" (click)="view(row.id)" class="payment-cell">
+                  <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null" class="payment-cell">
                     <span class="mobile-label">Instructor Fee:</span>
                     <span *ngIf="row.classId?.instructorCost !== null && row.classId?.instructorCost !== undefined">
                       <span>$</span> {{ row.classId?.instructorCost || 0 }}.00
@@ -108,13 +108,13 @@
                 </ng-container>
                 <ng-container matColumnDef="Classstart">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Start Date</mat-header-cell>
-                  <mat-cell *matCellDef="let row" (click)="view(row.id)">
+                  <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
                     <span class="mobile-label">Class Start:</span>{{row.classId?.sessions[0]?.sessionStartDate | date}}
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="Classend">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>End Date</mat-header-cell>
-                  <mat-cell *matCellDef="let row" (click)="view(row.id)">
+                  <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
                     <span class="mobile-label">Class End:</span>{{row.classId?.sessions[0]?.sessionEndDate | date}}
                   </mat-cell>
                 </ng-container>
@@ -124,7 +124,7 @@
                 <ng-container matColumnDef="Registered Date">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Registered Date
                   </mat-header-cell>
-                  <mat-cell *matCellDef="let row" (click)="view(row.id)">
+                  <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
                     <span class="mobile-label">Registered Date:</span>{{row.registeredOn | date}} </mat-cell>
                 </ng-container>
 
@@ -132,7 +132,7 @@
                 <ng-container matColumnDef="Completed Date">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Completed Date
                   </mat-header-cell>
-                  <mat-cell *matCellDef="let row" (click)="view(row.id)">
+                  <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
                     <span class="mobile-label">Completed Date:</span>{{row.updatedAt | date}} </mat-cell>
                 </ng-container>
 
@@ -140,7 +140,7 @@
                 <ng-container matColumnDef="Exam Score">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Exam Score
                   </mat-header-cell>
-                  <mat-cell *matCellDef="let row" (click)="view(row.id)">
+                  <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
                     <span class="mobile-label">Exam Score:</span><span
                       *ngIf="row.examassessmentanswers">{{row.examassessmentanswers?.score}} /
                       {{row.examassessmentanswers?.totalScore}}</span> </mat-cell>
@@ -150,7 +150,7 @@
                 <ng-container matColumnDef="Assessment Score">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Assessment Score
                   </mat-header-cell>
-                  <mat-cell *matCellDef="let row" (click)="view(row.id)">
+                  <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
                     <span class="mobile-label">Assessment Score:</span><span
                       *ngIf="row.assessmentanswers">{{row.assessmentanswers?.score}} /
                       {{row.assessmentanswers?.totalScore}}</span> </mat-cell>
@@ -327,7 +327,7 @@
               </tr>
             </tbody>
           </table>
-          <table   width="800px" [style.background-image]="'url(' + this.image_link + ')'" style="
+          <table   width="800px" [style.background-image]="'url(' +this.image_link + ')'" style="
             margin: 0 auto;
             background-repeat: no-repeat;
             background-position: center right;
@@ -335,6 +335,8 @@
             border: 0.5px solid lightgray;
             height: fit-content;
           "> </table>
+
+</div>
     <!-- <table #backgroundTable style="margin: 0 auto;
            background-repeat: no-repeat;
            background-position: center right;
@@ -462,4 +464,4 @@
       </tbody>
     </table> -->
   <!-- </div> -->
-</div>
+<!-- </div> -->
