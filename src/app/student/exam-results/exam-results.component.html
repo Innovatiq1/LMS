@@ -72,16 +72,28 @@
                                   <span class="mobile-label">Retakes left:</span>{{ row?.retakeLeft || 0 }}
                                 </mat-cell>
                               </ng-container>
+
                               <ng-container matColumnDef="Exam">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header>Exam</mat-header-cell>
                                 <mat-cell *matCellDef="let row">
                                   <button 
-                                  [disabled]="row?.retakeLeft <= 0"
-                                  [routerLink]="['/student/exam-questions/',  row.id, row?.studentId?.id, row?.courseId?._id, row?.examAssessmentId?.id]" [queryParams]="{ retake: false }" mat-flat-button color="primary" >
+                                    [disabled]="row.retakeLeft <= 0"
+                                    (click)="handleRetakeTest(row)"
+                                    mat-flat-button color="primary">
                                     Retake Test
                                   </button>
                                 </mat-cell>
                               </ng-container>
+                              <!-- <ng-container matColumnDef="Exam">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>Exam</mat-header-cell>
+                                <mat-cell *matCellDef="let row">
+                                  <button 
+                                  [disabled]="row?.retakeLeft <= 0"
+                                  [routerLink]="['/student/exam-questions/',studentClassId, row.id, row?.studentId?.id, row?.courseId?._id, row?.examAssessmentId?.id]" [queryParams]="{ retake: false }" mat-flat-button color="primary" >
+                                    Retake Test
+                                  </button>
+                                </mat-cell>
+                              </ng-container> -->
 
                             
                               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -92,6 +104,24 @@
                           <mat-paginator #paginator [length]="totalItems" (page)="pageSizeChange($event)"
                           [pageSizeOptions]="pageSizeArr" aria-label="select pagination option">
                       </mat-paginator>
+
+                      <!-- <ng-container *ngIf="isCertIssued">
+                        <div class="row d-flex justify-content-between align-items-center">
+                          <img
+                            style="width: 150px; height: 150px"
+                            class="img-fluid col-sm-12 mx-auto"
+                            src="/assets/images/cancel.png"
+                            alt=""
+                          />
+                          <div class="result text-center col-md-6 col-sm-12 mt-3">
+                            <h5 class="mb-5">
+                              
+                              <span class="d-block">Your certificate has been issued.  </span>
+                              <span class="d-block">Don't have access to take the assessment.</span>
+                            </h5>
+                          </div>
+                        </div>
+                      </ng-container> -->
           
                         </div>
                       </div>

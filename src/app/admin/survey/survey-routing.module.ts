@@ -21,6 +21,10 @@ const routes: Routes = [
     path:"view-survey",
     component: CreateSurveyComponent
   },
+  {
+    path:"feedbacks-list/view-survey",
+    component: CreateSurveyComponent
+  },
 
   {
     path:"create-survey-questions",
@@ -40,6 +44,10 @@ const routes: Routes = [
   // },
   {
     path:"view-feedback/:id",
+    component: FeedbackViewComponent
+  },
+  {
+    path:"survey-list/view-feedback/:id",
     component: FeedbackViewComponent
   }
 ];

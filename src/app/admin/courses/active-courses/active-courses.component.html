@@ -107,7 +107,7 @@
                           <mat-cell
                             class="name"
                             *matCellDef="let row"
-                            (click)="viewCourse(row.id)"
+                            (click)="view ? viewCourse(row.id) : null"
                             ><span class="mobile-label">Course:</span>
                             <span>{{ row.title | titlecase }}</span>
                           </mat-cell>
@@ -118,7 +118,7 @@
                           </mat-header-cell>
                           <mat-cell
                             *matCellDef="let row"
-                            (click)="viewCourse(row.id)"
+                            (click)="view ? viewCourse(row.id) : null"
                             ><span class="mobile-label">Course Code:</span>
                             {{ row.courseCode }}
                           </mat-cell>
@@ -136,7 +136,7 @@
                           </mat-header-cell>
                           <mat-cell
                             *matCellDef="let row"
-                            (click)="viewCourse(row.id)"
+                            (click)="view ? viewCourse(row.id) : null"
                           >
                             <span class="mobile-label">Main Category:</span
                             >{{ row.main_category_text }}</mat-cell
@@ -148,7 +148,7 @@
                           </mat-header-cell>
                           <mat-cell
                             *matCellDef="let row"
-                            (click)="viewCourse(row.id)"
+                            (click)="view ? viewCourse(row.id) : null"
                           >
                             <span class="mobile-label">Days:</span
                             >{{ row.course_duration_in_days || 0 }} Day
@@ -161,7 +161,7 @@
                           </mat-header-cell>
                           <mat-cell
                             *matCellDef="let row"
-                            (click)="viewCourse(row.id)"
+                            (click)="view ? viewCourse(row.id) : null"
                           >
                             <span class="mobile-label">Traning Hours:</span
                             >{{ row.training_hours || 0 }} Hours
@@ -173,7 +173,7 @@
                           </mat-header-cell>
                           <mat-cell
                             *matCellDef="let row"
-                            (click)="viewCourse(row.id)" class="payment-cell"
+                            (click)="view ? viewCourse(row.id) : null" class="payment-cell"
                           >
                             <span class="mobile-label">Payment:</span
                             ><span>$</span> {{ row.fee || 0 }}.00
@@ -185,7 +185,7 @@
                           </mat-header-cell>
                           <mat-cell
                             *matCellDef="let row"
-                            (click)="viewCourse(row.id)"
+                            (click)="view ? viewCourse(row.id) : null"
                           >
                             <span class="mobile-label">Start Date:</span>
                             {{ row.sessionStartDate | date }}
@@ -197,7 +197,7 @@
                           </mat-header-cell>
                           <mat-cell
                             *matCellDef="let row"
-                            (click)="viewCourse(row.id)"
+                            (click)="view ? viewCourse(row.id) : null"
                           >
                             <span class="mobile-label">End Date:</span
                             >{{ row.sessionEndDate | date }}
@@ -212,7 +212,7 @@
                           </mat-header-cell>
                           <mat-cell
                             *matCellDef="let row"
-                            (click)="viewCourse(row.id)"
+                            (click)="view ? viewCourse(row.id) : null"
                           >
                             <span class="mobile-label">Vendor:</span
                             >{{ row.vendor }}
@@ -230,7 +230,7 @@
                           </mat-header-cell>
                           <mat-cell
                             *matCellDef="let row"
-                            (click)="viewCourse(row.id)"
+                            (click)="view ? viewCourse(row.id) : null"
                           >
                             <span class="mobile-label">Status:</span>
                             <span class="badge badge-solid-green">

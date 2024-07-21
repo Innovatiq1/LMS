@@ -12,6 +12,8 @@ import * as moment from 'moment';
 import Swal from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { AppConstants } from '@shared/constants/app.constants';
+import { AuthenService } from '@core/service/authen.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-progaram-completion-list',
@@ -49,15 +51,29 @@ export class ProgaramCompletionListComponent {
   certificateUrl: boolean = false;
   pdfData: any = [];
   commonRoles: any;
+  view = false;
 
-
-  constructor(private classService: ClassService, private utils: UtilsService, public dialog: MatDialog) {
+  constructor(private classService: ClassService, private utils: UtilsService, public dialog: MatDialog, private authenService: AuthenService, private route :Router, ) {
 
 
     this.studentPaginationModel = {} as StudentPaginationModel;
   }
 
   ngOnInit(): void {
+    const roleDetails =this.authenService.getRoleDetails()[0].menuItems
+    let urlPath = this.route.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}`;
+    const childId =  urlPath[urlPath.length - 2];
+    const subChildId =  urlPath[urlPath.length - 1];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let subChildData = childData[0].children.filter((item: any) => item.id == subChildId);
+    let actions = subChildData[0].actions
+
+    let viewAction = actions.filter((item:any) => item.title == 'View')
+    if(viewAction.length >0){
+      this.view = true;
+    }
     this.commonRoles = AppConstants
     this.getCompletedClasses();
   }

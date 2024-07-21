@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Session, Student, StudentApproval, StudentPaginationModel } from '@core/models/class.model';
 import { AssessmentService } from '@core/service/assessment.service';
+import { AuthenService } from '@core/service/authen.service';
 import { CourseService } from '@core/service/course.service';
 import { AppConstants } from '@shared/constants/app.constants';
 import { ClassService } from 'app/admin/schedule-class/class.service';
@@ -34,7 +35,11 @@ export class ViewCompletionComponent {
   commonRoles: any;
   discountDetails:any;
   isDiscount = false;
-  constructor(private classService: ClassService,private courseService: CourseService,private _router: Router, private activatedRoute: ActivatedRoute,public _classService: ClassService, private assessmentService: AssessmentService) {
+  edit = false;
+  delete = false;
+
+  constructor(private classService: ClassService,private courseService: CourseService,private _router: Router, private activatedRoute: ActivatedRoute,public _classService: ClassService, private assessmentService: AssessmentService, 
+    private authenService: AuthenService) {
 
     this.studentPaginationModel = {} as StudentPaginationModel;
     this.activatedRoute.queryParams.subscribe((params: any) => {
@@ -76,6 +81,24 @@ export class ViewCompletionComponent {
   }
 
     ngOnInit(): void {
+      const roleDetails =this.authenService.getRoleDetails()[0].menuItems
+      let urlPath = this._router.url.split('/');
+      const parentId = `${urlPath[1]}/${urlPath[2]}`;
+      const childId =  urlPath[urlPath.length - 3];
+      const subChildId =  urlPath[urlPath.length - 2];
+      let parentData = roleDetails.filter((item: any) => item.id == parentId);
+      let childData = parentData[0].children.filter((item: any) => item.id == childId);
+      let subChildData = childData[0].children.filter((item: any) => item.id == subChildId);
+      let actions = subChildData[0].actions
+      let editAction = actions.filter((item:any) => item.title == 'Edit')
+      let deleteAction = actions.filter((item:any) => item.title == 'Delete')
+  
+      if(editAction.length >0){
+        this.edit = true;
+      }
+      if(deleteAction.length >0){
+        this.delete = true;
+      }
       this.commonRoles = AppConstants
       this.getCompletedClasses();
       // if (this.courseId) {
@@ -92,7 +115,9 @@ export class ViewCompletionComponent {
         this.classService
       .getSessionCompletedStudent(userId,this.studentPaginationModel.page, this.studentPaginationModel.limit)
       .subscribe((response: { docs: any; page: any; limit: any; totalDocs: any; }) => {
+        console.log("studentClasses==",response)
         this.completedData = response.docs;
+
       })
   }
   getCategories(id: string): void {
@@ -253,6 +278,7 @@ export class ViewCompletionComponent {
   }
 
   assignExam() {
+    console.log("getting the response dddd=",this.response._id)
     Swal.fire({
       title: 'Are you sure?',
       text: 'Do you want to assign Exam!',
@@ -269,6 +295,8 @@ export class ViewCompletionComponent {
   }
 
   addEmptyRecord(){
+    console.log("getting the response dddd=",this.response._id)
+    const studentClassId=this.response._id;
     const studentId = this.response.studentId._id;
     const examAssessmentId = this.response.courseId.exam_assessment;
     const assessmentAnswerId = this.response.assessmentAnswer._id;
@@ -277,6 +305,7 @@ export class ViewCompletionComponent {
       studentId,
       examAssessmentId,
       assessmentAnswerId,
+      studentClassId,
       courseId
     };
 

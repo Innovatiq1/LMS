@@ -42,10 +42,10 @@
                             <div class="header">
                                 <h6>CourseKit</h6>
                             </div>
-                            <button class="icons" *ngIf="checkActionAccess('edit')" alt="Edit" mat-menu-item [routerLink]="['/admin/courses/edit-course-kit/',response.id]" >
+                            <button class="icons" *ngIf="edit" alt="Edit" mat-menu-item [routerLink]="['/admin/courses/edit-course-kit/',response.id]" >
                                 <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
                             </button>
-                            <button class="icons"  *ngIf="checkActionAccess('edit')" alt="Delete" mat-menu-item (click)="deleteItem(response)">
+                            <button class="icons"  *ngIf="delete" alt="Delete" mat-menu-item (click)="deleteItem(response)">
                                 <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
                             </button>
                         </div>

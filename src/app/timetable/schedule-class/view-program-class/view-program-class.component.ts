@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthenService } from '@core/service/authen.service';
 import { AppConstants } from '@shared/constants/app.constants';
 import { ProgramService } from 'app/admin/program/program.service';
 import { ClassService } from 'app/admin/schedule-class/class.service';
@@ -27,17 +28,36 @@ export class ViewProgramClassComponent {
   isAdmin: boolean = false;
   isInstructor: boolean = false;
   commonRoles: any;
+  edit = false;
+  isDelete = false;
 
   constructor(private activatedRoute: ActivatedRoute,
     private _classService:ClassService,
     public programService: ProgramService,
-    private router: Router,){
+    private router: Router,
+    private authenService: AuthenService){
     this.subscribeParams = this.activatedRoute.params.subscribe((params:any) => {
       this.classId = params.id;
     });
   
   }
   ngOnInit() {
+    const roleDetails =this.authenService.getRoleDetails()[0].menuItems
+    let urlPath = this.router.url.split('/');
+    const parentId = urlPath[urlPath.length - 4];
+    const childId =  urlPath[urlPath.length - 3];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let actions = childData[0].actions
+    let editAction = actions.filter((item:any) => item.title == 'Edit')
+    let deleteAction = actions.filter((item:any) => item.title == 'Delete')
+
+    if(editAction.length >0){
+      this.edit = true;
+    }
+    if(deleteAction.length >0){
+      this.isDelete = true;
+    }
     this.commonRoles = AppConstants
     this.loadData()
     let userType = localStorage.getItem('user_type');

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CoursePaginationModel } from '@core/models/course.model';
+import { AuthenService } from '@core/service/authen.service';
 import { AppConstants } from '@shared/constants/app.constants';
 import { ClassService } from 'app/admin/schedule-class/class.service';
 import Swal from 'sweetalert2';
@@ -26,8 +27,10 @@ export class ViewClassComponent {
   isAdmin: boolean = false;
   isInstructor: boolean = false;
   commonRoles: any;
+  edit = false;
+  isDelete = false;
 
-  constructor(public _classService: ClassService,private _router: Router, private activatedRoute: ActivatedRoute,) {
+  constructor(public _classService: ClassService,private _router: Router, private activatedRoute: ActivatedRoute,private authenService: AuthenService) {
     this.coursePaginationModel = {};
     this.activatedRoute.params.subscribe((params: any) => {
       
@@ -40,6 +43,22 @@ export class ViewClassComponent {
   }
 
   ngOnInit(): void {
+    const roleDetails =this.authenService.getRoleDetails()[0].menuItems
+    let urlPath = this._router.url.split('/');
+    const parentId = urlPath[urlPath.length - 4];
+    const childId =  urlPath[urlPath.length - 3];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let actions = childData[0].actions
+    let editAction = actions.filter((item:any) => item.title == 'Edit')
+    let deleteAction = actions.filter((item:any) => item.title == 'Delete')
+
+    if(editAction.length >0){
+      this.edit = true;
+    }
+    if(deleteAction.length >0){
+      this.isDelete = true;
+    }
     this.commonRoles = AppConstants
     this.getClassList();
     if (this.courseId) {

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Session, Student, StudentApproval, StudentPaginationModel } from '@core/models/class.model';
+import { AuthenService } from '@core/service/authen.service';
 import { CourseService } from '@core/service/course.service';
 import { ClassService } from 'app/admin/schedule-class/class.service';
 import * as moment from 'moment';
@@ -24,8 +25,10 @@ export class ViewStudentPendingListComponent {
   studentPaginationModel: StudentPaginationModel;
   courseId: any;
   response: any;
+  edit = false;
+  isDelete = false;
 
-  constructor(private classService: ClassService,private courseService: CourseService,private _router: Router, private activatedRoute: ActivatedRoute,) {
+  constructor(private classService: ClassService,private courseService: CourseService,private _router: Router, private activatedRoute: ActivatedRoute,private authenService: AuthenService) {
 
     this.studentPaginationModel = {} as StudentPaginationModel;
     this.activatedRoute.params.subscribe((params: any) => {
@@ -40,6 +43,24 @@ export class ViewStudentPendingListComponent {
   }
 
     ngOnInit(): void {
+      const roleDetails =this.authenService.getRoleDetails()[0].menuItems
+    let urlPath = this._router.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}`;
+    const childId =  urlPath[urlPath.length - 4];
+    const subChildId =  urlPath[urlPath.length - 3];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let subChildData = childData[0].children.filter((item: any) => item.id == subChildId);
+    let actions = subChildData[0].actions
+
+    let editAction = actions.filter((item:any) => item.title == 'Edit')
+    let deleteAction = actions.filter((item:any) => item.title == 'Delete')
+    if(editAction.length >0){
+      this.edit = true;
+    }
+    if(deleteAction.length >0){
+      this.isDelete = true;
+    }
       this.getCompletedClasses();
       if (this.courseId) {
         this.activatedRoute.params.subscribe((params: any) => {

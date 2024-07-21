@@ -6,6 +6,7 @@ import { SendDailogComponent } from './send-dailog/send-dailog.component';
 import { Direction } from '@angular/cdk/bidi';
 import { MatDialog } from '@angular/material/dialog';
 import { UserService } from '@core/service/user.service';
+import { AuthenService } from '@core/service/authen.service';
 
 @Component({
   selector: 'app-feedback-view',
@@ -24,6 +25,8 @@ export class FeedbackViewComponent {
   questionsList: any = [];
   allUsers: any;
   surveyName: any;
+  edit = false;
+  isDelete = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -31,12 +34,29 @@ export class FeedbackViewComponent {
     private router: Router,
     public dialog: MatDialog,
        private alluserService: UserService,
+    private authenService: AuthenService
 
 
   ) {
     this.activatedRoute.params.subscribe((params: any) => {
       this.surveyId = params.id;
     });
+    const roleDetails =this.authenService.getRoleDetails()[0].menuItems
+    let urlPath = this.router.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}`;
+    const childId =  urlPath[urlPath.length - 3];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let actions = childData[0].actions
+    let editAction = actions.filter((item:any) => item.title == 'Edit')
+    let deleteAction = actions.filter((item:any) => item.title == 'Delete')
+
+    if(editAction.length >0){
+      this.edit = true;
+    }
+    if(deleteAction.length >0){
+      this.isDelete = true;
+    }
     this.getData();
   }
 

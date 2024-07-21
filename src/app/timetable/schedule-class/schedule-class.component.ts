@@ -21,6 +21,7 @@ import {
 import { ProgramService } from 'app/admin/program/program.service';
 import { LecturesService } from 'app/teacher/lectures/lectures.service';
 import { AppConstants } from '@shared/constants/app.constants';
+import { AuthenService } from '@core/service/authen.service';
 
 @Component({
   selector: 'app-schedule-class',
@@ -90,6 +91,8 @@ export class ScheduleClassComponent {
   isAdmin: boolean = false;
   isInstructor: boolean = false;
   commonRoles: any;
+  isView = false;
+  create = false;
   constructor(
     public courseService: ProgramService,
     private classService: ClassService,
@@ -97,11 +100,28 @@ export class ScheduleClassComponent {
     public router: Router,
     private instructorService: InstructorService,
     public lecturesService: LecturesService,
+    private authenService: AuthenService
   ) {
     this.coursePaginationModel = {};
   }
 
   ngOnInit(): void {
+    const roleDetails =this.authenService.getRoleDetails()[0].menuItems
+    let urlPath = this.router.url.split('/');
+    const parentId = urlPath[urlPath.length - 2];
+    const childId =  urlPath[urlPath.length - 1];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let actions = childData[0].actions
+    let createAction = actions.filter((item:any) => item.title == 'Create')
+    let viewAction = actions.filter((item:any) => item.title == 'View')
+
+    if(createAction.length >0){
+      this.create = true;
+    }
+    if(viewAction.length >0){
+      this.isView = true;
+    }
     this.commonRoles = AppConstants
     let userType = localStorage.getItem('user_type');
     if (userType == AppConstants.ADMIN_USERTYPE ||  AppConstants.ADMIN_ROLE) {

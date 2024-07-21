@@ -19,6 +19,7 @@ import { UserService } from '@core/service/user.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { formatDate } from '@angular/common';
 import { AppConstants } from '@shared/constants/app.constants';
+import { AuthenService } from '@core/service/authen.service';
 @Component({
   selector: 'app-all-course',
   templateUrl: './all-course.component.html',
@@ -90,13 +91,16 @@ export class AllCourseComponent {
   selectedCreators: any = [];
   filterForm: FormGroup;
   commonRoles: any;
+  create = false;
+  view = false;
 
   constructor(
     public _courseService: CourseService,
     private route: Router,
     private classService: ClassService,
     private userService: UserService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private authenService: AuthenService
   ) {
     // constructor
     this.coursePaginationModel = { limit: 10 };
@@ -149,6 +153,24 @@ export class AllCourseComponent {
   }
 
   ngOnInit() {
+    const roleDetails =this.authenService.getRoleDetails()[0].menuItems
+    let urlPath = this.route.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}`;
+    const childId =  urlPath[urlPath.length - 2];
+    const subChildId =  urlPath[urlPath.length - 1];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let subChildData = childData[0].children.filter((item: any) => item.id == subChildId);
+    let actions = subChildData[0].actions
+    let createAction = actions.filter((item:any) => item.title == 'Create')
+    let viewAction = actions.filter((item:any) => item.title == 'View')
+
+    if(createAction.length > 0){
+      this.create = true
+    }
+    if(viewAction.length >0){
+      this.view = true;
+    }
     this.getAllCourses();
     this.getAllVendorsAndUsers();
     forkJoin({

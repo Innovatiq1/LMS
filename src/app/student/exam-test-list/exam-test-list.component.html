@@ -61,8 +61,8 @@
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Exam
                 </mat-header-cell>
                 <mat-cell *matCellDef="let row" class="name" (click)="view(row.id)">
-                    <button *ngIf="row.isAssigned && !row.isCompleted"
-                        [routerLink]="['/student/exam-questions/',  row._id, row?.studentId, row?.courseId?._id, row?.examAssessmentId?._id]" [queryParams]="{ retake: true, submitted: false }" mat-flat-button color="primary" >
+                    <button *ngIf="row.isAssigned && !row.isCompleted
+                        [routerLink]="['/student/exam-questions/',studentClassId, row._id, row?.studentId, row?.courseId?._id, row?.examAssessmentId?._id]" [queryParams]="{ retake: true, submitted: false }" mat-flat-button color="primary" >
                       Take Exam
                     </button>
                     <button *ngIf="!row.isAssigned && !row.isCompleted && getLabel(row) != 'Approval Pending'" (click)="navToExam(row)" mat-flat-button color="primary" >
