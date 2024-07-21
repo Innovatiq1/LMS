@@ -106,11 +106,11 @@ export class ExamTestListComponent {
 
   getLabel(data:any):string{
     const course = data.courseId;
-    const isApproved = data.studentClassId.some((v:any)=>v.status == 'approved');
+    const isApproved = data.studentClassId?.some((v:any)=>v.status == 'approved');
     if(course.feeType == 'free' || isApproved){
       return 'Take Exam'
     }
-    return data.studentClassId.length ? 'Approval Pending' : 'Pay'
+    return data.studentClassId?.length ? 'Approval Pending' : 'Pay'
   }
 
   paidDirectExamFlow(data: any) {
