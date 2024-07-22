@@ -205,6 +205,10 @@ const routes: Routes = [
     component: ExamQuestionsComponent,
   },
   {
+    path: 'exam-questions/:id/:id/:id/:id', // 1.assessmentAnswerId, 2.studentId, 3.courseId, 4.examAssessmentId
+    component: ExamQuestionsComponent,
+  },
+  {
     path: 'welcome',
     component: WelcomeComponent,
   },

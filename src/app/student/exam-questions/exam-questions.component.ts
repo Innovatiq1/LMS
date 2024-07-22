@@ -141,7 +141,9 @@ export class ExamQuestionsComponent {
         this.studentId = urlPath[urlPath.length - 3];
         
         this.answerAssessmentId = urlPath[urlPath.length - 4];
+        if(urlPath[urlPath.length-5] != "exam-questions"){
         this.studentClassId=urlPath[urlPath.length-5]
+        }
         // this.assessmentService.getAssignedExamAnswers().subscribe((response)=>{
         //   console.log("getAssignedExamAnswers response ",response)
         //   console.log("this getAss==",response.data.docs[0].studentClassId[0]._id)

@@ -69,12 +69,10 @@ export class ExamTestListComponent {
 
   getEnabledExams() {
     let studentId = localStorage.getItem('id') || '';
+    let company = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     this.assessmentService
       .getAssignedExamAnswers({ ...this.assessmentPaginationModel, studentId })
       .subscribe((res) => {
-       // console.log("this is response id from ==",res.data.docs[0].studentClassId[0]._id)
-        this.studentClassId=res?.data?.docs[0]?.studentClassId[0]?._id;
-       // console.log("this.student ",this.studentClassId)
         this.isLoading = false;
         this.dataSource = res.data.docs;
         this.totalItems = res.data.totalDocs;
@@ -145,6 +143,7 @@ export class ExamTestListComponent {
     }));
     const studentClass =await firstValueFrom(this.registerClass(courseDetails, courseKit));
     if(studentClass.success){
+      this.studentClassId= studentClass?.data?.createdStudentClass?.id
       const courseDetailInfo = data.courseId;
       const studentId = localStorage.getItem('id');
       const examAssessment = data.courseId.exam_assessment._id;
@@ -356,7 +355,8 @@ export class ExamTestListComponent {
       courseId: courseDetails.id,
       verify:true,
       paid: courseFee ? false: true,
-      companyId: companyId
+      companyId: companyId,
+      status:"approved"
     };
     return this.courseService.saveRegisterClass(payload)
   }
