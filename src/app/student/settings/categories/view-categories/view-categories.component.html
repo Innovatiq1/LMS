@@ -62,7 +62,7 @@
                 <div class="header">
                   <h6>Categories</h6>
                 </div>
-                <button
+                <button *ngIf="isEdit"
                   class="icons"
                   alt="Edit"
                   mat-menu-item
@@ -73,7 +73,7 @@
                     [class]="'tbl-fav-edit'"
                   ></app-feather-icons>
                 </button>
-                <button
+                <button *ngIf="isDelete"
                   class="icons"
                   alt="Delete"
                   mat-menu-item

@@ -32,6 +32,7 @@ import { UtilsService } from '@core/service/utils.service';
 import { Teachers } from 'app/admin/teachers/teachers.model';
 import { TeachersService } from 'app/admin/teachers/teachers.service';
 import { AppConstants } from '@shared/constants/app.constants';
+import { AuthenService } from '@core/service/authen.service';
 
 @Component({
   selector: 'app-all-teachers',
@@ -72,6 +73,8 @@ export class AllTeachersComponent
   ];
   totalItems: any;
   pageSizeArr = this.utils.pageSizeArr;
+  isCreate: boolean = false;
+  isView: boolean = false;
   // rowData:any
   constructor(
     public httpClient: HttpClient,
@@ -80,7 +83,8 @@ export class AllTeachersComponent
     private snackBar: MatSnackBar,
     private route: Router,
     private location: Location,
-    public utils: UtilsService
+    public utils: UtilsService,
+    private authenService: AuthenService
   ) {
     super();
     this.UsersModel = {};
@@ -94,6 +98,24 @@ export class AllTeachersComponent
   searchTerm: string = '';
 
   ngOnInit() {
+    const roleDetails =this.authenService.getRoleDetails()[0].settingsMenuItems
+    let urlPath = this.route.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}`;
+    const childId =  urlPath[urlPath.length - 2];
+    const subChildId =  urlPath[urlPath.length - 1];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let subChildData = childData[0].children.filter((item: any) => item.id == subChildId);
+    let actions = subChildData[0].actions
+    let createAction = actions.filter((item:any) => item.title == 'Create')
+    let viewAction = actions.filter((item:any) => item.title == 'View')
+
+    if(createAction.length >0){
+      this.isCreate = true;
+    }
+    if(viewAction.length >0){
+      this.isView = true;
+    }
     this.loadData();
     //this.instructorData()
   }
@@ -107,7 +129,7 @@ export class AllTeachersComponent
     this.route.navigateByUrl('/student/settings/add-instructor');
   }
   aboutInstructor(id: any) {
-    this.route.navigate(['/student/settings/view-instructor'], {
+    this.route.navigate(['/student/settings/all-user/all-instructors/view-instructor'], {
       queryParams: { data: id },
     });
   }

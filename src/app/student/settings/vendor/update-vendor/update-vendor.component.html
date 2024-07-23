@@ -13,7 +13,7 @@
           <div class="card" style="height: fit-content;">
             <div class="header d-flex justify-content-between">
               <h2>Update Vendor</h2>
-              <button class="icons" (click)="deleteVendor(id)" alt="Delete" matTooltip="Delete" mat-menu-item>
+              <button class="icons" *ngIf="isDelete" (click)="deleteVendor(id)" alt="Delete" matTooltip="Delete" mat-menu-item>
                 <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
             </button>
             </div>

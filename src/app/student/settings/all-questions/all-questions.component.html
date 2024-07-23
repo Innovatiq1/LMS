@@ -21,7 +21,7 @@
                   </li>
                   <li class="tbl-header-btn">
                     <div class="m-l-10" matTooltip="ADD">
-                      <button mat-raised-button [routerLink]="['/student/settings/add-questions']"
+                      <button mat-raised-button *ngIf="isCreate" [routerLink]="['/student/settings/add-questions']"
                       id="submit">Create</button>
                     </div>
                   </li>         
@@ -33,28 +33,30 @@
                 <table mat-table [dataSource]="dataSource" matSort class="mat-cell advance-table">
                  
                   <ng-container matColumnDef="Name">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header >Name</mat-header-cell>
-                    <mat-cell *matCellDef="let row" [routerLink]="row.status !== 'approved' ? ['/student/settings/edit-questions', row.id] : ['/student/settings/preview-questions', row.id]" [queryParams]="{ approved: true, assessmentType: assessmentType(row) }" style="color: deepskyblue;font-weight: 500">
-                      <span class="mobile-label" >Name:</span> {{row.name}}
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+                    <mat-cell *matCellDef="let row"
+                              [routerLink]="getRouterLink(row)"
+                              [queryParams]="{ approved: true, assessmentType: assessmentType(row) }"
+                              style="color: deepskyblue; font-weight: 500">
+                      <span class="mobile-label">Name:</span> {{row.name}}
                     </mat-cell>
                   </ng-container>
-                  
-                  
+                 
                   <ng-container matColumnDef="Count">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>No.of Questions</mat-header-cell>
-                    <mat-cell *matCellDef="let row" [routerLink]="row.status !== 'approved' ? ['/student/settings/edit-questions', row.id] : ['/student/settings/preview-questions', row.id]" [queryParams]="{ approved: true, assessmentType: assessmentType(row) }">
+                    <mat-cell *matCellDef="let row" [routerLink]="getRouterLink(row)" [queryParams]="{ approved: true, assessmentType: assessmentType(row) }">
                        <span class="mobile-label">Count:</span>{{row.questions.length}}</mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="Created At">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>Created At</mat-header-cell>
-                    <mat-cell *matCellDef="let row" [routerLink]="row.status !== 'approved' ? ['/student/settings/edit-questions', row.id] : ['/student/settings/preview-questions', row.id]" [queryParams]="{ approved: true, assessmentType: assessmentType(row) }">
+                    <mat-cell *matCellDef="let row" [routerLink]="getRouterLink(row)" [queryParams]="{ approved: true, assessmentType: assessmentType(row) }">
                       <span class="mobile-label">Created At:</span>{{row.createdAt | date: 'MM/dd/yyyy' }}
                     </mat-cell>
                   </ng-container>
 
                   <ng-container matColumnDef="Assessment Type">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>Form Type</mat-header-cell>
-                    <mat-cell *matCellDef="let row" [routerLink]="row.status !== 'approved' ? ['/student/settings/edit-questions', row.id] : ['/student/settings/preview-questions', row.id]" [queryParams]="{ approved: true, assessmentType: assessmentType(row) }">
+                    <mat-cell *matCellDef="let row" [routerLink]="getRouterLink(row)" [queryParams]="{ approved: true, assessmentType: assessmentType(row) }">
                       <div class="status-container">
                         <span class="status-text">{{ assessmentType(row) }}</span>
                         </div>
@@ -63,7 +65,7 @@
                  
                   <ng-container matColumnDef="Approval Status">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
-                    <mat-cell *matCellDef="let row" [routerLink]="row.status !== 'approved' ? ['/student/settings/edit-questions', row.id] : ['/student/settings/preview-questions', row.id]" [queryParams]="{ approved: true, assessmentType: assessmentType(row) }" [ngClass]="getStatusClass(row.status)">
+                    <mat-cell *matCellDef="let row" [routerLink]="getRouterLink(row)" [queryParams]="{ approved: true, assessmentType: assessmentType(row) }" [ngClass]="getStatusClass(row.status)">
                       <!-- <div class="status-container">
                         <span class="dot" [ngClass]="getDotClass(row.status)"></span> 
                         <span class="status-text">{{row.status | titlecase}}</span>

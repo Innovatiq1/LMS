@@ -6,6 +6,7 @@ import { ImageSource } from '@core/enums/image-upload-source.enum';
 import { CoursePaginationModel } from '@core/models/course.model';
 import { MenuItemModel, UserType } from '@core/models/user.model';
 import { AdminService } from '@core/service/admin.service';
+import { AuthenService } from '@core/service/authen.service';
 import { UserService } from '@core/service/user.service';
 import { UtilsService } from '@core/service/utils.service';
 import { MENU_LIST } from '@shared/menu-item';
@@ -63,6 +64,7 @@ export class CreateUserTypeComponent {
   admin: any;
   userTypeNames: any;
   data: any;
+  isDelete = false;
 
   constructor(
     public router: ActivatedRoute,
@@ -73,6 +75,7 @@ export class CreateUserTypeComponent {
     public utils: UtilsService,
     private formBuilder: FormBuilder,
     private logoService: LogoService, private userService: UserService,
+    private authenService: AuthenService
   ) {
     this.initMenuItemsV2();
     this.initMenuItemsSettings();
@@ -152,11 +155,26 @@ export class CreateUserTypeComponent {
        this.changeSettingMenuChecked(element.checked, element.id);
      }else if(element.indeterminate&& element.children){
        this.populateSettingsMenuCheckbox(element.children);
-     }
+     }else if(element.indeterminate&& element.actions){
+      this.populateCheckbox(element.actions);
+    }
     });
    }
 
   ngOnInit() {
+    const roleDetails =this.authenService.getRoleDetails()[0].settingsMenuItems
+    let urlPath = this.route.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}`;
+    const childId =  urlPath[urlPath.length - 2];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let actions = childData[0].actions
+    let deleteAction = actions.filter((item:any) => item.title == 'Delete')
+
+   
+    if(deleteAction.length >0){
+      this.isDelete = true;
+    }
     this.dataSource = new MatTableDataSource<MenuItemModel>(
       this.dataSourceArray
     );
@@ -175,7 +193,6 @@ export class CreateUserTypeComponent {
       (v: any) => v
     );
     formData.menuItems = selectedMenuItems;
-console.log("form", formData)
     this.updateUserType(formData)
       .then((response: any) => {})
       .catch((e: any) => {});
@@ -348,12 +365,17 @@ console.log("form", formData)
     
   }
 
-  updateSettingMenuItem(item: { checked: any; id: any; children: any[] }) {
+  updateSettingMenuItem(item: { checked: any; id: any; children: any[]; actions: any[] }) {
     if (typeof item === 'object' && item.checked) {
       this.changeSettingMenuChecked(item.checked, item.id);
     }
     if (item?.children?.length) {
       item.children.forEach((element: any) => {
+        this.updateSettingMenuItem(element);
+      });
+    }
+    if (item?.actions?.length) {
+      item.actions.forEach((element: any) => {
         this.updateSettingMenuItem(element);
       });
     }

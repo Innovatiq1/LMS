@@ -28,6 +28,7 @@ import { Users } from '@core/models/user.model';
 import { Students } from 'app/admin/students/students.model';
 import { StudentsService } from 'app/admin/students/students.service';
 import { AppConstants } from '@shared/constants/app.constants';
+import { AuthenService } from '@core/service/authen.service';
 @Component({
   selector: 'app-all-students',
   templateUrl: './all-students.component.html',
@@ -62,12 +63,16 @@ export class AllStudentsComponent
       active: `${AppConstants.STUDENT_ROLE}s`,
     },
   ];
+  isCreate: boolean = false;
+  isView: boolean = false;
+
   constructor(
     public httpClient: HttpClient,
     public dialog: MatDialog,
     public studentsService: StudentsService,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private authenService: AuthenService
   ) {
     super();
   }
@@ -79,6 +84,25 @@ export class AllStudentsComponent
   contextMenuPosition = { x: '0px', y: '0px' };
 
   ngOnInit() {
+
+    const roleDetails =this.authenService.getRoleDetails()[0].settingsMenuItems
+    let urlPath = this.router.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}`;
+    const childId =  urlPath[urlPath.length - 2];
+    const subChildId =  urlPath[urlPath.length - 1];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let subChildData = childData[0].children.filter((item: any) => item.id == subChildId);
+    let actions = subChildData[0].actions
+    let createAction = actions.filter((item:any) => item.title == 'Create')
+    let viewAction = actions.filter((item:any) => item.title == 'View')
+
+    if(createAction.length >0){
+      this.isCreate = true;
+    }
+    if(viewAction.length >0){
+      this.isView = true;
+    }
     this.loadData();
   }
   // ngAfterViewInit() {
@@ -324,7 +348,7 @@ export class AllStudentsComponent
   }
 
   aboutStudent(id: any) {
-    this.router.navigate(['/student/settings/view-student'], {
+    this.router.navigate(['/student/settings/all-user/all-students/view-student'], {
       queryParams: { data: id },
     });
   }

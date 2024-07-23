@@ -25,6 +25,7 @@ import Swal from 'sweetalert2';
 import { TableElement, TableExportUtil } from '@shared';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import { AuthenService } from '@core/service/authen.service';
 
 
 @Component({
@@ -65,13 +66,16 @@ export class CategoriesComponent implements OnInit {
   subCategory = [];
   data: any;
   searchTerm: string = '';
+  isCreate = false;
+  isView = false;
 
   constructor(
     private router: Router,
     private courseService: CourseService,
     private formBuilder: FormBuilder,
     public utils: UtilsService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private authenService: AuthenService
   ) {
     this.coursePaginationModel = {};
   }
@@ -80,6 +84,22 @@ export class CategoriesComponent implements OnInit {
   @ViewChild('filter', { static: true }) filter!: ElementRef;
 
   ngOnInit(): void {
+    const roleDetails =this.authenService.getRoleDetails()[0].settingsMenuItems
+    let urlPath = this.router.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}/${urlPath[3]}`;
+    const childId =  urlPath[urlPath.length - 1];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let actions = childData[0].actions
+    let createAction = actions.filter((item:any) => item.title == 'Create')
+    let viewAction = actions.filter((item:any) => item.title == 'View')
+  
+    if(createAction.length >0){
+      this.isCreate = true;
+    }
+    if(viewAction.length >0){
+      this.isView = true;
+    }
     this.fetchSubCategories();
     // this.initSubCategoryForm();
     // this.addSubCategoryField();

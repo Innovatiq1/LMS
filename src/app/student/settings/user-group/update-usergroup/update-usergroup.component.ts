@@ -6,6 +6,7 @@ import { UserService } from '@core/service/user.service';
 import Swal from 'sweetalert2';
 import { Location } from '@angular/common';
 import { UtilsService } from '@core/service/utils.service';
+import { AuthenService } from '@core/service/authen.service';
 
 @Component({
   selector: 'app-update-usergroup',
@@ -26,13 +27,16 @@ export class UpdateUsergroupComponent {
   typeName: any;
   id: any;
   response: any;
+  isDelete = false;
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private userService: UserService,
     private activatedRoute: ActivatedRoute,
     private location: Location,
-    public utils: UtilsService
+    public utils: UtilsService,
+    private authenService: AuthenService
   ) {
     this.userTypeFormGroup = this.fb.group({
       typeName: ['', [Validators.required,...this.utils.validators.noLeadingSpace]],
@@ -42,6 +46,18 @@ export class UpdateUsergroupComponent {
   }
 
   ngOnInit() {
+    const roleDetails =this.authenService.getRoleDetails()[0].settingsMenuItems
+    let urlPath = this.router.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}`;
+    const childId =  urlPath[urlPath.length - 2];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let actions = childData[0].actions
+    let deleteAction = actions.filter((item:any) => item.title == 'Delete')
+  
+    if(deleteAction.length >0){
+      this.isDelete = true;
+    }
     this.activatedRoute.queryParams.subscribe((params) => {
       this.id = params['id'];
       this.getUserGroupById(this.id);

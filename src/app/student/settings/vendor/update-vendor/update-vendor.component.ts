@@ -5,6 +5,7 @@ import { CourseService } from '@core/service/course.service';
 import { UtilsService } from '@core/service/utils.service';
 import Swal from 'sweetalert2';
 import { Location } from '@angular/common';
+import { AuthenService } from '@core/service/authen.service';
 
 @Component({
   selector: 'app-update-vendor',
@@ -22,15 +23,29 @@ export class UpdateVendorComponent {
   ];
   dataSource :any;
   id: any;
+  isDelete = false;
 
   
   constructor(private fb: FormBuilder,private router:Router,
-    private activatedRoute:ActivatedRoute,private courseService:CourseService,public utils:UtilsService,  private location: Location) {
+    private activatedRoute:ActivatedRoute,private courseService:CourseService,public utils:UtilsService,  private location: Location,
+    private authenService: AuthenService) {
       this.vendorForm = this.fb.group({
         vendor: ['', [Validators.required,...this.utils.validators.name]],
         description: ['', [Validators.required,...this.utils.validators.name]]
 
       });
+      const roleDetails =this.authenService.getRoleDetails()[0].settingsMenuItems
+      let urlPath = this.router.url.split('/');
+      const parentId = `${urlPath[1]}/${urlPath[2]}/${urlPath [3]}`;
+      const childId =  urlPath[urlPath.length - 2];
+      let parentData = roleDetails.filter((item: any) => item.id == parentId);
+      let childData = parentData[0].children.filter((item: any) => item.id == childId);
+      let actions = childData[0].actions
+      let deleteAction = actions.filter((item:any) => item.title == 'Delete')
+    
+      if(deleteAction.length >0){
+        this.isDelete = true;
+      }
       this.activatedRoute.queryParams.subscribe(params => {
         this.id = params['id'];
         // this.getVendorById(this.id)

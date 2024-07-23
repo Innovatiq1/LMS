@@ -170,7 +170,7 @@
                 
               </div>
             </form>
-            <button class="icons" *ngIf="viewUrl" (click)="edit()" >
+            <button class="icons" *ngIf="viewUrl && isEdit" (click)="edit()" >
               <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
           </button>
           <table #backgroundTable

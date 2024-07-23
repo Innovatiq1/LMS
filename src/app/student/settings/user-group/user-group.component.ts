@@ -7,6 +7,7 @@ import { forkJoin } from 'rxjs';
 import Swal from 'sweetalert2';
 import { CoursePaginationModel } from '@core/models/course.model';
 import { UtilsService } from '@core/service/utils.service';
+import { AuthenService } from '@core/service/authen.service';
 
 @Component({
   selector: 'app-user-group',
@@ -19,6 +20,8 @@ export class UserGroupComponent {
   searchTerm: string = '';
   dataSource: any;
   coursePaginationModel!: Partial<CoursePaginationModel>;
+  isCreate = false;
+  isEdit = false;
 
   breadscrums = [
     {
@@ -31,7 +34,8 @@ export class UserGroupComponent {
     private fb: FormBuilder,
     private router: Router,
     private userService: UserService,
-    public utils: UtilsService
+    public utils: UtilsService,
+    private authenService: AuthenService
   ) {
     this.userTypeFormGroup = this.fb.group({
       typeName: ['', [Validators.required,...this.utils.validators.noLeadingSpace,...this.utils.validators.userGroup]],
@@ -42,6 +46,22 @@ export class UserGroupComponent {
   }
 
   ngOnInit(): void {
+    const roleDetails =this.authenService.getRoleDetails()[0].settingsMenuItems
+    let urlPath = this.router.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}`;
+    const childId =  urlPath[urlPath.length - 1];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let actions = childData[0].actions
+    let createAction = actions.filter((item:any) => item.title == 'Create')
+    let editAction = actions.filter((item:any) => item.title == 'Edit')
+
+    if(createAction.length >0){
+      this.isCreate = true;
+    }
+    if(editAction.length >0){
+      this.isEdit = true;
+    }
     this.setup();
     this.getUserGroups();
   }
@@ -110,7 +130,7 @@ export class UserGroupComponent {
     
   }
   update(id: any) {
-    this.router.navigate(['/student/settings/update-user-group'], {
+    this.router.navigate(['/student/settings/user-group/update-user-group'], {
       queryParams: {
         id: id,
       },

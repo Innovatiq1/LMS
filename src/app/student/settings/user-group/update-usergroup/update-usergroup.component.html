@@ -10,7 +10,7 @@
         <div class="card" style=" height: fit-content; ">
           <div class="header d-flex justify-content-between">
             <h2>Update User Group</h2>
-            <button class="icons" (click)="deleteUserGroup(id)" alt="Delete" matTooltip="Delete" mat-menu-item>
+            <button class="icons" *ngIf="isDelete" (click)="deleteUserGroup(id)" alt="Delete" matTooltip="Delete" mat-menu-item>
               <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
           </button>
           </div>

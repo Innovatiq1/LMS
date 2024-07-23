@@ -17,7 +17,7 @@
                         <ul class="tbl-export-btn">
                           <li class="tbl-header-btn">
                             <div class="m-l-10" matTooltip="ADD">
-                              <button
+                              <button *ngIf="isCreate"
                                 mat-raised-button
                                 (click)="addNew()"
                                 id="submit"
@@ -48,20 +48,20 @@
                           <ng-container matColumnDef="Title">
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Title
                             </mat-header-cell>
-                            <mat-cell *matCellDef="let row" class="name"  [routerLink]="['/student/settings/view-approval-flow', row.id]">
+                            <mat-cell *matCellDef="let row" class="name"  [routerLink]="isView ? ['/student/settings/automation/approval-workflow/view-approval-flow', row.id] : null">
                               <span class="mobile-label">Title:</span> {{row.title}}
                             </mat-cell>
                           </ng-container>
                           <ng-container matColumnDef="Level">
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Level
                             </mat-header-cell>
-                            <mat-cell *matCellDef="let row" [routerLink]="['/student/settings/view-approval-flow', row.id]">
+                            <mat-cell *matCellDef="let row" [routerLink]="isView ? ['/student/settings/automation/approval-workflow/view-approval-flow', row.id] : null">
                               <span class="mobile-label">Level:</span>{{row.level}}</mat-cell>
                           </ng-container>
                           <ng-container matColumnDef="Approver">
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Approver
                             </mat-header-cell>
-                            <mat-cell *matCellDef="let row" [routerLink]="['/student/settings/view-approval-flow', row.id]">
+                            <mat-cell *matCellDef="let row" [routerLink]="isView ? ['/student/settings/automation/approval-workflow/view-approval-flow', row.id] : null">
                               <span class="mobile-label">Approver:</span>
                               <ng-container *ngFor="let approver of row.Approver; let last = last" >
                                 {{ approver.approvers }}{{ !last ? '&nbsp; , ' : '' }}

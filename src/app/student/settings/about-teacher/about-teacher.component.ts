@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CoursePaginationModel } from '@core/models/course.model';
 import { LecturesService } from 'app/teacher/lectures/lectures.service';
 import * as moment from 'moment';
@@ -8,6 +8,7 @@ import { SessionModel } from '@core/models/class.model';
 import Swal from 'sweetalert2';
 import { TeachersService } from 'app/admin/teachers/teachers.service';
 import { AppConstants } from '@shared/constants/app.constants';
+import { AuthenService } from '@core/service/authen.service';
 
 @Component({
   selector: 'app-about-teacher',
@@ -31,12 +32,16 @@ export class AboutTeacherComponent {
   filterName='';
   myArray = new MatTableDataSource<SessionModel>([]);
   commonRoles: any;
+  isEdit = false;
+  isDelete = false;
 
   constructor(private activeRoute:ActivatedRoute, 
     // private StudentService:TeachersService,
     public lecturesService: LecturesService,
    private cdr: ChangeDetectorRef,
-   public teachersService: TeachersService,) {
+   public teachersService: TeachersService,
+   private router : Router,
+   private authenService: AuthenService) {
     this.coursePaginationModel = {};
     this.activeRoute.queryParams.subscribe(param =>{
     console.log("params:",param['data'])
@@ -46,6 +51,24 @@ export class AboutTeacherComponent {
    }
  
    ngOnInit() {
+    const roleDetails =this.authenService.getRoleDetails()[0].settingsMenuItems
+    let urlPath = this.router.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}`;
+    const childId =  urlPath[urlPath.length - 3];
+    const subChildId =  urlPath[urlPath.length - 2];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let subChildData = childData[0].children.filter((item: any) => item.id == subChildId);
+    let actions = subChildData[0].actions
+    let editAction = actions.filter((item:any) => item.title == 'Edit')
+    let deleteAction = actions.filter((item:any) => item.title == 'Delete')
+
+    if(editAction.length >0){
+      this.isEdit = true;
+    }
+    if(deleteAction.length >0){
+      this.isDelete = true;
+    }
      this.loadData();
    this.getClassList();
    this.getProgramList();
