@@ -99,6 +99,7 @@ export class ExamTestListComponent {
     if(studentClasses.length && studentClasses.some((v:any)=>v.status =='approved')){
       const courseDetails = data.courseId;
       const studentId = localStorage.getItem('id');
+      this.studentClassId = studentClasses[0]?._id
       const examAssessment = data.courseId.exam_assessment._id;
       this.redirectToExam(courseDetails, studentId, null)
     }else{
