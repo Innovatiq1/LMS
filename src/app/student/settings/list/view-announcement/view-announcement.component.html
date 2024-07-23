@@ -58,10 +58,10 @@
                             <!-- <div class="header">
                                 <h6>Departments</h6>
                             </div> -->
-                            <button class="icons" alt="Edit" [routerLink]="['/student/settings/edit-announcement',aboutData1.id]" mat-menu-item>
+                            <button class="icons" alt="Edit" *ngIf="isEdit" [routerLink]="['/student/settings/edit-announcement',aboutData1.id]" mat-menu-item>
                                 <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
                             </button>
-                            <button class="icons" alt="Delete" (click)="deleteAnnouncement(aboutData1._id)" mat-menu-item>
+                            <button class="icons" alt="Delete" *ngIf="isDelete" (click)="deleteAnnouncement(aboutData1._id)" mat-menu-item>
                                 <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
                             </button>
                         </div>

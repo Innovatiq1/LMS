@@ -66,7 +66,7 @@
                 <hr/>
                 <div class="float-end">
                     <div class="d-grid gap-3 d-md-flex">
-                    <button  mat-raised-button  id="submit" (click)="onSubmit()" > Create </button>
+                    <button  mat-raised-button  id="submit" *ngIf="isCreate" (click)="onSubmit()" > Create </button>
                     </div>
                   </div>
                   <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
@@ -84,9 +84,9 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr style="cursor: pointer;" *ngFor="let row of dataSource">
-                                <td (click)="update(row.id)">{{row.department | capitalizeFirstLetter}}</td>
-                                <td (click)="update(row.id)">
+                              <tr style="cursor: pointer;" *ngFor="let row of dataSource" (click)="isEdit ? update(row.id) : null">
+                                <td>{{row.department | capitalizeFirstLetter}}</td>
+                                <td>
                                     {{row?.description | titlecase}}
                                 </td>
                               </tr>

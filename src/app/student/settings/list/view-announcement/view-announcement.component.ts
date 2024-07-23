@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnnouncementService } from '@core/service/announcement.service';
+import { AuthenService } from '@core/service/authen.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -21,12 +22,15 @@ export class ViewAnnouncementComponent {
   subscribeParams: any;
   departmentId: any;
   id?: number;
+  isEdit = false;
+  isDelete = false;
   
   constructor(
     private activatedRoute:ActivatedRoute,
     private announcementService: AnnouncementService,
     private router: Router,
     private cdr: ChangeDetectorRef,
+    private authenService: AuthenService
   ) {
     
     this.subscribeParams = this.activatedRoute.params.subscribe((params:any) => {
@@ -34,6 +38,22 @@ export class ViewAnnouncementComponent {
     });
   }
   ngOnInit() {
+    const roleDetails =this.authenService.getRoleDetails()[0].settingsMenuItems
+      let urlPath = this.router.url.split('/');
+      const parentId = `${urlPath[1]}/${urlPath[2]}/${urlPath [3]}`;
+      const childId =  urlPath[urlPath.length - 3];
+      let parentData = roleDetails.filter((item: any) => item.id == parentId);
+      let childData = parentData[0].children.filter((item: any) => item.id == childId);
+      let actions = childData[0].actions
+      let editAction = actions.filter((item:any) => item.title == 'Edit')
+      let deleteAction = actions.filter((item:any) => item.title == 'Delete')
+
+      if(editAction.length >0){
+        this.isEdit = true;
+      }
+      if(deleteAction.length >0){
+        this.isDelete = true;
+      }
     // this.loadData();
     this.loadData()
   }

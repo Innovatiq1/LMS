@@ -28,6 +28,7 @@ import 'jspdf-autotable';
 import { formatDate } from '@angular/common';
 import { Department } from 'app/admin/departments/department.model';
 import { DepartmentService } from 'app/admin/departments/department.service';
+import { AuthenService } from '@core/service/authen.service';
 @Component({
   selector: 'app-all-departments',
   templateUrl: './all-departments.component.html',
@@ -65,13 +66,15 @@ export class AllDepartmentsComponent
   pageSizeArr = [10, 25, 50, 100];
   departmentsData: any;
   searchTerm:string = '';
+  isView = false;
   constructor(
     public httpClient: HttpClient,
     public dialog: MatDialog,
     public departmentService: DepartmentService,
     private snackBar: MatSnackBar,
     private deptService:DeptService,
-    private router: Router
+    private router: Router,
+    private authenService: AuthenService
   ) {
     super();
     this.departmentPaginationModel = {};
@@ -84,6 +87,18 @@ export class AllDepartmentsComponent
   contextMenuPosition = { x: '0px', y: '0px' };
 
   ngOnInit() {
+    const roleDetails =this.authenService.getRoleDetails()[0].settingsMenuItems
+    let urlPath = this.router.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}`;
+    const childId =  urlPath[urlPath.length - 1];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let actions = childData[0].actions
+    let viewAction = actions.filter((item:any) => item.title == 'View')
+  
+    if(viewAction.length >0){
+      this.isView = true;
+    }
     // this.loadData();
     this.getAllDepartments()
   }

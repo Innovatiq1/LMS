@@ -3,6 +3,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { CoursePaginationModel } from '@core/models/course.model';
+import { AuthenService } from '@core/service/authen.service';
 import { EtmsService } from '@core/service/etms.service';
 import { QuestionService } from '@core/service/question.service';
 import { UtilsService } from '@core/service/utils.service';
@@ -32,6 +33,9 @@ export class AllQuestionsComponent {
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild('filter', { static: true }) filter!: ElementRef;
   assessmentList: any[] = [];
+  isCreate = false;
+  isEdit = false;
+  isView = false;
   breadscrums = [
     {
       title: 'Questions',
@@ -40,11 +44,15 @@ export class AllQuestionsComponent {
     },
   ];
   private keyupSubject: Subject<Event> = new Subject<Event>();
+  editUrl: boolean = false;
+  viewUrl: boolean = false;
+
 
   constructor(
     private router: Router,
     public utils: UtilsService,
-    private questionService: QuestionService
+    private questionService: QuestionService,
+    private authenService: AuthenService
   ) {
     this.coursePaginationModel = {};
     this.keyupSubject.pipe(
@@ -54,7 +62,41 @@ export class AllQuestionsComponent {
     });
   }
   ngOnInit() {
+    const roleDetails =this.authenService.getRoleDetails()[0].settingsMenuItems
+    let urlPath = this.router.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}/${urlPath [3]}`;
+    const childId =  urlPath[urlPath.length - 1];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let actions = childData[0].actions
+    let createAction = actions.filter((item:any) => item.title == 'Create')
+    let editAction = actions.filter((item:any) => item.title == 'Edit')
+    let viewAction = actions.filter((item:any) => item.title == 'View')
+
+    if(createAction.length >0){
+      this.isCreate = true;
+    }
+    if(editAction.length >0){
+      this.isEdit = true;
+    }
+    if(viewAction.length >0){
+      this.isView = true;
+    }
     this.getAllQuestions();
+  }
+  getRouterLink(row: any): any[] | null {
+    if (this.isEdit && !this.isView) {
+      // Create and Edit actions exist, View action does not exist
+      return row.status !== 'approved' ? ['/student/settings/configuration/all-questions/edit-questions', row.id] : null;
+    } else if (this.isView && !this.isEdit) {
+      // Create and View actions exist, Edit action does not exist
+      return row.status === 'approved' ? ['/student/settings/configuration/all-questions/preview-questions', row.id] : null;
+    }  else if (this.isView && this.isEdit) {
+      // Both View and Edit actions exist
+      return row.status !== 'approved' ? ['/student/settings/configuration/all-questions/edit-questions', row.id] : ['/student/settings/configuration/all-questions/preview-questions', row.id];
+    } else {
+      return null; // Row should not be clickable
+    }
   }
   getAllQuestions() {
     this.questionService

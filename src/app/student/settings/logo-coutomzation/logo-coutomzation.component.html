@@ -23,7 +23,7 @@
                   class="list-unstyled user-progress list-unstyled-border list-unstyled-noborder"
                   *ngFor="let logo of Logos"
                 >
-                  <li class="lecture-list cursor-pointer"  (click)="patchFile(logo.id)">
+                  <li class="lecture-list cursor-pointer" (click)="isEdit ? patchFile(logo.id) : null">
                     <div class="set-flex">
                       <div class="media-title font-20">{{ logo.title }}</div>
                     </div>

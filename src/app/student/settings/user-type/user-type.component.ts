@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { CourseModel, CoursePaginationModel } from '@core/models/course.model';
 import { UserType } from '@core/models/user.model';
 import { AdminService } from '@core/service/admin.service';
+import { AuthenService } from '@core/service/authen.service';
 import { UserService } from '@core/service/user.service';
 import { UtilsService } from '@core/service/utils.service';
 import { TableElement, TableExportUtil } from '@shared';
@@ -48,14 +49,28 @@ export class UserTypeComponent {
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   menu: any;
   last: any;
+  isEdit = false;
 
   constructor(
     public router: Router,
     private adminService: AdminService,
     private userService: UserService,
     private ref: ChangeDetectorRef,
-    public utils: UtilsService
+    public utils: UtilsService,
+    private authenService: AuthenService
   ) {
+    const roleDetails =this.authenService.getRoleDetails()[0].settingsMenuItems
+    let urlPath = this.router.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}`;
+    const childId =  urlPath[urlPath.length - 1];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let actions = childData[0].actions
+    let editAction = actions.filter((item:any) => item.title == 'Edit')
+
+    if(editAction.length >0){
+      this.isEdit = true;
+    }
     this.getUserTypeList();
     this.coursePaginationModel = {};
   }
@@ -64,7 +79,7 @@ export class UserTypeComponent {
     this.modal = false;
   }
   edit(id: any) {
-    this.router.navigate(['/student/settings/edit-user-type'], {
+    this.router.navigate(['/student/settings/user-type/edit-user-type'], {
       queryParams: { id: id },
     });
     // this.router.navigate(['/Users/Type/edit'],{queryParams:{id:id}});

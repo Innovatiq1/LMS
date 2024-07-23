@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthenService } from '@core/service/authen.service';
 import { CourseService } from '@core/service/course.service';
 import { UtilsService } from '@core/service/utils.service';
 import Swal from 'sweetalert2';
@@ -20,9 +21,12 @@ export class VendorComponent {
     },
   ];
   dataSource :any;
+  isCreate = false;
+  isEdit = false;
 
   constructor(private fb: FormBuilder,private router:Router,
-    private activatedRoute:ActivatedRoute,private courseService:CourseService,public utils:UtilsService) {
+    private activatedRoute:ActivatedRoute,private courseService:CourseService,public utils:UtilsService,
+    private authenService: AuthenService) {
       this.vendorForm = this.fb.group({
         vendor: ['', [Validators.required,...this.utils.validators.noLeadingSpace,...this.utils.validators.name]],
         description: ['', [Validators.required,...this.utils.validators.noLeadingSpace,...this.utils.validators.name]]
@@ -31,6 +35,22 @@ export class VendorComponent {
   }
 
   ngOnInit() {
+    const roleDetails =this.authenService.getRoleDetails()[0].settingsMenuItems
+    let urlPath = this.router.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}/${urlPath [3]}`;
+    const childId =  urlPath[urlPath.length - 1];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let actions = childData[0].actions
+    let createAction = actions.filter((item:any) => item.title == 'Create')
+    let editAction = actions.filter((item:any) => item.title == 'Edit')
+
+    if(createAction.length >0){
+      this.isCreate = true;
+    }
+    if(editAction.length >0){
+      this.isEdit = true;
+    }
     this.getAllVendors();
   }
 
@@ -77,7 +97,7 @@ getAllVendors(){
   })
 }
 update(id: string){
-  this.router.navigate(['/student/settings/update-vendor'], {
+  this.router.navigate(['/student/settings/configuration/vendor/update-vendor'], {
     queryParams: {
       id: id
     }

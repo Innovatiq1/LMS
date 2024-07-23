@@ -98,7 +98,7 @@
                         />
                         <span class="menu-text">Active</span>
                       </button>
-                      <button mat-menu-item (click)="delete(this.data)">
+                      <button mat-menu-item *ngIf="isDelete" (click)="delete(this.data)">
                         <app-feather-icons
                           [icon]="'trash-2'"
                           [class]="'tbl-fav-delete'"
@@ -299,6 +299,102 @@
               <div
                 *ngFor="let submenu of menu.children; let i = index"
                 class="row sub-menu"
+                [class]="menu.children.length > i + 1 ? 'border-bottom' : ''"
+                name="submodule"
+              >
+                <div class="col-md-4">
+                  <mat-checkbox
+                    class="example-margin"
+                    [(ngModel)]="submenu.checked"
+                    (change)="changeSettingMenuChecked(submenu.checked, submenu.id)"
+                    [indeterminate]="submenu.indeterminate"
+                  >
+                    <p class="menu mb-0">{{ submenu?.title }}</p>
+                  </mat-checkbox>
+                </div>
+                <div class="col-md-4">
+                  <div *ngIf="submenu.children?.length">
+                    <div
+                      *ngFor="let module of submenu.children; let k = index"
+                      class="sub-menu row"
+                      name="module-access"
+                      [class]="
+                        module.children &&
+                        module.children.length &&
+                        submenu.children.length > k + 1
+                          ? 'border-bottom'
+                          : ''
+                      "
+                    >
+                      <div class="col-md-12">
+                        <mat-checkbox
+                          class="example-margin"
+                          [(ngModel)]="module.checked"
+                          (change)="changeSettingMenuChecked(module.checked, module.id)"
+                          [indeterminate]="module.indeterminate"
+                        >
+                          <p class="menu mb-0">{{ module?.title }}</p>
+                        </mat-checkbox>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div *ngIf="submenu.actions?.length" class="sub-menu-container">
+                    <div
+                      *ngFor="let action of submenu.actions"
+                      class="sub-menu"
+                      name="action-access"
+                    >
+                      <mat-checkbox
+                        class="example-margin"
+                        [(ngModel)]="action.checked"
+                        (change)="changeSettingMenuChecked(action.checked, action.id)"
+                        [indeterminate]="action.indeterminate"
+                      >
+                        <p class="menu mb-0">{{ action?.title }}</p>
+                      </mat-checkbox>
+                    </div>
+                  </div>
+                  <div *ngIf="submenu.children?.length">
+                    <div
+                      *ngFor="let module of submenu.children; let k = index"
+                      class="sub-menu row"
+                      name="module-actions"
+                      [class]="
+                        module.actions &&
+                        module.actions.length &&
+                        submenu.children.length > k + 1
+                          ? ''
+                          : ''
+                      "
+                    >
+                      <div class="col-md-12 sub-menu-container">
+                        <div
+                          *ngFor="let action of module.actions; let l = index"
+                          class="sub-menu"
+                          name="module-action-access"
+                        >
+                          <mat-checkbox
+                            class="example-margin"
+                            [(ngModel)]="action.checked"
+                            (change)="changeSettingMenuChecked(action.checked, action.id)"
+                            [indeterminate]="action.indeterminate"
+                          >
+                            <p class="menu mb-0">{{ action?.title }}</p>
+                          </mat-checkbox>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                 
+                </div>
+              </div>
+            </div>
+            <!-- <div class="col-md-9">
+              <div
+                *ngFor="let submenu of menu.children; let i = index"
+                class="row sub-menu"
                 [class]="
                   menu.children.length > i + 1 ? 'border-bottom' : ''
                 "
@@ -398,7 +494,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>

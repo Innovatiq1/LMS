@@ -83,7 +83,7 @@
                       <ng-container matColumnDef="Accessbility Module">
                         <mat-header-cell *matHeaderCellDef mat-sort-header>Module
                         </mat-header-cell>
-                        <mat-cell *matCellDef="let row" (click)="edit(row.id)">
+                        <mat-cell *matCellDef="let row" (click)="isEdit ? edit(row.id) : null">
                           <span class="mobile-label">Module:</span>
                           <ng-container *ngFor="let menu of row.menuItems  let last = last" style="width:fit-content">
                             {{menu?.title | capitalizeFirstLetter}}{{ !last ? ', ' : '' }}
@@ -92,7 +92,7 @@
                       <ng-container matColumnDef="Sub Module">
                         <mat-header-cell *matHeaderCellDef mat-sort-header>Sub Module
                         </mat-header-cell>
-                        <mat-cell *matCellDef="let row" (click)="edit(row.id)">
+                        <mat-cell *matCellDef="let row" (click)="isEdit ? edit(row.id) : null">
                           <span class="mobile-label">Sub Module:</span>
                           <ng-container *ngFor="let menu of row.menuItems  let last = last">
                             {{ menu?.children[0]?.title | capitalizeFirstLetter }}{{ !last ? ', ' : '' }}
@@ -101,7 +101,7 @@
                       <ng-container matColumnDef="Status">
                         <mat-header-cell *matHeaderCellDef mat-sort-header style="
                     margin-right: -15%;">Status</mat-header-cell>
-                        <mat-cell *matCellDef="let row" (click)="edit(row.id)" style="
+                        <mat-cell *matCellDef="let row" (click)="isEdit ? edit(row.id) : null" style="
                     margin-right: -15%;"> <span class="mobile-label">Status:</span><span
                             [class]="row?.status == 'active' ? 'badge badge-solid-green' : 'badge badge-solid-red'">
                             <span [class]="row?.status == 'active' ? 'status-dot' : 'status-red'"></span>

@@ -7,6 +7,7 @@ import { TableElement, TableExportUtil } from '@shared';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { BulletPointsPipe } from '@core/service/content.pipe';
+import { AuthenService } from '@core/service/authen.service';
 
 @Component({
   selector: 'app-list',
@@ -35,6 +36,8 @@ export class ListComponent {
   editUrl: any;
   isLoading = false;
   announcementData: any[] = [];
+  isCreate = false;
+  isView = false;
 
 
 
@@ -93,11 +96,28 @@ export class ListComponent {
     private announcementService: AnnouncementService,
     private cdr: ChangeDetectorRef,
     private activatedRoute: ActivatedRoute,
+    private authenService: AuthenService
 
   ) {
 
   }
   ngOnInit(): void {
+    const roleDetails =this.authenService.getRoleDetails()[0].settingsMenuItems
+    let urlPath = this.router.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}/${urlPath [3]}`;
+    const childId =  urlPath[urlPath.length - 1];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let actions = childData[0].actions
+    let createAction = actions.filter((item:any) => item.title == 'Create')
+    let viewAction = actions.filter((item:any) => item.title == 'View')
+
+    if(createAction.length >0){
+      this.isCreate = true;
+    }
+    if(viewAction.length >0){
+      this.isView = true;
+    }
     this.activatedRoute.queryParams.subscribe(params => {
       this.getAnnouncementList(params);
     });

@@ -17,7 +17,7 @@
                 <mat-icon class="col-white">delete
                 </mat-icon>
               </button> -->
-              <button class="icons" (click)="deleteFunding(id)" alt="Delete" matTooltip="Delete" mat-menu-item>
+              <button class="icons" *ngIf="isDelete" (click)="deleteFunding(id)" alt="Delete" matTooltip="Delete" mat-menu-item>
                 <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
             </button>
             </div>

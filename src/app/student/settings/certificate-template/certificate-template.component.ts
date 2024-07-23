@@ -15,6 +15,7 @@ import { TableElement, TableExportUtil } from '@shared';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import Swal from 'sweetalert2';
+import { AuthenService } from '@core/service/authen.service';
 
 @Component({
   selector: 'app-certificate-template',
@@ -48,11 +49,13 @@ export class CertificateTemplateComponent {
   dataSource: any;
   coursePaginationModel!: Partial<CoursePaginationModel>;
   searchTerm: string = '';
+  isCreate = false;
+  isView = false;
  
 
   constructor(private router: Router, private formBuilder: FormBuilder,
     public utils: UtilsService, private courseService: CertificateService,
-    private snackBar: MatSnackBar,private ref: ChangeDetectorRef,
+    private snackBar: MatSnackBar,private ref: ChangeDetectorRef,private authenService: AuthenService
   ) {
     this.coursePaginationModel = {};
   }
@@ -62,6 +65,22 @@ export class CertificateTemplateComponent {
 
   
   ngOnInit(): void {
+    const roleDetails =this.authenService.getRoleDetails()[0].settingsMenuItems
+    let urlPath = this.router.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}/${urlPath[3]}`;
+    const childId =  `${urlPath[4]}/${urlPath[5]}`;
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let actions = childData[0].actions
+    let createAction = actions.filter((item:any) => item.title == 'Create')
+    let viewAction = actions.filter((item:any) => item.title == 'View')
+  
+    if(createAction.length >0){
+      this.isCreate = true;
+    }
+    if(viewAction.length >0){
+      this.isView = true;
+    }
    //this.getAllCourse();
    this.getAllCertificates();
   }
@@ -120,7 +139,7 @@ export class CertificateTemplateComponent {
 
 view(id:any){
 
-this.router.navigate(['/student/settings/certificate/view/:id'], {queryParams:{id:id}})
+this.router.navigate(['/student/settings/customize/certificate/template/view/:id'], {queryParams:{id:id}})
 
 // [routerLink]="['/admin/payment/view-payments/']"
 }

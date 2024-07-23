@@ -66,7 +66,7 @@
                 <hr/>
                 <div class="float-end">
                     <div class="d-grid gap-3 d-md-flex">
-                    <button  mat-raised-button (click)="createUserType()" id="submit"> Create </button>
+                    <button  mat-raised-button (click)="createUserType()" *ngIf="isCreate" id="submit"> Create </button>
                     </div>
                   </div>
                   <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
@@ -84,7 +84,7 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr style="cursor: pointer;" *ngFor="let type of userTypeNames" (click)="edit(type.id)">
+                              <tr style="cursor: pointer;" *ngFor="let type of userTypeNames" (click)="isEdit ? edit(type.id) : null">
                                 <td>{{ type?.typeName | titlecase }}</td>
                                 <td>
                                     {{type?.description | titlecase}}

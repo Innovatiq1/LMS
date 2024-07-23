@@ -35,7 +35,7 @@
                   </li>
                   <li class="tbl-header-btn">
                     <div class="m-l-10" matTooltip="ADD">
-                      <button mat-raised-button id="submit" [routerLink]="['/student/settings/create-categories']">Create</button>
+                      <button mat-raised-button id="submit" *ngIf="isCreate" [routerLink]="['/student/settings/create-categories']">Create</button>
                       <!-- <button mat-mini-fab color="primary"  [routerLink]="['/admin/courses/create-categories']">
                         <mat-icon class="col-white">add</mat-icon>
                       </button> -->
@@ -91,14 +91,14 @@
                    <!-- Main Category -->
                   <ng-container matColumnDef="Main Category">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>Main Category</mat-header-cell>
-                    <mat-cell *matCellDef="let row" [routerLink]="['/student/settings/view-categories/',row.id]">
+                    <mat-cell *matCellDef="let row" [routerLink]="isView ? ['/student/settings/configuration/categories/view-categories/',row.id] : null">
                       <span class="mobile-label">Main Category:</span> {{row.category_name}}</mat-cell>
                   </ng-container>
                   <!-- Sub Category -->
                   <ng-container matColumnDef="Sub Category" >
                     <mat-header-cell *matHeaderCellDef mat-sort-header>Sub Category
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"  [routerLink]="['/student/settings/view-categories/',row.id]">
+                    <mat-cell *matCellDef="let row"  [routerLink]="isView ? ['/student/settings/configuration/categories/view-categories/',row.id] : null">
                       <span class="mobile-label">Sub Category:</span>
                       <ng-container *ngFor="let subCategory of row.subCategories; let last = last" >
                         {{ subCategory.category_name }}{{ !last ? '&nbsp; , ' : '' }}
