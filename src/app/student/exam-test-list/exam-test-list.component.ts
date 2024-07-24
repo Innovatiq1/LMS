@@ -71,7 +71,7 @@ export class ExamTestListComponent {
     let studentId = localStorage.getItem('id') || '';
     let company = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     this.assessmentService
-      .getAssignedExamAnswers({ ...this.assessmentPaginationModel, studentId })
+      .getAssignedExamAnswers({ ...this.assessmentPaginationModel, studentId,company })
       .subscribe((res) => {
         this.isLoading = false;
         this.dataSource = res.data.docs;

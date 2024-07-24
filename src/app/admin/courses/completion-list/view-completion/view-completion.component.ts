@@ -301,11 +301,14 @@ export class ViewCompletionComponent {
     const examAssessmentId = this.response.courseId.exam_assessment;
     const assessmentAnswerId = this.response.assessmentAnswer._id;
     const courseId = this.response.courseId._id;
+    let companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+
     const requestBody = {
       studentId,
       examAssessmentId,
       assessmentAnswerId,
       studentClassId,
+      companyId,
       courseId
     };
 

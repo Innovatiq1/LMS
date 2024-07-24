@@ -62,7 +62,8 @@ export class ExamScoresComponent {
 
 
    getAllAnswers() {
-    this.assessmentService.getExamAnswersV2({ ...this.assessmentPaginationModel})
+    let company = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    this.assessmentService.getExamAnswersV2({ ...this.assessmentPaginationModel,company})
       .subscribe(res => {
         this.dataSource = res.data.docs;
         this.examScores = res.data.docs;
