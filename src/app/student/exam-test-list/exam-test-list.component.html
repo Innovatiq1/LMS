@@ -76,6 +76,15 @@
                       {{ 'Completed' | titlecase}}</span>
                     </mat-cell>
               </ng-container>
+              <ng-container matColumnDef="Download">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Download
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row" class="name">
+                    <button class="download" *ngIf="row.studentClassId.certificate == true">
+                        <a  href="{{row.studentClassId.certifiacteUrl}}"target="_blank"> <mat-icon>download</mat-icon></a>
+                    </button>
+                    </mat-cell>
+              </ng-container>
 
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
               <mat-row *matRowDef="let row; columns: displayedColumns;" [style.cursor]="'pointer'" matRipple>

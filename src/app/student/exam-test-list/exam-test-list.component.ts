@@ -31,7 +31,7 @@ export class ExamTestListComponent {
       active: 'Exam',
     },
   ];
-  displayedColumns: string[] = ['Course Title', 'Exam Name', 'Exam'];
+  displayedColumns: string[] = ['Course Title', 'Exam Name', 'Exam', 'Download'];
   dataSource: any;
   assessmentPaginationModel!: Partial<AssessmentQuestionsPaginationModel>;
   totalItems: any;
