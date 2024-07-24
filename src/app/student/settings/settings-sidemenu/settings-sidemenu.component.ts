@@ -1,18 +1,15 @@
-
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseService } from '@core/service/course.service';
 import Swal from 'sweetalert2';
 import { LogoService } from '../logo.service';
-
 @Component({
   selector: 'app-settings-sidemenu',
   templateUrl: './settings-sidemenu.component.html',
   styleUrls: ['./settings-sidemenu.component.scss']
 })
 export class SettingsSidemenuComponent {
-
   breadscrums = [
     {
       title: 'Blank',
@@ -30,7 +27,6 @@ export class SettingsSidemenuComponent {
   thumbnail: any;
   uploadedImages: string[] = [];  
  
-  
   constructor(
     private formBuilder: FormBuilder,
     private router: Router, 
@@ -43,21 +39,18 @@ export class SettingsSidemenuComponent {
       });
     }
 
-    
-  ngOnInit() {
-    this.sideMenuForm = this.formBuilder.group({
-      // title: ['', [Validators.required]],
-      sidemenu: this.formBuilder.array([
-        // this.createSidemenu()
-      ])
-      
-      
-    });
-    this.getData();
-  }
+
+    ngOnInit() {
+      this.sideMenuForm = this.formBuilder.group({
+        sidemenu: this.formBuilder.array([])
+      });
+      this.getData();
+    }
+
   get sidemenu(): FormArray {
     return this.sideMenuForm.get('sidemenu') as FormArray;
   }
+
   addSidemenu() {
     this.sidemenu.push(this.createSidemenu());
     this.cdr.detectChanges();
@@ -69,96 +62,113 @@ export class SettingsSidemenuComponent {
       id: [''],
       iconsrc: [''],
       class: [''],
-      submenu: this.formBuilder.array([
-        // this.createSubmenu(),
-        // this.createOption()
-      ])
+      actions: this.formBuilder.array([]),
+      submenu: this.formBuilder.array([])
     });
   }
+
   createSidemenuwithoutSubmenu(): FormGroup {
     return this.formBuilder.group({
       title: ['', Validators.required],
       id: [''],
       class:[],
       iconsrc: [''],
-      submenu: this.formBuilder.array([
-       
-        // this.createOption()
-        
-      ])
+      actions: this.formBuilder.array([]),
+      submenu: this.formBuilder.array([])
     });
   }
 
-  get sidemenu1(): FormArray {
-    return this.sideMenuForm.get('sidemenu1') as FormArray;
-  }
-  // addSubmenu(submenuIndex: number) {
-  //   const submenu = this.getSubmenu(submenuIndex);
-  //   submenu.push(this.createSubmenu());
-  // }
-  
   createSubmenu(): FormGroup {
     return this.formBuilder.group({
       title: '',
       id:'',
       class:'',
+      actions: this.formBuilder.array([]),
+      submenu: this.formBuilder.array([])
     });
   }
 
-  
   getSubmenu(submenuIndex: number): FormArray {
     return this.sidemenu.at(submenuIndex).get('submenu') as FormArray;
   }
 
-  getData(){
+  getData() {
     this.logoService.getSettingSidemenuById(this.sidemenuId).subscribe((response: any) => {
       const sidemenuArray = this.sideMenuForm.get('sidemenu') as FormArray;
       response.MENU_LIST.forEach((menuItem: any, i: number) => {
         if (menuItem.title.trim() !== '') {
-        const newSidemenuGroup = this.createSidemenuwithoutSubmenu(); 
-        const uploadedImageLink = menuItem.iconsrc; 
-        const imageName = uploadedImageLink ? uploadedImageLink.split('/').pop()?.split('\\').pop() : null;
-        this.uploadedImages[i] = imageName;
-        newSidemenuGroup.patchValue({
-        title: menuItem.title,
-        id: menuItem.id,
-        iconsrc: uploadedImageLink,
-        class:menuItem.class
-         });
-         const submenuArray = newSidemenuGroup.get('submenu') as FormArray;
-         menuItem.children.forEach((submenus: any) => {
-             const submenuGroup = this.formBuilder.group({
-                 title: submenus.title,
-                 id: submenus.id,
-                 class:submenus.class,
-                 submenu: this.formBuilder.array([]) 
-             });
-         
-             if (submenus.children && submenus.children.length > 0) {
-                 submenus.children.forEach((submenu: any) => {
-                     const subSubmenuGroup = this.formBuilder.group({
-                         title: submenu.title,
-                         id: submenu.id,
-                         class:submenu.class
-                     });
-                     (submenuGroup.get('submenu') as FormArray).push(subSubmenuGroup);
-                 });
-             }
-         
-             submenuArray.push(submenuGroup);
-         });
-         
-         sidemenuArray.push(newSidemenuGroup);
+          const newSidemenuGroup = this.createSidemenuwithoutSubmenu(); 
+          const uploadedImageLink = menuItem.iconsrc; 
+          const imageName = uploadedImageLink ? uploadedImageLink.split('/').pop()?.split('\\').pop() : null;
+          this.uploadedImages[i] = imageName;
+          newSidemenuGroup.patchValue({
+            title: menuItem.title,
+            id: menuItem.id,
+            iconsrc: uploadedImageLink,
+            class: menuItem.class
+          });
+
+          // Patch actions array
+          const actionsArray = newSidemenuGroup.get('actions') as FormArray;
+          menuItem?.actions?.forEach((action: any) => {
+            actionsArray.push(this.formBuilder.group({
+              title: action?.title,
+              id: action?.id,
+              class:action?.class
+            }));
+          });
+
+          const submenuArray = newSidemenuGroup.get('submenu') as FormArray;
+          menuItem?.children?.forEach((submenus: any) => {
+            const submenuGroup = this.createSubmenu();
+            submenuGroup.patchValue({
+              title: submenus?.title,
+              id: submenus?.id,
+              class: submenus?.class
+            });
+
+            // Patch actions array in submenu
+            const submenuActionsArray = submenuGroup.get('actions') as FormArray;
+            submenus?.actions?.forEach((action: any) => {
+              submenuActionsArray.push(this.formBuilder.group({
+                title: action?.title,
+                id: action?.id,
+                class:action?.class
+              }));
+            });
+
+            if (submenus.children && submenus.children.length > 0) {
+              submenus?.children?.forEach((submenu: any) => {
+                const subSubmenuGroup = this.createSubmenu();
+                subSubmenuGroup.patchValue({
+                  title: submenu?.title,
+                  id: submenu?.id,
+                  class: submenu?.class
+                });
+
+                // Patch actions array in subsubmenu
+                const subsubmenuActionsArray = subSubmenuGroup.get('actions') as FormArray;
+                submenu?.actions?.forEach((action: any) => {
+                  subsubmenuActionsArray.push(this.formBuilder.group({
+                    title: action?.title,
+                    id: action?.id,
+                    class:action?.class
+                  }));
+                });
+
+                (submenuGroup.get('submenu') as FormArray).push(subSubmenuGroup);
+              });
+            }
+
+            submenuArray.push(submenuGroup);
+          });
+
+          sidemenuArray.push(newSidemenuGroup);
         }
       })
     })
   }
-  // submenuArray1?.push(
-  //   this.formBuilder.group({
-  //        title: submenus.title,
-  //        id: submenus.id,
-  //        })
-  //     );
+ 
   onFileUpload(event: any, menuItemIndex: number) {
     const file = event.target.files[0];
     const formData = new FormData();
@@ -171,63 +181,35 @@ export class SettingsSidemenuComponent {
       ...menuItemControl.value,
       iconsrc: uploadedImageLink,
     });
-    // Update the uploaded image name or URL for display
     this.uploadedImages[menuItemIndex] = imageName;
-   
-    // this.courseService.uploadCourseThumbnail(formData).subscribe((data: any) => {
-    //     const uploadedImageLink = data?.data?.thumbnail;
-    //     const imageName = uploadedImageLink.split('/').pop()?.split('\\').pop();
-    //     this.uploadedImages[menuItemIndex] = imageName;
-    //     const menuItemControl = this.sidemenu?.at(menuItemIndex);
-    //     menuItemControl.patchValue({
-    //       iconsrc: uploadedImageLink,
-    //     });
-    // })
 })
   }
 
-  // onFileUpload(event:any,menuItemIndex:number) {
-  //   const file = event.target.files[0];
-  //   this.thumbnail = file
-  //   const formData = new FormData();
-  //   formData.append('files', this.thumbnail);
-  //   this.courseService.uploadCourseThumbnail(formData).subscribe((data: any) =>{
-  //   const uploadedImageLink = data?.data?.thumbnail;
-  //   this.uploaded=uploadedImageLink.split('/')
-  //   let image  = this.uploaded.pop();
-  //   this.uploaded= image.split('\\');
-  //   this.uploadedImage = this.uploaded.pop();
-  //   const menuItemControl = this.sidemenu?.at(menuItemIndex);
-  //   menuItemControl.patchValue({
-  //       iconsrc: uploadedImageLink
-  //   });    
-  // })
-  
-  // }
   update() {
     if (this.sideMenuForm.valid) {
       let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-            const payload = {
+      const payload = {
         MENU_LIST: this.sideMenuForm.value.sidemenu.map((menulist: any) => ({
           title: menulist.title,
           id: menulist.id,
           iconsrc: menulist.iconsrc,
-          class:menulist.class,
+          class: menulist.class,
+          actions: menulist.actions,
           children: menulist.submenu.map((submenus: any) => ({
             title: submenus.title,
             id: submenus.id,
-            class:submenus.class,
+            class: submenus.class,
+            actions: submenus.actions,
             children: submenus.submenu.map((submenu: any) => ({
               title: submenu.title,
               id: submenu.id,
-              
-              class:submenu.class
+              class: submenu.class,
+              actions: submenu.actions
             }))
           }))
         })),
         id: this.sidemenuId,
-        companyId:userId,
-
+        companyId: userId,
       };
       
       Swal.fire({
@@ -238,12 +220,9 @@ export class SettingsSidemenuComponent {
         showCancelButton: true,
         cancelButtonColor: '#d33',
       }).then((result) => {
-     
         if (result.isConfirmed) {
-         
           this.logoService.updateSettingSidemenu(payload).subscribe(
             (res: any) => {
-             
               Swal.fire({
                 title: 'Successful',
                 text: 'Sidemenu Updated successfully',
@@ -252,6 +231,7 @@ export class SettingsSidemenuComponent {
               window.history.back();
             },
             (err: any) => {
+              console.error("Failed to update sidemenu", err);
               Swal.fire(
                 'Failed to update sidemenu',
                 'error'
@@ -260,8 +240,6 @@ export class SettingsSidemenuComponent {
           );
         }
       });
-    } else {
-      
     }
   }
 
