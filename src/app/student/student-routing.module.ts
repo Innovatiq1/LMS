@@ -92,8 +92,10 @@ import { DiscountComponent } from './settings/discount/discount.component';
 import { UpdateDiscountComponent } from './settings/discount/update-discount/update-discount.component';
 import { PassingCriteriaComponent } from './settings/passing-criteria/passing-criteria.component';
 import { UpdatePassingCriteriaComponent } from './settings/passing-criteria/update-passing-criteria/update-passing-criteria.component';
-
-
+import { ScoreComponent } from './settings/score/score.component';
+import { UpdateScoreAlgorithmComponent } from './settings/score/update-score-algorithm/update-score-algorithm.component';
+import { TimeComponent } from './settings/time/time.component';
+import { UpdateTimeAlgorithmComponent } from './settings/time/update-time-algorithm/update-time-algorithm.component';
 const routes: Routes = [
   {
     path: 'enrollment/course',
@@ -338,7 +340,14 @@ const routes: Routes = [
     path: 'settings/configuration/passing-criteria',
     component: PassingCriteriaComponent
   },
-
+  {
+    path: 'settings/configuration/score-algorithm',
+    component: ScoreComponent
+  },
+  {
+    path: 'settings/configuration/time-algorithm',
+    component: TimeComponent
+  },
 
   {
     path: 'settings/configuration/discount',
@@ -656,7 +665,14 @@ const routes: Routes = [
     path: 'settings/configuration/passing-criteria/update-passing-criteria',
     component: UpdatePassingCriteriaComponent
   },
-
+  {
+    path: 'settings/configuration/score-algorithm/update-score-algorithm',
+    component: UpdateScoreAlgorithmComponent
+  },
+  {
+    path: 'settings/configuration/time-algorithm/update-time-algorithm',
+    component: UpdateTimeAlgorithmComponent
+  },
   {
     path: 'settings/configuration/discount/update-discount',
     component: UpdateDiscountComponent

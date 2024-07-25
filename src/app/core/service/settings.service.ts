@@ -61,6 +61,71 @@ export class SettingsService {
       .put<ApiResponse>(apiUrl, data)
       .pipe(map((response) => {}));
   }
+  saveTimeAlgorithm(time: any) {
+    const apiUrl = `${this.prefix}admin/time`;
+    return this._Http
+      .post<ApiResponse>(apiUrl, time)
+      .pipe(map((response) => {}));
+  }
+
+  getTimeAlgorithm(filter?: Partial<CoursePaginationModel>): Observable<ApiResponse> {
+    //let userId = localStorage.getItem('id');
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    const apiUrl = this.defaultUrl + `admin/time?companyId=${userId}`;
+   // const apiUrl = this.defaultUrl + 'admin/passingCriteria';
+    return this._Http.get<ApiResponse>(apiUrl, {
+      params: this.buildParams(filter),
+    });
+  }
+
+  getTimeAlgorithmById(id: string) {
+    const apiUrl = `${this.prefix}admin/time/${id}`;
+    return this._Http.get<any>(apiUrl).pipe(map((response) => response));
+  }
+  updateTimeAlgorithm(id: string, data: any) {
+    const apiUrl = `${this.prefix}admin/time/${id}`;
+    return this._Http
+      .put<ApiResponse>(apiUrl, data)
+      .pipe(map((response) => {}));
+  }
+  deleteTimeAlgorithm(id: string) {
+    const apiUrl = `${this.prefix}admin/time/${id}`;
+    return this._Http
+      .delete<CourseModel>(apiUrl)
+      .pipe(map((response) => response));
+  }
+  saveScoreAlgorithm(score: any) {
+    const apiUrl = `${this.prefix}admin/score`;
+    return this._Http
+      .post<ApiResponse>(apiUrl, score)
+      .pipe(map((response) => {}));
+  }
+  getScoreAlgorithm(filter?: Partial<CoursePaginationModel>): Observable<ApiResponse> {
+    //let userId = localStorage.getItem('id');
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    const apiUrl = this.defaultUrl + `admin/score?companyId=${userId}`;
+   // const apiUrl = this.defaultUrl + 'admin/passingCriteria';
+    return this._Http.get<ApiResponse>(apiUrl, {
+      params: this.buildParams(filter),
+    });
+  }
+
+  getScoreAlgorithmById(id: string) {
+    const apiUrl = `${this.prefix}admin/score/${id}`;
+    return this._Http.get<any>(apiUrl).pipe(map((response) => response));
+  }
+  updateScoreAlgorithm(id: string, data: any) {
+    const apiUrl = `${this.prefix}admin/score/${id}`;
+    return this._Http
+      .put<ApiResponse>(apiUrl, data)
+      .pipe(map((response) => {}));
+  }
+  deleteScoreAlgorithm(id: string) {
+    const apiUrl = `${this.prefix}admin/score/${id}`;
+    return this._Http
+      .delete<CourseModel>(apiUrl)
+      .pipe(map((response) => response));
+  }
 
   savePassingCriteriya(passingCriteria: any) {
     const apiUrl = `${this.prefix}admin/passingCriteria`;
