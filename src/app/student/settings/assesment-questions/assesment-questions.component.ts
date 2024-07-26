@@ -46,10 +46,11 @@ export class AssesmentQuestionsComponent {
     'MYR',
     'AUD',
   ];
-  timerValues: string[] = ['15', '30', '45', '60', '90', '120', '150'];
+ // timerValues: string[] = ['15', '30', '45', '60', '90', '120', '150'];
   retakeCodesAssessment: string[] = ['1', '2', '3', '4', '5'];
-  scoreAlgo: number[] = [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
-
+  //scoreAlgo: number[] = [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
+  timerValues:any;
+scoreDataAlgo:any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -95,6 +96,8 @@ export class AssesmentQuestionsComponent {
   ngOnInit(): void {
     this.loadData();
     this.getAllPassingCriteria();
+    this.getAllScoreAlgo();
+    this.getAllTimeAlgo();
     if (!this.editUrl) {
       // this.getAlgorithm();
     }
@@ -122,7 +125,20 @@ export class AssesmentQuestionsComponent {
   getAllPassingCriteria(){
     this.SettingsService.getPassingCriteria().subscribe((response:any) =>{
       this.dataSource=response.data.docs;
-     //this.dataSource = response.reverse();
+    })
+  }
+
+  getAllScoreAlgo(){
+    this.SettingsService.getScoreAlgorithm().subscribe((response:any) =>{
+      this.scoreDataAlgo=response.data.docs;
+      //console.log("this.scoreAlgo==",this.scoreDataAlgo);
+    })
+  }
+
+  getAllTimeAlgo(){
+    this.SettingsService.getTimeAlgorithm().subscribe((response:any) =>{
+      this.timerValues=response.data.docs;
+     // console.log("this.timerValues",this.timerValues);
     })
   }
 
@@ -163,13 +179,14 @@ export class AssesmentQuestionsComponent {
         .getQuestionsById(this.questionId)
         .subscribe((response: any) => {
           if (response && response.questions) {
+            const passingCriteriaAsString = String(response?.passingCriteria);
             this.questionFormTab3.patchValue({
               name: response.name,
               scoreAlgorithm: response.scoreAlgorithm,
               resultAfterFeedback: response.resultAfterFeedback,
-              passingCriteria:response?.passingCriteria,
-              // retake:response.retake,
-              // timer:response?.timer
+              passingCriteria:passingCriteriaAsString,
+               retake:String(response.retake),
+               timer:response?.timer
             });
 
             const questionsArray = this.questionFormTab3.get(
@@ -312,7 +329,7 @@ export class AssesmentQuestionsComponent {
 
   update() {
     if (this.questionFormTab3.valid) {
-      console.log("FormTab3 Value",this.questionFormTab3.value);
+    //  console.log("FormTab3 Value",this.questionFormTab3.value);
       if (this.editUrl) {
         
         this.updateAssesment();
