@@ -21,8 +21,8 @@
               </h6>
               <mat-form-field appearance="outline" class="w-100">
                 <mat-select formControlName="timer">
-                  <mat-option *ngFor="let code of timerValues"[value]="code" >{{
-                    code
+                  <mat-option *ngFor="let code of timerValues" [value]="code.times" >{{
+                    code.times
                   }}Seconds</mat-option>
                 </mat-select>
   
@@ -74,8 +74,8 @@
                 </h6>
                 <mat-form-field appearance="outline" class="w-100">
                   <mat-select formControlName="scoreAlgorithm">
-                    <mat-option *ngFor="let code of scoreAlgo" [value]="code">{{
-                      code
+                    <mat-option *ngFor="let code of scoreAlgo" [value]="code.scores">{{
+                      code.scores
                     }}</mat-option>
                   </mat-select>
                   <!-- <input
@@ -89,7 +89,30 @@
                 </mat-form-field>
 
               </div>
+
               <div class="col-md-4">
+                <h6>
+                  Passing Criteria <span class="mandatory">&nbsp;*</span>
+                </h6>
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-select formControlName="passingCriteria">
+                    <mat-option *ngFor="let code of dataSource" [value]="code.value">{{
+                      code.value
+                    }}</mat-option>
+                  </mat-select>
+                  <!-- <input
+                    matInput
+                    formControlName="scoreAlgorithm"
+                    type="number"
+                    placeholder="Enter Score"
+                    min="0.5"
+                    step="0.5"
+                  /> -->
+                </mat-form-field>
+
+              </div>
+              
+              <!-- <div class="col-md-4">
                 <h6>
                   Passing Criteria <span class="mandatory">&nbsp;*</span>
                 </h6>
@@ -107,7 +130,7 @@
                     Select Passing Criteria
                   </mat-error>
                 </mat-form-field>
-              </div>
+              </div> -->
 
             </div>
 

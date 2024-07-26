@@ -47,9 +47,11 @@ export class AddExamQuestionsComponent {
     'MYR',
     'AUD',
   ];
-  timerValues: string[] = ['15', '30', '45', '60', '90', '120', '150'];
+ // timerValues: string[] = ['15', '30', '45', '60', '90', '120', '150'];
   retakeCodesAssessment: string[] = ['1', '2', '3', '4', '5'];
-  scoreAlgo: number[] = [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
+  //scoreAlgo: number[] = [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
+  scoreAlgo:any;
+  timerValues:any;
 
 
 
@@ -93,7 +95,10 @@ export class AddExamQuestionsComponent {
   }
 
   ngOnInit(): void { 
-    this.getAllPassingCriteria()
+    this.getAllPassingCriteria();
+    this.getAllscoreAlgo();
+    this.getAllTimesAlgo();
+
     if(!this.editUrl){
       // this.getAlgorithm()
     }
@@ -108,6 +113,20 @@ export class AddExamQuestionsComponent {
   getAllPassingCriteria(){
     this.SettingsService.getPassingCriteria().subscribe((response:any) =>{
       this.dataSource=response.data.docs;
+     //this.dataSource = response.reverse();
+    })
+  }
+  getAllscoreAlgo(){
+    this.SettingsService.getScoreAlgorithm().subscribe((response:any) =>{
+      this.scoreAlgo=response.data.docs;
+     //this.dataSource = response.reverse();
+    })
+  }
+
+  getAllTimesAlgo(){
+    this.SettingsService.getTimeAlgorithm().subscribe((response:any) =>{
+      this.timerValues=response.data.docs;
+      //console.log("this is timerValue=",this.timerValues)
      //this.dataSource = response.reverse();
     })
   }
@@ -157,11 +176,11 @@ export class AddExamQuestionsComponent {
         .getAnswerQuestionById(this.questionId)
         .subscribe((response: any) => {
           if (response && response.questions) {
-            console.log('res',response)
+          //  console.log('this is responce value res',response?.passingCriteria)
             this.questionFormTab2.patchValue({
               name: response.name,
-              passingCriteria:response?.passingCriteria,
-              retake:response?.retake,
+              passingCriteria:String(response?.passingCriteria),
+              retake:String(response?.retake),
               scoreAlgorithm:response?.scoreAlgorithm,
               timer:response?.timer
             });

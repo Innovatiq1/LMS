@@ -28,7 +28,7 @@ export class TimeComponent {
     private activatedRoute:ActivatedRoute,private SettingsService:SettingsService,public utils:UtilsService,
     private authenService: AuthenService) {
       this.timeAlgorithmForm = this.fb.group({
-        times: ['', [Validators.required,...this.utils.validators.noLeadingSpace]],
+        times: ['', [Validators.required,...this.utils.validators.noLeadingSpace,...this.utils.validators.value]],
         // description: ['', [Validators.required,...this.utils.validators.name, ...this.utils.validators.noLeadingSpace]]
 
       })
@@ -100,7 +100,7 @@ getAllPassingCriteria(){
   })
 }
 update(data: any) {
-  console.log("data score ==",data)
+  //console.log("data score ==",data)
   this.router.navigate(['/student/settings/configuration/time-algorithm/update-time-algorithm'], {
     queryParams: {
       funding: data.times,

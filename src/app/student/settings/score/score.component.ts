@@ -28,7 +28,7 @@ export class ScoreComponent {
     private activatedRoute:ActivatedRoute,private SettingsService:SettingsService,public utils:UtilsService,
     private authenService: AuthenService) {
       this.scoreAlgorithmForm = this.fb.group({
-        scores: ['', [Validators.required,...this.utils.validators.noLeadingSpace]],
+        scores: ['', [Validators.required,...this.utils.validators.noLeadingSpace,...this.utils.validators.value]],
         // description: ['', [Validators.required,...this.utils.validators.name, ...this.utils.validators.noLeadingSpace]]
 
       })
@@ -100,7 +100,7 @@ getAllScoreAlgorithm(){
   })
 }
 update(data: any) {
-  console.log("data score ==",data)
+  //console.log("data score ==",data)
   this.router.navigate(['/student/settings/configuration/score-algorithm/update-score-algorithm'], {
     queryParams: {
       funding: data.scores,
