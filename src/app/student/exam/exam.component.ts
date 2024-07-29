@@ -20,6 +20,7 @@ export class ExamComponent {
     'Submitted Date',
     'Score',
     'Exam Type',
+    'Retakes left',
     'Exam',
   ];
   assessmentPaginationModel!: Partial<AssessmentQuestionsPaginationModel>;
@@ -57,6 +58,7 @@ export class ExamComponent {
     this.assessmentService
       .getExamQuestionJsonV2({ ...this.assessmentPaginationModel, studentId })
       .subscribe((res) => {
+        console.log("hello this is res==",res)
         this.dataSource = res.data.docs;
         this.totalItems = res.data.totalDocs;
         this.assessmentPaginationModel.docs = res.docs;
@@ -88,6 +90,17 @@ export class ExamComponent {
       return 'Tutorial';
     } else {
       return 'Assessment';
+    }
+  }
+  calculateRetakesLeft(row: any) {
+     console.log("this is the retake ===",row);
+    // return 0;
+    if (row.is_tutorial) {
+      return 'Unlimited'; 
+    } else {
+      const maxRetakes = row.assessmentId.retake;
+      const usedRetakes = row.retakeCount;
+      return maxRetakes - usedRetakes;
     }
   }
 
