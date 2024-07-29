@@ -360,7 +360,7 @@ const routes: Routes = [
     component: CertificateTemplateComponent
   },
   {
-    path: 'settings/certificate/edit/:id',
+    path: 'settings/customize/certificate/template/edit/:id',
     component: CreateCertificateComponent
   },
   {
@@ -368,7 +368,7 @@ const routes: Routes = [
     component: CreateCertificateComponent
   },
   {
-    path: 'settings/certificate/create',
+    path: 'settings/customize/certificate/template/create',
     component: CreateCertificateComponent
   },
   {

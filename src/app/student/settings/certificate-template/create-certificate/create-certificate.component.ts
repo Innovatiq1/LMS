@@ -119,7 +119,7 @@ export class CreateCertificateComponent implements OnInit {
   }
 
   edit() {
-    this.router.navigate(['/student/settings/certificate/edit/:id'], {
+    this.router.navigate(['/student/settings/customize/certificate/template/edit/:id'], {
       queryParams: { id: this.classId },
     });
   }
@@ -132,7 +132,9 @@ export class CreateCertificateComponent implements OnInit {
     const parentId = `${urlPath[1]}/${urlPath[2]}/${urlPath[3]}`;
     const childId =  `${urlPath[4]}/${urlPath[5]}`;
     let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    console.log("pd", parentData)
     let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    console.log("cd", childData)
     let actions = childData[0].actions
     let editAction = actions.filter((item:any) => item.title == 'Edit')
   
