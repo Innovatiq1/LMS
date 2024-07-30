@@ -32,9 +32,7 @@ export class MyCoursesComponent {
 
   constructor(private classService: ClassService, private router: Router,public lecturesService: LecturesService,public dialog: MatDialog) {
     let userType = localStorage.getItem("user_type")
-    if(userType == AppConstants.STUDENT_ROLE){
       this.getApprovedCourse();
-    }
   
   }
 

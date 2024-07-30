@@ -46,10 +46,8 @@ export class CourseTimetableComponent implements OnInit {
     // }
     if (userType == AppConstants.ADMIN_USERTYPE|| userType == AppConstants.ADMIN_ROLE|| userType == AppConstants.STUDENT_ROLE) {
       this.getClassList();
-    }
-    if (userType == AppConstants.INSTRUCTOR_ROLE) {
+    } else {
       this.getInstructorApprovedCourse();
-      //this.getApprovedProgram();
     }
   }
 

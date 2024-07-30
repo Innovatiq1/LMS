@@ -117,14 +117,15 @@ export class ClassListComponent extends UnsubscribeOnDestroyAdapter implements O
     }
     this.commonRoles = AppConstants
     let userType = localStorage.getItem('user_type');
-    if (userType == AppConstants.ADMIN_USERTYPE || AppConstants.ADMIN_ROLE) {
+    
+    if (userType == AppConstants.ADMIN_USERTYPE ||userType == AppConstants.ADMIN_ROLE) {
       this.isAdmin = true;
       this.getClassList();
-    }
-    if (userType == AppConstants.INSTRUCTOR_ROLE) {
+    } else {
       this.isInstructor = true;
       this.getClassLectures();
     }
+   
     // this.getClassList();
     // this.getClassLectures();
   }

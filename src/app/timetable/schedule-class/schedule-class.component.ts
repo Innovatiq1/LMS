@@ -127,8 +127,8 @@ export class ScheduleClassComponent {
     if (userType == AppConstants.ADMIN_USERTYPE ||  AppConstants.ADMIN_ROLE) {
       this.isAdmin = true;
       this.getClassList();
-    }
-    if (userType == AppConstants.INSTRUCTOR_ROLE) {
+    } else {
+
       this.isInstructor = true;
       this.getClassLectures();
     }
@@ -141,8 +141,7 @@ export class ScheduleClassComponent {
     if (userType == AppConstants.ADMIN_USERTYPE ||  AppConstants.ADMIN_ROLE) {
       this.isAdmin = true;
       this.getClassList();
-    }
-    if (userType == AppConstants.INSTRUCTOR_ROLE) {
+    } else {
       this.isInstructor = true;
       this.getClassLectures();
     }
