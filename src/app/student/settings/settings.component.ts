@@ -56,7 +56,7 @@ export class SettingsComponent {
     'Trainee Analytics',
     'Trainer Analytics',
     'Support',
-    'TraineeDashboard'
+    'TraineeDashboard',
   ];
   filteredDashboardsList: string[] = this.dashboardsList.slice();
   selectedDashboard: string | null = null;
@@ -73,6 +73,7 @@ export class SettingsComponent {
       'ALL COURSES',
       'TOTAL TRAINERS',
       'COURSE CLASSES',
+      'COURSE CLASSES LIST',
       'TRAINER SURVEY',
       'USERS',
       'CLASSES LIST',
@@ -80,8 +81,14 @@ export class SettingsComponent {
       'NEW TRAINEES LIST',
     ],
     'Trainer Analytics': ['TRAINER LIST', 'UPCOMING COURSES'],
-    'Support': ['Support Tickets'],
-    'TraineeDashboard': ['INFO','LATEST ENROLLED COURSES','UPCOMING COURSE CLASSES','ANNOUNCEMENT BOARD','RESCHEDULE LIST']
+    Support: ['Support Tickets'],
+    TraineeDashboard: [
+      'INFO',
+      'LATEST ENROLLED COURSES',
+      'UPCOMING COURSE CLASSES',
+      'ANNOUNCEMENT BOARD',
+      'RESCHEDULE LIST',
+    ],
   };
   // Traineecomponents: string[] = [
   //   "TOTAL TRAINEES",
@@ -631,11 +638,12 @@ export class SettingsComponent {
       avatar: [''],
     });
 
-   
     this.roleForm = this.fb.group({
       typeName: ['', Validators.required],
+      dashboard: [''],
       dashboards: this.fb.array([]),
     });
+
     this.profileForm = this.fb.group({
       empName: ['', Validators.required],
       designation: ['', Validators.required],
@@ -1432,7 +1440,6 @@ export class SettingsComponent {
     this.dropdownVisible = !this.dropdownVisible;
   }
 
-
   updateVisibility() {
     // this.saveDashboardConfig();
   }
@@ -1451,7 +1458,6 @@ export class SettingsComponent {
     );
   }
 
- 
   saveDashboardConfig(): void {
     const userId = JSON.parse(localStorage.getItem('user_data')!).user
       .companyId;
@@ -1532,15 +1538,41 @@ export class SettingsComponent {
     );
   }
 
-  onDashboardSelectionChange(dashboard: string): void {
-    const dashboardGroup = this.fb.group({
-      title: dashboard,
-      components: this.fb.array(this.getComponentsArray(dashboard)),
+  // onDashboardSelectionChange(dashboard: string): void {
+  //   const exists = this.dashboards.controls.some(group => group.get('title')?.value === dashboard);
+
+  //   if (!exists) {
+  //     const dashboardGroup = this.fb.group({
+  //       title: dashboard,
+  //       components: this.fb.array(this.getComponentsArray(dashboard)),
+  //     });
+
+  //     this.dashboards.push(dashboardGroup);
+  //   }
+  // }
+  onDashboardSelectionChange(selectedDashboards: string[]): void {
+    // Remove dashboard groups that are no longer selected
+    for (let i = this.dashboards.controls.length - 1; i >= 0; i--) {
+      const group = this.dashboards.controls[i];
+      if (!selectedDashboards.includes(group.get('title')?.value)) {
+        this.dashboards.removeAt(i);
+      }
+    }
+
+    // Add new dashboard groups that have been selected
+    selectedDashboards.forEach((dashboard) => {
+      const exists = this.dashboards.controls.some(
+        (group) => group.get('title')?.value === dashboard
+      );
+      if (!exists) {
+        const dashboardGroup = this.fb.group({
+          title: dashboard,
+          components: this.fb.array(this.getComponentsArray(dashboard)),
+        });
+        this.dashboards.push(dashboardGroup);
+      }
     });
-
-    this.dashboards.push(dashboardGroup);
   }
-
   getSelectedComponents(dashboardGroup: AbstractControl): {
     [key: string]: boolean;
   } {
@@ -1576,16 +1608,15 @@ export class SettingsComponent {
   }
   cancel() {
     this.isCreate = false;
-    
   }
 
-  onRoleSelectionChange(selectedRole: string): void {
-    if (selectedRole === 'Trainee') {
-      this.filteredDashboardsList = ['TraineeDashboard'];
-    } else {
-      this.filteredDashboardsList = this.dashboardsList.filter(dashboard => dashboard !== 'TraineeDashboard');
-    }
-  }
+  // onRoleSelectionChange(selectedRole: string): void {
+  //   if (selectedRole === 'Trainee') {
+  //     this.filteredDashboardsList = ['TraineeDashboard'];
+  //   } else {
+  //     this.filteredDashboardsList = this.dashboardsList.filter(dashboard => dashboard !== 'TraineeDashboard');
+  //   }
+  // }
 
   onChildEditChange(type: string): void {
     this.isCreate = true;
@@ -1596,6 +1627,69 @@ export class SettingsComponent {
     this.getDashboardComponents(this.typeNameChild);
   }
 
+  // getDashboardComponents(role: string) {
+  //   this.userService.getAllDashboard(role).subscribe(
+  //     (data: any) => {
+  //       const outerDashboards: OuterDashboard[] = data.data.docs;
+
+  //       this.dashboards.clear();
+  //       if (Array.isArray(outerDashboards)) {
+  //         outerDashboards.forEach((outerDashboard: OuterDashboard) => {
+  //           if (Array.isArray(outerDashboard.dashboards)) {
+  //             outerDashboard.dashboards.forEach((innerDashboard: Dashboard) => {
+  //               const dashboardGroup = this.fb.group({
+  //                 title: [innerDashboard.title || ''],
+  //                 components: this.fb.array([]),
+  //               });
+  //               const components: Components[] =
+  //                 innerDashboard.components || [];
+  //               const componentsList =
+  //                 this.componentsMap[innerDashboard.title] || [];
+
+  //               if (Array.isArray(componentsList)) {
+  //                 const componentsSet = new Set(
+  //                   components.map((c) => c.component)
+  //                 );
+
+  //                 componentsList.forEach((componentName: string) => {
+  //                   const isChecked =
+  //                     (componentsSet.has(componentName) &&
+  //                       components.find((c) => c.component === componentName)
+  //                         ?.checked) ||
+  //                     false;
+
+  //                   const componentGroup = this.fb.group({
+  //                     checked: [isChecked],
+  //                     component: [componentName],
+  //                   });
+  //                   this.getComponentGroups(dashboardGroup).push(
+  //                     componentGroup
+  //                   );
+  //                 });
+  //               } else {
+  //                 console.warn(
+  //                   'componentsList is not an array:',
+  //                   componentsList
+  //                 );
+  //               }
+  //               this.dashboards.push(dashboardGroup);
+  //             });
+  //           } else {
+  //             console.warn(
+  //               'outerDashboard.dashboards is not an array:',
+  //               outerDashboard.dashboards
+  //             );
+  //           }
+  //         });
+  //       } else {
+  //         console.error('outerDashboards is not an array:', outerDashboards);
+  //       }
+  //     },
+  //     (error) => {
+  //       console.error('Error fetching dashboards:', error);
+  //     }
+  //   );
+  // }
   getDashboardComponents(role: string) {
     this.userService.getAllDashboard(role).subscribe(
       (data: any) => {
@@ -1603,6 +1697,8 @@ export class SettingsComponent {
 
         this.dashboards.clear();
         if (Array.isArray(outerDashboards)) {
+          const dashboardTitles: string[] = [];
+
           outerDashboards.forEach((outerDashboard: OuterDashboard) => {
             if (Array.isArray(outerDashboard.dashboards)) {
               outerDashboard.dashboards.forEach((innerDashboard: Dashboard) => {
@@ -1642,6 +1738,9 @@ export class SettingsComponent {
                   );
                 }
                 this.dashboards.push(dashboardGroup);
+
+                // Add title to the array for patching
+                dashboardTitles.push(innerDashboard.title);
               });
             } else {
               console.warn(
@@ -1650,6 +1749,9 @@ export class SettingsComponent {
               );
             }
           });
+
+          // Patch the form control with the dashboard titles as an array
+          this.roleForm.patchValue({ dashboard: dashboardTitles });
         } else {
           console.error('outerDashboards is not an array:', outerDashboards);
         }
