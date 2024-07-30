@@ -27,4 +27,5 @@ export interface AssessmentQuestionsPaginationModel extends Pagination {
     studentName: string;
     sortBy: string;
     sortByDirection: string;
+    company:string;
 }

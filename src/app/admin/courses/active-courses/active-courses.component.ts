@@ -16,6 +16,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { formatDate } from '@angular/common';
 import { O } from '@angular/cdk/keycodes';
+import { AuthenService } from '@core/service/authen.service';
 
 @Component({
   selector: 'app-active-courses',
@@ -56,12 +57,14 @@ export class ActiveCoursesComponent {
   searchTerm: string = '';
   selection = new SelectionModel<MainCategory>(true, []);
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
+  view = false;
 
   constructor(
     public _courseService: CourseService,
     private classService: ClassService,
     private cd: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    private authenService: AuthenService
   ) {
     // constructor
     this.coursePaginationModel = {};
@@ -70,6 +73,20 @@ export class ActiveCoursesComponent {
   }
 
   ngOnInit() {
+    const roleDetails =this.authenService.getRoleDetails()[0].menuItems
+    let urlPath = this.router.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}`;
+    const childId =  urlPath[urlPath.length - 2];
+    const subChildId =  urlPath[urlPath.length - 1];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let subChildData = childData[0].children.filter((item: any) => item.id == subChildId);
+    let actions = subChildData[0].actions
+    let viewAction = actions.filter((item:any) => item.title == 'View')
+
+    if(viewAction.length >0){
+      this.view = true;
+    }
     this.getAllCourse();
     this.setup();
   }

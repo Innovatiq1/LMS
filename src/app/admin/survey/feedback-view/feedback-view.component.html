@@ -31,7 +31,7 @@
                 </button>
 
                   <button
-                    alt="Edit"
+                    alt="Edit" *ngIf="edit"
                     mat-menu-item
                     [routerLink]="['/student/settings/edit-feedback/', surveyId]"
                     matTooltip="Edit"
@@ -42,7 +42,7 @@
                     ></app-feather-icons>
                   </button>
                   <button
-                    alt="Delete"
+                    alt="Delete" *ngIf="isDelete"
                     mat-menu-item
                     (click)="delete()"
                     matTooltip="Delete"

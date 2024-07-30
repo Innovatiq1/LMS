@@ -20,7 +20,7 @@
               <ul class="tbl-export-btn">
                 <li class="tbl-header-btn">
                   <div class="m-l-10" matTooltip="ADD">
-                    <button mat-raised-button [routerLink]="['/student/settings/create-announcement']"
+                    <button mat-raised-button *ngIf="isCreate" [routerLink]="['/student/settings/create-announcement']"
                     id="submit">Create</button>
                     <!-- <button mat-mini-fab color="primary" [routerLink]="['/student/settings/create-announcement']">
                       <mat-icon class="col-white">add</mat-icon>
@@ -46,21 +46,21 @@
                 <!-- Course Name -->
                 <ng-container matColumnDef="Title">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Title</mat-header-cell>
-                  <mat-cell *matCellDef="let row" class="name" [routerLink]="['/student/settings/view-announcement',row.id]">
+                  <mat-cell *matCellDef="let row" class="name" [routerLink]="isView ? ['/student/settings/automation/announcement/view-announcement',row.id] : null">
                     <span class="mobile-label">Title:</span>{{row.subject}}</mat-cell>
                 </ng-container>
                 <!-- Course Code -->
                 <ng-container matColumnDef="Decription">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Decription
                   </mat-header-cell>
-                  <mat-cell *matCellDef="let row" class="mt-3" [routerLink]="['/student/settings/view-announcement',row.id]">
+                  <mat-cell *matCellDef="let row" class="mt-3" [routerLink]="isView ? ['/student/settings/automation/announcement/view-announcement',row.id] : null">
                     <p [innerHTML]="row.details | bulletPoints"></p>
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="User Role">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Role
                   </mat-header-cell>
-                  <mat-cell *matCellDef="let row" [routerLink]="['/student/settings/view-announcement',row.id]">
+                  <mat-cell *matCellDef="let row" [routerLink]="isView ? ['/student/settings/automation/announcement/view-announcement',row.id] : null">
                     <p [innerHTML]="row.announcementFor | bulletPoints"></p>
                   </mat-cell>
 

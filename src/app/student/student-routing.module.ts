@@ -92,8 +92,10 @@ import { DiscountComponent } from './settings/discount/discount.component';
 import { UpdateDiscountComponent } from './settings/discount/update-discount/update-discount.component';
 import { PassingCriteriaComponent } from './settings/passing-criteria/passing-criteria.component';
 import { UpdatePassingCriteriaComponent } from './settings/passing-criteria/update-passing-criteria/update-passing-criteria.component';
-
-
+import { ScoreComponent } from './settings/score/score.component';
+import { UpdateScoreAlgorithmComponent } from './settings/score/update-score-algorithm/update-score-algorithm.component';
+import { TimeComponent } from './settings/time/time.component';
+import { UpdateTimeAlgorithmComponent } from './settings/time/update-time-algorithm/update-time-algorithm.component';
 const routes: Routes = [
   {
     path: 'enrollment/course',
@@ -200,6 +202,10 @@ const routes: Routes = [
     component: QuestionComponent,
   },
 
+  {
+    path: 'exam-questions/:id/:id/:id/:id/:id', // 1.assessmentAnswerId, 2.studentId, 3.courseId, 4.examAssessmentId
+    component: ExamQuestionsComponent,
+  },
   {
     path: 'exam-questions/:id/:id/:id/:id', // 1.assessmentAnswerId, 2.studentId, 3.courseId, 4.examAssessmentId
     component: ExamQuestionsComponent,
@@ -334,7 +340,14 @@ const routes: Routes = [
     path: 'settings/configuration/passing-criteria',
     component: PassingCriteriaComponent
   },
-
+  {
+    path: 'settings/configuration/score-algorithm',
+    component: ScoreComponent
+  },
+  {
+    path: 'settings/configuration/time-algorithm',
+    component: TimeComponent
+  },
 
   {
     path: 'settings/configuration/discount',
@@ -347,15 +360,15 @@ const routes: Routes = [
     component: CertificateTemplateComponent
   },
   {
-    path: 'settings/certificate/edit/:id',
+    path: 'settings/customize/certificate/template/edit/:id',
     component: CreateCertificateComponent
   },
   {
-    path: 'settings/certificate/view/:id',
+    path: 'settings/customize/certificate/template/view/:id',
     component: CreateCertificateComponent
   },
   {
-    path: 'settings/certificate/create',
+    path: 'settings/customize/certificate/template/create',
     component: CreateCertificateComponent
   },
   {
@@ -375,7 +388,7 @@ const routes: Routes = [
     component: CreatAnnouncementComponent,
   },
   {
-    path: 'settings/view-announcement/:id',
+    path: 'settings/automation/announcement/view-announcement/:id',
     component: ViewAnnouncementComponent,
   },
   {
@@ -391,11 +404,11 @@ const routes: Routes = [
     component: AddQuestionsComponent,
 },
 {
-  path: 'settings/edit-questions/:id',
+  path: 'settings/configuration/all-questions/edit-questions/:id',
   component: AddQuestionsComponent,
 },
 {
-  path: 'settings/preview-questions/:id',
+  path: 'settings/configuration/all-questions/preview-questions/:id',
   component: PreviewQuestionsComponent,
 },
 {
@@ -427,7 +440,7 @@ const routes: Routes = [
   component:  EditCategoriesComponent
 },
 {
-  path:'settings/view-categories/:id',
+  path:'settings/configuration/categories/view-categories/:id',
   component:ViewCategoriesComponent
 },
 {
@@ -503,7 +516,7 @@ const routes: Routes = [
     component: CreateUserTypeComponent
   },
   {
-    path: 'settings/edit-user-type',
+    path: 'settings/user-type/edit-user-type',
     component: CreateUserTypeComponent
   },
   {
@@ -519,7 +532,7 @@ const routes: Routes = [
     component: CreateAllUsersComponent
   },
   {
-    path: 'settings/view-all-users/:id',
+    path: 'settings/all-user/all-users/view-all-users/:id',
     component: ViewUsersComponent
   },
   {
@@ -528,7 +541,7 @@ const routes: Routes = [
   },
   
   {
-    path: 'settings/view-student',
+    path: 'settings/all-user/all-students/view-student',
     component: AboutStudentComponent
   },
   {
@@ -540,7 +553,7 @@ const routes: Routes = [
     component: EditTeacherComponent
   },
   {
-    path: 'settings/view-instructor',
+    path: 'settings/all-user/all-instructors/view-instructor',
     component: AboutTeacherComponent
   },
   {
@@ -617,7 +630,7 @@ const routes: Routes = [
     component: CreateApprovalWorkflowComponent
   },
   {
-    path: 'settings/view-approval-flow/:id',
+    path: 'settings/automation/approval-workflow/view-approval-flow/:id',
     component: ViewApprovalWorkflowComponent
   },
   
@@ -633,28 +646,35 @@ const routes: Routes = [
       import('./settings/email-configuration/email-configuration.module').then((m) => m.EmailConfigurationModule),
   },
   {
-    path: 'settings/update-funding',
+    path: 'settings/configuration/funding-grant/update-funding',
     component: UpdateFundingComponent
   },
   {
-    path: 'settings/update-department',
+    path: 'settings/create-department/update-department',
     component: UpdateDeptComponent
   },
   {
-    path: 'settings/update-user-group',
+    path: 'settings/user-group/update-user-group',
     component: UpdateUsergroupComponent
   },
   {
-    path: 'settings/update-vendor',
+    path: 'settings/configuration/vendor/update-vendor',
     component: UpdateVendorComponent
   },
   {
-    path: 'settings/update-passing-criteria',
+    path: 'settings/configuration/passing-criteria/update-passing-criteria',
     component: UpdatePassingCriteriaComponent
   },
-
   {
-    path: 'settings/update-discount',
+    path: 'settings/configuration/score-algorithm/update-score-algorithm',
+    component: UpdateScoreAlgorithmComponent
+  },
+  {
+    path: 'settings/configuration/time-algorithm/update-time-algorithm',
+    component: UpdateTimeAlgorithmComponent
+  },
+  {
+    path: 'settings/configuration/discount/update-discount',
     component: UpdateDiscountComponent
   },
 

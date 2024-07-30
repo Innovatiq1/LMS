@@ -31,7 +31,7 @@ export class ExamTestListComponent {
       active: 'Exam',
     },
   ];
-  displayedColumns: string[] = ['Course Title', 'Exam Name', 'Exam'];
+  displayedColumns: string[] = ['Course Title', 'Exam Name', 'Exam', 'Download'];
   dataSource: any;
   assessmentPaginationModel!: Partial<AssessmentQuestionsPaginationModel>;
   totalItems: any;
@@ -45,6 +45,7 @@ export class ExamTestListComponent {
   invoiceUrl: any;
   discountValue: any;
   discountType: string = 'percentage';
+  studentClassId:any;
 
   constructor(
     public utils: UtilsService,
@@ -68,8 +69,9 @@ export class ExamTestListComponent {
 
   getEnabledExams() {
     let studentId = localStorage.getItem('id') || '';
+    let company = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     this.assessmentService
-      .getAssignedExamAnswers({ ...this.assessmentPaginationModel, studentId })
+      .getAssignedExamAnswers({ ...this.assessmentPaginationModel, studentId,company })
       .subscribe((res) => {
         this.isLoading = false;
         this.dataSource = res.data.docs;
@@ -97,6 +99,7 @@ export class ExamTestListComponent {
     if(studentClasses.length && studentClasses.some((v:any)=>v.status =='approved')){
       const courseDetails = data.courseId;
       const studentId = localStorage.getItem('id');
+      this.studentClassId = studentClasses[0]?._id
       const examAssessment = data.courseId.exam_assessment._id;
       this.redirectToExam(courseDetails, studentId, null)
     }else{
@@ -106,11 +109,11 @@ export class ExamTestListComponent {
 
   getLabel(data:any):string{
     const course = data.courseId;
-    const isApproved = data.studentClassId.some((v:any)=>v.status == 'approved');
+    const isApproved = data.studentClassId?.some((v:any)=>v.status == 'approved');
     if(course.feeType == 'free' || isApproved){
       return 'Take Exam'
     }
-    return data.studentClassId.length ? 'Approval Pending' : 'Pay'
+    return data.studentClassId?.length ? 'Approval Pending' : 'Pay'
   }
 
   paidDirectExamFlow(data: any) {
@@ -141,6 +144,7 @@ export class ExamTestListComponent {
     }));
     const studentClass =await firstValueFrom(this.registerClass(courseDetails, courseKit));
     if(studentClass.success){
+      this.studentClassId= studentClass?.data?.createdStudentClass?.id
       const courseDetailInfo = data.courseId;
       const studentId = localStorage.getItem('id');
       const examAssessment = data.courseId.exam_assessment._id;
@@ -187,7 +191,7 @@ export class ExamTestListComponent {
     invoiceDialogRef.afterClosed().subscribe((res) => {
       if (res) {
         const dialogRef = this.dialog.open(PaymentDailogComponent, {
-          width: '650px',
+          width: '450px',
           height: '300px',
           data: { payment: '' },
         });
@@ -352,7 +356,8 @@ export class ExamTestListComponent {
       courseId: courseDetails.id,
       verify:true,
       paid: courseFee ? false: true,
-      companyId: companyId
+      companyId: companyId,
+      status:"approved"
     };
     return this.courseService.saveRegisterClass(payload)
   }
@@ -489,6 +494,7 @@ export class ExamTestListComponent {
     this.router.navigate(
       [
         '/student/exam-questions/',
+        this.studentClassId,
         examAssessmentId,
         studentId,
         courseId,

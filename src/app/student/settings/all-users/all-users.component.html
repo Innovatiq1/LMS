@@ -56,7 +56,7 @@
                       </li>
                       <li class="tbl-header-btn">
                         <div class="m-l-10" matTooltip="ADD">
-                          <button
+                          <button *ngIf="isCreate"
                             mat-raised-button
                             [routerLink]="[
                               '/student/settings/create-all-users'
@@ -154,10 +154,10 @@
                           <span class="mobile-label">Image:</span
                           ><img
                             [src]="row.avatar || 'assets/profile.png'"
-                            [routerLink]="[
-                              '/student/settings/view-all-users',
+                            [routerLink]=" isView ? [
+                              '/student/settings/all-user/all-users/view-all-users',
                               row.id
-                            ]"
+                            ] : null"
                           />
                         </mat-cell>
                       </ng-container>
@@ -168,10 +168,10 @@
                         <mat-cell
                           *matCellDef="let row"
                           class="name"
-                          [routerLink]="[
-                            '/student/settings/view-all-users',
-                            row.id
-                          ]"
+                          [routerLink]=" isView ? [
+                          '/student/settings/all-user/all-users/view-all-users',
+                          row.id
+                        ] : null"
                         >
                           <span class="mobile-label">Name:</span
                           >{{ row.name | capitalizeFirstLetter }}</mat-cell
@@ -197,10 +197,10 @@
                         <mat-cell
                           mat-cell
                           *matCellDef="let row"
-                          [routerLink]="[
-                            '/student/settings/view-all-users',
-                            row.id
-                          ]"
+                          [routerLink]=" isView ? [
+                          '/student/settings/all-user/all-users/view-all-users',
+                          row.id
+                        ] : null"
                         >
                           <span class="mobile-label">Gender:</span>
                           <div *ngIf="row.gender === 'male'">
@@ -227,10 +227,10 @@
                         </mat-header-cell>
                         <mat-cell
                           *matCellDef="let row"
-                          [routerLink]="[
-                            '/student/settings/view-all-users',
-                            row.id
-                          ]"
+                          [routerLink]=" isView ? [
+                          '/student/settings/all-user/all-users/view-all-users',
+                          row.id
+                        ] : null"
                         >
                           <span class="mobile-label">Education:</span
                           >{{ row.education | capitalizeFirstLetter }}</mat-cell
@@ -242,10 +242,10 @@
                         </mat-header-cell>
                         <mat-cell
                           *matCellDef="let row"
-                          [routerLink]="[
-                            '/student/settings/view-all-users',
-                            row.id
-                          ]"
+                          [routerLink]=" isView ? [
+                          '/student/settings/all-user/all-users/view-all-users',
+                          row.id
+                        ] : null"
                         >
                           <span class="mobile-label">Mobile:</span
                           >{{ row.mobile }}</mat-cell
@@ -258,10 +258,10 @@
                         >
                         <mat-cell
                           *matCellDef="let row"
-                          [routerLink]="[
-                            '/student/settings/view-all-users',
-                            row.id
-                          ]"
+                          [routerLink]=" isView ? [
+                          '/student/settings/all-user/all-users/view-all-users',
+                          row.id
+                        ] : null"
                         >
                           <span class="mobile-label">Email:</span>
                           <img
@@ -286,10 +286,10 @@
                         </mat-header-cell>
                         <mat-cell
                           *matCellDef="let row"
-                          [routerLink]="[
-                            '/student/settings/view-all-users',
-                            row.id
-                          ]"
+                          [routerLink]=" isView ? [
+                          '/student/settings/all-user/all-users/view-all-users',
+                          row.id
+                        ] : null"
                         >
                           <span class="mobile-label">Status:</span
                           ><span

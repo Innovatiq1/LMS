@@ -27,6 +27,7 @@ import { formatDate } from '@angular/common';
 import { LeaveService } from '@core/service/leave.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { AuthenService } from '@core/service/authen.service';
 
 @Component({
   selector: 'app-leave-request',
@@ -62,6 +63,8 @@ export class LeaveRequestComponent
   ];
   coursesUrl: boolean;
   programsUrl: boolean;
+  create = false;
+  view = false;
 
   constructor(
     public httpClient: HttpClient,
@@ -69,7 +72,8 @@ export class LeaveRequestComponent
     public leaveRequestService: LeaveRequestService,
     private snackBar: MatSnackBar,
     private leaveService: LeaveService,
-    private router: Router
+    private router: Router,
+    private authenService: AuthenService
   ) {
     super();
     let urlPath = this.router.url.split('/')
@@ -104,6 +108,22 @@ export class LeaveRequestComponent
   contextMenuPosition = { x: '0px', y: '0px' };
 
   ngOnInit() {
+    const roleDetails =this.authenService.getRoleDetails()[0].menuItems
+    let urlPath = this.router.url.split('/');
+    const parentId = urlPath[urlPath.length - 2];
+    const childId =  urlPath[urlPath.length - 1];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let actions = childData[0].actions
+    let createAction = actions.filter((item:any) => item.title == 'Create')
+    let viewAction = actions.filter((item:any) => item.title == 'View')
+
+    if(createAction.length >0){
+      this.create = true;
+    }
+    if(viewAction.length >0){
+      this.view = true;
+    }
     this.loadData();
   }
   refresh() {
@@ -223,7 +243,7 @@ export class LeaveRequestComponent
     
   }
   viewCall(id: any): void {
-    this.router.navigate(['reschedule/programs-view'], {queryParams:{id:id}});
+    this.router.navigate(['reschedule/courses/programs-view'], {queryParams:{id:id}});
   }
   // deleteItem(row: LeaveRequest) {
   //   let id = row.id;

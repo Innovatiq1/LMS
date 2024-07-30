@@ -71,7 +71,7 @@
               <!-- Course Name -->
               <ng-container matColumnDef="name">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Program</mat-header-cell>
-                <mat-cell class="name" *matCellDef="let row" (click)="viewInActiveProgram(row.id)"><span
+                <mat-cell class="name" *matCellDef="let row" (click)="view ? viewInActiveProgram(row.id): null"><span
                     class="mobile-label">Program Name:</span> <span class=" col-cyan">{{row.title |titlecase}}</span>
                 </mat-cell>
               </ng-container>
@@ -86,41 +86,41 @@
               <!-- Course Code -->
               <ng-container matColumnDef="code">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Program Code</mat-header-cell>
-                <mat-cell *matCellDef="let row" (click)="viewInActiveProgram(row.id)"><span class="mobile-label">Program
+                <mat-cell *matCellDef="let row" (click)="view ? viewInActiveProgram(row.id): null"><span class="mobile-label">Program
                     Code:</span> {{row.courseCode}}
                 </mat-cell>
               </ng-container>
               <!-- Creator -->
               <ng-container matColumnDef="Creator">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Creator</mat-header-cell>
-                <mat-cell *matCellDef="let row" (click)="viewInActiveProgram(row.id)"><span
+                <mat-cell *matCellDef="let row" (click)="view ? viewInActiveProgram(row.id): null"><span
                     class="mobile-label">Creator:</span> {{row.creator}}
                 </mat-cell>
               </ng-container>
               <!-- Duration -->
               <ng-container matColumnDef="Duration">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Duration</mat-header-cell>
-                <mat-cell *matCellDef="let row" (click)="viewInActiveProgram(row.id)">
+                <mat-cell *matCellDef="let row" (click)="view ? viewInActiveProgram(row.id): null">
                   <span class="mobile-label">Duration:</span>{{row.duration}} Hours</mat-cell>
               </ng-container>
               <!-- Start Date -->
               <ng-container matColumnDef="Start Date">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Start Date</mat-header-cell>
-                <mat-cell *matCellDef="let row" (click)="viewInActiveProgram(row.id)"> <span class="mobile-label">Start
+                <mat-cell *matCellDef="let row" (click)="view ? viewInActiveProgram(row.id): null"> <span class="mobile-label">Start
                     Date:</span>{{row.sessionStartDate |date}}
                 </mat-cell>
               </ng-container>
               <!-- End Date -->
               <ng-container matColumnDef="End Date">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>End Date</mat-header-cell>
-                <mat-cell *matCellDef="let row" (click)="viewInActiveProgram(row.id)"> <span class="mobile-label">End
+                <mat-cell *matCellDef="let row" (click)="view ? viewInActiveProgram(row.id): null"> <span class="mobile-label">End
                     Date:</span>{{row.sessionEndDate |date}}
                 </mat-cell>
               </ng-container>
               <!-- Payment -->
               <ng-container matColumnDef="Payment">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Payment</mat-header-cell>
-                <mat-cell *matCellDef="let row" (click)="viewInActiveProgram(row.id)"> <span
+                <mat-cell *matCellDef="let row" (click)="view ? viewInActiveProgram(row.id): null"> <span
                     class="mobile-label">Payment:</span><span >$</span> {{row.courseFee||0}}.00
                 </mat-cell>
               </ng-container>

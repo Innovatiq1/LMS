@@ -52,6 +52,11 @@
                                 <mat-cell *matCellDef="let row"><span class="mobile-label">Exam Type:</span> {{ examType(row) }}
                                 </mat-cell>
                               </ng-container>
+                              <ng-container matColumnDef="Retakes left">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>Retakes left</mat-header-cell>
+                                <mat-cell *matCellDef="let row"><span class="mobile-label">Retakes left:</span> {{ calculateRetakesLeft(row) }}
+                                </mat-cell>
+                              </ng-container>
                               <ng-container matColumnDef="Exam">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header>Exam</mat-header-cell>
                                 <mat-cell *matCellDef="let row">

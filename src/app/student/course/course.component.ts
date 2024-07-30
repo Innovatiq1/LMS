@@ -5,6 +5,8 @@ import {  CoursePaginationModel, MainCategory, SubCategory } from '@core/models/
 import Swal from 'sweetalert2';
 import { ClassService } from 'app/admin/schedule-class/class.service';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { AuthenService } from '@core/service/authen.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-course',
   templateUrl: './course.component.html',
@@ -49,9 +51,14 @@ export class CourseComponent {
   department: any;
   totalFreeItems: any;
   userGroupIds: string = '';
+  allCourses = false;
+  register = false;
+  approve = false;
+  complete = false;
 
 
-  constructor(public _courseService:CourseService,  private classService: ClassService) {
+  constructor(public _courseService:CourseService,  private classService: ClassService, private router: Router,
+    private authenService: AuthenService) {
     this.coursePaginationModel = {};
     this.studentRegisteredModel = {};
     this.studentApprovedModel = {};
@@ -63,6 +70,30 @@ export class CourseComponent {
   }
 
   ngOnInit(){
+    const roleDetails =this.authenService.getRoleDetails()[0].menuItems
+    let urlPath = this.router.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}`;
+    const childId =  urlPath[urlPath.length - 1];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let actions = childData[0].actions
+    let allAction = actions.filter((item:any) => item.title == 'All Courses')
+    let registeredAction = actions.filter((item:any) => item.title == 'Registered Courses')
+    let approvedAction = actions.filter((item:any) => item.title == 'Approved Courses')
+    let completedAction = actions.filter((item:any) => item.title == 'Completed Courses')
+
+    if(allAction.length >0){
+      this.allCourses = true;
+    }
+    if(registeredAction.length >0){
+      this.register = true;
+    }
+    if(approvedAction.length >0){
+      this.approve = true;
+    }
+    if(completedAction.length >0){
+      this.complete = true;
+    }
     this.getFreeCoursesList();
     this.getAllCourse();
     this.getRegisteredCourse();

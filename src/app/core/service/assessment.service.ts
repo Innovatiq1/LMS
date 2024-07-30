@@ -51,6 +51,10 @@ import { ApiResponse } from '@core/models/general.response';
         if(filter.studentName) {
           params = params.set('studentName', filter.studentName?.toString());
         }
+
+        if(filter.company) {
+          params = params.set('company', filter.company?.toString());
+        }
         // if (filter.status && filter.status === 'active') {
         //   params = params.set('status', 'active');
         // }else if (filter.status && filter.status === 'approved')  {
@@ -114,6 +118,13 @@ import { ApiResponse } from '@core/models/general.response';
 
     getAssignedExamAnswers( filter?: Partial<AssessmentQuestionsPaginationModel>): Observable<ApiResponse> {
       const apiUrl = `${this.defaultUrl}admin/exam-assesment-answers/assignedExams/v2`;
+      return this.http.get<any>(apiUrl, {
+        params: this.buildParams(filter),
+      });
+    }
+
+    getAssignedExamAnswersByStudentId(studentId:any, filter?: Partial<AssessmentQuestionsPaginationModel>): Observable<ApiResponse> {
+      const apiUrl = `${this.defaultUrl}admin/exam-assesment-answers/assignedExams/v2?studentId=${studentId}`;
       return this.http.get<any>(apiUrl, {
         params: this.buildParams(filter),
       });

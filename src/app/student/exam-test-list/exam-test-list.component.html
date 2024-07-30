@@ -61,19 +61,28 @@
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Exam
                 </mat-header-cell>
                 <mat-cell *matCellDef="let row" class="name" (click)="view(row.id)">
-                    <button *ngIf="row.isAssigned && !row.isSubmitted"
-                        [routerLink]="['/student/exam-questions/',  row._id, row?.studentId, row?.courseId?._id, row?.examAssessmentId?._id]" [queryParams]="{ retake: true, submitted: false }" mat-flat-button color="primary" >
+                    <button *ngIf="row.isAssigned && !row.isCompleted"
+                        [routerLink]="['/student/exam-questions/',studentClassId, row._id, row?.studentId, row?.courseId?._id, row?.examAssessmentId?._id]" [queryParams]="{ retake: true, submitted: false }" mat-flat-button color="primary" >
                       Take Exam
                     </button>
-                    <button *ngIf="!row.isAssigned && !row.isSubmitted && getLabel(row) != 'Approval Pending'" (click)="navToExam(row)" mat-flat-button color="primary" >
+                    <button *ngIf="!row.isAssigned && !row.isCompleted && getLabel(row) != 'Approval Pending'" (click)="navToExam(row)" mat-flat-button color="primary" >
                       {{getLabel(row) }}
                     </button>
-                    <span class="badge badge-solid-red" *ngIf="!row.isAssigned && !row.isSubmitted && getLabel(row) == 'Approval Pending'">
+                    <span class="badge badge-solid-red" *ngIf="!row.isAssigned && !row.isCompleted && getLabel(row) == 'Approval Pending'">
                       <span class="status-dot"></span>
                       {{ 'Pending' | titlecase}}</span>
-                    <span class="badge badge-solid-green" *ngIf="row.isSubmitted">
+                    <span class="badge badge-solid-green" *ngIf="row.isCompleted">
                       <span class="success-dot"></span>
                       {{ 'Completed' | titlecase}}</span>
+                    </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="Download">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Download
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row" class="name">
+                    <button class="download" *ngIf="row.studentClassId.certificate == true">
+                        <a  href="{{row.studentClassId.certifiacteUrl}}"target="_blank"> <mat-icon>download</mat-icon></a>
+                    </button>
                     </mat-cell>
               </ng-container>
 

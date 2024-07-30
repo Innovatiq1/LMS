@@ -108,7 +108,7 @@
       <div class="col-lg-8 col-md-12">
         <div class="card">
           <div class="card-container">
-            <button
+            <button *ngIf="isEdit"
               class="icons"
               alt="Edit"
               [routerLink]="['/student/settings/edit-instructor', aboutData.id]"
@@ -118,7 +118,7 @@
                 [class]="'tbl-fav-edit'"
               ></app-feather-icons>
             </button>
-            <button
+            <button *ngIf="isDelete"
               class="icons"
               alt="Delete"
               mat-menu-item

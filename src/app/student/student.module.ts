@@ -126,6 +126,11 @@ import { PassingCriteriaComponent } from './settings/passing-criteria/passing-cr
 import { UpdatePassingCriteriaComponent } from './settings/passing-criteria/update-passing-criteria/update-passing-criteria.component';
 import { SettingsSidemenuComponent } from './settings/settings-sidemenu/settings-sidemenu.component';
 import { RescheduledCoursesComponent } from './rescheduled-courses/rescheduled-courses.component';
+import { ScoreComponent } from './settings/score/score.component';
+import { UpdateScoreAlgorithmComponent } from './settings/score/update-score-algorithm/update-score-algorithm.component';
+import { TimeComponent } from './settings/time/time.component';
+import { UpdateTimeAlgorithmComponent } from './settings/time/update-time-algorithm/update-time-algorithm.component';
+
 @NgModule({
   declarations: [
     DashboardComponent,
@@ -230,6 +235,10 @@ import { RescheduledCoursesComponent } from './rescheduled-courses/rescheduled-c
     UpdatePassingCriteriaComponent,
     SettingsSidemenuComponent,
     RescheduledCoursesComponent,
+    ScoreComponent,
+    UpdateScoreAlgorithmComponent,
+    TimeComponent,
+    UpdateTimeAlgorithmComponent,
   
     // CourseKitComponent,
     // VideoPlayerComponent,

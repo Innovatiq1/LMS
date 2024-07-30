@@ -28,6 +28,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { CourseService } from '@core/service/course.service';
+import { AuthenService } from '@core/service/authen.service';
 
 @Component({
   selector: 'app-completion-list',
@@ -80,6 +81,7 @@ export class CompletionListComponent {
   certificateId: any;
 
   image_link: any;
+  // imageUrl: any;
   uploaded: any;
   uploadedImage: any;
   certificateForm!: FormGroup;
@@ -116,6 +118,7 @@ export class CompletionListComponent {
   thumbnail: any;
   studentData: any;
   dialogRef: any;
+  isView = false;
   
 
   upload() {
@@ -125,7 +128,8 @@ export class CompletionListComponent {
 
   constructor(private classService: ClassService, private changeDetectorRef: ChangeDetectorRef,public router: Router, public dialog: MatDialog,
     private certificateService: CertificateService,  private sanitizer: DomSanitizer,private _activeRouter: ActivatedRoute,
-    private courseService: CourseService,private fb: FormBuilder,) {
+    private courseService: CourseService,private fb: FormBuilder,
+    private authenService: AuthenService) {
     this.studentPaginationModel = {} as StudentPaginationModel;
     let urlPath = this.router.url.split('/')
     this.certificateUrl = urlPath.includes('edit');
@@ -139,11 +143,25 @@ export class CompletionListComponent {
   }
 
   ngOnInit(): void {
+    const roleDetails =this.authenService.getRoleDetails()[0].menuItems
+    let urlPath = this.router.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}`;
+    const childId =  urlPath[urlPath.length - 2];
+    const subChildId =  urlPath[urlPath.length - 1];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let subChildData = childData[0].children.filter((item: any) => item.id == subChildId);
+    let actions = subChildData[0].actions
+    let viewAction = actions.filter((item:any) => item.title == 'View')
+
+    if(viewAction.length >0){
+      this.isView = true;
+    }
     this.commonRoles = AppConstants
     this.getCompletedClasses();
       this.certificateForm = this.fb.group({
         text1: [''],
-        // image_link: ['']
+        image_link: ['']
       });
 
   }
@@ -226,7 +244,7 @@ export class CompletionListComponent {
 
 
   view(id: string) {
-    this.router.navigate(['/admin/courses/view-completion-list'], {
+    this.router.navigate(['/admin/courses/student-courses/completed-courses/view-completion-list'], {
       queryParams: { id: id, status: 'completed' },
     });
   }
@@ -390,10 +408,12 @@ export class CompletionListComponent {
 
 
             this.certificateForm.patchValue({
-            title: response.title,
+            // title: response.title,
             text1: response.text1,
           })
+         
     })
+    console.log("form", this.certificateForm)
   
     this.dialogRef = this.dialog.open(templateRef, {
       width: '1000px',
@@ -415,35 +435,28 @@ export class CompletionListComponent {
     });
        this.dafaultGenratepdf = true;
        var convertIdDynamic = 'contentToConvert';
-       this.setBackgroundImage(this.image_link);  // Ensure background is set
-    setTimeout(() => {
-        this.genratePdf3(convertIdDynamic, this.studentData?.studentId._id, this.studentData?.courseId._id);
-        this.dialogRef.close();
-    }, 1000);
-      //  this.genratePdf3(
-      //       convertIdDynamic,
-      //       this.studentData?.studentId._id,
-      //       this.studentData?.courseId._id
-      //     );
-      //     this.dialogRef.close(); // Close the dialog
+       const dashboard = document.getElementById('contentToConvert');
+       console.log("dddddd", dashboard)
+       this.genratePdf3(
+            convertIdDynamic,
+            this.studentData?.studentId._id,
+            this.studentData?.courseId._id,
+          );
+          this.dialogRef.close();
 
   
   }
-  private setBackgroundImage(imageUrl: string) {
-    console.log('setBackgroundImage', imageUrl);
+  private setBackgroundImage(imageUrl: string) {  
+    console.log('setBackgroundImage',imageUrl);
+ this.image_link = imageUrl;
     this.backgroundTable.nativeElement.style.backgroundImage = `url("${imageUrl}")`;
-}
-  // private setBackgroundImage(imageUrl: string) {  
-  //   console.log('setBackgroundImage',imageUrl);
+    setTimeout(() => {
+      const computedStyle = window.getComputedStyle(this.backgroundTable.nativeElement);
+      console.log('Computed background image:', computedStyle.backgroundImage);
 
-  //   this.backgroundTable.nativeElement.style.backgroundImage = `url("${imageUrl}")`;
-  //   setTimeout(() => {
-  //     const computedStyle = window.getComputedStyle(this.backgroundTable.nativeElement);
-  //     console.log('Computed background image:', computedStyle.backgroundImage);
+    }, 1000);
 
-  //   }, 1000);
-
-  // }
+  }
  
   genratePdf3(convertIdDynamic: any, memberId: any, memberProgrmId: any) {
     console.log('convertIdDynamic - ',convertIdDynamic,'memberId -',memberId,'memberProgrmId',memberProgrmId)
@@ -454,6 +467,7 @@ export class CompletionListComponent {
       if (dashboard != null) {
         const dashboardHeight = dashboard.clientHeight;
         const dashboardWidth = dashboard.clientWidth;
+        console.log("dash", dashboard)
  
         const options = {
           background: 'white',
@@ -576,8 +590,6 @@ export class CompletionListComponent {
       cancelButtonColor: '#d33',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.certificateForm.value.image_link = this.uploadedImage;
-        console.log("images", this.uploadedImage)
         this.classService.updateCertificateUser(objpdf).subscribe(
           (response) => {
             if (response.data.certifiacteUrl) {

@@ -18,6 +18,7 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { forkJoin } from 'rxjs';
 import { formatDate } from '@angular/common';
+import { AuthenService } from '@core/service/authen.service';
 
 @Component({
   selector: 'app-pending-programs',
@@ -61,9 +62,10 @@ export class PendingProgramsComponent {
   isLoading = true;
   selection = new SelectionModel<CourseModel>(true, []);
   searchTerm :string ='';
+  view = false;
 
   constructor(private router: Router,
-  private courseService: CourseService,private cd: ChangeDetectorRef,private route :Router, private snackBar: MatSnackBar){
+  private courseService: CourseService,private cd: ChangeDetectorRef,private route :Router, private snackBar: MatSnackBar, private authenService: AuthenService){
     this.coursePaginationModel = {};
     this.coursePaginationModel.main_category = '0';
     this.coursePaginationModel.sub_category = '0';
@@ -79,6 +81,20 @@ export class PendingProgramsComponent {
   }
 
   ngOnInit(): void {
+    const roleDetails =this.authenService.getRoleDetails()[0].menuItems
+    let urlPath = this.route.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}`;
+    const childId =  urlPath[urlPath.length - 2];
+    const subChildId =  urlPath[urlPath.length - 1];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let subChildData = childData[0].children.filter((item: any) => item.id == subChildId);
+    let actions = subChildData[0].actions
+
+    let viewAction = actions.filter((item:any) => item.title == 'View')
+    if(viewAction.length >0){
+      this.view = true;
+    }
     this.setup()
   }
   private setup(): void {
@@ -313,7 +329,7 @@ export class PendingProgramsComponent {
     });
   }
   viewInActiveProgram(id:string){
-    this.route.navigate(['/admin/program/view-program'],{queryParams:{id:id, status:'pending'}});
+    this.route.navigate(['/admin/program/submitted-program/pending-program/view-program'],{queryParams:{id:id, status:'pending'}});
   }
   removeSelectedRows() {
     const totalSelect = this.selection.selected.length;

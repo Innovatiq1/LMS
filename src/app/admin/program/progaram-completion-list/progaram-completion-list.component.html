@@ -79,12 +79,12 @@
                 <ng-container matColumnDef="Student Name">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>{{commonRoles.STUDENT_ROLE}}
                   </mat-header-cell>
-                  <mat-cell *matCellDef="let row" class="name" [routerLink]="['/admin/program/view-completion-list/',row.id]">
+                  <mat-cell *matCellDef="let row" class="name" [routerLink]="view ? ['/admin/program/view-completion-list/',row.id] : null">
                     <span class="mobile-label">Student Name:</span> {{row.student_name | capitalizeFirstLetter}}</mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="email">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
-                  <mat-cell *matCellDef="let row" [routerLink]="['/admin/program/view-completion-list/',row.id]">
+                  <mat-cell *matCellDef="let row" [routerLink]="view ? ['/admin/program/view-completion-list/',row.id] : null">
                     <span class="mobile-label">Email:</span>
                     <img src="assets/images/gmail.png" alt="Email Icon" class="email-icon">
                     <!-- Replace "email-icon.png" with the filename of your PNG icon -->
@@ -93,7 +93,7 @@
                 </ng-container>
                 <ng-container matColumnDef="Program Name">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Program</mat-header-cell>
-                  <mat-cell *matCellDef="let row" [routerLink]="['/admin/program/view-completion-list/',row.id]">
+                  <mat-cell *matCellDef="let row" [routerLink]="view ? ['/admin/program/view-completion-list/',row.id] : null">
                     <span class="mobile-label">Program Name:</span>{{row.programTitle | capitalizeFirstLetter}} </mat-cell>
                 </ng-container>
                  <!-- Student Name -->
@@ -102,7 +102,7 @@
                 <ng-container matColumnDef="Class Start Date">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Start Date
                   </mat-header-cell>
-                  <mat-cell *matCellDef="let row" [routerLink]="['/admin/program/view-completion-list/',row.id]">
+                  <mat-cell *matCellDef="let row" [routerLink]="view ? ['/admin/program/view-completion-list/',row.id] : null">
                     <span class="mobile-label">Class Start Date:</span>{{row?.classId?.sessions[0]?.sessionStartDate |date}} </mat-cell>
                 </ng-container>
 
@@ -110,14 +110,14 @@
                 <ng-container matColumnDef="Class End Date">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>End Date
                   </mat-header-cell>
-                  <mat-cell *matCellDef="let row" [routerLink]="['/admin/program/view-completion-list/',row.id]">
+                  <mat-cell *matCellDef="let row" [routerLink]="view ? ['/admin/program/view-completion-list/',row.id] : null">
                     <span class="mobile-label">Class End Date:</span>{{row?.classId?.sessions[0]?.sessionEndDate |date}} </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="Registered Date">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Registered Date
                   </mat-header-cell>
-                  <mat-cell *matCellDef="let row" [routerLink]="['/admin/program/view-completion-list/',row.id]">
+                  <mat-cell *matCellDef="let row" [routerLink]="view ? ['/admin/program/view-completion-list/',row.id] : null">
                     <span class="mobile-label">Registered Date:</span>{{row.registeredOn | date}} </mat-cell>
                 </ng-container>
 
@@ -125,7 +125,7 @@
                 <ng-container matColumnDef="Completed Date">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Completed Date
                   </mat-header-cell>
-                  <mat-cell *matCellDef="let row" [routerLink]="['/admin/program/view-completion-list/',row.id]">
+                  <mat-cell *matCellDef="let row" [routerLink]="view ? ['/admin/program/view-completion-list/',row.id] : null">
                     <span class="mobile-label">Completed Date:</span>{{row.updatedAt | date}} </mat-cell>
                 </ng-container>
 

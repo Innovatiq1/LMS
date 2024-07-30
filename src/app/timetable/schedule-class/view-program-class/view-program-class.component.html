@@ -41,10 +41,10 @@
                         <div class="header">
                             <h6>Program Class</h6>
                         </div>
-                        <button class="icons" alt="Edit" mat-menu-item *ngIf="isAdmin && !isInstructor" [routerLink]="['/admin/program/edit-class',aboutData1.id]">
+                        <button class="icons" alt="Edit" mat-menu-item *ngIf="isAdmin && !isInstructor && edit" [routerLink]="['/admin/program/edit-class',aboutData1.id]">
                             <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
                         </button>
-                        <button class="icons" (click)="delete(aboutData1.id)" *ngIf="isAdmin && !isInstructor" alt="Delete" mat-menu-item >
+                        <button class="icons" (click)="delete(aboutData1.id)" *ngIf="isAdmin && !isInstructor && isDelete" alt="Delete" mat-menu-item >
                             <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
                         </button>
                     </div>

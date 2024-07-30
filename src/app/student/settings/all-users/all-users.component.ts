@@ -15,6 +15,7 @@ import Swal from 'sweetalert2';
 import { RoleDailogComponent } from './role-dailog/role-dailog.component';
 import { Direction } from '@angular/cdk/bidi';
 import { MatDialog } from '@angular/material/dialog';
+import { AuthenService } from '@core/service/authen.service';
 @Component({
   selector: 'app-all-users',
   templateUrl: './all-users.component.html',
@@ -52,6 +53,9 @@ export class AllUsersComponent {
   searchTerm:string = '';
   pageSizeArr = this.utils.pageSizeArr;
   typeName?: any;
+  isCreate: boolean = false;
+  isView: boolean = false;
+  
 
   constructor(private router: Router,
     public utils: UtilsService,
@@ -61,7 +65,7 @@ export class AllUsersComponent {
     private courseService: CourseService,
     private snackBar: MatSnackBar,
     public dialog: MatDialog,
-
+    private authenService: AuthenService
   ) {
 
     this.coursePaginationModel = {};
@@ -87,6 +91,24 @@ getBlogsList(filters?:any) {
 }
 
 ngOnInit(): void {
+  const roleDetails =this.authenService.getRoleDetails()[0].settingsMenuItems
+  let urlPath = this.router.url.split('/');
+  const parentId = `${urlPath[1]}/${urlPath[2]}`;
+  const childId =  urlPath[urlPath.length - 2];
+  const subChildId =  urlPath[urlPath.length - 1];
+  let parentData = roleDetails.filter((item: any) => item.id == parentId);
+  let childData = parentData[0].children.filter((item: any) => item.id == childId);
+  let subChildData = childData[0].children.filter((item: any) => item.id == subChildId);
+  let actions = subChildData[0].actions
+  let createAction = actions.filter((item:any) => item.title == 'Create')
+  let viewAction = actions.filter((item:any) => item.title == 'View')
+
+  if(createAction.length >0){
+    this.isCreate = true;
+  }
+  if(viewAction.length >0){
+    this.isView = true;
+  }
   this.activatedRoute.queryParams.subscribe((params: any) => {
     this.getBlogsList(params);
   });

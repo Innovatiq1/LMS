@@ -1504,14 +1504,14 @@
       <div class="body">
         <div class="row px-4 py-4">
           <div class="col-md-6 banner">
-            <button id="saved" [routerLink]="['/student/settings/all-users']">
+            <button id="saved" [routerLink]="['/student/settings/all-user/all-users']">
               All Users
             </button>
           </div>
           <div class="col-md-5">
             <button
               id="saved"
-              [routerLink]="['/student/settings/all-students']"
+              [routerLink]="['/student/settings/all-user/all-students']"
             >
               {{ commonRoles.STUDENT_ROLE }}s
             </button>
@@ -1521,13 +1521,13 @@
           <div class="col-md-6 banner">
             <button
               id="saved"
-              [routerLink]="['/student/settings/all-instructors']"
+              [routerLink]="['/student/settings/all-user/all-instructors']"
             >
               {{ commonRoles?.INSTRUCTOR_ROLE }}s
             </button>
           </div>
           <div class="col-md-5">
-            <button id="saved" [routerLink]="['/student/settings/all-staff']">
+            <button id="saved" [routerLink]="['/student/settings/all-user/all-staff']">
               Staff
             </button>
           </div>

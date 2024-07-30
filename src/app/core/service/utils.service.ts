@@ -87,6 +87,14 @@ export class UtilsService {
       { type: 'required', message: 'Enter Value' },
       { type: 'min', message: 'Value must be at least 1' },
     ],
+    scores: [
+      { type: 'required', message: 'Enter Score' },
+      { type: 'min', message: 'Score must be at least 1' },
+    ],
+    times: [
+      { type: 'required', message: 'Enter Score' },
+      { type: 'min', message: 'Score must be at least 1' },
+    ],
     total: [
       { type: 'required', message: 'Enter Total Budget' },
       { type: 'min', message: 'Total must be at least 1' },

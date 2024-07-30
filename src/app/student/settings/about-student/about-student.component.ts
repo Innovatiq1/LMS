@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { Students } from 'app/admin/students/students.model';
 import { StudentsService } from 'app/admin/students/students.service';
 import { AppConstants } from '@shared/constants/app.constants';
+import { AuthenService } from '@core/service/authen.service';
 
 @Component({
   selector: 'app-about-student',
@@ -42,12 +43,15 @@ export class AboutStudentComponent {
   studentApprovedModel!: Partial<CoursePaginationModel>;
   studentCompletedModel!: Partial<CoursePaginationModel>;
   commonRoles: any;
-  
+  isEdit = false;
+  isDelete = false;
+
   constructor(private activeRoute:ActivatedRoute, 
     private StudentService:StudentsService,
     public _courseService:CourseService,  
     private classService: ClassService,
-    private router : Router
+    private router : Router,
+    private authenService: AuthenService
     ) {
 
       this.coursePaginationModel = {};
@@ -62,6 +66,24 @@ export class AboutStudentComponent {
   }
 
   ngOnInit() {
+    const roleDetails =this.authenService.getRoleDetails()[0].settingsMenuItems
+    let urlPath = this.router.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}`;
+    const childId =  urlPath[urlPath.length - 3];
+    const subChildId =  urlPath[urlPath.length - 2];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let subChildData = childData[0].children.filter((item: any) => item.id == subChildId);
+    let actions = subChildData[0].actions
+    let editAction = actions.filter((item:any) => item.title == 'Edit')
+    let deleteAction = actions.filter((item:any) => item.title == 'Delete')
+
+    if(editAction.length >0){
+      this.isEdit = true;
+    }
+    if(deleteAction.length >0){
+      this.isDelete = true;
+    }
     this.loadData();
     this.getRegisteredCourse();
     this.getApprovedCourse();

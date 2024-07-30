@@ -4,9 +4,11 @@
       <div class="row p-3 d-flex justify-content-between">
         <div class="col-lg-7 col-md-12 col-sm-12 col-12 flex-start">
           <div class="text-left font-weight-bold mt-3">
+            <div class="custom-style">Test: Assessment</div>
             <div class="text-primary mb-1">
               {{ user_name }}
             </div>
+            
             <div class="text-primary">
               Total Questions: {{ questionList?.length }}
             </div>
@@ -54,7 +56,7 @@
                   >
                   <span>
                     <i
-                      *ngIf="
+                      *ngIf=" 
                         question.status &&
                         question.selectedOption === option.text
                       "
@@ -114,7 +116,7 @@
         <div class="result text-center col-md-6 col-sm-12 mt-3">
           <h5 class="mb-5">
             Congratulations!!
-            <span class="d-block">You have completed the quiz. </span
+            <span class="d-block">You have completed the assessment. </span
             ><span class="d-block">Below is your result:</span>
           </h5>
           <p class="mb-1">
@@ -157,8 +159,8 @@
         <div class="result text-center col-md-6 col-sm-12 mt-3">
           <h5 class="mb-5">
             Sorry!!
-            <span class="d-block">You have failed the quiz.  </span>
-            <span class="d-block">Please retake the test.</span>
+            <span class="d-block">You have failed the assessment.  </span>
+            <span class="d-block">Please retake the assessment.</span>
             <span class="d-block">Below is your result:</span>
           </h5>
           <p class="mb-1">
@@ -173,6 +175,19 @@
           <p class="mb-1">
             Your Score : <b>{{ answersResult.score }} Points </b>
           </p>
+          <div
+          class="border-dotted-bottom mt-3 mb-3 text-center"
+          *ngIf="isAnswersSubmitted"
+        >
+          <button
+            mat-flat-button
+            color="primary"
+            class="mls-2"
+            [routerLink] = "['/student/enrollment/exam']"
+          >
+            Retake
+          </button>
+        </div>
         </div>
       </div>
     </ng-container>

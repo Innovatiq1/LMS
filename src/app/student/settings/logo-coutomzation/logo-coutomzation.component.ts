@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { LogoService } from '../logo.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { AuthenService } from '@core/service/authen.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-logo-coutomzation',
@@ -25,7 +27,9 @@ export class LogoCoutomzationComponent {
   patchId!: string;
   upload: any;
   fileError: string = '';
-  constructor(private logoService: LogoService, public fb: FormBuilder) {
+  isEdit = false;
+  constructor(private logoService: LogoService, public fb: FormBuilder,
+    private authenService: AuthenService, private router: Router,) {
     this.LogoForm = this.fb.group({
       title: [''],
       logo: [''],
@@ -33,6 +37,18 @@ export class LogoCoutomzationComponent {
     // constructor
   }
   ngOnInit() {
+    const roleDetails =this.authenService.getRoleDetails()[0].settingsMenuItems
+    let urlPath = this.router.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}/${urlPath[3]}`;
+    const childId =  urlPath[urlPath.length - 1];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let actions = childData[0].actions
+    let editAction = actions.filter((item:any) => item.title == 'Edit')
+  
+    if(editAction.length >0){
+      this.isEdit = true;
+    }
     this.getLogo();
   }
   getLogo() {

@@ -70,6 +70,10 @@ const routes: Routes = [
         component:ViewProgramClassComponent
       },
       {
+        path:'schedule-class/view-schedule-class/:id', 
+        component:ViewProgramClassComponent
+      },
+      {
         path:'view-program-exam-schedule/:id',
         component:ViewProgramScheduleComponent
       },

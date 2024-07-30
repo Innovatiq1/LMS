@@ -11,6 +11,7 @@ import { UserService } from '@core/service/user.service';
 import { Students } from 'app/admin/students/students.model';
 import { StudentsService } from 'app/admin/students/students.service';
 import { AppConstants } from '@shared/constants/app.constants';
+import { AuthenService } from '@core/service/authen.service';
 
 @Component({
   selector: 'app-view-users',
@@ -59,6 +60,8 @@ export class ViewUsersComponent implements OnInit{
   subscribeParams: any;
   currentId: any;
   commonRoles: any;
+  isEdit = false;
+  isDelete = false;
   
   constructor(private activeRoute:ActivatedRoute, 
     private StudentService:StudentsService,
@@ -67,6 +70,7 @@ export class ViewUsersComponent implements OnInit{
     private router : Router,
     public lecturesService: LecturesService,
     private userService: UserService,
+    private authenService: AuthenService
     ) {
 
       this.coursePaginationModel = {};
@@ -90,6 +94,24 @@ export class ViewUsersComponent implements OnInit{
   }
 
   ngOnInit() {
+    const roleDetails =this.authenService.getRoleDetails()[0].settingsMenuItems
+    let urlPath = this.router.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}`;
+    const childId =  urlPath[urlPath.length - 4];
+    const subChildId =  urlPath[urlPath.length - 3];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let subChildData = childData[0].children.filter((item: any) => item.id == subChildId);
+    let actions = subChildData[0].actions
+    let editAction = actions.filter((item:any) => item.title == 'Edit')
+    let deleteAction = actions.filter((item:any) => item.title == 'Delete')
+
+    if(editAction.length >0){
+      this.isEdit = true;
+    }
+    if(deleteAction.length >0){
+      this.isDelete = true;
+    }
     this.commonRoles = AppConstants
     this.userService.getUserById(this.currentId).subscribe((response: any) => {
       this.userType = response.data.data.type

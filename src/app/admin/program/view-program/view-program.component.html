@@ -15,10 +15,10 @@
  
                 <div class="d-flex justify-content-end" *ngIf="button" >
                   <div class="d-flex">
-                    <button alt="Edit" mat-menu-item [routerLink]="['/admin/program/edit-program/',response.id]" matTooltip="Edit">
+                    <button alt="Edit" *ngIf="edit" mat-menu-item [routerLink]="['/admin/program/edit-program/',response.id]" matTooltip="Edit">
                       <app-feather-icons [icon]="'edit'" class="tbl-fav-edit"></app-feather-icons>
                     </button>
-                    <button alt="Delete" mat-menu-item (click)="delete(response.id)" matTooltip="Delete">
+                    <button alt="Delete" *ngIf="isDelete" mat-menu-item (click)="delete(response.id)" matTooltip="Delete">
                       <app-feather-icons [icon]="'trash-2'" class="tbl-fav-delete"></app-feather-icons>
                     </button>
                     <button mat-menu-item  class="align-items-center" matTooltip="Approve" (click)="approveProgram(response.id,response)">

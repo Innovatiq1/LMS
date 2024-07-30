@@ -30,8 +30,8 @@
                 </h6>
                 <mat-form-field appearance="outline" class="w-100">
                   <mat-select formControlName="timer">
-                    <mat-option *ngFor="let code of timerValues"[value]="code" >{{
-                      code
+                    <mat-option *ngFor="let code of timerValues"[value]="code.times" >{{
+                      code.times
                     }}Seconds</mat-option>
                   </mat-select>
     
@@ -84,8 +84,8 @@
                 </h6>
                 <mat-form-field appearance="outline" class="w-100">
                   <mat-select formControlName="scoreAlgorithm">
-                    <mat-option *ngFor="let code of scoreAlgo" [value]="code">{{
-                      code
+                    <mat-option *ngFor="let code of scoreDataAlgo" [value]="code.scores">{{
+                      code.scores
                     }}</mat-option>
                   </mat-select>
                   <!-- <input

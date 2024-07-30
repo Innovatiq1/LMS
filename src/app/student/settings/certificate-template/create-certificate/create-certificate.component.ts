@@ -14,6 +14,7 @@ import { text } from 'd3';
 import { CourseService } from '@core/service/course.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { AuthenService } from '@core/service/authen.service';
 @Component({
   selector: 'app-create-certificate',
   templateUrl: './create-certificate.component.html',
@@ -42,6 +43,7 @@ export class CreateCertificateComponent implements OnInit {
   image_link: any;
   uploaded: any;
   uploadedImage: any;
+  isEdit = false;
 
   config: AngularEditorConfig = {
     editable: true,
@@ -80,7 +82,8 @@ export class CreateCertificateComponent implements OnInit {
     private certificateService: CertificateService,
     private courseService: CourseService,
     private renderer: Renderer2,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private authenService: AuthenService
   ) {
     this._activeRoute.queryParams.subscribe((params) => {
       this.classId = params['id'];
@@ -116,7 +119,7 @@ export class CreateCertificateComponent implements OnInit {
   }
 
   edit() {
-    this.router.navigate(['/student/settings/certificate/edit/:id'], {
+    this.router.navigate(['/student/settings/customize/certificate/template/edit/:id'], {
       queryParams: { id: this.classId },
     });
   }
@@ -124,6 +127,21 @@ export class CreateCertificateComponent implements OnInit {
   // let urlPath = this.router.url.split('/');
   // this.editUrl = urlPath.includes('edit-class');
   ngOnInit() {
+    const roleDetails =this.authenService.getRoleDetails()[0].settingsMenuItems
+    let urlPath = this.router.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}/${urlPath[3]}`;
+    const childId =  `${urlPath[4]}/${urlPath[5]}`;
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    console.log("pd", parentData)
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    console.log("cd", childData)
+    let actions = childData[0].actions
+    let editAction = actions.filter((item:any) => item.title == 'Edit')
+  
+    if(editAction.length >0){
+      this.isEdit = true;
+    }
+    
     this.certificateForm = this.fb.group({
       title: [''],
       // user: [''],
