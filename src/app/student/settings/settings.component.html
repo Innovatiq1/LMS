@@ -2643,7 +2643,7 @@
                         <form [formGroup]="roleForm">
                           <mat-form-field class="example-full-width" appearance="outline">
                             <mat-label>Select Role</mat-label>
-                            <mat-select formControlName="typeName" (selectionChange)="onRoleSelectionChange($event.value)">
+                            <mat-select formControlName="typeName" >
                               <mat-option *ngFor="let role of userTypeNames" [value]="role.typeName">
                                 {{ role.typeName }}
                               </mat-option>
@@ -2652,7 +2652,7 @@
                           
                           <mat-form-field class="example-full-width" appearance="outline">
                             <mat-label>Select Dashboard</mat-label>
-                            <mat-select (selectionChange)="onDashboardSelectionChange($event.value)">
+                            <mat-select formControlName="dashboard" (selectionChange)="onDashboardSelectionChange($event.value)" multiple>
                               <mat-option *ngFor="let dashboard of dashboardsList" [value]="dashboard">
                                 {{ dashboard }}
                               </mat-option>

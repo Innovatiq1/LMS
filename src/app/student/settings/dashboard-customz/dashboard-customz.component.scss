@@ -2,10 +2,25 @@
     width: 104%;
 }
 
-.dashboard {
-    padding: 8px;
-    background-color: #f9f9f9;
-    border-radius: 4px;
-    // box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+// .dashboard {
+//     padding: 8px;
+//     background-color: #f9f9f9;
+//     border-radius: 4px;
+//     // box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
   
-  }
+//   }
+.marginclass{
+    margin-top: 116px;
+}
+
+@media (min-width: 1299px) {
+    .marginclass {
+        margin-top: 125px;
+    }
+}
+
+// .card.card-statistic-2 .card-right {
+//     float: right;
+//     margin: -5px 15px 15px 0px;
+// }
+

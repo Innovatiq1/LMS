@@ -15,69 +15,7 @@
     </ng-template>
     <div class="row mt-5">
 
-      <!-- <ng-container *ngIf="roleType === 'Trainer'">
-        <ng-container *ngFor="let component of dashboard.components">
-          <div  *ngIf="component.id === 'total-trainees'" class="col-lg-6 col-md-6 col-sm-12" >
-            <div class="card card-statistic-2">
-              <div class="clearfix">
-                <div class="card-icon-only shadow-primary float-start">
-                  <img src="assets/images/banner/New Students.jpg" alt="" style="margin-left: -21px;">
-                </div>
-                <div class="card-right">
-                  <div>
-                    <h5 class="float-end" style="margin-top: 100px;">Total {{commonRoles.STUDENT_ROLE}}s</h5>
-                  </div>
-                  <div class="col-green">
-                    <h3 class="font-weight-bold float-end mb-0">{{count?.students}}</h3>
-                  </div>
-                </div>
-              </div>
-              <div class="card-content msl-4 mb-3">
-                <p class="m-b-0 d-flex"><i class="material-icons col-green psr-2">trending_up</i> 10% Higher Than Last Month</p>
-              </div>
-            </div>
-          </div>
-        </ng-container>
-        
-    <ng-container *ngFor="let component of dashboard.components">
-      <div class="col-xs-12 col-sm-12 col-md-8 col-lg-12" *ngIf="component.checked && component.id === 'classes-list'">
-        <div class="card" style="border-radius: 31px;">
-          <div class="header mt-3">
-            <h2>Classes List</h2>
-
-          </div>
-          <div class="tableBody">
-            <div class="table-responsive">
-              <table class="table table-hover ">
-                <thead>
-                  <tr>
-                    <th>Course Name</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Status </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let class of classesList " style="cursor: pointer;"
-                    [routerLink]="['/admin/courses/view-class/',class.id]">
-                    <td>{{class?.courseId?.title | titlecase | truncate:10}}</td>
-                    <td> {{class?.sessions[0]?.sessionStartDate | date}} </td>
-                    <td> {{class?.sessions[0]?.sessionEndDate | date}}</td>
-                    <td>
-                      <div class="badge col-green">{{class?.status == 'open'?'Active':'Inactive'}}</div>
-                    </td>
-
-                  </tr>
-
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </ng-container>
-      </ng-container> -->
-
+      
      
         <ng-container *ngFor="let component of dashboard.components">
           <div  *ngIf="component.id === 'total-trainees'" class="col-lg-4 col-md-4 col-sm-12" >
@@ -242,6 +180,43 @@
             </div>
           </div>
         </ng-container>
+        <ng-container *ngFor="let component of dashboard.components">
+        <div *ngIf="component.checked && component.id === 'course-classes-list'" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <div class="card" style="border-radius: 31px;">
+            <div class="header mt-3">
+              <h2>Course Classes List</h2>
+    
+            </div>
+            <div class="tableBody">
+              <div class="table-responsive">
+                <table class="table table-hover ">
+                  <thead>
+                    <tr>
+                      <th>Course Name</th>
+                      <th>Start Date</th>
+                      <th>End Date</th>
+                      <th>Status </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let class of classList " style="cursor: pointer;"
+                      [routerLink]="['/admin/courses/view-class/',class.id]">
+                      <td>{{class?.courseName | truncate:10}}</td>
+                      <td> {{class?.sessions[0]?.sessionStartDate | date}} </td>
+                      <td> {{class?.sessions[0]?.sessionEndDate | date}}</td>
+                      <td>
+                        <div class="badge col-green">{{class?.status == 'open'?'Active':'Inactive'}}</div>
+                      </td>
+    
+                    </tr>
+    
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
         <ng-container *ngFor="let component of dashboard.components">
           <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" *ngIf="component.checked && component.id === 'trainers-list'">
             <div class="card" style="border-radius: 31px;">
