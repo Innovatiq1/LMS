@@ -188,13 +188,15 @@ export class AddCourseComponent implements OnInit {
 
         // course_instructor: new FormControl('', [Validators.required]),
         // assign_exam: new FormControl('', []),
-        assessment: new FormControl('', [Validators.required, ...this.utils.validators.noLeadingSpace,...this.utils.validators.assessment]),
-        exam_assessment: new FormControl('', [Validators.required,...this.utils.validators.noLeadingSpace,...this.utils.validators.e_assessment]),
-        survey: new FormControl('', [Validators.required]),
+        assessment: new FormControl(null, [...this.utils.validators.noLeadingSpace,...this.utils.validators.assessment]),
+       // assessment: new FormControl('', [Validators.required, ...this.utils.validators.noLeadingSpace,...this.utils.validators.assessment]),
+       // exam_assessment: new FormControl('', [Validators.required,...this.utils.validators.noLeadingSpace,...this.utils.validators.e_assessment]),
+       exam_assessment: new FormControl(null, [...this.utils.validators.noLeadingSpace,...this.utils.validators.e_assessment]), 
+       survey: new FormControl(null,[]),
         course_kit: new FormControl('', [Validators.required]),
         vendor: new FormControl('',[ Validators.maxLength(100)]),
-        isFeedbackRequired: new FormControl(null, [Validators.required]),
-        examType: new FormControl(null, [Validators.required]),
+        isFeedbackRequired: new FormControl(null, []),
+        examType: new FormControl('', []),
         certificate_temp: new FormControl(null, [Validators.required]),
       });
       // this.secondFormGroup = this._formBuilder.group({

@@ -206,16 +206,17 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" 
+                *ngIf="labelStatusCheck('Assign Feedback Questionnaire')">
                   <label
                     >Assign Feedback Questionnaire
-                    <span class="mandatory">&nbsp;*</span></label
+                    </label
                   >
                   <mat-form-field
                     class="example-full-width mb-3"
                     appearance="outline"
                   >
-                    <mat-select formControlName="survey" required>
+                    <mat-select formControlName="survey">
                       <mat-option
                         *ngFor="let item of feedbacks"
                         [value]="item.id"
@@ -240,13 +241,13 @@
                 >
                   <label
                     >Assign Assessment
-                    <span class="mandatory">&nbsp;*</span></label
+                    </label
                   >
                   <mat-form-field
                     class="example-full-width mb-3"
                     appearance="outline"
                   >
-                    <mat-select formControlName="assessment" required>
+                    <mat-select formControlName="assessment">
                       <mat-option
                         *ngFor="let item of assessments"
                         [value]="item.id"
@@ -268,23 +269,20 @@
                         )
                       }}
                     </mat-error>
-                    <!-- <mat-error
-                      *ngIf="firstFormGroup.get('assessment')?.hasError('required') && firstFormGroup.get('assessment')?.touched">
-                      Select Assessment
-                    </mat-error> -->
                   </mat-form-field>
                 </div>
 
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
+                *ngIf="labelStatusCheck('Assign Exam Assessment')" >
                   <label
                     >Assign Exam Assessment
-                    <span class="mandatory">&nbsp;*</span></label
+                    </label
                   >
                   <mat-form-field
                     class="example-full-width mb-3"
                     appearance="outline"
                   >
-                    <mat-select formControlName="exam_assessment" required>
+                    <mat-select formControlName="exam_assessment" >
                       <mat-option
                         *ngFor="let item of exam_assessments"
                         [value]="item.id"
@@ -715,10 +713,13 @@
                   </div>
                   <!-- <app-file-upload formControlName="image_link" (change)="onFileUpload($event)"></app-file-upload> -->
                 </div>
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
+                *ngIf="labelStatusCheck('Is Feedback Mandatory')"
+                >
                   <label
                     >Is Feedback Mandatory
-                    <span class="mandatory">&nbsp;*</span></label
+                    <!-- <span class="mandatory">&nbsp;*</span> -->
+                    </label
                   >
                   <mat-form-field
                     class="example-full-width mb-3"
@@ -744,10 +745,12 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
+                *ngIf="labelStatusCheck('Exam Type')"
+                >
                   <label
                     >Exam Type
-                    <span class="mandatory">&nbsp;*</span></label
+                    </label
                   >
                   <mat-form-field
                     class="example-full-width mb-3"
