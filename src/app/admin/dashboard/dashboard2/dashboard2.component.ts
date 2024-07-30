@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CoursePaginationModel, MainCategory, SubCategory } from '@core/models/course.model';
 import { AuthenService } from '@core/service/authen.service';
@@ -68,7 +68,7 @@ export class Dashboard2Component implements OnInit,AfterViewInit {
   public feesLineChartOptions!: Partial<chartOptions>;
   public feesBarChartOptions!: Partial<chartOptions>;
   public feesPieChartOptions!: Partial<pieChart1Options>;
-
+  @Input() dashboardCpm : any;
   breadscrums = [
     {
       title: 'Dashboad',
@@ -119,7 +119,7 @@ export class Dashboard2Component implements OnInit,AfterViewInit {
     private cdr: ChangeDetectorRef) {
     //constructor
   }
-
+  
   ngOnInit() {
   //   this.getInstructorsList();
   //   this.getProgramList();
@@ -129,7 +129,13 @@ export class Dashboard2Component implements OnInit,AfterViewInit {
   //     this.getStudentDashboard();
   //   }
   //   this.cdr.detectChanges();
+  if (this.dashboardCpm) {
+    console.log(this.dashboardCpm); 
+  } else {
+    console.warn('dashboardCpm is undefined or null.');
   }
+}
+  
   ngAfterViewInit(): void {
     this.commonRoles = AppConstants
     this.getInstructorsList();

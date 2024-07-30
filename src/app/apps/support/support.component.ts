@@ -1,6 +1,6 @@
 import { map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { SupportService } from './support.service';
@@ -47,7 +47,7 @@ export class SupportComponent implements OnInit {
   // dataSource: any;
   totalTickets:any;
   pageSizeArr = [10, 2, 50, 100];
-  
+  @Input() dashboardCpm : any;
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   // 'status',
   // 'assignTo',

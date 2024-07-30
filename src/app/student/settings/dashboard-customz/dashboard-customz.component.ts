@@ -1,4 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { CoursePaginationModel } from '@core/models/course.model';
+import { LecturesService } from 'app/teacher/lectures/lectures.service';
 import {
   ChartComponent,
   ApexAxisChartSeries,
@@ -51,6 +53,8 @@ export class DashboardCustomzComponent {
   public barChartOptions!: Partial<chartOptions>;
   public performanceRateChartOptions!: Partial<chartOptions>;
   public polarChartOptions!: Partial<chartOptions>;
+  coursePaginationModel!: Partial<CoursePaginationModel>;
+  filterName='';
   breadscrums = [
     {
       title: 'Dashboad',
@@ -58,11 +62,14 @@ export class DashboardCustomzComponent {
       active: 'Dashboard 1',
     },
   ];
-  constructor() {
+  classList: any;
+  docs: any;
+  constructor( public lecturesService: LecturesService,) {
     //constructor
   }
 
   ngOnInit() {
+    console.log('kkiolho',this.selectedComponents)
     this.chart1();
     this.chart2();
     this.chart3();
@@ -331,4 +338,40 @@ export class DashboardCustomzComponent {
       ],
     };
   }
+
+  getInsClassList() {
+    let instructorId = localStorage.getItem('id')
+    this.lecturesService.getClassListWithPagination(instructorId, this.filterName,{ ...this.coursePaginationModel }).subscribe(
+      (response) => {
+        if (response.data) {
+          this.classList = response.data.docs.slice(0, 5).sort();
+          this.docs = response.data.totalDocs;
+        }
+      },
+      (error) => {
+        console.log('error', error);
+      }
+    );
+  }
+  // saveDashboardConfig() {
+  //   const config = {
+  //     typeName: "Admin",
+  //     companyId: "",
+  //     checked: false,
+  //     dashboards: [
+  //       {
+  //         title: this.selectedDashboard,
+  //         id: this.selectedDashboard.toLowerCase().replace(/\s+/g, '-'),
+  //         components: this.Traineecomponents.map(component => ({
+  //           component: component,
+  //           id: component.toLowerCase().replace(/\s+/g, '-'),
+  //           checked: !!this.selectedComponents[component]
+  //         }))
+  //       }
+  //     ]
+  //   };
+
+  //   console.log(config);
+  //   // Add logic here to save the config, e.g., send to a service
+  // }
 }

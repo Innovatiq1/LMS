@@ -297,8 +297,38 @@ export class UserService {
       })
       .pipe(map((response) => response));
   }
- 
+
+
+  saveCustomzDashboard(data: any) {
+    const apiUrl = `${this.defaultUrl}/customzDashboard/`;
+    return this.http
+      .post<ApiResponse>(apiUrl, data)
+      .pipe(map((response) => { }));
+  }
+  
+  updateCustomzDashboard(data: any) {
+    const apiUrl = `${this.defaultUrl}/customzDashboard/`;
+    return this.http
+      .put<ApiResponse>(apiUrl, data)
+      .pipe(map((response) => { }));
+  }
+  getAllDashboard(typeName: string) {
+    const apiUrl = `${this.defaultUrl}customzDashboard/`;
+    let params = new HttpParams().set('typeName', typeName);
+    return this.http.get<ApiResponse>(apiUrl,{ params }).pipe(map((response) => response));
+  }
+
+  getDashboardsByCompanyId(companyId: string, typeName?:any): Observable<ApiResponse> {
+    let apiUrl
+    if(typeName){
+      apiUrl = `${this.defaultUrl}customzDashboard/${companyId}/${typeName}`;
+    }else{
+      apiUrl = `${this.defaultUrl}customzDashboard/${companyId}`;
+    }
+    return this.http.get<ApiResponse>(apiUrl).pipe(map((response) => response));
+  }
 }
+
 
 
 

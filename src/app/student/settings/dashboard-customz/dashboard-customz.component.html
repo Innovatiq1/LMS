@@ -1,15 +1,15 @@
 <div class="dashboard">
     <div class="row">
-        <div *ngIf="selectedComponents['TOTAL TRAINEES']" class="col-lg-6 col-md-6 col-sm-12" >
+        <div *ngIf="selectedComponents['TOTAL TRAINEES']" class="col-lg-4 col-md-4 col-sm-12" >
             <div class="card card-statistic-2">
               <div class="clearfix">
                 <div class="card-icon-only shadow-primary float-start">
-                  <img src="assets/images/banner/New Students.jpg" alt="" style="margin-left: -21px;">
+                  <img style="width: 51px;" src="assets/images/banner/New Students.jpg" alt="" >
     
                 </div>
                 <div class="card-right">
                   <div>
-                    <h5 class="float-end" style="margin-top: 100px;">Total Trainees</h5>
+                    <h6 class="float-end" style="margin-top: 21px;">Total Trainees</h6>
                   </div>
                   <div class="col-green">
                     <h3 class="font-weight-bold float-end mb-0">72</h3>
@@ -17,23 +17,23 @@
                 </div>
               </div>
               <div class="card-content msl-4 mb-3">
-                <p class="m-b-0 d-flex"><i class="material-icons col-green psr-2">trending_up</i> 10% Higher Then Last
+                <p class="m-b-0 d-flex text-sm"><i class="material-icons col-green psr-2">trending_up</i> 10% Higher Then Last
                   Month
                 </p>
               </div>
             </div>
           </div>
 
-          <div *ngIf="selectedComponents['ALL COURSES']" class="col-lg-6 col-md-6 col-sm-12">
+          <div *ngIf="selectedComponents['ALL COURSES']" class="col-lg-4 col-md-4 col-sm-12">
             <div class="card card-statistic-2">
               <div class="clearfix">
                 <div class="card-icon-only shadow-primary float-start">
-                    <img src="assets/images/banner/img3.png" alt="">
+                    <img  style="width: 51px;" src="assets/images/banner/img3.png" alt="">
     
                 </div>
                 <div class="card-right">
                   <div>
-                    <h5 class="float-end" style="margin-top: 100px;">All Courses</h5>
+                    <h6 class="float-end" style="margin-top: 116px;">All Courses</h6>
                   </div>
                   <div class="col-green">
                     <h3 class="font-weight-bold float-end mb-0">72</h3>
@@ -48,18 +48,16 @@
             </div>
           </div>
    
-    <!-- #END# Widgets -->
-    <!-- <div class="row"> -->
-        <div *ngIf="selectedComponents['TOTAL TRAINERS']" class="col-lg-6 col-md-6 col-sm-12">
+        <div *ngIf="selectedComponents['TOTAL TRAINERS']" class="col-lg-4 col-md-4 col-sm-12">
             <div class="card card-statistic-2">
               <div class="clearfix">
                 <div class="card-icon-only shadow-primary float-start">
-                    <img src="assets/images/banner/img2.png" alt="" style="margin-left: -21px;">
+                    <img  style="width: 51px;" src="assets/images/banner/img2.png" alt="">
     
                 </div>
                 <div class="card-right">
                   <div>
-                    <h5 class="float-end" style="margin-top: 100px;">Total Trainers</h5>
+                    <h6 class="float-end" style="margin-top: 21px;">Total Trainers</h6>
                   </div>
                   <div class="col-green">
                     <h3 class="font-weight-bold float-end mb-0">72</h3>
@@ -73,11 +71,28 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-6 col-md-6 col-sm-12">
-
+          <div *ngIf="selectedComponents['COURSE CLASSES']" class="col-lg-6 col-md-6 col-sm-12">
+            <div class="card card-statistic-3">
+              <div class="clearfix">
+                <div class="card-icon-only shadow-primary float-start">
+                  <img src="assets/images/banner/online-course.png" alt="">
+                </div>
+                <div class="card-right">
+                  <div>
+                    <h5 class="float-end">Course Classes</h5>
+                  </div>
+                  <div class="col-green">
+                    <h3 class="font-weight-bold float-end mb-0">12</h3>
+                  </div>
+                </div>
+              </div>
+              <div class="card-content msl-4 mb-3">
+                <p class="m-b-0 d-flex"><i class="material-icons col-orange psr-2">trending_down</i> 07% Less Then Last
+                  Year
+                </p>
+              </div>
+            </div>
           </div>
-    <!-- </div> -->
-    <!-- <div class="row"> -->
       <div *ngIf="selectedComponents['TRAINER SURVEY']" class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
         <div class="card">
           <div class="header">
@@ -109,6 +124,7 @@
           </div>
         </div>
       </div>
+
       <div *ngIf="selectedComponents['USERS']"  class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
         <div class="card">
           <div class="header">
@@ -140,8 +156,6 @@
           </div>
         </div>
       </div>
-    <!-- </div> -->
-    <!-- <div class="row clearfix"> -->
       <div *ngIf="selectedComponents['CLASSES LIST']" class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
         <div class="card">
           <div class="header">
@@ -293,8 +307,6 @@
           </div>
         </div>
       </div>
-    <!-- </div> -->
-    <!-- <div class="row clearfix"> -->
       <div *ngIf="selectedComponents['NEW TRAINEES LIST']" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <div class="card">
           <div class="header">
@@ -344,5 +356,5 @@
         </div>
       </div>
     </div>
+  
 </div>
-<!-- </div> -->

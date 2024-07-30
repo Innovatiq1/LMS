@@ -316,6 +316,8 @@ export class MainComponent implements OnInit {
   assessmentPaginationModel!: Partial<AssessmentQuestionsPaginationModel>;
   allClasses: any;
   allClassesCount: any;
+  dashboards: any;
+  roleType: any;
 
   constructor(
     private courseService: CourseService,
@@ -392,6 +394,27 @@ export class MainComponent implements OnInit {
         this.instructors = response.slice(0, 5);
       },
       (error) => {}
+    );
+  }
+
+  getDashboardComponents() {
+    const typeName = localStorage.getItem('user_type');
+    const companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    this.userService.getDashboardsByCompanyId(companyId, typeName).subscribe(
+      (data: any) => {
+        this.roleType = data.data.map((doc: any) => doc.typeName).toString();
+        this.dashboards = data.data.flatMap((doc: any) => doc.dashboards);
+        console.log("Dashboard_data", this.dashboards);
+        this.dashboards.forEach((dashboard: { checked: any; }, index: number) => {
+          if (dashboard.checked) {
+            console.log(`Dashboard ${index + 1} is checked`);
+          } else {
+          }
+        });
+      },
+      (error: any) => {
+        console.error('Error fetching dashboard data:', error);
+      }
     );
   }
 
@@ -838,6 +861,7 @@ export class MainComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getDashboardComponents();
     this.commonRoles = AppConstants
     this.getClassList();
     const role = this.authenticationService.currentUserValue.user.role;

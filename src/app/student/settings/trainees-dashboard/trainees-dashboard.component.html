@@ -1,0 +1,169 @@
+<div class="row">
+    <div *ngIf="selectedComponents['INFO']" class="col-xl-12 col-lg-12 col-md-14 col-sm-14">
+      <div class="card">
+        <div class="body">
+          <div class="row align-items-center">
+            <div class="col-md-12 mb-0">
+              <h4>
+                <div class="weight-600 col-pink pt-1">Good Job, Student. Keep Going!! </div>
+              </h4>
+              <div class="recent-report__chart" >
+                <apx-chart [series]="studentPieChartOptions.series!" [chart]="studentPieChartOptions.chart!"
+                  [dataLabels]="studentPieChartOptions.dataLabels!" [labels]="studentPieChartOptions.labels!"
+                  [legend]="studentPieChartOptions.legend!" [fill]="studentPieChartOptions.fill!"
+                  [responsive]="studentPieChartOptions.responsive!">
+                </apx-chart>
+              </div>
+              <div class="recent-report__chart">
+                <apx-chart [series]="studentBarChartOptions.series!" [chart]="studentBarChartOptions.chart!"
+                  [dataLabels]="studentBarChartOptions.dataLabels!" [labels]="studentBarChartOptions.labels!"
+                  [legend]="studentBarChartOptions.legend!" [fill]="studentBarChartOptions.fill!"
+                  [responsive]="studentBarChartOptions.responsive!">
+                </apx-chart>
+              </div>
+              <div class="recent-report__chart" >
+                <apx-chart [series]="studentLineChartOptions.series!" [chart]="studentLineChartOptions.chart!"
+                  [dataLabels]="studentLineChartOptions.dataLabels!" [labels]="studentLineChartOptions.labels!"
+                  [legend]="studentLineChartOptions.legend!" [fill]="studentLineChartOptions.fill!"
+                  [responsive]="studentLineChartOptions.responsive!">
+                </apx-chart>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="selectedComponents['LATEST ENROLLED COURSES']" class="col-xl-6 col-lg-6 col-md-14 col-sm-14">
+        <div class="card">
+          <div class="header">
+            <h2>Latest Enrolled Courses</h2>
+          </div>
+          <div class="tableBody">
+            <ng-scrollbar style="height: 300px" visibility="hover">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Course</th>
+                      <th>Duration</th>
+                      <th>End Date</th>
+                      <th>Completed</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Test Course</td>
+                      <td>12 Days</td>
+                      <td>14 Jun 2024
+                      </td>
+                      <td
+                       Class="green-text">
+                        Completed
+                      </td>
+                      <!-- <td
+                        [ngClass]="{'red-text': course?.playbackTime?.toFixed(2) < 50, 'green-text': course?.playbackTime?.toFixed(2) >= 50}">
+                        {{course?.playbackTime?.toFixed(2) || 0}}%
+                      </td> -->
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </ng-scrollbar>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="selectedComponents['UPCOMING COURSE CLASSES']" class="col-xl-6 col-lg-6 col-md-14 col-sm-14">
+        <div class="card">
+          <div class="header">
+            <h2>
+              Upcoming Course Classes
+            </h2>
+          </div>
+          <div class="card-body">
+            <ng-scrollbar style="height: 270px" visibility="hover">
+              <ul class="list-unstyled user-progress list-unstyled-border list-unstyled-noborder">
+                <li class="lecture-list">
+                  <div class="set-flex">
+                    <div class="media-title font-16">Test Course</div>
+                    <div class="text-job text-muted mb-0">T2345</div>
+                  </div>
+                  <div class="ms-auto">
+                    <div class="media-title font-16">14 Jun 2024
+                    </div>
+                    <!-- <div class="text-job text-muted mb-0">09:00-10:00</div> -->
+                  </div>
+                </li>
+              </ul>
+            </ng-scrollbar>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="selectedComponents['ANNOUNCEMENT BOARD']" class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+          <div class="card">
+            <div class="header">
+              <h2>Announcement Board</h2>
+            </div>
+            <div class="body">
+              <ng-scrollbar style="height: 350px" visibility="hover">
+                <div class="recent-comment">
+                  <div  class="notice-board">
+                    <div class="notice-body">
+                      <h5 class="notice-heading col-green">navigateToAccountSettings</h5>
+                      <p [innerHTML]="'Test' | truncate:150"></p>
+                      <small class="text-muted float-end">14 Jun 2024</small>
+                    </div>
+                  </div>
+                </div>
+              </ng-scrollbar>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="selectedComponents['RESCHEDULE LIST']" class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+          <div class="card">
+            <div class="header">
+              <h2>Reschedule list</h2>
+            </div>
+            <div class="tableBody">
+              <ng-scrollbar style="height: 370px" visibility="hover">
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Class</th>
+                        <th>Apply Date</th>
+                        <th>From Date</th>
+                        <th>To Date</th>
+                        <th>Reason</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr >
+                        <td>Test</td>
+                        <td>23 April 2024</td>
+                        <td>14 Jun 2024</td>
+                        <td>17 Sep 2024</td>
+                        <td>Sick</td>
+                        <td><span class="badge badge-solid-green">Approved</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </ng-scrollbar>
+    
+            </div>
+          </div>
+        </div>
+  </div>
+
+
+
+  <!-- #END# Widgets -->
+  <div class="row">
+   
+
+  </div>
+  <!-- <div class="row clearfix">
+   
+  </div> -->

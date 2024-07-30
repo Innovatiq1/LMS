@@ -1,0 +1,81 @@
+<div class="mt-3">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class="card">
+        <div class="materialTableHeader">
+          <div class="right">
+            <ul class="tbl-export-btn">
+              <li>
+                <ul class="header-buttons-left ms-0">
+                  <li class="tbl-search-box">
+                    <label for="search-input"><i class="material-icons search-icon">search</i></label>
+                    <input placeholder="Search" type="text" #filter class="browser-default search-field"
+                      aria-label="Search box">
+                  </li>
+                </ul>
+              </li>
+              <li class="tbl-header-btn">
+                <div class="m-l-10"  matTooltip="CREATE">
+                    <button
+                        mat-raised-button
+                        id="submit" 
+                      (click)="createDashboard()">
+                        Create
+                      </button>
+                </div>
+              </li>
+              <li>
+                <div class="export-button m-l-10" matTooltip="XLSX"(click)="exportExcel()">
+                  <img src="assets/excel.svg" alt="" />
+                </div>
+              </li>
+              <li>
+                <div class="export-button m-l-10" matTooltip="PDF" (click)="generatePdf()">
+                  <img src="assets/pdf (1).svg" alt=""  />
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        
+
+        <div class="body overflow-auto">
+          <div class="responsive_table">
+            <table mat-table [dataSource]="filteredDashboards" matSort class="mat-cell advance-table">
+              <ng-container matColumnDef="type">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Type</mat-header-cell>
+                <mat-cell *matCellDef="let row" class="name" (click)="edit(row)">
+                  <span class="mobile-label">Type:</span>{{ row.typeName }}
+                </mat-cell>
+              </ng-container>
+        
+              <ng-container matColumnDef="Dashboards">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Dashboards</mat-header-cell>
+                <mat-cell *matCellDef="let row" (click)="edit(row)">
+                  <span class="mobile-label">Dashboards:</span>
+                  <div class="dashboard-container">
+                    <div *ngFor="let dashboard of row.dashboards" class="dashboard">
+                      <div class="dashboard-title">{{ dashboard.title | titlecase }}</div>
+                      <div class="components">
+                        <div *ngFor="let component of dashboard.components" class="component">{{ component | titlecase }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </mat-cell>
+              </ng-container>
+        
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;" [style.cursor]="'pointer'" matRipple></mat-row>
+            </table>
+        
+            <!-- <mat-paginator #paginator [length]="totalItems" (page)="pageSizeChange($event)"
+              [pageSizeOptions]="pageSizeArr" aria-label="select pagination option">
+            </mat-paginator> -->
+          </div>
+        </div>
+        
+        
+        
+        
+      </div>
+    </div>
+  </div>

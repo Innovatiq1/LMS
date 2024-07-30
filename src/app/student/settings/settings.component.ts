@@ -1,5 +1,7 @@
 import { Component, ViewChild, TemplateRef } from '@angular/core';
 import {
+  AbstractControl,
+  FormArray,
   FormGroup,
   UntypedFormBuilder,
   UntypedFormGroup,
@@ -21,7 +23,21 @@ import { UtilsService } from '@core/service/utils.service';
 import { SettingsService } from '@core/service/settings.service';
 import { forkJoin } from 'rxjs';
 import { AppConstants } from '@shared/constants/app.constants';
+import { AdminService } from '@core/service/admin.service';
 
+interface Components {
+  checked: boolean;
+  component: string;
+}
+
+interface Dashboard {
+  title: string;
+  components: Components[]; // Make sure this matches the Components interface
+}
+
+interface OuterDashboard {
+  dashboards: Dashboard[];
+}
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
@@ -32,10 +48,18 @@ export class SettingsComponent {
   stdForm1: UntypedFormGroup;
   profileForm: FormGroup;
   dropdownVisible = false;
-  selectedDashboard!: string;
-  component!: string ;
+  // selectedDashboard!: string;
+  component!: string;
+  selectedDashboards = new Set<string>();
   selectedComponents: { [key: string]: boolean } = {};
-
+  dashboardsList: string[] = [
+    'Trainee Analytics',
+    'Trainer Analytics',
+    'Support',
+    'TraineeDashboard'
+  ];
+  filteredDashboardsList: string[] = this.dashboardsList.slice();
+  selectedDashboard: string | null = null;
   breadscrums = [
     {
       title: 'Settings',
@@ -43,27 +67,40 @@ export class SettingsComponent {
       active: 'Settings',
     },
   ];
+  componentsMap: { [key: string]: string[] } = {
+    'Trainee Analytics': [
+      'TOTAL TRAINEES',
+      'ALL COURSES',
+      'TOTAL TRAINERS',
+      'COURSE CLASSES',
+      'TRAINER SURVEY',
+      'USERS',
+      'CLASSES LIST',
+      'TRAINERS LIST',
+      'NEW TRAINEES LIST',
+    ],
+    'Trainer Analytics': ['TRAINER LIST', 'UPCOMING COURSES'],
+    'Support': ['Support Tickets'],
+    'TraineeDashboard': ['INFO','LATEST ENROLLED COURSES','UPCOMING COURSE CLASSES','ANNOUNCEMENT BOARD','RESCHEDULE LIST']
+  };
+  // Traineecomponents: string[] = [
+  //   "TOTAL TRAINEES",
+  //   'ALL COURSES',
+  //   'TOTAL TRAINERS',
+  //   "TRAINER SURVEY",
+  //   'USERS',
+  //   'CLASSES LIST',
+  //   'TRAINERS LIST',
+  //   'NEW TRAINEES LIST'
+  // ];
+  // TrainerComponents: string[] = [
+  //   "TRAINER LIST",
+  //   'UPCOMING COURSES',
+  // ];
 
-  Traineecomponents: string[] = [
-    "TOTAL TRAINEES",
-    'ALL COURSES',
-    'TOTAL TRAINERS',
-    "TRAINER SURVEY",
-    'USERS',
-    'CLASSES LIST',
-    'TRAINERS LIST',
-    'NEW TRAINEES LIST'
-  ];
-  TrainerComponents: string[] = [
-    "TRAINER LIST",
-    'UPCOMING COURSES',
-  ];
-
-  SupportComponents: string[] = [
-    "TOTAL TICKETS",
-    'RESOLVE',
-    'PENDING',
-  ];
+  // SupportComponents: string[] = [
+  //  "Support Tickets"
+  // ];
 
   editData: any;
   studentId: any;
@@ -98,7 +135,7 @@ export class SettingsComponent {
   configUrl: any;
   formsUrl: any;
   sidemenuUrl: any;
-  settingsSidemenuUrl:any;
+  settingsSidemenuUrl: any;
   studentDbUrl: any;
   allUsersUrl: any;
   customFormsUrl: any;
@@ -124,7 +161,7 @@ export class SettingsComponent {
   showConfig: boolean = false;
   showForms: boolean = false;
   showSidemenu: boolean = false;
-  showSettingsSidemenu:boolean=false;
+  showSettingsSidemenu: boolean = false;
   showCustomForms: boolean = false;
   showCourseForms: boolean = false;
   showProgramForms: boolean = false;
@@ -138,6 +175,8 @@ export class SettingsComponent {
   users: any;
   vendors: any;
   toggleValue: boolean = false;
+  isCreate: boolean = false;
+  isEdit: boolean = false;
 
   currentContent: number = 1;
   currencyCodes: string[] = [
@@ -163,7 +202,7 @@ export class SettingsComponent {
   selectedAssessmentAlgorithm: number = 1;
   selectedExamAlgorithm: number = 1;
   sidemenu: any;
-  settingsSidemenu:any;
+  settingsSidemenu: any;
   studentDb: any;
   dept: any;
   ro: any;
@@ -176,9 +215,16 @@ export class SettingsComponent {
   directorUsers: any;
   trainingAdminUsers: any;
   showBodyContent: boolean = false;
-  role: string|null;
+  role: string | null;
   commonRoles: any;
   isStudent: boolean = false;
+  checkedDashboard: any;
+  userTypeNames: any;
+  roleForm: UntypedFormGroup;
+  typeName!: string;
+  filteredDashboards: any[] = [];
+  updateId: any;
+  typeNameChild!: string;
 
   constructor(
     private studentService: StudentsService,
@@ -192,7 +238,8 @@ export class SettingsComponent {
     private logoService: LogoService,
     private userService: UserService,
     private settingsService: SettingsService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private adminService: AdminService
   ) {
     this.role = localStorage.getItem('user_type');
     let urlPath = this.router.url.split('/');
@@ -216,7 +263,7 @@ export class SettingsComponent {
     this.configUrl = urlPath.includes('config');
     this.formsUrl = urlPath.includes('forms');
     this.sidemenuUrl = urlPath.includes('sidemenu');
-    this.settingsSidemenuUrl=urlPath.includes('settings-sidemenu');
+    this.settingsSidemenuUrl = urlPath.includes('settings-sidemenu');
     this.allUsersUrl = urlPath.includes('all-user');
     this.customFormsUrl = urlPath.includes('customization-forms');
     this.faUrl = urlPath.includes('2-factor-authentication');
@@ -228,12 +275,17 @@ export class SettingsComponent {
     this.dashboardsUrl = urlPath.includes('dashboards');
     this.studentDbUrl = urlPath.includes('student-dashboard');
 
-    this.Traineecomponents.forEach(component => {
-      this.selectedComponents[component] = false;
-    });
-    const formURLs = [this.courseFormsUrl, this.programFormsUrl, this.usersFormsUrl, this.financeFormsUrl, this.bannerFormsUrl]
-    if(formURLs.includes(true))
-      this.customFormsUrl = false;
+    // this.Traineecomponents.forEach((component) => {
+    //   this.selectedComponents[component] = false;
+    // });
+    const formURLs = [
+      this.courseFormsUrl,
+      this.programFormsUrl,
+      this.usersFormsUrl,
+      this.financeFormsUrl,
+      this.bannerFormsUrl,
+    ];
+    if (formURLs.includes(true)) this.customFormsUrl = false;
 
     if (this.cmUrl === true) {
       this.breadscrums = [
@@ -579,6 +631,11 @@ export class SettingsComponent {
       avatar: [''],
     });
 
+   
+    this.roleForm = this.fb.group({
+      typeName: ['', Validators.required],
+      dashboards: this.fb.array([]),
+    });
     this.profileForm = this.fb.group({
       empName: ['', Validators.required],
       designation: ['', Validators.required],
@@ -597,14 +654,19 @@ export class SettingsComponent {
     this.getSettingsSidemenu();
     this.getStudentDb();
     this.getAllUsers();
-    this.commonRoles = AppConstants
+    this.getAllUserTypes();
+    // this.getDashboardComponents();
+    this.commonRoles = AppConstants;
     let role = localStorage.getItem('user_type');
-    if (role == AppConstants.ADMIN_USERTYPE ||  AppConstants.ADMIN_ROLE) {
+    if (role == AppConstants.ADMIN_USERTYPE || AppConstants.ADMIN_ROLE) {
       this.isAdmin = true;
     } else if (role == AppConstants.STUDENT_ROLE) {
       this.isStudent = true;
     } else if (
-      !(role == AppConstants.STUDENT_ROLE|| role == AppConstants.INSTRUCTOR_ROLE)
+      !(
+        role == AppConstants.STUDENT_ROLE ||
+        role == AppConstants.INSTRUCTOR_ROLE
+      )
     ) {
       this.isApprovers = true;
     }
@@ -734,19 +796,29 @@ export class SettingsComponent {
     this.router.navigate(['/student/settings/customize/student-dashboard']);
   }
   navigateToCourseFormsSettings() {
-    this.router.navigate(['/student/settings/customize/customization-forms/course-forms']);
+    this.router.navigate([
+      '/student/settings/customize/customization-forms/course-forms',
+    ]);
   }
   navigateToProgramFormsSettings() {
-    this.router.navigate(['/student/settings/customize/customization-forms/program-forms']);
+    this.router.navigate([
+      '/student/settings/customize/customization-forms/program-forms',
+    ]);
   }
   navigateToUsersFormsSettings() {
-    this.router.navigate(['/student/settings/customize/customization-forms/users-forms']);
+    this.router.navigate([
+      '/student/settings/customize/customization-forms/users-forms',
+    ]);
   }
   navigateToFinanceFormsSettings() {
-    this.router.navigate(['/student/settings/customize/customization-forms/finance-forms']);
+    this.router.navigate([
+      '/student/settings/customize/customization-forms/finance-forms',
+    ]);
   }
   navigateToBannerFormsSettings() {
-    this.router.navigate(['/student/settings/customize/customization-forms/banner-forms']);
+    this.router.navigate([
+      '/student/settings/customize/customization-forms/banner-forms',
+    ]);
   }
   navigateToDashboardSettings() {
     this.router.navigate(['/student/settings/dashboards']);
@@ -760,19 +832,19 @@ export class SettingsComponent {
   }
   getSidemenu() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-        this.logoService.getSidemenu(userId).subscribe((response) => {
+    this.logoService.getSidemenu(userId).subscribe((response) => {
       this.sidemenu = response?.data?.docs;
     });
   }
   getSettingsSidemenu() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-        this.logoService.getSettingsSidemenu(userId).subscribe((response) => {
+    this.logoService.getSettingsSidemenu(userId).subscribe((response) => {
       this.settingsSidemenu = response?.data?.docs;
     });
   }
   getStudentDb() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-        this.settingsService.getStudentDashboard(userId).subscribe((response) => {
+    this.settingsService.getStudentDashboard(userId).subscribe((response) => {
       this.studentDb = response?.data?.docs;
     });
   }
@@ -863,14 +935,14 @@ export class SettingsComponent {
         ? examassessmentConfig.value
         : null;
       const assessmentAlgoConfig = this.editData.configuration.find(
-          (config: any) => config.field === 'assessmentAlgorithm'
-        );
+        (config: any) => config.field === 'assessmentAlgorithm'
+      );
       const selectedAssessmentAlgorithm = assessmentAlgoConfig
         ? assessmentAlgoConfig.value
         : null;
       const examAlgoConfig = this.editData.configuration.find(
-          (config: any) => config.field === 'examAlgorithm'
-        );
+        (config: any) => config.field === 'examAlgorithm'
+      );
       const selectedExamAlgorithm = examAlgoConfig
         ? examAlgoConfig.value
         : null;
@@ -904,7 +976,6 @@ export class SettingsComponent {
       this.selectedExamAssessmentRetake = selectedExamAssessmentRetake;
       this.selectedAssessmentAlgorithm = Number(selectedAssessmentAlgorithm);
       this.selectedExamAlgorithm = Number(selectedExamAlgorithm);
-      
     });
   }
   onFileUpload(event: any) {
@@ -997,7 +1068,6 @@ export class SettingsComponent {
   //   }
   // }
   onSubmit1() {
-
     if (this.stdForm1.valid) {
       // No need to call uploadVideo() here since it's not needed
       const userData: any = this.stdForm1.value;
@@ -1091,24 +1161,27 @@ export class SettingsComponent {
         cancelButtonColor: '#d33',
       }).then((result) => {
         if (result.isConfirmed) {
-          let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-                this.courseService.createCurrency({ value: selectedCurrency ,companyId:userId}).subscribe(
-        (response) => {
-          Swal.fire({
-            title: 'Successful',
-            text: 'Currency Configuration Success',
-            icon: 'success',
-          });
-          dialogRef.close(selectedCurrency);
-        },
-        (error) => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: error,
-          });
-        }
-      );
+          let userId = JSON.parse(localStorage.getItem('user_data')!).user
+            .companyId;
+          this.courseService
+            .createCurrency({ value: selectedCurrency, companyId: userId })
+            .subscribe(
+              (response) => {
+                Swal.fire({
+                  title: 'Successful',
+                  text: 'Currency Configuration Success',
+                  icon: 'success',
+                });
+                dialogRef.close(selectedCurrency);
+              },
+              (error) => {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: error,
+                });
+              }
+            );
         }
       });
     } else if (value === 'timer') {
@@ -1122,27 +1195,30 @@ export class SettingsComponent {
         cancelButtonColor: '#d33',
       }).then((result) => {
         if (result.isConfirmed) {
-          let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-                this.courseService.createTimer({ value: selectedTimer ,companyId:userId}).subscribe(
-        (response) => {
-          Swal.fire({
-            title: 'Successful',
-            text: 'Timer Configuration Success',
-            icon: 'success',
-          });
-          dialogRef.close(selectedTimer);
-        },
-        (error) => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: error,
-          });
-        }
-      );
+          let userId = JSON.parse(localStorage.getItem('user_data')!).user
+            .companyId;
+          this.courseService
+            .createTimer({ value: selectedTimer, companyId: userId })
+            .subscribe(
+              (response) => {
+                Swal.fire({
+                  title: 'Successful',
+                  text: 'Timer Configuration Success',
+                  icon: 'success',
+                });
+                dialogRef.close(selectedTimer);
+              },
+              (error) => {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: error,
+                });
+              }
+            );
         }
       });
-    }else if (value === 'examTimer') {
+    } else if (value === 'examTimer') {
       const selectedExamTimer = this.selectedExamTimer;
       Swal.fire({
         title: 'Are you sure?',
@@ -1152,25 +1228,28 @@ export class SettingsComponent {
         showCancelButton: true,
         cancelButtonColor: '#d33',
       }).then((result) => {
-        let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-                if (result.isConfirmed) {
-      this.courseService.createExamTimer({ value: selectedExamTimer,companyId:userId }).subscribe(
-        (response) => {
-          Swal.fire({
-            title: 'Successful',
-            text: 'Exam Timer Configuration Success',
-            icon: 'success',
-          });
-          dialogRef.close(selectedExamTimer);
-        },
-        (error) => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: error,
-          });
-        }
-      );
+        let userId = JSON.parse(localStorage.getItem('user_data')!).user
+          .companyId;
+        if (result.isConfirmed) {
+          this.courseService
+            .createExamTimer({ value: selectedExamTimer, companyId: userId })
+            .subscribe(
+              (response) => {
+                Swal.fire({
+                  title: 'Successful',
+                  text: 'Exam Timer Configuration Success',
+                  icon: 'success',
+                });
+                dialogRef.close(selectedExamTimer);
+              },
+              (error) => {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: error,
+                });
+              }
+            );
         }
       });
     } else if (value === 'assessment') {
@@ -1184,26 +1263,30 @@ export class SettingsComponent {
         cancelButtonColor: '#d33',
       }).then((result) => {
         if (result.isConfirmed) {
-          let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-                this.courseService
-        .createAssessment({ value: selectedAssessmentRetake ,companyId:userId})
-        .subscribe(
-          (response) => {
-            Swal.fire({
-              title: 'Successful',
-              text: 'Assessment Configuration Success',
-              icon: 'success',
-            });
-            dialogRef.close(selectedAssessmentRetake);
-          },
-          (error) => {
-            Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: error,
-            });
-          }
-        );
+          let userId = JSON.parse(localStorage.getItem('user_data')!).user
+            .companyId;
+          this.courseService
+            .createAssessment({
+              value: selectedAssessmentRetake,
+              companyId: userId,
+            })
+            .subscribe(
+              (response) => {
+                Swal.fire({
+                  title: 'Successful',
+                  text: 'Assessment Configuration Success',
+                  icon: 'success',
+                });
+                dialogRef.close(selectedAssessmentRetake);
+              },
+              (error) => {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: error,
+                });
+              }
+            );
         }
       });
     } else if (value === 'examAssessment') {
@@ -1217,54 +1300,63 @@ export class SettingsComponent {
         cancelButtonColor: '#d33',
       }).then((result) => {
         if (result.isConfirmed) {
-          let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-                this.courseService
-        .createExamAssessment({ value: selectedExamAssessmentRetake,companyId:userId })
-        .subscribe(
-          (response) => {
-            Swal.fire({
-              title: 'Successful',
-              text: 'Exam Configuration Success',
-              icon: 'success',
-            });
-            dialogRef.close(selectedExamAssessmentRetake);
-          },
-          (error) => {
-            Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: error,
-            });
-          }
-        );
-      }
-    })
-  }else if(value == 'scoreAlgorithm'){
-      const selectedAssessmentAlgorithm= this.selectedAssessmentAlgorithm;
-      const selectedExamAlgorithm= this.selectedExamAlgorithm;
-      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-            forkJoin(
-        this.courseService
-        .createAssessmentAlgorithm({ value: selectedAssessmentAlgorithm,companyId:userId }),
-        this.courseService
-        .createExamAlgorithm({ value: selectedExamAlgorithm ,companyId:userId})
+          let userId = JSON.parse(localStorage.getItem('user_data')!).user
+            .companyId;
+          this.courseService
+            .createExamAssessment({
+              value: selectedExamAssessmentRetake,
+              companyId: userId,
+            })
+            .subscribe(
+              (response) => {
+                Swal.fire({
+                  title: 'Successful',
+                  text: 'Exam Configuration Success',
+                  icon: 'success',
+                });
+                dialogRef.close(selectedExamAssessmentRetake);
+              },
+              (error) => {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: error,
+                });
+              }
+            );
+        }
+      });
+    } else if (value == 'scoreAlgorithm') {
+      const selectedAssessmentAlgorithm = this.selectedAssessmentAlgorithm;
+      const selectedExamAlgorithm = this.selectedExamAlgorithm;
+      let userId = JSON.parse(localStorage.getItem('user_data')!).user
+        .companyId;
+      forkJoin(
+        this.courseService.createAssessmentAlgorithm({
+          value: selectedAssessmentAlgorithm,
+          companyId: userId,
+        }),
+        this.courseService.createExamAlgorithm({
+          value: selectedExamAlgorithm,
+          companyId: userId,
+        })
       ).subscribe(
-          (response) => {
-            Swal.fire({
-              title: 'Successful',
-              text: 'Score Algorithm Configuration Success',
-              icon: 'success',
-            });
-            dialogRef.close(selectedAssessmentAlgorithm);
-          },
-          (error) => {
-            Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: error,
-            });
-          }
-        );
+        (response) => {
+          Swal.fire({
+            title: 'Successful',
+            text: 'Score Algorithm Configuration Success',
+            icon: 'success',
+          });
+          dialogRef.close(selectedAssessmentAlgorithm);
+        },
+        (error) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: error,
+          });
+        }
+      );
     }
   }
 
@@ -1321,7 +1413,7 @@ export class SettingsComponent {
           this.selectedExamAssessmentRetake = result;
         }
       });
-    } else if(value === 'scoreAlgorithm'){
+    } else if (value === 'scoreAlgorithm') {
       const dialogRef = this.dialog.open(templateRef, {
         width: '500px',
         data: {
@@ -1339,15 +1431,232 @@ export class SettingsComponent {
   toggleDropdown() {
     this.dropdownVisible = !this.dropdownVisible;
   }
-  onDashboardSelectionChange(value: string) {
-    this.selectedDashboard = value;
-  }
+
 
   updateVisibility() {
-    // This method can be used to perform additional actions when a checkbox is toggled
-    console.log(this.selectedComponents);
+    // this.saveDashboardConfig();
   }
   onSelect(currencyCode: string, dialogRef: any) {
     dialogRef.close(currencyCode);
+  }
+
+  getAllUserTypes(filters?: any) {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    this.adminService.getUserTypeList({ allRows: true }, userId).subscribe(
+      (response: any) => {
+        this.userTypeNames = response;
+        console.log('types', this.userTypeNames);
+      },
+      (error) => {}
+    );
+  }
+
+ 
+  saveDashboardConfig(): void {
+    const userId = JSON.parse(localStorage.getItem('user_data')!).user
+      .companyId;
+    const selectedDashboards = this.dashboards.controls
+      .map((dashboardGroup) => {
+        const dashboardFormGroup = dashboardGroup as FormGroup;
+        const components = (
+          dashboardFormGroup.get('components') as FormArray
+        ).controls
+          .filter(
+            (componentGroup) =>
+              (componentGroup as FormGroup).get('checked')!.value
+          )
+          .map((componentGroup) => {
+            const componentFormGroup = componentGroup as FormGroup;
+            return {
+              component: componentFormGroup.get('component')!.value,
+              id: componentFormGroup
+                .get('component')!
+                .value.toLowerCase()
+                .replace(/\s+/g, '-'),
+              checked: componentFormGroup.get('checked')!.value,
+            };
+          });
+
+        return {
+          title: dashboardFormGroup.get('title')!.value,
+          id: dashboardFormGroup
+            .get('title')!
+            .value.toLowerCase()
+            .replace(/\s+/g, '-'),
+          components: components,
+        };
+      })
+      .filter((dashboard) => dashboard.components.length > 0);
+
+    const config = {
+      typeName: this.roleForm.value.typeName,
+      companyId: userId,
+      dashboards: selectedDashboards,
+    };
+
+    if (!this.typeNameChild) {
+      this.userService.saveCustomzDashboard(config).subscribe((data: any) => {
+        Swal.fire({
+          title: 'Successful',
+          text: 'Dashboard Created successfully',
+          icon: 'success',
+        });
+        this.isCreate = false;
+      });
+    } else {
+      this.userService.updateCustomzDashboard(config).subscribe((data: any) => {
+        Swal.fire({
+          title: 'Successful',
+          text: 'Dashboard Updated successfully',
+          icon: 'success',
+        });
+      });
+      this.isCreate = false;
+    }
+  }
+
+  getComponentsForDashboard(dashboard: string) {
+    return this.componentsMap[dashboard].map((component) =>
+      this.fb.group({
+        component: [component],
+        checked: [false],
+      })
+    );
+  }
+  getComponentsArray(dashboard: string): FormGroup[] {
+    return (this.componentsMap[dashboard] || []).map((component) =>
+      this.fb.group({
+        component: component,
+        checked: false,
+      })
+    );
+  }
+
+  onDashboardSelectionChange(dashboard: string): void {
+    const dashboardGroup = this.fb.group({
+      title: dashboard,
+      components: this.fb.array(this.getComponentsArray(dashboard)),
+    });
+
+    this.dashboards.push(dashboardGroup);
+  }
+
+  getSelectedComponents(dashboardGroup: AbstractControl): {
+    [key: string]: boolean;
+  } {
+    const selectedComponents: { [key: string]: boolean } = {};
+    (dashboardGroup.get('components') as FormArray).controls.forEach(
+      (componentGroup) => {
+        const componentFormGroup = componentGroup as FormGroup;
+        const componentName = componentFormGroup.get('component')!.value;
+        const isChecked = componentFormGroup.get('checked')!.value;
+        if (isChecked) {
+          selectedComponents[componentName] = true;
+        }
+      }
+    );
+    return selectedComponents;
+  }
+
+  getComponentGroups(dashboardGroup: AbstractControl): FormArray {
+    return dashboardGroup.get('components') as FormArray;
+  }
+
+  isDashboardSelected(dashboard: string): boolean {
+    return this.dashboards.controls.some(
+      (control) => control.get('title')!.value === dashboard
+    );
+  }
+  get dashboards(): FormArray {
+    return this.roleForm.get('dashboards') as FormArray;
+  }
+
+  onChildStateChange(newState: boolean) {
+    this.isCreate = newState;
+  }
+  cancel() {
+    this.isCreate = false;
+    
+  }
+
+  onRoleSelectionChange(selectedRole: string): void {
+    if (selectedRole === 'Trainee') {
+      this.filteredDashboardsList = ['TraineeDashboard'];
+    } else {
+      this.filteredDashboardsList = this.dashboardsList.filter(dashboard => dashboard !== 'TraineeDashboard');
+    }
+  }
+
+  onChildEditChange(type: string): void {
+    this.isCreate = true;
+    this.typeNameChild = type;
+    this.roleForm.patchValue({
+      typeName: this.typeNameChild,
+    });
+    this.getDashboardComponents(this.typeNameChild);
+  }
+
+  getDashboardComponents(role: string) {
+    this.userService.getAllDashboard(role).subscribe(
+      (data: any) => {
+        const outerDashboards: OuterDashboard[] = data.data.docs;
+
+        this.dashboards.clear();
+        if (Array.isArray(outerDashboards)) {
+          outerDashboards.forEach((outerDashboard: OuterDashboard) => {
+            if (Array.isArray(outerDashboard.dashboards)) {
+              outerDashboard.dashboards.forEach((innerDashboard: Dashboard) => {
+                const dashboardGroup = this.fb.group({
+                  title: [innerDashboard.title || ''],
+                  components: this.fb.array([]),
+                });
+                const components: Components[] =
+                  innerDashboard.components || [];
+                const componentsList =
+                  this.componentsMap[innerDashboard.title] || [];
+
+                if (Array.isArray(componentsList)) {
+                  const componentsSet = new Set(
+                    components.map((c) => c.component)
+                  );
+
+                  componentsList.forEach((componentName: string) => {
+                    const isChecked =
+                      (componentsSet.has(componentName) &&
+                        components.find((c) => c.component === componentName)
+                          ?.checked) ||
+                      false;
+
+                    const componentGroup = this.fb.group({
+                      checked: [isChecked],
+                      component: [componentName],
+                    });
+                    this.getComponentGroups(dashboardGroup).push(
+                      componentGroup
+                    );
+                  });
+                } else {
+                  console.warn(
+                    'componentsList is not an array:',
+                    componentsList
+                  );
+                }
+                this.dashboards.push(dashboardGroup);
+              });
+            } else {
+              console.warn(
+                'outerDashboard.dashboards is not an array:',
+                outerDashboard.dashboards
+              );
+            }
+          });
+        } else {
+          console.error('outerDashboards is not an array:', outerDashboards);
+        }
+      },
+      (error) => {
+        console.error('Error fetching dashboards:', error);
+      }
+    );
   }
 }

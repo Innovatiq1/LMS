@@ -130,7 +130,8 @@
     </div> -->
  
     <div class="row clearfix">
-      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <ng-container *ngFor="let component of dashboardCpm.components">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" *ngIf="component?.checked && component.id === 'trainer-list'">
         <div class="card">
           <div class="header mt-3">
             <h2>{{commonRoles?.INSTRUCTOR_ROLE}}s List</h2>
@@ -176,10 +177,11 @@
           </div>
         </div>
       </div>
+    </ng-container>
     </div>
     <div class="row">
-     
-      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" style="width: 100%;">
+      <ng-container *ngFor="let component of dashboardCpm.components">
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4"  *ngIf="component?.checked && component.id === 'upcoming-courses'"  style="width: 100%;">
         <div class="card">
           <div class="header mt-3">
             <h2>Upcoming Courses</h2>
@@ -220,6 +222,7 @@
           </div>
         </div>
       </div>
+    </ng-container>
       <!-- <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" style="width: 100%;">
         <div class="card">
           <div class="header mt-3">
