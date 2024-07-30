@@ -1,4 +1,4 @@
-<section class="content" *ngIf="isAdmin">
+<section class="content" >
   <div class="content-block">
     <div class="block-header" *ngFor="let breadscrum of breadscrums">
       <!-- breadcrumb -->
@@ -6,36 +6,26 @@
       </app-breadcrumb>
     </div>
 
+    
+<mat-tab-group>
+  <ng-container *ngFor="let dashboard of dashboards">
+  <mat-tab *ngIf=" dashboard.id === 'trainee-analytics'">
+    <ng-template mat-tab-label>
+      {{commonRoles.STUDENT_ROLE}} Analytics
+    </ng-template>
+    <div class="row mt-5">
 
-    <!-- <nav>
-      <div class="nav nav-tabs" id="nav-tab" role="tablist">
-        <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button"
-          role="tab" aria-controls="nav-home" aria-selected="true">Student Analytics</button>
-        <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button"
-          role="tab" aria-controls="nav-profile" aria-selected="false">Instructor Analytics</button>
-        <button class="nav-link" id="nav-support-tab" data-bs-toggle="tab" data-bs-target="#nav-support" type="button"
-          role="tab" aria-controls="nav-support" aria-selected="false">Support</button>
-        <button class="nav-link" id="nav-budget-tab" data-bs-toggle="tab" data-bs-target="#nav-budget" type="button"
-          role="tab" aria-controls="nav-budget" aria-selected="false">Finance</button>
-        <button class="nav-link" id="nav-training-tab" data-bs-toggle="tab" data-bs-target="#nav-training" type="button"
-          role="tab" aria-controls="nav-training" aria-selected="false">Training Approval</button>
-
-      </div>
-    </nav>
-    <div class="tab-content" id="nav-tabContent">
-      <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-        <!-- Widgets --
-        <div class="row mt-5">
-          <div class="col-lg-3 col-md-3 col-sm-12">
+      <!-- <ng-container *ngIf="roleType === 'Trainer'">
+        <ng-container *ngFor="let component of dashboard.components">
+          <div  *ngIf="component.id === 'total-trainees'" class="col-lg-6 col-md-6 col-sm-12" >
             <div class="card card-statistic-2">
               <div class="clearfix">
                 <div class="card-icon-only shadow-primary float-start">
                   <img src="assets/images/banner/New Students.jpg" alt="" style="margin-left: -21px;">
-
                 </div>
                 <div class="card-right">
                   <div>
-                    <h5 class="float-end">Total Students</h5>
+                    <h5 class="float-end" style="margin-top: 100px;">Total {{commonRoles.STUDENT_ROLE}}s</h5>
                   </div>
                   <div class="col-green">
                     <h3 class="font-weight-bold float-end mb-0">{{count?.students}}</h3>
@@ -43,13 +33,79 @@
                 </div>
               </div>
               <div class="card-content msl-4 mb-3">
-                <p class="m-b-0 d-flex"><i class="material-icons col-green psr-2">trending_up</i> 10% Higher Then Last
-                  Month
-                </p>
+                <p class="m-b-0 d-flex"><i class="material-icons col-green psr-2">trending_up</i> 10% Higher Than Last Month</p>
               </div>
             </div>
           </div>
-          <div class="col-lg-3 col-md-3 col-sm-12">
+        </ng-container>
+        
+    <ng-container *ngFor="let component of dashboard.components">
+      <div class="col-xs-12 col-sm-12 col-md-8 col-lg-12" *ngIf="component.checked && component.id === 'classes-list'">
+        <div class="card" style="border-radius: 31px;">
+          <div class="header mt-3">
+            <h2>Classes List</h2>
+
+          </div>
+          <div class="tableBody">
+            <div class="table-responsive">
+              <table class="table table-hover ">
+                <thead>
+                  <tr>
+                    <th>Course Name</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Status </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let class of classesList " style="cursor: pointer;"
+                    [routerLink]="['/admin/courses/view-class/',class.id]">
+                    <td>{{class?.courseId?.title | titlecase | truncate:10}}</td>
+                    <td> {{class?.sessions[0]?.sessionStartDate | date}} </td>
+                    <td> {{class?.sessions[0]?.sessionEndDate | date}}</td>
+                    <td>
+                      <div class="badge col-green">{{class?.status == 'open'?'Active':'Inactive'}}</div>
+                    </td>
+
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+      </ng-container> -->
+
+     
+        <ng-container *ngFor="let component of dashboard.components">
+          <div  *ngIf="component.id === 'total-trainees'" class="col-lg-4 col-md-4 col-sm-12" >
+            <div class="card card-statistic-2">
+              <div class="clearfix">
+                <div class="card-icon-only shadow-primary float-start">
+                  <img src="assets/images/banner/New Students.jpg" alt="" style="margin-left: -21px;">
+                </div>
+                <div class="card-right">
+                  <div>
+                    <h5 class="float-end" style="margin-top: 100px;">Total {{commonRoles.STUDENT_ROLE}}s</h5>
+                  </div>
+                  <div class="col-green">
+                    <h3 class="font-weight-bold float-end mb-0">{{count?.students}}</h3>
+                  </div>
+                </div>
+              </div>
+              <div class="card-content msl-4 mb-3">
+                <p class="m-b-0 d-flex"><i class="material-icons col-green psr-2">trending_up</i> 10% Higher Than Last Month</p>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngFor="let component of dashboard.components">
+          <div
+          class="col-lg-4 col-md-4 col-sm-12"
+            *ngIf="component.id === 'all-courses'"
+          >
             <div class="card card-statistic-2">
               <div class="clearfix">
                 <div class="card-icon-only shadow-primary float-start">
@@ -65,35 +121,17 @@
                 </div>
               </div>
               <div class="card-content msl-4 mb-3">
-                <p class="m-b-0 d-flex"><i class="material-icons col-orange psr-2">trending_down</i> 07% Less Then Last
-                  Year
-                </p>
+                <p class="m-b-0 d-flex"><i class="material-icons col-orange psr-2">trending_down</i> 07% Less Than Last Year</p>
               </div>
             </div>
           </div>
-          <div class="col-lg-3 col-md-3 col-sm-12">
-            <div class="card card-statistic-2">
-              <div class="clearfix">
-                <div class="card-icon-only shadow-primary float-start">
-                  <img src="assets/images/banner/img2.png" alt="">
-                </div>
-                <div class="card-right">
-                  <div>
-                    <h5 class="float-end">All Programs</h5>
-                  </div>
-                  <div class="col-green">
-                    <h3 class="font-weight-bold float-end mb-0">{{count?.programs}}</h3>
-                  </div>
-                </div>
-              </div>
-              <div class="card-content msl-4 mb-3">
-                <p class="m-b-0 d-flex"><i class="material-icons col-green psr-2">trending_up</i> 05% Higher Then Last
-                  Month
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-3 col-sm-12">
+        </ng-container>
+      
+        <ng-container *ngFor="let component of dashboard.components">
+          <div
+          class="col-lg-4 col-md-4 col-sm-12"
+            *ngIf="component.id === 'total-trainers'"
+          >
             <div class="card card-statistic-2">
               <div class="clearfix">
                 <div class="card-icon-only shadow-primary float-start">
@@ -101,7 +139,7 @@
                 </div>
                 <div class="card-right">
                   <div>
-                    <h5 class="float-end">Total Instructors</h5>
+                    <h5 class="float-end" style="margin-top: 100px;">Total {{commonRoles.INSTRUCTOR_ROLE}}s</h5>
                   </div>
                   <div class="col-green">
                     <h3 class="font-weight-bold float-end mb-0">{{count?.instructors}}</h3>
@@ -109,27 +147,45 @@
                 </div>
               </div>
               <div class="card-content msl-4 mb-3">
-                <p class="m-b-0 d-flex"><i class="material-icons col-green psr-2">trending_up</i> 08% Higher Then Last
-                  Month
-                </p>
+                <p class="m-b-0 d-flex"><i class="material-icons col-green psr-2">trending_up</i> 08% Higher Than Last Month</p>
               </div>
             </div>
           </div>
-
-        </div>
-        <!-- #END# Widgets --
-        <div class="row">
-          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+        </ng-container>
+        <ng-container *ngFor="let component of dashboard.components">
+          <div *ngIf="component.id === 'course-classes'" class="col-lg-4 col-md-4 col-sm-12">
+            <div class="card card-statistic-2">
+              <div class="clearfix">
+                <div class="card-icon-only shadow-primary float-start">
+                  <img src="assets/images/banner/online-course.png" alt="" >
+                </div>
+                <div class="card-right">
+                  <div>
+                    <h5 class="float-end" style="margin-top: 100px;">Course Classes</h5>
+                  </div>
+                  <div class="col-green">
+                    <h3 class="font-weight-bold float-end mb-0">{{docs}}</h3>
+                  </div>
+                </div>
+              </div>
+              <div class="card-content msl-4 mb-3">
+                <p class="m-b-0 d-flex"><i class="material-icons col-green psr-2">trending_down</i> 07% Less Then Last
+                  Year</p>
+              </div>
+            </div>
+          </div>
+    </ng-container>
+        <ng-container *ngFor="let component of dashboard.components">
+          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12" *ngIf="component.checked && component.id === 'trainer-survey'">
             <div class="card" style="border-radius: 31px;">
               <div class="header mt-3">
                 <h2>
-                  Students Survey</h2>
+                  {{commonRoles.STUDENT_ROLE}}s Survey</h2>
               </div>
               <div class="body" *ngIf="isArea">
                 <apx-chart [series]="areaChartOptions.series!" [chart]="areaChartOptions.chart!"
-                  [xaxis]="areaChartOptions.xaxis!" [yaxis]="areaChartOptions.yaxis!"
-                  [colors]="areaChartOptions.colors!" [stroke]="areaChartOptions.stroke!"
-                  [legend]="areaChartOptions.legend!" [grid]="areaChartOptions.grid!"
+                  [xaxis]="areaChartOptions.xaxis!" [yaxis]="areaChartOptions.yaxis!" [colors]="areaChartOptions.colors!"
+                  [stroke]="areaChartOptions.stroke!" [legend]="areaChartOptions.legend!" [grid]="areaChartOptions.grid!"
                   [tooltip]="areaChartOptions.tooltip!" [dataLabels]="areaChartOptions.dataLabels!"></apx-chart>
               </div>
               <div class="body" *ngIf="isSurveyBar">
@@ -137,87 +193,19 @@
                   [xaxis]="surveyBarChartOptions.xaxis!" [yaxis]="surveyBarChartOptions.yaxis!"
                   [colors]="surveyBarChartOptions.colors!" [stroke]="surveyBarChartOptions.stroke!"
                   [legend]="surveyBarChartOptions.legend!" [grid]="surveyBarChartOptions.grid!"
-                  [tooltip]="surveyBarChartOptions.tooltip!"
-                  [dataLabels]="surveyBarChartOptions.dataLabels!"></apx-chart>
+                  [tooltip]="surveyBarChartOptions.tooltip!" [dataLabels]="surveyBarChartOptions.dataLabels!"></apx-chart>
               </div>
               <div class="body" *ngIf="isSurveyPie">
                 <apx-chart [series]="surveyPieChartOptions.series!" [chart]="surveyPieChartOptions.chart!"
                   [labels]="surveyPieChartOptions.labels!" [legend]="surveyPieChartOptions.legend!"
                   [colors]="surveyPieChartOptions.colors!" [responsive]="surveyPieChartOptions.responsive!"></apx-chart>
               </div>
-
+    
             </div>
           </div>
-          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-            <div class="card" style="border-radius: 31px;">
-              <div class="header mt-3">
-                <h2>Student Performance Chart</h2>
-              </div>
-              <div class="body" *ngIf="isBar">
-                <apx-chart [series]="performanceBarChartOptions.series!" [chart]="performanceBarChartOptions.chart!"
-                  [dataLabels]="performanceBarChartOptions.dataLabels!" [labels]="performanceBarChartOptions.labels!"
-                  [legend]="performanceBarChartOptions.legend!" [fill]="performanceBarChartOptions.fill!"
-                  [responsive]="performanceBarChartOptions.responsive!">
-                </apx-chart>
-              </div>
-              <div class="body" *ngIf="isPie">
-                <apx-chart [series]="pieChart1Options.series!" [chart]="pieChart1Options.chart!"
-                  [dataLabels]="pieChart1Options.dataLabels!" [labels]="pieChart1Options.labels!"
-                  [legend]="pieChart1Options.legend!" [fill]="pieChart1Options.fill!"
-                  [responsive]="pieChart1Options.responsive!">
-                </apx-chart>
-              </div>
-              <div class="body" *ngIf="isLine">
-                <apx-chart [series]="lineChartOptions.series!" [chart]="lineChartOptions.chart!"
-                  [dataLabels]="lineChartOptions.dataLabels!" [labels]="lineChartOptions.labels!"
-                  [legend]="lineChartOptions.legend!" [fill]="lineChartOptions.fill!"
-                  [responsive]="lineChartOptions.responsive!" [xaxis]="lineChartOptions.xaxis!"
-                  [yaxis]="lineChartOptions.yaxis!" [grid]="lineChartOptions.grid!" [stroke]="lineChartOptions.stroke!"
-                  [markers]="lineChartOptions.markers!">
-                </apx-chart>
-              </div>
-
-            </div>
-          </div>
-        </div>
-        <div class="row clearfix">
-
-          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-            <div class="card" style="border-radius: 31px;">
-              <div class="header mt-3">
-                <h2>Average Class Attendance</h2>
-              </div>
-              <div class="float-start ms-3 me-3">
-                <h5>129 Students <span class="text-muted font-12">(Average)</span></h5>
-              </div>
-              <div class="body" *ngIf="isAttendanceLine">
-                <apx-chart [series]="performanceRateChartOptions.series!" [chart]="performanceRateChartOptions.chart!"
-                  [xaxis]="performanceRateChartOptions.xaxis!" [stroke]="performanceRateChartOptions.stroke!"
-                  [colors]="performanceRateChartOptions.colors!" [dataLabels]="performanceRateChartOptions.dataLabels!"
-                  [legend]="performanceRateChartOptions.legend!" [markers]="performanceRateChartOptions.markers!"
-                  [grid]="performanceRateChartOptions.grid!" [yaxis]="performanceRateChartOptions.yaxis!"
-                  [tooltip]="performanceRateChartOptions.tooltip!" [title]="performanceRateChartOptions.title!">
-                </apx-chart>
-              </div>
-              <div class="body" *ngIf="isAttendancePie">
-                <apx-chart [series]="attendancePieChartOptions.series!" [chart]="attendancePieChartOptions.chart!"
-                  [labels]="attendancePieChartOptions.labels!" [colors]="attendancePieChartOptions.colors!"
-                  [dataLabels]="attendancePieChartOptions.dataLabels!" [legend]="attendancePieChartOptions.legend!"
-                  [tooltip]="attendancePieChartOptions.tooltip!">
-                </apx-chart>
-              </div>
-              <div class="body" *ngIf="isAttendanceBar">
-                <apx-chart [series]="attendanceBarChartOptions.series!" [chart]="attendanceBarChartOptions.chart!"
-                  [xaxis]="attendanceBarChartOptions.xaxis!" [stroke]="attendanceBarChartOptions.stroke!"
-                  [colors]="attendanceBarChartOptions.colors!" [dataLabels]="attendanceBarChartOptions.dataLabels!"
-                  [legend]="attendanceBarChartOptions.legend!" [markers]="attendanceBarChartOptions.markers!"
-                  [grid]="attendanceBarChartOptions.grid!" [yaxis]="attendanceBarChartOptions.yaxis!"
-                  [tooltip]="attendanceBarChartOptions.tooltip!" [title]="attendanceBarChartOptions.title!">
-                </apx-chart>
-              </div>
-            </div>
-          </div>
-          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        </ng-container>
+        <ng-container *ngFor="let component of dashboard.components">
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" *ngIf="component.checked && component.id === 'users'">
             <div class="card" style="border-radius: 31px;">
               <div class="header mt-3">
                 <h2>Users</h2>
@@ -227,10 +215,10 @@
               </div>
               <div class="body" *ngIf="isUsersPie">
                 <apx-chart [series]="polarChartOptions.series2!" [chart]="polarChartOptions.chart!"
-                  [labels]="polarChartOptions.labels!" [title]="polarChartOptions.title!"
-                  [theme]="polarChartOptions.theme!" [fill]="polarChartOptions.fill!" [yaxis]="polarChartOptions.yaxis!"
-                  [stroke]="polarChartOptions.stroke!" [legend]="polarChartOptions.legend!"
-                  [plotOptions]="polarChartOptions.plotOptions!" [colors]="polarChartOptions.colors!"></apx-chart>
+                  [labels]="polarChartOptions.labels!" [title]="polarChartOptions.title!" [theme]="polarChartOptions.theme!"
+                  [fill]="polarChartOptions.fill!" [yaxis]="polarChartOptions.yaxis!" [stroke]="polarChartOptions.stroke!"
+                  [legend]="polarChartOptions.legend!" [plotOptions]="polarChartOptions.plotOptions!"
+                  [colors]="polarChartOptions.colors!"></apx-chart>
               </div>
               <div class="body" *ngIf="isUsersLine">
                 <apx-chart [series]="usersLineChartOptions.series!" [chart]="usersLineChartOptions.chart!"
@@ -240,7 +228,7 @@
                   [grid]="usersLineChartOptions.grid!" [yaxis]="usersLineChartOptions.yaxis!"
                   [tooltip]="usersLineChartOptions.tooltip!" [title]="usersLineChartOptions.title!">
                 </apx-chart>
-
+    
               </div>
               <div class="body" *ngIf="isUsersBar">
                 <apx-chart [series]="usersBarChartOptions.series!" [chart]="usersBarChartOptions.chart!"
@@ -253,54 +241,13 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="row clearfix">
-          <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+        </ng-container>
+        <ng-container *ngFor="let component of dashboard.components">
+          <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" *ngIf="component.checked && component.id === 'trainers-list'">
             <div class="card" style="border-radius: 31px;">
               <div class="header mt-3">
-                <h2>Classes List</h2>
-
-              </div>
-              <div class="tableBody">
-                <div class="table-responsive">
-                  <table class="table table-hover ">
-                    <thead>
-                      <tr>
-                        <!-- <th>#</th> --
-                        <th>Course Name</th>
-                        <th>Start Date</th>
-                        <th>End Date</th>
-                        <th>Status </th>
-                        <!-- <th>Actions </th> --
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let class of classesList " style="cursor: pointer;"
-                        [routerLink]="['/admin/courses/view-class/',class.id]">
-                        <!-- <td class="table-img">
-                      <img src="{{class?.courseId?.image_link}}" alt="course">
-                    </td> --
-                        <td>{{class?.courseId?.title | titlecase | truncate:10}}</td>
-                        <td> {{class?.sessions[0]?.sessionStartDate | date}} </td>
-                        <td> {{class?.sessions[0]?.sessionEndDate | date}}</td>
-                        <td>
-                          <div class="badge col-green">{{class?.status == 'open'?'Active':'Inactive'}}</div>
-                        </td>
-
-                      </tr>
-
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-            <div class="card" style="border-radius: 31px;">
-              <div class="header mt-3">
-                <h2>Instructors List</h2>
-
+                <h2>{{commonRoles.INSTRUCTOR_ROLE}}s List</h2>
+    
               </div>
               <div class="tableBody">
                 <div class="table-responsive">
@@ -308,7 +255,7 @@
                     <thead>
                       <tr>
                         <th>#</th>
-                        <th>Instructor Name</th>
+                        <th>{{commonRoles.INSTRUCTOR_ROLE}} Name</th>
                         <th>Status</th>
                       </tr>
                     </thead>
@@ -333,380 +280,58 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="row clearfix">
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        </ng-container>
+        <ng-container *ngFor="let component of dashboard.components">
+          <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8" *ngIf="component.checked && component.id === 'classes-list'">
             <div class="card" style="border-radius: 31px;">
               <div class="header mt-3">
-                <h2>New Student List</h2>
-
+                <h2>Classes List</h2>
+    
               </div>
               <div class="tableBody">
                 <div class="table-responsive">
-                  <table class="table">
+                  <table class="table table-hover ">
                     <thead>
                       <tr>
-                        <th>#</th>
-                        <th>Student Name</th>
-                        <th>Qualification</th>
-                        <th>Date Of Joining</th>
-                        <th>Mobile</th>
-                        <!-- <th>Actions</th> --
+                        <!-- <th>#</th> -->
+                        <th>Course Name</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Status </th>
+                        <!-- <th>Actions </th> -->
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let student of students" style="cursor: pointer;" (click)="aboutStudent(student.id)">
-                        <td class="table-img">
-                          <img src="{{student?.avatar || 'assets/profile.png'}}" alt="">
-                        </td>
-                        <td>{{student?.name | titlecase}}</td>
-                        <td>{{student?.education}}</td>
-                        <td>{{student?.createdAt | date}}</td>
+                      <tr *ngFor="let class of classesList " style="cursor: pointer;"
+                        [routerLink]="['/admin/courses/view-class/',class.id]">
+                        <!-- <td class="table-img">
+                    <img src="{{class?.courseId?.image_link}}" alt="course">
+                  </td> -->
+                        <td>{{class?.courseId?.title | titlecase | truncate:10}}</td>
+                        <td> {{class?.sessions[0]?.sessionStartDate | date}} </td>
+                        <td> {{class?.sessions[0]?.sessionEndDate | date}}</td>
                         <td>
-                          {{student?.mobile}}
-                          <!-- <i class="far fa-file-pdf tbl-pdf"></i> --
+                          <div class="badge col-green">{{class?.status == 'open'?'Active':'Inactive'}}</div>
                         </td>
-
+    
                       </tr>
+    
                     </tbody>
                   </table>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-
-      </div>
-      <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-        <app-dashboard2></app-dashboard2>
-      </div>
-      <div class="tab-pane fade" id="nav-support" role="tabpanel" aria-labelledby="nav-support-tab">
-        <app-support></app-support>
-      </div>
-      <div class="tab-pane fade" id="nav-budget" role="tabpanel" aria-labelledby="nav-budget-tab">
-        <app-etms-dashboard></app-etms-dashboard>
-      </div>
-      <div class="tab-pane fade" id="nav-training" role="tabpanel" aria-labelledby="nav-training-tab">
-        <app-training-approval-tab></app-training-approval-tab>
-      </div>
-    </div> -->
-
-<mat-tab-group>
-  <mat-tab>
-    <ng-template mat-tab-label>
-      <!-- <mat-icon class="example-tab-icon msr-2">face</mat-icon> -->
-      {{commonRoles.STUDENT_ROLE}} Analytics
-    </ng-template>
-    <div class="row mt-5">
-      <div class="col-lg-4 col-md-4 col-sm-12">
-        <div class="card card-statistic-2">
-          <div class="clearfix">
-            <div class="card-icon-only shadow-primary float-start">
-              <img src="assets/images/banner/New Students.jpg" alt="" style="margin-left: -21px;">
-
-            </div>
-            <div class="card-right">
-              <div>
-                <h5 class="float-end" style="margin-top: 100px;">Total {{commonRoles.STUDENT_ROLE}}s</h5>
-              </div>
-              <div class="col-green">
-                <h3 class="font-weight-bold float-end mb-0">{{count?.students}}</h3>
-              </div>
-            </div>
-          </div>
-          <div class="card-content msl-4 mb-3">
-            <p class="m-b-0 d-flex"><i class="material-icons col-green psr-2">trending_up</i> 10% Higher Then Last
-              Month
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-4 col-md-4 col-sm-12">
-        <div class="card card-statistic-2">
-          <div class="clearfix">
-            <div class="card-icon-only shadow-primary float-start">
-              <img src="assets/images/banner/online-course.png" alt="">
-            </div>
-            <div class="card-right">
-              <div>
-                <h5 class="float-end" style="margin-top: 100px;">All Courses</h5>
-              </div>
-              <div class="col-green">
-                <h3 class="font-weight-bold float-end mb-0">{{count?.courses}}</h3>
-              </div>
-            </div>
-          </div>
-          <div class="card-content msl-4 mb-3">
-            <p class="m-b-0 d-flex"><i class="material-icons col-orange psr-2">trending_down</i> 07% Less Then Last
-              Year
-            </p>
-          </div>
-        </div>
-      </div>
-      <!-- <div class="col-lg-3 col-md-3 col-sm-12">
-        <div class="card card-statistic-2">
-          <div class="clearfix">
-            <div class="card-icon-only shadow-primary float-start">
-              <img src="assets/images/banner/img2.png" alt="">
-            </div>
-            <div class="card-right">
-              <div>
-                <h5 class="float-end">All Programs</h5>
-              </div>
-              <div class="col-green">
-                <h3 class="font-weight-bold float-end mb-0">{{count?.programs}}</h3>
-              </div>
-            </div>
-          </div>
-          <div class="card-content msl-4 mb-3">
-            <p class="m-b-0 d-flex"><i class="material-icons col-green psr-2">trending_up</i> 05% Higher Then Last
-              Month
-            </p>
-          </div>
-        </div>
-      </div> -->
-      <div class="col-lg-4 col-md-4 col-sm-12">
-        <div class="card card-statistic-2">
-          <div class="clearfix">
-            <div class="card-icon-only shadow-primary float-start">
-              <img src="assets/images/banner/img3.png" alt="">
-            </div>
-            <div class="card-right">
-              <div>
-                <h5 class="float-end" style="margin-top: 100px;">Total {{commonRoles.INSTRUCTOR_ROLE}}s</h5>
-              </div>
-              <div class="col-green">
-                <h3 class="font-weight-bold float-end mb-0">{{count?.instructors}}</h3>
-              </div>
-            </div>
-          </div>
-          <div class="card-content msl-4 mb-3">
-            <p class="m-b-0 d-flex"><i class="material-icons col-green psr-2">trending_up</i> 08% Higher Then Last
-              Month
-            </p>
-          </div>
-        </div>
-      </div>
-
-    </div>
-    <!-- #END# Widgets -->
-    <div class="row">
-      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-        <div class="card" style="border-radius: 31px;">
-          <div class="header mt-3">
-            <h2>
-              {{commonRoles.STUDENT_ROLE}}s Survey</h2>
-          </div>
-          <div class="body" *ngIf="isArea">
-            <apx-chart [series]="areaChartOptions.series!" [chart]="areaChartOptions.chart!"
-              [xaxis]="areaChartOptions.xaxis!" [yaxis]="areaChartOptions.yaxis!" [colors]="areaChartOptions.colors!"
-              [stroke]="areaChartOptions.stroke!" [legend]="areaChartOptions.legend!" [grid]="areaChartOptions.grid!"
-              [tooltip]="areaChartOptions.tooltip!" [dataLabels]="areaChartOptions.dataLabels!"></apx-chart>
-          </div>
-          <div class="body" *ngIf="isSurveyBar">
-            <apx-chart [series]="surveyBarChartOptions.series!" [chart]="surveyBarChartOptions.chart!"
-              [xaxis]="surveyBarChartOptions.xaxis!" [yaxis]="surveyBarChartOptions.yaxis!"
-              [colors]="surveyBarChartOptions.colors!" [stroke]="surveyBarChartOptions.stroke!"
-              [legend]="surveyBarChartOptions.legend!" [grid]="surveyBarChartOptions.grid!"
-              [tooltip]="surveyBarChartOptions.tooltip!" [dataLabels]="surveyBarChartOptions.dataLabels!"></apx-chart>
-          </div>
-          <div class="body" *ngIf="isSurveyPie">
-            <apx-chart [series]="surveyPieChartOptions.series!" [chart]="surveyPieChartOptions.chart!"
-              [labels]="surveyPieChartOptions.labels!" [legend]="surveyPieChartOptions.legend!"
-              [colors]="surveyPieChartOptions.colors!" [responsive]="surveyPieChartOptions.responsive!"></apx-chart>
-          </div>
-
-        </div>
-      </div>
-      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-        <div class="card" style="border-radius: 31px;">
-          <div class="header mt-3">
-            <h2>Users</h2>
-          </div>
-          <div class="float-start ms-3 me-3">
-            <h5>{{count?.users}} Users(All) <span class="text-muted font-12"></span></h5>
-          </div>
-          <div class="body" *ngIf="isUsersPie">
-            <apx-chart [series]="polarChartOptions.series2!" [chart]="polarChartOptions.chart!"
-              [labels]="polarChartOptions.labels!" [title]="polarChartOptions.title!" [theme]="polarChartOptions.theme!"
-              [fill]="polarChartOptions.fill!" [yaxis]="polarChartOptions.yaxis!" [stroke]="polarChartOptions.stroke!"
-              [legend]="polarChartOptions.legend!" [plotOptions]="polarChartOptions.plotOptions!"
-              [colors]="polarChartOptions.colors!"></apx-chart>
-          </div>
-          <div class="body" *ngIf="isUsersLine">
-            <apx-chart [series]="usersLineChartOptions.series!" [chart]="usersLineChartOptions.chart!"
-              [xaxis]="usersLineChartOptions.xaxis!" [stroke]="usersLineChartOptions.stroke!"
-              [colors]="usersLineChartOptions.colors!" [dataLabels]="usersLineChartOptions.dataLabels!"
-              [legend]="usersLineChartOptions.legend!" [markers]="usersLineChartOptions.markers!"
-              [grid]="usersLineChartOptions.grid!" [yaxis]="usersLineChartOptions.yaxis!"
-              [tooltip]="usersLineChartOptions.tooltip!" [title]="usersLineChartOptions.title!">
-            </apx-chart>
-
-          </div>
-          <div class="body" *ngIf="isUsersBar">
-            <apx-chart [series]="usersBarChartOptions.series!" [chart]="usersBarChartOptions.chart!"
-              [xaxis]="usersBarChartOptions.xaxis!" [stroke]="usersBarChartOptions.stroke!"
-              [colors]="usersBarChartOptions.colors!" [dataLabels]="usersBarChartOptions.dataLabels!"
-              [legend]="usersBarChartOptions.legend!" [markers]="usersBarChartOptions.markers!"
-              [grid]="usersBarChartOptions.grid!" [yaxis]="usersBarChartOptions.yaxis!"
-              [tooltip]="usersBarChartOptions.tooltip!" [title]="usersBarChartOptions.title!">
-            </apx-chart>
-          </div>
-        </div>
-      </div>
-      <!-- <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-        <div class="card" style="border-radius: 31px;">
-          <div class="header mt-3">
-            <h2>{{commonRoles.STUDENT_ROLE}} Performance Chart</h2>
-          </div>
-          <div class="body" *ngIf="isBar">
-            <apx-chart [series]="performanceBarChartOptions.series!" [chart]="performanceBarChartOptions.chart!"
-              [dataLabels]="performanceBarChartOptions.dataLabels!" [labels]="performanceBarChartOptions.labels!"
-              [legend]="performanceBarChartOptions.legend!" [fill]="performanceBarChartOptions.fill!"
-              [responsive]="performanceBarChartOptions.responsive!">
-            </apx-chart>
-          </div>
-          <div class="body" *ngIf="isPie">
-            <apx-chart [series]="pieChart1Options.series!" [chart]="pieChart1Options.chart!"
-              [dataLabels]="pieChart1Options.dataLabels!" [labels]="pieChart1Options.labels!"
-              [legend]="pieChart1Options.legend!" [fill]="pieChart1Options.fill!"
-              [responsive]="pieChart1Options.responsive!">
-            </apx-chart>
-          </div>
-          <div class="body" *ngIf="isLine">
-            <apx-chart [series]="lineChartOptions.series!" [chart]="lineChartOptions.chart!"
-              [dataLabels]="lineChartOptions.dataLabels!" [labels]="lineChartOptions.labels!"
-              [legend]="lineChartOptions.legend!" [fill]="lineChartOptions.fill!"
-              [responsive]="lineChartOptions.responsive!" [xaxis]="lineChartOptions.xaxis!"
-              [yaxis]="lineChartOptions.yaxis!" [grid]="lineChartOptions.grid!" [stroke]="lineChartOptions.stroke!"
-              [markers]="lineChartOptions.markers!">
-            </apx-chart>
-          </div>
-
-        </div>
-      </div> -->
-    </div>
-    <div class="row clearfix">
-
-      <!-- <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-        <div class="card" style="border-radius: 31px;">
-          <div class="header mt-3">
-            <h2>Average Class Attendance</h2>
-          </div>
-          <div class="float-start ms-3 me-3">
-            <h5>129 {{commonRoles.STUDENT_ROLE}}s <span class="text-muted font-12">(Average)</span></h5>
-          </div>
-          <div class="body" *ngIf="isAttendanceLine">
-            <apx-chart [series]="performanceRateChartOptions.series!" [chart]="performanceRateChartOptions.chart!"
-              [xaxis]="performanceRateChartOptions.xaxis!" [stroke]="performanceRateChartOptions.stroke!"
-              [colors]="performanceRateChartOptions.colors!" [dataLabels]="performanceRateChartOptions.dataLabels!"
-              [legend]="performanceRateChartOptions.legend!" [markers]="performanceRateChartOptions.markers!"
-              [grid]="performanceRateChartOptions.grid!" [yaxis]="performanceRateChartOptions.yaxis!"
-              [tooltip]="performanceRateChartOptions.tooltip!" [title]="performanceRateChartOptions.title!">
-            </apx-chart>
-          </div>
-          <div class="body" *ngIf="isAttendancePie">
-            <apx-chart [series]="attendancePieChartOptions.series!" [chart]="attendancePieChartOptions.chart!"
-              [labels]="attendancePieChartOptions.labels!" [colors]="attendancePieChartOptions.colors!"
-              [dataLabels]="attendancePieChartOptions.dataLabels!" [legend]="attendancePieChartOptions.legend!"
-              [tooltip]="attendancePieChartOptions.tooltip!">
-            </apx-chart>
-          </div>
-          <div class="body" *ngIf="isAttendanceBar">
-            <apx-chart [series]="attendanceBarChartOptions.series!" [chart]="attendanceBarChartOptions.chart!"
-              [xaxis]="attendanceBarChartOptions.xaxis!" [stroke]="attendanceBarChartOptions.stroke!"
-              [colors]="attendanceBarChartOptions.colors!" [dataLabels]="attendanceBarChartOptions.dataLabels!"
-              [legend]="attendanceBarChartOptions.legend!" [markers]="attendanceBarChartOptions.markers!"
-              [grid]="attendanceBarChartOptions.grid!" [yaxis]="attendanceBarChartOptions.yaxis!"
-              [tooltip]="attendanceBarChartOptions.tooltip!" [title]="attendanceBarChartOptions.title!">
-            </apx-chart>
-          </div>
-        </div>
-      </div> -->
+        </ng-container>
       
-    </div>
-    <div class="row clearfix">
-      <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
-        <div class="card" style="border-radius: 31px;">
-          <div class="header mt-3">
-            <h2>Classes List</h2>
+      
+      
+   
 
-          </div>
-          <div class="tableBody">
-            <div class="table-responsive">
-              <table class="table table-hover ">
-                <thead>
-                  <tr>
-                    <!-- <th>#</th> -->
-                    <th>Course Name</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Status </th>
-                    <!-- <th>Actions </th> -->
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let class of classesList " style="cursor: pointer;"
-                    [routerLink]="['/admin/courses/view-class/',class.id]">
-                    <!-- <td class="table-img">
-                <img src="{{class?.courseId?.image_link}}" alt="course">
-              </td> -->
-                    <td>{{class?.courseId?.title | titlecase | truncate:10}}</td>
-                    <td> {{class?.sessions[0]?.sessionStartDate | date}} </td>
-                    <td> {{class?.sessions[0]?.sessionEndDate | date}}</td>
-                    <td>
-                      <div class="badge col-green">{{class?.status == 'open'?'Active':'Inactive'}}</div>
-                    </td>
-
-                  </tr>
-
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-        <div class="card" style="border-radius: 31px;">
-          <div class="header mt-3">
-            <h2>{{commonRoles.INSTRUCTOR_ROLE}}s List</h2>
-
-          </div>
-          <div class="tableBody">
-            <div class="table-responsive">
-              <table class="table table-hover">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>{{commonRoles.INSTRUCTOR_ROLE}} Name</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let instructor of instructors">
-                    <td class="table-img">
-                      <img src="{{instructor.avatar}}" alt="">
-                    </td>
-                    <td>
-                      <div class="media-title"><a href="mailto:test@gmail.com"> {{instructor?.name | titlecase}}
-                        </a></div>
-                      <div class="text-job font-11">({{instructor?.qualification}})</div>
-                    </td>
-                    <td>
-                      <div [class]="instructor?.Active ? 'badge badge-solid-green' : 'badge badge-solid-red'">
-                        {{instructor?.Active == true?"Active":"Inactive"}}</div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row clearfix">
-      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    
+    
+      <ng-container *ngFor="let component of dashboard.components">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" *ngIf="component.checked && component.id === 'new-trainees-list'">
         <div class="card" style="border-radius: 31px;">
           <div class="header mt-3">
             <h2>New {{commonRoles.STUDENT_ROLE}} List</h2>
@@ -722,7 +347,6 @@
                     <th>Qualification</th>
                     <th>Date Of Joining</th>
                     <th>Mobile</th>
-                    <!-- <th>Actions</th> -->
                   </tr>
                 </thead>
                 <tbody>
@@ -735,7 +359,6 @@
                     <td>{{student?.createdAt | date}}</td>
                     <td>
                       {{student?.mobile}}
-                      <!-- <i class="far fa-file-pdf tbl-pdf"></i> -->
                     </td>
 
                   </tr>
@@ -745,337 +368,221 @@
           </div>
         </div>
       </div>
+    </ng-container>
     </div>
 
   </mat-tab>
-  <mat-tab>
+
+  <mat-tab *ngIf="dashboard.id === 'trainer-analytics'">
     <ng-template mat-tab-label>
-      <!-- <mat-icon class="example-tab-icon msr-2">face</mat-icon> -->
       {{commonRoles.INSTRUCTOR_ROLE}} Analytics
     </ng-template>
-    <app-dashboard2></app-dashboard2>
+    <app-dashboard2 [dashboardCpm]="dashboard"></app-dashboard2>
   </mat-tab>
-  <mat-tab>
+
+  <mat-tab *ngIf=" dashboard.id === 'support'">
     <ng-template mat-tab-label>
       <!-- <mat-icon class="example-tab-icon msr-2">face</mat-icon> -->
       Support
     </ng-template>
-    <app-support></app-support>
+    <app-support [dashboardCpm]="dashboard"></app-support>
   </mat-tab>
-  <!-- <mat-tab>
-    <ng-template mat-tab-label>
-      <!-- <mat-icon class="example-tab-icon msr-2">face</mat-icon> --
-      Finance
-    </ng-template>
-    <app-etms-dashboard></app-etms-dashboard>
-  </mat-tab> -->
-  <!-- <mat-tab>
-    <ng-template mat-tab-label>
-      <!-- <mat-icon class="example-tab-icon msr-2">face</mat-icon> --
-      Training Approval
-    </ng-template>
-    <app-training-approval-tab></app-training-approval-tab>
-
-  </mat-tab> -->
+</ng-container>
 </mat-tab-group>
-
   </div>
-</section>
 
-
-
-<section class="content" *ngIf="isStudentDB">
-  <div class="content-block">
-    <div class="block-header" *ngFor="let breadscrum of breadscrums">
-      <!-- breadcrumb -->
-      <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
-      </app-breadcrumb>
-    </div>
-    <!-- Widgets -->
-    <div class="row">
-      <div class="col-xl-12 col-lg-12 col-md-14 col-sm-14">
-        <div class="card">
-          <div class="body">
-            <div class="row align-items-center">
-              <div class="col-md-12 mb-0">
-                <h4>
-                  <div class="weight-600 col-pink pt-1">Good Job, {{studentName}}. Keep Going!! </div>
-                </h4>
-                <div class="recent-report__chart" *ngIf="isStudentPie">
-                  <apx-chart [series]="studentPieChartOptions.series!" [chart]="studentPieChartOptions.chart!"
-                    [dataLabels]="studentPieChartOptions.dataLabels!" [labels]="studentPieChartOptions.labels!"
-                    [legend]="studentPieChartOptions.legend!" [fill]="studentPieChartOptions.fill!"
-                    [responsive]="studentPieChartOptions.responsive!">
-                  </apx-chart>
+  <ng-container *ngFor="let dashboard of dashboards">
+    <div *ngIf=" dashboard.id === 'traineedashboard'" class="content-block">
+      <!-- <div class="block-header" *ngFor="let breadscrum of breadscrums">
+        <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
+        </app-breadcrumb>
+      </div> -->
+     
+      <div class="row">
+        <ng-container *ngFor="let component of dashboard.components">
+        <div *ngIf="component.id === 'info'" class="col-xl-12 col-lg-12 col-md-14 col-sm-14">
+          <div class="card">
+            <div class="body">
+              <div class="row align-items-center">
+                <div class="col-md-12 mb-0">
+                  <h4>
+                    <div class="weight-600 col-pink pt-1">Good Job, {{studentName}}. Keep Going!! </div>
+                  </h4>
+                  <div class="recent-report__chart" *ngIf="isStudentPie">
+                    <apx-chart [series]="studentPieChartOptions.series!" [chart]="studentPieChartOptions.chart!"
+                      [dataLabels]="studentPieChartOptions.dataLabels!" [labels]="studentPieChartOptions.labels!"
+                      [legend]="studentPieChartOptions.legend!" [fill]="studentPieChartOptions.fill!"
+                      [responsive]="studentPieChartOptions.responsive!">
+                    </apx-chart>
+                  </div>
+                  <div class="recent-report__chart" *ngIf="isStudentBar">
+                    <apx-chart [series]="studentBarChartOptions.series!" [chart]="studentBarChartOptions.chart!"
+                      [dataLabels]="studentBarChartOptions.dataLabels!" [labels]="studentBarChartOptions.labels!"
+                      [legend]="studentBarChartOptions.legend!" [fill]="studentBarChartOptions.fill!"
+                      [responsive]="studentBarChartOptions.responsive!">
+                    </apx-chart>
+                  </div>
+                  <div class="recent-report__chart" *ngIf="isStudentLine">
+                    <apx-chart [series]="studentLineChartOptions.series!" [chart]="studentLineChartOptions.chart!"
+                      [dataLabels]="studentLineChartOptions.dataLabels!" [labels]="studentLineChartOptions.labels!"
+                      [legend]="studentLineChartOptions.legend!" [fill]="studentLineChartOptions.fill!"
+                      [responsive]="studentLineChartOptions.responsive!">
+                    </apx-chart>
+                  </div>
                 </div>
-                <div class="recent-report__chart" *ngIf="isStudentBar">
-                  <apx-chart [series]="studentBarChartOptions.series!" [chart]="studentBarChartOptions.chart!"
-                    [dataLabels]="studentBarChartOptions.dataLabels!" [labels]="studentBarChartOptions.labels!"
-                    [legend]="studentBarChartOptions.legend!" [fill]="studentBarChartOptions.fill!"
-                    [responsive]="studentBarChartOptions.responsive!">
-                  </apx-chart>
-                </div>
-                <div class="recent-report__chart" *ngIf="isStudentLine">
-                  <apx-chart [series]="studentLineChartOptions.series!" [chart]="studentLineChartOptions.chart!"
-                    [dataLabels]="studentLineChartOptions.dataLabels!" [labels]="studentLineChartOptions.labels!"
-                    [legend]="studentLineChartOptions.legend!" [fill]="studentLineChartOptions.fill!"
-                    [responsive]="studentLineChartOptions.responsive!">
-                  </apx-chart>
-                </div>
+  
               </div>
-
             </div>
           </div>
         </div>
+        </ng-container>
       </div>
-
-    </div>
-
-
-
-    <!-- #END# Widgets -->
-    <div class="row">
-      <div class="col-xl-6 col-lg-6 col-md-14 col-sm-14">
-        <div class="card">
-          <div class="header">
-            <h2>Latest Enrolled Courses</h2>
-          </div>
-          <div class="tableBody">
-            <ng-scrollbar style="height: 300px" visibility="hover">
-              <div class="table-responsive">
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th>Course</th>
-                      <th>Duration</th>
-                      <th>End Date</th>
-                      <th>Completed</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let course of studentApprovedClasses ">
-                      <td>{{course?.classId?.courseId?.title}}</td>
-                      <td>{{course?.classId?.courseId?.training_hours}} Days</td>
-                      <td>{{course?.classId?.sessions[0]?.sessionEndDate | date}}
-                      </td>
-                      <td
-                        [ngClass]="{'red-text': course?.playbackTime?.toFixed(2) < 50, 'green-text': course?.playbackTime?.toFixed(2) >= 50}">
-                        {{course?.playbackTime?.toFixed(2) || 0}}%
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </ng-scrollbar>
+  
+  
+  
+      <!-- #END# Widgets -->
+      <ng-container *ngFor="let dashboard of dashboards">
+      <div class="row">
+        <ng-container *ngFor="let component of dashboard.components">
+        <div *ngIf="component.id === 'latest-enrolled-courses'" class="col-xl-6 col-lg-6 col-md-14 col-sm-14">
+          <div class="card">
+            <div class="header">
+              <h2>Latest Enrolled Courses</h2>
+            </div>
+            <div class="tableBody">
+              <ng-scrollbar style="height: 300px" visibility="hover">
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Course</th>
+                        <th>Duration</th>
+                        <th>End Date</th>
+                        <th>Completed</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let course of studentApprovedClasses ">
+                        <td>{{course?.classId?.courseId?.title}}</td>
+                        <td>{{course?.classId?.courseId?.training_hours}} Days</td>
+                        <td>{{course?.classId?.sessions[0]?.sessionEndDate | date}}
+                        </td>
+                        <td
+                          [ngClass]="{'red-text': course?.playbackTime?.toFixed(2) < 50, 'green-text': course?.playbackTime?.toFixed(2) >= 50}">
+                          {{course?.playbackTime?.toFixed(2) || 0}}%
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </ng-scrollbar>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col-xl-6 col-lg-6 col-md-14 col-sm-14">
-        <div class="card">
-          <div class="header">
-            <h2>
-              Upcoming Course Classes
-            </h2>
-          </div>
-          <div class="card-body">
-            <ng-scrollbar style="height: 270px" visibility="hover">
-              <ul class="list-unstyled user-progress list-unstyled-border list-unstyled-noborder">
-                <li *ngFor="let upcomingclass of upcomingCourseClasses" class="lecture-list">
-                  <div class="set-flex">
-                    <div class="media-title font-16">{{upcomingclass?.classId?.courseName}}</div>
-                    <div class="text-job text-muted mb-0">{{upcomingclass?.classId?.courseId?.courseCode}}</div>
-                  </div>
-                  <div class="ms-auto">
-                    <div class="media-title font-16">{{upcomingclass?.classId?.sessions[0]?.sessionStartDate | date}}
+        </ng-container>
+        <ng-container *ngFor="let component of dashboard.components">
+        <div *ngIf="component.id === 'upcoming-course-classes'" class="col-xl-6 col-lg-6 col-md-14 col-sm-14">
+          <div class="card">
+            <div class="header">
+              <h2>
+                Upcoming Course Classes
+              </h2>
+            </div>
+            <div class="card-body">
+              <ng-scrollbar style="height: 270px" visibility="hover">
+                <ul class="list-unstyled user-progress list-unstyled-border list-unstyled-noborder">
+                  <li *ngFor="let upcomingclass of upcomingCourseClasses" class="lecture-list">
+                    <div class="set-flex">
+                      <div class="media-title font-16">{{upcomingclass?.classId?.courseName}}</div>
+                      <div class="text-job text-muted mb-0">{{upcomingclass?.classId?.courseId?.courseCode}}</div>
                     </div>
-                    <!-- <div class="text-job text-muted mb-0">09:00-10:00</div> -->
-                  </div>
-                </li>
-              </ul>
-            </ng-scrollbar>
-          </div>
-        </div>
-      </div>
-      <!-- <div class="row">
-      <div class="col-xl-6 col-lg-6 col-md-14 col-sm-14">
-        <div class="card">
-          <div class="header">
-            <h2>Latest Enrolled Programs</h2>
-          </div>
-          <div class="tableBody">
-            <ng-scrollbar style="height: 300px" visibility="hover">
-              <div class="table-responsive">
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th>Program</th>
-                      <th>Duration</th>
-                      <th>End Date</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let program of studentApprovedPrograms ">
-                      <td>{{program?.classId?.courseId?.title }}</td>
-                      <td>{{program?.classId?.courseId?.duration}} Days</td>
-                      <td>{{program?.classId?.sessions[0]?.sessionEndDate | date}}
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </ng-scrollbar>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-6 col-lg-6 col-md-14 col-sm-14">
-        <div class="card">
-          <div class="header">
-            <h2>
-              Upcoming Program Classes
-            </h2>
-          </div>
-          <div class="card-body">
-            <ng-scrollbar style="height: 270px" visibility="hover">
-              <ul class="list-unstyled user-progress list-unstyled-border list-unstyled-noborder">
-                <li *ngFor="let upcomingclass of upcomingProgramClasses" class="lecture-list">
-                  <div class="set-flex">
-                    <div class="media-title font-16">{{upcomingclass?.classId?.courseId?.title}}</div>
-                    <div class="text-job text-muted mb-0">{{upcomingclass?.classId?.courseId?.courseCode}}</div>
-                  </div>
-                  <div class="ms-auto">
-                    <div class="media-title font-16">{{upcomingclass?.classId?.sessions[0]?.sessionStartDate | date}}
+                    <div class="ms-auto">
+                      <div class="media-title font-16">{{upcomingclass?.classId?.sessions[0]?.sessionStartDate | date}}
+                      </div>
+                      <!-- <div class="text-job text-muted mb-0">09:00-10:00</div> -->
                     </div>
-                    <!-- <div class="text-job text-muted mb-0">09:00-10:00</div> --
-                  </div>
-                </li>
-              </ul>
-            </ng-scrollbar>
+                  </li>
+                </ul>
+              </ng-scrollbar>
+            </div>
           </div>
         </div>
-        </div>
-        </div> -->
-
-
-    </div>
-    <div class="row clearfix">
-      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-        <div class="card">
-          <div class="header">
-            <h2>Announcement Board</h2>
-          </div>
-          <div class="body">
-            <ng-scrollbar style="height: 350px" visibility="hover">
-              <div class="recent-comment">
-                <div *ngFor="let announcement of announcements.reverse()" class="notice-board">
-                  <div class="notice-body">
-                    <h5 class="notice-heading col-green">{{announcement?.announcementBy?.name}}</h5>
-                    <p [innerHTML]="announcement?.details | truncate:150"></p>
-                    <small class="text-muted float-end">{{announcement?.createdAt | date}}</small>
+  </ng-container>
+  <ng-container *ngFor="let component of dashboard.components">
+        <div *ngIf="component.id === 'announcement-board'" class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+          <div class="card">
+            <div class="header">
+              <h2>Announcement Board</h2>
+            </div>
+            <div class="body">
+              <ng-scrollbar style="height: 350px" visibility="hover">
+                <div class="recent-comment">
+                  <div *ngFor="let announcement of announcements.reverse()" class="notice-board">
+                    <div class="notice-body">
+                      <h5 class="notice-heading col-green">{{announcement?.announcementBy?.name}}</h5>
+                      <p [innerHTML]="announcement?.details | truncate:150"></p>
+                      <small class="text-muted float-end">{{announcement?.createdAt | date}}</small>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </ng-scrollbar>
+              </ng-scrollbar>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
-        <div class="card">
-          <div class="header">
-            <h2>Reschedule list</h2>
-          </div>
-          <div class="tableBody">
-            <ng-scrollbar style="height: 370px" visibility="hover">
-              <div class="table-responsive">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th>Class</th>
-                      <th>Apply Date</th>
-                      <th>From Date</th>
-                      <th>To Date</th>
-                      <th>Reason</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let leave of approvedLeaves">
-                      <td>{{leave?.className | titlecase}}</td>
-                      <td>{{leave?.applyDate | date}}</td>
-                      <td>{{leave?.fromDate | date}}</td>
-                      <td>{{leave?.toDate | date}}</td>
-                      <td>{{leave?.reason | titlecase}}</td>
-                      <td><span class="badge badge-solid-green">{{leave?.status | titlecase}}</span></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </ng-scrollbar>
-
+        </ng-container>
+        <ng-container *ngFor="let component of dashboard.components">
+        <div *ngIf="component.id === 'reschedule-list'"   class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+          <div class="card">
+            <div class="header">
+              <h2>Reschedule list</h2>
+            </div>
+            <div class="tableBody">
+              <ng-scrollbar style="height: 370px" visibility="hover">
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Class</th>
+                        <th>Apply Date</th>
+                        <th>From Date</th>
+                        <th>To Date</th>
+                        <th>Reason</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let leave of approvedLeaves">
+                        <td>{{leave?.className | titlecase}}</td>
+                        <td>{{leave?.applyDate | date}}</td>
+                        <td>{{leave?.fromDate | date}}</td>
+                        <td>{{leave?.toDate | date}}</td>
+                        <td>{{leave?.reason | titlecase}}</td>
+                        <td><span class="badge badge-solid-green">{{leave?.status | titlecase}}</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </ng-scrollbar>
+  
+            </div>
           </div>
         </div>
+        </ng-container>
       </div>
+      
+  
+    </ng-container>
     </div>
-    <!-- <div class="row clearfix"> -->
-      <!-- <div class="col-xl-6 col-lg-6 col-md-14 col-sm-14">
-        <div class="card">
-          <div class="header">
-            <h2>
-              Upcoming Course Classes
-            </h2>
-          </div>
-          <div class="card-body">
-            <ng-scrollbar style="height: 335px" visibility="hover">
-              <ul class="list-unstyled user-progress list-unstyled-border list-unstyled-noborder">
-                <li *ngFor="let upcomingclass of upcomingCourseClasses" class="lecture-list">
-                  <div class="set-flex">
-                    <div class="media-title font-16">{{upcomingclass?.classId?.courseName}}</div>
-                    <div class="text-job text-muted mb-0">{{upcomingclass?.classId?.courseId?.courseCode}}</div>
-                  </div>
-                  <div class="ms-auto">
-                    <div class="media-title font-16">{{upcomingclass?.classId?.sessions[0]?.sessionStartDate | date}}
-                    </div>
-                    <!-- <div class="text-job text-muted mb-0">09:00-10:00</div> --
-                  </div>
-                </li>
-              </ul>
-            </ng-scrollbar>
-          </div>
-        </div>
-      </div> -->
-      <!-- <div class="col-xl-6 col-lg-6 col-md-14 col-sm-14">
-        <div class="card">
-          <div class="header">
-            <h2>
-              Upcoming Program Classes
-            </h2>
-          </div>
-          <div class="card-body">
-            <ng-scrollbar style="height: 335px" visibility="hover">
-              <ul class="list-unstyled user-progress list-unstyled-border list-unstyled-noborder">
-                <li *ngFor="let upcomingclass of upcomingProgramClasses" class="lecture-list">
-                  <div class="set-flex">
-                    <div class="media-title font-16">{{upcomingclass?.classId?.courseId?.title}}</div>
-                    <div class="text-job text-muted mb-0">{{upcomingclass?.classId?.courseId?.courseCode}}</div>
-                  </div>
-                  <div class="ms-auto">
-                    <div class="media-title font-16">{{upcomingclass?.classId?.sessions[0]?.sessionStartDate | date}}
-                    </div>
-                    <!-- <div class="text-job text-muted mb-0">09:00-10:00</div> --
-                  </div>
-                </li>
-              </ul>
-            </ng-scrollbar>
-          </div>
-        </div>
-      </div> -->
-    <!-- </div> -->
-
-  </div>
+</ng-container>
 </section>
 
-<section class="content" *ngIf="isInstructorDB">
+
+
+
+
+<!-- <section class="content" *ngIf="isInstructorDB">
   <div class="content-block">
     <div class="block-header" *ngFor="let breadscrum of breadscrums">
-      <!-- breadcrumb -->
       <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
       </app-breadcrumb>
     </div>
@@ -1124,162 +631,9 @@
           </div>
         </div>
       </div>
-      <!-- <div class="col-lg-4 col-md-4 col-sm-12">
-        <div class="card card-statistic-3">
-          <div class="clearfix">
-            <div class="card-icon-only shadow-primary float-start">
-              <img src="assets/images/banner/img2.png" alt="">
-            </div>
-            <div class="card-right">
-              <div>
-                <h5 class="float-end">Program Classes</h5>
-              </div>
-              <div class="col-green">
-                <h3 class="font-weight-bold float-end mb-0">{{totalDocs}}</h3>
-              </div>
-            </div>
-          </div>
-          <div class="card-content msl-4 mb-3">
-            <p class="m-b-0 d-flex"><i class="material-icons col-green psr-2">trending_up</i> 05% Higher Then Last Month
-            </p>
-          </div>
-        </div>
-      </div> -->
 
 
     </div>
-
-
-    <!-- <div class="row">
-      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" style="width: 100%;">
-        <div class="card">
-          <div class="header mt-3">
-            <h2>Upcoming Courses</h2>
-          </div>
-          <div class="body">
-            <div class="card-block" *ngFor="let data of upcomingCourses" style="cursor: pointer;"
-              [routerLink]="['/admin/courses/all-courses']">
-              <div class="row m-b-20">
-                <div class="col-md-3">
-                  <img src="{{data.image_link}}" alt="user image" class="img-fluid">
-                </div>
-                <div class="col-md-8" style="margin-left: -15px;">
-                  <h6>{{data.title |truncate : 25}}</h6>
-                  <div class="row">
-                    <div class="col-md-2">
-                      <b>{{ data?.courseCode }}</b>
-                    </div>
-                    <div class="col-md-2">
-                      <b>{{ data.training_hours}} Hours</b>
-                    </div>
-                    <div class="col-md-2">
-                      <b>{{data.course_duration_in_days}}</b>
-                    </div>
-                    <!-- <div class="col-md-3" [class]="data?.Active ? 'badge badge-solid-red' : 'badge badge-solid-green'">
-                      <b>{{ data?.classDeliveryType | titlecase }}</b>
-                    </div> --
-                    <div class="col-md-3">
-                      <b style="color: blue;"><i class="fa fa-play-circle-o"></i> {{data.sessionStartDate | date}}</b>
-                    </div>
-                  </div>
-
-
-                </div>
-              </div>
-            </div>
-            <div class="text-center">
-              <button mat-stroked-button [routerLink]="['/admin/courses/all-courses/course']" color="primary">View
-                More</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" style="width: 100%;">
-        <div class="card">
-          <div class="header mt-3">
-            <h2>Upcoming Programs</h2>
-          </div>
-          <div class="body">
-            <div class="card-block" *ngFor="let program of upcomingPrograms" style="cursor: pointer;"
-              [routerLink]="['/admin/program/program-list']">
-              <div class="row m-b-20">
-                <div class="col-md-3">
-                  <img src="{{program?.image_link}}" alt="user image" class="img-fluid">
-                </div>
-                <div class="col-md-8" style="margin-left: -15px;">
-                  <h6>{{program?.title}}</h6>
-                  <div class="row">
-                    <div class="col-md-2">
-                      <b>{{ program?.courseCode }}</b>
-                    </div>
-                    <div class="col-md-2">
-                      <b>{{ program?.duration }} Hours</b>
-                    </div>
-                    <div class="col-md-2">
-                      <b>{{ program?.courseFee }}$</b>
-                    </div>
-                    <div class="col-md-3"
-                      [class]="program?.Active ? 'badge badge-solid-red' : 'badge badge-solid-green'">
-                      <b>{{ program?.deliveryMode | titlecase }}</b>
-                    </div>
-                    <div class="col-md-3">
-                      <b style="color: blue;"><i class="fa fa-play-circle-o"></i> {{program?.sessionStartDate |
-                        date}}</b>
-                    </div>
-                  </div>
-
-
-                </div>
-              </div>
-            </div>
-            <div class="text-center">
-              <button mat-stroked-button [routerLink]="['/admin/program/program-list/program']" color="primary">View
-                More</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
-    <!-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-      <div class="card" style="border-radius: 31px;">
-        <div class="header mt-3">
-          <h2>Program Classes List</h2>
-
-        </div>
-        <div class="tableBody">
-          <div class="table-responsive">
-            <table class="table table-hover ">
-              <thead>
-                <tr>
-                  <!-- <th>#</th> --
-                  <th>Program Name</th>
-                  <th>Start Date</th>
-                  <th>End Date</th>
-                  <th>Status </th>
-                  <!-- <th>Actions </th> --
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let class of programClassList " style="cursor: pointer;"
-                  [routerLink]="['/admin/courses/view-class/',class.id]">
-                  <!-- <td class="table-img">
-                      <img src="{{class?.courseId?.image_link}}" alt="course">
-                    </td> --
-                  <td>{{class?.programName | truncate:10}}</td>
-                  <td> {{class?.sessions[0]?.sessionStartDate | date}} </td>
-                  <td> {{class?.sessions[0]?.sessionEndDate | date}}</td>
-                  <td>
-                    <div class="badge col-green">{{class?.status == 'open'?'Active':'Inactive'}}</div>
-                  </td>
-
-                </tr>
-
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div> -->
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <div class="card" style="border-radius: 31px;">
         <div class="header mt-3">
@@ -1291,20 +645,15 @@
             <table class="table table-hover ">
               <thead>
                 <tr>
-                  <!-- <th>#</th> -->
                   <th>Course Name</th>
                   <th>Start Date</th>
                   <th>End Date</th>
                   <th>Status </th>
-                  <!-- <th>Actions </th> -->
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let class of classList " style="cursor: pointer;"
                   [routerLink]="['/admin/courses/view-class/',class.id]">
-                  <!-- <td class="table-img">
-                      <img src="{{class?.courseId?.image_link}}" alt="course">
-                    </td> -->
                   <td>{{class?.courseName | truncate:10}}</td>
                   <td> {{class?.sessions[0]?.sessionStartDate | date}} </td>
                   <td> {{class?.sessions[0]?.sessionEndDate | date}}</td>
@@ -1337,7 +686,6 @@
                     <th>Qualification</th>
                     <th>Date Of Joining</th>
                     <th>Mobile</th>
-                    <!-- <th>Actions</th> -->
                   </tr>
                 </thead>
                 <tbody>
@@ -1350,7 +698,6 @@
                     <td>{{student?.createdAt | date}}</td>
                     <td>
                       {{student?.mobile}}
-                      <!-- <i class="far fa-file-pdf tbl-pdf"></i> -->
                     </td>
 
                   </tr>
@@ -1363,7 +710,7 @@
     </div>
 
   </div>
-</section>
+</section> -->
 
 <section class="content" *ngIf="isAssessorDB">
   <div class="content-block">

@@ -49,6 +49,8 @@ import { UsersModule } from './admin/users/users.module';
 import { DashboardCustomzComponent } from './student/settings/dashboard-customz/dashboard-customz.component';
 import { TrainerAnalyticsDashboardComponent } from './student/settings/trainer-analytics-dashboard/trainer-analytics-dashboard.component';
 import { SupportDashboardComponent } from './student/settings/support-dashboard/support-dashboard.component';
+import { EditUpdateDashboardComponent } from './student/settings/dashboard-customz/edit-update-dashboard/edit-update-dashboard.component';
+import { TraineesDashboardComponent } from './student/settings/trainees-dashboard/trainees-dashboard.component';
 
 // import { ChangeBgDirective } from './change-bg.directive';
 
@@ -73,6 +75,9 @@ export function createTranslateLoader(http: HttpClient) {
     DashboardCustomzComponent,
     TrainerAnalyticsDashboardComponent,
     SupportDashboardComponent,
+    EditUpdateDashboardComponent,
+    
+    TraineesDashboardComponent,
     // ChangeBgDirective
 
   ],
