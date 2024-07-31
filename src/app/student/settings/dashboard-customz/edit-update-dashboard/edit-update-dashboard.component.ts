@@ -50,30 +50,34 @@ export class EditUpdateDashboardComponent {
   }
 
   getDashboardComponents() {
-
-    const companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    const companyId = JSON.parse(localStorage.getItem('user_data')!).user
+      .companyId;
     this.userService.getDashboardsByCompanyId(companyId).subscribe(
       (data: any) => {
         const dashboards = data.data;
-  console.log("dashboards", dashboards);  
-        const processedData = dashboards.map((dashboard: { typeName: any; dashboards: any[]; }) => {
-          return {
-            typeName: dashboard.typeName,
-            dashboards: dashboard.dashboards.map(dash => ({
-              title: dash.title,
-              components: dash.components.map((component: { component: any; }) => component.component)
-            }))
-          };
-        });
-  
+        console.log('dashboards', dashboards);
+        const processedData = dashboards.map(
+          (dashboard: { typeName: any; dashboards: any[] }) => {
+            return {
+              typeName: dashboard.typeName,
+              dashboards: dashboard.dashboards.map((dash) => ({
+                title: dash.title,
+                components: dash.components.map(
+                  (component: { component: any }) => component.component
+                ),
+              })),
+            };
+          }
+        );
+
         this.filteredDashboards = processedData;
       },
-      error => {
+      (error) => {
         console.error('Error fetching dashboards:', error);
       }
     );
   }
-  
+
   edit(dashboard: any) {
     let type = dashboard.typeName;
     this.isEditChange.emit(type);
