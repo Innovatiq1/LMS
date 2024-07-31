@@ -77,7 +77,7 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header>Exam</mat-header-cell>
                                 <mat-cell *matCellDef="let row">
                                   <button 
-                                    [disabled]="row.retakeLeft <= 0"
+                                    [disabled]="row.retakeLeft <= 0 || row.studentClassId.certificate"
                                     (click)="handleRetakeTest(row)"
                                     mat-flat-button color="primary">
                                     Retake Test
