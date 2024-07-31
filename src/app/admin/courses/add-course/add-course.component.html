@@ -206,106 +206,6 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" 
-                *ngIf="labelStatusCheck('Assign Feedback Questionnaire')">
-                  <label
-                    >Assign Feedback Questionnaire
-                    </label
-                  >
-                  <mat-form-field
-                    class="example-full-width mb-3"
-                    appearance="outline"
-                  >
-                    <mat-select formControlName="survey">
-                      <mat-option
-                        *ngFor="let item of feedbacks"
-                        [value]="item.id"
-                        [disabled]="viewUrl == true"
-                      >
-                        {{ item.name }}
-                      </mat-option>
-                    </mat-select>
-                    <mat-error
-                      *ngIf="
-                        firstFormGroup.get('survey')?.hasError('required') ||
-                        firstFormGroup.get('survey')?.touched
-                      "
-                    >
-                      Select Feedback Questionnaire
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-                <div
-                  class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
-                  *ngIf="labelStatusCheck('Assign Assessment')"
-                >
-                  <label
-                    >Assign Assessment
-                    </label
-                  >
-                  <mat-form-field
-                    class="example-full-width mb-3"
-                    appearance="outline"
-                  >
-                    <mat-select formControlName="assessment">
-                      <mat-option
-                        *ngFor="let item of assessments"
-                        [value]="item.id"
-                        [disabled]="viewUrl == true"
-                      >
-                        {{ item.name }}
-                      </mat-option>
-                    </mat-select>
-                    <mat-error
-                      *ngIf="
-                        firstFormGroup.get('assessment')?.invalid &&
-                        firstFormGroup.get('assessment')?.touched
-                      "
-                    >
-                      {{
-                        utils.getErrorMessage1(
-                          firstFormGroup.get("assessment"),
-                          "assessment"
-                        )
-                      }}
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
-                *ngIf="labelStatusCheck('Assign Exam Assessment')" >
-                  <label
-                    >Assign Exam Assessment
-                    </label
-                  >
-                  <mat-form-field
-                    class="example-full-width mb-3"
-                    appearance="outline"
-                  >
-                    <mat-select formControlName="exam_assessment" >
-                      <mat-option
-                        *ngFor="let item of exam_assessments"
-                        [value]="item.id"
-                        [disabled]="viewUrl == true"
-                      >
-                        {{ item.name }}
-                      </mat-option>
-                    </mat-select>
-                    <mat-error
-                      *ngIf="
-                        firstFormGroup.get('exam_assessment')?.invalid &&
-                        firstFormGroup.get('exam_assessment')?.touched
-                      "
-                    >
-                      {{
-                        utils.getErrorMessage1(
-                          firstFormGroup.get("exam_assessment"),
-                          "e_assessment"
-                        )
-                      }}
-                    </mat-error>
-                  </mat-form-field>
-                </div>
                 <div
                   class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2"
                   *ngIf="labelStatusCheck('Fee Type')"
@@ -352,7 +252,164 @@
                     />
                   </mat-form-field>
                 </div>
-
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                  <label
+                    >Certificate Template
+                    <span class="mandatory">&nbsp;*</span></label
+                  >
+                  <mat-form-field
+                    class="example-full-width mb-3"
+                    appearance="outline"
+                  >
+                    <mat-select formControlName="certificate_temp">
+                      <mat-option
+                        *ngFor="let item of certificates"
+                        [value]="item.title"
+                      >
+                        {{ item.title }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error
+                      *ngIf="
+                        firstFormGroup
+                          .get('certificate_template')
+                          ?.hasError('maxLength') ||
+                        firstFormGroup.get('certificate_template')?.touched
+                      "
+                    >
+                      Enter Vendor
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
+                >
+                  <label
+                    >Issue Certificate
+                    <span class="mandatory">&nbsp;*</span></label
+                  >
+                  <mat-form-field
+                    class="example-full-width mb-3"
+                    appearance="outline"
+                  >
+                    <mat-select formControlName="issueCertificate" (selectionChange)="onTestSelect($event)">
+                      <mat-option
+                        *ngFor="let item of CertificateIssue"
+                        [value]="item.code"
+                      >
+                        {{ item.label }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error
+                      *ngIf="
+                        firstFormGroup
+                          .get('issueCertificate')
+                          ?.hasError('maxLength') ||
+                        firstFormGroup.get('issueCertificate')?.touched
+                      "
+                    >
+                      Choose Certificate Issue Type
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div
+                  class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
+                  *ngIf="labelStatusCheck('Assign Assessment') && isTestIssueCertificate "
+                >
+                  <label
+                    >Assign Assessment
+                    </label
+                  >
+                  <mat-form-field
+                    class="example-full-width mb-3"
+                    appearance="outline"
+                  >
+                    <mat-select formControlName="assessment">
+                      <mat-option
+                        *ngFor="let item of assessments"
+                        [value]="item.id"
+                        [disabled]="viewUrl == true"
+                      >
+                        {{ item.name }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error
+                      *ngIf="
+                        firstFormGroup.get('assessment')?.invalid &&
+                        firstFormGroup.get('assessment')?.touched
+                      "
+                    >
+                      {{
+                        utils.getErrorMessage1(
+                          firstFormGroup.get("assessment"),
+                          "assessment"
+                        )
+                      }}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
+                *ngIf="labelStatusCheck('Assign Exam Assessment') && isTestIssueCertificate" >
+                  <label
+                    >Assign Exam
+                    </label
+                  >
+                  <mat-form-field
+                    class="example-full-width mb-3"
+                    appearance="outline"
+                  >
+                    <mat-select formControlName="exam_assessment" >
+                      <mat-option
+                        *ngFor="let item of exam_assessments"
+                        [value]="item.id"
+                        [disabled]="viewUrl == true"
+                      >
+                        {{ item.name }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error
+                      *ngIf="
+                        firstFormGroup.get('exam_assessment')?.invalid &&
+                        firstFormGroup.get('exam_assessment')?.touched
+                      "
+                    >
+                      {{
+                        utils.getErrorMessage1(
+                          firstFormGroup.get("exam_assessment"),
+                          "e_assessment"
+                        )
+                      }}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" 
+                *ngIf="labelStatusCheck('Assign Feedback Questionnaire')">
+                  <label
+                    >Assign Feedback Questionnaire
+                    </label
+                  >
+                  <mat-form-field
+                    class="example-full-width mb-3"
+                    appearance="outline"
+                  >
+                    <mat-select formControlName="survey">
+                      <mat-option
+                        *ngFor="let item of feedbacks"
+                        [value]="item.id"
+                        [disabled]="viewUrl == true"
+                      >
+                        {{ item.name }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error
+                      *ngIf="
+                        firstFormGroup.get('survey')?.hasError('required') ||
+                        firstFormGroup.get('survey')?.touched
+                      "
+                    >
+                      Select Feedback Questionnaire
+                    </mat-error>
+                  </mat-form-field>
+                </div>
                 <div
                   class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2"
                   *ngIf="labelStatusCheck('Currency') && isPaid"
@@ -776,35 +833,7 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                  <label
-                    >Certificate Template
-                    <span class="mandatory">&nbsp;*</span></label
-                  >
-                  <mat-form-field
-                    class="example-full-width mb-3"
-                    appearance="outline"
-                  >
-                    <mat-select formControlName="certificate_temp">
-                      <mat-option
-                        *ngFor="let item of certificates"
-                        [value]="item.title"
-                      >
-                        {{ item.title }}
-                      </mat-option>
-                    </mat-select>
-                    <mat-error
-                      *ngIf="
-                        firstFormGroup
-                          .get('certificate_template')
-                          ?.hasError('maxLength') ||
-                        firstFormGroup.get('certificate_template')?.touched
-                      "
-                    >
-                      Enter Vendor
-                    </mat-error>
-                  </mat-form-field>
-                </div>
+                
               </div>
               <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">

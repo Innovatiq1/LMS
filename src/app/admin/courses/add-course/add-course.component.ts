@@ -85,7 +85,8 @@ export class AddCourseComponent implements OnInit {
   defaultCurrency: string = '';
   booleanOpt: any[] = [{code: true, label: "Yes"},{code: false, label: "No"}]
   examTypes: any[] = [ { code: 'after', label: 'After Assessment' }, { code: 'direct', label: 'Direct' } ];
-
+  CertificateIssue:any[]=[ { code: 'test', label: 'After Test' }, { code: 'video', label: 'After Video' } ];
+  isTestIssueCertificate: boolean = false;
   breadscrums = [
     {
       title:'Create Course',
@@ -197,6 +198,7 @@ export class AddCourseComponent implements OnInit {
         vendor: new FormControl('',[ Validators.maxLength(100)]),
         isFeedbackRequired: new FormControl(null, []),
         examType: new FormControl('', []),
+        issueCertificate:new FormControl('',[Validators.required]),
         certificate_temp: new FormControl(null, [Validators.required]),
       });
       // this.secondFormGroup = this._formBuilder.group({
@@ -613,6 +615,7 @@ this.courseService.uploadCourseThumbnail(formData).subscribe((data: any) =>{
       id:this.courseId,
       isFeedbackRequired: courseData?.isFeedbackRequired,
       examType: courseData?.examType,
+      issueCertificate:courseData?.issueCertificate,
       certificate_template:courseData?.certificate_temp,
       certificate_template_id:certicate_temp_id[0].id,
     }
@@ -655,6 +658,11 @@ this.courseService.uploadCourseThumbnail(formData).subscribe((data: any) =>{
      this.isPaid = false;
     }
    }
+
+   onTestSelect(event: any) {
+    const selectedValue = event.value;
+    this.isTestIssueCertificate = selectedValue === 'test';
+  }
   setup() {
     var userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
 
@@ -736,6 +744,7 @@ this.courseService.uploadCourseThumbnail(formData).subscribe((data: any) =>{
         feeType:courseData?.feeType,
         isFeedbackRequired: courseData?.isFeedbackRequired,
         examType: courseData?.examType,
+        issueCertificate:courseData?.issueCertificate,
         certificate_template:courseData?.certificate_temp,
         certificate_template_id:certicate_temp_id[0].id,
         companyId:userId,
@@ -818,6 +827,10 @@ this.courseService.uploadCourseThumbnail(formData).subscribe((data: any) =>{
       if(this.course?.feeType == 'paid'){
         this.isPaid = true;
       }
+      if(this.course?.issueCertificate=='test')
+      {
+        this.isTestIssueCertificate=true;
+      }
       this.firstFormGroup.patchValue({
         currency_code: this.course.currency_code ? this.course.currency_code: null,
         training_hours: this.course?.training_hours?.toString(),
@@ -853,6 +866,7 @@ this.courseService.uploadCourseThumbnail(formData).subscribe((data: any) =>{
         vendor: this.course?.vendor,
         isFeedbackRequired: this.course?.isFeedbackRequired,
         examType: this.course?.examType,
+        issueCertificate:this.course?.issueCertificate,
         certificate_temp:this.course?.certificate_template ,
       });
       this.mainCategoryChange();
