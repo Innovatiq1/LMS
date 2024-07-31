@@ -46,10 +46,8 @@ export class CourseTimetableComponent implements OnInit {
     // }
     if (userType == AppConstants.ADMIN_USERTYPE|| userType == AppConstants.ADMIN_ROLE|| userType == AppConstants.STUDENT_ROLE) {
       this.getClassList();
-    }
-    if (userType == AppConstants.INSTRUCTOR_ROLE) {
+    } else {
       this.getInstructorApprovedCourse();
-      //this.getApprovedProgram();
     }
   }
 
@@ -293,12 +291,12 @@ export class CourseTimetableComponent implements OnInit {
           const sessionStartTime = courseClass?.sessions[0]?.sessionStartTime;
           const sessionEndTime = courseClass?.sessions[0]?.sessionEndTime;
           const title = courseClass?.courseId?.title;
-          const courseCode = courseClass.courseId.courseCode;
-          const status = courseClass.sessions[0].status;
-          const deliveryType = courseClass.classDeliveryType;
-          const instructorCost = courseClass.instructorCost;
-          const id = courseClass.id;
-          const courseName = courseClass.courseName;
+          const courseCode = courseClass?.courseId?.courseCode;
+          const status = courseClass?.sessions[0]?.status;
+          const deliveryType = courseClass?.classDeliveryType;
+          const instructorCost = courseClass?.instructorCost;
+          const id = courseClass?.id;
+          const courseName = courseClass?.courseName;
           const datesArray = [];
           let currentDate = startDate;
           while (currentDate <= endDate) {
