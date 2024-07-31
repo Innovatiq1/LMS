@@ -73,24 +73,24 @@ export class ExamResultsComponent {
   handleRetakeTest(row: any) {
 
     //console.log("row responce ",row.studentClassId.certificate);
-    this.isCertIssued=row.studentClassId.certificate;
+    // this.isCertIssued=row.studentClassId.certificate;
     // console.log("row response==",row.data.docs)
-    if (this.isCertIssued) {
-      this.showCertificateIssuedAlert();
-    } else {
+    // if (this.isCertIssued) {
+    //   this.showCertificateIssuedAlert();
+    // } else {
       this.navigateToRetakeTest(row);
-    }
+    // }
   }
 
-  showCertificateIssuedAlert() {
+  // showCertificateIssuedAlert() {
   
-   Swal.fire({
-    title: 'Your certificate has been issued',
-    text: ' You cannot retake the Exam.',
-    icon: 'warning',
-    confirmButtonText: 'Ok'
-  });
-  }
+  //  Swal.fire({
+  //   title: 'Your certificate has been issued',
+  //   text: ' You cannot retake the Exam.',
+  //   icon: 'warning',
+  //   confirmButtonText: 'Ok'
+  // });
+  // }
 
   navigateToRetakeTest(row: any) {
     
