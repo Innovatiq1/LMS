@@ -310,7 +310,7 @@ export class ViewCourseComponent implements OnDestroy {
 
   checkStudentClassRedirect() {
     let courseId = this.courseDetailsId;
-    let studentId = localStorage.getItem('id');
+    let studentId:any = localStorage.getItem('id');
     let classId = localStorage.getItem('classId');
     const videoDetails = this.commonService.getVideoDetails();
 
@@ -335,26 +335,84 @@ export class ViewCourseComponent implements OnDestroy {
               .getStudentClass(studentId, this.classId)
               .subscribe((response) => {
                 this.studentClassDetails = response.data.docs[0];
+      
+                const issueCertificate=this.studentClassDetails.classId.courseId.issueCertificate;
+
                 if (this.studentClassDetails.status == 'approved') {
                   if (this.paid) {
+                    console.log("Paid Course Is Getting Called")
                     const targetURL = `/student/questions/${classId}/${studentId}/${this.courseId}`;
                     if(this.router.url!=targetURL){
-                      this.router.navigate([
-                        '/student/questions/',
-                        classId,
-                        studentId,
-                        this.courseId,
-                      ]);
+                      if(issueCertificate=='test'){
+                        console.log("this is issue certificate value==",issueCertificate)
+                        this.router.navigate([
+                          '/student/questions/',
+                          classId,
+                          studentId,
+                          this.courseId,
+                        ]);
+
+                      }
+                      else{
+                        let payload={
+                          classId:this.classId,
+                          playbackTime:100,
+                          status:'completed',
+                          studentId:studentId
+
+                        }
+                        this.classService.saveApprovedClasses(this.classId,payload).subscribe((response)=>{
+                         Swal.fire({
+                          title: 'Course Completed Successfully',
+                          text: 'Please Wait For the Certificate',
+                          icon: 'success',
+                        }).then((result) => {
+                          if (result.isConfirmed) {
+                            // Reload the page after the alert is closed
+                            location.reload();
+                          }
+                        });
+
+                        })
+                      }
+                     
                     }
                   } else if (this.free) {
                     const targetURL = `/student/questions/freecourse/${classId}/${studentId}/${this.courseId}`;
                     if(this.router.url!=targetURL){
+                      if(issueCertificate=='test'){
                       this.router.navigate([
                         '/student/questions/freecourse/',
                         classId,
                         studentId,
                         this.courseId,
                       ]);
+                    }
+                    else{
+                      let payload={
+                        classId:this.classId,
+                        playbackTime:100,
+                        status:'completed',
+                        studentId:studentId
+
+                      }
+
+                      console.log("the putStudnetClasses is called for free Class",);
+
+                      this.classService.saveApprovedClasses(this.classId,payload).subscribe((response)=>{
+                       // window.history.back();
+                       Swal.fire({
+                        title: 'Course Completed Successfully',
+                        text: 'Please Wait For the Certificate',
+                        icon: 'success',
+                      }).then((result) => {
+                        if (result.isConfirmed) {
+                          location.reload();
+                        }
+                      });
+
+                      })
+                    }
                     }
                   }
                 } else {
