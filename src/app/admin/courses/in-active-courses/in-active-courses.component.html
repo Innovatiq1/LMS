@@ -146,6 +146,13 @@
                         <mat-cell *matCellDef="let row" (click)=viewCourse(row.id)>
                           <span class="mobile-label">Creator:</span>{{row.creator }} </mat-cell>
                       </ng-container> -->
+                      <ng-container matColumnDef="Fee Type">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">Fee Type
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row" (click)= "view ? viewCourse(row.id) : null"> <span
+                            class="mobile-label">Fee Type:</span>{{row.feeType | titlecase}}
+                        </mat-cell>
+                      </ng-container>
                     <!-- Main Category -->
                     <ng-container matColumnDef="Main Category">
                       <mat-header-cell *matHeaderCellDef mat-sort-header

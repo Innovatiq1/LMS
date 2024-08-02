@@ -154,7 +154,7 @@
                       >Start Date
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
-                      <span class="mobile-label">Class Start Date:</span>{{row?.classId?.sessions[0]?.sessionStartDate| date }}
+                      <span class="mobile-label">Class Start Date:</span>{{ row?.classId?.sessions[0]?.sessionStartDate ? (row?.classId?.sessions[0]?.sessionStartDate| date): "--" }}
                     </mat-cell>
                   </ng-container>
                   <!--Class Enddate -->
@@ -163,7 +163,7 @@
                       >End Date
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
-                      <span class="mobile-label">Class End Date:</span>{{row?.classId?.sessions[0]?.sessionEndDate | date }}
+                      <span class="mobile-label">Class End Date:</span>{{row?.classId?.sessions[0]?.sessionEndDate ? (row?.classId?.sessions[0]?.sessionEndDate | date) : "--" }}
                     </mat-cell>
                   </ng-container>
                   <!--Registered date -->
@@ -172,7 +172,7 @@
                       >Registered Date
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
-                      <span class="mobile-label">Registered Date:</span>{{row?.registeredOn | date}}
+                      <span class="mobile-label">Registered Date:</span>{{ row?.registeredOn ? (row?.registeredOn | date) : "--"}}
                     </mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="status" >

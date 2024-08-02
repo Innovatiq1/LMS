@@ -768,9 +768,9 @@ export class SettingsComponent {
   navigateToUserSettings() {
     this.router.navigate(['/student/settings/users']);
   }
-  navigateToAllUserSettings() {
-    this.router.navigate(['/student/settings/all-user']);
-  }
+  // navigateToAllUserSettings() {
+  //   this.router.navigate(['/student/settings/all-user']);
+  // }
   navigateToIntegrateSettings() {
     this.router.navigate(['/student/settings/integration']);
   }

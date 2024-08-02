@@ -34,6 +34,7 @@ export class StudentPendingCoursesComponent {
     'studentname',
     'status',
     'coursename',
+    'Fee Type',
     // 'programFee',
     // 'instructorFee',
     'classstartDate',

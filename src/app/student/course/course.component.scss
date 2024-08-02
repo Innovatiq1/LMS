@@ -32,3 +32,37 @@
     padding-left: -2px;
     color: rgba(0, 0, 0, 0.54);
   }
+  .feeType-ribbon {
+    position: relative;
+    width: fit-content;
+  }
+  
+  .course-card-image {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .feeType-ribbon {
+    position: absolute;
+    top: 3px;
+    left: -18px;
+    width: fit-content;
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    z-index: 1;
+  }
+  
+  .feeType {
+    font-family: 'Times New Roman', Times, serif;
+    background: #ff4b2b;
+    color: #fff;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 5px 22px;
+    text-transform: uppercase;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+  }
+  
+  .course-card {
+    position: relative;
+  }

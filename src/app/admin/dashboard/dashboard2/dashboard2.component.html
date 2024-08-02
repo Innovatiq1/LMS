@@ -129,7 +129,7 @@
       
     </div> -->
  
-    <div class="row clearfix">
+    <div class="row mt-5 clearfix">
       <ng-container *ngFor="let component of dashboardCpm.components">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" *ngIf="component?.checked && component.id === 'trainer-list'">
         <div class="card">
@@ -143,10 +143,10 @@
                 <thead>
                   <tr>
                     <th>Img</th>
-                    <th>{{commonRoles?.INSTRUCTOR_ROLE}}s Name</th>
+                    <th>{{commonRoles?.INSTRUCTOR_ROLE}}</th>
                     <th>Department</th>
                     <th>Gender</th>
-                    <th>Degree</th>
+                    <th>Education</th>
                     <th>Email</th>
                     <th>Mobile</th>
                     <th>Joining Date</th>
@@ -156,14 +156,16 @@
                 <tbody>
                   <tr *ngFor="let instructor of instructors" style="cursor: pointer;" (click)="aboutInstructor(instructor.id)">
                     <td class="table-img">
-                      <img src="{{instructor?.avatar}}" alt="">
+                      <img src="{{instructor?.avatar|| 'assets/profile.png'}}" alt="">
                     </td>
                     <td>{{instructor?.name | titlecase}}</td>
                     <td>
                       <div class="badge col-green">{{instructor?.department}}</div>
                     </td>
-                    <td>{{instructor?.gender | titlecase}}</td>
-                    <td>{{instructor?.qualification}}</td>
+                    <td *ngIf="instructor.gender==='male'"><span class="badge badge-solid-green">{{instructor?.gender | titlecase}}</span></td>
+                    <td *ngIf="instructor.gender==='female'"><span class="badge badge-solid-purple">{{instructor?.gender | titlecase}}</span></td>
+                    <td *ngIf="instructor.gender==='other'"><span class="badge badge-solid-orange">{{instructor?.gender | titlecase}}</span></td>
+                    <td>{{instructor?.education}}</td>
                     <td>{{instructor?.email}}</td>
                     <td>{{instructor?.mobile}}</td>
                     <td>{{instructor?.joiningDate | date}}</td>

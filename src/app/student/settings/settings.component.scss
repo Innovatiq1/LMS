@@ -237,3 +237,6 @@ h5 {
 .container button:hover {
   background-color: #45a049;
 }
+::ng-deep .mat-mdc-tab-body-content{
+  overflow-x: hidden !important;
+}

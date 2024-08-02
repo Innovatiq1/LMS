@@ -93,7 +93,7 @@ export class SupportComponent implements OnInit {
   listOfTicket() {
     this.ticketService.getAllTickets({ ...this.coursePaginationModel }).subscribe((res) => {
       this.dataSource = res.data.docs;
-      this.totalTickets = this.dataSource.length;
+      this.totalTickets = res.data.totalDocs;
       this.totalItems = res.data.totalDocs;
       this.coursePaginationModel.docs = res.data.docs;
       this.coursePaginationModel.page = res.data.page;

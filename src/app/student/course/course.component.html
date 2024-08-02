@@ -87,6 +87,9 @@
                         style="cursor: pointer"
                         [routerLink]="['/student/view-course/', data?.id]"
                       >
+                      <div class="feeType-ribbon">
+                        <h6 class="feeType">{{ data?.courseId?.feeType | titlecase }}</h6>
+                      </div>
                         <img
                           class="img"
                           [src]="
@@ -110,7 +113,9 @@
                             >
                           </p>
                         </div>
-                        <h6>{{ data?.courseId?.feeType | titlecase }}</h6>
+                        <!-- <div class="feeType-ribbon">
+                          <h6 class="feeType">{{ data?.courseId?.feeType | titlecase }}</h6>
+                        </div> -->
                         <p
                           class="course-card-description"
                           [innerHTML]="
@@ -182,6 +187,9 @@
                           data?.classId?.id
                         ]"
                       >
+                      <div class="feeType-ribbon">
+                        <h6 class="feeType">{{ data?.courseId?.feeType | titlecase }}</h6>
+                      </div>
                         <img
                           class="img"
                           [src]="
@@ -277,6 +285,9 @@
                           data?.classId?.id
                         ]"
                       >
+                      <div class="feeType-ribbon">
+                        <h6 class="feeType">{{ data?.courseId?.feeType | titlecase }}</h6>
+                      </div>
                         <img
                           class="img"
                           [src]="
@@ -371,6 +382,9 @@
                           data?.classId?.id
                         ]"
                       >
+                      <div class="feeType-ribbon">
+                        <h6 class="feeType">{{ data?.courseId?.feeType | titlecase }}</h6>
+                      </div>
                         <img
                           class="img"
                           [src]="

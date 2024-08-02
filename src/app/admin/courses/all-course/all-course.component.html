@@ -164,11 +164,12 @@
                                       <span class="mobile-label">Creator:</span> {{row.creator}}
                                     </mat-cell>
                                   </ng-container>
+                                 
                                   <ng-container matColumnDef="Days">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header>Days
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let row" (click)= "view ? viewCourse(row.id) : null"> <span
-                                        class="mobile-label">Days:</span>{{row.course_duration_in_days ||0}} Day
+                                        class="mobile-label">Days:</span>{{row.course_duration_in_days ||0}}  {{ (row.course_duration_in_days === 1) ? 'Day' : 'Days' }}
                                     </mat-cell>
                                   </ng-container>
             
@@ -179,13 +180,13 @@
                                         class="mobile-label">Traning Hours:</span>{{row.training_hours || 0}} Hours
                                     </mat-cell>
                                   </ng-container>
-                                  <!-- <ng-container matColumnDef="Fees">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Payment
+                                  <ng-container matColumnDef="Fee Type">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">Fee Type
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let row" (click)=viewCourse(row.id)> <span
-                                        class="mobile-label">Payment:</span><span >$</span> {{row.fee ||0}} .00
+                                    <mat-cell *matCellDef="let row" (click)= "view ? viewCourse(row.id) : null"> <span
+                                        class="mobile-label">Fee Type:</span>{{row.feeType | titlecase}}
                                     </mat-cell>
-                                  </ng-container> -->
+                                  </ng-container>
                                   <ng-container matColumnDef="Vendor">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">Vendor
                                     </mat-header-cell>

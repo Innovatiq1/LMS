@@ -35,4 +35,6 @@ svg {
      padding: 5px 13px 5px 11px;
    }
 
-   
+   ::ng-deep .mat-mdc-tab-body-content{
+    overflow-x: hidden !important;
+  }

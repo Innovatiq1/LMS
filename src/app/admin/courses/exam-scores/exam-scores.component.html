@@ -106,7 +106,7 @@
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row">
                     <span class="mobile-label">Exam Name:</span
-                    >{{ row?.examAssessmentAnswer?.examAssessmentId?.name | capitalizeFirstLetter }}
+                    >{{ row?.examAssessmentAnswer?.examAssessmentId?.name ?  (row?.examAssessmentAnswer?.examAssessmentId?.name | capitalizeFirstLetter ) : "--"}}
                   </mat-cell>
                 </ng-container>
 
@@ -114,23 +114,25 @@
                   <mat-header-cell *matHeaderCellDef mat-sort-header class="assessment-header">
                     Assessment Score
                   </mat-header-cell>
-                  <mat-cell *matCellDef="let row" [routerLink]="row.assessmentAnswer?._id ? ['/student/test/preview', row.assessmentAnswer?._id, 'student', row.studentId._id]:null" [queryParams]="{ assessmentType: 'assessment' }">
-                    <span class="mobile-label">Assessment Score:</span
-                    >{{ row?.assessmentAnswer?.score }} <span *ngIf="row?.assessmentAnswer?._id">/</span>
-                    {{
-                      row?.assessmentAnswer?.totalScore
-                    }}
+                  <mat-cell *matCellDef="let row" [routerLink]="row.assessmentAnswer?._id ? ['/student/test/preview', row.assessmentAnswer?._id, 'student', row.studentId._id] : null" [queryParams]="{ assessmentType: 'assessment' }">
+                    <span class="mobile-label">Assessment Score:</span>
+                    <span *ngIf="row?.assessmentAnswer?.score != null && row?.assessmentAnswer?.totalScore != null; else noScore">
+                      {{ row.assessmentAnswer.score }} / {{ row.assessmentAnswer.totalScore }}
+                    </span>
+                    <ng-template #noScore>--</ng-template>
                   </mat-cell>
                 </ng-container>
-
+                
                 <ng-container matColumnDef="Exam Assessment Score">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header
-                    >Exam Score
+                  <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Exam Score
                   </mat-header-cell>
-                  <mat-cell *matCellDef="let row" [routerLink]="row?.examAssessmentAnswer?._id ? ['/student/test/preview', row.examAssessmentAnswer?._id, 'student', row.studentId._id]:null" [queryParams]="{ assessmentType: 'exam' }">
-                    <span class="mobile-label">Exam Assessment Score:</span
-                    >{{ row?.examAssessmentAnswer?.score }} <span *ngIf="row?.examAssessmentAnswer?._id">/</span>
-                    {{ row?.examAssessmentAnswer?.totalScore }}
+                  <mat-cell *matCellDef="let row" [routerLink]="row?.examAssessmentAnswer?._id ? ['/student/test/preview', row.examAssessmentAnswer?._id, 'student', row.studentId._id] : null" [queryParams]="{ assessmentType: 'exam' }">
+                    <span class="mobile-label">Exam Assessment Score:</span>
+                    <span *ngIf="row?.examAssessmentAnswer?.score != null && row?.examAssessmentAnswer?.totalScore != null; else noExamScore">
+                      {{ row.examAssessmentAnswer.score }} / {{ row.examAssessmentAnswer.totalScore }}
+                    </span>
+                    <ng-template #noExamScore>--</ng-template>
                   </mat-cell>
                 </ng-container>
 
