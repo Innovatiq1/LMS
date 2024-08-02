@@ -193,6 +193,9 @@
                         </tr>
                       </thead>
                       <tbody>
+                        <tr *ngIf="studentApprovedPrograms.length === 0">
+                          <td colspan="2" class="text-center">No records</td>
+                        </tr>
                         <tr
                           style="cursor: pointer"
                           *ngFor="let data of studentApprovedPrograms"
@@ -231,6 +234,9 @@
                         </tr>
                       </thead>
                       <tbody>
+                        <tr *ngIf="studentApprovedClasses.length === 0">
+                          <td colspan="2" class="text-center">No records</td>
+                        </tr>
                         <tr
                           style="cursor: pointer"
                           *ngFor="let data of studentApprovedClasses"
@@ -272,6 +278,9 @@
                     </div>
 
                     <div class="row">
+                      <div class="col-12" *ngIf="studentCompletedPrograms.length === 0 && studentCompletedClasses.length === 0">
+                        <p class="text-center">No records</p>
+                      </div>
                       <div
                         class="col-6"
                         *ngFor="let data of studentCompletedPrograms"

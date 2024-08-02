@@ -521,8 +521,7 @@
                       <tr>
                         <th>Class</th>
                         <th>Apply Date</th>
-                        <th>From Date</th>
-                        <th>To Date</th>
+                        <th>Reschedule Date</th>
                         <th>Reason</th>
                         <th>Status</th>
                       </tr>
@@ -531,7 +530,6 @@
                       <tr *ngFor="let leave of approvedLeaves">
                         <td>{{leave?.className | titlecase}}</td>
                         <td>{{leave?.applyDate | date}}</td>
-                        <td>{{leave?.fromDate | date}}</td>
                         <td>{{leave?.toDate | date}}</td>
                         <td>{{leave?.reason | titlecase}}</td>
                         <td>
