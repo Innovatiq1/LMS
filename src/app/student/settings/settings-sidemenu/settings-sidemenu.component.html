@@ -113,9 +113,9 @@
                       </div> -->
                     </div>
                     <div formArrayName="submenu">
-                      <label
-                        >SubMenu <span class="mandatory">&nbsp;*</span></label
-                      >
+                      <ng-container *ngIf="getSubmenu(i).controls.length > 0">
+                        <label>SubMenu <span class="mandatory">&nbsp;*</span></label>
+                      </ng-container>
                       <!-- <button class="btn" >
                         <img
                           src="/assets/Close.svg"

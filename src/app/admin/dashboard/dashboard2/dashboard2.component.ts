@@ -429,7 +429,7 @@ export class Dashboard2Component implements OnInit,AfterViewInit {
   
   }
   aboutInstructor(id: any) {
-    this.router.navigate(['/student/settings/view-instructor'], {
+    this.router.navigate(['/student/settings/all-user/all-instructors/view-instructor/'], {
       queryParams: { data: id },
     });
   }
