@@ -993,6 +993,9 @@ else if(this.feeType=="free"){
         const time = totalPlaybackTime / documentCount;
         this.playBackTime = time;
         this.commonService.setCompletedPercentage(this.playBackTime);
+        const issueCertificate=this.studentClassDetails.classId.courseId.issueCertificate;
+        const playBackTimes=this.studentClassDetails.playbackTime;
+
         if (this.studentClassDetails.status == 'registered' && this.studentClassDetails.verify == true && this.studentClassDetails.paid == false) {
           this.isRegistered = true;
           this.isStatus = true;
@@ -1017,10 +1020,7 @@ else if(this.feeType=="free"){
 
 
         if (this.studentClassDetails.status == 'approved') {
-          const issueCertificate=this.studentClassDetails.classId.courseId.issueCertificate;
-          const playBackTimes=this.studentClassDetails.playbackTime;
           this.isTest = (issueCertificate === 'test' && playBackTimes === 100) ? true : false;
-
           this.isRegistered == true;
           this.isApproved = true;
         }
@@ -1028,6 +1028,7 @@ else if(this.feeType=="free"){
           !this.studentClassDetails.certifiacteUrl &&
           this.studentClassDetails.status == 'completed'
         ) {
+          this.isTest = (issueCertificate === 'test' && playBackTimes === 100) ? true : false;
           this.isRegistered == true;
           this.isCompleted = true;
         }
@@ -1035,6 +1036,7 @@ else if(this.feeType=="free"){
           this.studentClassDetails.certifiacteUrl &&
           this.studentClassDetails.status == 'completed'
         ) {
+          this.isTest = (issueCertificate === 'test' && playBackTimes === 100) ? true : false;
           this.isRegistered == true;
           this.isCompleted = true;
           this.isCertificate = "Yes";
