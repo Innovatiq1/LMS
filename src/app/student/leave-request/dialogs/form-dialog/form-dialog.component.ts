@@ -135,7 +135,7 @@ export class FormDialogComponent {
         text: 'Reschedule requested successfully',
         icon: 'success',
       });
-      this.router.navigate(['reschedule/programs']);
+      this.router.navigate(['reschedule/courses']);
     }
   }else{
     this.leaveRequestForm.markAllAsTouched(); 
