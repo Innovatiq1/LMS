@@ -193,6 +193,9 @@
                         </tr>
                       </thead>
                       <tbody>
+                        <tr *ngIf="studentApprovedPrograms.length === 0">
+                          <td colspan="2" class="text-center">No records</td>
+                        </tr>
                         <tr
                           style="cursor: pointer"
                           *ngFor="let data of studentApprovedPrograms"
@@ -231,6 +234,9 @@
                         </tr>
                       </thead>
                       <tbody>
+                        <tr *ngIf="studentApprovedClasses.length === 0">
+                          <td colspan="2" class="text-center">No records</td>
+                        </tr>
                         <tr
                           style="cursor: pointer"
                           *ngFor="let data of studentApprovedClasses"
@@ -259,6 +265,9 @@
                 <div class="project_widget">
                   <div class="body">
                     <div class="row">
+                      <div class="col-12" *ngIf="studentCompletedPrograms.length === 0 && studentCompletedClasses.length === 0">
+                        <p class="text-center">No records</p>
+                      </div>
                       <div class="col-6">
                         <div class="header mt-3">
                           <h2>Program Certificates</h2>
@@ -498,11 +507,14 @@
                       <thead>
                         <tr>
                           <th>Program Name</th>
-                          <th>Instructor Fee</th>
+                          <th>{{commonRoles?.INSTRUCTOR_ROLE}} Fee</th>
                           <th>Class</th>
                         </tr>
                       </thead>
                       <tbody>
+                        <tr *ngIf="dataSource2.length === 0">
+                          <td colspan="2" class="text-center">No records</td>
+                        </tr>
                         <tr
                           style="cursor: pointer"
                           *ngFor="let data of dataSource2"
@@ -542,11 +554,14 @@
                       <thead>
                         <tr>
                           <th>Course Name</th>
-                          <th>Instructor Fee</th>
+                          <th>{{commonRoles?.INSTRUCTOR_ROLE}} Fee</th>
                           <th>Class</th>
                         </tr>
                       </thead>
                       <tbody>
+                        <tr *ngIf="dataSource1.length === 0">
+                          <td colspan="2" class="text-center">No records</td>
+                        </tr>
                         <tr
                           style="cursor: pointer"
                           *ngFor="let data of dataSource1"
