@@ -34,7 +34,13 @@ svg {
      width: 140px;
      padding: 5px 13px 5px 11px;
    }
-
+   .red-text {
+    color: red;
+  }
+  
+  .green-text {
+    color: green;
+  }
    ::ng-deep .mat-mdc-tab-body-content{
     overflow-x: hidden !important;
   }
