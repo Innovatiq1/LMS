@@ -55,7 +55,7 @@ export class FeedbackCommonComponent implements OnChanges {
     }
     Swal.fire({
       title: 'Are you sure?',
-      text: 'Do you want to create Feedback!',
+      text: 'Do you want to submit Feedback!',
       icon: 'warning',
       confirmButtonText: 'Yes',
       showCancelButton: true,
