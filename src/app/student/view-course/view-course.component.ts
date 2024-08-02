@@ -96,6 +96,7 @@ export class ViewCourseComponent implements OnDestroy {
   studentClassDetails: any;
   isStatus = false;
   isApproved = false;
+  isTest:boolean=false;
   isCancelled = false;
   isCompleted = false;
   documentLink: any;
@@ -163,6 +164,7 @@ export class ViewCourseComponent implements OnDestroy {
   isShowFeedback: boolean = false;
   isShowAssessmentQuestions: boolean = false;
   feeType:string='';
+  
 
   constructor(
     private classService: ClassService,
@@ -335,16 +337,15 @@ export class ViewCourseComponent implements OnDestroy {
               .getStudentClass(studentId, this.classId)
               .subscribe((response) => {
                 this.studentClassDetails = response.data.docs[0];
-      
                 const issueCertificate=this.studentClassDetails.classId.courseId.issueCertificate;
-
+           const playBackTimes=this.studentClassDetails.playbackTime;
+           this.isTest = (issueCertificate === 'test' && playBackTimes === 100) ? true : false;           
                 if (this.studentClassDetails.status == 'approved') {
                   if (this.paid) {
-                    console.log("Paid Course Is Getting Called")
                     const targetURL = `/student/questions/${classId}/${studentId}/${this.courseId}`;
                     if(this.router.url!=targetURL){
                       if(issueCertificate=='test'){
-                        console.log("this is issue certificate value==",issueCertificate)
+                      //  console.log("this is issue certificate value==",issueCertificate)
                         this.router.navigate([
                           '/student/questions/',
                           classId,
@@ -396,8 +397,6 @@ export class ViewCourseComponent implements OnDestroy {
                         studentId:studentId
 
                       }
-
-                      console.log("the putStudnetClasses is called for free Class",);
 
                       this.classService.saveApprovedClasses(this.classId,payload).subscribe((response)=>{
                        // window.history.back();
@@ -1018,6 +1017,10 @@ else if(this.feeType=="free"){
 
 
         if (this.studentClassDetails.status == 'approved') {
+          const issueCertificate=this.studentClassDetails.classId.courseId.issueCertificate;
+          const playBackTimes=this.studentClassDetails.playbackTime;
+          this.isTest = (issueCertificate === 'test' && playBackTimes === 100) ? true : false;
+
           this.isRegistered == true;
           this.isApproved = true;
         }
@@ -1140,6 +1143,7 @@ else if(this.feeType=="free"){
           this.isStatus = true;
         }
         if (this.studentClassDetails.status == 'approved') {
+
           this.isRegistered == true;
           this.isApproved = true;
         }
