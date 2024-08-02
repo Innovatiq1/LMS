@@ -1946,7 +1946,7 @@ private attendanceBarChart() {
   
 
   aboutStudent(id: any) {
-    this.router.navigate(['/student/settings/view-student'], {
+    this.router.navigate(['/student/settings/all-user/all-students/view-student/'], {
       queryParams: { data: id },
     });
   }

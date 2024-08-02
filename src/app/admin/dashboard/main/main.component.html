@@ -200,7 +200,7 @@
                   </thead>
                   <tbody>
                     <tr *ngFor="let class of classList " style="cursor: pointer;"
-                      [routerLink]="['/admin/courses/view-class/',class.id]">
+                      [routerLink]="['/admin/courses/timetable/class-list/view-class/',class.id]">
                       <td>{{class?.courseName }}</td>
                       <td> {{class?.sessions[0]?.sessionStartDate | date}} </td>
                       <td> {{class?.sessions[0]?.sessionEndDate | date}}</td>
@@ -240,7 +240,7 @@
                           <img src="{{instructor.avatar|| 'assets/profile.png'}}" alt="">
                         </td>
                         <td>
-                          <div class="media-title"><a href="mailto:test@gmail.com"> {{instructor?.name | titlecase}}
+                          <div class="media-title"><a> {{instructor?.name | titlecase}}
                             </a></div>
                           <div class="text-job font-11">({{instructor?.education}})</div>
                         </td>
@@ -280,7 +280,7 @@
                     </thead>
                     <tbody>
                       <tr *ngFor="let class of classesList " style="cursor: pointer;"
-                        [routerLink]="['/admin/courses/view-class/',class.id]">
+                        [routerLink]="['/admin/courses/timetable/class-list/view-class/',class.id]">
                         <!-- <td class="table-img">
                     <img src="{{class?.courseId?.image_link}}" alt="course">
                   </td> -->
@@ -327,7 +327,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let student of students" style="cursor: pointer;" (click)="aboutStudent(student.id)">
+                  <tr *ngFor="let student of students" style="cursor: pointer;">
                     <td class="table-img">
                       <img src="{{student?.avatar || 'assets/profile.png'}}" alt="">
                     </td>
@@ -876,7 +876,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let student of students" style="cursor: pointer;" (click)="aboutStudent(student.id)">
+                  <tr *ngFor="let student of students" style="cursor: pointer;">
                     <td class="table-img">
                       <img src="{{student?.avatar || 'assets/profile.png'}}" alt="">
                     </td>
