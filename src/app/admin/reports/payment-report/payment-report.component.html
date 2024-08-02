@@ -117,7 +117,7 @@
                       <span class="mobile-label">Payment Mode:</span>{{row.paymentMode}}</mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="Amount">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Amount</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header class="amount">Amount</mat-header-cell>
                     <mat-cell *matCellDef="let row" (click)="view(row._id)" class="payment-cell">
                       <span class="mobile-label">Amount:</span><span>$</span> {{row.price||0}}.00</mat-cell>
                   </ng-container>
@@ -131,10 +131,15 @@
                   
                    <ng-container matColumnDef="Payment Status">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> Status</mat-header-cell>
-                    <mat-cell *matCellDef="let row" (click)="view(row._id)" [ngClass]="getStatusClass(row.status)">
+                    <mat-cell *matCellDef="let row" (click)="view(row._id)" class="payment-cell">
                       <div class="status-container">
-                        <span class="status-dot"></span>
-                        <span class="status-text">{{row.status | titlecase}}</span>
+                        <!-- <span class="status-dot"></span>
+                        <span class="status-text">{{row.status | titlecase}}</span> -->
+                        <span
+                        [class]=" row.status === 'Success' ? 'badge badge-solid-green' : 'badge badge-solid-red'">
+                        <span
+                          [class]=" row.status === 'Success' ? 'status-dot' : 'status-red'"></span>
+                        {{ row.status ==='Success'? 'Success':'Failed' | titlecase}}</span>
                       </div>
                     </mat-cell>
                   </ng-container>

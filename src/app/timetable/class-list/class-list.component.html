@@ -232,15 +232,20 @@
                   >
                   <mat-cell
                     *matCellDef="let row"
-                    [ngClass]="getStatusClass(row.classDeliveryType)"
+                   
                     [routerLink]="isView ? ['/admin/courses/timetable/class-list/view-class/', row.id] : null"
                   >
                     <span class="mobile-label">Class:</span>
                     <div class="status-container">
-                      <span class="status-dot"></span>
+                      <!-- <span class="status-dot"></span>
                       <span class="status-text">{{
                         row.classDeliveryType | titlecase
-                      }}</span>
+                      }}</span> -->
+                      <span
+                        [class]=" row.classDeliveryType === 'online' ? 'badge badge-solid-green' :  row.classDeliveryType === 'offline' ? 'badge badge-solid-red' : ''">
+                        <span
+                          [class]=" row.classDeliveryType === 'online' ? 'status-dot' :  row.classDeliveryType === 'offline' ? 'status-red' : ''"></span>
+                        {{ row.classDeliveryType ==='online'? 'Online':'Offline' | titlecase}}</span>
                     </div>
                   </mat-cell>
                 </ng-container>

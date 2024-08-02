@@ -52,6 +52,7 @@ export class ApproveListComponent {
     'studentname',
     'status',
     'coursename',
+    'Fee Type',
     // 'programFee',
     // 'instructorFee',
     'classstartDate',

@@ -1687,7 +1687,7 @@ private attendanceBarChart() {
 }
   private usersPieChart() {
     this.polarChartOptions = {
-      series2: [this.instructorCount, this.studentCount, this.adminCount],
+      series2: [this.instructorCount, this.studentCount],
       chart: {
         type: 'pie',
         height: 350,
@@ -1699,7 +1699,7 @@ private attendanceBarChart() {
       dataLabels: {
         enabled: false,
       },
-      labels: [`${AppConstants.INSTRUCTOR_ROLE}s`, `${AppConstants.STUDENT_ROLE}s`, `${AppConstants.ADMIN_ROLE}`],
+      labels: [`${AppConstants.INSTRUCTOR_ROLE}s`, `${AppConstants.STUDENT_ROLE}s`],
       colors: ['#6777ef', '#ff9800', '#B71180'],
       responsive: [
         {
@@ -1721,7 +1721,7 @@ private attendanceBarChart() {
       series: [
         {
             name: 'Count',
-            data: [ this.instructorCount,this.studentCount,this.adminCount],
+            data: [ this.instructorCount,this.studentCount],
         },
     ],
     chart: {
@@ -1756,7 +1756,7 @@ private attendanceBarChart() {
         strokeDashArray: 1,
     },
     xaxis: {
-        categories: [`${AppConstants.INSTRUCTOR_ROLE}s`, `${AppConstants.STUDENT_ROLE}s`, `${AppConstants.ADMIN_ROLE}`],
+        categories: [`${AppConstants.INSTRUCTOR_ROLE}s`, `${AppConstants.STUDENT_ROLE}s`],
         title: {
             text: 'Users',
         },
@@ -1788,7 +1788,7 @@ private attendanceBarChart() {
       series: [
         {
             name: 'Count',
-            data: [ this.instructorCount,this.studentCount,this.adminCount],
+            data: [ this.instructorCount,this.studentCount],
         },
     ],
       chart: {
@@ -1823,7 +1823,7 @@ private attendanceBarChart() {
         strokeDashArray: 1,
       },
       xaxis: {
-        categories: [`${AppConstants.INSTRUCTOR_ROLE}s`, `${AppConstants.STUDENT_ROLE}s`, `${AppConstants.ADMIN_ROLE}`],
+        categories: [`${AppConstants.INSTRUCTOR_ROLE}s`, `${AppConstants.STUDENT_ROLE}s`],
         title: {
           text: 'Users',
         },

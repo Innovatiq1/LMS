@@ -74,11 +74,11 @@
       Register
     </button>
     <button *ngIf="isStudent  && code && data.reschedule" type="button" mat-raised-button id="submit"
-    [routerLink]="['/reschedule/programs']" mat-dialog-close style="float: right;">
+    [routerLink]="['/reschedule/programs']" mat-dialog-close style="float: right; width: 120px;">
     Reschedule
   </button>
     <button *ngIf="isStudent  && !code && data.reschedule" type="button" mat-raised-button id="submit"
-      [routerLink]="['/reschedule/courses']" mat-dialog-close style="float: right;">
+      [routerLink]="['/reschedule/courses']" mat-dialog-close style="float: right; width: 120px;">
       Reschedule
     </button>
     <button *ngIf="isStudent && !isProgram && !data.reschedule" type="button" mat-raised-button id="submit"

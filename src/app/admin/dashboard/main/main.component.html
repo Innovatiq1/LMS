@@ -192,7 +192,7 @@
                 <table class="table table-hover ">
                   <thead>
                     <tr>
-                      <th>Course Name</th>
+                      <th>Course</th>
                       <th>Start Date</th>
                       <th>End Date</th>
                       <th>Status </th>
@@ -201,7 +201,7 @@
                   <tbody>
                     <tr *ngFor="let class of classList " style="cursor: pointer;"
                       [routerLink]="['/admin/courses/view-class/',class.id]">
-                      <td>{{class?.courseName | truncate:10}}</td>
+                      <td>{{class?.courseName }}</td>
                       <td> {{class?.sessions[0]?.sessionStartDate | date}} </td>
                       <td> {{class?.sessions[0]?.sessionEndDate | date}}</td>
                       <td>
@@ -230,22 +230,24 @@
                     <thead>
                       <tr>
                         <th>#</th>
-                        <th>{{commonRoles.INSTRUCTOR_ROLE}} Name</th>
+                        <th>{{commonRoles.INSTRUCTOR_ROLE}}</th>
                         <th>Status</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr *ngFor="let instructor of instructors">
                         <td class="table-img">
-                          <img src="{{instructor.avatar}}" alt="">
+                          <img src="{{instructor.avatar|| 'assets/profile.png'}}" alt="">
                         </td>
                         <td>
                           <div class="media-title"><a href="mailto:test@gmail.com"> {{instructor?.name | titlecase}}
                             </a></div>
-                          <div class="text-job font-11">({{instructor?.qualification}})</div>
+                          <div class="text-job font-11">({{instructor?.education}})</div>
                         </td>
                         <td>
                           <div [class]="instructor?.Active ? 'badge badge-solid-green' : 'badge badge-solid-red'">
+                            <span
+                            [class]="instructor?.Active ? 'status-dot' : 'status-red'"></span>
                             {{instructor?.Active == true?"Active":"Inactive"}}</div>
                         </td>
                       </tr>
@@ -269,7 +271,7 @@
                     <thead>
                       <tr>
                         <!-- <th>#</th> -->
-                        <th>Course Name</th>
+                        <th>Course</th>
                         <th>Start Date</th>
                         <th>End Date</th>
                         <th>Status </th>
@@ -282,7 +284,7 @@
                         <!-- <td class="table-img">
                     <img src="{{class?.courseId?.image_link}}" alt="course">
                   </td> -->
-                        <td>{{class?.courseId?.title | titlecase | truncate:10}}</td>
+                        <td>{{class?.courseId?.title | titlecase }}</td>
                         <td> {{class?.sessions[0]?.sessionStartDate | date}} </td>
                         <td> {{class?.sessions[0]?.sessionEndDate | date}}</td>
                         <td>
@@ -318,9 +320,9 @@
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th>{{commonRoles.STUDENT_ROLE}} Name</th>
-                    <th>Qualification</th>
-                    <th>Date Of Joining</th>
+                    <th>{{commonRoles.STUDENT_ROLE}}</th>
+                    <th>Education</th>
+                    <th>Joining Date</th>
                     <th>Mobile</th>
                   </tr>
                 </thead>
@@ -532,7 +534,13 @@
                         <td>{{leave?.fromDate | date}}</td>
                         <td>{{leave?.toDate | date}}</td>
                         <td>{{leave?.reason | titlecase}}</td>
-                        <td><span class="badge badge-solid-green">{{leave?.status | titlecase}}</span></td>
+                        <td>
+                          <span
+                          [class]=" leave?.status === 'approved' ? 'badge badge-solid-green' : leave?.status === 'applied' ? 'badge badge-solid-orange' : leave?.status === 'cancelled' ? 'badge badge-solid-red': ''">
+                          <span
+                            [class]=" leave?.status === 'approved' ? 'status-dot' : leave?.status === 'applied' ? 'status-orange' : leave?.status === 'cancelled' ? 'status-red' : '' "></span>
+                          {{ leave?.status  | titlecase}}</span>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -781,7 +789,7 @@
               <thead>
                 <tr>
                   <!-- <th>#</th> -->
-                  <th>Course Name</th>
+                  <th>Course</th>
                   <th>Start Date</th>
                   <th>End Date</th>
                   <th>Status </th>
@@ -794,7 +802,7 @@
                   <!-- <td class="table-img">
                       <img src="{{class?.courseId?.image_link}}" alt="course">
                     </td> -->
-                  <td>{{class?.courseName | truncate:10}}</td>
+                  <td>{{class?.courseName }}</td>
                   <td> {{class?.sessions[0]?.sessionStartDate | date}} </td>
                   <td> {{class?.sessions[0]?.sessionEndDate | date}}</td>
                   <td>
@@ -822,7 +830,7 @@
                 <tr>
                   <!-- <th>#</th> -->
                   <th>{{commonRoles.STUDENT_ROLE}} Name</th>
-                  <th>Course Name</th>
+                  <th>Course</th>
                   <th>Status </th>
                   <!-- <th>Actions </th> -->
                 </tr>
@@ -833,7 +841,7 @@
                   <!-- <td class="table-img">
                       <img src="{{class?.courseId?.image_link}}" alt="course">
                     </td> -->
-                  <td>{{student?.studentId?.email | truncate:10}}</td>
+                  <td>{{student?.studentId?.email }}</td>
                   <td> {{student?.title}} </td>
                   <td>
                     <div *ngIf="student.certificate"><span class="label l-bg-green shadow-style" mat-raised-button id="issued" >Certificate issued</span></div>

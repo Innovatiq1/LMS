@@ -39,6 +39,7 @@ export class InActiveCoursesComponent {
     'Course Name',
     'status',
     'Course Code',
+    'Fee Type',
     'Main Category',
     'days',
     'hr',

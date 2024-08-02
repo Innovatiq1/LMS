@@ -35,6 +35,7 @@ export class ActiveCoursesComponent {
     'name',
     'status',
     'code',
+    'Fee Type',
     'Main Category',
     // 'creator',
     'Days',

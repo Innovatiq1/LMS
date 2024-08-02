@@ -41,6 +41,7 @@ export class CompletionListComponent {
     'Student',
     'email',
     'Course',
+    'Fee Type',
     'Instructorfee',
     'Classstart',
     'Classend',

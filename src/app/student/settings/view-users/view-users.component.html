@@ -511,15 +511,16 @@
                                 <img src="{{class?.courseId?.image_link}}" alt="course">
                               </td> -->
                           <td>{{ data?.programName }}</td>
-                          <td>$ {{ data?.instructorCost }}</td>
+                          <td>$ {{ data?.instructorCost || 0}}.00</td>
                           <td
                             [ngClass]="getStatusClass(data.classDeliveryType)"
                           >
                             <div class="status-container">
-                              <span class="status-dot"></span>
-                              <span class="status-text">{{
-                                data.classDeliveryType | titlecase
-                              }}</span>
+                              <span
+                              [class]=" data.classDeliveryType === 'online' ? 'badge badge-solid-green' :  data.classDeliveryType === 'offline' ? 'badge badge-solid-red' : ''">
+                              <span
+                                [class]=" data.classDeliveryType === 'online' ? 'status-dot' :  data.classDeliveryType === 'offline' ? 'status-red' : ''"></span>
+                              {{ data.classDeliveryType ==='online'? 'Online':'Offline' | titlecase}}</span>
                             </div>
                           </td>
                         </tr>
@@ -554,15 +555,16 @@
                                 <img src="{{class?.courseId?.image_link}}" alt="course">
                               </td> -->
                           <td>{{ data?.courseName }}</td>
-                          <td>$ {{ data?.instructorCost }}</td>
+                          <td>$ {{ data?.instructorCost || 0}}.00</td>
                           <td
                             [ngClass]="getStatusClass(data.classDeliveryType)"
                           >
                             <div class="status-container">
-                              <span class="status-dot"></span>
-                              <span class="status-text">{{
-                                data.classDeliveryType | titlecase
-                              }}</span>
+                              <span
+                              [class]=" data.classDeliveryType === 'online' ? 'badge badge-solid-green' :  data.classDeliveryType === 'offline' ? 'badge badge-solid-red' : ''">
+                              <span
+                                [class]=" data.classDeliveryType === 'online' ? 'status-dot' :  data.classDeliveryType === 'offline' ? 'status-red' : ''"></span>
+                              {{ data.classDeliveryType ==='online'? 'Online':'Offline' | titlecase}}</span>
                             </div>
                           </td>
                         </tr>
