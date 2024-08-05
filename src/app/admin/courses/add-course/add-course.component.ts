@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   Validators,
@@ -9,7 +9,7 @@ import { Assessment, ExamAssessment, Certificate, CourseKit, CourseUploadData, F
 import * as XLSX from 'xlsx';
 import Swal from 'sweetalert2';
 import { CourseService } from '@core/service/course.service';
-import { forkJoin } from 'rxjs';
+import { forkJoin, timer } from 'rxjs';
 import { CertificateService } from '@core/service/certificate.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -22,13 +22,15 @@ import { FormService  } from '@core/service/customization.service';
 import { Subscription } from 'rxjs';
 import { StudentsService } from 'app/admin/students/students.service';
 import { UtilsService } from '@core/service/utils.service';
+import { CommonService } from '@core/service/common.service';
 
 @Component({
   selector: 'app-add-course',
   templateUrl: './add-course.component.html',
   styleUrls: ['./add-course.component.scss'],
 })
-export class AddCourseComponent implements OnInit {
+export class AddCourseComponent implements OnInit,OnDestroy {
+  private draftSubscription!: Subscription;
   mainCategories!: MainCategory[];
   subCategories!: SubCategory[];
   allSubCategories!: SubCategory[];
@@ -87,6 +89,7 @@ export class AddCourseComponent implements OnInit {
   examTypes: any[] = [ { code: 'after', label: 'After Assessment' }, { code: 'direct', label: 'Direct' } ];
   CertificateIssue:any[]=[ { code: 'test', label: 'After Test' }, { code: 'video', label: 'After Video' } ];
   isTestIssueCertificate: boolean = false;
+  draftId!: string ;
   breadscrums = [
     {
       title:'Create Course',
@@ -136,7 +139,8 @@ export class AddCourseComponent implements OnInit {
     public surveyService: SurveyService,
     private formService: FormService,
     private studentsService: StudentsService,
-    public utils: UtilsService
+    public utils: UtilsService,
+    private commonService:CommonService
     ) {
       let urlPath = this.router.url.split('/')
     this.editUrl = urlPath.includes('edit-course');
@@ -222,6 +226,10 @@ export class AddCourseComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if(!this.editUrl){
+      this.draftId = this.commonService.generate4DigitId();
+    }
+    this.startAutoSave();
     this.getAllCertificates();
     this.getCurrency();
     this. getAllVendors();
@@ -273,6 +281,73 @@ export class AddCourseComponent implements OnInit {
     // });
 
 // this.getCourseKits();
+}
+startAutoSave(){
+  this.draftSubscription = timer(0, 30000).subscribe(() => {
+    this.saveDraft();
+  });
+
+}
+ngOnDestroy() {
+  if (this.draftSubscription) {
+    this.draftSubscription.unsubscribe();
+  }
+}
+
+saveDraft(){
+  let certicate_temp_id = this.certificates?.filter((certificate: any) => 
+    certificate.title === this.firstFormGroup?.value?.certificate_temp 
+  );
+  const courseData = this.firstFormGroup.value;
+  let creator = JSON.parse(localStorage.getItem('user_data')!).user.name;
+  let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+  let courses = JSON.parse(localStorage.getItem('user_data')!).user.courses;
+  let payload = {
+    draftId:this.draftId,
+    title: courseData.title,
+    courseCode: courseData?.courseCode,
+    main_category: courseData.main_category ?courseData.main_category :null,
+    sub_category: courseData?.sub_category? courseData.sub_category:null,
+    course_duration_in_days: courseData?.course_duration_in_days,
+    training_hours:courseData?.training_hours,
+    fee:courseData?.fee,
+    currency_code:courseData?.currency_code,
+    skill_connect_code:courseData?.skill_connect_code,
+    course_description:courseData?.course_description,
+    sessionStartDate: courseData?.sessionStartDate == "Invalid date" ? null : courseData.sessionStartDate,
+    sessionEndDate: courseData?.sessionEndDate == "Invalid date" ? null : courseData.sessionEndDate,
+    sessionStartTime: courseData?.sessionStartTime,
+    sessionEndTime: courseData?.sessionEndTime,
+    course_detailed_description:courseData?.course_detailed_description,
+    pdu_technical:courseData?.pdu_technical,
+    pdu_leadership:courseData?.pdu_leadership,
+    pdu_strategic:courseData?.pdu_strategic,
+    funding_grant:courseData?.funding_grant?courseData.funding_grant:null,
+    assessment:courseData?.assessment,
+    exam_assessment:courseData?.exam_assessment,
+    survey:courseData?.survey,
+    course_kit:courseData?.course_kit?courseData.course_kit:null,
+    image_link:this.image_link,
+    vendor: courseData?.vendor,
+    creator:creator,
+    website_link:courseData?.website_link,
+    feeType:courseData?.feeType,
+    isFeedbackRequired: courseData?.isFeedbackRequired,
+    examType: courseData?.examType,
+    issueCertificate:courseData?.issueCertificate,
+    certificate_template:courseData?.certificate_temp,
+    // certificate_template_id:certicate_temp_id[0].id?certicate_temp_id[0].id:null,
+    companyId:userId,
+    courses: courses,
+    status:'draft'
+  }
+      this.courseService.saveCourse(payload).subscribe((response: any) => {
+      },(error:any) =>{
+        console.log('err',error)
+      }
+  )
+        
+
 }
 
 isInputReadonly(): boolean {
@@ -812,6 +887,7 @@ this.courseService.uploadCourseThumbnail(formData).subscribe((data: any) =>{
       // this.instructors = response.instructor;
       // this.surveys = response.surveys.data.docs;
       // this.certificates = response.certificates.data.docs;
+      this.draftId = this.course.draftId;
       this.image_link = this.course.image_link;
       this.uploaded=this.image_link?.split('/')
       let image  = this.uploaded?.pop();
