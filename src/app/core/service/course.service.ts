@@ -1,7 +1,7 @@
 
 import { Inject, Injectable, PLATFORM_ID } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
-import { BehaviorSubject, ConnectableObservable, Observable, map } from "rxjs";
+import { BehaviorSubject, ConnectableObservable, Observable, map, tap } from "rxjs";
 import { ApiResponse } from "@core/models/response";
 import { environment } from "environments/environment";
 import { CourseKit, CourseModel, CoursePaginationModel, Discount, Program, Vendor } from "@core/models/course.model";
@@ -314,7 +314,9 @@ export class CourseService {
     const apiUrl = `${this.prefix}admin/courses-new/`;
     return this._Http
       .post<ApiResponse>(apiUrl, course)
-      .pipe(map((response) => { }));
+      .pipe(      
+      tap(response => console.log('API Response:', response)), // Log the response
+      map((response) =>  response));
   }
   getCourseById(id: string) {
     const apiUrl = `${this.prefix}admin/courses-new/${id}`;
