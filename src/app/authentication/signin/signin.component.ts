@@ -7,7 +7,7 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { AuthService, Role } from '@core';
+import { AuthService } from '@core';
 import { UnsubscribeOnDestroyAdapter } from '@shared';
 import { AuthenService } from '@core/service/authen.service';
 import { LanguageService } from '@core/service/language.service';
@@ -17,6 +17,10 @@ import { AdminService } from '@core/service/admin.service';
 import Swal from 'sweetalert2';
 import { UserService } from '@core/service/user.service';
 import { RegistrationService } from '@core/service/registration.service';
+import { SuperAdminService } from 'app/superAdmin/super-admin.service';
+import { CommonService } from '@core/service/common.service';
+import { AppConstants } from '@shared/constants/app.constants';
+import { Role } from '../../../app/core/models/role';
 
 @Component({
   selector: 'app-signin',
@@ -59,7 +63,9 @@ export class SigninComponent
     private dialog:MatDialog,
     private adminService:AdminService,
     private userService:UserService,
-    private registration: RegistrationService
+    private registration: RegistrationService,
+    private superadminservice:SuperAdminService,
+    private commonService: CommonService
 
 
   ) {
@@ -133,6 +139,13 @@ export class SigninComponent
             this.loading = false;
           }, 100);
           this.authenticationService.saveUserInfo(user);
+          let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+          this.superadminservice.getAllCustomRoleById(userId).subscribe(
+            (response: any) => {
+              this.commonService.setRoleDetails(response)
+              this.updateRoleConstants();
+
+            })
   
         }
       },
@@ -181,6 +194,13 @@ export class SigninComponent
                         this.loading = false;
                       }, 100);
                       this.authenticationService.saveUserInfo(user);
+                      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+                      this.superadminservice.getAllCustomRoleById(userId).subscribe(
+                        (response: any) => {
+                          this.commonService.setRoleDetails(response)
+                          this.updateRoleConstants();
+  
+                        })
               
                     }
                   },
@@ -313,6 +333,17 @@ export class SigninComponent
     this.authForm.get('email')?.setValue('timothy.chow@yahooo.com');
     this.authForm.get('password')?.setValue('12345678');
   }
+
+  private updateRoleConstants(): void {
+    const roleDetails = this.commonService.getRoleDetails();
+        AppConstants.INSTRUCTOR_ROLE = roleDetails.trainer; // Update the role constant
+        AppConstants.STUDENT_ROLE = roleDetails.learner; // Update the role constant
+
+      // Add more conditions as needed for other roles
+
+    // Update ALLTHREEROLES array
+    AppConstants.ALLTHREEROLES = [roleDetails.trainer, 'Admin', 'admin', 'Assessor']
+  }
   loginUser() {
     let formData = this.authForm.getRawValue();
     this.isLoading = true;
@@ -323,39 +354,18 @@ export class SigninComponent
           setTimeout(() => {
             const role = this.authenticationService.currentUserValue.user.role;
             this.router.navigate(['/dashboard/dashboard']);
-            // if ((role === Role.All && this.tmsUrl) || (role === Role.Admin && this.tmsUrl || role=="RO"  || role == "Director" || role == "Employee")) {
-            //   this.router.navigate(['/dashboard/dashboard']);
-            // } else if ((role === Role.Instructor && this.tmsUrl) || (role === 'Trainer' && this.tmsUrl) || (role ==='instructor' && this.tmsUrl)) {
-            //   this.router.navigate(['/dashboard/instructor-dashboard']);
-            // } else if ((role === Role.Student && this.lmsUrl)|| (role === 'Student' && this.lmsUrl)) {
-            //   console.log('student',role)
-            //   this.router.navigate(['/dashboard/student-dashboard']);
-            // }
-            //   else if (role === Role.TrainingAdministrator || role === 'Training administrator' || role === 'training administrator') {
-            //   this.router.navigate(['/dashboard/trainingadministrator-dashboard']);
-            // } else if (role === Role.Supervisor || role === 'Supervisor' || role === 'supervisor') {
-            //   this.router.navigate(['/dashboard/supervisor-dashboard']);
-            // } else if (role === Role.HOD || role === 'hod' || role === 'HOD' || role === 'head of department') {
-            //   this.router.navigate(['/dashboard/hod-dashboard']);
-            // } else if (role === Role.TrainingCoordinator || role === 'Training Coordinator' || role === 'training coordinator') {
-            //   this.router.navigate(['/dashboard/trainingcoordinator-dashboard']);
-            // } else if (role === Role.CourseManager || role === 'coursemanager'|| role === 'Course Manager') {
-            //   this.router.navigate(['/dashboard/coursemanager-dashboard']);
-            // }  else if (role === Role.ProgramManager || role === 'programcoordinator'|| role === 'Program manager') {
-            //   this.router.navigate(['/dashboard/programmanager-dashboard']);
-            // } else if (role === Role.Approver || role === 'approver'|| role === 'approver') {
-            //   this.router.navigate(['/admin/courses/all-courses']);
-            // } else if (role === Role.TrainingCoordinatorAdministrator || role === 'Training Coordinator Administrator'|| role === 'Training Coordinator Administrator') {
-            //   this.router.navigate(['/admin/users/all-students']);
-            // }
-            //  else {
-            //   this.router.navigate(['/dashboard/dashboard']);
-            // }
-
             this.loading = false;
           }, 100);
           this.authenticationService.saveUserInfo(user);
                     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+                    this.superadminservice.getAllCustomRoleById(userId).subscribe(
+                      (response: any) => {
+                        console.log('listing user', response);
+                        this.commonService.setRoleDetails(response)
+                        this.updateRoleConstants();
+
+                      })
+                
                     this.adminService.getUserTypeList({ allRows: true },userId).subscribe(
                       (response: any) => {
                         let userType = localStorage.getItem('user_type');

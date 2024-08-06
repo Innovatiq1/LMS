@@ -60,15 +60,6 @@ export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
 }
 
-export function initializeRoles(roleService: SuperAdminService) {
-  return (): Promise<void> => {
-    const companyId = 'g56807ef-269a-4b27-81dd-19fbd6a6862a'; 
-    return new Promise((resolve, reject) => {
-      roleService.setRoles(companyId);
-      resolve();
-    });
-  };
-}
 
 @NgModule({
   declarations: [
@@ -145,12 +136,6 @@ export function initializeRoles(roleService: SuperAdminService) {
       multi: true
     },
     SuperAdminService,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeRoles,
-      deps: [SuperAdminService],
-      multi: true
-    }
   ],
   bootstrap: [AppComponent],
 })

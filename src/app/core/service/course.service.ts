@@ -7,6 +7,7 @@ import { environment } from "environments/environment";
 import { CourseKit, CourseModel, CoursePaginationModel, Discount, Program, Vendor } from "@core/models/course.model";
 import { FundingGrant, Instructor, MainCategory, SubCategory, Survey } from "@core/models/course.model";
 import { isPlatformBrowser } from "@angular/common";
+import { AppConstants } from "@shared/constants/app.constants";
 
 @Injectable({
   providedIn: 'root'
@@ -202,7 +203,7 @@ export class CourseService {
   getCount(id:any,
     filter?: Partial<CoursePaginationModel>
   ): Observable<ApiResponse> {
-    const apiUrl = `${this.prefix}admin/courses-new/count?companyId=${id}`;
+    const apiUrl = `${this.prefix}admin/courses-new/count?companyId=${id}&trainer=${AppConstants.INSTRUCTOR_ROLE}&learner=${AppConstants.STUDENT_ROLE}`;
     return this._Http.get<ApiResponse>(apiUrl);
   }
   getMainCategories(): Observable<MainCategory[]> {

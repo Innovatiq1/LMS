@@ -1,29 +1,29 @@
 
 
 export class AppConstants {
-  // static  STUDENT_ROLE = 'Trainee';
-  // static  INSTRUCTOR_ROLE = 'Trainer';
-  // static  ADMIN_ROLE = 'Admin';
-  // static  ASSESSOR_ROLE = 'Assessor';
-  // static  ALLTHREEROLES= ['Trainer', 'Admin', 'admin', 'Assessor']
+  static  STUDENT_ROLE = 'Student';
+  static  INSTRUCTOR_ROLE = 'Trainer';
+  static  ADMIN_ROLE = 'Admin';
+  static  ASSESSOR_ROLE = 'Assessor';
+  static  ALLTHREEROLES= ['Trainer', 'Admin', 'admin', 'Assessor']
 
 
-  static  STUDENT_ROLE = '';
-  static  INSTRUCTOR_ROLE = '';
-  static  ADMIN_ROLE = '';
-  static  ASSESSOR_ROLE = '';
-  static  ALLTHREEROLES: string[] = [];
+  // static  STUDENT_ROLE = '';
+  // static  INSTRUCTOR_ROLE = '';
+  // static  ADMIN_ROLE = '';
+  // static  ASSESSOR_ROLE = '';
+  // static  ALLTHREEROLES: string[] = [];
 
-  static setRoles(roles: any[]) {
-    roles.forEach(role => {
-      console.log("seRoles",role)
-      if (role.trainer === 'instructor') {
-        AppConstants.INSTRUCTOR_ROLE = role.trainer; 
-      }
-      // Add more conditions as needed
-    });
-    AppConstants.ALLTHREEROLES = roles.map(role => role.trainer); // Example, adjust according to your roles structure
-  }
+  // static setRoles(roles: any[]) {
+  //   roles.forEach(role => {
+  //     console.log("seRoles",role)
+  //     if (role.trainer === 'instructor') {
+  //       AppConstants.INSTRUCTOR_ROLE = role.trainer; 
+  //     }
+  //     // Add more conditions as needed
+  //   });
+  //   AppConstants.ALLTHREEROLES = roles.map(role => role.trainer); // Example, adjust according to your roles structure
+  // }
 
   static readonly ADMIN_USERTYPE = 'admin';
     static readonly TOAST_DISPLAY_TIME = 3000; 

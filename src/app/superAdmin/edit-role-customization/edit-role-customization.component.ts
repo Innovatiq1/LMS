@@ -47,7 +47,7 @@ export class EditRoleCustomizationComponent {
        
           Swal.fire({
             title: 'Success',
-            text: 'Course Withdraw successfully.',
+            text: 'Updated successfully.',
             icon: 'success',
           });
         
@@ -58,7 +58,7 @@ export class EditRoleCustomizationComponent {
     this.superadminservice.getAllCustomRoleById(this.companyId).subscribe(
       (response: any) => {
         console.log('listing user', response);
-        this.data = response.data;
+        this.data = response;
         if (this.data) {
           this.userForm.patchValue({
             company: this.data?.company,

@@ -50,7 +50,7 @@ export class RoleCustomizeComponent {
 
 
   ngOnInit() {
-    this.getAllCustomRoles();
+    this.fetchData();
   }
 
   performSearch() {
@@ -99,18 +99,68 @@ this.router.navigate(['super-admin/edit-customization'],{queryParams: {id:id}});
     this.coursePaginationModel.limit = $event?.pageSize;
     // this.fetchData(); 
   }
-getAllCustomRoles(){
-  this.superadminservice.getAllCustomRole().subscribe((response: any) => {
 
-    console.log(response);
-    this.filteredData = response.data.docs;
-    // this.coursePaginationModel.docs = response.data;
-    // this.filteredData = this.coursePaginationModel.docs;
-    this.isLoading = false;
-    this.ref.detectChanges();
-  }, (error: any) => {
-    this.isLoading = false;
-    console.error('Error fetching search results:', error);
-  });
+  resetData() {
+    this.dataSource = [];
+    this.filteredData = [];
+    this.totalItems = 0;
+    this.coursePaginationModel.page = 1;
+  }
+
+  fetchData(page?: number) {
+    this.resetData()
+    let filterText = this.searchTerm;
+    this.alluserService
+      .getAdminsList({
+        filterText,
+        page,
+        limit: this.coursePaginationModel.limit,
+      })
+      .subscribe(
+        (response: any) => {
+          this.dataSource = [...this.dataSource, ...response.data.data];
+          this.totalItems = this.dataSource.length;
+
+          if (this.dataSource.length < this.totalItems) {
+            this.coursePaginationModel.page += 1;
+            this.fetchData(this.coursePaginationModel.page);
+          } else {
+            this.applyFilter();
+            this.isLoading = false;
+            this.ref.detectChanges();
+          }
+        },
+        (error) => {
+          this.isLoading = false;
+          console.error('Error fetching data:', error);
+        }
+      );
+  }
+
+updateDisplayedData() {
+  const startIndex =
+    (this.coursePaginationModel.page - 1) * this.coursePaginationModel.limit;
+  const endIndex = startIndex + this.coursePaginationModel.limit;
+  this.coursePaginationModel.docs = this.filteredData.slice(
+    startIndex,
+    endIndex
+  );
+  this.ref.detectChanges();
 }
+
+applyFilter() {
+  this.filteredData = this.dataSource.filter(
+    (data) => data.type === 'Admin' || data.type === 'admin'
+  );
+  let active = this.filteredData.filter(data => data.Active === true);
+  this.activeCount = active.length;
+  let in_active = this.filteredData.filter(data => data.Active === false);
+  this.inactiveCount = in_active.length;
+  this.totalItems = this.filteredData.length;
+  console.log('Filtered Data', this.filteredData);
+  this.updateDisplayedData();
 }
+
+}
+
+

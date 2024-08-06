@@ -47,18 +47,6 @@ export class SuperAdminService {
     );
   }
 
-  setRoles(companyId: any) {
-    console.log("Fetching roles for companyId:", companyId);
-    this.getAllCustomRoleById(companyId).subscribe(
-      role => {
-        console.log("Fetched role:", role);
-        AppConstants.setRoles([role]); // Passing as an array
-      },
-      error => {
-        console.error('Error fetching roles', error);
-      }
-    );
-  }
 
   updateCustomzRole(companyId: any,data: any) {
     const apiUrl = `${this.defaultUrl}admin/customizRole/${companyId}`;
