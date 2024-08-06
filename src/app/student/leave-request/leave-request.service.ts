@@ -26,8 +26,8 @@ export class LeaveRequestService extends UnsubscribeOnDestroyAdapter {
     return this.dialogData;
   }
   /** CRUD METHODS */
-  getAllLeavesByStudentId(id:any,studentId:any): void {
-    const apiUrl = `${this.defaultUrl}admin/leave/${id}/${studentId}`;
+  getAllLeavesByStudentId(id:any,learnerId:any): void {
+    const apiUrl = `${this.defaultUrl}admin/leave/${id}/${learnerId}`;
     this.subs.sink = this.httpClient
       .get<any>(apiUrl)
       .subscribe({

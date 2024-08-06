@@ -11,10 +11,20 @@ import { ViewadminComponent } from './viewadmin/viewadmin.component';
 import { AdminListComponent } from './admin-list/admin-list.component';
 import { PackageListComponent } from './package-list/package-list.component';
 import { EditPackageComponent } from './edit-package/edit-package.component';
-
+import { RoleCustomizeComponent } from './role-customize/role-customize.component';
+import { EditRoleCustomizationComponent } from './edit-role-customization/edit-role-customization.component';
 
 @NgModule({
-  declarations: [CreateSuperAdminComponent,EditSuperAdminComponent, ViewadminComponent, AdminListComponent, PackageListComponent, EditPackageComponent],
+  declarations: [
+    CreateSuperAdminComponent,
+    EditSuperAdminComponent,
+    ViewadminComponent,
+    AdminListComponent,
+    PackageListComponent,
+    EditPackageComponent,
+    RoleCustomizeComponent,
+    EditRoleCustomizationComponent,
+  ],
   imports: [
     CommonModule,
     SuperAdmiRRoutingModule,
@@ -22,6 +32,6 @@ import { EditPackageComponent } from './edit-package/edit-package.component';
     ReactiveFormsModule,
     ComponentsModule,
     SharedModule,
-  ]
+  ],
 })
-export class SuperAdmiRModule { }
+export class SuperAdmiRModule {}

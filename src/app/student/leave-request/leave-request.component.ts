@@ -394,9 +394,9 @@ export class ExampleDataSource extends DataSource<LeaveRequest> {
       this.filterChange,
       this.paginator.page,
     ];
-      let studentId = localStorage.getItem('id')
+      let learnerId = localStorage.getItem('id')
   
-    this.exampleDatabase.getAllLeavesByStudentId('651bdef02191b64db4db0e06',studentId);
+    this.exampleDatabase.getAllLeavesByStudentId('651bdef02191b64db4db0e06',learnerId);
     return merge(...displayDataChanges).pipe(
       map(() => {
         // Filter data

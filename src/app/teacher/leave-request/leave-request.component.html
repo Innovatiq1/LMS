@@ -99,7 +99,7 @@
                 </ng-container> -->
                 <ng-container matColumnDef="name">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>{{commonRoles.STUDENT_ROLE}}</mat-header-cell>
-                  <mat-cell *matCellDef="let row" (click)="edit? editCall(row) : null"> <span class="mobile-label">Student Name:</span>{{row.studentId?.name}}
+                  <mat-cell *matCellDef="let row" (click)="edit? editCall(row) : null"> <span class="mobile-label">Student Name:</span>{{row.learnerId?.name}}
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="applyDate">

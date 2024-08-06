@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
@@ -51,11 +51,23 @@ import { TrainerAnalyticsDashboardComponent } from './student/settings/trainer-a
 import { SupportDashboardComponent } from './student/settings/support-dashboard/support-dashboard.component';
 import { EditUpdateDashboardComponent } from './student/settings/dashboard-customz/edit-update-dashboard/edit-update-dashboard.component';
 import { TraineesDashboardComponent } from './student/settings/trainees-dashboard/trainees-dashboard.component';
+import { SuperAdminService } from './superAdmin/super-admin.service';
+
 
 // import { ChangeBgDirective } from './change-bg.directive';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
+}
+
+export function initializeRoles(roleService: SuperAdminService) {
+  return (): Promise<void> => {
+    const companyId = 'g56807ef-269a-4b27-81dd-19fbd6a6862a'; 
+    return new Promise((resolve, reject) => {
+      roleService.setRoles(companyId);
+      resolve();
+    });
+  };
 }
 
 @NgModule({
@@ -132,6 +144,13 @@ export function createTranslateLoader(http: HttpClient) {
       useClass: ErrorHandlerInterceptor,
       multi: true
     },
+    SuperAdminService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeRoles,
+      deps: [SuperAdminService],
+      multi: true
+    }
   ],
   bootstrap: [AppComponent],
 })

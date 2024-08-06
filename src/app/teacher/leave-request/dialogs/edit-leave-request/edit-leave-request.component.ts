@@ -89,11 +89,11 @@ export class EditLeaveRequestComponent {
     this.dialogRef.close();
   }
   confirmAdd(){
-    let studentId = this.leaveRequest.studentId._id;
+    let learnerId = this.leaveRequest.learnerId._id;
     let classId = this.leaveRequest.classId;
 
     this.courseService
-      .getStudentClass(studentId, classId)
+      .getStudentClass(learnerId, classId)
       .subscribe((response) => {
         console.log("re", response)
         let element = response.data.docs[0];
