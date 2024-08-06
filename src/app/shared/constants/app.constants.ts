@@ -1,11 +1,31 @@
 
 
 export class AppConstants {
-  static  STUDENT_ROLE = 'Student';
-  static  INSTRUCTOR_ROLE = 'Trainer';
+
+  static getRoleData() {
+    const roleData = localStorage.getItem('role_data');
+    if (roleData) {
+      try {
+        return JSON.parse(roleData);
+      } catch (error) {
+        console.error('Error parsing role data from localStorage:', error);
+        return {};
+      }
+    }
+    return {};
+  }
+  static STUDENT_ROLE = (() => {
+    const roleData = AppConstants.getRoleData();
+    return roleData.learner || 'Trainee';
+  })();
+
+  static INSTRUCTOR_ROLE = (() => {
+    const roleData = AppConstants.getRoleData();
+    return roleData.trainer || 'Trainer';
+  })();
   static  ADMIN_ROLE = 'Admin';
   static  ASSESSOR_ROLE = 'Assessor';
-  static  ALLTHREEROLES= ['Trainer', 'Admin', 'admin', 'Assessor']
+  static  ALLTHREEROLES= [localStorage.getItem('trainer'), 'Admin', 'admin', 'Assessor']
 
 
   // static  STUDENT_ROLE = '';

@@ -1,4 +1,4 @@
-declare var google:any
+declare var google: any
 import { Component, OnInit, Input, OnChanges, ViewChild, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -29,13 +29,12 @@ import { Role } from '../../../app/core/models/role';
 })
 export class SigninComponent
   extends UnsubscribeOnDestroyAdapter
-  implements OnInit
-{
+  implements OnInit {
   @ViewChild('profileDialog') profileDialog!: TemplateRef<any>;
 
   // strength: string = '';
   authForm!: UntypedFormGroup;
-  profileForm!:FormGroup;
+  profileForm!: FormGroup;
   langStoreValue?: string;
   submitted = false;
   loading = false;
@@ -60,11 +59,11 @@ export class SigninComponent
     private authenticationService: AuthenService,
     public utils: UtilsService,
     private translate: LanguageService,
-    private dialog:MatDialog,
-    private adminService:AdminService,
-    private userService:UserService,
+    private dialog: MatDialog,
+    private adminService: AdminService,
+    private userService: UserService,
     private registration: RegistrationService,
-    private superadminservice:SuperAdminService,
+    private superadminservice: SuperAdminService,
     private commonService: CommonService
 
 
@@ -96,75 +95,75 @@ export class SigninComponent
 
   ngOnInit() {
     this.startSlideshow();
-    if(this.linkedinUrl){
- //Linkedin
- this.handleLinkedIn();
-    }else{
-    google.accounts.id.initialize({
-      client_id:'254303785853-4av7vt4kjc2fus3rgf01e3ltnp2icad0.apps.googleusercontent.com',
-      callback: (res:any) => {
-        this.handleGmailLogin(res)
-      }
-    })
-    google.accounts.id.renderButton(document.getElementById("google-btn"),{
-      theme:'filled_blue',
-      size:'large',
-      shape:'rectangle',
-      width:450
-    })
-  }
+    if (this.linkedinUrl) {
+      //Linkedin
+      this.handleLinkedIn();
+    } else {
+      google.accounts.id.initialize({
+        client_id: '254303785853-4av7vt4kjc2fus3rgf01e3ltnp2icad0.apps.googleusercontent.com',
+        callback: (res: any) => {
+          this.handleGmailLogin(res)
+        }
+      })
+      google.accounts.id.renderButton(document.getElementById("google-btn"), {
+        theme: 'filled_blue',
+        size: 'large',
+        shape: 'rectangle',
+        width: 450
+      })
+    }
 
-   
-    
+
+
   }
-  handleGmailLogin(data:any){
-    if(data){
+  handleGmailLogin(data: any) {
+    if (data) {
       const payload = this.decodeGmailToken(data.credential)
       this.accountDetails = payload
       let body = {
-        name:payload.given_name,
-        avatar:payload.picture,
-        last_name:payload.family_name,
-        email:payload.email,
+        name: payload.given_name,
+        avatar: payload.picture,
+        last_name: payload.family_name,
+        email: payload.email,
         authToken: data.credential, // Include the raw token as authToken
         id: payload.sub,
-        gmail:true
+        gmail: true
       }
-      this.authenticationService.socialLogin({ email:payload.email, social_type:'GOOGLE', social_id:payload.sub }).subscribe(
-      (user: any) => { 
+      this.authenticationService.socialLogin({ email: payload.email, social_type: 'GOOGLE', social_id: payload.sub }).subscribe(
+        (user: any) => {
 
-        if(user){
-          setTimeout(() => {
-            this.router.navigate(['/dashboard/dashboard']);
-            this.loading = false;
-          }, 100);
-          this.authenticationService.saveUserInfo(user);
-          let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-          this.superadminservice.getAllCustomRoleById(userId).subscribe(
-            (response: any) => {
-              this.commonService.setRoleDetails(response)
-              this.updateRoleConstants();
+          if (user) {
+            setTimeout(() => {
+              this.router.navigate(['/dashboard/dashboard']);
+              this.loading = false;
+            }, 100);
+            this.authenticationService.saveUserInfo(user);
+            let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+            this.superadminservice.getAllCustomRoleById(userId).subscribe(
+              (response: any) => {
+                this.commonService.setRoleDetails(response)
+                this.updateRoleConstants();
 
+              })
+
+          }
+        },
+        (err: any) => {
+          if (err == "user not found!") {
+            this.getUserTypeList();
+            this.profileForm = this.formBuilder.group({
+              role: ['', Validators.required],
+              email: [this.accountDetails.email, [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)]],
+              name: [this.accountDetails.name, Validators.required],
+              password: [''],
             })
-  
+
+            this.openDialog(this.profileDialog)
+
+          } else {
+            console.log('err', err)
+          }
         }
-      },
-      (err: any) => { 
-        if(err == "user not found!"){
-          this.getUserTypeList();
-          this.profileForm = this.formBuilder.group({
-            role: ['', Validators.required],
-            email: [this.accountDetails.email,[Validators.required,Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)] ],
-            name: [this.accountDetails.name, Validators.required],
-            password: [''],
-          })
-      
-          this.openDialog(this.profileDialog)
-          
-        } else {
-          console.log('err',err)
-        }
-      }
       )
 
     }
@@ -185,10 +184,10 @@ export class SigninComponent
               (profile: any) => {
                 this.accountDetails = profile;
                 const email = profile.email;
-                this.authenticationService.socialLogin({ email:email, social_type:'LINKEDIN', social_id: profile.sub }).subscribe(
-                  (user: any) => { 
-            
-                    if(user){
+                this.authenticationService.socialLogin({ email: email, social_type: 'LINKEDIN', social_id: profile.sub }).subscribe(
+                  (user: any) => {
+
+                    if (user) {
                       setTimeout(() => {
                         this.router.navigate(['/dashboard/dashboard']);
                         this.loading = false;
@@ -199,28 +198,28 @@ export class SigninComponent
                         (response: any) => {
                           this.commonService.setRoleDetails(response)
                           this.updateRoleConstants();
-  
+
                         })
-              
+
                     }
                   },
-                  (err: any) => { 
-                    if(err == "user not found!"){
+                  (err: any) => {
+                    if (err == "user not found!") {
                       this.getUserTypeList();
                       this.profileForm = this.formBuilder.group({
                         role: ['', Validators.required],
-                        email: [this.accountDetails.email,[Validators.required,Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)] ],
+                        email: [this.accountDetails.email, [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)]],
                         name: [this.accountDetails.name, Validators.required],
                         password: [''],
                       })
-                  
+
                       this.openDialog(this.profileDialog)
-                      
+
                     } else {
-                      console.log('err',err)
+                      console.log('err', err)
                     }
                   }
-                  )
+                )
               },
               (error) => {
                 console.error('Error fetching LinkedIn profile data:', error);
@@ -236,59 +235,59 @@ export class SigninComponent
   }
 
   openDialog(templateRef: any): void {
-      const dialogRef = this.dialog.open(templateRef, {
-        width: '1000px',
-        data: {        account:this.accountDetails},
-      });    
+    const dialogRef = this.dialog.open(templateRef, {
+      width: '1000px',
+      data: { account: this.accountDetails },
+    });
   }
   getUserTypeList() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-    this.adminService.getUserTypeList({ allRows: true },userId).subscribe(
+    this.adminService.getUserTypeList({ allRows: true }, userId).subscribe(
       (response: any) => {
         this.userTypes = response;
       },
-      (error) => {}
+      (error) => { }
     );
   }
 
-  create(dialogRef:any) {
-  
-    if (this.profileForm.valid) {
-        Swal.fire({
-          title: 'Are you sure?',
-          text: 'Do you want to create user!',
-          icon: 'warning',
-          confirmButtonText: 'Yes',
-          showCancelButton: true,
-          cancelButtonColor: '#d33',
-        }).then((result) => {
-          if (result.isConfirmed) {
-            this.profileForm.value.Active = true;
-            this.profileForm.value.type = this.profileForm.value.role;
-            this.profileForm.value.isLogin = true;   
-            this.profileForm.value.avatar =   this.accountDetails.picture
-            this.registration.socialLoginRegisterUser(this.profileForm.value).subscribe(
-              () => {
-                Swal.fire({
-                  title: 'Successful',
-                  text: 'User created successfully',
-                  icon: 'success',
-                });
-                this.profileForm.reset();
-                    dialogRef.close();
+  create(dialogRef: any) {
 
-              },
-              (error) => {
-                Swal.fire(
-                  error,
-                  error.message || error.error,
-                  'error'
-                );
-              }
-            );
-                   }
-        });
-        
+    if (this.profileForm.valid) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'Do you want to create user!',
+        icon: 'warning',
+        confirmButtonText: 'Yes',
+        showCancelButton: true,
+        cancelButtonColor: '#d33',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.profileForm.value.Active = true;
+          this.profileForm.value.type = this.profileForm.value.role;
+          this.profileForm.value.isLogin = true;
+          this.profileForm.value.avatar = this.accountDetails.picture
+          this.registration.socialLoginRegisterUser(this.profileForm.value).subscribe(
+            () => {
+              Swal.fire({
+                title: 'Successful',
+                text: 'User created successfully',
+                icon: 'success',
+              });
+              this.profileForm.reset();
+              dialogRef.close();
+
+            },
+            (error) => {
+              Swal.fire(
+                error,
+                error.message || error.error,
+                'error'
+              );
+            }
+          );
+        }
+      });
+
     } else {
       this.isSubmitted = true;
     }
@@ -310,9 +309,9 @@ export class SigninComponent
   //     this.linkedInCredentials.clientId
   //   }&redirect_uri=${this.linkedInCredentials.redirectUrl}&scope=${this.linkedInCredentials.scope}`;
   // } 
-  
 
-  private decodeGmailToken(token:string){
+
+  private decodeGmailToken(token: string) {
     return JSON.parse(atob(token.split(".")[1]));
   }
   get f() {
@@ -336,13 +335,13 @@ export class SigninComponent
 
   private updateRoleConstants(): void {
     const roleDetails = this.commonService.getRoleDetails();
-        AppConstants.INSTRUCTOR_ROLE = roleDetails.trainer; // Update the role constant
-        AppConstants.STUDENT_ROLE = roleDetails.learner; // Update the role constant
+    AppConstants.INSTRUCTOR_ROLE = roleDetails.trainer; // Update the role constant
+    AppConstants.STUDENT_ROLE = roleDetails.learner; // Update the role constant
 
-      // Add more conditions as needed for other roles
-
-    // Update ALLTHREEROLES array
     AppConstants.ALLTHREEROLES = [roleDetails.trainer, 'Admin', 'admin', 'Assessor']
+    localStorage.setItem('role_data', JSON.stringify(roleDetails));
+
+
   }
   loginUser() {
     let formData = this.authForm.getRawValue();
@@ -357,25 +356,25 @@ export class SigninComponent
             this.loading = false;
           }, 100);
           this.authenticationService.saveUserInfo(user);
-                    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-                    this.superadminservice.getAllCustomRoleById(userId).subscribe(
-                      (response: any) => {
-                        console.log('listing user', response);
-                        this.commonService.setRoleDetails(response)
-                        this.updateRoleConstants();
+          let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+          this.superadminservice.getAllCustomRoleById(userId).subscribe(
+            (response: any) => {
+              console.log('listing user', response);
+              this.commonService.setRoleDetails(response)
+              this.updateRoleConstants();
 
-                      })
-                
-                    this.adminService.getUserTypeList({ allRows: true },userId).subscribe(
-                      (response: any) => {
-                        let userType = localStorage.getItem('user_type');
-                        let data = response.filter((item: any) => item.typeName === userType);
-                
-                        this.authenticationService.saveRoleDetails(data);
-          
-                      })
-                
-          
+            })
+
+          this.adminService.getUserTypeList({ allRows: true }, userId).subscribe(
+            (response: any) => {
+              let userType = localStorage.getItem('user_type');
+              let data = response.filter((item: any) => item.typeName === userType);
+
+              this.authenticationService.saveRoleDetails(data);
+
+            })
+
+
         },
         (error) => {
           this.isLoading = false;
