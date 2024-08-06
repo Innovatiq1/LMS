@@ -91,22 +91,23 @@ export class CreateCourseKitComponent implements OnInit {
         ...this.utils.validators.noLeadingSpace,
       ]),
       documentLink: new FormControl('', [
-        Validators.required,
-        ...this.utils.validators.imagePath,
-        ...this.utils.validators.noLeadingSpace,
+        //Validators.required,
+       // ...this.utils.validators.imagePath,
+        //...this.utils.validators.noLeadingSpace,
       ]),
       shortDescription: new FormControl('', [
-        Validators.required,
+       // Validators.required,
         ...this.utils.validators.descripton,
         ...this.utils.validators.noLeadingSpace,
       ]),
       longDescription: new FormControl('', [
-        Validators.required,
+      //  Validators.required,
         ...this.utils.validators.longDescription,
         ...this.utils.validators.noLeadingSpace,
       ]),
-      videoLink: new FormControl('', [ Validators.required,
-        ...this.utils.validators.imagePath,
+      videoLink: new FormControl('', [
+        // Validators.required,
+        //...this.utils.validators.imagePath,
         ...this.utils.validators.noLeadingSpace,]),
       // startDate: ['', [Validators.required]],
       // endDate: ['', [Validators.required]]
@@ -137,7 +138,7 @@ export class CreateCourseKitComponent implements OnInit {
       shortDescription: ['',Validators.required],
       longDescription: ['',Validators.required],
       videoLink: ['',Validators.required],
-      documentLink: ['',Validators.required],
+      documentLink: ['',[]],
     });
   }
   startDateChange(element: { end: any; start: any }) {
@@ -151,10 +152,18 @@ export class CreateCourseKitComponent implements OnInit {
   submitCourseKit1() {
     if(this.courseKitForm.valid) {
       const formdata = new FormData();
-      formdata.append('files', this.docs);
-      formdata.append('files', this.videoLink);
-      formdata.append('video_filename', this.videoSrc);
-      formdata.append('doc_filename', this.uploadedDocument);
+      if (this.docs) {
+        formdata.append('files', this.docs);
+      }
+      if (this.videoLink) {
+        formdata.append('files', this.videoLink);
+      }
+      formdata.append('video_filename', this.videoSrc || '');
+      formdata.append('doc_filename', this.uploadedDocument || '');
+      // formdata.append('files', this.docs);
+      // formdata.append('files', this.videoLink);
+      // formdata.append('video_filename', this.videoSrc);
+      // formdata.append('doc_filename', this.uploadedDocument);
       Swal.fire({
         title: 'Uploading...',
         text: 'Please wait...',
@@ -170,7 +179,8 @@ export class CreateCourseKitComponent implements OnInit {
           this.courseService.saveVideo(formdata).subscribe((data) => {
             const courseKitData: CourseKit = this.courseKitForm.value;
             courseKitData.videoLink = data.data._id;
-            courseKitData.documentLink = data.data.document;
+           courseKitData.documentLink = data.data.document || '';
+           // courseKitData.documentLink = data.data.document ||'';
             if(courseKitData){
               this.createCourseKit(courseKitData);
             }
@@ -224,7 +234,7 @@ export class CreateCourseKitComponent implements OnInit {
   getForms(): void {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
         this.formService
-      .getAllForms(userId,'Course Kit Creation Form')
+      .getAllForms(userId,'Course kit Creation Form')
       .subscribe((forms) => {
         this.forms = forms;
       });
