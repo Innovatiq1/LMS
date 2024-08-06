@@ -87,17 +87,21 @@ export class EditCourseKitComponent {
         ...this.utils.validators.name,
         ...this.utils.validators.noLeadingSpace,
       ]),
-      documentLink: new FormControl('', [ Validators.required,
-        ...this.utils.validators.imagePath,
+      documentLink: new FormControl('', [
+        // Validators.required,
+        //...this.utils.validators.imagePath,
         ...this.utils.validators.noLeadingSpace,]),
-      shortDescription: new FormControl('', [ Validators.required,
+      shortDescription: new FormControl('', [
+        // Validators.required,
         ...this.utils.validators.descripton,
         ...this.utils.validators.noLeadingSpace,]),
-      longDescription: new FormControl('', [ Validators.required,
+      longDescription: new FormControl('', [ 
+        //Validators.required,
         ...this.utils.validators.longDescription,
         ...this.utils.validators.noLeadingSpace,]),
-      videoLink: new FormControl('', [ Validators.required,
-        ...this.utils.validators.imagePath,
+      videoLink: new FormControl('', [ 
+        //Validators.required,
+       // ...this.utils.validators.imagePath,
         ...this.utils.validators.noLeadingSpace,]),
       // startDate: ['', [Validators.required]],
       // endDate: ['', [Validators.required]]
