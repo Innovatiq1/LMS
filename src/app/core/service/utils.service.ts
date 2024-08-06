@@ -226,7 +226,7 @@ export class UtilsService {
       { type: 'maxlength', message: 'Enter maximum 255 characters' },
     ],
     'documentLink': [
-      { type: 'required', message: 'Enter Document link' },
+     // { type: 'required', message: 'Enter Document link' },
       { type: 'maxlength', message: 'Enter maximum 255 characters' },
 
     ],
@@ -335,7 +335,7 @@ export class UtilsService {
 
     ],
     'longDescription': [
-      { type: 'required', message: 'Enter Long Description' },
+     // { type: 'required', message: 'Enter Long Description' },
       { type: 'maxlength', message: 'Enter maximum 255 characters' },
     ],
     'coursekitName': [
@@ -546,12 +546,17 @@ export class UtilsService {
     mobile:[Validators.required, Validators.pattern('[0-9]+')],
     roll_no:[Validators.required, Validators.minLength(2), Validators.maxLength(150)],
     name: [Validators.required, Validators.minLength(2), Validators.maxLength(150)],
-    documentLink: [Validators.required, Validators.minLength(2), Validators.maxLength(255)],
+    documentLink: [ 
+      //Validators.required,
+      Validators.minLength(2), Validators.maxLength(255)],
     course_duration_in_days: [ Validators.min(1), Validators.pattern(/^\d+(\.\d+)?$/)],
     training_hours: [  Validators.min(0.5), Validators.pattern(/^\d+(\.\d+)?$/)],
     fee: [ Validators.min(0), Validators.max(99999999), Validators.pattern(/^\d+(\.\d+)?$/)],
     course: [Validators.maxLength(20)],
-    longDescription: [ Validators.required, Validators.min(2), Validators.max(255)],
+    longDescription: [
+      // Validators.required, 
+       Validators.min(2),
+        Validators.max(255)],
     descripton: [ Validators.maxLength(100)],
     website: [ Validators.maxLength(255), Validators.pattern(/^(https?:\/\/)?(www\.)?[a-zA-Z0-9]+\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})?$/)],
     pdu: [ Validators.min(0), Validators.max(999), Validators.pattern(/^\d+(\.\d+)?$/)],
@@ -578,7 +583,7 @@ export class UtilsService {
     if (!control) {
       return null;
     }
-
+    
     for (const validator of this.validationMessages[fieldName]) {
       if (control.hasError(validator.type)) {
         return validator.message;

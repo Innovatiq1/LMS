@@ -29,7 +29,27 @@
                                         </mat-error> -->
                                     </mat-form-field>
                                 </div>
-                                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                                <!-- Document Field -->
+<div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
+*ngIf="labelStatusCheck('Document')"
+>
+    <label>Document</label>
+    <div class="file-drop-area1">
+        <div class="file1">
+            <button mat-raised-button color="primary" class="btn">Choose file 
+                <input formControlName="documentLink" (change)="onFileUpload($event)" class="file-input" type="file">
+            </button>
+            <span class="file-msg">
+                <h6>{{uploadedDocument ? uploadedDocument : 'Drag and Drop File Here' }}</h6>
+            </span>
+        </div>
+    </div>
+    <!-- <mat-error class="error" *ngIf="courseKitForm.get('documentLink')?.touched">
+        {{utils.getErrorMessage1(courseKitForm.get("documentLink"), "document") }}
+    </mat-error> -->
+</div>
+
+                                <!-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                                     <label>Document<span class="mandatory">&nbsp;*</span></label>
                                     <div class="file-drop-area1">
                                         <div class="file1">
@@ -41,10 +61,11 @@
                                     <mat-error class="error" *ngIf=" courseKitForm.get('documentLink')?.invalid && courseKitForm.get('documentLink')?.touched ">
                                         {{utils.getErrorMessage1(courseKitForm.get("documentLink"), "document") }}
                                     </mat-error>
-                                </div>
+                                </div> -->
 
-                                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                                    <label>Short Description<span class="mandatory">&nbsp;*</span></label>
+                                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
+                                 *ngIf="labelStatusCheck('Short Description')">
+                                    <label>Short Description</label>
                                     <mat-form-field class="example-full-width mb-3" appearance="outline">
                                         <!-- <mat-label>Course Name</mat-label> -->
 
@@ -59,8 +80,9 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                                    <label>Long Description<span class="mandatory">&nbsp;*</span></label>
+                                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" 
+                                *ngIf="labelStatusCheck('Long Description')">
+                                    <label>Long Description</label>
                                     <mat-form-field class="example-full-width mb-3" appearance="outline">
                                         <!-- <mat-label>Course Name</mat-label> -->
 
@@ -75,8 +97,8 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-5">
-                                    <label>Upload Media <span class="mandatory">&nbsp;*</span></label>
+                                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-5" *ngIf="labelStatusCheck('Upload Media')">
+                                    <label>Upload Media </label>
                                     <div class="file-drop-area">
                                       <div class="file">
                                       <button mat-raised-button color="primary" class="btn">Choose file  <input formControlName="videoLink" (fileDropped)="onFileDropped($event)" (change)="fileBrowseHandler($event)"  class="file-input" type="file"></button>
