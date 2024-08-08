@@ -68,6 +68,7 @@
     "ngx-intl-tel-input": "^3.2.0",
     "ngx-mask": "^16.2.5",
     "ngx-scrollbar": "^13.0.3",
+    "pdfjs-dist": "^2.16.105",
     "plyr": "^3.5.10",
     "rxjs": "~7.8.1",
     "shortid": "^2.2.16",

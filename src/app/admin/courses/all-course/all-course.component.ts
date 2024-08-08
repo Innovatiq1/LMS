@@ -20,6 +20,10 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { formatDate } from '@angular/common';
 import { AppConstants } from '@shared/constants/app.constants';
 import { AuthenService } from '@core/service/authen.service';
+import * as XLSX from 'xlsx';
+
+import * as JSZip from 'jszip';
+import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf';
 @Component({
   selector: 'app-all-course',
   templateUrl: './all-course.component.html',
@@ -94,6 +98,7 @@ export class AllCourseComponent {
   commonRoles: any;
   create = false;
   view = false;
+  private showAlert = false;
 
   constructor(
     public _courseService: CourseService,
@@ -101,7 +106,8 @@ export class AllCourseComponent {
     private classService: ClassService,
     private userService: UserService,
     private fb: FormBuilder,
-    private authenService: AuthenService
+    private authenService: AuthenService,
+    private courseService: CourseService,
   ) {
     // constructor
     this.coursePaginationModel = { limit: 10 };
@@ -426,4 +432,317 @@ export class AllCourseComponent {
       queryParams: { id: id, status: 'active' },
     });
   }
+  async onBulkUpload(event: any): Promise<void> {
+    const selectedFile: File = event.target.files[0];
+    const fileType = selectedFile.type;
+    if (selectedFile) {
+      const formData = new FormData();
+  
+      if (fileType === 'application/pdf') {
+        await this.parsePDF(selectedFile);
+      } else if (fileType === 'application/vnd.ms-excel' || fileType === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+        this.parseExcel(selectedFile, formData);
+      }else if (
+        fileType ===
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      ) {
+        this.parseWord(selectedFile);
+      } 
+  console.log("hi")
+      // If it's not an Excel file, we just handle it as a PDF or other file
+      this.logFormData(formData);
+      this.courseService.uploadFiles(formData);
+      this.showAlert = true;
+      
+      event.target.value = null;
+    }
+  }
+  
+  public logFormData(formData: FormData) {
+    formData.forEach((value, key) => {
+      console.log(`${key}:`, value);
+      
+      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+      let courses = JSON.parse(localStorage.getItem('user_data')!).user.courses;
+  
+      if (typeof value === 'string') {
+        // Remove quotes around the array if they exist
+        let cleanedValue = value.replace(/^"|"$/g, '');
+        let parsedValue;
+        
+        try {
+          parsedValue = JSON.parse(cleanedValue);
+        } catch (e) {
+          console.error("Failed to parse value:", cleanedValue, e);
+          return;
+        }
+        
+        let payload = {
+          companyId: userId,
+          courses: courses,
+          formData: parsedValue,
+          // excel: true
+        };
+      
+        console.log("payload", payload);
+  
+        this.courseService.createBulkCourses(payload).subscribe(
+          (response: any) => {
+            Swal.fire({
+              title: 'Successful',
+              text: 'Uploaded successfully',
+              icon: 'success',
+            });
+          },
+          (error: any) => {
+            console.log('err', error);
+          }
+        );
+      } else {
+        // Handle the case where value is not a string (e.g., it's a File)
+        console.error("The value is not a string and cannot be parsed as JSON:", value);
+      }
+    });
+  }
+  
+
+  async  parsePDF(selectedFile: File) {
+    const reader = new FileReader();
+  
+    reader.onload = async (e: any) => {
+      try {
+        const arrayBuffer = e.target.result as ArrayBuffer;
+  
+        // Load PDF document
+        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        const numPages = pdf.numPages;
+        let pdfText = '';
+  
+        // Iterate through pages and extract text
+        for (let pageNum = 1; pageNum <= numPages; pageNum++) {
+          const page = await pdf.getPage(pageNum);
+          const textContent = await page.getTextContent();
+          pdfText += textContent.items.map((item: any) => item.str).join(' ');
+        }
+  
+        // Log the content to the console
+        console.log('Extracted Text Content:', pdfText);
+  
+      } catch (error) {
+        console.error('Error parsing PDF document:', error);
+      }
+    };
+  
+    reader.onerror = (error) => {
+      console.error('Error reading file:', error);
+    };
+  
+    reader.readAsArrayBuffer(selectedFile);
+  }
+
+  async parseExcel(selectedFile: File, formData: FormData) {
+    const reader = new FileReader();
+        reader.onload = (e: any) => {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+  
+          const sheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[sheetName];
+          const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+          formData.append('excelData', JSON.stringify(jsonData));
+          console.log("data1111", formData)
+        this.logFormData(formData);
+          this.courseService.uploadFiles(formData);
+          this.showAlert = true;
+          
+          e.target.value = null;
+        };
+        reader.readAsArrayBuffer(selectedFile);
+        return; // Exit the function as we're processing the file asynchronously
+      }
+      async parseWord(selectedFile: File) {
+        const reader = new FileReader();
+      
+        reader.onload = async (e: any) => {
+          try {
+            const arrayBuffer = e.target.result as ArrayBuffer;
+            const zip = new JSZip();
+            const content = await zip.loadAsync(arrayBuffer);
+      
+            // Check if the file exists in the zip
+            const documentFile = content.file('word/document.xml');
+            if (documentFile) {
+              // Extract document XML
+              const documentXML = await documentFile.async('text');
+              const parser = new DOMParser();
+              const xmlDoc = parser.parseFromString(documentXML, 'application/xml');
+              const textNodes = xmlDoc.getElementsByTagName('w:t');
+      
+              let plainText = '';
+              for (let i = 0; i < textNodes.length; i++) {
+                plainText += textNodes[i].textContent + ' ';
+              }
+      
+              // Log the content to the console
+              console.log('Extracted Text Content:', plainText);
+      
+              // Split plain text into an array
+              const elements = plainText.split(/\s+/).filter(item => item.trim() !== '');
+      
+              // Identify headers and data
+              const headers = elements.slice(0, 18); // Assuming first 18 elements are headers
+              console.log('Headers:', headers);
+      
+              const data = [];
+              for (let i = headers.length; i < elements.length; i += headers.length) {
+                data.push(elements.slice(i, i + headers.length));
+              }
+      
+              console.log('Data:', data);
+      
+              // Combine headers and data into a single array
+              const combinedData = [headers, ...data];
+              console.log('Combined Data:', combinedData);
+      
+              // Format the payload
+              let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+              let courses = JSON.parse(localStorage.getItem('user_data')!).user.courses;
+      
+              let payload = {
+                companyId: userId,
+                courses: courses,
+                formData: combinedData, // Pass the formatted data
+              };
+      
+              console.log("Payload:", payload);
+      
+              // Send the payload to the backend
+              this.courseService.createBulkCourses(payload).subscribe(
+                (response: any) => {
+                  Swal.fire({
+                    title: 'Successful',
+                    text: 'Uploaded successfully',
+                    icon: 'success',
+                  });
+                },
+                (error: any) => {
+                  console.log('Error:', error);
+                }
+              );
+            } else {
+              console.error('Document XML file not found in the zip.');
+            }
+      
+          } catch (error) {
+            console.error('Error parsing Word document:', error);
+          }
+        };
+      
+        reader.onerror = (error) => {
+          console.error('Error reading file:', error);
+        };
+      
+        reader.readAsArrayBuffer(selectedFile);
+      }
+      
+  
+      // async parseWord(selectedFile: File) {
+      //   const reader = new FileReader();
+      
+      //   reader.onload = async (e: any) => {
+      //     try {
+      //       const arrayBuffer = e.target.result as ArrayBuffer;
+      //       const zip = new JSZip();
+      //       const content = await zip.loadAsync(arrayBuffer);
+      
+      //       // Check if the file exists in the zip
+      //       const documentFile = content.file('word/document.xml');
+      //       if (documentFile) {
+      //         // Extract document XML
+      //         const documentXML = await documentFile.async('text');
+      //         const parser = new DOMParser();
+      //         const xmlDoc = parser.parseFromString(documentXML, 'application/xml');
+      //         const textNodes = xmlDoc.getElementsByTagName('w:t');
+      
+      //         // let plainText = '';
+      //         // for (let i = 0; i < textNodes.length; i++) {
+      //         //   plainText += textNodes[i].textContent + ' ';
+      //         // }
+      //         let plainText = '';
+      //         for (let i = 0; i < textNodes.length; i++) {
+      //           plainText += textNodes[i].textContent || '';
+      //         }
+      
+      //         // Log the content to the console
+      //         console.log('Extracted Text Content:', plainText);
+      
+      //         // Convert the plain text into an array format
+      //         // const elements = plainText.split(/\s+/).filter(item => item.trim() !== '');
+      //         // console.log('Elements:', elements);
+      
+      //         // // Assume the first five elements are headers
+      //         // const headers = elements
+      //         // const data = elements.slice(5);
+      
+      //         // console.log('Headers:', headers);
+      //         // console.log('Data:', data);
+      
+      //         // // Ensure the data length is a multiple of the headers length
+      //         // if (data.length % headers.length !== 0) {
+      //         //   console.error('Data length is not a multiple of headers length.');
+      //         //   return;
+      //         // }
+      
+      //         // // Create an array of objects
+      //         // const combinedData = [];
+      //         // for (let i = 0; i < data.length; i += headers.length) {
+      //         //   let row: { [key: string]: string } = {};
+      //         //   headers.forEach((header, index) => {
+      //         //     row[header] = data[i + index] || '';
+      //         //   });
+      //         //   combinedData.push(row);
+      //         // }
+      
+      //         // console.log('Combined Data:', combinedData);
+      
+      //         let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+      //         let courses = JSON.parse(localStorage.getItem('user_data')!).user.courses;
+      
+      //         let payload = {
+      //           companyId: userId,
+      //           courses: courses,
+      //           formData: plainText, // Pass the formatted data
+      //         };
+      
+      //         console.log("Payload:", payload);
+      
+      //         this.courseService.createBulkCourses(payload).subscribe(
+      //           (response: any) => {
+      //             Swal.fire({
+      //               title: 'Successful',
+      //               text: 'Uploaded successfully',
+      //               icon: 'success',
+      //             });
+      //           },
+      //           (error: any) => {
+      //             console.log('Error:', error);
+      //           }
+      //         );
+      //       } else {
+      //         console.error('Document XML file not found in the zip.');
+      //       }
+      
+      //     } catch (error) {
+      //       console.error('Error parsing Word document:', error);
+      //     }
+      //   };
+      
+      //   reader.onerror = (error) => {
+      //     console.error('Error reading file:', error);
+      //   };
+      
+      //   reader.readAsArrayBuffer(selectedFile);
+      // }
+      
+      
 }

@@ -148,13 +148,17 @@
 
                 <!-- exam-score -->
                 <ng-container matColumnDef="Exam Score">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>Exam Score
-                  </mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef mat-sort-header>Exam Score</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
-                    <span class="mobile-label">Exam Score:</span><span
-                      *ngIf="row.examassessmentanswers">{{row.examassessmentanswers?.score}} /
-                      {{row.examassessmentanswers?.totalScore}}</span> </mat-cell>
+                    <span class="mobile-label">Exam Score:</span>
+                    <ng-container *ngIf="row.examassessmentanswers?.score != null && row.examassessmentanswers?.totalScore != null; else noData">
+                      <span>{{row.examassessmentanswers.score}} / {{row.examassessmentanswers.totalScore}}</span>
+                    </ng-container>
+                    <ng-template #noData>--</ng-template>
+                  </mat-cell>
                 </ng-container>
+                
+                
 
                 <!-- assessment-score -->
                 <ng-container matColumnDef="Assessment Score">
