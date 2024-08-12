@@ -116,9 +116,10 @@ export class InstructorLeaveRequestComponent
   }
   editCall(row: LeaveRequest) {
     this.id = row.id;
-    this.studentId = row.studentId._id;
-    // this.clId = row?.classId;
     console.log("row", row)
+    this.studentId = row.learnerId.id;
+    // this.clId = row?.classId;
+    
     let tempDirection: Direction;
     if (localStorage.getItem('isRtl') === 'true') {
       tempDirection = 'rtl';
@@ -255,7 +256,7 @@ export class InstructorLeaveRequestComponent
       this.dataSource.filteredData.map((x) => ({
       'Class Name': x.className,
       // "Roll No": x.studentId?.rollNo,
-      "Student Name": x.studentId?.name,
+      "Student Name": x.learnerId?.name,
       "Apply Date":formatDate(new Date(x.applyDate), 'yyyy-MM-dd', 'en') || '',
       // "From Date":formatDate(new Date(x.fromDate), 'yyyy-MM-dd', 'en') || '',
       "To Date":formatDate(new Date(x.toDate), 'yyyy-MM-dd', 'en') || '',
@@ -311,7 +312,7 @@ export class InstructorLeaveRequestComponent
     const data = this.dataSource.filteredData.map((user:any) =>
       [user.className,
         // user.studentId?.rollNo, 
-      user.studentId?.name, 
+      user.learnerId?.name, 
       formatDate(new Date(user.applyDate), 'yyyy-MM-dd', 'en') || '',
       // formatDate(new Date(user.fromDate), 'yyyy-MM-dd', 'en') || '',
       formatDate(new Date(user.toDate), 'yyyy-MM-dd', 'en') || '',
@@ -370,9 +371,9 @@ export class ExampleDataSource extends DataSource<LeaveRequest> {
       this.filterChange,
       this.paginator.page,
     ];
-    let instructorId = localStorage.getItem('id')
+    let headId = localStorage.getItem('id')
 
-    this.exampleDatabase.getAllLeaveRequest(instructorId);
+    this.exampleDatabase.getAllLeaveRequest(headId);
     return merge(...displayDataChanges).pipe(
       map(() => {
         // Filter data
@@ -380,8 +381,8 @@ export class ExampleDataSource extends DataSource<LeaveRequest> {
           .slice()
           .filter((leaveRequest: LeaveRequest) => {
             const searchStr = (
-              leaveRequest.className +
-              leaveRequest.studentId.name +
+              leaveRequest?.className +
+              leaveRequest.learnerId?.name +
               leaveRequest.toDate +
               leaveRequest.status +
               leaveRequest.reason
@@ -422,7 +423,7 @@ export class ExampleDataSource extends DataSource<LeaveRequest> {
           // [propertyA, propertyB] = [a.studentId.rollNo, b.studentId.rollNo];
           // break;
         case 'name':
-          [propertyA, propertyB] = [a.studentId.name, b.studentId.name];
+          [propertyA, propertyB] = [a.learnerId.name, b.learnerId.name];
           break;
         // case 'fromDate':
         //   [propertyA, propertyB] = [a.fromDate, b.fromDate];

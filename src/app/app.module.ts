@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
@@ -51,12 +51,15 @@ import { TrainerAnalyticsDashboardComponent } from './student/settings/trainer-a
 import { SupportDashboardComponent } from './student/settings/support-dashboard/support-dashboard.component';
 import { EditUpdateDashboardComponent } from './student/settings/dashboard-customz/edit-update-dashboard/edit-update-dashboard.component';
 import { TraineesDashboardComponent } from './student/settings/trainees-dashboard/trainees-dashboard.component';
+import { SuperAdminService } from './superAdmin/super-admin.service';
+
 
 // import { ChangeBgDirective } from './change-bg.directive';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
 }
+
 
 @NgModule({
   declarations: [
@@ -132,6 +135,7 @@ export function createTranslateLoader(http: HttpClient) {
       useClass: ErrorHandlerInterceptor,
       multi: true
     },
+    SuperAdminService,
   ],
   bootstrap: [AppComponent],
 })

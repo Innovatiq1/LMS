@@ -43,13 +43,18 @@ export class ProgramTimetableComponent implements OnInit {
     //   this.getApprovedCourse();
     //   this.getApprovedProgram();
     // }
-    if (userType == AppConstants.ADMIN_USERTYPE ||  AppConstants.ADMIN_ROLE|| userType == AppConstants.STUDENT_ROLE) {
+    // if (userType == AppConstants.ADMIN_USERTYPE ||  AppConstants.ADMIN_ROLE|| userType == AppConstants.STUDENT_ROLE) {
+    //   this.getClassesList();
+    // }
+    // if (userType == AppConstants.INSTRUCTOR_ROLE) {
+    //   console.log('test');
+    //   //this.getApprovedCourse();
+    //   // this.getInstructorApprovedProgram();
+    //   this.getClassesList();
+    // }
+    if (userType == AppConstants.ADMIN_USERTYPE|| userType == AppConstants.ADMIN_ROLE|| userType == AppConstants.STUDENT_ROLE) {
       this.getClassesList();
-    }
-    if (userType == AppConstants.INSTRUCTOR_ROLE) {
-      console.log('test');
-      //this.getApprovedCourse();
-      // this.getInstructorApprovedProgram();
+    } else {
       this.getClassesList();
     }
   }

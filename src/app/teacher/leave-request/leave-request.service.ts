@@ -52,21 +52,43 @@ export class InstructorLeaveRequestService extends UnsubscribeOnDestroyAdapter {
     //     },
     //   });
   }
-  updateLeaveRequest(leaveRequest: LeaveRequest,id:any): void {
-    this.dialogData = leaveRequest;
+  // updateLeaveRequest(leaveRequest: LeaveRequest,id:any): void {
+  //   this.dialogData = leaveRequest;
+  //   const apiUrl = `${this.defaultUrl}admin/leave/${id}`;
+
+  //   this.httpClient.put(apiUrl, leaveRequest)
+  //       .subscribe({
+  //         next: (data) => {
+  //           this.dialogData = leaveRequest;
+  //         },
+  //         error: (error: HttpErrorResponse) => {
+  //            // error code here
+  //         },
+  //       });
+  // }  
+  updateLeaveRequest(leaveRequest: LeaveRequest, id: any): void {
     const apiUrl = `${this.defaultUrl}admin/leave/${id}`;
 
     this.httpClient.put(apiUrl, leaveRequest)
-        .subscribe({
-          next: (data) => {
-            this.dialogData = leaveRequest;
-          },
-          error: (error: HttpErrorResponse) => {
-             // error code here
-          },
-        });
-  }  
-  
+      .subscribe({
+        next: (data) => {
+          // Update dialog data
+          this.dialogData = leaveRequest;
+
+          // Find and update the item in the current data
+          const updatedData = this.data.map(item =>
+            item.id === id ? leaveRequest : item
+          );
+
+          // Emit the new data
+          this.dataChange.next(updatedData);
+        },
+        error: (error: HttpErrorResponse) => {
+          // Handle error
+          console.error('Error updating leave request', error);
+        },
+      });
+  }
   
   deleteLeaveRequest(id: number): void {
     
