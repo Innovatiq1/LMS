@@ -34,6 +34,33 @@ font-weight: 500;
     margin-left: 15px;
   }
 }
+#draft{
+  margin-left: 20px;
+  // background: #90706D;
+  border: none;
+  width: 150px;
+  height: 35px;
+  color: #FFF;
+}
+#submit{
+  margin-left: -50px;
+}
+.label-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.label-container label {
+  margin-bottom: 0;
+}
+
+.label-container .btn {
+  padding: 0;
+  background: none;
+  border: none;
+  margin-top: -15px;
+}
 
 // #submit {
 //   margin-left: -10px;

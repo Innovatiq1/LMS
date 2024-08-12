@@ -33,6 +33,7 @@ import { ExamScoresComponent } from './exam-scores/exam-scores.component';
 import { StudentPendingCoursesComponent } from './student-pending-courses/student-pending-courses.component';
 import { VerificationListComponent } from './verification-list/verification-list.component';
 import { StudentCourseComponent } from './all-course/student-course/student-course.component';
+import { DraftedCoursesComponent } from './all-course/drafted-courses/drafted-courses.component';
 
 
 
@@ -59,7 +60,8 @@ import { StudentCourseComponent } from './all-course/student-course/student-cour
     ExamScoresComponent,
     StudentPendingCoursesComponent,
     VerificationListComponent,
-    StudentCourseComponent
+    StudentCourseComponent,
+    DraftedCoursesComponent
     
 
   ],

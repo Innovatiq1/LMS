@@ -166,6 +166,16 @@ export class CourseService {
       params: this.buildParams(filter),
     });
   }
+  getAllDraftedCoursesWithPagination(
+    filter?: Partial<CoursePaginationModel>
+  ): Observable<ApiResponse> {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId
+        const apiUrl = `${this.prefix}admin/courses-new?companyId=${userId}&status=draft`;
+
+    return this._Http.get<ApiResponse>(apiUrl, {
+      params: this.buildParams(filter),
+    });
+  }
 
   getAllPrograms(filter?: Partial<Program>,id?:any): Observable<ApiResponse> {
     const apiUrl = `${this.prefix}admin/courseprogram?companyId=${id}&status=active&status=inactive`;
@@ -311,13 +321,21 @@ export class CourseService {
         })
       );
   }
+  // saveCourse(course: any) {
+  //   const apiUrl = `${this.prefix}admin/courses-new/`;
+  //   return this._Http
+  //     .post<ApiResponse>(apiUrl, course)
+  //     .pipe(      
+  //     tap(response => console.log('API Response:', response)), // Log the response
+  //     map((response) =>  response));
+  // }
   saveCourse(course: any) {
     const apiUrl = `${this.prefix}admin/courses-new/`;
     return this._Http
       .post<ApiResponse>(apiUrl, course)
-      .pipe(      
-      tap(response => console.log('API Response:', response)), // Log the response
-      map((response) =>  response));
+      .pipe(
+        map((response) => response)
+      );
   }
   getCourseById(id: string) {
     const apiUrl = `${this.prefix}admin/courses-new/${id}`;
@@ -668,7 +686,14 @@ export class CourseService {
         const apiUrl = `${this.prefix}admin/studentClasses/studentcourses/${courseId}`;
         return this._Http.get<any>(apiUrl).pipe(map((response) => response));
       }
-    
+      public uploadFiles(formData: FormData): void {
+        
+      console.log("formdata", formData)
+    }
+    createBulkCourses(payload:any) {
+      const apiUrl = `${this.prefix}admin/courses-new/createBulkCourses`;
+      return this._Http.post<any>(apiUrl, payload).pipe(map((response) => response));
+    }
 }
 
 

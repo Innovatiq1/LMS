@@ -51,14 +51,15 @@
                                       <button mat-raised-button id="submit">Create</button>
                                     </div>
                                   </li>
-                                  <!-- <li class="tbl-header-btn">
-                                    <div class="m-l-10" [hidden]=!selection.hasValue() matTooltip="DELETE">
-                                      <button mat-mini-fab color="warn" (click)="removeSelectedRows()">
-                                        <mat-icon class="col-white">delete
-                                        </mat-icon>
-                                      </button>
+                                  <!-- <li>
+                                    <div class="upload-btn m-l-10" matTooltip="Bulk Upload">
+                                        <input
+                                          type="file"
+                                          (change)="onBulkUpload($event)"
+                                        />
                                     </div>
                                   </li> -->
+                                  
                                   <li>
                                     <div class="export-button m-l-10" matTooltip="XLSX">
                                       <img src="assets/excel.svg" alt="" (click)="exportExcel()" />
@@ -69,6 +70,14 @@
                                       <img src="assets/pdf (1).svg" alt="" (click)="generatePdf()" />
                                     </div>
                                   </li>
+                                  <!-- <li>
+                                    <div class="upload-btn m-l-10" matTooltip="Bulk Upload">
+                                        <input
+                                          type="file"
+                                          (change)="onBulkUpload($event)"
+                                        />
+                                    </div>
+                                  </li> -->
                                 </ul>
                               </div>
                             </div>
@@ -148,20 +157,20 @@
                                     <mat-header-cell *matHeaderCellDef mat-sort-header>Course
                                     </mat-header-cell>
                                     <mat-cell class="name" [class.name]="isCourse" *matCellDef="let row" (click)= "view ? viewCourse(row.id) : null"><span
-                                        class="mobile-label">Course Name:</span> <span>{{row.title |titlecase}}</span>
+                                        class="mobile-label">Course Name:</span> <span>{{ row.title ? (row.title | titlecase) : '--' }}</span>
                                     </mat-cell>
                                   </ng-container>
                                   <ng-container matColumnDef="code">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header>Course Code
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let row" (click)= "view ? viewCourse(row.id) : null"><span
-                                        class="mobile-label">Course Code:</span> {{row.courseCode}}
+                                        class="mobile-label">Course Code:</span> {{row.courseCode ? (row.courseCode) : "--"}}
                                     </mat-cell>
                                   </ng-container>
                                   <ng-container matColumnDef="creator">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header>Creator</mat-header-cell>
                                     <mat-cell *matCellDef="let row" [class.name]="isCreator" (click)= "view ? viewCourse(row.id) : null">
-                                      <span class="mobile-label">Creator:</span> {{row.creator}}
+                                      <span class="mobile-label">Creator:</span> {{row.creator ? (row.creator) : "--"}}
                                     </mat-cell>
                                   </ng-container>
                                  
@@ -184,14 +193,14 @@
                                     <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">Fee Type
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let row" (click)= "view ? viewCourse(row.id) : null"> <span
-                                        class="mobile-label">Fee Type:</span>{{row.feeType | titlecase}}
+                                        class="mobile-label">Fee Type:</span>{{row.feeType ? (row.feeType | titlecase) : "--"}}
                                     </mat-cell>
                                   </ng-container>
                                   <ng-container matColumnDef="Vendor">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">Vendor
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let row" (click)= "view ? viewCourse(row.id) : null"> <span
-                                        class="mobile-label">Vendor:</span>{{row.vendor}}
+                                        class="mobile-label">Vendor:</span>{{row.vendor ? (row.vendor) : "--"}}
                                     </mat-cell>
                                   </ng-container>
                                   <ng-container matColumnDef="Users">
@@ -208,14 +217,15 @@
                                     <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">Start Date
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let row" (click)= "view ? viewCourse(row.id) : null"> <span
-                                        class="mobile-label">Start Date:</span><span>{{row.sessionStartDate | date}}</span>
+                                        class="mobile-label">Start Date:</span><span>{{row.sessionStartDate ? (row.sessionStartDate | date) : "--"}}</span>
                                     </mat-cell>
                                   </ng-container>
                                   <ng-container matColumnDef="endDate">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">End Date
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let row" (click)= "view ? viewCourse(row.id) : null"> <span
-                                        class="mobile-label">End date:</span><span>{{row.sessionEndDate | date}}</span>
+                                        class="mobile-label">End date:</span><span>{{ row.sessionEndDate ?(row.sessionEndDate
+                                          | date) : "--"}}</span>
                                     </mat-cell>
                                   </ng-container>
                                   <ng-container matColumnDef="status">
