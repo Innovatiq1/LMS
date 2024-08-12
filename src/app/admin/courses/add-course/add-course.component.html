@@ -82,34 +82,19 @@
                   </mat-form-field>
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                  <label
-                    >Main Category <span class="mandatory">&nbsp;*</span></label
-                  >
-                  <mat-form-field
-                    class="example-full-width mb-3"
-                    appearance="outline"
-                  >
-                    <mat-select
-                      formControlName="main_category"
-                      required
-                      (selectionChange)="mainCategoryChange()"
-                    >
-                      <mat-option
-                        *ngFor="let item of mainCategories"
-                        [value]="item.id"
-                        [disabled]="viewUrl == true"
-                      >
+                  <div class="label-container">
+                    <label>Main Category <span class="mandatory">&nbsp;*</span></label>
+                    <button class="btn" [routerLink] ="['/student/settings/create-categories']">
+                      <img src="/assets/Close.svg"alt="plus" />
+                    </button>
+                  </div>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-select formControlName="main_category" required (selectionChange)="mainCategoryChange()">
+                      <mat-option *ngFor="let item of mainCategories" [value]="item.id" [disabled]="viewUrl == true">
                         {{ item.category_name }}
                       </mat-option>
                     </mat-select>
-                    <mat-error
-                      *ngIf="
-                        firstFormGroup
-                          .get('main_category')
-                          ?.hasError('required') ||
-                        firstFormGroup.get('main_category')?.touched
-                      "
-                    >
+                    <mat-error *ngIf="firstFormGroup.get('main_category')?.hasError('required') || firstFormGroup.get('main_category')?.touched">
                       Select Main Category
                     </mat-error>
                   </mat-form-field>
@@ -146,9 +131,12 @@
                   </mat-form-field>
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                  <label
-                    >Funding/Grant <span class="mandatory">&nbsp;*</span></label
-                  >
+                  <div class="label-container">
+                    <label>Funding/Grant <span class="mandatory">&nbsp;*</span></label>
+                    <button class="btn" [routerLink] = "['/student/settings/configuration/funding-grant']">
+                      <img src="/assets/Close.svg"alt="plus" />
+                    </button>
+                  </div>
                   <mat-form-field
                     class="example-full-width mb-3"
                     appearance="outline"
@@ -175,10 +163,12 @@
                   </mat-form-field>
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                  <label
-                    >Assign Coursekit
-                    <span class="mandatory">&nbsp;*</span></label
-                  >
+                  <div class="label-container">
+                    <label>Assign Coursekit <span class="mandatory">&nbsp;*</span></label>
+                    <button class="btn" [routerLink] = "['/admin/courses/create-course-kit']">
+                      <img src="/assets/Close.svg"alt="plus" />
+                    </button>
+                  </div>
                   <mat-form-field
                     class="example-full-width mb-3"
                     appearance="outline"
@@ -253,10 +243,12 @@
                   </mat-form-field>
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                  <label
-                    >Certificate Template
-                    <span class="mandatory">&nbsp;*</span></label
-                  >
+                  <div class="label-container">
+                    <label>Certificate Template <span class="mandatory">&nbsp;*</span></label>
+                    <button class="btn" [routerLink] = "['/student/settings/customize/certificate/template/create']">
+                      <img src="/assets/Close.svg"alt="plus" />
+                    </button>
+                  </div>
                   <mat-form-field
                     class="example-full-width mb-3"
                     appearance="outline"
@@ -315,10 +307,12 @@
                   class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
                   *ngIf="labelStatusCheck('Assign Assessment') && isTestIssueCertificate "
                 >
-                  <label
-                    >Assign Assessment
-                    </label
-                  >
+                  <div class="label-container">
+                    <label>Assign Assessment <span class="mandatory">&nbsp;*</span></label>
+                    <button class="btn" [routerLink] = "['/student/settings/add-questions']">
+                      <img src="/assets/Close.svg"alt="plus" />
+                    </button>
+                  </div>
                   <mat-form-field
                     class="example-full-width mb-3"
                     appearance="outline"
@@ -349,10 +343,12 @@
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
                 *ngIf="labelStatusCheck('Assign Exam Assessment') && isTestIssueCertificate" >
-                  <label
-                    >Assign Exam
-                    </label
-                  >
+                  <div class="label-container">
+                    <label>Assign Exam<span class="mandatory">&nbsp;*</span></label>
+                    <button class="btn" [routerLink] = "['/student/settings/add-questions']">
+                      <img src="/assets/Close.svg"alt="plus" />
+                    </button>
+                  </div>
                   <mat-form-field
                     class="example-full-width mb-3"
                     appearance="outline"
@@ -383,10 +379,12 @@
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" 
                 *ngIf="labelStatusCheck('Assign Feedback Questionnaire')">
-                  <label
-                    >Assign Feedback Questionnaire
-                    </label
-                  >
+                  <div class="label-container">
+                    <label>Assign Feedback Questionnaire <span class="mandatory">&nbsp;*</span></label>
+                    <button class="btn" [routerLink] = "['/student/settings/customize/create-feedback']">
+                      <img src="/assets/Close.svg"alt="plus" />
+                    </button>
+                  </div>
                   <mat-form-field
                     class="example-full-width mb-3"
                     appearance="outline"
@@ -709,7 +707,12 @@
                   class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
                   *ngIf="labelStatusCheck('Vendor')"
                 >
-                  <label>Vendor</label>
+                  <div class="label-container">
+                    <label>Vendor <span class="mandatory">&nbsp;*</span></label>
+                    <button class="btn" [routerLink] = "['/student/settings/configuration/vendor']">
+                      <img src="/assets/Close.svg"alt="plus" />
+                    </button>
+                  </div>
                   <mat-form-field
                     class="example-full-width mb-3"
                     appearance="outline"
@@ -880,6 +883,17 @@
                     >
                       Save
                     </button>
+                    <button
+                    mat-raised-button
+                    (click)="saveDraft('draft')"
+                    *ngIf="!editUrl && !viewUrl"
+                    id="draft" color="warn"
+                    [attr.data-bs-toggle]="
+                      firstFormGroup.valid ? 'modal' : null
+                    "
+                  >
+                    Save as draft
+                  </button>
                     <button
                       mat-raised-button
                       *ngIf="editUrl && !viewUrl"

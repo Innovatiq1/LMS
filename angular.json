@@ -62,7 +62,8 @@
               "./node_modules/moment/min/moment.min.js",
               "./node_modules/apexcharts/dist/apexcharts.min.js",
               "./node_modules/intl-tel-input/build/js/intlTelInput.min.js",
-              "./node_modules/bootstrap/dist/js/bootstrap.min.js"
+              "./node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "./node_modules/pdfjs-dist/build/pdf.worker.js"
             ]
           },
           "configurations": {
