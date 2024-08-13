@@ -270,7 +270,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     this.getCurrency();
     this.getAllVendors();
 
-    // Initialize form controls
+   
     this.mainCategoryControl = this.firstFormGroup.get(
       'main_category'
     ) as FormControl;
