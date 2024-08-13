@@ -2,11 +2,7 @@
   <div class="content-block">
     <div class="block-header" *ngFor="let breadscrum of breadscrums">
       <!-- breadcrumb -->
-      <app-breadcrumb
-        [title]="breadscrum.title"
-        [items]="breadscrum.items"
-        [active_item]="breadscrum.active"
-      >
+      <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
       </app-breadcrumb>
     </div>
     <div class="row clearfix">
@@ -20,63 +16,35 @@
               <!-- <form class="m-4" [formGroup]="firstFormGroup" (ngSubmit)="onSubmit()"> -->
               <div class="row">
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                  <label
-                    >Course Name <span class="mandatory">&nbsp;*</span></label
-                  >
-                  <mat-form-field
-                    class="example-full-width mb-3"
-                    appearance="outline"
-                  >
-                    <input
-                      matInput
-                      formControlName="title"
-                      placeholder="Enter Course Name"
-                      [readonly]="isInputReadonly()"
-                      required
-                    />
-                    <mat-error
-                      *ngIf="firstFormGroup.get('title')?.hasError('required')"
-                    >
+                  <label>Course Name <span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <input matInput formControlName="title" placeholder="Enter Course Name"
+                      [readonly]="isInputReadonly()" required />
+                    <mat-error *ngIf="firstFormGroup.get('title')?.hasError('required')">
                       Enter Course Name
                     </mat-error>
-                    <mat-error
-                      *ngIf="
+                    <mat-error *ngIf="
                         firstFormGroup.get('title')?.hasError('pattern') &&
                         firstFormGroup.get('title')?.touched
-                      "
-                    >
+                      ">
                       Enter a valid Course name
                     </mat-error>
                   </mat-form-field>
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                  <label
-                    >Course Code <span class="mandatory">&nbsp;*</span></label
-                  >
-                  <mat-form-field
-                    class="example-full-width mb-3"
-                    appearance="outline"
-                  >
-                    <input
-                      matInput
-                      formControlName="courseCode"
-                      placeholder="Enter Course Code"
-                      [readonly]="isInputReadonly()"
-                      required
-                    />
-                    <mat-error
-                      *ngIf="
+                  <label>Course Code <span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <input matInput formControlName="courseCode" placeholder="Enter Course Code"
+                      [readonly]="isInputReadonly()" required />
+                    <mat-error *ngIf="
                         firstFormGroup.get('courseCode')?.hasError('required')
-                      "
-                    >
+                      ">
                       Enter Course Code
                     </mat-error>
-                    <mat-error
-                      *ngIf="
+                    <mat-error *ngIf="
                         firstFormGroup.get('courseCode')?.hasError('pattern') &&
                         firstFormGroup.get('courseCode')?.touched
-                      "
-                    >
+                      ">
                       Enter a valid Course code
                     </mat-error>
                   </mat-form-field>
@@ -84,8 +52,8 @@
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <div class="label-container">
                     <label>Main Category <span class="mandatory">&nbsp;*</span></label>
-                    <button class="btn" [routerLink] ="['/student/settings/create-categories']">
-                      <img src="/assets/Close.svg"alt="plus" />
+                    <button class="btn" [routerLink]="['/student/settings/create-categories']">
+                      <img src="/assets/Close.svg" alt="plus" />
                     </button>
                   </div>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
@@ -94,7 +62,8 @@
                         {{ item.category_name }}
                       </mat-option>
                     </mat-select>
-                    <mat-error *ngIf="firstFormGroup.get('main_category')?.hasError('required') || firstFormGroup.get('main_category')?.touched">
+                    <mat-error
+                      *ngIf="firstFormGroup.get('main_category')?.hasError('required') || firstFormGroup.get('main_category')?.touched">
                       Select Main Category
                     </mat-error>
                   </mat-form-field>
@@ -102,30 +71,19 @@
               </div>
               <div class="row">
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                  <label
-                    >Sub Category <span class="mandatory">&nbsp;*</span></label
-                  >
-                  <mat-form-field
-                    class="example-full-width mb-3"
-                    appearance="outline"
-                  >
+                  <label>Sub Category <span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <mat-select formControlName="sub_category" required>
-                      <mat-option
-                        *ngFor="let item of subCategories"
-                        [value]="item.id"
-                        [disabled]="viewUrl == true"
-                      >
+                      <mat-option *ngFor="let item of subCategories" [value]="item.id" [disabled]="viewUrl == true">
                         {{ item.category_name }}
                       </mat-option>
                     </mat-select>
-                    <mat-error
-                      *ngIf="
+                    <mat-error *ngIf="
                         firstFormGroup
                           .get('sub_category')
                           ?.hasError('required') ||
                         firstFormGroup.get('sub_category')?.touched
-                      "
-                    >
+                      ">
                       Select Sub Category
                     </mat-error>
                   </mat-form-field>
@@ -133,639 +91,439 @@
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <div class="label-container">
                     <label>Funding/Grant <span class="mandatory">&nbsp;*</span></label>
-                    <button class="btn" [routerLink] = "['/student/settings/configuration/funding-grant']">
-                      <img src="/assets/Close.svg"alt="plus" />
+                    <button class="btn" [routerLink]="['/student/settings/configuration/funding-grant']">
+                      <img src="/assets/Close.svg" alt="plus" />
                     </button>
                   </div>
-                  <mat-form-field
-                    class="example-full-width mb-3"
-                    appearance="outline"
-                  >
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <mat-select formControlName="funding_grant" required>
-                      <mat-option
-                        *ngFor="let item of fundingGrants"
-                        [value]="item.id"
-                        [disabled]="viewUrl == true"
-                      >
+                      <mat-option *ngFor="let item of fundingGrants" [value]="item.id" [disabled]="viewUrl == true">
                         {{ item.grant_type }}
                       </mat-option>
                     </mat-select>
-                    <mat-error
-                      *ngIf="
+                    <mat-error *ngIf="
                         firstFormGroup
                           .get('funding_grant')
                           ?.hasError('required') ||
                         firstFormGroup.get('funding_grant')?.touched
-                      "
-                    >
+                      ">
                       Select Funding/Grant
                     </mat-error>
                   </mat-form-field>
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                  <label>Issue Certificate
+                    <span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-select formControlName="issueCertificate" (selectionChange)="onTestSelect($event)">
+                      <mat-option *ngFor="let item of CertificateIssue" [value]="item.code">
+                        {{ item.label }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="
+                        firstFormGroup
+                          .get('issueCertificate')
+                          ?.hasError('maxLength') ||
+                        firstFormGroup.get('issueCertificate')?.touched
+                      ">
+                      Choose Certificate Issue Type
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="isTestIssueCertificate">
+                  <label>Exam Type
+                    <span class="mandatory">&nbsp;*</span>
+                  </label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-select formControlName="examType" (selectionChange)="onExamTypeSelect($event)">
+                      <mat-option *ngFor="let item of examTypes" [value]="item.code">
+                        {{ item.label }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="
+                        firstFormGroup
+                          .get('examType')
+                          ?.hasError('maxLength') ||
+                        firstFormGroup.get('examType')?.touched
+                      ">
+                      Choose Exam Type
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
+                  *ngIf="labelStatusCheck('Assign Exam Assessment') && isTestIssueCertificate && (isExamTypeCertificate || isAfterExamType)">
                   <div class="label-container">
-                    <label>Assign Coursekit <span class="mandatory">&nbsp;*</span></label>
-                    <button class="btn" [routerLink] = "['/admin/courses/create-course-kit']">
-                      <img src="/assets/Close.svg"alt="plus" />
+                    <label>Assign Exam<span class="mandatory">&nbsp;*</span></label>
+                    <button class="btn" [routerLink]="['/student/settings/add-questions']">
+                      <img src="/assets/Close.svg" alt="plus" />
                     </button>
                   </div>
-                  <mat-form-field
-                    class="example-full-width mb-3"
-                    appearance="outline"
-                  >
-                    <mat-select formControlName="course_kit" required multiple>
-                      <mat-option
-                        *ngFor="let item of courseKits"
-                        [value]="item.id"
-                        [disabled]="viewUrl == true"
-                      >
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-select formControlName="exam_assessment">
+                      <mat-option *ngFor="let item of exam_assessments" [value]="item.id" [disabled]="viewUrl == true">
                         {{ item.name }}
                       </mat-option>
                     </mat-select>
-                    <mat-error
-                      *ngIf="
-                        firstFormGroup
-                          .get('course_kit')
-                          ?.hasError('required') ||
-                        firstFormGroup.get('course_kit')?.touched
-                      "
-                    >
+                    <mat-error *ngIf="
+                        firstFormGroup.get('exam_assessment')?.invalid &&
+                        firstFormGroup.get('exam_assessment')?.touched
+                      ">
+                      {{
+                      utils.getErrorMessage1(
+                      firstFormGroup.get("exam_assessment"),
+                      "e_assessment"
+                      )
+                      }}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
+                  *ngIf="labelStatusCheck('Assign Exam Assessment') && isTestIssueCertificate && isAfterExamType">
+                  <div class="label-container">
+                    <label>Assign Assessment <span class="mandatory">&nbsp;*</span></label>
+                    <button class="btn" [routerLink]="['/student/settings/add-questions']">
+                      <img src="/assets/Close.svg" alt="plus" />
+                    </button>
+                  </div>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-select formControlName="assessment">
+                      <mat-option *ngFor="let item of assessments" [value]="item.id" [disabled]="viewUrl == true">
+                        {{ item.name }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="
+                      firstFormGroup.get('assessment')?.invalid &&
+                      firstFormGroup.get('assessment')?.touched
+                    ">
+                      {{
+                      utils.getErrorMessage1(
+                      firstFormGroup.get("assessment"),
+                      "assessment"
+                      )
+                      }}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
+                  *ngIf="(isTestIssueCertificate && isAfterExamType) || isVideoIssueCertificate">
+                  <div class="label-container">
+                    <label>Assign Coursekit <span class="mandatory">&nbsp;*</span></label>
+                    <button class="btn" [routerLink]="['/admin/courses/create-course-kit']">
+                      <img src="/assets/Close.svg" alt="plus" />
+                    </button>
+                  </div>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-select formControlName="course_kit" multiple>
+                      <mat-option *ngFor="let item of courseKits" [value]="item.id" [disabled]="viewUrl == true">
+                        {{ item.name }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="
+                      firstFormGroup
+                        .get('course_kit')
+                        ?.hasError('required') ||
+                      firstFormGroup.get('course_kit')?.touched
+                    ">
                       Select Course Kit
                     </mat-error>
                   </mat-form-field>
                 </div>
-              </div>
-              <div class="row">
-                <div
-                  class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2"
-                  *ngIf="labelStatusCheck('Fee Type')"
-                >
-                  <label>Fee Type <span class="mandatory">&nbsp;*</span></label>
-                  <mat-form-field
-                    class="example-full-width mb-3"
-                    appearance="outline"
-                  >
-                    <mat-select
-                      formControlName="feeType"
-                      (selectionChange)="onSelect($event)"
-                    >
-                      <mat-option value="paid"> Paid </mat-option>
-                      <mat-option value="free"> Free </mat-option>
-                      <mat-option value="free"> Sponser </mat-option>
+
+
+                <!-- <div class="row"> -->
+
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
+                  *ngIf="labelStatusCheck('Assign Feedback Questionnaire')">
+                  <div class="label-container">
+                    <label>Assign Feedback Questionnaire <span class="mandatory">&nbsp;*</span></label>
+                    <button class="btn" [routerLink]="['/student/settings/customize/create-feedback']">
+                      <img src="/assets/Close.svg" alt="plus" />
+                    </button>
+                  </div>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-select formControlName="survey">
+                      <mat-option *ngFor="let item of feedbacks" [value]="item.id" [disabled]="viewUrl == true">
+                        {{ item.name }}
+                      </mat-option>
                     </mat-select>
-                    <mat-error
-                      *ngIf="
-                        firstFormGroup.get('feeType')?.hasError('required') ||
-                        firstFormGroup.get('feeType')?.touched
-                      "
-                    >
-                      Select Fee Type
+                    <mat-error *ngIf="
+                        firstFormGroup.get('survey')?.hasError('required') ||
+                        firstFormGroup.get('survey')?.touched
+                      ">
+                      Select Feedback Questionnaire
                     </mat-error>
                   </mat-form-field>
                 </div>
-
-                <div
-                  class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2"
-                  *ngIf="labelStatusCheck('Fees') && isPaid"
-                >
-                  <label>Fees </label>
-                  <mat-form-field
-                    class="example-full-width mb-3"
-                    appearance="outline"
-                  >
-                    <input
-                      matInput
-                      formControlName="fee"
-                      type="number"
-                      [readonly]="isInputReadonly()"
-                      placeholder="Enter Fees"
-                    />
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
+                  *ngIf="labelStatusCheck('Is Feedback Mandatory')">
+                  <label>Is Feedback Mandatory
+                    <span class="mandatory">&nbsp;*</span>
+                  </label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-select formControlName="isFeedbackRequired">
+                      <mat-option *ngFor="let item of booleanOpt" [value]="item.code">
+                        {{ item.label }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="
+                        firstFormGroup
+                          .get('isFeedbackRequired')
+                          ?.hasError('maxLength') ||
+                        firstFormGroup.get('isFeedbackRequired')?.touched
+                      ">
+                      Choose Feedback Mandatory or not
+                    </mat-error>
                   </mat-form-field>
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <div class="label-container">
                     <label>Certificate Template <span class="mandatory">&nbsp;*</span></label>
-                    <button class="btn" [routerLink] = "['/student/settings/customize/certificate/template/create']">
-                      <img src="/assets/Close.svg"alt="plus" />
+                    <button class="btn" [routerLink]="['/student/settings/customize/certificate/template/create']">
+                      <img src="/assets/Close.svg" alt="plus" />
                     </button>
                   </div>
-                  <mat-form-field
-                    class="example-full-width mb-3"
-                    appearance="outline"
-                  >
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <mat-select formControlName="certificate_temp">
-                      <mat-option
-                        *ngFor="let item of certificates"
-                        [value]="item.title"
-                      >
+                      <mat-option *ngFor="let item of certificates" [value]="item.title">
                         {{ item.title }}
                       </mat-option>
                     </mat-select>
-                    <mat-error
-                      *ngIf="
+                    <mat-error *ngIf="
                         firstFormGroup
                           .get('certificate_template')
                           ?.hasError('maxLength') ||
                         firstFormGroup.get('certificate_template')?.touched
-                      "
-                    >
+                      ">
+                      Enter Certificate Template
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+
+                <!-- </div> -->
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('Vendor')">
+                  <div class="label-container">
+                    <label>Vendor <span class="mandatory">&nbsp;*</span></label>
+                    <button class="btn" [routerLink]="['/student/settings/configuration/vendor']">
+                      <img src="/assets/Close.svg" alt="plus" />
+                    </button>
+                  </div>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-select formControlName="vendor">
+                      <mat-option *ngFor="let item of vendors" [value]="item.vendor" [disabled]="viewUrl == true">
+                        {{ item.vendor }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="
+                    firstFormGroup.get('vendor')?.hasError('maxLength') ||
+                    firstFormGroup.get('vendor')?.touched
+                  ">
                       Enter Vendor
                     </mat-error>
                   </mat-form-field>
+                  <!-- <mat-form-field class="example-full-width mb-3" appearance="outline">
+                <input matInput formControlName="vendor" [readonly]="isInputReadonly()" placeholder="Enter Vendor">
+                <mat-error
+                  *ngIf="firstFormGroup.get('vendor')?.hasError('maxLength') && firstFormGroup.get('vendor')?.touched">
+                  Enter Vendor
+                </mat-error>
+              </mat-form-field> -->
                 </div>
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
-                >
-                  <label
-                    >Issue Certificate
-                    <span class="mandatory">&nbsp;*</span></label
-                  >
-                  <mat-form-field
-                    class="example-full-width mb-3"
-                    appearance="outline"
-                  >
-                    <mat-select formControlName="issueCertificate" (selectionChange)="onTestSelect($event)">
-                      <mat-option
-                        *ngFor="let item of CertificateIssue"
-                        [value]="item.code"
-                      >
-                        {{ item.label }}
-                      </mat-option>
+
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2" *ngIf="labelStatusCheck('Fee Type')">
+                  <label>Fee Type <span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-select formControlName="feeType" (selectionChange)="onSelect($event)">
+                      <mat-option value="paid"> Paid </mat-option>
+                      <mat-option value="free"> Free </mat-option>
+                      <mat-option value="free"> Sponser </mat-option>
                     </mat-select>
-                    <mat-error
-                      *ngIf="
-                        firstFormGroup
-                          .get('issueCertificate')
-                          ?.hasError('maxLength') ||
-                        firstFormGroup.get('issueCertificate')?.touched
-                      "
-                    >
-                      Choose Certificate Issue Type
+                    <mat-error *ngIf="
+                      firstFormGroup.get('feeType')?.hasError('required') ||
+                      firstFormGroup.get('feeType')?.touched
+                    ">
+                      Select Fee Type
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <div
-                  class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
-                  *ngIf="labelStatusCheck('Assign Assessment') && isTestIssueCertificate "
-                >
-                  <div class="label-container">
-                    <label>Assign Assessment <span class="mandatory">&nbsp;*</span></label>
-                    <button class="btn" [routerLink] = "['/student/settings/add-questions']">
-                      <img src="/assets/Close.svg"alt="plus" />
-                    </button>
-                  </div>
-                  <mat-form-field
-                    class="example-full-width mb-3"
-                    appearance="outline"
-                  >
-                    <mat-select formControlName="assessment">
-                      <mat-option
-                        *ngFor="let item of assessments"
-                        [value]="item.id"
-                        [disabled]="viewUrl == true"
-                      >
-                        {{ item.name }}
-                      </mat-option>
-                    </mat-select>
-                    <mat-error
-                      *ngIf="
-                        firstFormGroup.get('assessment')?.invalid &&
-                        firstFormGroup.get('assessment')?.touched
-                      "
-                    >
-                      {{
-                        utils.getErrorMessage1(
-                          firstFormGroup.get("assessment"),
-                          "assessment"
-                        )
-                      }}
-                    </mat-error>
+
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2" *ngIf="labelStatusCheck('Fees') && isPaid">
+                  <label>Fees </label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <input matInput formControlName="fee" type="number" [readonly]="isInputReadonly()"
+                      placeholder="Enter Fees" />
                   </mat-form-field>
                 </div>
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
-                *ngIf="labelStatusCheck('Assign Exam Assessment') && isTestIssueCertificate" >
-                  <div class="label-container">
-                    <label>Assign Exam<span class="mandatory">&nbsp;*</span></label>
-                    <button class="btn" [routerLink] = "['/student/settings/add-questions']">
-                      <img src="/assets/Close.svg"alt="plus" />
-                    </button>
-                  </div>
-                  <mat-form-field
-                    class="example-full-width mb-3"
-                    appearance="outline"
-                  >
-                    <mat-select formControlName="exam_assessment" >
-                      <mat-option
-                        *ngFor="let item of exam_assessments"
-                        [value]="item.id"
-                        [disabled]="viewUrl == true"
-                      >
-                        {{ item.name }}
-                      </mat-option>
-                    </mat-select>
-                    <mat-error
-                      *ngIf="
-                        firstFormGroup.get('exam_assessment')?.invalid &&
-                        firstFormGroup.get('exam_assessment')?.touched
-                      "
-                    >
-                      {{
-                        utils.getErrorMessage1(
-                          firstFormGroup.get("exam_assessment"),
-                          "e_assessment"
-                        )
-                      }}
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" 
-                *ngIf="labelStatusCheck('Assign Feedback Questionnaire')">
-                  <div class="label-container">
-                    <label>Assign Feedback Questionnaire <span class="mandatory">&nbsp;*</span></label>
-                    <button class="btn" [routerLink] = "['/student/settings/customize/create-feedback']">
-                      <img src="/assets/Close.svg"alt="plus" />
-                    </button>
-                  </div>
-                  <mat-form-field
-                    class="example-full-width mb-3"
-                    appearance="outline"
-                  >
-                    <mat-select formControlName="survey">
-                      <mat-option
-                        *ngFor="let item of feedbacks"
-                        [value]="item.id"
-                        [disabled]="viewUrl == true"
-                      >
-                        {{ item.name }}
-                      </mat-option>
-                    </mat-select>
-                    <mat-error
-                      *ngIf="
-                        firstFormGroup.get('survey')?.hasError('required') ||
-                        firstFormGroup.get('survey')?.touched
-                      "
-                    >
-                      Select Feedback Questionnaire
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-                <div
-                  class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2"
-                  *ngIf="labelStatusCheck('Currency') && isPaid"
-                >
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2" *ngIf="labelStatusCheck('Currency') && isPaid">
                   <label>Currency</label>
-                  <mat-form-field
-                    class="example-full-width mb-3"
-                    appearance="outline"
-                  >
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <mat-select formControlName="currency_code">
-                      <mat-option value="USD" [disabled]="viewUrl == true"
-                        >USD</mat-option
-                      >
-                      <mat-option value="SGD" [disabled]="viewUrl == true"
-                        >SGD</mat-option
-                      >
-                      <mat-option value="NZD" [disabled]="viewUrl == true"
-                        >NZD</mat-option
-                      >
-                      <mat-option value="YEN" [disabled]="viewUrl == true"
-                        >YEN</mat-option
-                      >
-                      <mat-option value="GBP" [disabled]="viewUrl == true"
-                        >GBP</mat-option
-                      >
-                      <mat-option value="KWN" [disabled]="viewUrl == true"
-                        >KWN</mat-option
-                      >
-                      <mat-option value="IDR" [disabled]="viewUrl == true"
-                        >IDR</mat-option
-                      >
-                      <mat-option value="TWD" [disabled]="viewUrl == true"
-                        >TWD</mat-option
-                      >
-                      <mat-option value="MYR" [disabled]="viewUrl == true"
-                        >MYR</mat-option
-                      >
-                      <mat-option value="AUD" [disabled]="viewUrl == true"
-                        >AUD</mat-option
-                      >
+                      <mat-option value="USD" [disabled]="viewUrl == true">USD</mat-option>
+                      <mat-option value="SGD" [disabled]="viewUrl == true">SGD</mat-option>
+                      <mat-option value="NZD" [disabled]="viewUrl == true">NZD</mat-option>
+                      <mat-option value="YEN" [disabled]="viewUrl == true">YEN</mat-option>
+                      <mat-option value="GBP" [disabled]="viewUrl == true">GBP</mat-option>
+                      <mat-option value="KWN" [disabled]="viewUrl == true">KWN</mat-option>
+                      <mat-option value="IDR" [disabled]="viewUrl == true">IDR</mat-option>
+                      <mat-option value="TWD" [disabled]="viewUrl == true">TWD</mat-option>
+                      <mat-option value="MYR" [disabled]="viewUrl == true">MYR</mat-option>
+                      <mat-option value="AUD" [disabled]="viewUrl == true">AUD</mat-option>
                     </mat-select>
                   </mat-form-field>
                 </div>
-                <div
-                  class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2"
-                  *ngIf="labelStatusCheck('Days')"
-                >
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2" *ngIf="labelStatusCheck('Days')">
                   <label>Days</label>
-                  <mat-form-field
-                    class="example-full-width mb-3"
-                    appearance="outline"
-                  >
-                    <input
-                      matInput
-                      type="number"
-                      formControlName="course_duration_in_days"
-                      [readonly]="isInputReadonly()"
-                      placeholder="Enter Days"
-                    />
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <input matInput type="number" formControlName="course_duration_in_days"
+                      [readonly]="isInputReadonly()" placeholder="Enter Days" />
                     <!-- <mat-error *ngIf="firstFormGroup.get('course_duration_in_days')?.hasError('required')">
                            Enter Days
                           </mat-error> -->
-                    <mat-error
-                      *ngIf="
+                    <mat-error *ngIf="
                         firstFormGroup
                           .get('course_duration_in_days')
                           ?.hasError('min') &&
                         firstFormGroup.get('course_duration_in_days')?.touched
-                      "
-                    >
+                      ">
                       Enter Minimum 1 day
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <div
-                  class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2"
-                  *ngIf="labelStatusCheck('Training Hours')"
-                >
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2" *ngIf="labelStatusCheck('Training Hours')">
                   <label>Training Hours</label>
-                  <mat-form-field
-                    class="example-full-width mb-3"
-                    appearance="outline"
-                  >
-                    <input
-                      matInput
-                      formControlName="training_hours"
-                      type="number"
-                      [readonly]="isInputReadonly()"
-                      placeholder="Enter Training Days"
-                    />
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <input matInput formControlName="training_hours" type="number" [readonly]="isInputReadonly()"
+                      placeholder="Enter Training Days" />
                     <!-- <mat-error *ngIf="firstFormGroup.get('training_hours')?.hasError('required')">
                             Enter Training Hours
                            </mat-error> -->
-                    <mat-error
-                      *ngIf="
+                    <mat-error *ngIf="
                         firstFormGroup
                           .get('training_hours')
                           ?.hasError('pattern') &&
                         firstFormGroup.get('training_hours')?.touched
-                      "
-                    >
+                      ">
                       Enter Valid Digits
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <div
-                  class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
-                  *ngIf="labelStatusCheck('Start Date')"
-                >
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('Start Date')">
                   <label>Start Date</label>
-                  <input
-                    type="date"
-                    formControlName="sessionStartDate"
-                    id="date"
-                    class="form-control"
-                  />
+                  <input type="date" formControlName="sessionStartDate" id="date" class="form-control" />
                 </div>
-                <div
-                  class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
-                  *ngIf="labelStatusCheck('End Date')"
-                >
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('End Date')">
                   <label>End Date</label>
-                  <input
-                    type="date"
-                    formControlName="sessionEndDate"
-                    class="form-control"
-                    id="date"
-                  />
+                  <input type="date" formControlName="sessionEndDate" class="form-control" id="date" />
                 </div>
 
-                <div
-                  class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
-                  *ngIf="labelStatusCheck('Skill Connect Code')"
-                >
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('Skill Connect Code')">
                   <label>Skill Connect Code</label>
-                  <mat-form-field
-                    class="example-full-width mb-3"
-                    appearance="outline"
-                  >
-                    <input
-                      matInput
-                      formControlName="skill_connect_code"
-                      [readonly]="isInputReadonly()"
-                      placeholder="Enter Skill Connect Code"
-                    />
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <input matInput formControlName="skill_connect_code" [readonly]="isInputReadonly()"
+                      placeholder="Enter Skill Connect Code" />
                     <!-- <mat-error *ngIf="firstFormGroup.get('skill_connect_code')?.hasError('maxLength')">
                             Enter Days
                            </mat-error> -->
-                    <mat-error
-                      *ngIf="
+                    <mat-error *ngIf="
                         firstFormGroup
                           .get('skill_connect_code')
                           ?.hasError('pattern') &&
                         firstFormGroup.get('skill_connect_code')?.touched
-                      "
-                    >
+                      ">
                       Enter Valid Skill Connect Code
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <div
-                  class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
-                  *ngIf="labelStatusCheck('Description')"
-                >
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('Description')">
                   <label>Description</label>
-                  <mat-form-field
-                    class="example-full-width mb-3"
-                    appearance="outline"
-                  >
-                    <input
-                      matInput
-                      formControlName="course_description"
-                      [readonly]="isInputReadonly()"
-                      placeholder="Enter Description"
-                    />
-                    <mat-error
-                      *ngIf="
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <input matInput formControlName="course_description" [readonly]="isInputReadonly()"
+                      placeholder="Enter Description" />
+                    <mat-error *ngIf="
                         firstFormGroup
                           .get('course_description')
                           ?.hasError('maxLength') &&
                         firstFormGroup.get('course_description')?.touched
-                      "
-                    >
+                      ">
                       Enter Description
                     </mat-error>
                   </mat-form-field>
                 </div>
 
-                <div
-                  class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
-                  *ngIf="labelStatusCheck('PDU Technical')"
-                >
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('PDU Technical')">
                   <label>PDU Technical</label>
-                  <mat-form-field
-                    class="example-full-width mb-3"
-                    appearance="outline"
-                  >
-                    <input
-                      matInput
-                      formControlName="pdu_technical"
-                      [readonly]="isInputReadonly()"
-                    />
-                    <mat-error
-                      *ngIf="
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <input matInput formControlName="pdu_technical" [readonly]="isInputReadonly()" />
+                    <mat-error *ngIf="
                         firstFormGroup
                           .get('pdu_technical')
                           ?.hasError('pattern') &&
                         firstFormGroup.get('pdu_technical')?.touched
-                      "
-                    >
+                      ">
                       Enter Digits
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <div
-                  class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
-                  *ngIf="labelStatusCheck('PDU Leadership')"
-                >
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('PDU Leadership')">
                   <label>PDU Leadership</label>
-                  <mat-form-field
-                    class="example-full-width mb-3"
-                    appearance="outline"
-                  >
-                    <input
-                      matInput
-                      formControlName="pdu_leadership"
-                      [readonly]="isInputReadonly()"
-                    />
-                    <mat-error
-                      *ngIf="
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <input matInput formControlName="pdu_leadership" [readonly]="isInputReadonly()" />
+                    <mat-error *ngIf="
                         firstFormGroup
                           .get('pdu_leadership')
                           ?.hasError('pattern') &&
                         firstFormGroup.get('pdu_leadership')?.touched
-                      "
-                    >
+                      ">
                       Enter Digits
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <div
-                  class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
-                  *ngIf="labelStatusCheck('PDU Startegic')"
-                >
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('PDU Startegic')">
                   <label>PDU Startegic</label>
-                  <mat-form-field
-                    class="example-full-width mb-3"
-                    appearance="outline"
-                  >
-                    <input
-                      matInput
-                      formControlName="pdu_strategic"
-                      [readonly]="isInputReadonly()"
-                    />
-                    <mat-error
-                      *ngIf="
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <input matInput formControlName="pdu_strategic" [readonly]="isInputReadonly()" />
+                    <mat-error *ngIf="
                         firstFormGroup
                           .get('pdu_strategic')
                           ?.hasError('pattern') &&
                         firstFormGroup.get('pdu_strategic')?.touched
-                      "
-                    >
+                      ">
                       Enter Digits
                     </mat-error>
                   </mat-form-field>
                 </div>
 
-                <div
-                  class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
-                  *ngIf="labelStatusCheck('Website Link')"
-                >
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('Website Link')">
                   <label>Website Link</label>
-                  <mat-form-field
-                    class="example-full-width mb-3"
-                    appearance="outline"
-                  >
-                    <input
-                      matInput
-                      formControlName="website_link"
-                      [readonly]="isInputReadonly()"
-                      placeholder="www"
-                    />
-                    <mat-error
-                      *ngIf="
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <input matInput formControlName="website_link" [readonly]="isInputReadonly()" placeholder="www" />
+                    <mat-error *ngIf="
                         firstFormGroup
                           .get('website_link')
                           ?.hasError('pattern') &&
                         firstFormGroup.get('website_link')?.touched
-                      "
-                    >
+                      ">
                       Enter Website
                     </mat-error>
                   </mat-form-field>
                 </div>
 
-                <div
-                  class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
-                  *ngIf="labelStatusCheck('Vendor')"
-                >
-                  <div class="label-container">
-                    <label>Vendor <span class="mandatory">&nbsp;*</span></label>
-                    <button class="btn" [routerLink] = "['/student/settings/configuration/vendor']">
-                      <img src="/assets/Close.svg"alt="plus" />
-                    </button>
-                  </div>
-                  <mat-form-field
-                    class="example-full-width mb-3"
-                    appearance="outline"
-                  >
-                    <mat-select formControlName="vendor">
-                      <mat-option
-                        *ngFor="let item of vendors"
-                        [value]="item.vendor"
-                        [disabled]="viewUrl == true"
-                      >
-                        {{ item.vendor }}
-                      </mat-option>
-                    </mat-select>
-                    <mat-error
-                      *ngIf="
-                        firstFormGroup.get('vendor')?.hasError('maxLength') ||
-                        firstFormGroup.get('vendor')?.touched
-                      "
-                    >
-                      Enter Vendor
-                    </mat-error>
-                  </mat-form-field>
-                  <!-- <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <input matInput formControlName="vendor" [readonly]="isInputReadonly()" placeholder="Enter Vendor">
-                    <mat-error
-                      *ngIf="firstFormGroup.get('vendor')?.hasError('maxLength') && firstFormGroup.get('vendor')?.touched">
-                      Enter Vendor
-                    </mat-error>
-                  </mat-form-field> -->
-                </div>
-                <div
-                  class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
-                  *ngIf="!viewUrl"
-                >
+
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="!viewUrl">
                   <label>Thumbnail</label>
                   <div class="file-drop-area">
                     <div class="file">
                       <button mat-raised-button color="primary" class="btn">
                         Choose file
-                        <input
-                          formControlName="image_link"
-                          (change)="onFileUpload($event)"
-                          [readonly]="isInputReadonly()"
-                          class="file-input"
-                          type="file"
-                        />
+                        <input formControlName="image_link" (change)="onFileUpload($event)"
+                          [readonly]="isInputReadonly()" class="file-input" type="file" />
                       </button>
                       <span class="file-msg">
                         <h6>
                           {{
-                            uploadedImage
-                              ? uploadedImage
-                              : "Drag and Drop File Here"
+                          uploadedImage
+                          ? uploadedImage
+                          : "Drag and Drop File Here"
                           }}
                         </h6>
                       </span>
@@ -773,81 +531,16 @@
                   </div>
                   <!-- <app-file-upload formControlName="image_link" (change)="onFileUpload($event)"></app-file-upload> -->
                 </div>
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
-                *ngIf="labelStatusCheck('Is Feedback Mandatory')"
-                >
-                  <label
-                    >Is Feedback Mandatory
-                    <!-- <span class="mandatory">&nbsp;*</span> -->
-                    </label
-                  >
-                  <mat-form-field
-                    class="example-full-width mb-3"
-                    appearance="outline"
-                  >
-                    <mat-select formControlName="isFeedbackRequired">
-                      <mat-option
-                        *ngFor="let item of booleanOpt"
-                        [value]="item.code"
-                      >
-                        {{ item.label }}
-                      </mat-option>
-                    </mat-select>
-                    <mat-error
-                      *ngIf="
-                        firstFormGroup
-                          .get('isFeedbackRequired')
-                          ?.hasError('maxLength') ||
-                        firstFormGroup.get('isFeedbackRequired')?.touched
-                      "
-                    >
-                      Choose Feedback Mandatory or not
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
-                *ngIf="labelStatusCheck('Exam Type')"
-                >
-                  <label
-                    >Exam Type
-                    </label
-                  >
-                  <mat-form-field
-                    class="example-full-width mb-3"
-                    appearance="outline"
-                  >
-                    <mat-select formControlName="examType">
-                      <mat-option
-                        *ngFor="let item of examTypes"
-                        [value]="item.code"
-                      >
-                        {{ item.label }}
-                      </mat-option>
-                    </mat-select>
-                    <mat-error
-                      *ngIf="
-                        firstFormGroup
-                          .get('examType')
-                          ?.hasError('maxLength') ||
-                        firstFormGroup.get('examType')?.touched
-                      "
-                    >
-                      Choose Exam Type
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-                
+
+
+
               </div>
               <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
                   <label>Course Detailed Description</label>
                   <!-- <ckeditor [editor]="Editor" id="editor" formControlName="course_detailed_description" ></ckeditor> -->
-                  <angular-editor
-                    placeholder="Enter text..."
-                    id="editor"
-                    formControlName="course_detailed_description"
-                    [config]="config"
-                  ></angular-editor>
+                  <angular-editor placeholder="Enter text..." id="editor" formControlName="course_detailed_description"
+                    [config]="config"></angular-editor>
                 </div>
               </div>
               <!-- </form> -->
@@ -860,49 +553,27 @@
               <div class="col-md-3 mb-5">
                 <div class="d-grid d-md-flex">
                   <div style="margin-left: -44.5rem; margin-right: 43.5rem">
-                    <button
-                      mat-raised-button
-                      class="btn-space"
-                      *ngIf="editUrl || viewUrl"
-                      type="button"
-                      id="back"
-                      (click)="cancel()"
-                    >
+                    <button mat-raised-button class="btn-space" *ngIf="editUrl || viewUrl" type="button" id="back"
+                      (click)="cancel()">
                       Back
                     </button>
                   </div>
                   <div>
-                    <button
-                      mat-raised-button
-                      (click)="submit()"
-                      *ngIf="!editUrl && !viewUrl"
-                      id="submit"
+                    <button mat-raised-button (click)="submit()" *ngIf="!editUrl && !viewUrl" id="submit"
                       [attr.data-bs-toggle]="
                         firstFormGroup.valid ? 'modal' : null
-                      "
-                    >
+                      ">
                       Save
                     </button>
-                    <button
-                    mat-raised-button
-                    (click)="saveDraft('draft')"
-                    *ngIf="!editUrl && !viewUrl"
-                    id="draft" color="warn"
-                    [attr.data-bs-toggle]="
+                    <button mat-raised-button (click)="saveDraft('draft')" *ngIf="!editUrl && !viewUrl" id="draft"
+                      color="warn" [attr.data-bs-toggle]="
                       firstFormGroup.valid ? 'modal' : null
-                    "
-                  >
-                    Save as draft
-                  </button>
-                    <button
-                      mat-raised-button
-                      *ngIf="editUrl && !viewUrl"
-                      id="save"
-                      [attr.data-bs-toggle]="
+                    ">
+                      Save as draft
+                    </button>
+                    <button mat-raised-button *ngIf="editUrl && !viewUrl" id="save" [attr.data-bs-toggle]="
                         firstFormGroup.valid ? 'modal' : null
-                      "
-                      (click)="save()"
-                    >
+                      " (click)="save()">
                       Submit
                     </button>
                   </div>

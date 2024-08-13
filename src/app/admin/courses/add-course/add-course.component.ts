@@ -23,11 +23,6 @@ import { Subscription } from 'rxjs';
 import { StudentsService } from 'app/admin/students/students.service';
 import { UtilsService } from '@core/service/utils.service';
 import { CommonService } from '@core/service/common.service';
-import * as JSZip from 'jszip';
-import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf';
-
-// Use a CDN for the worker script
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
 @Component({
   selector: 'app-add-course',
@@ -95,7 +90,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     { code: false, label: 'No' },
   ];
   examTypes: any[] = [
-    { code: 'after', label: 'After Assessment' },
+    { code: 'after', label: 'After Video / Assessment' },
     { code: 'direct', label: 'Direct' },
   ];
   CertificateIssue: any[] = [
@@ -103,6 +98,9 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     { code: 'video', label: 'After Video' },
   ];
   isTestIssueCertificate: boolean = false;
+  isVideoIssueCertificate: boolean = false;
+  isExamTypeCertificate: boolean = false;
+  isAfterExamType: boolean = false;
   draftId!: string;
   breadscrums = [
     {
@@ -140,7 +138,6 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   };
   vendors: any;
   certificates: any;
-  private showAlert = false;
 
   constructor(
     private router: Router,
@@ -235,10 +232,10 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         ...this.utils.validators.e_assessment,
       ]),
       survey: new FormControl(null, []),
-      course_kit: new FormControl('', [Validators.required]),
-      vendor: new FormControl('', [Validators.maxLength(100)]),
-      isFeedbackRequired: new FormControl(null, []),
-      examType: new FormControl('', []),
+      course_kit: new FormControl('', []),
+      vendor: new FormControl('',[Validators.required, Validators.maxLength(100)]),
+      isFeedbackRequired: new FormControl(null, [Validators.required]),
+      examType: new FormControl('', [ ]),
       issueCertificate: new FormControl('', [Validators.required]),
       certificate_temp: new FormControl(null, [Validators.required]),
     });
@@ -270,7 +267,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     this.getCurrency();
     this.getAllVendors();
 
-    // Initialize form controls
+   
     this.mainCategoryControl = this.firstFormGroup.get(
       'main_category'
     ) as FormControl;
@@ -817,6 +814,20 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   onTestSelect(event: any) {
     const selectedValue = event.value;
     this.isTestIssueCertificate = selectedValue === 'test';
+    this.isVideoIssueCertificate = selectedValue === 'video';
+  
+    // Reset exam type if issueCertificate is 'video'
+    if (this.isVideoIssueCertificate) {
+        this.firstFormGroup.get('examType')?.reset();
+        this.isExamTypeCertificate = false;
+        this.isAfterExamType = false; // Ensure 'after' is also reset
+    }
+}
+  
+  onExamTypeSelect(event: any) {
+    const selectedValue = event.value;
+    this.isExamTypeCertificate = selectedValue === 'direct';
+    this.isAfterExamType = selectedValue === 'after';
   }
   setup() {
     var userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
@@ -1049,6 +1060,33 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         issueCertificate: this.course?.issueCertificate,
         certificate_temp: this.course?.certificate_template,
       });
+      if (this.course?.issueCertificate === 'test') {
+        this.isTestIssueCertificate = true;
+        if (this.course?.examType === 'direct') {
+          this.isExamTypeCertificate = true;
+          this.isAfterExamType = false;
+          // Patch only assign exam
+          this.firstFormGroup.patchValue({
+            exam_assessment: this.course?.exam_assessment?.id,
+          });
+        } else if (this.course?.examType === 'after') {
+          this.isAfterExamType = true;
+          this.isExamTypeCertificate = false;
+          // Patch assign exam, assign assessment, and assign coursekit
+          this.firstFormGroup.patchValue({
+            exam_assessment: this.course?.exam_assessment?.id,
+            assessment: this.course?.assessment?.id,
+            course_kit: this.course?.course_kit?.map((item: { id: any }) => item?.id) || [],
+          });
+        }
+      } else if (this.course?.issueCertificate === 'video') {
+        this.isVideoIssueCertificate = true;
+        // Patch assign coursekit only
+        this.firstFormGroup.patchValue({
+          course_kit: this.course?.course_kit?.map((item: { id: any }) => item?.id) || [],
+        });
+      }
+  
       this.mainCategoryChange();
       this.cd.detectChanges();
     });
@@ -1073,155 +1111,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     }
     return false;
   }
-  async onBulkUpload(event: any): Promise<void> {
-    const selectedFile: File = event.target.files[0];
-    const fileType = selectedFile.type;
-    if (selectedFile) {
-      const formData = new FormData();
-  
-      if (fileType === 'application/pdf') {
-        await this.parsePDF(selectedFile);
-      } else if (fileType === 'application/vnd.ms-excel' || fileType === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
-        this.parseExcel(selectedFile, formData);
-      }else if (
-        fileType ===
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-      ) {
-        this.parseWord(selectedFile);
-      } 
-  console.log("hi")
-      // If it's not an Excel file, we just handle it as a PDF or other file
-      this.logFormData(formData);
-      this.courseService.uploadFiles(formData);
-      this.showAlert = true;
-      
-      event.target.value = null;
-    }
-  }
-  
-  public logFormData(formData: FormData) {
-    formData.forEach((value, key) => {
-      console.log(`${key}:`, value);
-      const courseData = this.firstFormGroup.value;
-    let creator = JSON.parse(localStorage.getItem('user_data')!).user.name;
-    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-    let courses = JSON.parse(localStorage.getItem('user_data')!).user.courses;
-    let payload = {
-      companyId: userId,
-      courses: courses,
-      formdata : value
-    };
-    this.courseService.createBulkCourses(payload).subscribe(
-      (response: any) => {
-          Swal.fire({
-            title: 'Successful',
-            text: 'Uploaded successfully ',
-            icon: 'success',
-          });
-          window.history.back();
-      },
-      (error: any) => {
-        console.log('err', error);
-      }
-    );
-    });
-  }
 
-  async  parsePDF(selectedFile: File) {
-    const reader = new FileReader();
-  
-    reader.onload = async (e: any) => {
-      try {
-        const arrayBuffer = e.target.result as ArrayBuffer;
-  
-        // Load PDF document
-        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-        const numPages = pdf.numPages;
-        let pdfText = '';
-  
-        // Iterate through pages and extract text
-        for (let pageNum = 1; pageNum <= numPages; pageNum++) {
-          const page = await pdf.getPage(pageNum);
-          const textContent = await page.getTextContent();
-          pdfText += textContent.items.map((item: any) => item.str).join(' ');
-        }
-  
-        // Log the content to the console
-        console.log('Extracted Text Content:', pdfText);
-  
-      } catch (error) {
-        console.error('Error parsing PDF document:', error);
-      }
-    };
-  
-    reader.onerror = (error) => {
-      console.error('Error reading file:', error);
-    };
-  
-    reader.readAsArrayBuffer(selectedFile);
-  }
-
-  async parseExcel(selectedFile: File, formData: FormData) {
-    const reader = new FileReader();
-        reader.onload = (e: any) => {
-          const data = new Uint8Array(e.target.result);
-          const workbook = XLSX.read(data, { type: 'array' });
-  
-          const sheetName = workbook.SheetNames[0];
-          const worksheet = workbook.Sheets[sheetName];
-          const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-          formData.append('excelData', JSON.stringify(jsonData));
-          console.log("data1111", formData)
-        this.logFormData(formData);
-          this.courseService.uploadFiles(formData);
-          this.showAlert = true;
-          
-          e.target.value = null;
-        };
-        reader.readAsArrayBuffer(selectedFile);
-        return; // Exit the function as we're processing the file asynchronously
-      }
-   
-async  parseWord(selectedFile: File) {
-  const reader = new FileReader();
-
-  reader.onload = async (e: any) => {
-    try {
-      const arrayBuffer = e.target.result as ArrayBuffer;
-      const zip = new JSZip();
-      const content = await zip.loadAsync(arrayBuffer);
-
-      // Check if the file exists in the zip
-      const documentFile = content.file('word/document.xml');
-      if (documentFile) {
-        // Extract document XML
-        const documentXML = await documentFile.async('text');
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(documentXML, 'application/xml');
-        const textNodes = xmlDoc.getElementsByTagName('w:t');
-
-        let plainText = '';
-        for (let i = 0; i < textNodes.length; i++) {
-          plainText += textNodes[i].textContent || '';
-        }
-
-        // Log the content to the console
-        console.log('Extracted Text Content:', plainText);
-      } else {
-        console.error('Document XML file not found in the zip.');
-      }
-      
-    } catch (error) {
-      console.error('Error parsing Word document:', error);
-    }
-  };
-
-  reader.onerror = (error) => {
-    console.error('Error reading file:', error);
-  };
-
-  reader.readAsArrayBuffer(selectedFile);
-}
    }
 
 

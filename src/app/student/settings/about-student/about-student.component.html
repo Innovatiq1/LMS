@@ -260,8 +260,97 @@
                 </div>
                 <!-- </div> -->
               </div>
-
               <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
+                <!-- <div class="card" style="border-radius: 31px;"> -->
+                <div class="header mt-3">
+                  <h2>Completed Programs</h2>
+                </div>
+                <div class="table-wrapper">
+                  <div class="table-responsive">
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th>Program Name</th>
+                          <th>Certificate</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngIf="studentCompletedPrograms.length === 0">
+                          <td colspan="2" class="text-center">No records</td>
+                        </tr>
+                        <tr
+                          style="cursor: pointer"
+                          *ngFor="let data of studentCompletedPrograms"
+                        >
+                          <!-- <td class="table-img">
+                              <img src="{{class?.courseId?.image_link}}" alt="course">
+                            </td> -->
+                          <td>
+                            {{
+                              data?.classId?.courseId?.title | truncate : 45
+                            }}
+                          </td>
+                          <td>
+                            <a
+                            href="{{ data.certifiacteUrl }}"
+                            target="_blank"
+                          >
+                            <mat-icon>download</mat-icon></a
+                          >
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <!-- </div> -->
+              </div>
+              <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
+                <!-- <div class="card" style="border-radius: 31px;"> -->
+                <div class="header mt-3">
+                  <h2>Completed Courses</h2>
+                </div>
+                <div class="table-wrapper">
+                  <div class="table-responsive">
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th>Course Name</th>
+                          <th>Certificate</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngIf="studentCompletedClasses.length === 0">
+                          <td colspan="2" class="text-center">No records</td>
+                        </tr>
+                        <tr
+                          style="cursor: pointer"
+                          *ngFor="let data of studentCompletedClasses"
+                        >
+                          <!-- <td class="table-img">
+                              <img src="{{class?.courseId?.image_link}}" alt="course">
+                            </td> -->
+                          <td>
+                            {{
+                              data?.classId?.courseId?.title | truncate : 45
+                            }}
+                          </td>
+                          <td>
+                            <a
+                            href="{{ data.certifiacteUrl }}"
+                            target="_blank"
+                          >
+                            <mat-icon>download</mat-icon></a
+                          >
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <!-- </div> -->
+              </div>
+              <!-- <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="project_widget">
                   <div class="body">
                     <div class="row">
@@ -313,10 +402,10 @@
                       <li>1st Prise in Music competition</li>
                       <li>1st Prise in Acting & Drama</li>
                       <li>Gold Medal in Betchler in Arts</li>
-                    </ul> -->
+                    </ul> --
                   </div>
                 </div>
-              </div>
+              </div> -->
             </mat-tab>
           </mat-tab-group>
         </div>

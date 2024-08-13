@@ -64,8 +64,14 @@ export class MyProgramsComponent {
     const events = this.studentApprovedPrograms.flatMap((courseClass: any,classId:any) => {
       const startDate = new Date(courseClass.sessions[0].sessionStartDate);
       const endDate = new Date(courseClass.sessions[0].sessionEndDate);
-      const sessionStartTime = courseClass.sessions[0].sessionStartTime;
-      const sessionEndTime = courseClass.sessions[0].sessionEndTime;
+      // const sessionStartTime = courseClass.sessions[0].sessionStartTime;
+      // const sessionEndTime = courseClass.sessions[0].sessionEndTime;
+      const sessionStartTime = this.formatTime(
+        courseClass?.sessions[0]?.sessionStartTime
+      );
+      const sessionEndTime = this.formatTime(
+        courseClass?.sessions[0]?.sessionEndTime
+      );
       const title = courseClass?.sessions[0]?.courseName;
       const datesArray = [];
       let currentDate = startDate;
@@ -122,7 +128,12 @@ export class MyProgramsComponent {
     })
   }
 
- 
+  formatTime(time: string): string {
+    let [hours, minutes] = time.split(':').map(Number);
+    const suffix = hours >= 12 ? 'P.M' : 'A.M';
+    hours = hours % 12 || 12; // Convert to 12-hour format
+    return `${hours}:${minutes.toString().padStart(2, '0')} ${suffix}`;
+  }
 
   openDialog(event: { title: any; extendedProps: { [x: string]: any; }; }) {
     let userType = localStorage.getItem("user_type")
@@ -167,8 +178,14 @@ export class MyProgramsComponent {
     const events = this.studentApprovedPrograms.flatMap((courseClass: any,classId:any) => {
       const startDate = new Date(courseClass.classId.sessions[0].sessionStartDate);
       const endDate = new Date(courseClass.classId.sessions[0].sessionEndDate);
-      const sessionStartTime = courseClass.classId.sessions[0].sessionStartTime;
-      const sessionEndTime = courseClass.classId.sessions[0].sessionEndTime;
+      // const sessionStartTime = courseClass.classId.sessions[0].sessionStartTime;
+      // const sessionEndTime = courseClass.classId.sessions[0].sessionEndTime;
+      const sessionStartTime = this.formatTime(
+        courseClass?.classId?.sessions[0]?.sessionStartTime
+      );
+      const sessionEndTime = this.formatTime(
+        courseClass?.classId?.sessions[0]?.sessionEndTime
+      );
       const title = courseClass.classId.courseId.title;
       const programCode = courseClass.classId?.sessions[0].courseCode;
       const deliveryType = courseClass.classId?.classDeliveryType;

@@ -493,6 +493,7 @@ export class AllCourseComponent {
               text: 'Uploaded successfully',
               icon: 'success',
             });
+            this.getAllCourses();
           },
           (error: any) => {
             console.log('err', error);

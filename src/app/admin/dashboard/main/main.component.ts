@@ -528,8 +528,10 @@ export class MainComponent implements OnInit {
     })
   }
   getAnnouncementForStudents(filter?: any) {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     let payload ={
-      announcementFor:AppConstants.STUDENT_ROLE
+      announcementFor:AppConstants.STUDENT_ROLE,
+      companyId: userId,
     }
     this.announcementService.getAnnouncementsForStudents(payload).subscribe((res: { data: { data: any[]; }; totalRecords: number; }) => {
       this.announcements = res.data

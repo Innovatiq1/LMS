@@ -2495,6 +2495,9 @@
       </div>
     </div>
     <div *ngIf="showSidemenu">
+    <mat-tab-group>
+      <mat-tab label="Sidemenu">
+    <!-- <div *ngIf="showSidemenu"> -->
       <div class="content-block">
         <div class="row clearfix">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -2533,8 +2536,10 @@
           </div>
         </div>
       </div>
-    </div>
-    <div *ngIf="showSettingsSidemenu">
+    <!-- </div> -->
+    </mat-tab>
+      <mat-tab label="Settings Side menu">
+    <!-- <div *ngIf="showSettingsSidemenu"> -->
       <div class="content-block">
         <div class="row clearfix">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -2576,6 +2581,9 @@
           </div>
         </div>
       </div>
+    <!-- </div> -->
+    </mat-tab>
+    </mat-tab-group>
     </div>
     <div *ngIf="showStudentDb">
       <mat-tab-group>
