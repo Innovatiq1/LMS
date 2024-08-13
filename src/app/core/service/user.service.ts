@@ -227,8 +227,8 @@ export class UserService {
     );
   }
 
-  deleteUserType(id: string,typeName:string) {
-    const apiUrl = `${this.defaultUrl}userType/${id}?typeName=${typeName}`;
+  deleteUserType(id: string,typeName:string,companyId:string) {
+    const apiUrl = `${this.defaultUrl}userType/${id}?typeName=${typeName}&companyId=${companyId}`;
     return this.http.delete<ApiResponse>(apiUrl).pipe(
       map((response) => {
         return response

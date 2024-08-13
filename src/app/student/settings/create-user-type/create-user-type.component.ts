@@ -663,7 +663,7 @@ export class CreateUserTypeComponent {
       cancelButtonText: "Cancel",
     }).then((result) => {
       if (result.isConfirmed){
-        this.userService.deleteUserType(data.id,data.typeName).subscribe(() => {
+        this.userService.deleteUserType(data.id,data.typeName,data.companyId).subscribe(() => {
           Swal.fire({
             title: 'Success',
             text: 'Role deleted successfully.',
