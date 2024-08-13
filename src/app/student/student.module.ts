@@ -9,7 +9,7 @@ import {
   OwlDateTimeModule,
   OwlNativeDateTimeModule,
 } from '@danielmoncada/angular-datetime-picker';
-
+//import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { StudentRoutingModule } from './student-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeworkComponent } from './homework/homework.component';
@@ -130,6 +130,10 @@ import { ScoreComponent } from './settings/score/score.component';
 import { UpdateScoreAlgorithmComponent } from './settings/score/update-score-algorithm/update-score-algorithm.component';
 import { TimeComponent } from './settings/time/time.component';
 import { UpdateTimeAlgorithmComponent } from './settings/time/update-time-algorithm/update-time-algorithm.component';
+import { DocumentViewComponent } from './view-course/document-view/document-view.component';
+//import { SafeUrlPipe } from './view-course/document-view/safe-url.pipe';
+import { MatDialogModule } from '@angular/material/dialog';
+
 
 @NgModule({
   declarations: [
@@ -239,6 +243,8 @@ import { UpdateTimeAlgorithmComponent } from './settings/time/update-time-algori
     UpdateScoreAlgorithmComponent,
     TimeComponent,
     UpdateTimeAlgorithmComponent,
+    DocumentViewComponent,
+   // SafeUrlPipe,
   
     // CourseKitComponent,
     // VideoPlayerComponent,
@@ -269,7 +275,7 @@ import { UpdateTimeAlgorithmComponent } from './settings/time/update-time-algori
     CKEditorModule,
     AngularEditorModule,
     SurveyModule,
-
+    MatDialogModule
 
   ],
   providers: [

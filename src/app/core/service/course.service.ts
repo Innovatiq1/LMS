@@ -694,6 +694,13 @@ export class CourseService {
       const apiUrl = `${this.prefix}admin/courses-new/createBulkCourses`;
       return this._Http.post<any>(apiUrl, payload).pipe(map((response) => response));
     }
+    uploadFile(file: File): Observable<any> {
+      const formData = new FormData();
+      formData.append('file', file);
+      const apiUrl = `${this.prefix}uploadppt`;
+  
+      return this._Http.post<any>(apiUrl, formData);
+    }
 }
 
 

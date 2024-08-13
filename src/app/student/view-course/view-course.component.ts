@@ -24,7 +24,7 @@ import * as Plyr from 'plyr';
 import { T } from '@angular/cdk/keycodes';
 import { MatDialog } from '@angular/material/dialog';
 import DomToImage from 'dom-to-image';
-
+import { DocumentViewComponent } from './document-view/document-view.component';
 import {
   AbstractControl,
   FormArray,
@@ -226,7 +226,21 @@ export class ViewCourseComponent implements OnDestroy {
     });
     this.commonRoles = AppConstants
   }
- 
+  // openDocumentDialog(documentLink: string, filename: string): void {
+  //   this.dialog.open(DocumentViewComponent, {
+  //     data: { documentLink, filename },
+  //     width: '80%',
+  //     height: '80%'
+  //   });
+  // }
+  openDocumentDialog(url: string,filename: string): void {
+    console.log("viewCourse page ==",url);
+    this.dialog.open(DocumentViewComponent, {
+      width: '80%',
+      height: '100%',
+      data: { url }
+    });
+  }
   getClassDetails() {
     this.classService.getClassById(this.classId).subscribe((response) => {
       this.classDetails = response;
@@ -240,6 +254,7 @@ export class ViewCourseComponent implements OnDestroy {
       this.getExamAssessmentAnswerCount(this.courseId);
     });
   }
+  
  
   onTimeUpdate(event: any) {
     let time = this.commonService.getPlayBackTime();

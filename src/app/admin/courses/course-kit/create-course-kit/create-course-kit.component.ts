@@ -282,10 +282,39 @@ export class CreateCourseKitComponent implements OnInit {
     }
     //this.fileDropEl.nativeElement.value = "";
   }
-
   onFileUpload(event: any) {
     const file = event.target.files[0];
-    this.docs = file;
-    this.uploadedDocument = this.docs.name;
+
+    if (file) {
+      if (
+        file.type === 'application/vnd.ms-powerpoint' ||
+        file.type ===
+          'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+      ) {
+        // Only call the API for PPT/PPTX files
+        this.courseService.uploadFile(file).subscribe(
+          (response) => {
+            console.log("converted pdf ==",response)
+            this.uploadedDocument = response.filename; // Name of the converted PDF
+            this.docs = new File([response.filePath], response.filename, {
+              type: 'application/pdf',
+            });
+          },
+          (error) => {
+            console.error('File upload failed', error);
+            Swal.fire('Upload Failed', 'Unable to convert the file.', 'error');
+          }
+        );
+      } else {
+        // Handle non-PPT files without conversion
+        this.uploadedDocument = file.name; // Original file name
+        this.docs = file; // Original file
+      }
+    }
   }
+  // onFileUpload(event: any) {
+  //   const file = event.target.files[0];
+  //   this.docs = file;
+  //   this.uploadedDocument = this.docs.name;
+  // }
 }

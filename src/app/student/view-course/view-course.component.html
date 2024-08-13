@@ -1407,6 +1407,14 @@
                         <span class="d-flex align-items-start"
                           ><i class="material-icons icon">article</i>&nbsp;
                           <a
+                            href="javascript:void(0)"
+                            class="m-b-20 text-black"
+                            (click)="openDocumentDialog(row.documentLink, row.filename)"
+                             >
+                            <span class="duration">{{ row.filename | truncate: 20 }}</span>
+                            </a>
+
+                          <!-- <a
                             href="{{ row.documentLink }}"
                             href=""
                             class="m-b-20 text-black"
@@ -1415,7 +1423,7 @@
                             <span class="duration">{{
                               row.filename | truncate : 20
                             }}</span></a
-                          >
+                          > -->
                         </span>
                       </div>
                     </div>
