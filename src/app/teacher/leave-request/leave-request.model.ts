@@ -15,6 +15,7 @@ export class LeaveRequest {
   data:any;
   docs:any;
   studentId: any;
+  learnerId: any;
   classId: any;
   constructor(leaveRequest: LeaveRequest) {
     {

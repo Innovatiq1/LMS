@@ -12,7 +12,7 @@ import { mergeMap } from 'rxjs/operators';
 import { User } from '../models/user';
 import { Role } from '../models/role';
 
-const users: User[] = [
+const users: any[] = [
   {
     id: 1,
     img: 'assets/images/user/admin.jpg',
@@ -20,7 +20,6 @@ const users: User[] = [
     password: 'admin@123',
     firstName: 'Sarah',
     lastName: 'Smith',
-    role: Role.Admin,
     token: 'admin-token',
   },
   {
@@ -30,7 +29,6 @@ const users: User[] = [
     password: 'Instructor@123',
     firstName: 'Ashton',
     lastName: 'Cox',
-    role: Role.Instructor,
     token: 'Instructor-token',
   },
   {
@@ -40,7 +38,6 @@ const users: User[] = [
     password: 'student@123',
     firstName: 'Ashton',
     lastName: 'Cox',
-    role: Role.Student,
     token: 'student-token',
   },
 ];

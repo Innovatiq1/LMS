@@ -103,11 +103,11 @@ export class FormDialogComponent {
       // fromDate: this.leaveRequestForm.value?.fromDate,
       toDate: this.leaveRequestForm.value?.toDate,
       reason: this.leaveRequestForm.value?.reason,
-      instructorId:
+     headId:
         this.leaveRequestForm.value?.className?.classId?.sessions[0]
           ?.instructorId,
       classId: this.leaveRequestForm.value?.className?.classId?.id,
-      studentId: this.leaveRequestForm.value?.className?.studentId?.id,
+      learnerId: this.leaveRequestForm.value?.className?.studentId?.id,
       status: 'applied',
     };
     if (this.action === 'edit') {

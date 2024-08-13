@@ -9,6 +9,7 @@ import {UserType} from "../models/user.model"
 import { Mentor } from '../models/mentor';
 import { environment } from 'environments/environment';
 import { CoursePaginationModel } from '@core/models/course.model';
+import { AppConstants } from '@shared/constants/app.constants';
 
 const Logging = new Logger('UserService');
 
@@ -82,7 +83,7 @@ export class UserService {
    }
  
   getAllStudents(filter?: Partial<CoursePaginationModel>): Observable<any> {
-    const apiUrl = this.defaultUrl + 'admin/adminUserListing?isAll=true';
+    const apiUrl = `${this.defaultUrl}admin/adminUserListing?learner=${AppConstants.STUDENT_ROLE}`;
     return this.http
       .get<ApiResponse>(apiUrl, {
         params: this.buildParams(filter),
@@ -195,21 +196,8 @@ export class UserService {
     );
   };
 
-  getUsersByName(data: any): Observable<any> {
-    const apiUrl = this.defaultUrl + 'admin/adminUserListing/getUsersByName';
-    return this.http.post<ApiResponse>(apiUrl, data).pipe(map((response) => {
-      Logging.debug(response);
-      return response;
-    }));
-  }
   
-  getUsersByName1(data: any): Observable<any> {
-    const apiUrl = this.defaultUrl + 'admin/adminUserListing/getUsersByName3';
-    return this.http.post<ApiResponse>(apiUrl, data).pipe(map((response) => {
-      Logging.debug(response);
-      return response;
-    }));
-  }
+
 
   saveUsers(formData:any): Observable<Mentor> {
     const apiUrl = this.defaultUrl + 'admin/adminUserListing';

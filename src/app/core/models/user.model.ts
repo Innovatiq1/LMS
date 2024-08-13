@@ -34,7 +34,7 @@ export interface Student {
   }
 
   export interface Users {
-    role: string;
+    role: any;
     designation: any;
     _id: string;
     id:string;
@@ -47,7 +47,7 @@ export interface Student {
     source: string;
     createdAt?: Date;
     updatedAt?: Date;
-    type?: string;
+    type?: any;
     password: string;
     mobile?:String;
     joiningDate:Date,

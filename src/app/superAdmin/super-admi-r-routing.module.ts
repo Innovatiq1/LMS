@@ -6,6 +6,8 @@ import { ViewadminComponent } from './viewadmin/viewadmin.component';
 import { AdminListComponent } from './admin-list/admin-list.component';
 import { PackageListComponent } from './package-list/package-list.component';
 import { EditPackageComponent } from './edit-package/edit-package.component';
+import { RoleCustomizeComponent } from './role-customize/role-customize.component';
+import { EditRoleCustomizationComponent } from './edit-role-customization/edit-role-customization.component';
 
 const routes: Routes = [
   { path: 'create-admin', component: CreateSuperAdminComponent },
@@ -15,6 +17,8 @@ const routes: Routes = [
   { path: 'package-list', component: PackageListComponent },
   { path: 'view-package-details/pkg', component: ViewadminComponent },
   { path: 'edit-package-details', component: EditPackageComponent },
+  { path: 'role-customize', component: RoleCustomizeComponent },
+  { path: 'edit-customization', component: EditRoleCustomizationComponent },
 ];
 
 @NgModule({

@@ -207,15 +207,15 @@ export class HeaderComponent
     const userRole = this.authService.currentUserValue.role;
     this.docElement = document.documentElement;
 
-    if (userRole === AppConstants.ADMIN_ROLE) {
-      this.homePage = 'admin/dashboard/main';
-    } else if (userRole === AppConstants.INSTRUCTOR_ROLE) {
-      this.homePage = 'teacher/dashboard';
-    } else if (userRole === AppConstants.STUDENT_ROLE) {
-      this.homePage = 'student/dashboard';
-    } else {
-      this.homePage = 'admin/dashboard/main';
-    }
+    // if (userRole === AppConstants.ADMIN_ROLE) {
+    //   this.homePage = 'admin/dashboard/main';
+    // } else if (userRole === AppConstants.INSTRUCTOR_ROLE) {
+    //   this.homePage = 'teacher/dashboard';
+    // } else if (userRole === AppConstants.STUDENT_ROLE) {
+    //   this.homePage = 'student/dashboard';
+    // } else {
+    //   this.homePage = 'admin/dashboard/main';
+    // }
 
     this.langStoreValue = localStorage.getItem('lang') as string;
     const val = this.listLang.filter((x) => x.lang === this.langStoreValue);
@@ -251,16 +251,16 @@ export class HeaderComponent
   navigateToConfigSettings() {
     this.router.navigate(['/student/settings/config']);
   }
-  onClick() {
-    let role = localStorage.getItem('user_type');
-    if (role == AppConstants.ADMIN_USERTYPE || AppConstants.ADMIN_ROLE) {
-      this.router.navigate(['/settings/admin-settings']);
-    } else if (role == AppConstants.STUDENT_ROLE) {
-      this.router.navigate(['/settings/student-settings']);
-    } else if (role == AppConstants.INSTRUCTOR_ROLE) {
-      this.router.navigate(['/settings/instructor-settings']);
-    }
-  }
+  // onClick() {
+  //   let role = localStorage.getItem('user_type');
+  //   if (role == AppConstants.ADMIN_USERTYPE || AppConstants.ADMIN_ROLE) {
+  //     this.router.navigate(['/settings/admin-settings']);
+  //   } else if (role == AppConstants.STUDENT_ROLE) {
+  //     this.router.navigate(['/settings/student-settings']);
+  //   } else if (role == AppConstants.INSTRUCTOR_ROLE) {
+  //     this.router.navigate(['/settings/instructor-settings']);
+  //   }
+  // }
 
   getAnnouncementForStudents(filter?: any) {
     let payload = {

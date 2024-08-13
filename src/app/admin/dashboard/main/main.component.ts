@@ -634,7 +634,7 @@ export class MainComponent implements OnInit {
     };
     this.instructorService.getInstructor(payload).subscribe(
       (response: any) => {
-        this.students = response.slice(0, 5);
+        this.students = response?.slice(0, 5);
         const currentDate = new Date();
         const currentMonth = currentDate.getMonth();
         const currentYear = currentDate.getFullYear();

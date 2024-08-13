@@ -1,13 +1,52 @@
-export class AppConstants {
-  static readonly STUDENT_ROLE = 'Trainee';
-  static readonly INSTRUCTOR_ROLE = 'Trainer';
-  static readonly ADMIN_ROLE = 'Admin';
-  static readonly ASSESSOR_ROLE = 'Assessor';
-  static readonly ALLTHREEROLES= ['Trainer', 'Admin', 'admin', 'Assessor']
 
+
+export class AppConstants {
+
+  static getRoleData() {
+    const roleData = localStorage.getItem('role_data');
+    if (roleData) {
+      try {
+        return JSON.parse(roleData);
+      } catch (error) {
+        console.error('Error parsing role data from localStorage:', error);
+        return {};
+      }
+    }
+    return {};
+  }
+  static STUDENT_ROLE = (() => {
+    const roleData = AppConstants.getRoleData();
+    return roleData.learner || 'Trainee';
+  })();
+
+  static INSTRUCTOR_ROLE = (() => {
+    const roleData = AppConstants.getRoleData();
+    return roleData.trainer || 'Trainer';
+  })();
+  static  ADMIN_ROLE = 'Admin';
+  static  ASSESSOR_ROLE = 'Assessor';
+  static  ALLTHREEROLES= [localStorage.getItem('trainer'), 'Admin', 'admin', 'Assessor']
+
+
+  // static  STUDENT_ROLE = '';
+  // static  INSTRUCTOR_ROLE = '';
+  // static  ADMIN_ROLE = '';
+  // static  ASSESSOR_ROLE = '';
+  // static  ALLTHREEROLES: string[] = [];
+
+  // static setRoles(roles: any[]) {
+  //   roles.forEach(role => {
+  //     console.log("seRoles",role)
+  //     if (role.trainer === 'instructor') {
+  //       AppConstants.INSTRUCTOR_ROLE = role.trainer; 
+  //     }
+  //     // Add more conditions as needed
+  //   });
+  //   AppConstants.ALLTHREEROLES = roles.map(role => role.trainer); // Example, adjust according to your roles structure
+  // }
 
   static readonly ADMIN_USERTYPE = 'admin';
-    static readonly TOAST_DISPLAY_TIME = 3000; // In milliseconds
+    static readonly TOAST_DISPLAY_TIME = 3000; 
     static readonly KEY_USER_DATA = 'user_data';
     static readonly DEFAULT_QUERY_LIMIT = 10;
     static readonly KEY_STATIC_DATA = 'static_data';
@@ -223,5 +262,40 @@ export class AppConstants {
     // tslint:disable-next-line:max-line-length
     static readonly EMAIL_PATTERN = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     static readonly URL_PATTERN = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+
+
+
+    // static updateRolesFromService(roleService: StudentService): void {
+    //   const responseData = roleService.getRolesData();
+    //   console.log("rolessss", responseData)
+    //   AppConstants.updateRoles(responseData);
+    // }
+  
+    // static updateRoles(responseData: any[]): void {
+    //   responseData.forEach(item => {
+    //     switch (item.typeName) {
+    //       case 'Trainee':
+    //         AppConstants.STUDENT_ROLE = item.typeName;
+    //         break;
+    //       case 'Trainer':
+    //         AppConstants.INSTRUCTOR_ROLE = item.typeName;
+    //         break;
+    //       case 'Admin':
+    //         AppConstants.ADMIN_ROLE = item.typeName;
+    //         break;
+    //       case 'Assessor':
+    //         AppConstants.ASSESSOR_ROLE = item.typeName;
+    //         break;
+    //       default:
+    //         break;
+    //     }
+    //   });
+    //   AppConstants.ALLTHREEROLES = [
+    //     AppConstants.INSTRUCTOR_ROLE,
+    //     AppConstants.ADMIN_ROLE,
+    //     AppConstants.ASSESSOR_ROLE
+    //   ].filter(role => role); // Filter out any empty values
+    // }
   }
+  
   

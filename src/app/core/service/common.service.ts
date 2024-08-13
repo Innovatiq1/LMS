@@ -45,6 +45,17 @@ export class CommonService {
     return this.videoDetails;
   }
 
+  private roleDetails: any;
+
+  setRoleDetails(data: any) {
+    this.roleDetails = data;
+  }
+
+  getRoleDetails() {
+    return this.roleDetails;
+  }
+
+
   private completedPercentage!: number;
 
   setCompletedPercentage(time: number) {

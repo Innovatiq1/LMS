@@ -17,6 +17,8 @@ import { environment } from 'environments/environment';
 })
 export class StudentService {
   private currentUserSubject!: BehaviorSubject<any>;
+  private rolesData = new BehaviorSubject<any[]>([]);
+  rolesData$ = this.rolesData.asObservable();
   public currentUser!: Observable<any>;
 defaultUrl = environment['apiUrl'];
 constructor(private http: HttpClient) {
@@ -125,7 +127,12 @@ getStudent(filter?: Partial<UsersPaginationModel>): Observable<ApiResponse> {
 getUserById(id: string) {
   const apiUrl = `${this.defaultUrl}auth/instructorListByID/${id}`;
   return this.http.get<Student>(apiUrl).pipe(map((response) => response));
+
 }
+getRolesData(): any[] {
+  return this.rolesData.getValue();
+}
+
 updateUser(
   id: string,
   users: Student
