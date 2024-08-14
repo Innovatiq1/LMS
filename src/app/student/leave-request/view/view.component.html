@@ -10,8 +10,8 @@
           <div class="card">
             <div class="d-flex justify-content-end">
                 <div class="d-flex">
-                    <button
-                      alt="Edit" *ngIf="edit"
+                    <button 
+                      alt="Edit" *ngIf="edit && SourceData?.status == 'applied'"
                       mat-menu-item
                       (click)="editCall(SourceData)"
                     >

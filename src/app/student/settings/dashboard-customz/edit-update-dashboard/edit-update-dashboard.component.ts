@@ -70,7 +70,7 @@ export class EditUpdateDashboardComponent {
           }
         );
 
-        this.filteredDashboards = processedData;
+        this.filteredDashboards = processedData.reverse();
       },
       (error) => {
         console.error('Error fetching dashboards:', error);
