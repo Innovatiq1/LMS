@@ -154,11 +154,11 @@ export class ExamTestListComponent {
 
   paidDialogEvent(courseDetails: any, classDetails: any, rawData: any) {
     const courseKitDetails = courseDetails?.course_kit;
-    const courseKit = courseKitDetails.map((kit: any) => ({
-      shortDescription: kit.shortDescription,
-      longDescription: kit.longDescription,
-      documentLink: kit.documentLink,
-      name: kit.name,
+    const courseKit = courseKitDetails?.map((kit: any) => ({
+      shortDescription: kit?.shortDescription,
+      longDescription: kit?.longDescription,
+      documentLink: kit?.documentLink,
+      name: kit?.name,
       filename: kit?.videoLink[0]?.doc_filename,
       videoId: kit?.videoLink[0]?.id,
       inputUrl: kit?.videoLink[0]?.video_url,
@@ -178,7 +178,7 @@ export class ExamTestListComponent {
       studentId: studentId,
       classId: null,
       title: courseDetails.title,
-      coursekit: courseKit,
+      coursekit: courseKit?courseKit:null,
       date: date,
       discountType:'percentage',
       discountValue:0
@@ -357,7 +357,8 @@ export class ExamTestListComponent {
       verify:true,
       paid: courseFee ? false: true,
       companyId: companyId,
-      status:"approved"
+      status:"approved",
+      courseType:"direct"
     };
     return this.courseService.saveRegisterClass(payload)
   }
