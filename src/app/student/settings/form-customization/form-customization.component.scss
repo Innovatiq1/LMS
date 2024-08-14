@@ -40,3 +40,12 @@
 .mandatory {
     color: red;
 }
+.labels {
+    display: flex;
+    flex-wrap: wrap;
+    white-space: nowrap;
+}
+
+.label-container {
+    width: 40%;
+}

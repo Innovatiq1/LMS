@@ -205,7 +205,7 @@
                   </mat-form-field>
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
-                  *ngIf="(isTestIssueCertificate && isAfterExamType) || isVideoIssueCertificate">
+                  *ngIf="(labelStatusCheck('Assign Coursekit') && isTestIssueCertificate && isAfterExamType) || isVideoIssueCertificate">
                   <div class="label-container">
                     <label>Assign Coursekit <span class="mandatory">&nbsp;*</span></label>
                     <button class="btn" [routerLink]="['/admin/courses/create-course-kit']">

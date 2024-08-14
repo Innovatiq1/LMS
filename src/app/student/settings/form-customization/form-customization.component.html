@@ -25,8 +25,8 @@
                                         <h6 style="padding-top: 10px;font-weight: bolder;">{{ form.name }}</h6>
                                     <!-- </mat-checkbox> -->
                                 </div>
-                                <div class="col-md-4">
-                                    <div *ngFor="let label of form.labels">
+                                <div class="col-md-8 labels">
+                                    <div *ngFor="let label of form.labels"  class="label-container">
                                         <mat-checkbox class="example-margin" [checked]="label.checked" (change)="onCheckboxChange(form.id, label.name, $event.checked)">
                                             <p class="menu">{{ label.name }}</p>
                                         </mat-checkbox>
