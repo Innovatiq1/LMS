@@ -96,7 +96,8 @@ export class ViewCourseComponent implements OnDestroy {
   studentClassDetails: any;
   isStatus = false;
   isApproved = false;
-  isTest:boolean=false;
+  isTest:boolean=true;
+  isDocument:boolean=false;
   isCancelled = false;
   isCompleted = false;
   documentLink: any;
@@ -234,7 +235,7 @@ export class ViewCourseComponent implements OnDestroy {
   //   });
   // }
   openDocumentDialog(url: string,filename: string): void {
-    console.log("viewCourse page ==",url);
+   // console.log("viewCourse page ==",url);
     this.dialog.open(DocumentViewComponent, {
       width: '80%',
       height: '100%',
@@ -354,7 +355,8 @@ export class ViewCourseComponent implements OnDestroy {
                 this.studentClassDetails = response.data.docs[0];
                 const issueCertificate=this.studentClassDetails.classId.courseId.issueCertificate;
            const playBackTimes=this.studentClassDetails.playbackTime;
-           this.isTest = (issueCertificate === 'test' && playBackTimes === 100) ? true : false;           
+           this.isTest = (issueCertificate === 'test' && playBackTimes === 100) ? true : false; 
+           this.isDocument=issueCertificate==='document'?false:true;          
                 if (this.studentClassDetails.status == 'approved') {
                   if (this.paid) {
                     const targetURL = `/student/questions/${classId}/${studentId}/${this.courseId}`;
@@ -928,6 +930,8 @@ else if(this.feeType=="free"){
         this.url = item?.videoLink[0]?.video_url;
       });
 
+      //console.log("get the courseKit Details==",this.courseKitDetails)
+
       this.courseKit = this.courseKitDetails.map((kit: any) => ({
         shortDescription: kit.shortDescription,
         longDescription: kit.longDescription,
@@ -1035,7 +1039,9 @@ else if(this.feeType=="free"){
 
 
         if (this.studentClassDetails.status == 'approved') {
+        //  console.log("this is the approved==",this.studentClassDetails)
           this.isTest = (issueCertificate === 'test' && playBackTimes === 100) ? true : false;
+          this.isDocument=issueCertificate==='document'?false:true;
           this.isRegistered == true;
           this.isApproved = true;
         }
@@ -1044,6 +1050,7 @@ else if(this.feeType=="free"){
           this.studentClassDetails.status == 'completed'
         ) {
           this.isTest = (issueCertificate === 'test' && playBackTimes === 100) ? true : false;
+          this.isDocument=issueCertificate==='document'?false:true;
           this.isRegistered == true;
           this.isCompleted = true;
         }

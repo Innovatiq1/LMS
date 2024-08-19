@@ -16,7 +16,7 @@
               <!-- <form class="m-4" [formGroup]="firstFormGroup" (ngSubmit)="onSubmit()"> -->
               <div class="row">
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                  <label>Course Name <span class="mandatory">&nbsp;*</span></label>
+                  <label>Course Name<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <input matInput formControlName="title" placeholder="Enter Course Name"
                       [readonly]="isInputReadonly()" required />
@@ -205,7 +205,7 @@
                   </mat-form-field>
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
-                  *ngIf="(labelStatusCheck('Assign Coursekit') && isTestIssueCertificate && isAfterExamType) || isVideoIssueCertificate">
+                  *ngIf="(labelStatusCheck('Assign Coursekit') && isTestIssueCertificate && isAfterExamType) || isVideoIssueCertificate||isDocumentIssueCertificate">
                   <div class="label-container">
                     <label>Assign Coursekit <span class="mandatory">&nbsp;*</span></label>
                     <button class="btn" [routerLink]="['/admin/courses/create-course-kit']">
