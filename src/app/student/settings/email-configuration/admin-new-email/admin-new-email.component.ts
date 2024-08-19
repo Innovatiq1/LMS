@@ -49,7 +49,6 @@ export class AdminNewEmailComponent {
 
   toggle(_data: any) {
     this.edit = !this.edit;
-    // this._id = _data._id;
     this.emailTemplateForm.patchValue({
       email_subject: _data.email_subject,
       email_content: _data.email_content,
@@ -74,7 +73,6 @@ export class AdminNewEmailComponent {
       email_subject: pageContent?.email_subject,
       email_content: pageContent?.email_content,
     });
-    // this.markAllTouched();
   }
 
   createForm() {
@@ -98,7 +96,6 @@ export class AdminNewEmailComponent {
   }
   update() {
     return new Promise<void>((resolve, reject) => {
-      // this.markAllTouched();
       if (this.emailTemplateForm.valid) {
           const obj = this.emailTemplateForm.value;
           obj.insertaction = 'admin_email';

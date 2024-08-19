@@ -75,7 +75,6 @@ export class ForgotPasswordComponent {
           ...this.utils.validators.longDescription,
         ],
       ],
-      // email_template_type:['', [Validators.required, ...this.utils.validators.noLeadingSpace, ...this.utils.validators.name]],
       bottom_button_text: [
         '',
         [
@@ -93,7 +92,6 @@ export class ForgotPasswordComponent {
     this.updatePsw.patchValue({
       email_subject: _data.email_subject,
       email_content: _data.email_content,
-      // email_template_type:_data.email_template_type,
       bottom_button_text: _data.bottom_button_text,
     });
   }
@@ -111,13 +109,11 @@ export class ForgotPasswordComponent {
         this.assignData = response?.data?.docs[0]?.forget_password_template;
       },
       (error) => {
-        // this.isLoading = false;
       }
     );
   }
   update() {
     if (this.updatePsw.valid) {
-      // if(!this.edit){
       Swal.fire({
         title: 'Are you sure?',
         text: 'Do you want to update template!',
@@ -130,7 +126,6 @@ export class ForgotPasswordComponent {
           this.updateTemplate();
         }
       });
-      // }
     } else {
       this.updatePsw.markAllAsTouched();
       this.isSubmitted = true;

@@ -16,18 +16,6 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
               <div class="card">
                 <div class="materialTableHeader">
-                  <!-- <div class="left">
-                <ul class="header-buttons-left ms-0">
-                  <li class="tbl-title">
-                    <h2>Staffs</h2>
-                  </li>
-                  <li class="tbl-search-box">
-                    <label for="search-input"><i class="material-icons search-icon">search</i></label>
-                    <input placeholder="Search" type="text" #filter class="browser-default search-field"
-                      aria-label="Search box">
-                  </li>
-                </ul>
-              </div> -->
                   <div class="right">
                     <ul class="tbl-export-btn">
                       <li>
@@ -41,11 +29,6 @@
                       </li>
                       <li class="tbl-header-btn">
                         <div class="m-l-10" matTooltip="ADD">
-                          <!-- <button mat-raised-button [routerLink]="['/student/settings/create-user-type']"
-                            id="submit">Create</button> -->
-                          <!-- <button mat-mini-fab color="primary" [routerLink]="['/admin/users/create-user-type']">
-                        <mat-icon class="col-white">add</mat-icon>
-                      </button> -->
                         </div>
                       </li>
                       <li class="tbl-header-btn">
@@ -117,48 +100,7 @@
                           </span>
                         </mat-cell>
                       </ng-container>
-
-                      <!-- actions -->
-                      <!-- <ng-container matColumnDef="actions">
-                    <mat-header-cell *matHeaderCellDef class="pr-0" style="
-                    margin-right: -15%;">Actions</mat-header-cell>
-  
-                    <mat-cell *matCellDef="let row" class="pr-0"style="
-                    margin-right: -15%;">
-                      <button mat-button [matMenuTriggerFor]="menu" class="svg2">
-                        <svg class="dropdown-toggle border rounded-circle" data-bs-toggle="dropdown" aria-expanded="false"
-                        xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                        class="bi bi-three-dots border rounded-circle bg" viewBox="0 0 16 16">
-                        <path
-                          d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
-                      </svg>
-  
-                      </button>
-  
-  
-  
-                              <mat-menu #menu="matMenu" xPosition="before">
-                                <button mat-menu-item (click)="edit(row.id)" >
-                                  <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                                  <span class="menu-text px-3">Edit</span>
-                                </button>
-                                <button *ngIf="row?.status == 'active'"mat-menu-item (click)="changeInActive(row)">
-                                    <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                                    <span class="menu-text">Inactive</span>
-                                  </button>
-                                  <button *ngIf="row?.status == 'inactive'"mat-menu-item (click)="changeActive(row)">
-                                      <img class="img" src="/assets/approve.svg" alt="approve">
-                                      <span class="menu-text">Active</span>
-                                    </button>
-                                <button mat-menu-item  (click)="delete(row)" class="align-items-center">
-                                  <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                                  <span class="menu-text px-3">Delete</span>
-                                </button>
-                              </mat-menu>
-                    </mat-cell>
-                  </ng-container> -->
                       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                      <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
                       <mat-row *matRowDef="let row; columns: displayedColumns;" [style.cursor]="'pointer'" matRipple>
                       </mat-row>
                     </table>
@@ -178,13 +120,10 @@
           </ng-template>
           <div class="row mt-5">
             <div class="col-md-9 ">
-              <!-- <h3>User Role Listing</h3> -->
             </div>
             <div class="col-md-3">
               <ul class="tbl-export-btn">
                 <li class="tbl-header-btn">
-                  <!-- <button mat-raised-button id="submit" [routerLink]="['/student/settings/create-user-type']">
-                    Create Module Access</button> -->
                 </li>
               </ul>
             </div>
@@ -195,7 +134,6 @@
                     <ul class="header-buttons-left ms-0">
                       <li class="tbl-title" [routerLink]="['/student/settings/role-user/',types.typeName]">
                         <h2 style="font-weight: 600;">{{types?.typeName | capitalizeFirstLetter}}
-                          <!-- <span *ngIf="types.isAdmin == true" class="admin border fw-normal bg-white text-success">Admin</span> -->
                           <span class="ms-2 border border-success fw-normal rounded-4 px-2 text-success">{{types.status
                             == 'active'?'Active':'Inactive' }}</span>
                         </h2>
@@ -204,57 +142,6 @@
                       </li>
                     </ul>
                   </div>
-                  <!-- <div class="right">
-                    <ul class="tbl-export-btn">
-                      -- <li class="tbl-header-btn">
-                                    <div class="m-l-10" matTooltip="ADD">
-                                        <button mat-mini-fab color="primary" [routerLink]="['/admin/users/create-user-type']">
-                                            <mat-icon class="col-white">add</mat-icon>
-                                        </button>
-                                    </div>
-                                </li> -->
-                      <!-- <li class="tbl-header-btn">
-                                    <div class="m-l-10" matTooltip="REFRESH">
-                                        <button mat-mini-fab color="primary">
-                                            <mat-icon class="col-white">refresh</mat-icon>
-                                        </button>
-                                    </div>
-                                </li> 
-                      <li class="tbl-header-btn">
-                        <button mat-button [matMenuTriggerFor]="menu">
-                          <svg class="dropdown-toggle border rounded-circle m-l-10 svg1" data-bs-toggle="dropdown"
-                            aria-expanded="false" xmlns="http://www.w3.org/2000/svg" width="35" height="38"
-                            fill="currentColor" class="bi bi-three-dots rounded-circle" viewBox="0 0 16 16">
-                            <path
-                              d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
-                          </svg>
-
-                        </button>
-
-                        <mat-menu #menu="matMenu" xPosition="before">
-                          <button mat-menu-item (click)="edit(types.id)">
-                            <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                            <span class="menu-text">Edit</span>
-                          </button>
-                          <button *ngIf="types?.status == 'active'" mat-menu-item (click)="changeInActive(types)">
-                            <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                            <span class="menu-text">Inactive</span>
-                          </button>
-                          <button *ngIf="types?.status == 'inactive'" mat-menu-item (click)="changeActive(types)">
-                            <img class="img" src="/assets/approve.svg" alt="approve">
-                            <span class="menu-text">Active</span>
-                          </button>
-                          <button mat-menu-item (click)="delete(types)">
-                            <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                            <span class="menu-text">Delete</span>
-                          </button>
-
-
-                        </mat-menu>
-                      </li>
-
-                    </ul>
-                  </div> -->
                 </div>
                 <div class="body overflow-auto" style="cursor: pointer;" (click)="edit(types.id)">
                   <div class="responsive_table">
@@ -271,183 +158,12 @@
 
               </div>
             </div>
-            <!-- <div class="col-md-3"  *ngFor="let row of dataSource.filteredData">
-              <div class="card border-apply"  style="height: 300px;" (click)="aboutStaff(row.id)">
-                <div class="m-b-20">
-                  <div class="contact-grid">
-                    <div class="profile-header l-bg-blue">
-                      <div class="user-name">{{row.name}}</div>
-                      <!-- <div class="name-center">{{row.department}}</div> --
-                    </div>
-                    <!-- <div class="course-card-image"> --
-                      <img src="{{row.avatar}}" class="user-img" >
-                      <p>
-                        {{row.type | uppercase}}
-                        <br> {{row?.country_name}}
-                      </p>
-                     
-                      <div>
-                        <span class="phone">
-                          <i class="material-icons">phone</i>{{row.mobile}}</span>
-                      </div>
-                      <!-- <div>
-                        <span class="email">
-                          <i class="material-icons">email</i>{{row.email}}</span>
-                      </div> -->
-            <!-- </div> -->
-            <!-- <img src="assets/images/user/usrbig1.jpg" class="user-img" alt=""> -->
-            <!-- <p>
-                      A-103, shyam gokul flats, Mahatma Road
-                      <br />Mumbai
-                    </p> -->
-            <!-- <div class="row call">
-                      <div class="col-1">
-                        <i class="material-icons">phone</i>
-                      </div>
-                     <div class="col-6">
-                      {{row.mobile}}
-                     </div> -->
-
-            <!-- </div>
-                    <div class="row mail mt-2">
-                      <div class="col-1">
-                        <i class="material-icons">email</i>
-                      </div>
-                      <div class="col-9">
-                        {{row.email}}
-                      </div>
-                    </div> -->
-
-            <!-- <div class="profile-userbuttons">
-                      <button mat-flat-button color="primary" (click)="aboutInstructor(row.id)">Read More</button>
-                    </div> --
-                  </div>
-                </div>
-              </div>
-            </div> -->
           </div>
           <mat-paginator class="bg-transparent" #paginator [length]="totalItems" (page)="pageSizeChange($event)"
             [pageSizeOptions]="pageSizeArr" aria-label="select pagination option">
           </mat-paginator>
-          <!-- <mat-paginator class="paginator" #paginator [length]="dataSource.filteredData.length" [pageIndex]="0"
-          [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
-        </mat-paginator> -->
         </mat-tab>
       </mat-tab-group>
     </div>
   </div>
 </section>
-
-
-<!-- <section class="content">
-    <div class="content-block">
-        <div class="block-header" *ngFor="let breadscrum of breadscrums">
-            <!-- breadcrumb --
-            <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
-            </app-breadcrumb>
-        </div>
-        <div class="row">
-            <div class="col-md-9 ">
-                <h3>User Role Listing</h3>
-            </div>
-            <div class="col-md-3 ">
-                <ul class="tbl-export-btn">
-                    <li class="tbl-header-btn">
-                            <button class="btn border px-4" id="submit"[routerLink]="['/admin/users/create-user-type']">
-                               Create User Access</button>
-                    </li>
-                </ul>
-            </div>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="card" *ngFor="let types of typesList let j = index">
-                    <div class="materialTableHeader">
-                        <div class="left" style="cursor: pointer;" (click)="edit(types.id)">
-                            <ul class="header-buttons-left ms-0">
-                                <li class="tbl-title">
-                                    <h2 style="font-weight: 600;">{{types?.typeName | capitalizeFirstLetter}} 
-                                     <!-- <span *ngIf="types.isAdmin == true" class="admin border fw-normal bg-white text-success">Admin</span> --
-                                     <span  class="ms-2 border border-success fw-normal rounded-4 px-2 text-success">{{types.status == 'active'?'Active':'Inactive' }}</span>
-                                    </h2>
-                                   
-                                
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="right">
-                            <ul class="tbl-export-btn">
-                                <!-- <li class="tbl-header-btn">
-                                    <div class="m-l-10" matTooltip="ADD">
-                                        <button mat-mini-fab color="primary" [routerLink]="['/admin/users/create-user-type']">
-                                            <mat-icon class="col-white">add</mat-icon>
-                                        </button>
-                                    </div>
-                                </li> -->
-<!-- <li class="tbl-header-btn">
-                                    <div class="m-l-10" matTooltip="REFRESH">
-                                        <button mat-mini-fab color="primary">
-                                            <mat-icon class="col-white">refresh</mat-icon>
-                                        </button>
-                                    </div>
-                                </li> --
-                                <li class="tbl-header-btn">
-                                    <button mat-button [matMenuTriggerFor]="menu">
-                                        <svg class="dropdown-toggle m-l-10" data-bs-toggle="dropdown" aria-expanded="false"
-                                        xmlns="http://www.w3.org/2000/svg" width="35" height="38" fill="currentColor"
-                                        class="bi bi-three-dots rounded-circle" viewBox="0 0 16 16">
-                                        <path
-                                          d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
-                                      </svg>
-                  
-                                      </button>
-                                      
-                                              <mat-menu #menu="matMenu" xPosition="before">
-                                                <button mat-menu-item (click)="edit(types.id)">
-                                                  <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                                                  <span class="menu-text">Edit</span>
-                                                </button>
-                                                <button *ngIf="types?.status == 'active'"mat-menu-item (click)="changeInActive(types)">
-                                                  <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                                                  <span class="menu-text">Inactive</span>
-                                                </button>
-                                                <button *ngIf="types?.status == 'inactive'"mat-menu-item (click)="changeActive(types)">
-                                                    <img class="img" src="/assets/approve.svg" alt="approve">
-                                                    <span class="menu-text">Active</span>
-                                                  </button>
-                                                  <button mat-menu-item (click)="delete(types)">
-                                                    <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                                                    <span class="menu-text">Delete</span>
-                                                  </button>
-  
-  
-                                              </mat-menu>
-                                </li>
-                               
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="body overflow-auto" style="cursor: pointer;" (click)="edit(types.id)">
-                        <div class="responsive_table">
-                            <ng-container>
-                                <h5 class="card-title text-center">Accessibility Menu</h5>
-                                <div class="row mt-4" style="margin-left: 155px;">
-                                    <div class="col-md-4 items" *ngFor="let menu of types.menuItems ">
-                                      <p class="menu"><img src="assets/tick.svg">{{menu?.title | capitalizeFirstLetter}}</p>
-                                    </div>
-                                  </div>
-                            </ng-container>
-                        </div>
-                    </div>
-                    
-                </div>
-            </div>
-        </div>
-        <div  class="tbl-spinner">
-            <mat-progress-spinner *ngIf="isLoading" color="primary" [diameter]="40" mode="indeterminate">
-            </mat-progress-spinner>
-          </div>
-         
-          <mat-paginator class="bg-transparent" #paginator [length]="totalItems" (page)="pageSizeChange($event)"
-          [pageSizeOptions]="pageSizeArr" aria-label="select pagination option">
-      </mat-paginator>
-    </div>
-</section> -->

@@ -86,16 +86,13 @@ export class AllQuestionsComponent {
   }
   getRouterLink(row: any): any[] | null {
     if (this.isEdit && !this.isView) {
-      // Create and Edit actions exist, View action does not exist
       return row.status !== 'approved' ? ['/student/settings/configuration/all-questions/edit-questions', row.id] : null;
     } else if (this.isView && !this.isEdit) {
-      // Create and View actions exist, Edit action does not exist
       return row.status === 'approved' ? ['/student/settings/configuration/all-questions/preview-questions', row.id] : null;
     }  else if (this.isView && this.isEdit) {
-      // Both View and Edit actions exist
       return row.status !== 'approved' ? ['/student/settings/configuration/all-questions/edit-questions', row.id] : ['/student/settings/configuration/all-questions/preview-questions', row.id];
     } else {
-      return null; // Row should not be clickable
+      return null;
     }
   }
   getAllQuestions() {
@@ -129,7 +126,6 @@ export class AllQuestionsComponent {
     }
   }
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
     this.isAllSelected()
       ? this.selection.clear()

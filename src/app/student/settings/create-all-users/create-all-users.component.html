@@ -59,27 +59,6 @@
                                          </mat-error>
                                   </mat-form-field>
                               </div>
-                                  <!-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                                    <label>Qualification <span class="mandatory">&nbsp;*</span></label>
-                                    <mat-form-field class="example-full-width mb-3" appearance="outline">
-                                        <input matInput type="text"  formControlName="qualification"
-                                            class="form-control"  required>
-                                        <mat-error *ngIf="userForm.get('qualification')?.hasError('required')">
-                                            Enter Qualification
-                                        </mat-error>
-                                          <mat-error  *ngIf="userForm.get('qualification')?.hasError('minLength') && userForm.get('qualification')?.touched">
-                                            Enter a valid Qualification
-                                          </mat-error>
-                                    </mat-form-field>
-                                </div> -->
-                              <!-- <div class="row"> -->
-                               
-  
-                              <!-- </div> -->
-                               
-                              <!-- </div>
-                            <div class="row"> -->
-
                               <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                                 <label>Gender<span class="mandatory">&nbsp;*</span></label>
                                 <mat-form-field class="example-full-width mb-3" appearance="outline">
@@ -147,14 +126,6 @@
                                     </mat-error> 
                                   </mat-form-field>
                                 </div>
-                            <!-- </div>
-
-                            <div class="row"> -->
-
-                                
-                            <!-- </div>
-                         
-                              <div class="row"> -->
                                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
                                   <label>Registration Date <span class="mandatory">&nbsp;*</span></label>
                                   <mat-form-field
@@ -202,7 +173,6 @@
                                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                                   <div class="button-container">
                                     <label class="self-end">Role<span class="mandatory">&nbsp;*</span></label>
-                                    <!-- <button type="button" mat-flat-button color="primary" class="px-4 py-2">+</button> -->
                                     <mat-icon class="cursor-pointer" (click)="openRoleModal()">add</mat-icon>
                                   </div>
                                   <mat-form-field class="example-full-width mb-3 test" appearance="outline">
@@ -227,24 +197,6 @@
                                     </mat-error>
                                 </mat-form-field>
                             </div>
-                                <!-- <div *ngIf = "!editUrl" class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                                    <label>Re-Enter Password <span class="mandatory">&nbsp;*</span></label>
-                                    <mat-form-field class="example-full-width mb-3" appearance="outline">
-                                        <input matInput [type]="hide ? 'password' : 'text'" formControlName="re_passwords" required>
-                                        <mat-error *ngIf="userForm.get('re_passwords')?.hasError('required')">
-                                          Re-Enter Password
-                                        </mat-error>
-                                    </mat-form-field>
-                                </div> -->
-                             
-                          
-                           
-
-
-
-
-                              <!-- </div>
-                              <div class="row"> -->
                                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('Blood Group')">
                                   <label>Blood Group</label>
                                   <mat-form-field
@@ -313,13 +265,6 @@
                                   <textarea matInput formControlName="address"></textarea>
                                 </mat-form-field>
                               </div>
-                             
-
-                           
-
-<!-- 
-                              </div>
-                            <div class="row"> -->
                                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-5" *ngIf="labelStatusCheck('Upload')">
                                     <label>Upload</label>
                                     <div class="file-drop-area">

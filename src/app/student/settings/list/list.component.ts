@@ -26,7 +26,6 @@ export class ListComponent {
     'Title',
     'Decription',
     'User Role',
-    // 'Actions'
   ];
   dataSource: any;
   create = true;
@@ -140,11 +139,10 @@ export class ListComponent {
       this.cdr.detectChanges();
     })
   }
-   // export table data in excel file
    exportExcel() {
     const exportData: Partial<TableElement>[] = this.dataSource.map((x: any) => ({
         'Title': x.subject,
-        'Description': this.removeHtmlTags(x.details), // Remove HTML tags from description
+        'Description': this.removeHtmlTags(x.details),
         'Role': x.announcementFor,
     }));
 

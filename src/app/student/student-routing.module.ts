@@ -159,14 +159,6 @@ const routes: Routes = [
     path: 'schedule/homework',
     component: HomeworkComponent,
   },
-  // {
-  //   path: 'timetable/course-timetable',
-  //   component: TimetableComponent,
-  // },
-  // {
-  //   path: 'timetable/program-timetable',
-  //   component: ProgramTimetableComponent,
-  // },
 
   {
     path: 'feedback/courses/:classId/:studentId/:courseId',
@@ -459,29 +451,6 @@ const routes: Routes = [
     path:"settings/create-department",
     component: CreateDepartmentComponent
   },
-// {
-//   path: 'settings/course-kit',
-//   component: CourseKitComponent
-// },
-// {
-//   path: 'settings/create-course-kit',
-//   component: CreateCourseKitComponent
-// },
-// {
-//   path: 'settings/edit-course-kit/:id',
-//   component:  EditCourseKitComponent
-// },
-// {
-//   path: 'settings/create-template',
-//   component: CreateTemplateComponent
-// },
-// {
-//   path:'settings/view-course-kit/:id',
-//   component:ViewCourseKitComponent
-// },
-
-
-
 
   {
     path: 'settings/side-menu/:id',

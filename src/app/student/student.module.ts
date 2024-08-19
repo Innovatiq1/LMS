@@ -137,15 +137,11 @@ import { UpdateTimeAlgorithmComponent } from './settings/time/update-time-algori
     HomeworkComponent,
     leaveDeleteComonent,
     FormDialogComponent,
-    // TimetableComponent,
     CourseComponent,
     ViewCourseComponent,
     ProgramComponent,
     ViewProgramComponent,
     FeedbackComponent,
-
-    // ProgramTimetableComponent,
-
     SucessCourseComponent,
     FailureCourseComponent,
     ExamsSheduleComponent,
@@ -239,13 +235,6 @@ import { UpdateTimeAlgorithmComponent } from './settings/time/update-time-algori
     UpdateScoreAlgorithmComponent,
     TimeComponent,
     UpdateTimeAlgorithmComponent,
-  
-    // CourseKitComponent,
-    // VideoPlayerComponent,
-    // CreateCourseKitComponent,
-    // EditCourseKitComponent,
-    // ViewCourseKitComponent,
-    // CreateTemplateComponent
   ],
   imports: [
     CommonModule,

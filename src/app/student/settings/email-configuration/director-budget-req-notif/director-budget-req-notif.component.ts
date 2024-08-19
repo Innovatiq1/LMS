@@ -25,10 +25,8 @@ export class DirectorBudgetReqNotifComponent {
   instacptcrsinvtstsUrl : any;
   sendcourseinvoiceUrl : any;
   adminnewmailUrl : any;
-  // _id:any ;
   isSubmitted=false;
   id: any;
-  //forgot password
 
   assignData :any[] = [];
   public Editor: any = ClassicEditor;
@@ -106,7 +104,6 @@ export class DirectorBudgetReqNotifComponent {
       this.assignData  = response?.data?.docs[0]?.new_budget_request_template;
       this.ref.detectChanges();
     }, error => {
-      // this.isLoading = false;
     }); 
   }
 
@@ -164,11 +161,9 @@ export class DirectorBudgetReqNotifComponent {
 
   toggle(_data: any){
     this.edit = !this.edit;
-    // this._id = _data._id;
     this.directorBudgetReqNotifForm.patchValue({
       email_subject: _data.email_subject,
       email_content:_data.email_content,
-      // email_template_type:_data.email_template_type,
       email_top_header_text: _data.email_top_header_text
     });
 

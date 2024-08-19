@@ -9,8 +9,6 @@
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                 <div class="card">
                     <div class="header">
-                        <!-- <h2>Create Course</h2> -->
-
                     </div>
                     <form [formGroup]="mainCategoryForm" (ngSubmit)="createMainCategory()">
                         <div class="body">
@@ -18,8 +16,6 @@
                                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
                                     <label>Main Category <span class="mandatory">&nbsp;*</span></label>
                                     <mat-form-field class="example-full-width mt-2" appearance="outline">
-                                        <!-- <mat-label>Course Name</mat-label> -->
-
                                         <input matInput type="text" id="category_name" formControlName="category_name"
                                             class="form-control" required>
                                             <mat-error *ngIf="mainCategoryForm.get('category_name')?.hasError('required')">
@@ -28,9 +24,6 @@
                                               <mat-error  *ngIf="mainCategoryForm.get('category_name')?.hasError('pattern') && mainCategoryForm.get('category_name')?.touched">
                                                 Enter a valid Main Category
                                                </mat-error>
-                                        <!-- <mat-error *ngIf="mainCategoryForm.get('category_name')?.hasError('required')">
-                                            Enter Main Category
-                                        </mat-error> -->
                                     </mat-form-field>
                                 </div>
                                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">

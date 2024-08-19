@@ -57,12 +57,6 @@ export class LogoCoutomzationComponent {
       this.Logos = logo?.data?.docs;
     });
   }
-  /* get logo from HTML **/
-  // onFileUpload(event: any) {
-  //   const file = event.target.files[0];
-  //   this.logoFile = file;
-  //   this.logoImg = this.logoFile.name;
-  // }
 
   onFileUpload(event: any) {
     const file = event.target.files[0];
@@ -88,14 +82,11 @@ export class LogoCoutomzationComponent {
     this.logoFile = file;
     this.logoImg = this.logoFile.name;
   }
-
-  /* when list was clicked, get log By Id & patch values  **/
   patchFile(id: string) {
     this.patchId = id;
     this.logoService.getLogoById(this.patchId).subscribe((res) => {
       try {
         if (res) {
-          /* this.isLogo for showing and hiding of update section **/
           this.isLogo = true;
           this.logoImg = res.filename;
           this.LogoForm.patchValue({
@@ -109,7 +100,6 @@ export class LogoCoutomzationComponent {
     this.isLogo = false;
   }
 
-  /* update logo api call **/
 
   updateLogo() {
     
@@ -139,8 +129,7 @@ export class LogoCoutomzationComponent {
               Swal.fire({
                 title: 'Success',
                 text: 'Logo Updated successfully.',
-                icon: 'success',
-                // confirmButtonColor: '#d33',
+                icon: 'success'
               });
             }
           });

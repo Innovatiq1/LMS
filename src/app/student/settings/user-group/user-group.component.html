@@ -59,7 +59,6 @@
               </div>
             </div>
             <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
-              <!-- <div class="card" style="border-radius: 31px;"> -->
               <div class="header mt-3">
                 <h2>User Groups Listing</h2>
               </div>
@@ -81,20 +80,13 @@
                             *ngFor="let user of row.userId; let i = index; let last = last">
                             {{ user.name }}{{ !last ? ',' : '' }}
                           </div>
-
-                          <!-- <span *ngIf="!last">,</span> -->
-
                         </td>
-
                         <td (click)="isEdit ? update(row.id) : null">{{row.shortDes | capitalizeFirstLetter}}</td>
-
                       </tr>
-
                     </tbody>
                   </table>
                 </div>
               </div>
-              <!-- </div> -->
             </div>
           </div>
         </div>

@@ -85,14 +85,6 @@ export class SBannerCreateComponent {
 
 
   FileUpload(event:any){
-    // const file =event.target.files[0]
-    // const formData = new FormData()
-    // formData.append('files', file)
-    // this.bannerService.uploadCourseThumbnail(formData).subscribe((response:any)=>{
-    // this.image_link = response.image_link;
-    // this.uploaded=this.image_link.split('/')
-    // this.uploadedImage = this.uploaded.pop();
-    // })
     const file = event.target.files[0];
   
     this.thumbnail = file

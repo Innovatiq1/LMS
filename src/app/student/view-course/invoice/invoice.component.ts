@@ -32,9 +32,6 @@ export class InvoiceComponent {
         this.data.totalValue = totalValue
       }
       this.dialogRef.close(this.data); 
-
-  
-      // Send the calculated values back to the parent component
     }
   }
 

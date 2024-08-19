@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-//import { CourseService } from '@core/service/course.service';
 import { SettingsService } from '@core/service/settings.service';
 import { UtilsService } from '@core/service/utils.service';
 import Swal from 'sweetalert2';
@@ -30,7 +29,6 @@ export class UpdateTimeAlgorithmComponent {
     private authenService: AuthenService) {
       this.timeAlgorithmForm = this.fb.group({
         times: ['', [Validators.required,...this.utils.validators.noLeadingSpace]],
-       // description: ['', [Validators.required,...this.utils.validators.name]]
 
       });
 
@@ -55,7 +53,6 @@ export class UpdateTimeAlgorithmComponent {
       this.id = params['id'];
       this.timeAlgorithmForm.patchValue({
         times: this.fund,
-       // description: this.description
       });
     });
   }
@@ -64,7 +61,6 @@ export class UpdateTimeAlgorithmComponent {
     if(this.timeAlgorithmForm.valid) {
       
       const timesValue = this.timeAlgorithmForm.value.times;
-      console.log("Value getting==",timesValue)
     const payload = {
       times: timesValue,
     }
@@ -84,7 +80,6 @@ export class UpdateTimeAlgorithmComponent {
               title: 'Success',
               text: 'Time Algorithm updated successfully.',
               icon: 'success',
-              // confirmButtonColor: '#d33',
             });
             this.timeAlgorithmForm.reset();
             () => {
@@ -92,7 +87,6 @@ export class UpdateTimeAlgorithmComponent {
                 title: 'Error',
                 text: 'Failed to update. Please try again.',
                 icon: 'error',
-                // confirmButtonColor: '#d33',
               });
             };
           }
@@ -123,7 +117,6 @@ export class UpdateTimeAlgorithmComponent {
         title: 'Success',
         text: 'Record Deleted Successfully...!!!',
         icon: 'success',
-        // confirmButtonColor: '#526D82',
       });
       window.history.back();
     });

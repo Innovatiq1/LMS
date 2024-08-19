@@ -32,7 +32,7 @@ interface Components {
 
 interface Dashboard {
   title: string;
-  components: Components[]; // Make sure this matches the Components interface
+  components: Components[];
 }
 
 interface OuterDashboard {
@@ -48,7 +48,6 @@ export class SettingsComponent {
   stdForm1: UntypedFormGroup;
   profileForm: FormGroup;
   dropdownVisible = false;
-  // selectedDashboard!: string;
   component!: string;
   selectedDashboards = new Set<string>();
   selectedComponents: { [key: string]: boolean } = {};
@@ -90,25 +89,6 @@ export class SettingsComponent {
       'RESCHEDULE LIST',
     ],
   };
-  // Traineecomponents: string[] = [
-  //   "TOTAL TRAINEES",
-  //   'ALL COURSES',
-  //   'TOTAL TRAINERS',
-  //   "TRAINER SURVEY",
-  //   'USERS',
-  //   'CLASSES LIST',
-  //   'TRAINERS LIST',
-  //   'NEW TRAINEES LIST'
-  // ];
-  // TrainerComponents: string[] = [
-  //   "TRAINER LIST",
-  //   'UPCOMING COURSES',
-  // ];
-
-  // SupportComponents: string[] = [
-  //  "Support Tickets"
-  // ];
-
   editData: any;
   studentId: any;
   hide = true;
@@ -283,9 +263,6 @@ export class SettingsComponent {
     this.dashboardsUrl = urlPath.includes('dashboards');
     this.studentDbUrl = urlPath.includes('student-dashboard');
 
-    // this.Traineecomponents.forEach((component) => {
-    //   this.selectedComponents[component] = false;
-    // });
     const formURLs = [
       this.courseFormsUrl,
       this.programFormsUrl,
@@ -600,7 +577,6 @@ export class SettingsComponent {
       this.isAdmin = true;
     }
     this.patchValues(),
-      //this.patchValues1()
       (this.stdForm = this.fb.group({
         name: ['', [Validators.required, ...this.utils.validators.uname]],
         password: [
@@ -653,8 +629,6 @@ export class SettingsComponent {
       director: ['', Validators.required],
       TA: ['', Validators.required],
     });
-
-    //constructor
   }
 
   ngOnInit() {
@@ -664,7 +638,6 @@ export class SettingsComponent {
     this.getStudentDb();
     this.getAllUsers();
     this.getAllUserTypes();
-    // this.getDashboardComponents();
     this.commonRoles = AppConstants;
     let role = localStorage.getItem('user_type');
     if (role == AppConstants.ADMIN_USERTYPE || AppConstants.ADMIN_ROLE) {
@@ -768,9 +741,6 @@ export class SettingsComponent {
   navigateToUserSettings() {
     this.router.navigate(['/student/settings/users']);
   }
-  // navigateToAllUserSettings() {
-  //   this.router.navigate(['/student/settings/all-user']);
-  // }
   navigateToIntegrateSettings() {
     this.router.navigate(['/student/settings/integration']);
   }
@@ -911,7 +881,6 @@ export class SettingsComponent {
   }
   patchValues() {
     this.studentId = localStorage.getItem('id');
-    // let studentId = localStorage.getItem('id')?localStorage.getItem('id'):null
     this.studentService.getStudentById(this.studentId).subscribe((res: any) => {
       this.editData = res;
       this.avatar = this.editData.avatar;
@@ -988,8 +957,6 @@ export class SettingsComponent {
     });
   }
   onFileUpload(event: any) {
-    // this.fileName = event.target.files[0].name;
-    // this.files = event.target.files[0];
     const file = event.target.files[0];
 
     this.thumbnail = file;
@@ -1003,39 +970,14 @@ export class SettingsComponent {
         let image = this.uploaded.pop();
         this.uploaded = image.split('\\');
         this.uploadedImage = this.uploaded.pop();
-
-        // this.onSubmit1();
       });
-    // this.uploadedImage = event.target.files[0].name;
-
-    // // const file = event.target.files[0];
-    // const formData = new FormData();
-    // // formData.append('files', file);
-    // this.certificateService
-    //   .uploadCourseThumbnail(formData)
-    //   .subscribe((response: any) => {
-    //     this.avatar = response.avatar;
-    //     this.uploaded = this.avatar.split('/');
-    //     this.uploadedImage = this.uploaded.pop();
-    //   });
   }
 
   onSubmit() {
     if (this.stdForm.valid) {
-      // this.instructor.uploadVideo(this.files).subscribe(
-      //   (response: any) => {
-      //     const inputUrl = response.inputUrl;
-
       const userData: Student = this.stdForm.value;
-      //this.commonService.setVideoId(videoId)
-
-      //userData.avatar = inputUrl;
-      //userData.filename= this.fileName
       userData.type = 'Student';
       userData.role = 'Student';
-
-      //this.currentVideoIds = [...this.currentVideoIds, ...videoId]
-      // this.currentVideoIds.push(videoId);
       this.updateInstructor(userData);
 
       Swal.close();
@@ -1044,43 +986,10 @@ export class SettingsComponent {
       this.stdForm.markAllAsTouched();
     }
   }
-  // onSubmit1() {
-  //   if (!this.stdForm1.invalid) {
-  //     this.studentService.uploadVideo(this.files).subscribe(
-  //       (response: any) => {
-  //         const inputUrl = response.inputUrl;
-  //         this.authenservice.updateUserProfile(response.inputUrl);
-
-  //         const userData: Student = this.stdForm1.value;
-  //         //this.commonService.setVideoId(videoId)
-
-  //         userData.avatar = inputUrl;
-  //         userData.filename = response.filename;
-  //         userData.type = 'Student';
-  //         userData.role = 'Student';
-
-  //         //this.currentVideoIds = [...this.currentVideoIds, ...videoId]
-  //         // this.currentVideoIds.push(videoId);
-  //         this.updateInstructor(userData);
-
-  //         Swal.close();
-  //       },
-  //       (error: any) => {
-  //         Swal.fire({
-  //           icon: 'error',
-  //           title: 'Upload Failed',
-  //           text: 'An error occurred while uploading the video',
-  //         });
-  //         Swal.close();
-  //       }
-  //     );
-  //   }
-  // }
   onSubmit1() {
     if (this.stdForm1.valid) {
-      // No need to call uploadVideo() here since it's not needed
       const userData: any = this.stdForm1.value;
-      userData.avatar = this.avatar; // Assuming this.avatar contains the URL of the uploaded thumbnail
+      userData.avatar = this.avatar;
       userData.type = this.editData.type;
       userData.role = this.editData.role;
       userData.ro = this.ro;
@@ -1108,15 +1017,6 @@ export class SettingsComponent {
   }
 
   private updateInstructor(userData: Student): void {
-    //   Swal.fire({
-    //   title: 'Are you sure?',
-    //   text: 'Do you want to update!',
-    //   icon: 'warning',
-    //   confirmButtonText: 'Yes',
-    //   showCancelButton: true,
-    //   cancelButtonColor: '#d33',
-    // }).then((result) => {
-    //   if (result.isConfirmed){
     this.studentService.updateStudent(this.studentId, userData).subscribe(
       () => {
         Swal.fire({
@@ -1124,10 +1024,6 @@ export class SettingsComponent {
           text: 'User data update successfully',
           icon: 'success',
         });
-        //this.fileDropEl.nativeElement.value = "";
-        //this.stdForm.reset();
-        //this.toggleList()
-        //this.router.navigateByUrl('/admin/teachers/all-teachers');
       },
       (error: { message: any; error: any }) => {
         Swal.fire(
@@ -1137,8 +1033,6 @@ export class SettingsComponent {
         );
       }
     );
-    //   }
-    // });
   }
 
   /** Get User for profile */

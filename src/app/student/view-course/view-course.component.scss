@@ -18,11 +18,6 @@
     border:1px solid black
   }
 
-//   .mat-mdc-header-cell, .mat-mdc-cell {
-//     border-bottom: none;
-// }
-// :host ::ng-deep thead{display: none;}
-
 .kit {
   font-size: 16px;
   font-weight: 700;
@@ -74,10 +69,6 @@
   z-index: 1;
   opacity: 20%;
 }
-
-
-
-// tabs for under video section
 
 button,
 input {
@@ -348,7 +339,6 @@ body {
   font-size: inherit;
   speak: none;
   text-transform: none;
-  /* Better Font Rendering */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

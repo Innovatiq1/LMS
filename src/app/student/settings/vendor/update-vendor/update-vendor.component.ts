@@ -48,7 +48,6 @@ export class UpdateVendorComponent {
       }
       this.activatedRoute.queryParams.subscribe(params => {
         this.id = params['id'];
-        // this.getVendorById(this.id)
         this.getVendorById(this.id);
       })
   }
@@ -72,14 +71,12 @@ export class UpdateVendorComponent {
               title: 'Success',
               text: 'Vendor updated successfully.',
               icon: 'success',
-              // confirmButtonColor: '#d33',
             });
             () => {
               Swal.fire({
                 title: 'Error',
                 text: 'Failed to update. Please try again.',
                 icon: 'error',
-                // confirmButtonColor: '#d33',
               });
             };
           }
@@ -118,7 +115,6 @@ export class UpdateVendorComponent {
             title: 'Success',
             text: 'Record Deleted Successfully...!!!',
             icon: 'success',
-            // confirmButtonColor: '#526D82',
           });
           window.history.back();
         });

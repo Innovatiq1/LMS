@@ -306,8 +306,6 @@ export class ViewCourseComponent implements OnDestroy {
           });
       });
     }
-
-    // this.destroyModal(event.target.currentTime);
   }
 
   checkStudentClassRedirect() {
@@ -345,7 +343,6 @@ export class ViewCourseComponent implements OnDestroy {
                     const targetURL = `/student/questions/${classId}/${studentId}/${this.courseId}`;
                     if(this.router.url!=targetURL){
                       if(issueCertificate=='test'){
-                      //  console.log("this is issue certificate value==",issueCertificate)
                         this.router.navigate([
                           '/student/questions/',
                           classId,
@@ -369,7 +366,6 @@ export class ViewCourseComponent implements OnDestroy {
                           icon: 'success',
                         }).then((result) => {
                           if (result.isConfirmed) {
-                            // Reload the page after the alert is closed
                             location.reload();
                           }
                         });
@@ -399,7 +395,6 @@ export class ViewCourseComponent implements OnDestroy {
                       }
 
                       this.classService.saveApprovedClasses(this.classId,payload).subscribe((response)=>{
-                       // window.history.back();
                        Swal.fire({
                         title: 'Course Completed Successfully',
                         text: 'Please Wait For the Certificate',
@@ -446,7 +441,6 @@ export class ViewCourseComponent implements OnDestroy {
     this.courseService.getCoursekitVideoById(video.id).subscribe((data) => {
       let videoUrl = data?.data;
       this.videoPlayer.nativeElement.src = videoUrl?.video_url;
-      // console.log("data:12 " , data.data)
     });
     this.sdiscrption = video.discription;
     this.header = video.name;
@@ -744,7 +738,6 @@ if(this.feeType=="paid")
   });
 }
 else if(this.feeType=="free"){
-  //console.log("this.feeType")
   let payload = {
     email: userdata.user.email,
     name: userdata.user.name,
@@ -772,7 +765,6 @@ else if(this.feeType=="free"){
   });
 }
     } else if (this.free ) {
-     // console.log("this is paid type ",this.feeType)
       let payload = {
         email: userdata.user.email,
         name: userdata.user.name,
@@ -802,9 +794,6 @@ else if(this.feeType=="free"){
   }
   generateInvoice(element: any) {
     Swal.fire({
-      // title: "Updated",
-      // text: "Course Kit updated successfully",
-      // icon: "success",
       title: 'Loading Payment Screen...',
       text: 'Please wait...',
       allowOutsideClick: false,
@@ -907,8 +896,6 @@ else if(this.feeType=="free"){
     this.courseService.getCourseById(id).subscribe((response) => {
       this.courseKitDetails = response?.course_kit;
       this.courseDetails = response;
-      // if (Array.isArray(this.courseKitDetails)) {
-
       this.courseKitDetails.map((item: any) => {
         this.url = item?.videoLink[0]?.video_url;
       });
@@ -926,7 +913,6 @@ else if(this.feeType=="free"){
       }));
       if(this.paidProgram){
         this.classService.getClassList({courseId:this.courseDetails.id,program:'yes'}).subscribe((response) => {
-        //  console.log('res',response)
           this.classId = response.docs[0].id
           localStorage.setItem('classId', this.classId);
           this.getClassDetails();    
@@ -1041,7 +1027,6 @@ else if(this.feeType=="free"){
           this.isCompleted = true;
           this.isCertificate = "Yes";
           this.certificateIssued = true;
-         // console.log("cert", this.isCertificate)
         }
         if (this.studentClassDetails.status == 'cancel') {
           this.isRegistered == true;
@@ -1170,52 +1155,6 @@ else if(this.feeType=="free"){
         }
       });
   }
-
-  // playVideo(video: { url: any, playbackProgress: number, id: any, playbackTime: any }): void {
-  //   if (video?.url) {
-  //     this.openVidePlayer(video);
-  //     this.commonService.setPlayBackTime(video?.playbackTime)
-
-  //   } else {
-  //     console.error("Invalid video URL");
-  //   }
-  // }
-
-  // openVidePlayer(videoLink: { url?: any; id?: any; playbackProgress?: number }): void {
-  //   if (videoLink?.id) {
-  //     const videoId = videoLink.id;
-  //     this.courseService.getVideoById(videoId).subscribe((res) => {
-  //       const videoURL = res.data.videoUrl;
-  //       if (!videoURL) {
-  //         Swal.fire({
-  //           icon: "error",
-  //           title: "Video Convert is Pending",
-  //           text: "Please start convert this video",
-  //         });
-  //         return
-
-  //       }
-  //       const videoType = "application/x-mpegURL";
-  //       if (videoURL) {
-  //         const initialState: ModalOptions = {
-  //           initialState: {
-  //             videoURL,
-  //             videoType,
-  //             playbackProgress: videoLink.playbackProgress || 0,
-  //            // Default to 0 if not provided
-
-  //           },
-  //           class: "videoPlayer-modal",
-  //           backdrop: 'static', keyboard: false
-  //         };
-  //         this.commonService.setVideoDetails(videoLink)
-
-  //         this.modalServices.show(StudentVideoPlayerComponent, initialState);
-  //       }
-  //     });
-  //   }
-  // }
-
   parseDate(dateString: string): Date {
     return new Date(dateString);
   }
@@ -1329,12 +1268,6 @@ else if(this.feeType=="free"){
       }
     }
   }
-  // feedback(){
-  //   let classId = localStorage.getItem('classId');
-  //   let studentId = localStorage.getItem('id');
-  //   this.router.navigate(['/student/feedback/courses', classId, studentId, this.courseId]);
-  // }
-
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
@@ -1422,8 +1355,6 @@ else if(this.feeType=="free"){
   }
 
   submitFeedback(event: any) {
-   // console.log('submitting feedback..');
-    
     this.isFeedBackSubmitted = false;
     const studentId = localStorage.getItem('id');
     const userData = JSON.parse(localStorage.getItem('user_data') || '');

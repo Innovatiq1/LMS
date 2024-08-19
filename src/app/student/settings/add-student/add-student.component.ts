@@ -1,5 +1,3 @@
-// import { StudentId } from './../../schedule-class/class.model';
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component } from '@angular/core';
 import {
   UntypedFormBuilder,
@@ -82,7 +80,6 @@ export class AddStudentComponent {
       attemptBlock: ['', []],
 
     },{
-      // validator: ConfirmedValidator('password', 'conformPassword')
     });
   }
 
@@ -137,47 +134,11 @@ export class AddStudentComponent {
       this.uploaded = image?.split('\\');
       this.fileName = this.uploaded?.pop();
     });
-  }     
-
-  // onSubmit() {
-  //   console.log('Form Value', this.stdForm.value);
-  //   if (!this.stdForm.invalid) {
-  //     this.StudentService.uploadVideo(this.files).subscribe(
-  //       (response: any) => {
-  //         const inputUrl = response.inputUrl;
-
-  //         const userData: Student = this.stdForm.value;
-  //         //this.commonService.setVideoId(videoId)
-
-  //         userData.avatar = inputUrl;
-  //         userData.filename = response.filename;
-  //         userData.type = 'Student';
-  //         userData.role = 'Student';
-  //         userData.isLogin = true;
-
-  //         //this.currentVideoIds = [...this.currentVideoIds, ...videoId]
-  //         // this.currentVideoIds.push(videoId);
-  //         this.createInstructor(userData);
-
-  //         Swal.close();
-  //       },
-  //       (error) => {
-  //         Swal.fire({
-  //           icon: 'error',
-  //           title: 'Upload Failed',
-  //           text: 'An error occurred while uploading the video',
-  //         });
-  //         Swal.close();
-  //       }
-  //     );
-  //   }
-  // }
+  }    
   onSubmit() {
     let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     if (!this.stdForm.invalid) {
         const userData: any = this.stdForm.value;
-        
-        // Set the avatar path to the URL received during file upload
         userData.avatar = this.avatar;
         
         userData.type = AppConstants.STUDENT_ROLE;
@@ -202,8 +163,6 @@ export class AddStudentComponent {
         }).then((result) => {
           if (result.isConfirmed){
             this.createInstructor(userData);
-            // this.router.navigate(['/student/settings/all-students'])
-            // Swal.close();
           }
         });
        
@@ -222,9 +181,7 @@ export class AddStudentComponent {
           text: 'Trainee created successfully',
           icon: 'success',
         });
-        //this.fileDropEl.nativeElement.value = "";
         this.stdForm.reset();
-        //this.toggleList()
         this.router.navigateByUrl('/student/settings/all-user/all-students');
       },
       (error) => {
@@ -243,29 +200,17 @@ getDepartment(){
    })
 
 }
-// onSelectChange(event :any) {
-//   console.log("ibstList",this.dept)
-//   const filteredData = this.dept.filter((item: { id: string; }) => item.id === event.value);
-//   console.log(filteredData,"filter")
-//   let dept = filteredData[0].department;
-//   this.stdForm.get('department')?.setValue(dept);
-
-// }
-
-
   patchValues(id: string) {
     if (id != undefined) {
       this.viewUrl = true;
       this.edit = true;
       this.StudentService.getStudentById(id).subscribe((res) => {
-        // this.fileName =res.avatar
         this.editData = res;
         this.avatar = this.editData?.avatar;
       this.uploaded=this.avatar?.split('/')
       let image  = this.uploaded?.pop();
       this.uploaded= image?.split('\\');
       this.fileName = this.uploaded?.pop();
-        // this.stdForm.get('department')?.setValue(this.editData.department);
         this.stdForm.patchValue({
           name: this.editData.name,
           last_name: this.editData.last_name,
@@ -294,97 +239,10 @@ getDepartment(){
 
     window.history.back();
   }
-
-  // update() {
-  //   console.log('Form Value', this.stdForm);
-  //   if (this.stdForm.valid) {
-  //     this.StudentService.uploadVideo(this.files).subscribe((response: any) => {
-  //       const inputUrl = response.inputUrl;
-
-  //       const userData: Student = this.stdForm.value;
-  //       //this.commonService.setVideoId(videoId)
-
-  //       userData.avatar = inputUrl;
-  //       userData.filename = this.fileName;
-  //       userData.type = 'Student';
-  //       userData.role = 'Student';
-
-  //       //this.currentVideoIds = [...this.currentVideoIds, ...videoId]
-  //       // this.currentVideoIds.push(videoId);
-  //       this.updateInstructor(userData);
-
-  //       Swal.close();
-  //     });
-  //   }
-  // }
-
-  // update() {
-  //   console.log('Form Value', this.stdForm);
-  //   if (this.stdForm.valid) {
-  //     this.StudentService.uploadVideo(this.files).subscribe((response: any) => {
-  //       const inputUrl = response.inputUrl;
-
-  //       const userData: Student = this.stdForm.value;
-  //       //this.commonService.setVideoId(videoId)
-
-  //       userData.avatar = inputUrl;
-  //       userData.filename = this.fileName;
-  //       userData.type = 'Student';
-  //       userData.role = 'Student';
-
-  //       //this.currentVideoIds = [...this.currentVideoIds, ...videoId]
-  //       // this.currentVideoIds.push(videoId);
-  //       this.updateInstructor(userData);
-
-  //       Swal.close();
-  //     });
-  //   }
-  // }
-
-  // update() {
-  //   console.log('Form Value', this.stdForm.value);
-  
-  //   // Check if the form is valid
-  //   if (this.stdForm.valid) {
-  //     if (this.files) {
-  //       // If files are present, upload the video
-  //       this.StudentService.uploadVideo(this.files).subscribe(
-  //         (response: any) => {
-  //           const inputUrl = response.inputUrl;
-  
-  //           const userData: Student = this.stdForm.value;
-  //           userData.avatar = inputUrl;
-  //           userData.filename = this.fileName;
-  //           userData.type = "Student";
-  //           userData.role = "Student";
-  
-  //           this.updateInstructor(userData);
-  
-  //           Swal.close();
-  //         },
-  //         (error: any) => {
-  //           // Handle the error during file upload
-  //           console.error('File upload failed:', error);
-  //         }
-  //       );
-  //     } else {
-  //       // If no files are present, update the user directly
-  //       const userData: Student = this.stdForm.value;
-  //       userData.type = "Student";
-  //       userData.role = "Student";
-  
-  //       this.updateInstructor(userData);
-  //     }
-  //   }
-  // }
   update() {
     let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    // Check if the form is valid
     if (this.stdForm.valid) {
-      // Create userData object with form values
       const userData: Student = this.stdForm.value;
-
-      // Set the avatar path to the existing avatar URL
       userData.avatar = this.avatar;
 
       userData.type = AppConstants.STUDENT_ROLE;
@@ -394,8 +252,6 @@ getDepartment(){
         userData.adminName = user.user.name;
         userData.companyId = user.user.companyId;
         userData.attemptCalculation = 1;
-
-      // Call the updateInstructor function with userData
 
       Swal.fire({
         title: 'Are you sure?',
@@ -408,7 +264,6 @@ getDepartment(){
         if (result.isConfirmed){
           this.updateInstructor(userData);
           Swal.close();
-          // window.history.back();
         }
       });
      
@@ -423,11 +278,7 @@ getDepartment(){
           text: 'Trainee details update successfully',
           icon: 'success',
         });
-        //this.fileDropEl.nativeElement.value = "";
-        // this.stdForm.reset();
         window.history.back();
-        //this.toggleList()
-        // this.router.navigateByUrl('/admin/students/all-students');
       },
       (error: { message: any; error: any }) => {
         Swal.fire(

@@ -44,7 +44,6 @@ export class SendCourseInvoiceComponent {
   
   toggle(_data: any){
     this.edit =!this.edit;
-    // this._id = _data._id;
     this.emailTemplateForm.patchValue({
       email_subject: _data.email_subject,
       email_top_header_text:_data.email_top_header_text,
@@ -75,11 +74,9 @@ export class SendCourseInvoiceComponent {
   patchForm(pageContent: any) {
     this.pageContent = pageContent;
     this.emailTemplateForm.patchValue({
-      // email_template_type: pageContent?.email_template_type,
       email_subject: pageContent?.email_subject,
       email_top_header_text: pageContent?.email_top_header_text,
       email_content: pageContent?.email_content,
-      // bottom_button_text: pageContent?.bottom_button_text,
     });
   
   }

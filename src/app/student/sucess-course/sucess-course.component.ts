@@ -132,11 +132,6 @@ export class SucessCourseComponent implements OnInit {
       }
     });
   }
-  // getCourseKitDetails(){
-  //   this.courseService.getClassList(this.courseId).subscribe((response) => {
-  //     this.courseKitDetails=response?.course_kit;
-  //   });
-  // }
   getJobTemplates() {
     this.courseService.getJobTempletes().subscribe(
       (data: any) => {
@@ -157,7 +152,6 @@ export class SucessCourseComponent implements OnInit {
   }
 
   openVidePlayer(videoLink: { url?: any; id?: any; }): void {
-    // const { videoLink } = videoLink;
     if (videoLink?.id) {
       const videoId = videoLink.id;
       this.courseService.getVideoById(videoId).subscribe((res) => {

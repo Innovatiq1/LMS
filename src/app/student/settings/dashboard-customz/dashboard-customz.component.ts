@@ -353,25 +353,5 @@ export class DashboardCustomzComponent {
       }
     );
   }
-  // saveDashboardConfig() {
-  //   const config = {
-  //     typeName: "Admin",
-  //     companyId: "",
-  //     checked: false,
-  //     dashboards: [
-  //       {
-  //         title: this.selectedDashboard,
-  //         id: this.selectedDashboard.toLowerCase().replace(/\s+/g, '-'),
-  //         components: this.Traineecomponents.map(component => ({
-  //           component: component,
-  //           id: component.toLowerCase().replace(/\s+/g, '-'),
-  //           checked: !!this.selectedComponents[component]
-  //         }))
-  //       }
-  //     ]
-  //   };
-
-  //   console.log(config);
-  //   // Add logic here to save the config, e.g., send to a service
-  // }
+ 
 }

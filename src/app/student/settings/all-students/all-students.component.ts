@@ -105,9 +105,6 @@ export class AllStudentsComponent
     }
     this.loadData();
   }
-  // ngAfterViewInit() {
-  //   this.dataSource.paginator = this.paginator;
-  // }
   refresh() {
     this.loadData();
   }
@@ -120,39 +117,7 @@ export class AllStudentsComponent
       queryParams: { id: row.id },
     });
   }
-  // deleteItem(row: Students) {
-  //   this.id = row.id;
-  //   let tempDirection: Direction;
-  //   if (localStorage.getItem('isRtl') === 'true') {
-  //     tempDirection = 'rtl';
-  //   } else {
-  //     tempDirection = 'ltr';
-  //   }
-  //   const dialogRef = this.dialog.open(DeleteDialogComponent, {
-  //     data: row,
-  //     direction: tempDirection,
-  //   });
-  //   this.subs.sink = dialogRef.afterClosed().subscribe((result) => {
-  //     if (result === 1) {
-  //       const foundIndex = this.exampleDatabase?.dataChange.value.findIndex(
-  //         (x) => x.id === this.id
-  //       );
-  //       // for delete we use splice in order to remove single object from DataService
-  //       if (foundIndex != null && this.exampleDatabase) {
-  //         this.exampleDatabase.dataChange.value.splice(foundIndex, 1);
-  //         this.refreshTable();
-  //         this.showNotification(
-  //           'snackbar-danger',
-  //           'Delete Record Successfully...!!!',
-  //           'bottom',
-  //           'center'
-  //         );
-  //       }
-  //     }
-  //   });
-  // }
   deleteItem(row: any) {
-    // this.id = row.id;
     Swal.fire({
       title: 'Confirm Deletion',
       text: 'Are you sure you want to delete this Student?',
@@ -171,7 +136,6 @@ export class AllStudentsComponent
               text: 'Student deleted successfully',
               icon: 'success',
             });
-            //this.fetchCourseKits();
             this.loadData();
           },
           (error: { message: any; error: any }) => {
@@ -186,7 +150,6 @@ export class AllStudentsComponent
     });
   }
   confirmItem(row: any) {
-    // this.id = row.id;
     Swal.fire({
       title: 'Confirm Active',
       text: 'Are you sure you want to active this Student?',
@@ -205,7 +168,6 @@ export class AllStudentsComponent
               text: 'Student Active successfully',
               icon: 'success',
             });
-            //this.fetchCourseKits();
             this.loadData();
           },
           (error: { message: any; error: any }) => {
@@ -222,14 +184,11 @@ export class AllStudentsComponent
   private refreshTable() {
     this.paginator._changePageSize(this.paginator.pageSize);
   }
-  /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.renderedData.length;
     return numSelected === numRows;
   }
-
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
     this.isAllSelected()
       ? this.selection.clear()
@@ -252,14 +211,7 @@ export class AllStudentsComponent
       title: 'Success',
       text: 'Record Deleted Successfully...!!!',
       icon: 'success',
-      // confirmButtonColor: '#526D82',
     });
-    // this.showNotification(
-    //   'snackbar-danger',
-    //   totalSelect + ' Record Delete Successfully...!!!',
-    //   'bottom',
-    //   'center'
-    // );
   }
 
   public loadData() {
@@ -278,16 +230,8 @@ export class AllStudentsComponent
         this.dataSource.filter = this.filter.nativeElement.value;
       }
     );
-
-    // this.dataSource.filteredData.map((x) => {
-    //   console.log("xData",x)
-    // })
-
-    //girdView
   }
-  // export table data in excel file
   exportExcel() {
-    // key name with space add in brackets
     const exportData: Partial<TableElement>[] =
       this.dataSource.filteredData.map((x) => ({
         Name: x.name,
@@ -325,13 +269,7 @@ export class AllStudentsComponent
       user.email,
       user.Active ? 'Active' : 'Inactive',
     ]);
-    //const columnWidths = [60, 80, 40];
     const columnWidths = [20, 20, 20, 20, 20, 20, 20, 20, 20, 20];
-
-    // Add a page to the document (optional)
-    //doc.addPage();
-
-    // Generate the table using jspdf-autotable
     (doc as any).autoTable({
       head: headers,
       body: data,
@@ -342,8 +280,6 @@ export class AllStudentsComponent
         cellWidth: 'wrap',
       },
     });
-
-    // Save or open the PDF
     doc.save('StudentList.pdf');
   }
 
@@ -386,9 +322,6 @@ export class AllStudentsComponent
       startIndex,
       endIndex
     );
-    //     this.dataSource.filteredData = this.dataSource.filteredData.slice(startIndex, endIndex)
-    //     this.paginator.pageIndex = event.pageIndex;
-    //  this.dataSource.filteredData = this.dataSource.originalData.slice(startIndex, endIndex);
   }
 }
 export class ExampleDataSource extends DataSource<Students> {
@@ -408,12 +341,9 @@ export class ExampleDataSource extends DataSource<Students> {
     public _sort: MatSort
   ) {
     super();
-    // Reset to the first page when the user changes the filter.
     this.filterChange.subscribe(() => (this.paginator.pageIndex = 0));
   }
-  /** Connect function called by the table to retrieve one stream containing the data to render. */
   connect(): Observable<Students[]> {
-    // Listen for any changes in the base data, sorting, filtering, or pagination
     const displayDataChanges = [
       this.exampleDatabase.dataChange,
       this._sort.sortChange,
@@ -431,7 +361,6 @@ export class ExampleDataSource extends DataSource<Students> {
     this.rowData = this.exampleDatabase.data;
     return merge(...displayDataChanges).pipe(
       map((x) => {
-        // Filter data
         this.filteredData = this.exampleDatabase.data
           .slice()
           .filter((students: Students) => {
@@ -444,10 +373,7 @@ export class ExampleDataSource extends DataSource<Students> {
             ).toLowerCase();
             return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
           });
-
-        // Sort filtered data
         const sortedData = this.sortData(this.filteredData.slice());
-        // Grab the page's slice of the filtered sorted data.
         const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
         this.renderedData = sortedData.splice(
           startIndex,
@@ -459,9 +385,7 @@ export class ExampleDataSource extends DataSource<Students> {
     );
   }
   disconnect() {
-    // disconnect
   }
-  /** Returns a sorted copy of the database data. */
   sortData(data: Students[]): Students[] {
     if (!this._sort.active || this._sort.direction === '') {
       return data;
