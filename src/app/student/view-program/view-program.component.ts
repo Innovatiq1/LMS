@@ -9,7 +9,6 @@ import { ClassService } from 'app/admin/schedule-class/class.service';
 import { BsModalService, ModalOptions } from "ngx-bootstrap/modal";
 
 import Swal from 'sweetalert2';
-// import { VideoPlayerComponent } from '../settings/course-kit/video-player/video-player.component';
 export interface PeriodicElement {
   name: string;
   position: number;
@@ -99,9 +98,6 @@ export class ViewProgramComponent {
       title: this.title,
       companyId:userdata.user.companyId
     }
-    // console.log('data',data)
-    // let studentId=localStorage.getItem('id')
-    // let programName=this.courseName;
     this.courseService.registerProgramClass(payload).subscribe((response) => {
       this.document.location.href = response.data.session.url;
       this.getClassDetails();

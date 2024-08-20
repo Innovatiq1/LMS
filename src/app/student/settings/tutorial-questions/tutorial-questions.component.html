@@ -1,0 +1,214 @@
+<div class="row clearfix">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+      <div class="card mt-4">
+        <div class="p-3">
+          <form [formGroup]="questionFormTab3">
+            <div class="w-100">
+              <div class="row">
+                <div class="col-md-4">
+                  <h6>Name <span class="mandatory">&nbsp;*</span></h6>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <input
+                      class="form-control"
+                      matInput
+                      type="text"
+                      formControlName="name"
+                      placeholder="Name"
+                      required
+                    />
+                    <mat-error
+                      *ngIf="questionFormTab3.get('name')?.hasError('required')"
+                    >
+                      Name cannot be empty
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                  <h6>
+                    Time (Seconds per question)
+                    <span class="mandatory">&nbsp;*</span>
+                  </h6>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-select formControlName="timer">
+                      <mat-option *ngFor="let code of timerValues"[value]="code.times" >{{
+                        code.times
+                      }}Seconds</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                  <h6>
+                    Score (per question) <span class="mandatory">&nbsp;*</span>
+                  </h6>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-select formControlName="scoreAlgorithm">
+                      <mat-option *ngFor="let code of scoreDataAlgo" [value]="code.scores">{{
+                        code.scores
+                      }}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <label>Bulk Upload <span ><a href="assets/Assessment Sheet.xlsx" target="_blank"> <img src="assets/excel.svg" alt="" /></a> </span></label>
+                  <div class="file-drop-area">
+                    <div class="file">
+                      <button mat-raised-button color="primary" class="btn">
+                        Choose file
+                        <input
+                          formControlName="image_link"
+                          (change)="onFileSelected($event)"
+                          accept=".xlsx, .xls"
+                          class="file-input"
+                          type="file"
+                        />
+                      </button>
+                      <span class="file-msg">
+                        <h6>Drag and Drop File Here</h6>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> 
+  
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="text-align: center">Question</th>
+                    <th style="text-align: center">Options</th>
+                  </tr>
+                </thead>
+                <tbody formArrayName="questions">
+                  <tr
+                    *ngFor="let question of questions.controls; let i = index"
+                    class="test"
+                    [formGroupName]="i"
+                  >
+                    <td>
+                      <div class="d-flex align-items-baseline">
+                        <mat-checkbox
+                          formControlName="isSelected"
+                          style="width: 35px"
+                        ></mat-checkbox>
+                        Q{{ i + 1 }}.
+                        <mat-form-field appearance="outline" style="width: 100%">
+                          <input
+                            matInput
+                            type="text"
+                            formControlName="questionText"
+                            placeholder="Enter question"
+                          />
+                          <mat-error
+                            *ngIf="
+                              question.get('questionText')?.hasError('required')
+                            "
+                          >
+                            Question cannot be empty
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </td>
+                    <td formArrayName="options">
+                      <div class="d-flex align-items-baseline">
+                        <ng-container
+                          *ngFor="
+                            let optionCtrl of getAnswers(i).controls;
+                            let j = index
+                          "
+                          [formGroupName]="j"
+                        >
+                          <mat-checkbox
+                            formControlName="correct"
+                            (change)="checkboxChange(i, j)"
+                            style="width: 35px"
+                          ></mat-checkbox>
+                          <mat-form-field
+                            appearance="outline"
+                            style="width: 175px"
+                          >
+                            <input
+                              matInput
+                              type="text"
+                              formControlName="text"
+                              placeholder="Enter option"
+                            />
+                            <mat-error
+                              *ngIf="optionCtrl.get('text')?.hasError('required')"
+                            >
+                              Option cannot be empty
+                            </mat-error>
+                          </mat-form-field>
+                        </ng-container>
+                        <button
+                          mat-icon-button
+                          class="p-1"
+                          (click)="deleteQuestion(i)"
+                          type="button"
+                        >
+                          <mat-icon
+                            style="color: black; font-size: 24px; width: 25px"
+                            >delete</mat-icon
+                          >
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="text-align: center; margin-top: 20px">
+              <button
+                mat-icon-button
+                (click)="addAdditionalQuestion()"
+                type="button"
+              >
+                <mat-icon style="color: black; font-size: 24px">add</mat-icon>
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="row body">
+          <div class="col-md-10">
+            <button
+              mat-raised-button
+              id="back"
+              [routerLink]="['/student/settings/configuration/all-questions']"
+            >
+              Back
+            </button>
+          </div>
+  
+          <div class="col-md-2">
+            <div class="d-flex justify-content-between">
+              <button
+                *ngIf="editUrl && approved"
+                mat-raised-button
+                color="success"
+                type="submit"
+                id="back"
+                style="margin-left: -80px; margin-right: 10px"
+                (click)="approve()"
+              >
+                Publish
+              </button>
+  
+              <button
+                class="btn-space"
+                id="submit"
+                mat-raised-button
+                color="primary"
+                id="submit"
+                (click)="update()"
+              >
+                {{ editUrl ? "Update" : "Create" }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
