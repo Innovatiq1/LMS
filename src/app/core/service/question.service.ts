@@ -84,7 +84,18 @@ export class QuestionService {
       .put<ApiResponse>(apiUrl, question)
       .pipe(map((response) => { }));
   }
-
+  createTutorialQuestion(request: any) {
+    const apiUrl = `${this.defaultUrl}admin/tutorial`;
+    return this.http
+      .post<ApiResponse>(apiUrl, request)
+      .pipe(map((response) => response));
+  }
+  updateTutorialQuestions(question:any) {
+    const apiUrl = `${this.defaultUrl}admin/tutorial/${question.id}`;
+    return this.http
+      .put<ApiResponse>(apiUrl, question)
+      .pipe(map((response) => { }));
+  }
   updateExamQuestions(question:any) {
     const apiUrl = `${this.defaultUrl}admin/exam-assessment/${question.id}`;
     return this.http
@@ -93,6 +104,10 @@ export class QuestionService {
   }
   getQuestionsById(id?: string) {
     const apiUrl = `${this.defaultUrl}admin/assesment/${id}`;
+    return this.http.get<ApiResponse>(apiUrl).pipe(map((response) => response));
+  }
+  getTutorialQuestionsById(id?: string) {
+    const apiUrl = `${this.defaultUrl}admin/tutorial/${id}`;
     return this.http.get<ApiResponse>(apiUrl).pipe(map((response) => response));
   }
 
@@ -117,6 +132,12 @@ export class QuestionService {
 
   getQuestionJson( filter?: Partial<CoursePaginationModel>): Observable<ApiResponse> {
     const apiUrl = `${this.defaultUrl}admin/assesment`;
+    return this.http.get<any>(apiUrl, {
+      params: this.buildParams(filter),
+    });
+  }
+  getTutorialQuestionJson( filter?: Partial<CoursePaginationModel>): Observable<ApiResponse> {
+    const apiUrl = `${this.defaultUrl}admin/tutorial`;
     return this.http.get<any>(apiUrl, {
       params: this.buildParams(filter),
     });

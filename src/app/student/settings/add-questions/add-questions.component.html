@@ -18,6 +18,9 @@
           <mat-tab *ngIf="formType === 'Exam' || formType === 'Create'" label="Exam Form">
             <app-add-exam-questions class="mt-2" [approved]="approved"></app-add-exam-questions>
           </mat-tab>
+          <mat-tab *ngIf="formType === 'Tutorial' || formType === 'Create'" label="Tutorial Form">
+            <app-tutorial-questions class="mt-2" [approved]="approved"></app-tutorial-questions>
+          </mat-tab>
         </mat-tab-group>
       </div>
     </div>

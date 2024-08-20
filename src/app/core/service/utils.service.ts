@@ -57,6 +57,11 @@ export class UtilsService {
       { type: 'minlength', message: 'Enter minimum 2 characters' },
       { type: 'maxlength', message: 'Enter maximum 255 characters' },
     ],
+    tutorial : [
+      // { type: 'required', message: 'Select Assessment ' },
+      { type: 'minlength', message: 'Enter minimum 2 characters' },
+      { type: 'maxlength', message: 'Enter maximum 255 characters' },
+    ],
     e_assessment : [
     //  { type: 'required', message: 'Select Exam Assessment ' },
       { type: 'minlength', message: 'Enter minimum 2 characters' },
@@ -515,6 +520,7 @@ export class UtilsService {
     ],
     assessment:[Validators.minLength(2), Validators.maxLength(150)],
     e_assessment:[Validators.minLength(2), Validators.maxLength(150)],
+    tutorial:[Validators.minLength(2), Validators.maxLength(150)],
     gender:[Validators.required,Validators.minLength(2), Validators.maxLength(150)],
     budget: [Validators.required, Validators.min(1), Validators.max(99999999)],
     percentage: [Validators.required, Validators.min(1), Validators.max(100)],
