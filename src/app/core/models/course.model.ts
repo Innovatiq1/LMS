@@ -56,6 +56,7 @@ export interface CourseUploadData {
    course_kit?: string[];
    assessment?: string[];
    exam_assessment?: string[];
+   tutorial?: string[];
    survey?: string[];
  }
  export interface MainCategory {
@@ -154,6 +155,15 @@ export interface Discount {
 export interface Assessment {
 	_id: string;
 	docs: Assessment[];
+	name: string;
+	createdAt: string;
+	updatedAt: string;
+	__v: number;
+	id: string;
+}
+export interface Tutorial {
+	_id: string;
+	docs: Tutorial[];
 	name: string;
 	createdAt: string;
 	updatedAt: string;

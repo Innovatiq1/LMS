@@ -5,7 +5,7 @@ import {
   FormControl,
   FormGroup
 } from '@angular/forms';
-import { Assessment, ExamAssessment, Certificate, CourseKit, CourseUploadData, Feedback, FundingGrant, Instructor, MainCategory, SubCategory, Survey } from '@core/models/course.model';
+import { Assessment, ExamAssessment, Certificate, CourseKit, CourseUploadData, Feedback, FundingGrant, Instructor, MainCategory, SubCategory, Survey, Tutorial } from '@core/models/course.model';
 import * as XLSX from 'xlsx';
 import Swal from 'sweetalert2';
 import { CourseService } from '@core/service/course.service';
@@ -54,6 +54,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   courseKitCategoryControl!: FormControl;
   assessmentControl!: FormControl;
   assessmentExamControl!: FormControl;
+  tutorialControl!: FormControl;
   feedbackControl!: FormControl;
   certificatesCategoryControl!: FormControl;
   // instructors!: Instructor[];
@@ -61,6 +62,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   courseKits1: any;
   assessments!: Assessment[];
   exam_assessments!: ExamAssessment[];
+  tutorials!: Tutorial[];
   feedbacks!: Feedback[];
   // certificates!:Certificate[];
   next = true;
@@ -231,6 +233,10 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         ...this.utils.validators.noLeadingSpace,
         ...this.utils.validators.e_assessment,
       ]),
+      tutorial: new FormControl(null, [
+        ...this.utils.validators.noLeadingSpace,
+        ...this.utils.validators.tutorial,
+      ]),
       survey: new FormControl(null, []),
       course_kit: new FormControl('', []),
       vendor: new FormControl('',[Validators.required, Validators.maxLength(100)]),
@@ -286,6 +292,9 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     ) as FormControl;
     this.assessmentExamControl = this.firstFormGroup.get(
       'exam_assessment'
+    ) as FormControl;
+    this.tutorialControl = this.firstFormGroup.get(
+      'tutorial'
     ) as FormControl;
     this.feedbackControl = this.firstFormGroup.get('survey') as FormControl;
 
@@ -381,6 +390,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         : null,
       assessment: courseData?.assessment,
       exam_assessment: courseData?.exam_assessment,
+      tutorial: courseData?.tutorial,
       survey: courseData?.survey,
       course_kit: courseData?.course_kit ? courseData.course_kit : null,
       image_link: this.image_link,
@@ -584,6 +594,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
               assignCourseKit,
               assignAssessment,
               assignExamAssessment,
+              assignTutorial,
               assignFeedback,
               vendor,
             ] = row as string[];
@@ -671,6 +682,17 @@ export class AddCourseComponent implements OnInit, OnDestroy {
                 icon: 'error',
               });
             }
+            const tutorialObj = this.tutorials.find((i) => {
+              return assignTutorial === i.name;
+            });
+
+            if (tutorialObj === undefined) {
+              Swal.fire({
+                title: 'Error',
+                text: 'Cannot find Tutorial',
+                icon: 'error',
+              });
+            }
 
             const feedbackObj = this.feedbacks.find((i) => {
               return assignFeedback === i.name;
@@ -702,6 +724,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
               // course_instructor: [instructorObj!.id],
               assessment: [assessmentObj!.id],
               exam_assessment: [assessmentExamObj!.id],
+              tutorial: [tutorialObj!.id],
               survey: [feedbackObj!.id],
               course_kit: [courseKitObj!.id],
               vendor: vendor,
@@ -756,6 +779,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         // course_instructor:courseData?.course_instructor,
         assessment: courseData?.assessment,
         exam_assessment: courseData?.exam_assessment,
+        tutorial: this.course?.tutorial,
         survey: courseData?.survey,
         course_kit: courseData.course_kit ? courseData.course_kit : null,
         vendor: courseData?.vendor,
@@ -774,6 +798,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       this.firstFormGroup.value?.course_kit?.map((item: any) => item.id);
       this.firstFormGroup.value?.assessment;
       this.firstFormGroup.value?.exam_assessment;
+      this.firstFormGroup.value?.tutorial;
       this.firstFormGroup.value?.survey;
 
       Swal.fire({
@@ -846,12 +871,17 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       exam_assessment: this.questionService.getExamQuestionJson({
         companyId: userId,
       }),
+      tutorial: this.questionService.getTutorialQuestionJson({
+        status: 'approved',
+        companyId: userId,
+      }),
       survey: this.surveyService.getSurvey(),
       // certificates: this.certificateService.getcertificateBuilders(),
     }).subscribe(
       (response: {
         assessment: any;
         exam_assessment: any;
+        tutorial: any;
         survey: any;
         mainCategory: any;
         subCategory: any;
@@ -866,6 +896,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         this.courseKits = response.courseKit?.docs;
         this.assessments = response.assessment.data.docs;
         this.exam_assessments = response.exam_assessment.data.docs;
+        this.tutorials = response.tutorial.data.docs;
         this.feedbacks = response.survey.data.docs;
         // this.certificates = response.certificates.data.docs;
       }
@@ -918,6 +949,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         // course_instructor:courseData?.course_instructor,
         assessment: courseData?.assessment,
         exam_assessment: courseData?.exam_assessment,
+        tutorial: courseData?.tutorial,
         survey: courseData?.survey,
         course_kit: courseData.course_kit ? courseData.course_kit : null,
         // certificates:courseData?.certificates,
@@ -976,6 +1008,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       fundingGrant: this.courseService.getFundingGrant(),
       courseKit: this.courseService.getCourseKit(),
       assessment: this.questionService.getQuestionJson({ status: 'approved' }),
+      tutorial: this.questionService.getTutorialQuestionJson({ status: 'approved' }),
       survey: this.surveyService.getSurvey(),
       course: this.courseService.getCourseById(this.courseId),
       exam_assessment: this.questionService.getExamQuestionJson(),
@@ -987,6 +1020,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       this.courseKits = response.courseKit?.docs;
       this.assessments = response.assessment?.data.docs;
       this.exam_assessments = response.exam_assessment.data.docs;
+      this.tutorials = response.tutorial?.data.docs;
       this.feedbacks = response.survey?.data.docs;
       // this.survey = response.survey;
       this.allSubCategories = response.subCategory;
@@ -1008,6 +1042,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         this.course?.course_kit?.map((item: { id: any }) => item?.id) || [];
       let assessmentId = this.course?.assessment?.id;
       let exam_assessmentId = this.course?.exam_assessment?.id;
+      let tutorialId = this.course?.tutorial?.id;
       let feedbackId = this.course?.survey?.id;
       if (this.course?.feeType == 'paid') {
         this.isPaid = true;
@@ -1052,6 +1087,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         course_kit: courseKitId,
         assessment: assessmentId,
         exam_assessment: exam_assessmentId,
+        tutorial: tutorialId,
         survey: feedbackId,
         uploadedImage: this.course?.image_link,
         vendor: this.course?.vendor,
@@ -1076,6 +1112,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
           this.firstFormGroup.patchValue({
             exam_assessment: this.course?.exam_assessment?.id,
             assessment: this.course?.assessment?.id,
+            tutorial: this.course?.tutorial?.id,
             course_kit: this.course?.course_kit?.map((item: { id: any }) => item?.id) || [],
           });
         }

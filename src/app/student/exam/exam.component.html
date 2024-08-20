@@ -1,103 +1,171 @@
 <section class="content">
-    <div class="content-block">
-        <div class="block-header" *ngFor="let breadscrum of breadscrums">
-            <app-breadcrumb [title]="breadscrum.title"  [active_item]="breadscrum.active">
-            </app-breadcrumb>
+  <div class="content-block">
+    <div class="block-header" *ngFor="let breadscrum of breadscrums">
+      <app-breadcrumb [title]="breadscrum.title" [active_item]="breadscrum.active">
+      </app-breadcrumb>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+          <div class="materialTableHeader">
+            <div class="right">
+              <ul class="tbl-export-btn">
+                <li>
+                  <ul class="header-buttons-left ms-0">
+                    <li class="tbl-search-box">
+                      <label for="search-input"><i class="material-icons search-icon">search</i></label>
+                      <input placeholder="Search" type="text" #filter class="browser-default search-field"
+                        aria-label="Search box">
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
           </div>
+          <mat-tab-group (selectedTabChange)="onTabChange($event)">
 
-          <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-              <div class="card">
-                <div class="materialTableHeader">
-                    <div class="right">
-                      <ul class="tbl-export-btn">
-                        <li>
-                          <ul class="header-buttons-left ms-0">
-                            <li class="tbl-search-box">
-                              <label for="search-input"><i class="material-icons search-icon">search</i></label>
-                              <input placeholder="Search" type="text" #filter class="browser-default search-field"
-                                aria-label="Search box">
-                            </li>
-                          </ul>
-                        </li>       
-                      </ul>
-                    </div>
-                  </div>
+            <mat-tab *ngIf="isAssessment">
+              <ng-template mat-tab-label>
+                <!-- <mat-icon class="example-tab-icon msr-2">face</mat-icon> -->
+                <div class="course mx-4">Assessment</div>
+              </ng-template>
+              <div class="body overflow-auto">
+                <div class="responsive_table">
+                  <table mat-table [dataSource]="dataSource" matSort class="mat-cell advance-table">
 
-                  <div class="body overflow-auto">
-                    <div class="responsive_table">
-                        <table mat-table [dataSource]="dataSource" matSort class="mat-cell advance-table">
-                 
-                            <!-- <ng-container matColumnDef="Assessment Name">
+                    <!-- <ng-container matColumnDef="Assessment Name">
                               <mat-header-cell *matHeaderCellDef mat-sort-header>Assessment Name
                               </mat-header-cell>
                               <mat-cell *matCellDef="let row"><span class="mobile-label">Name:</span> {{row.assessmentId?.name }}</mat-cell>
                             </ng-container> -->
-                            <ng-container matColumnDef="Course Name">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header>Course Name</mat-header-cell>
-                              <mat-cell *matCellDef="let row"><span class="mobile-label">Course Name:</span>{{row.courseId?.title}}</mat-cell>
-                            </ng-container>
-                            <ng-container matColumnDef="Submitted Date">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header>Submitted Date</mat-header-cell>
-                              <mat-cell *matCellDef="let row"><span class="mobile-label">Submitted Date:</span>{{row?.submittedAt | date: 'MM/dd/yyyy'}}
-                              </mat-cell>
-                            </ng-container>
-                            <ng-container matColumnDef="Score">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>Score</mat-header-cell>
-                                <mat-cell *matCellDef="let row"><span class="mobile-label">Score:</span>{{row.score}} / {{row.totalScore}}
-                                </mat-cell>
-                              </ng-container>
-                              <ng-container matColumnDef="Exam Type">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>Exam Type</mat-header-cell>
-                                <mat-cell *matCellDef="let row"><span class="mobile-label">Exam Type:</span> {{ examType(row) }}
-                                </mat-cell>
-                              </ng-container>
-                              <ng-container matColumnDef="Retakes left">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>Retakes left</mat-header-cell>
-                                <mat-cell *matCellDef="let row"><span class="mobile-label">Retakes left:</span> {{ calculateRetakesLeft(row) }}
-                                </mat-cell>
-                              </ng-container>
-                              <ng-container matColumnDef="Exam">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>Exam</mat-header-cell>
-                                <mat-cell *matCellDef="let row">
-                                  <button *ngIf="row.is_tutorial && !row.isLatestTutorial" 
-                                  (click)="onDelete(row.id)" 
-                                  mat-flat-button 
-                                  color="warn">
-                                  Delete
-                                  </button>
-                                  <button *ngIf="row.is_tutorial && row.isLatestTutorial"
-                                  [disabled]="row.is_exam_completed"
-                                  (click)="openTest(row, false)"
-                                  mat-flat-button 
-                                  color="primary">
-                                   Retake
-                                  </button>
-                                  <button *ngIf="!row.is_tutorial"
-                                  [disabled]="row.is_exam_completed || row.retakeCount>=row.assessmentId.retake"
-                                  (click)="openTest(row, true)" 
-                                  mat-flat-button 
-                                  color="primary">
-                                   Retake
-                                  </button>
-                                </mat-cell>
-                              </ng-container>
-                           
-                            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                            <mat-row *matRowDef="let row; columns: displayedColumns;" [style.cursor]="'pointer'" matRipple>
-                            </mat-row>
-                          </table>
-                          <mat-paginator #paginator [length]="totalItems" (page)="pageSizeChange($event)"
-                          [pageSizeOptions]="pageSizeArr" aria-label="select pagination option">
-                      </mat-paginator>
-                        </div>
-                        </div>
+                    <ng-container matColumnDef="Course Name">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>Course Name</mat-header-cell>
+                      <mat-cell *matCellDef="let row"><span class="mobile-label">Course
+                          Name:</span>{{row.courseId?.title}}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="Submitted Date">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>Submitted Date</mat-header-cell>
+                      <mat-cell *matCellDef="let row"><span class="mobile-label">Submitted
+                          Date:</span>{{row?.submittedAt | date: 'MM/dd/yyyy'}}
+                      </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="Score">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>Score</mat-header-cell>
+                      <mat-cell *matCellDef="let row"><span class="mobile-label">Score:</span>{{row.score}} /
+                        {{row.totalScore}}
+                      </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="Exam Type">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>Exam Type</mat-header-cell>
+                      <mat-cell *matCellDef="let row"><span class="mobile-label">Exam Type:</span> {{ examType(row) }}
+                      </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="Retakes left">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>Retakes left</mat-header-cell>
+                      <mat-cell *matCellDef="let row"><span class="mobile-label">Retakes left:</span> {{
+                        calculateRetakesLeft(row) }}
+                      </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="Exam">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>Exam</mat-header-cell>
+                      <mat-cell *matCellDef="let row">
+                        <button *ngIf="row.is_tutorial && !row.isLatestTutorial" (click)="onDelete(row.id)"
+                          mat-flat-button color="warn">
+                          Delete
+                        </button>
+                        <button *ngIf="row.is_tutorial && row.isLatestTutorial" [disabled]="row.is_exam_completed"
+                          (click)="openTest(row, false)" mat-flat-button color="primary">
+                          Retake
+                        </button>
+                        <button *ngIf="!row.is_tutorial"
+                          [disabled]="row.is_exam_completed || row.retakeCount>=row.assessmentId.retake"
+                          (click)="openTest(row, true)" mat-flat-button color="primary">
+                          Retake
+                        </button>
+                      </mat-cell>
+                    </ng-container>
 
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;" [style.cursor]="'pointer'" matRipple>
+                    </mat-row>
+                  </table>
+                  <mat-paginator #paginator [length]="totalItems" (page)="pageSizeChange($event)"
+                    [pageSizeOptions]="pageSizeArr" aria-label="select pagination option">
+                  </mat-paginator>
+                </div>
+              </div>
+            </mat-tab>
+            <mat-tab *ngIf="isTutorial">
+              <ng-template mat-tab-label>
+                <div class="course mx-4">Tutorial</div>
+              </ng-template>
+              <div class="body overflow-auto">
+                <div class="responsive_table">
+                  <table mat-table [dataSource]="dataSource" matSort class="mat-cell advance-table">
+                    <ng-container matColumnDef="Course Name">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>Course Name</mat-header-cell>
+                      <mat-cell *matCellDef="let row"><span class="mobile-label">Course
+                          Name:</span>{{row.courseId?.title}}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="Submitted Date">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>Submitted Date</mat-header-cell>
+                      <mat-cell *matCellDef="let row"><span class="mobile-label">Submitted
+                          Date:</span>{{row?.submittedAt | date: 'MM/dd/yyyy'}}
+                      </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="Score">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>Score</mat-header-cell>
+                      <mat-cell *matCellDef="let row"><span class="mobile-label">Score:</span>{{row.score}} /
+                        {{row.totalScore}}
+                      </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="Exam Type">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>Exam Type</mat-header-cell>
+                      <mat-cell *matCellDef="let row"><span class="mobile-label">Exam Type:</span> {{ examType(row) }}
+                      </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="Retakes left">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>Retakes left</mat-header-cell>
+                      <mat-cell *matCellDef="let row"><span class="mobile-label">Retakes left:</span> {{
+                        calculateRetakesLeft(row) }}
+                      </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="Exam">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>Exam</mat-header-cell>
+                      <mat-cell *matCellDef="let row">
+                        <button *ngIf="row.is_tutorial && !row.isLatestTutorial" (click)="onDelete(row.id)"
+                          mat-flat-button color="warn">
+                          Delete
+                        </button>
+                        <button *ngIf="row.is_tutorial && row.isLatestTutorial" [disabled]="row.is_exam_completed"
+                          (click)="openTest(row, false)" mat-flat-button color="primary">
+                          Retake
+                        </button>
+                        <!-- <button *ngIf="!row.is_tutorial"
+                          [disabled]="row.is_exam_completed || row.retakeCount>=row.assessmentId.retake"
+                          (click)="openTest(row, true)" mat-flat-button color="primary">
+                          Retake
+                        </button> -->
+                      </mat-cell>
+                    </ng-container>
 
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;" [style.cursor]="'pointer'" matRipple>
+                    </mat-row>
+                  </table>
+                  <mat-paginator #paginator [length]="totalItems" (page)="pageSizeChange($event)"
+                    [pageSizeOptions]="pageSizeArr" aria-label="select pagination option">
+                  </mat-paginator>
                 </div>
-                </div>
-                </div>
-
+              </div>
+            </mat-tab>
+            </mat-tab-group>
 
         </div>
-        </section>
+      </div>
+    </div>
+
+
+  </div>
+</section>

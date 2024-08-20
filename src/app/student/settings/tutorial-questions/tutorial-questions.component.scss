@@ -1,0 +1,78 @@
+.table-container{
+    padding: 10px;
+    padding-left: 20px !important;
+}
+
+
+.name-container {
+    padding: 10px;
+}
+.test {
+    margin-top: 25px;
+}
+
+
+
+.mandatory{
+    color: red;
+}
+
+.side-closed section.content {
+  margin-left: 0px !important;
+}
+
+.name-container {
+    display: flex;
+  }
+  
+  .input-container {
+    width: 30%; /* Adjust the width as needed */
+  }
+  
+  //file-upload styling
+.file-drop-area {
+  border: 1px dashed #7c7db3;
+  border-radius: 15px;
+  position: relative;
+  margin-top: 5px;
+  transition: 0.2s;
+}
+.file{
+ text-align: center;
+}
+.file-input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+  opacity: 0;
+}
+.file-msg {
+  margin-left: 20px;
+  vertical-align: middle;
+  font-size: 12px;
+  font-weight: 500;
+}
+h5{
+  padding-top: 10px;
+}
+
+.btn{
+  margin-top: 6px;
+  height: 22px;
+}
+
+#editor {
+  font-size: 16px;
+  font-style: italic;
+  padding: 10px;
+}
+::ng-deep .angular-editor-textarea{
+  border-radius: 12px;
+}
+.bupload{
+  margin-left: -100%;
+    margin-right: -20px;
+}
