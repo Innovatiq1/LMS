@@ -181,7 +181,6 @@ export class CreateCategoriesComponent implements OnInit{
     this.subCategoryData.forEach(subcategory => {
       subcategory.main_category_id = this.mainCategoryId;
     });
-    console.log("create",this.subCategoryData)
     if(this.subCategoryData[0].category_name !==''){
       Swal.fire({
         title: 'Are you sure?',

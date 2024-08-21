@@ -71,7 +71,6 @@ export class DepartmentModalComponent {
     const selectedValue = event.value;
     
     let userfindEmail:Users[]=this.users.filter(event=>event.id===selectedValue)
-    console.log(userfindEmail)
     this.hod=selectedValue
     this.hodName=userfindEmail[0].name + " "+ (userfindEmail[0].last_name?userfindEmail[0].last_name:'')
   }
@@ -85,7 +84,6 @@ export class DepartmentModalComponent {
   getDepartmentById(){
     this.deptService.getDepartmentById(this.departmentId).subscribe((response:any)=>{
       let details = response;
-      console.log('res',response)
       this.departmentForm.patchValue({
         department:response?.department,
         hod:response?.hodId,

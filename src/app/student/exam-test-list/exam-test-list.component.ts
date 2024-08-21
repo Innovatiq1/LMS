@@ -230,12 +230,6 @@ export class ExamTestListComponent {
                   .saveApprovedClasses(registeredClassId,payload).subscribe((response) => {
                       this.document.location.href = response.data.session.url;
                     }); 
-                  //redirect to exam
-                  // this.redirectToExam(
-                  //   courseDetails,
-                  //   studentId,
-                  //   null
-                  // );
                 },5000)
                 
               } else if (result.payment === 'other') {
@@ -278,7 +272,6 @@ export class ExamTestListComponent {
                               title: 'Error',
                               text: 'Failed to payment. Please try again.',
                               icon: 'error',
-                              // confirmButtonColor: '#526D82',
                             });
                           } else {
                             this.courseService
@@ -365,9 +358,6 @@ export class ExamTestListComponent {
 
   generateInvoice(element: any) {
     Swal.fire({
-      // title: "Updated",
-      // text: "Course Kit updated successfully",
-      // icon: "success",
       title: 'Loading Payment Screen...',
       text: 'Please wait...',
       allowOutsideClick: false,

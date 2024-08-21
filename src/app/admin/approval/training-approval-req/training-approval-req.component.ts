@@ -326,45 +326,6 @@ implements OnInit{
       }
     });
 
-    // if (this.ro) {
-    //   this.payload = {
-    //     roApproval: 'Approved',
-    //   };
-    // } else if (this.director) {
-    //   this.payload = {
-    //     directorApproval: 'Approved',
-    //   };
-    // } else if (this.trainingAdmin) {
-    //   this.payload = {
-    //     trainingAdminApproval: 'Approved',
-    //   };
-    // }
-    // this.etmsService
-    //   .updateStatus(this.payload, id)
-    //   .subscribe((response: any) => {
-    //     if (this.ro) {
-    //       Swal.fire({
-    //         title: 'Approved Sucessfully',
-    //         text: 'Sent Course Approval Request to Director',
-    //         icon: 'success',
-    //       });
-    //       this.getAllRequestsByRo();
-    //     } else if (this.director) {
-    //       Swal.fire({
-    //         title: 'Approved Sucessfully',
-    //         text: 'Sent Course Approval Request to Training Admin',
-    //         icon: 'success',
-    //       });
-    //       this.getAllRequestsByDirector();
-    //     } else if (this.trainingAdmin) {
-    //       Swal.fire({
-    //         title: 'Successful',
-    //         text: 'Approved Sucessfully',
-    //         icon: 'success',
-    //       });
-    //       this.getAllRequestsByTrainingAdmin();
-    //     }
-    //   });
   }
 
 

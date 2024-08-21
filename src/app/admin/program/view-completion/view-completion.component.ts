@@ -80,13 +80,6 @@ export class ViewCompletionComponent {
     this.courseService.getStudentProgramClassById(id).subscribe((response: any) => {
      this.classDataById = response?._id;
      this.response = response;
-     // this.subCategory = response.subCategories;
-     // if (response && response.data && response.data._id) {
-     //   this.classDataById = response?._id;
-     //   this.response = response.data;
-     // } else {
-      
-     // }
    });
  }
 }

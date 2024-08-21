@@ -77,7 +77,6 @@ export class UpdateUsergroupComponent {
         });
       },
       (error) => {
-        console.log(error);
       }
     );
   }

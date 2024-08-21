@@ -9,34 +9,8 @@
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin: auto;">
         <div class="card">
           <div class="materialTableHeader">
-            <!-- <div class="left">
-              <ul class="header-buttons-left ms-0">
-                <li class="tbl-title">
-                  <h2>Completion List</h2>
-                </li>
-                <li class="tbl-search-box">
-                  <label for="search-input"><i class="material-icons search-icon">search</i></label>
-                  <input placeholder="Search" type="text"  [(ngModel)]="searchTerm" class="browser-default search-field"  (keyup)="performSearch()"
-                    aria-label="Search box">
-                </li>
-              </ul>
-            </div> -->
             <div class="right">
               <ul class="tbl-export-btn">
-                <!-- <li class="tbl-header-btn">
-                  <div class="m-l-10" matTooltip="ADD">
-                    <button mat-mini-fab color="primary" >
-                      <mat-icon class="col-white">add</mat-icon>
-                    </button>
-                  </div>
-                </li> -->
-                <!-- <li class="tbl-header-btn">
-                  <div class="m-l-10" matTooltip="REFRESH">
-                    <button mat-mini-fab color="primary" >
-                      <mat-icon class="col-white">refresh</mat-icon>
-                    </button>
-                  </div>
-                </li> -->
                 <li>
                   <ul class="header-buttons-left ms-0">
                     <li class="tbl-search-box">
@@ -62,20 +36,6 @@
           <div class="body overflow-auto">
             <div class="responsive_table">
               <table mat-table matSort [dataSource]="dataSource" class="mat-cell advance-table">
-                <!-- Checkbox Column -->
-                <!-- <ng-container matColumnDef="select">
-                  <mat-header-cell *matHeaderCellDef [ngClass]="'tbl-col-width-per-6'">
-                    <mat-checkbox
-                      [checked]=""
-                      [indeterminate]="" [ngClass]="'tbl-checkbox'">
-                    </mat-checkbox>
-                  </mat-header-cell>
-                  <mat-cell *matCellDef="let row" [ngClass]="'tbl-col-width-per-6'">
-                    <mat-checkbox (click)="$event.stopPropagation()"
-                      [checked]="" [ngClass]="'tbl-checkbox'">
-                    </mat-checkbox>
-                  </mat-cell>
-                </ng-container> -->
                 <ng-container matColumnDef="Student">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>{{commonRoles.STUDENT_ROLE}}
                   </mat-header-cell>
@@ -87,7 +47,6 @@
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
                     <span class="mobile-label">Email:</span>
                     <img src="assets/images/gmail.png" alt="Email Icon" class="email-icon">
-                    <!-- Replace "email-icon.png" with the filename of your PNG icon -->
                     <span class="email-address">{{row.studentId?.email}}</span>
                   </mat-cell>
                 </ng-container>

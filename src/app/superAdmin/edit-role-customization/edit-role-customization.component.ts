@@ -57,7 +57,6 @@ export class EditRoleCustomizationComponent {
   getList(filters?: any) {
     this.superadminservice.getAllCustomRoleById(this.companyId).subscribe(
       (response: any) => {
-        console.log('listing user', response);
         this.data = response;
         if (this.data) {
           this.userForm.patchValue({

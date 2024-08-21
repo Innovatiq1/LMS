@@ -34,10 +34,6 @@ export class ViewStudentPendingListComponent {
     this.activatedRoute.params.subscribe((params: any) => {
       
       this.courseId = params.id;
-      // if(this.courseId){
-      //   this.getProgramByID(this.courseId);
-      // }
-
     });
    
   }
@@ -86,13 +82,6 @@ export class ViewStudentPendingListComponent {
     this.courseService.getStudentProgramClassById(id).subscribe((response: any) => {
      this.classDataById = response?._id;
      this.response = response;
-     // this.subCategory = response.subCategories;
-     // if (response && response.data && response.data._id) {
-     //   this.classDataById = response?._id;
-     //   this.response = response.data;
-     // } else {
-      
-     // }
    });
  }
  getCurrentUserId(): string {
@@ -126,9 +115,7 @@ export class ViewStudentPendingListComponent {
           title: 'Success',
           text: 'Program approved successfully.',
           icon: 'success',
-          // confirmButtonColor: '#d33',
         });
-        // this.getCompletedClasses();
         window.history.back();
       });
       () => {
@@ -136,7 +123,6 @@ export class ViewStudentPendingListComponent {
               title: 'Error',
               text: 'Failed to approve course. Please try again.',
               icon: 'error',
-              // confirmButtonColor: '#d33',
             });
           };
     }
@@ -168,7 +154,6 @@ Status(element: Student, status:string) {
           title: 'Success',
           text: 'Program withdrawn successfully.',
           icon: 'success',
-          // confirmButtonColor: '#526D82',
         });
         this.getCompletedClasses();
         this._router.navigate(['/admin/program/student-program/pending-program'])
@@ -177,7 +162,6 @@ Status(element: Student, status:string) {
           title: 'Error',
           text: 'Failed to withdraw prograam. Please try again.',
           icon: 'error',
-          // confirmButtonColor: '#526D82',
         });
       });
     }

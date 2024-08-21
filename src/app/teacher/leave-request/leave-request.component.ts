@@ -38,17 +38,13 @@ export class InstructorLeaveRequestComponent
   implements OnInit
 {
   displayedColumns = [
-    // 'select',
     'img',
     "className",
-    // 'rNo',
     'name',
     'applyDate',
-    // 'fromDate',
     'toDate',
     'status',
     'reason',
-    // 'actions',
   ];
   exampleDatabase?: InstructorLeaveRequestService;
   dataSource!: ExampleDataSource;
@@ -99,14 +95,11 @@ export class InstructorLeaveRequestComponent
     this.commonRoles = AppConstants
     this.loadData();
   }
-  /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.renderedData.length;
     return numSelected === numRows;
   }
-
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
     this.isAllSelected()
       ? this.selection.clear()
@@ -116,9 +109,7 @@ export class InstructorLeaveRequestComponent
   }
   editCall(row: LeaveRequest) {
     this.id = row.id;
-    console.log("row", row)
     this.studentId = row.learnerId.id;
-    // this.clId = row?.classId;
     
     let tempDirection: Direction;
     if (localStorage.getItem('isRtl') === 'true') {
@@ -146,41 +137,6 @@ export class InstructorLeaveRequestComponent
               }
             }
               })
-    // Swal.fire({
-    //   title: 'Are you sure?',
-    //   text: 'Do you want to update this user!',
-    //   icon: 'warning',
-    //   confirmButtonText: 'Yes',
-    //   showCancelButton: true,
-    //   cancelButtonColor: '#d33',
-    // }).then((result) => {
-    //   if (result.isConfirmed){
-    //     this.subs.sink = dialogRef.afterClosed().subscribe((result) => {
-    //       if (result === 1) {
-    //         // When using an edit things are little different, firstly we find record inside DataService by id
-    //         const foundIndex = this.exampleDatabase?.dataChange.value.findIndex(
-    //           (x) => x.id === this.id
-    //         );
-    //         // Then you update that record using data from dialogData (values you enetered)
-    //         if (foundIndex != null && this.exampleDatabase) {
-    //           this.exampleDatabase.dataChange.value[foundIndex] =
-    //             this.leaveRequestService.getDialogData();
-    //             //this.ro
-    //           // And lastly refresh table
-    //           this.loadData();
-    //           this.refreshTable();
-    //           Swal.fire({
-    //             title: 'Success',
-    //             text: 'Edit Record Successfully...!!!',
-    //             icon: 'success',
-    //             // confirmButtonColor: '#526D82',
-    //           });
-    //         }
-    //       }
-    //     });
-    //   }
-    // });
-   
   }
 
 
@@ -210,7 +166,6 @@ export class InstructorLeaveRequestComponent
           title: 'Success',
           text: 'Record Deleted Successfully...!!!',
           icon: 'success',
-          // confirmButtonColor: '#526D82',
         });
   }
   });
@@ -251,14 +206,11 @@ export class InstructorLeaveRequestComponent
     });
   }
   exportExcel() {
-    //key name with space add in brackets
     const exportData: Partial<TableElement>[] =
       this.dataSource.filteredData.map((x) => ({
       'Class Name': x.className,
-      // "Roll No": x.studentId?.rollNo,
       "Student Name": x.learnerId?.name,
       "Apply Date":formatDate(new Date(x.applyDate), 'yyyy-MM-dd', 'en') || '',
-      // "From Date":formatDate(new Date(x.fromDate), 'yyyy-MM-dd', 'en') || '',
       "To Date":formatDate(new Date(x.toDate), 'yyyy-MM-dd', 'en') || '',
       "Status": x.status,
       "Reason": x.reason,
@@ -266,68 +218,21 @@ export class InstructorLeaveRequestComponent
   
     TableExportUtil.exportToExcel(exportData, 'excel');
   }
-  // generatePdf() {
-  //   const doc = new jsPDF();
-  //   const headers = [['Class Name', 'Apply Date','From Date','To Date','Status','Reason']];
-  //   const data = this.dataSource.filteredData.map((user: {
-  //    className: any; applyDate:any; fromDate:any; toDate:any; status:any; reason:any
-  //     //formatDate(arg0: Date, arg1: string, arg2: string): unknown;
-  
-      
-  //   }, index: any) => [user.className, 
-  //   //user.studentId?.rollNo, 
-  //     // user.studentId?.name, 
-  //     formatDate(new Date(user.applyDate), 'yyyy-MM-dd', 'en') || '',
-  //     formatDate(new Date(user.fromDate), 'yyyy-MM-dd', 'en') || '',
-  //     formatDate(new Date(user.toDate), 'yyyy-MM-dd', 'en') || '',
-  //     user.status,
-  //     user.reason
-      
-  
-  
-  //   ]);
-  //   //const columnWidths = [60, 80, 40];
-  //   const columnWidths = [20, 20, 20, 20, 20, 20, 20, 20, 20, 20];
-  
-  //   // Add a page to the document (optional)
-  //   //doc.addPage();
-  
-  //   // Generate the table using jspdf-autotable
-  //   (doc as any).autoTable({
-  //     head: headers,
-  //     body: data,
-  //     startY: 20,
-  
-  
-  
-  //   });
-  
-  //   // Save or open the PDF
-  //   doc.save('lecture-list.pdf');
-  // }
   generatePdf() {
     const doc = new jsPDF();
     const headers = [[' Class Name','Roll No', 'Student Name','Apply Date','From Date','To Date','Status','Reason']];
     
     const data = this.dataSource.filteredData.map((user:any) =>
       [user.className,
-        // user.studentId?.rollNo, 
       user.learnerId?.name, 
       formatDate(new Date(user.applyDate), 'yyyy-MM-dd', 'en') || '',
-      // formatDate(new Date(user.fromDate), 'yyyy-MM-dd', 'en') || '',
       formatDate(new Date(user.toDate), 'yyyy-MM-dd', 'en') || '',
       user.status,
       user.reason
         
         
     ] );
-    //const columnWidths = [60, 80, 40];
     const columnWidths = [20, 20, 20, 20, 20, 20, 20, 20, 20, 20];
-  
-    // Add a page to the document (optional)
-    //doc.addPage();
-  
-    // Generate the table using jspdf-autotable
     (doc as any).autoTable({
       head: headers,
       body: data,
@@ -359,12 +264,9 @@ export class ExampleDataSource extends DataSource<LeaveRequest> {
     public _sort: MatSort
   ) {
     super();
-    // Reset to the first page when the user changes the filter.
     this.filterChange.subscribe(() => (this.paginator.pageIndex = 0));
   }
-  /** Connect function called by the table to retrieve one stream containing the data to render. */
   connect(): Observable<LeaveRequest[]> {
-    // Listen for any changes in the base data, sorting, filtering, or pagination
     const displayDataChanges = [
       this.exampleDatabase.dataChange,
       this._sort.sortChange,
@@ -376,7 +278,6 @@ export class ExampleDataSource extends DataSource<LeaveRequest> {
     this.exampleDatabase.getAllLeaveRequest(headId);
     return merge(...displayDataChanges).pipe(
       map(() => {
-        // Filter data
         this.filteredData = this.exampleDatabase.data
           .slice()
           .filter((leaveRequest: LeaveRequest) => {
@@ -389,9 +290,7 @@ export class ExampleDataSource extends DataSource<LeaveRequest> {
             ).toLowerCase();
             return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
           });
-        // Sort filtered data
         const sortedData = this.sortData(this.filteredData.slice());
-        // Grab the page's slice of the filtered sorted data.
         const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
         this.renderedData = sortedData.splice(
           startIndex,
@@ -404,7 +303,6 @@ export class ExampleDataSource extends DataSource<LeaveRequest> {
   disconnect() {
     // disconnect
   }
-  /** Returns a sorted copy of the database data. */
   sortData(data: LeaveRequest[]): LeaveRequest[] {
     if (!this._sort.active || this._sort.direction === '') {
       return data;
@@ -419,15 +317,9 @@ export class ExampleDataSource extends DataSource<LeaveRequest> {
           case 'className':
           [propertyA, propertyB] = [a.className, b.className];
           break;
-          // case 'rNo':
-          // [propertyA, propertyB] = [a.studentId.rollNo, b.studentId.rollNo];
-          // break;
         case 'name':
           [propertyA, propertyB] = [a.learnerId.name, b.learnerId.name];
           break;
-        // case 'fromDate':
-        //   [propertyA, propertyB] = [a.fromDate, b.fromDate];
-        //   break;
         case 'toDate':
           [propertyA, propertyB] = [a.toDate, b.toDate];
           break;

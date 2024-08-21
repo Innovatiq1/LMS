@@ -13,20 +13,13 @@ import { FeedbackReportComponent } from './feedback-report/feedback-report.compo
 import { UserReportComponent } from './user-report/user-report.component';
 import { PaymentReportComponent } from './payment-report/payment-report.component';
 
-
-
-
 @NgModule({
   declarations: [
-    
-    
-
-  
     ReportsComponent,
-                     GenereateReportComponent,
-                     FeedbackReportComponent,
-                     UserReportComponent,
-                     PaymentReportComponent
+    GenereateReportComponent,
+    FeedbackReportComponent,
+    UserReportComponent,
+    PaymentReportComponent,
   ],
   imports: [
     CommonModule,
@@ -36,7 +29,6 @@ import { PaymentReportComponent } from './payment-report/payment-report.componen
     ComponentsModule,
     SharedModule,
     ModalModule.forRoot(),
-   
   ],
 })
 export class ReportsModule {}

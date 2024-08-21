@@ -86,7 +86,6 @@ export class SucessCourseComponent implements OnInit {
   registerClass(classId: string) {
     let userdata = JSON.parse(localStorage.getItem('currentUser')!)
     let studentId=localStorage.getItem('id')
-    console.log('title',this.classDetails.courseId.title)
     let payload ={
       email:userdata.user.email,
       courseTitle:this.classDetails?.courseId?.title,

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CourseService } from '@core/service/course.service';
 import {  CoursePaginationModel, MainCategory, SubCategory } from '@core/models/course.model';

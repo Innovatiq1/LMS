@@ -36,7 +36,6 @@ export class SuperAdminService {
     const apiUrl = `${this.defaultUrl}admin/customizRole/${companyId}`;
     return this.http.get<any>(apiUrl).pipe(
       map((response: any) => {
-        console.log('API response:', response); // Log the complete response
         if (response && response.data) {
           return response.data;
         } else {

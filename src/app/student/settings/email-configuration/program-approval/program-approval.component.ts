@@ -157,7 +157,6 @@ updateTemplate(){
           let test =obj.email_content
           const stringWithoutPTags = this.removeTagsAndSpaces(test)
           obj['email_content']=stringWithoutPTags
-          console.log("stringWithoutPTags",stringWithoutPTags)
           obj['insertaction'] = 'new_waitlist_template';
           this.emailConfigurationService.updateForgetPasswordTemplate(obj,this.id).subscribe(
             (res) => {

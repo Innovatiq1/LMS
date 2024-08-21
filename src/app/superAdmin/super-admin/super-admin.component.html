@@ -56,25 +56,6 @@
                     [dataSource]="filteredData"
                     class="mat-cell advance-table"
                   >
-                    <!-- <ng-container matColumnDef="img">
-                      <mat-header-cell
-                        mat-header-cell
-                        *matHeaderCellDef
-                        [ngClass]="'tbl-col-width-per-6'"
-                      >
-                        Image
-                      </mat-header-cell>
-                      <mat-cell
-                        mat-cell
-                        *matCellDef="let row"
-                        class="table-img tbl-col-width-per-6"
-                      >
-                        <span class="mobile-label">Image:</span
-                        ><img
-                          [src]="row.avatar || 'assets/profile.png'"
-                        />
-                      </mat-cell>
-                    </ng-container> -->
                     <ng-container matColumnDef="Company">
                       <mat-header-cell *matHeaderCellDef mat-sort-header
                        >Company</mat-header-cell
@@ -125,46 +106,6 @@
                         >{{ row.type | titlecase }}</mat-cell
                       >
                     </ng-container>
-                    <!-- <ng-container matColumnDef="gender">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header>
-                        Gender
-                      </mat-header-cell>
-                      <mat-cell
-                        mat-cell
-                        *matCellDef="let row"
-                         
-                      >
-                        <span class="mobile-label">Gender:</span>
-                        <div *ngIf="row.gender === 'male'">
-                          <span class="badge badge-solid-green">
-                            {{ row.gender | titlecase }}</span
-                          >
-                        </div>
-                        <div *ngIf="row.gender === 'female'">
-                          <span class="badge badge-solid-purple">
-                            {{ row.gender | titlecase }}</span
-                          >
-                        </div>
-                        <div *ngIf="row.gender === 'other'">
-                          <span class="badge badge-solid-orange">
-                            {{ row.gender | titlecase }}</span
-                          >
-                        </div>
-                      </mat-cell>
-                    </ng-container> -->
-                    <!-- Main Category -->
-                    <!-- <ng-container matColumnDef="Qualification">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header
-                        >Education
-                      </mat-header-cell>
-                      <mat-cell
-                        *matCellDef="let row"
-                         
-                      >
-                        <span class="mobile-label">Education:</span
-                        >{{ row.education | capitalizeFirstLetter }}</mat-cell
-                      >
-                    </ng-container> -->
                     <ng-container matColumnDef="Mobile">
                       <mat-header-cell *matHeaderCellDef mat-sort-header
                         >Mobile

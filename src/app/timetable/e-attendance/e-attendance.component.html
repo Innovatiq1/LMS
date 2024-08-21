@@ -8,8 +8,6 @@
         [active_item]="'E-Attendance'"
       >
       </app-breadcrumb>
-      <!-- <app-breadcrumb [title]="breadscrumb.title" [items]="breadscrumb.items" [active_item]="breadscrumb.active">
-      </app-breadcrumb> -->
     </div>
     <div class="row clearfix">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -212,7 +210,6 @@
 
                       <mat-header-row *matHeaderRowDef="displayedColumns">
                       </mat-header-row>
-                      <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
                       <mat-row
                         *matRowDef="let row; columns: displayedColumns"
                         [style.cursor]="'pointer'"
@@ -360,12 +357,6 @@
                                 {{ course.title }}
                               </mat-option>
                             </mat-select>
-                            <!-- <mat-error *ngIf="
-                                                        attendanceForm.get('courseName')?.hasError('required') ||
-                                                        attendanceForm.get('courseName')?.touched
-                                                            ">
-                                                            Course Name is required.
-                                                        </mat-error> -->
                           </mat-form-field>
                         </div>
                         <div class="col-3" *ngIf="isProgram && !isCourse">
@@ -385,12 +376,6 @@
                                 {{ program.title }}
                               </mat-option>
                             </mat-select>
-                            <!-- <mat-error *ngIf="
-                                                        attendanceForm.get('programName')?.hasError('required') ||
-                                                        attendanceForm.get('programName')?.touched
-                                                              ">
-                                                            Program Name is required.
-                                                        </mat-error> -->
                           </mat-form-field>
                         </div>
                         <div class="col-2">
@@ -399,7 +384,6 @@
                             class="example-full-width"
                             appearance="outline"
                           >
-                            <!-- <mat-label>Start date</mat-label> -->
                             <input
                               matInput
                               [matDatepicker]="picker"
@@ -418,7 +402,6 @@
                             class="example-full-width"
                             appearance="outline"
                           >
-                            <!-- <mat-label>End date</mat-label> -->
                             <input
                               matInput
                               [matDatepicker]="picker2"
@@ -453,7 +436,6 @@
                         >
                           {{ header }}
                         </th>
-                        <!-- <th class="border-bottom-0 cell-dimention">1</th> -->
                       </tr>
                     </thead>
                     <tbody>

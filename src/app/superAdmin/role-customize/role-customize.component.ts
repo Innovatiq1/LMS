@@ -57,47 +57,13 @@ export class RoleCustomizeComponent {
     this.isLoading = true;
     this.coursePaginationModel.page = 1;
     this.searchResults = [];
-    // this.searchData(this.coursePaginationModel.page);
   }
-
-  // searchData(page: number = 1) {
-  //   let filterText = this.searchTerm;
-  //   this.alluserService
-  //     .getUserList({
-  //       filterText,
-  //       page,
-  //       limit: this.coursePaginationModel.limit,
-  //     })
-  //     .subscribe(
-  //       (response: any) => {
-  //         this.searchResults = [...this.searchResults, ...response.data.data];
-
-  //         if (this.searchResults.length < response.data.total) {
-  //           this.searchData(page + 1);
-  //         } else {
-  //           this.filteredData = this.searchResults.filter(
-  //             (data) => data.type === 'admin'
-  //           );
-  //           this.updateDisplayedData();
-  //           this.isLoading = false;
-  //           this.ref.detectChanges();
-  //         }
-  //       },
-  //       (error) => {
-  //         this.isLoading = false;
-  //         console.error('Error fetching search results:', error);
-  //       }
-  //     );
-  // }
-
   viewPackage(id:string){
-console.log('viewPackage', id);
 this.router.navigate(['super-admin/edit-customization'],{queryParams: {id:id}});
   }
   pageSizeChange($event: any) {
     this.coursePaginationModel.page = $event?.pageIndex + 1;
     this.coursePaginationModel.limit = $event?.pageSize;
-    // this.fetchData(); 
   }
 
   resetData() {
@@ -157,7 +123,6 @@ applyFilter() {
   let in_active = this.filteredData.filter(data => data.Active === false);
   this.inactiveCount = in_active.length;
   this.totalItems = this.filteredData.length;
-  console.log('Filtered Data', this.filteredData);
   this.updateDisplayedData();
 }
 

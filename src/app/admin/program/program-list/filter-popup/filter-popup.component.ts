@@ -28,7 +28,6 @@ export class FilterPopupComponent {
     this.courseService.getAllPrograms().subscribe(
       (response: any) => {
         this.programData = response.docs;
-        console.log(this.programData);
         this.titles = this.programData.map((doc: any) => doc.title);
         this.codes = this.programData.map((doc: any) => doc.courseCode);
         this.creator = this.programData.map((doc: any) => doc.creator);

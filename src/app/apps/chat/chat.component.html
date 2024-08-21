@@ -6,36 +6,10 @@
       </app-breadcrumb>
     </div>
     <div class="row">
-      <!-- <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-        <div class="card">
-          <div class="body">
-            <div id="plist" class="people-list">
-              <div class="form-line m-b-15">
-                <input type="text" class="form-control" placeholder="Search..." />
-              </div>
-              <div class="tab-content">
-                <ng-scrollbar style="height: 590px" visibility="hover">
-                  <div id="chat_user">
-                    <ul class="chat-list list-unstyled m-b-0" *ngFor="let student of students">
-                      <li class="clearfix ">
-                        <img src={{student.avatar}} alt="avatar">
-                        <div class="about">
-                          <div class="name">{{student.name | titlecase}}   {{ student.last_name ? student.last_name : '' }}</div>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </ng-scrollbar>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> -->
       <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
         <div class="card">
           <div class="chat">
             <div class="chat-header clearfix">
-              <!-- <img src="assets/images/user/user2.jpg" alt="avatar"> -->
               <div class="chat-about">
                 <div class="chat-with">{{user}}</div>
                 
@@ -69,38 +43,10 @@
                       </div>
                     </div>
                   </li>
-                  <!-- <li>
-                    <div class="message-data">
-                      <span class="message-data-name">Robert </span>
-                      <span class="message-data-time">10:12 AM, Today</span>
-                    </div>
-                    <div class="message my-message">
-                      <p>How are you feel today? What's about vacation?.</p>
-                      <div class="row">
-                      </div>
-                    </div>
-                  </li> -->
-                  <!-- <li class="clearfix">
-                    <div class="message-data text-end">
-                      <span class="message-data-time">10:10 AM, Today
-                      </span>
-                      &nbsp; &nbsp;
-                      <span class="message-data-name">Maria</span>
-                    </div>
-                    <div class="message other-message float-end"> I am good, We think for next
-                      weekend.
-                    </div>
-                  </li> -->
                 </ul>
               </div>
             </ng-scrollbar>
             <div class="chat-message clearfix">
-              <!-- <div class="chat-upload">
-                <div class="d-flex align-items-center">
-                  <button  class="bg-deep-orange msr-2" (click)="cancel()"> <i class="material-icons">cancel</i>Cancel</button>
-                  <button  class="bg-deep-orange" (click)="update()"> <i class="material-icons">insert_emoticon</i>Resolved</button>
-                </div>
-              </div> -->
               <div class="row mt-4 chat-upload">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
                   <button class="btn-space" mat-raised-button color="warn" (click)="cancel()">

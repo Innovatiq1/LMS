@@ -1,4 +1,3 @@
-
 import { AuthLayoutComponent } from './layout/app-layout/auth-layout/auth-layout.component';
 import { MainLayoutComponent } from './layout/app-layout/main-layout/main-layout.component';
 import { NgModule } from '@angular/core';
@@ -71,12 +70,6 @@ const routes: Routes = [
           import('./timetable/timetable.module').then((m) => m.TimetableModule),
         canActivate: [LoginGuard],
       },
-      // {
-      //   path: 'instructor-timetable',
-      //   loadChildren: () =>
-      //     import('./instructor-timetable/instructor-timetable.module').then((m) => m.InstructorTimetableModule),
-      //   canActivate: [LoginGuard],
-      // },
       {
         path: 'settings/student-settings',
         component: SettingsComponent,
@@ -152,96 +145,17 @@ const routes: Routes = [
         component: SettingsComponent,
         canActivate: [LoginGuard],
       },
-
-
-      // Extra components
-      // {
-      //   path: 'calendar',
-      //   loadChildren: () =>
-      //     import('./calendar/calendar.module').then((m) => m.CalendarsModule),
-      //   canActivate: [LoginGuard],
-      // },
-      // {
-      //   path: 'task',
-      //   loadChildren: () =>
-      //     import('./task/task.module').then((m) => m.TaskModule),
-      //   canActivate: [LoginGuard],
-      // },
-      // {
-      //   path: 'contacts',
-      //   loadChildren: () =>
-      //     import('./contacts/contacts.module').then((m) => m.ContactsModule),
-      //   canActivate: [LoginGuard],
-      // },
       {
         path: 'apps',
         loadChildren: () =>
           import('./apps/apps.module').then((m) => m.AppsModule),
         canActivate: [LoginGuard],
       },
-      // {
-      //   path: 'widget',
-      //   loadChildren: () =>
-      //     import('./widget/widget.module').then((m) => m.WidgetModule),
-      //   canActivate: [LoginGuard],
-      // },
       {
         path: 'ui',
         loadChildren: () => import('./ui/ui.module').then((m) => m.UiModule),
         canActivate: [LoginGuard],
       },
-      // {
-      //   path: 'forms',
-      //   loadChildren: () =>
-      //     import('./forms/forms.module').then((m) => m.FormModule),
-      //   canActivate: [LoginGuard],
-      // },
-      // {
-      //   path: 'tables',
-      //   loadChildren: () =>
-      //     import('./tables/tables.module').then((m) => m.TablesModule),
-      //   canActivate: [LoginGuard],
-      // },
-      // {
-      //   path: 'charts',
-      //   loadChildren: () =>
-      //     import('./charts/charts.module').then((m) => m.ChartsModule),
-      //   canActivate: [LoginGuard],
-      // },
-      // {
-      //   path: 'timeline',
-      //   loadChildren: () =>
-      //     import('./timeline/timeline.module').then((m) => m.TimelineModule),
-      //   canActivate: [LoginGuard],
-      // },
-      // {
-      //   path: 'icons',
-      //   loadChildren: () =>
-      //     import('./icons/icons.module').then((m) => m.IconsModule),
-      //   canActivate: [LoginGuard],
-      // },
-      // {
-      //   path: 'extra-pages',
-      //   loadChildren: () =>
-      //     import('./extra-pages/extra-pages.module').then(
-      //       (m) => m.ExtraPagesModule
-      //     ),
-      //   canActivate: [LoginGuard],
-      // },
-      // {
-      //   path: 'maps',
-      //   loadChildren: () =>
-      //     import('./maps/maps.module').then((m) => m.MapsModule),
-      //   canActivate: [LoginGuard],
-      // },
-      // {
-      //   path: 'multilevel',
-      //   loadChildren: () =>
-      //     import('./multilevel/multilevel.module').then(
-      //       (m) => m.MultilevelModule
-      //     ),
-      //   canActivate: [LoginGuard],
-      // },
     ],
   },
   {

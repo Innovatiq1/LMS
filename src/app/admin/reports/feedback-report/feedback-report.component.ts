@@ -33,11 +33,8 @@ import Swal from 'sweetalert2';
 export class FeedbackReportComponent  extends UnsubscribeOnDestroyAdapter
 implements OnInit{
   displayedColumns = [
-    // 'select',
-
     'studentName',
     'courseName',
-    // 'actions',
   ];
   exampleDatabase?: SurveyService;
   dataSource!: ExampleDataSource;
@@ -127,14 +124,11 @@ implements OnInit{
   private refreshTable() {
     this.paginator._changePageSize(this.paginator.pageSize);
   }
-  /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.renderedData.length;
     return numSelected === numRows;
   }
-
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
     this.isAllSelected()
       ? this.selection.clear()
@@ -157,14 +151,7 @@ implements OnInit{
       title: 'Success',
       text: 'Record Deleted Successfully...!!!',
       icon: 'success',
-      // confirmButtonColor: '#526D82',
     });
-    // this.showNotification(
-    //   'snackbar-danger',
-    //   totalSelect + ' Record Delete Successfully...!!!',
-    //   'bottom',
-    //   'center'
-    // );
   }
   public loadData() {
     this.exampleDatabase = new SurveyService(this.httpClient);
@@ -183,9 +170,7 @@ implements OnInit{
     );
   }
 
-  // export table data in excel file
   exportExcel() {
-    // key name with space add in brackets
     const exportData: Partial<TableElement>[] =
       this.dataSource.filteredData.map((x) => ({
         'User Name': x.studentFirstName,
@@ -209,7 +194,6 @@ implements OnInit{
       panelClass: colorName,
     });
   }
-  // context menu
   onContextMenu(event: MouseEvent, item: SurveyBuilderModel) {
     event.preventDefault();
     this.contextMenuPosition.x = event.clientX + 'px';
@@ -237,12 +221,9 @@ export class ExampleDataSource extends DataSource<SurveyBuilderModel> {
     public _sort: MatSort
   ) {
     super();
-    // Reset to the first page when the user changes the filter.
     this.filterChange.subscribe(() => (this.paginator.pageIndex = 0));
   }
-  /** Connect function called by the table to retrieve one stream containing the data to render. */
   connect(): Observable<SurveyBuilderModel[]> {
-    // Listen for any changes in the base data, sorting, filtering, or pagination
     const displayDataChanges = [
       this.exampleDatabase.dataChange,
       this._sort.sortChange,
@@ -261,9 +242,7 @@ export class ExampleDataSource extends DataSource<SurveyBuilderModel> {
             )?.toLowerCase();
             return searchStr?.indexOf(this.filter?.toLowerCase()) !== -1;
           });
-        // Sort filtered data
         const sortedData = this.sortData(this.filteredData.slice());
-        // Grab the page's slice of the filtered sorted data.
         const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
         this.renderedData = sortedData.splice(
           startIndex,
@@ -276,7 +255,6 @@ export class ExampleDataSource extends DataSource<SurveyBuilderModel> {
   disconnect() {
     // disconnect
   }
-  /** Returns a sorted copy of the database data. */
   sortData(data: SurveyBuilderModel[]): SurveyBuilderModel[] {
     if (!this._sort.active || this._sort.direction === '') {
       return data;

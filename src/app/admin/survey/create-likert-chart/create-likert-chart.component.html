@@ -19,53 +19,6 @@
                                     <input matInput type="text" formControlName="name" class="form-control" required>
                                 </mat-form-field>
                             </div>
-
-                            <!-- <div formArrayName="questions">
-                                <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 mb-2">
-                                    <label>Questions <span class="mandatory">&nbsp;*</span></label>
-                                    <button class="btn" (click)="addQuestion()">
-                                        <img src="/assets/Close.svg" alt="plus"
-                                            style="display: inline;margin-bottom: 10px;">
-                                    </button>
-                                </div>
-                                <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 mb-2"
-                                    *ngFor="let ques of questions.controls; let j = index" [formGroupName]="j">
-                                    <label>Question {{j+1}}<span class="mandatory">&nbsp;*</span></label>
-                                    <mat-form-field class="example-full-width mb-3" appearance="outline">
-                                        <input matInput type="text" formControlName="questionText" class="form-control"
-                                            required>
-                                    </mat-form-field>
-                                   
-                                    <div formArrayName="options">
-                                        <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 mb-2">
-                                            <label>Options <span class="mandatory">&nbsp;*</span></label>
-                                            <button class="btn" (click)="addSubCategoryField()">
-                                                <img src="/assets/Close.svg" alt="plus"
-                                                    style="display: inline;margin-bottom: 10px;">
-                                            </button>
-                                        </div>
-                                        <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12"
-                                            *ngFor="let subcategory of options.controls; let i = index"
-                                            [formGroupName]="i">
-                                            <label for="subcategory_name_{{i}}">Answer <span
-                                                    class="mandatory">&nbsp;*</span></label>
-                                            <mat-form-field class="example-full-width mb-3" appearance="outline">
-                                                <input matInput type="text" id="subcategory_name_{{i}}"
-                                                    formControlName="text">
-
-                                            </mat-form-field>
-                                            <label for="subcategory_name_{{i}}">Correct <span
-                                                    class="mandatory">&nbsp;*</span></label>
-                                            <mat-form-field class="example-full-width mb-3" appearance="outline">
-                                                <input matInput type="text" id="subcategory_name_{{i}}"
-                                                    formControlName="correct">
-
-                                            </mat-form-field>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
                             <div formArrayName="questions">
                                 <div *ngFor="let ques of questions.controls; let i=index" [formGroupName]="i">
                                     <label>Questions <span class="mandatory">&nbsp;*</span></label>
@@ -85,27 +38,15 @@
                                         <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 mb-2">
                                             <!-- Dynamic options -->
                                             <div *ngFor="let option of getOptions(i).controls; let j=index" [formGroupName]="j">
-                                                <!-- Use [formControlName] with respect to 'option' FormGroup -->
                                                 <label>Option {{j+1}} <span class="mandatory">&nbsp;*</span></label>
                                                 <mat-form-field class="example-full-width mb-3" appearance="outline">
                                                     <input type="text" matInput [formControlName]="'text'"  placeholder="Answer">
                                                 </mat-form-field>
-                                                <!-- Label for 'Correct' -->
-                                                <!-- <label>Correct <span class="mandatory">&nbsp;*</span></label>
-                                                <mat-form-field class="example-full-width mb-3" appearance="outline">
-                                                    <input type="text" matInput [formControlName]="'correct'"  placeholder="Correct">
-                                                </mat-form-field> -->
                                             </div>
                                         </div>
                                     </div>
-                                    
-                                    
-                                    <!-- <button type="button" (click)="addOption(i)">Add Option</button> -->
                                 </div>
                             </div>
-
-
-                            <!-- <button type="button" (click)="addQuestion()">Add Question</button> -->
                         </div>
                     </form>
                     <div class="row body">

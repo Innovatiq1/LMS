@@ -60,20 +60,12 @@ export class CreateSuperAdminComponent {
         ...this.utils.validators.noLeadingSpace,
       ]),
       website: new FormControl('', []),
-     // last_name: new FormControl('', []),
-      // rollNo: new FormControl('', [
-      //   Validators.required,
-      //   ...this.utils.validators.noLeadingSpace,
-      //   ...this.utils.validators.roll_no,
-      // ]),
-      // gender: new FormControl('', [Validators.required]),
       mobile: new FormControl('', [
         Validators.required,
         ...this.utils.validators.mobile,
       ]),
       company: new FormControl('', [Validators.required]),
       qualification: new FormControl('', []),
-      // department: new FormControl('', []),
       address: new FormControl('', []),
       email: new FormControl('', [
         Validators.required,
@@ -81,15 +73,7 @@ export class CreateSuperAdminComponent {
       ]),
       password: new FormControl('', [Validators.required]),
       re_passwords: new FormControl('', []),
-      // education: new FormControl('', [
-      //   Validators.required,
-      //   Validators.minLength(2),
-      // ]),
       type: new FormControl('admin', [Validators.required]),
-      // dob: new FormControl('', [
-      //   Validators.required,
-      //   ...this.utils.validators.dob,
-      // ]),
       joiningDate: new FormControl('', [Validators.required]),
     });
     this.getDepartment();
@@ -206,22 +190,6 @@ export class CreateSuperAdminComponent {
   }
   update() {
     if (this.userForm.valid) {
-      // if (this.editUrl) {
-      //   Swal.fire({
-      //     title: 'Are you sure?',
-      //     text: 'Do you want to update user!',
-      //     icon: 'warning',
-      //     confirmButtonText: 'Yes',
-      //     showCancelButton: true,
-      //     cancelButtonColor: '#d33',
-      //   }).then((result) => {
-      //     if (result.isConfirmed) {
-      //       this.updateBlog(this.userForm.value);
-      //     }
-      //   });
-
-      // }
-      // else {
       Swal.fire({
         title: 'Are you sure?',
         text: 'Do you want to create user!',
@@ -234,8 +202,6 @@ export class CreateSuperAdminComponent {
           this.addBlog(this.userForm.value);
         }
       });
-
-      // }
     } else {
       this.userForm.markAllAsTouched();
       this.isSubmitted = true;
@@ -247,9 +213,6 @@ export class CreateSuperAdminComponent {
     let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     if (!formObj.invalid) {
       const uniqueId = uuidv4();
-      console.log('id',uniqueId)
-          // Assign the unique ID to userData (assuming userData has an 'id' property)
-      
       formObj['Active'] = this.status;
       formObj['type'] = formObj.type;
       formObj['role'] = 'Admin';
@@ -275,7 +238,6 @@ export class CreateSuperAdminComponent {
           text: 'Users created successfully',
           icon: 'success',
         });
-        //this.fileDropEl.nativeElement.value = "";
         this.userForm.reset();
         this.router.navigateByUrl('/super-admin/admin-list');
       },

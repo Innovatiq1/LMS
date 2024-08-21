@@ -10,272 +10,52 @@
         <div class="card">
           <div class="body">
             <div class="container mx-auto ">
-              <!-- <form [formGroup]="surveyForm">
-              <div class="row justify-content-between mt-4">
-                   <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
-                    <label>Name <span class="mandatory">&nbsp;*</span></label>
-                  <mat-form-field class="example-full-width" appearance="outline">
-                    <input matInput formControlName="title" >
-                    <mat-icon matSuffix>face</mat-icon>
-                  </mat-form-field>
+              <form [formGroup]="feedbackForm">
+                <div class="p-4">
+                  <ul class="list-group list-group-unbordered">
+                    <li class="list-group-item p-1">
+                      <b>{{commonRoles.STUDENT_ROLE}} Name: </b>
+                      <span class="profile-desc-item gap-4">{{studentLastName? studentFirstName + " " +
+                        studentLastName:studentFirstName}}</span>
+                    </li>
+                    <li class="list-group-item p-1">
+                      <b>Course/Program Name: </b>
+                      <span class="profile-desc-item">{{courseName}}</span>
+                      <!-- <div class="profile-desc-item float-end">{{courseName}}</div> -->
+                    </li>
+                  </ul>
+                  <div class="mt-4 p-1">
+                    <app-feedbackcommon [feedbackInfo]="questionList" [col]="3" [isPreview]="true"
+                      [answer]="true"></app-feedbackcommon>
+                  </div>
                 </div>
+                <br>
+                <div class="row" *ngIf="false">
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                    <div class="card" *ngFor="let row of questionList">
+                      <div class="header">
+                        <h2>{{row.questionText}}</h2>
+                      </div>
+                      <div class="body">
+                        <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group">
 
-                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2 mt-4 " (click)="preinitRating()">
-                  <button mat-raised-button >Add Ratings
-                      <i class="material-icons m-2">star_rate</i>
-                  </button>
-                  <button mat-raised-button color="warn" class="m-2" (click)="addQuestion()">Add Questions
-                    <i class="material-icons m-2" >question_answer</i>
-                  </button>
-                   </div>
-              </div>
-              <div class="row" formArrayName="questions">
-                <div class="row mt-5  align-items-center" *ngFor="let question of questions.controls; let index= index" [formGroupName]="index">
-                  <div class="col-lg-3">
-                    <label>Question {{index + 1}}</label>
-                    <mat-form-field class="example-full-width" appearance="outline">
-                      <input matInput formControlName="question" >
-                      <mat-error *ngIf="surveyForm?.get('question')?.hasError('required')">
-                      Question is required
-                      </mat-error>
-                    </mat-form-field>
+                          <mat-radio-button class="example-radio-button ms-0">
+                            {{row?.selectedOption}}
+                          </mat-radio-button>
+                        </mat-radio-group>
+                      </div>
+                    </div>
                   </div>
-                  <div class="col-lg-3">
-                    <label>Type</label>
-                              <mat-form-field class="example-full-width " appearance="outline">
-                                <mat-select formControlName="type"  >
-                                  <mat-option value="single">
-                                    Single Choice
-                                  </mat-option>
-                                  <mat-option value="multi">
-                                    Multiple Choice
-                                  </mat-option>
-                                  <mat-option value="text">
-                                    Text Input
-                                  </mat-option>
-                                </mat-select>
-                                <mat-error *ngIf="surveyForm?.get('type')?.hasError('required')">
-                                  Question is required
-                                  </mat-error>
-                              </mat-form-field>
-                  </div>
-                  <div class="col-lg-4">
-                    <label>Choices (comma-separated)</label>
-                    <mat-form-field class="example-full-width" appearance="outline">
-                      <input matInput  formControlName="choices" >
-                    </mat-form-field>
-                  </div>
-                  <div class="col-lg-1">
-                    <button mat-icon-button color="accent" class="tbl-action-btn" (click)="deleteQuestion(index)">
-                      <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'">
-                      </app-feather-icons>
+                </div>
+                <div class="row mt-4">
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
+                    <button type="button" mat-raised-button id="back" class="float-end"
+                      [routerLink]="['/admin/survey/feedbacks-list']">
+                      Back
                     </button>
                   </div>
                 </div>
-              </div>
-              <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2 " [routerLink]="['/admin/survey/survey-list']" >
-                <button mat-raised-button >Cancel
-                </button>
-                <button mat-raised-button color="warn" class="m-2" (click)="createSurvey()">Save
-                </button>
-                 </div>
-            </form> -->
-            <form [formGroup]="feedbackForm">
-              <!-- <div class="row">
-                <div class="header">
-                  <h2>Student Name</h2>
-                </div>
-                <div>
-                  {{studentFirstName}}
-                </div>
-                <div class="header">
-                  <h2>Course/Program Name</h2>
-                </div>
-                <div>
-                  {{courseName}}
-                </div>
-                    </div> -->
-                    <div class="p-4">
-                      <ul class="list-group list-group-unbordered">
-                          <li class="list-group-item p-1">
-                            <b>{{commonRoles.STUDENT_ROLE}} Name: </b>
-                            <span class="profile-desc-item gap-4">{{studentLastName? studentFirstName + " " + studentLastName:studentFirstName}}</span>
-                          </li>
-                          <li class="list-group-item p-1">
-                            <b>Course/Program Name: </b>
-                            <span class="profile-desc-item">{{courseName}}</span>
-                            <!-- <div class="profile-desc-item float-end">{{courseName}}</div> -->
-                          </li>
-                        </ul>
-                        <div class="mt-4 p-1">
-                          <app-feedbackcommon [feedbackInfo]="questionList" [col]="3" [isPreview]="true" [answer]="true"></app-feedbackcommon>
-                        </div>
-                    </div>
-
-                    <br>
-
-
-              <div class="row" *ngIf="false">
-                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                  <div class="card" *ngFor="let row of questionList">
-                    <div class="header">
-                      <h2>{{row.questionText}}</h2>
-                    </div>
-                    <div class="body">
-                      <mat-radio-group
-                        aria-labelledby="example-radio-group-label"
-                        class="example-radio-group" 
-                      >
-                    
-                        <mat-radio-button
-                          class="example-radio-button ms-0"
-                         >
-                          {{row?.selectedOption}}
-                        </mat-radio-button>
-                      </mat-radio-group>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- <div class="row">
-                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                  <div class="card">
-                    <div class="header">
-                      <h2>
-                        2.The Assignments were appropriate for the level of this
-                        course
-                      </h2>
-                    </div>
-                    <div class="body">
-                      <mat-radio-group
-                        aria-labelledby="example-radio-group-label"
-                        class="example-radio-group" formControlName ="question2"
-
-                      >
-                        <mat-radio-button
-                          class="example-radio-button ms-0"
-                          *ngFor="let season of levelofcourse"
-                          [value]="season"
-                        >
-                          {{ season }}
-                        </mat-radio-button>
-                      </mat-radio-group>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                  <div class="card">
-                    <div class="header">
-                      <h2>3.The course corresponded to my expectations</h2>
-                    </div>
-                    <div class="body">
-                      <mat-radio-group formControlName ="question3"
-                        aria-labelledby="example-radio-group-label"
-                        class="example-radio-group"
-                      >
-                        <mat-radio-button
-                          class="example-radio-button ms-0"
-                          *ngFor="let season of expectations"
-                          [value]="season"
-                        >
-                          {{ season }}
-                        </mat-radio-button>
-                      </mat-radio-group>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                  <div class="card">
-                    <div class="header">
-                      <h2>
-                        4.The Instructor demonstrated knowledge of the subject
-                        matter
-                      </h2>
-                    </div>
-                    <div class="body">
-                      <mat-radio-group formControlName ="question4"
-                        aria-labelledby="example-radio-group-label"
-                        class="example-radio-group"
-                      >
-                        <mat-radio-button
-                          class="example-radio-button ms-0"
-                          *ngFor="let season of subject"
-                          [value]="season"
-                        >
-                          {{ season }}
-                        </mat-radio-button>
-                      </mat-radio-group>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="card p-4">
-                <div class="header">
-                  <h2>Which is your overall satisfaction with the course?</h2>
-                  </div>
-                  <div class="body mt-2">
-                    <ngb-rating [max]="5" [(rate)]="question6" [readonly]="true"></ngb-rating>
-                  </div>
-              </div>
-              <div class="card p-3">
-                <div class="header">
-                  <h2>How likely is that you would recommend this course to another student?</h2>
-                  </div>
-                  <div class="body">
-                    <div
-              class=" mt-4"
-              *ngFor="let cunts of countNumber; let i = index"
-              style="display: inline; padding: 15px"
-              [ngClass]="selected ? 'disabled' : ''"
-            >
-              <span
-                class="shadow border number rounded-circle px-3 py-2"
-
-                [ngClass]="{ highlight: selectedIndex == i }"
-              >
-                {{ cunts }}</span
-              >
-            </div>
-            <div class="mt-4">
-              <span style="color: #afaaaa">0- less likely at all</span>
-              <span style="color: #afaaaa">10- very likely </span>
-            </div>
-                  </div>
-
-              </div>
-              <div class="card">
-                <div class="header">
-                  <h2>Please provide any comments or suggestions that might help improve this course in the future!</h2></div>
-                <div class="body">
-                  <div class="row">
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
-                      <mat-form-field class="example-full-width mb-3" appearance="outline">
-                        <textarea matInput formControlName="question7" readonly ></textarea>
-                      </mat-form-field>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
-              <div class="row mt-4">
-                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
-                  <button
-                    type="button"
-                    mat-raised-button
-                    id="back"
-                    class="float-end"
-                    [routerLink]="['/admin/survey/feedbacks-list']"
-                  >
-                    Back
-                  </button>
-                </div>
-              </div>
-
-            </form>
-
+              </form>
             </div>
           </div>
         </div>
@@ -283,4 +63,3 @@
     </div>
   </div>
 </section>
-

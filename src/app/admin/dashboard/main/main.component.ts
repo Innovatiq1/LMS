@@ -404,10 +404,8 @@ export class MainComponent implements OnInit {
       (data: any) => {
         this.roleType = data.data.map((doc: any) => doc.typeName).toString();
         this.dashboards = data.data.flatMap((doc: any) => doc.dashboards);
-        console.log("Dashboard_data", this.dashboards);
         this.dashboards.forEach((dashboard: { checked: any; }, index: number) => {
           if (dashboard.checked) {
-            console.log(`Dashboard ${index + 1} is checked`);
           } else {
           }
         });
@@ -462,25 +460,6 @@ export class MainComponent implements OnInit {
           // this.setSurveyChart();
 
         })
-        // this.pieChartData= {
-        //   labels: this.pieChartLabels,
-        //   datasets: [
-        //     {
-        //       data: [this.registeredCourses, this.approvedCourses, this.registeredPrograms, this.approvedPrograms, this.completedCourses, this.completedPrograms],
-        //       backgroundColor: ['#5A5FAF', '#F7BF31', '#EA6E6C', '#28BDB8', '#73af5a', '#af5a79'],
-        //     },
-        //   ],
-        // };
-
-        // this.barChartData= {
-        //   labels: this.barChartLabels,
-        //   datasets: [
-        //     {
-        //       data: [this.registeredCourses, this.approvedCourses, this.registeredPrograms, this.approvedPrograms, this.completedCourses, this.completedPrograms],
-        //       backgroundColor: ['#5A5FAF', '#F7BF31', '#EA6E6C', '#28BDB8', '#73af5a', '#af5a79'],
-        //     },
-        //   ],
-        // };
       })
     })
     })
@@ -537,96 +516,6 @@ export class MainComponent implements OnInit {
       this.announcements = res.data
     })
   }
-
-  // public doughnutChartOptions: ChartConfiguration['options'] = {
-  //   responsive: true,
-  //   maintainAspectRatio: false,
-  //   plugins: {
-  //     legend: {
-  //       display: false,
-  //     },
-  //   },
-  // };
-//   public studentPieChartOptions: ChartConfiguration['options'] = {
-//     responsive: true,
-//     maintainAspectRatio: false,
-//     plugins: {
-//         legend: {
-//             display: false,
-//         },
-//     },
-// };
-// public pieChartLabels: string[] = [
-//   'Registered Courses',
-//   'Approved Courses',
-//   'Registered Programs',
-//   'Approved Programs',
-//   'Completed Courses',
-//   'Completed Programs'
-// ];
-// public pieChartData: ChartData<'pie'> = {
-//   labels: this.pieChartLabels,
-//   datasets: [
-//       {
-//           data: [/* Insert your data values here */],
-//           backgroundColor: [/* Add colors for each section of the pie chart */],
-//       },
-//   ],
-// };
-// public pieChartType: ChartType = 'pie';
-
-
-// public barChartOptions: ChartConfiguration['options'] = {
-//   responsive: true,
-//   maintainAspectRatio: false,
-//   plugins: {
-//       legend: {
-//           display: false,
-//       },
-//   },
-//   scales: {
-//       x: {
-//           stacked: true, // Stack bars horizontally
-//       },
-//       y: {
-//           stacked: true, // Stack bars vertically
-//       },
-//   },
-// };
-// public barChartLabels: string[] = [
-//   'Registered Courses',
-//   'Approved Courses',
-//   'Registered Programs',
-//   'Approved Programs',
-//   'Completed Courses',
-//   'Completed Programs'
-// ];
-
-// public barChartData: ChartData<'bar'> = {
-//   labels: this.barChartLabels,
-//   datasets: [
-//       {
-//           label: 'Data', // Label for the dataset
-//           data: [/* Insert your data values here */],
-//           backgroundColor: [/* Add colors for each bar in the chart */],
-//       },
-//   ],
-// };
-
-// public barChartType: ChartType = 'bar';
-
-  // public doughnutChartLabels: string[] = [
-  //   'Registered Courses',
-  //   'Approved Courses',
-  //   'Registered Programs ',
-  //   'Approved Programs',
-  //   'Completed Courses' , 
-  //   'Completed Programs'
-  // ];
-  // public doughnutChartData!: ChartData<'doughnut'>
-  // public doughnutChartType: ChartType = 'doughnut';
-  //End Student Information
-  
   getStudentsList() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
         let payload = {
@@ -867,7 +756,6 @@ export class MainComponent implements OnInit {
     this.commonRoles = AppConstants
     this.getClassList();
     const role = this.authenticationService.currentUserValue.user.role;
-    console.log('roles', role);
     if(role === 'Super Admin'){
       this.superAdmin = true;
       this.breadscrums = [
@@ -963,7 +851,6 @@ export class MainComponent implements OnInit {
         }
       },
       (error) => {
-        console.log('error', error);
       }
     );
   }
@@ -978,7 +865,6 @@ export class MainComponent implements OnInit {
         }
       },
       (error) => {
-        console.log('error', error);
       }
     );
   }
@@ -990,11 +876,9 @@ export class MainComponent implements OnInit {
         if (response.data) {
           this.programClassList = response.data.docs.slice(0, 5).sort();
           this.totalDocs = response.data.totalDocs;
-          console.log("docs", this.totalDocs)
         }
       },
       (error) => {
-        console.log('error', error);
       }
     );
   }
@@ -2357,7 +2241,6 @@ private attendanceBarChart() {
        
         },
         (error) => {
-          console.log('error', error);
         }
       );
   }
@@ -2529,7 +2412,6 @@ private attendanceBarChart() {
           }
         },
         (error) => {
-          console.log('error', error);
         }
       );
   }

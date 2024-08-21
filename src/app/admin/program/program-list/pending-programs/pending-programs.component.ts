@@ -35,7 +35,6 @@ export class PendingProgramsComponent {
   ];
 
   displayedColumns: string[] = [
-    // 'select',
     'name',
     'status',
     'code',
@@ -46,8 +45,6 @@ export class PendingProgramsComponent {
     'Payment',
     'Compulsory Count',
     'Elective Count',
-    // 'Payment',
-    
   ];
 
   
@@ -118,7 +115,6 @@ export class PendingProgramsComponent {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     this.courseService.getCourseProgram({...this.coursePaginationModel,status:'inactive'},userId).subscribe(
       (response: any) => {
-        console.log("page",response)
         this.totalItems = response.totalDocs;
         this.dataSource = response.docs;
         this.coursePaginationModel.docs = response.docs;
@@ -131,16 +127,11 @@ export class PendingProgramsComponent {
     );
   }
   performSearch() {
-    console.log("ps")
     if(this.searchTerm){
     this.dataSource = this.dataSource?.filter((item: any) =>{
-      console.log("ps",item)
       const searchList = (item?.title).toLowerCase()
       return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1
     }
-
-
-    // item.classId.courseId?.title.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
     } else {
       this.getProgramList();
@@ -168,7 +159,6 @@ export class PendingProgramsComponent {
             title: 'Success',
             text: 'Program approved successfully.',
             icon: 'success',
-            // confirmButtonColor: '#d33',
           });
           this.getProgramList();
         }, (error) => {
@@ -176,42 +166,12 @@ export class PendingProgramsComponent {
             title: 'Error',
             text: 'Failed to approve program. Please try again.',
             icon: 'error',
-            // confirmButtonColor: '#d33',
           });
         });
       }
     });
  
   }
-  // exportExcel() {
-  //  const exportData: Partial<TableElement>[] =
-  //     this.dataSource.map((user:any) => ({
-  //       ProgramName:user?.title,
-  //       CompulsoryCount: user?.coreCourseCount,
-  //       ElectiveCount: user?.electiveCourseCount
-       
-  //     }));
-  //   TableExportUtil.exportToExcel(exportData, 'excel');
-  // }
-  // generatePdf() {
-  //   const doc = new jsPDF();
-  //   const headers = [['Program Name','Compulsory Count','Elective Count']];
-  //   const data = this.dataSource.map((user:any) =>
-  //     [user?.title,
-  //       user?.coreCourseCount,
-  //      user?.electiveCourseCount,
-       
-
-  //   ] );
-  //   const columnWidths = [20, 20, 20, 20, 20, 20, 20, 20, 20, 20];
-  //   (doc as any).autoTable({
-  //     head: headers,
-  //     body: data,
-  //     startY: 20,
-  //   });
-  //   doc.save('Program pending-list.pdf');
-  // }
-
   exportExcel() {
     const mapStatus = (status: string): string => {
       if (status === 'active') {
@@ -219,10 +179,9 @@ export class PendingProgramsComponent {
       } else if (status === 'inactive') {
           return 'pending';
       } else {
-          return status; // Handle other cases if needed
+          return status; 
       }
   };
-    // key name with space add in brackets
     const exportData: Partial<TableElement>[] =
       this.dataSource.map((user: any) => ({
         'Program Name': user.title,
@@ -246,7 +205,7 @@ export class PendingProgramsComponent {
     const doc = new jsPDF();
     const headers = [['Program Name', 'Status', 'Program Code', 'Creator', 'Duration', 'Payment', 'Start Date', 'End Date', 'Compulsory Count', 'Elective Count']];
     
-    // Map status values to desired strings
+
     const mapStatus = (status: string): string => {
         if (status === 'active') {
             return 'approved';
@@ -270,16 +229,13 @@ export class PendingProgramsComponent {
         user?.electiveCourseCount
     ]);
 
-    // Adjust column widths
     const columnWidths = [30, 30, 25, 25, 20, 25, 25, 25, 25, 25];
-
-    // Generate the table using jspdf-autotable
     (doc as any).autoTable({
         head: headers,
         body: data,
         startY: 20,
         columnStyles: {
-            0: { cellWidth: 20 }, // Adjust cell width for each column
+            0: { cellWidth: 20 },
             1: { cellWidth: 20 },
             2: { cellWidth: 20 },
             3: { cellWidth: 17 },
@@ -290,8 +246,8 @@ export class PendingProgramsComponent {
             8: { cellWidth: 20 },
             9: { cellWidth: 20 }
         },
-        margin: { top: 20, bottom: 20, left: 10, right: 10 }, // Adjust margins if needed
-        pageBreak: 'auto' // Enable automatic page breaks
+        margin: { top: 20, bottom: 20, left: 10, right: 10 }, 
+        pageBreak: 'auto'
     });
 
     // Save or open the PDF
@@ -301,7 +257,6 @@ export class PendingProgramsComponent {
   private refreshTable() {
     this.paginator._changePageSize(this.paginator.pageSize);
   }
-  /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.length;
@@ -358,16 +313,8 @@ export class PendingProgramsComponent {
           title: 'Success',
           text: 'Record Deleted Successfully...!!!',
           icon: 'success',
-          // confirmButtonColor: '#526D82',
         });
       }
     });
-   
-    // this.showNotification(
-    //   'snackbar-danger',
-    //   totalSelect + ' Record Delete Successfully...!!!',
-    //   'top',
-    //   'right'
-    // );
   }
 }

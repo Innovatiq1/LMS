@@ -14,7 +14,6 @@
         <div class="card">
           <div class="header"></div>
           <form [formGroup]="programFormGroup">
-            <!-- <ng-template matStepLabel>{{' editUrl ? 'Edit Course' : 'Course Create'}}</ng-template> -->
             <div class="body m-3 justify-content-between">
               <div class="row">
                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-2">
@@ -116,60 +115,6 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
-
-                <!-- <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
-                                <label class="form-label ">Program Kit<span
-                                        class="mandatory">&nbsp;*</span></label>
-                                <mat-form-field class="example-full-width mb-3" appearance="outline">
-                                    <mat-select formControlName="programKit" required>
-                                        <mat-option *ngFor="let item of programKits" [value]="item.id">
-                                            {{item.name}}
-                                        </mat-option>
-                                    </mat-select>
-                                    <mat-error
-                                        *ngIf="programFormGroup.get('programKit')?.hasError('required') ||programFormGroup.get('programKit')?.touched">
-                                        Select Program Kit
-                                    </mat-error>
-                                </mat-form-field>
-                            </div> -->
-              <!-- </div> -->
-              <!-- <div class="row">
-                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-5">
-                  <label>Thumbnail</label>
-                  <div class="file-drop-area">
-                    <div class="file">
-                      <button mat-raised-button color="primary">
-                        <input
-                          type="file"
-                          #fileDropRef
-                          id="fileDropRef"
-                          formControlName="image_link"
-                          (change)="onFileUpload($event)"
-                          accept="image/*"
-                          class="input"
-                        />
-                        Choose file
-                      </button>
-                      <span class="file-msg">
-                        <h5>
-                          {{
-                            uploadedImage
-                              ? uploadedImage
-                              : "Drag and Drop File Here"
-                          }}
-                        </h5>
-                      </span>
-                      <input
-                        formControlName="image_link"
-                        (change)="onFileUpload($event)"
-                        class="file-input"
-                        type="file"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div> -->
-
                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-2" *ngIf="labelStatusCheck('Start Date')">
                   <label class="form-label">Start Date<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field
@@ -232,48 +177,6 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <!-- <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-2">
-                    <label>Thumbnail</label>
-                    <div class="file-drop-area">
-                      <div class="file">
-                        <button mat-raised-button color="primary" class="btn">
-                          <input
-                            type="file"
-                            #fileDropRef
-                            id="fileDropRef"
-                            formControlName="image_link"
-                            (change)="onFileUpload($event)"
-                            accept="image/*"
-                            class="input"
-                          />
-                          Choose file
-                        </button>
-                        <div class="file-msg">
-                          <h5>
-                            {{
-                              uploadedImage
-                                ? uploadedImage
-                                : "Drag and Drop File Here"
-                            }}
-                          </h5>
-                        </div>
-                        <input
-                          formControlName="image_link"
-                          (change)="onFileUpload($event)"
-                          class="file-input"
-                          type="file"
-                        />
-                      </div>
-                    </div>
-                  </div> -->
-                <!-- <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-2">
-                                <mat-form-field appearance="outline" class="example-full-width mb-3">
-                                  <mat-label>End Date</mat-label>
-                                  <input matInput [matDatepicker]="picker" formControlName="sessionEndDate">
-                                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                  <mat-datepicker #picker></mat-datepicker>
-                                </mat-form-field>
-                              </div> -->
                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-2" *ngIf="labelStatusCheck('Duration')">
                   <label class="form-label">Duration</label>
                   <mat-form-field
@@ -376,12 +279,6 @@
                             }}
                           </h6>
                         </span>
-                        <!-- <input
-                          formControlName="image_link"
-                          (change)="onFileUpload($event)"
-                          class="file-input"
-                          type="file"
-                        /> -->
                       </div>
                     </div>
                   </div>
@@ -415,17 +312,6 @@
                   }}
                 </mat-error>
                 </mat-form-field>
-                  <!-- <input
-                    type="text"
-                    class="form-control rounded-3 p-1 w-25 border-secondary"
-                    formControlName="coreCourseCount"
-                    [class.invalid-input]="
-                      (isSubmitted &&
-                        programFormGroup.get('coreCourseCount')?.invalid) ||
-                      (programFormGroup.get('coreCourseCount')?.invalid &&
-                        programFormGroup.get('coreCourseCount')?.touched)
-                    "
-                  /> -->
                 </div>
                 <div class="d-flex gap-4">
                   <button (click)="addCoreCard()" class="btn rounded-2 px-4">
@@ -474,13 +360,6 @@
                               >
                             </mat-select>
                           </mat-form-field>
-                          <!-- <mat-select name="coursename"
-                                                    class="form-select rounded-2 w-50 border-secondary"
-                                                    formControlName="coreProgramName">
-                                                    <mat-option>Choose...</mat-option>
-                                                    <mat-option *ngFor="let item of programList" [value]="item.id">
-                                                        {{item.title}}</mat-option>
-                                                </mat-select> -->
                         </div>
                       </div>
                       <div
@@ -509,8 +388,6 @@
                   </div>
                   <div class="row">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                      <!-- <ckeditor [editor]="Editor" id="editor"
-                                            formControlName="coreProgramDescription"></ckeditor> -->
                       <angular-editor
                         placeholder="Enter text..."
                         formControlName="coreProgramDescription"
@@ -572,10 +449,6 @@
                   </button>
                 </div>
               </div>
-              <!-- <div *ngIf="isSubmitted"
-                            [class.invalid-text]="isSubmitted && programFormGroup.get('electiveCourseCount')?.invalid || programFormGroup.get('electiveCourseCount')?.invalid && programFormGroup.get('electiveCourseCount')?.touched">
-                            {{ utils.getErrorMessage(programFormGroup, 'electiveCourseCount')?.message }}
-                        </div> -->
 
               <div formArrayName="electivePrograms" class="m-3">
                 <div
@@ -608,13 +481,6 @@
                               >
                             </mat-select>
                           </mat-form-field>
-                          <!-- <select name="coursename"
-                                                    class="form-select rounded-2 w-50 border-secondary"
-                                                    formControlName="electiveProgramName">
-                                                    <option>Choose...</option>
-                                                    <option *ngFor="let item of programList" [value]="item.id">
-                                                        {{item.title}}</option>
-                                                </select> -->
                         </div>
                       </div>
                       <div
@@ -643,9 +509,6 @@
                   </div>
                   <div class="row">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
-                      <!-- <ckeditor [editor]="Editor" id="editor"
-                                            formControlName="electiveProgramDescription">
-                                        </ckeditor> -->
                       <angular-editor
                         placeholder="Enter text..."
                         formControlName="electiveProgramDescription"
@@ -656,18 +519,12 @@
                   <div class="card-body"></div>
                 </div>
               </div>
-              <!-- <hr class="m-4" style="width: 94%;" /> -->
-              <!-- <div class="mt-2">
-                            <p class="fs-4 mx-3">Schedule Course & Set Fees</p>
-                        </div> -->
               <div class="">
                 <hr class="m-4" />
                 <div class="mt-2" *ngIf="labelStatusCheck('Learning Outcomes')">
                   <span class="fw-bold mx-3"> Learning Outcomes</span>
                   <div class="row">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
-                      <!-- <ckeditor [editor]="Editor" id="editor" formControlName="learningOutcomes">
-                                        </ckeditor> -->
                       <angular-editor
                         placeholder="Enter text..."
                         formControlName="learningOutcomes"
@@ -679,8 +536,6 @@
                 <div class="mt-2" *ngIf="labelStatusCheck('Who Should Attend')">
                   <span class="fw-bold mx-3">Who Should Attend</span>
                   <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
-                    <!-- <ckeditor [editor]="Editor" id="editor" formControlName="attendees">
-                                    </ckeditor> -->
                     <angular-editor
                       placeholder="Enter text..."
                       formControlName="attendees"
@@ -691,8 +546,6 @@
                 <div class="mt-2" *ngIf="labelStatusCheck('Prerequisites')">
                   <span class="fw-bold mx-3">Prerequisites</span>
                   <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
-                    <!-- <ckeditor [editor]="Editor" id="editor" formControlName="prerequisites">
-                                    </ckeditor> -->
                     <angular-editor
                       placeholder="Enter text..."
                       formControlName="prerequisites"

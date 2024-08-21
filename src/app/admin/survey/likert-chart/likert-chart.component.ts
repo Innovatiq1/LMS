@@ -34,13 +34,6 @@ import { AuthenService } from '@core/service/authen.service';
   encapsulation: ViewEncapsulation.Emulated,
 })
 export class LikertChartComponent {
-  // name = 'Angular ' + VERSION.major;
-  // selectcourse: boolean = false;
-  // programData: any = [];
-  // userTypeNames: any;
-  // data:any;
-  // starRating = 0;
-  // currentRate = 3.14;
   breadscrums = [
     {
       title: 'Survey List',
@@ -64,39 +57,6 @@ export class LikertChartComponent {
 
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild('filter', { static: true }) filter!: ElementRef;
-  // instructorList: any = [];
-  // courseList!: CourseTitleModel[];
-  // countNumber = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  // selectedIndex: number | undefined;
-  // favoriteSeason?: string;
-  // course: string[] = [
-  //   'Strongly Disagree',
-  //   'Disagree',
-  //   'Normal',
-  //   'Agree',
-  //   'Strongly Agree',
-  // ];
-  // levelofcourse: string[] = [
-  //   'Strongly Disagree',
-  //   'Disagree',
-  //   'Normal',
-  //   'Agree',
-  //   'Strongly Agree',
-  // ];
-  // expectations: string[]=[
-  //   'Strongly Disagree',
-  //   'Disagree',
-  //   'Normal',
-  //   'Agree',
-  //   'Strongly Agree',
-  // ];
-  // subject : string[]=[
-  //   'Strongly Disagree',
-  //   'Disagree',
-  //   'Normal',
-  //   'Agree',
-  //   'Strongly Agree',
-  // ];
   constructor(
     private instructorService: InstructorService,
     private _classService: ClassService,
@@ -150,8 +110,6 @@ export class LikertChartComponent {
     const numRows = this.dataSource.length;
     return numSelected === numRows;
   }
-
-   /** Selects all rows if they are not all selected; otherwise clear selection. */
    masterToggle() {
     this.isAllSelected()
       ? this.selection.clear()
@@ -159,8 +117,6 @@ export class LikertChartComponent {
           this.selection.select(row)
         );
   }
-
-   // export table data in excel file
    exportExcel() {
     // key name with space add in brackets
     const exportData: Partial<TableElement>[] =
@@ -197,46 +153,3 @@ export class LikertChartComponent {
     doc.save('SurveyList.pdf');
   }
 }
-  //   this.instructorService.getInstructor(payload).subscribe((res) => {
-  //     this.instructorList = res;
-  //     console.log('instructor', this.instructorList);
-  //   });
-
-  //   this._classService.getAllCoursesTitle('active').subscribe((course) => {
-  //     this.courseList = course;
-  //     console.log('course', this.courseList);
-  //   });
-  // }
-  // public setRow(_index: number) {
-  //   this.selectedIndex = _index;
-  // }
-
-
-  // selectcourseList(){
-  //   this.selectcourse = true;
-  // }
-
-  // selectprogramList(){
-  //   this.selectcourse = false;
-  // }
-
-  // getProgramList() {
-  //   this.courseService.getCourseProgram({status:'active'}).subscribe(
-  //     (response: any) => {
-  //       // console.log("page",response)
-  //       this.programData = response.docs;
-  //     },
-  //     (error) => {
-  //     }
-  //   );
-  // }
-//   getAllUserTypes(filters?: any) {
-//     this.adminService.getUserTypeList({ 'allRows':true }).subscribe(
-//       (response: any) => {
-//         this.data = response.filter((item:any) =>item.typeName !== 'admin');
-//       },
-//       (error) => {
-//       }
-//     );
-//   }
-// }

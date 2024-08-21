@@ -141,7 +141,6 @@ export class EditPackageComponent {
   }
 
   updateBlog(formObj: any) {
-    console.log('Form Value', formObj);
     let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     if (!formObj.invalid) {
       // Prepare user data for update
@@ -193,7 +192,6 @@ export class EditPackageComponent {
 
     this.userService.getUserById(this.currentId).subscribe(
       (response: any) => {
-        console.log('listing user', response);
         this.data = response.data.data;
         if (this.data) {
           this.userForm.patchValue({

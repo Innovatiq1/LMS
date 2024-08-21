@@ -32,18 +32,13 @@ export class SuperAdminComponent extends UnsubscribeOnDestroyAdapter {
     },
   ];
   displayedColumns: string[] = [
-    // 'select',
-    // 'img',
     'Company',
     'Name',
     'Website',
     'User Type',
-    //'gender',
-    //'Qualification',
     'Mobile',
     'Email',
     'Status',
-    // 'Actions'
   ];
  
   dataSource: any[] = [];
@@ -69,10 +64,6 @@ export class SuperAdminComponent extends UnsubscribeOnDestroyAdapter {
     super();
   }
   ngOnInit(): void {
-    // this.activatedRoute.queryParams.subscribe((params: any) => {
-    //   this.getBlogsList(params);
-    // });
-
     this.getAllData();
   }
 
@@ -127,7 +118,6 @@ export class SuperAdminComponent extends UnsubscribeOnDestroyAdapter {
     let in_active = this.filteredData.filter(data => data.Active === false);
     this.inactiveCount = in_active.length;
     this.totalItems = this.filteredData.length;
-    console.log('Filtered Data', this.filteredData);
     this.updateDisplayedData();
   }
   resetData() {
@@ -141,7 +131,7 @@ export class SuperAdminComponent extends UnsubscribeOnDestroyAdapter {
   pageSizeChange($event: any) {
     this.coursePaginationModel.page = $event?.pageIndex + 1;
     this.coursePaginationModel.limit = $event?.pageSize;
-    this.fetchData(); // Call method to update displayed data
+    this.fetchData();
   }
  
 }

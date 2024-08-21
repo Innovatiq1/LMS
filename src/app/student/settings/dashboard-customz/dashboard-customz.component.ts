@@ -69,7 +69,6 @@ export class DashboardCustomzComponent {
   }
 
   ngOnInit() {
-    console.log('kkiolho',this.selectedComponents)
     this.chart1();
     this.chart2();
     this.chart3();
@@ -349,7 +348,6 @@ export class DashboardCustomzComponent {
         }
       },
       (error) => {
-        console.log('error', error);
       }
     );
   }

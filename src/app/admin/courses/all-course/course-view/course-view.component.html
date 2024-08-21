@@ -12,91 +12,8 @@
     <div class="row clearfix mt-5">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <div class="card">
-          <!-- <div class="header">
-            <div class="d-flex justify-content-between w-100">
-                <h2>{{status === 'active' ? 'All Active Courses': 'In-active Courses'}}</h2>
-                <button type="button" class="btn btn-outline-danger btn-border-radius"
-                  routerLink="/admin/courses/all-courses">Back</button>
-              </div>
-          </div> -->
           <div class="body">
             <div class="row">
-              <!-- <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-                <div class="card">
-                  <table mat-table [dataSource]="courseData">
-                    <ng-container matColumnDef="video">
-                      <th mat-header-cell *matHeaderCellDef>
-                        <h6 class="font-color">Course Name</h6>
-                      </th>
-                      <td
-                        mat-cell
-                        *matCellDef="let row; let i = index"
-                        (click)="getDataByClick(row.id)"
-                      >
-                        <div class="d-flex justify-content-between">
-                          <span
-                            [ngClass]="
-                              this.checkId === row.id
-                                ? 'size badge col-green'
-                                : 'size '
-                            "
-                            >{{ row?.title }}</span
-                          >
-
-                          <div
-                            *ngIf="this.checkId === row.id"
-                            class="checkmark checkmark--inverted"
-                          >
-                            <div class="check"></div>
-                          </div>
-                        </div>
-                      </td>
-                    </ng-container>
-
-                    <tr
-                      mat-header-row
-                      *matHeaderRowDef="displayedColumns1"
-                    ></tr>
-                    <tr
-                      mat-row
-                      *matRowDef="let row; columns: displayedColumns1"
-                    ></tr>
-                  </table>
-                </div>
-              </div> -->
-              <!-- <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4"> -->
-              <!-- <div class="card"> -->
-              <!-- <div class="header ">
-            <div class="d-flex justify-content-between w-100">
-              <h2>{{status === 'active' ? 'All Active Courses': 'In-active Courses'}}</h2>
-              <button type="button" class="btn btn-outline-danger btn-border-radius"
-                routerLink="/admin/courses/all-courses">Back</button>
-            </div>
-          </div> -->
-              <!--<div class="body">
-            <div class="" [ngClass]="
-           this.checkId === course.id ? ' sl-item sl-success ':'sl-item sl-danger'"
-              *ngFor="let course of courseData; let i = index">
-              <div class="sl-content" style="cursor: pointer;" [ngClass]="
-             this.checkId === course.id ? ' bg-c-green ' : 'border-class'
-            " (click)="getDataByClick(course.id)">
-                <h6>{{ course?.title | titlecase }}</h6>
-                <small class="text-muted">
-                  <i class="fa fa-play-circle-o"></i> {{ course?.training_hours }} hours</small>
-                <!-- <span class="feedLblStyle1 lblCommentStyle">Program {{i+1}}</span> --
-
-              </div>
-            </div> -->
-              <!-- <div class="sl-item sl-success">
-              <div class="sl-content">
-                <small class="text-muted">
-                  <i class="fa fa-user position-left"></i> 10 mins ago</small>
-                <p>Lorem ipsum dolor sit amet cons the ecte tur and adip ascing elit users.</p>
-              </div>
-            </div> 
-          </div>-->
-              <!-- </div> -->
-              <!-- </div> -->
               <div class="col-xl-12 col-lg-12 col-md-12 col-lg-8">
                 <div class="card p-3">
                   <div class="d-flex justify-content-end" *ngIf="button">
@@ -124,7 +41,6 @@
                           class="tbl-fav-delete"
                         ></app-feather-icons>
                       </button>
-                      <!-- <div  *ngIf="!aboutData?.isLogin"> -->
                       <button
                         mat-menu-item
                         (click)="approveCourse(sourceData)"
@@ -135,12 +51,7 @@
                           src="/assets/approve.svg"
                           alt="approve"
                         />
-
-                        <!-- <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons> -->
                       </button>
-                      <!-- <button type="button"mat-raised-button id="submit" (click)="approveCourse(row)">
-                          Approve
-                        </button> -->
                     </div>
                   </div>
                   <div class="container mt-3">
@@ -213,22 +124,6 @@
                               ></span
                               >{{ sourceData?.status | titlecase }}
                             </h6>
-                            <!-- <h6
-                              [class]="
-                                status === 'active'
-                                  ? 'badge badge-solid-green'
-                                  : row?.status === 'inactive' ? 'badge badge-solid-red' : ''
-                              "
-                            >
-                              <span
-                                [ngClass]="
-                                  status === 'active'
-                                    ? 'status-dot'
-                                    : 'status-red'
-                                "
-                              ></span
-                              >{{ sourceData?.status | titlecase }}
-                            </h6> -->
                           </div>
                         </div>
                       </div>
@@ -294,17 +189,11 @@
                         ></p>
                       </div>
                     </div>
-
-                    <!-- <div class="d-flex justify-content-between mt-3" *ngIf="button">
-                            <button mat-raised-button class="btn-space"  type="button" color="warn" id="cancel" (click)="delete(sourceData.id)">Delete</button>
-                            <button mat-raised-button color="primary" class="btn-right" [routerLink]="['/admin/courses/edit-course/',sourceData.id]">Edit</button>
-                          </div> -->
                   </div>
 
                   <div class="col-12">
                     <div class="row clearfix">
                       <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
-                        <!-- <div class="card" style="border-radius: 31px;"> -->
                         <div class="header mt-3">
                           <h2>CourseKit</h2>
                         </div>
@@ -324,9 +213,6 @@
                                   style="cursor: pointer"
                                   *ngFor="let row of coursekitData"
                                 >
-                                  <!-- <td class="table-img">
-                                      <img src="{{class?.courseId?.image_link}}" alt="course">
-                                    </td> -->
                                   <td>{{ row?.name }}</td>
                                   <td>{{ row?.shortDescription }}</td>
                                   <td>
@@ -355,7 +241,6 @@
                             </table>
                           </div>
                         </div>
-                        <!-- </div> -->
                       </div>
                     </div>
                   </div>

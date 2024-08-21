@@ -80,7 +80,6 @@ export class AddDepartmentComponent  implements OnInit {
     const selectedValue = event.value;
     
     let userfindEmail:Users[]=this.users.filter(event=>event.id===selectedValue)
-    console.log(userfindEmail)
     this.hod=selectedValue
     this.hodName=userfindEmail[0].name + " "+ (userfindEmail[0].last_name?userfindEmail[0].last_name:'')
     

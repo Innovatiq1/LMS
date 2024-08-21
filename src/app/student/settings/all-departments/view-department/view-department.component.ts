@@ -41,7 +41,6 @@ export class ViewDepartmentComponent{
 
     this.subscribeParams = this.activatedRoute.params.subscribe((params:any) => {
       this.type = params.id;
-      console.log("paramas here",params)
       this.breadscrums = [
         {
           title: this.type,

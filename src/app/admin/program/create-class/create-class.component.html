@@ -15,14 +15,11 @@
           <div class="header">
             <!-- <h2>Create Course</h2> -->
           </div>
-          <!-- <mat-horizontal-stepper linear labelPosition="bottom" #stepper> -->
-          <!-- <mat-step [stepControl]="classForm" completed="false"> -->
           <form [formGroup]="classForm">
             <ng-template matStepLabel>{{
               classId ? "Edit Class" : "Create Class"
             }}</ng-template>
             <div class="body">
-              <!-- <form class="m-4" [formGroup]="firstFormGroup" (ngSubmit)="onSubmit()"> -->
               <div class="row">
                 <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-2">
                   <label
@@ -55,15 +52,6 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <!-- <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-2">
-                      <label>Class Type</label>
-                      <mat-form-field class="example-full-width mb-3" appearance="outline">
-                        <mat-select formControlName="classType">
-                          <mat-option [value]="'2'"> Private </mat-option>
-                          <mat-option [value]="'1'"> Public </mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                    </div> -->
                 <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-2">
                   <label
                     >Class Delivery<span class="mandatory">&nbsp;*</span></label
@@ -206,7 +194,6 @@
                       >Select Department
                       <span class="mandatory">&nbsp;*</span></label
                     >
-                    <!-- <mat-icon class="cursor-pointer" (click)="openDialog()">add</mat-icon> -->
                   </div>
                   <mat-form-field
                     class="example-full-width mb-3"
@@ -278,20 +265,8 @@
                   </section>
                 </div>
               </div>
-              <!-- </form> -->
             </div>
-            <!-- <div class="row mt-4">
-                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
-                    <button class="btn-space" mat-raised-button color="primary" matStepperNext>
-                      Next
-                    </button>
-
-                  </div>
-                </div> -->
-            <!-- </div> -->
           </form>
-          <!-- </mat-step> -->
-          <!-- <mat-step completed="false"> -->
           <form (ngSubmit)="saveProgramClass()">
             <div class="mx-3">
               <h5>Assign {{commonRoles?.INSTRUCTOR_ROLE}}</h5>
@@ -412,13 +387,9 @@
                 >
                   Update
                 </button>
-                <!-- <button mat-raised-button color="warn" matStepperPrevious >Back</button> -->
               </div>
             </div>
           </form>
-          <!-- </mat-step> -->
-
-          <!-- </mat-horizontal-stepper> -->
         </div>
       </div>
     </div>

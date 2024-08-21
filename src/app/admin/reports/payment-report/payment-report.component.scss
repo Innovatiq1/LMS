@@ -37,15 +37,6 @@ svg {
     padding-right: 70px !important;
   }
 
-
-// ::ng-deep .mat-column-Amount {
-//     display: flex !important;
-//     justify-content: flex-end !important;
-//     margin-left: -20px;
-//   }
   :host ::ng-deep mat-cell{
     min-width: 150px;
   }
-//   .payment-cell{
-//     padding-right: 35px;
-//   }

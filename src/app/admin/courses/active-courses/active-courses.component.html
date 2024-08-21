@@ -17,18 +17,6 @@
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="card">
                   <div class="materialTableHeader">
-                    <!-- <div class="left">
-                                <ul class="header-buttons-left ms-0">
-                                  <li class="tbl-title">
-                                    <h2> Active Courses</h2>
-                                  </li>
-                                  <li class="tbl-search-box">
-                                    <label for="search-input"><i class="material-icons search-icon">search</i></label>
-                                    <input placeholder="Search" type="text" #filter class="browser-default search-field"
-                                      aria-label="Search box" [(ngModel)]="searchTerm" (input)="performSearch()" />
-                                  </li>
-                                </ul>
-                              </div> -->
                     <div class="right">
                       <ul class="tbl-export-btn">
                         <li>
@@ -51,11 +39,6 @@
                             </li>
                           </ul>
                         </li>
-                        <!-- <li class="tbl-header-btn">
-                                    <div class="m-l-10" matTooltip="ADD" [routerLink]="['/admin/courses/add-course']">
-                                      <button mat-raised-button id="submit">Create</button>
-                                    </div>
-                                  </li> -->
                         <li class="tbl-header-btn">
                           <div
                             class="m-l-10"
@@ -123,13 +106,6 @@
                             {{row.courseCode ? (row.courseCode) : "--"}}
                           </mat-cell>
                         </ng-container>
-                        <!-- <ng-container matColumnDef="creator">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Creator
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let row" (click)=viewCourse(row.id)><span
-                                        class="mobile-label">Creator:</span> {{row.Creator}}
-                                    </mat-cell>
-                                  </ng-container> -->
                                   <ng-container matColumnDef="Fee Type">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">Fee Type
                                     </mat-header-cell>
@@ -233,7 +209,6 @@
                             class="compulsory-count-header"
                             style="width: 400px"
                           >
-                            <!-- Adjust the width as needed -->
                             Status
                           </mat-header-cell>
                           <mat-cell
@@ -252,7 +227,6 @@
 
                         <mat-header-row *matHeaderRowDef="displayedColumns">
                         </mat-header-row>
-                        <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
                         <mat-row
                           *matRowDef="let row; columns: displayedColumns"
                           [style.cursor]="'pointer'"
@@ -275,94 +249,6 @@
                 </div>
               </div>
             </div>
-            <!-- 2nd Tab -->
-            <!-- <mat-tab class="grid">
-                      <ng-template mat-tab-label>
-                        <i class="material-icons-two-tone psr-3">grid_on</i>
-                        Grid View
-                      </ng-template>
-                      <div class="row mt-5">
-                        <div class="col-md-12">
-                          <div class="card">
-                            <div class="materialTableHeader">
-                              <div class="left">
-                                <ul class="header-buttons-left ms-0">
-                                  <li class="tbl-title">
-                                    <h2>All Courses</h2>
-                                  </li>
-                                  <li class="tbl-search-box">
-                                    <label for="search-input"><i class="material-icons search-icon">search</i></label>
-                                    <input placeholder="Search" type="text" #filter class="browser-default search-field"
-                                      aria-label="Search box" [(ngModel)]="searchTerm" (input)="performSearch()" />
-                                  </li>
-                                </ul>
-                              </div>
-                              <div class="right">
-                                <ul class="tbl-export-btn">
-                                  <li class="tbl-header-btn">
-                                    <div class="m-l-10" matTooltip="ADD" [routerLink]="['/admin/courses/add-course']">
-                                      <button mat-mini-fab color="primary">
-                                        <mat-icon class="col-white">add</mat-icon>
-                                      </button>
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div class="export-button m-l-10" matTooltip="XLSX" (click)="exportExcel()">
-                                      <img src="assets/excel.svg" alt="" />
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div class="export-button m-l-10" matTooltip="PDF" (click)="generatePdf()">
-                                      <img src="assets/pdf (1).svg" alt="" />
-                                    </div>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                            <div class="body">
-                              <div class="row">
-                                <div class="col-md-3" *ngFor="let data of courseData">
-                                  <div class="course-card course-card-blog">
-                                    <div class="course-card-image" style="cursor: pointer;"
-                                      [routerLink]="['/admin/courses/view-course/',data.id]">
-                                      <img class="img" src="{{data.image_link || 'assets/noimage.jpg'}}">
-                                    </div>
-                                    <div class="blog-table">
-                                      <div class="post-user mt-3">
-                                        <h6 class="mb-xs mt-xs title"> {{data.title |truncate : 25}}</h6>
-                                        <p class="text-muted"><time>{{data.training_hours}} Hours</time></p>
-                                      </div>
-                                      <div class="col">
-                                        <p class="course-card-description"
-                                          [innerHTML]="data?.course_detailed_description | truncate:30">
-                                      </div>
-                                      <div class="text-center mb-3">
-                                        <button mat-icon-button class="tbl-action-btn"
-                                          [routerLink]="['/admin/courses/view-course/',data.id]">
-                                          <app-feather-icons [icon]="'eye'" [class]="'tbl-fav-view'"></app-feather-icons>
-                                        </button>
-                                        <button mat-icon-button class="tbl-action-btn"
-                                          [routerLink]="['/admin/courses/edit-course/',data.id]">
-                                          <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                                        </button>
-                                        <button mat-icon-button class="tbl-action-btn" (click)="delete(data.id)">
-                                          <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                                        </button>
-            
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems"
-                              (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr"
-                              aria-label="select pagination option">
-                            </mat-paginator>
-                          </div>
-                        </div>
-                      </div>
-                    </mat-tab> -->
           </div>
         </div>
       </div>

@@ -188,12 +188,10 @@ this.studentCompletedPrograms = response.data.docs;
 }
 
 editCall(row: Students) {
-  console.log("edit",row)
   this.router.navigate(['/admin/users/add-student'],{queryParams:{id:row.id}})
 }
 
 deleteItem(row: any) {
-  console.log("kjkj",row);
    Swal.fire({
      title: "Confirm Deletion",
      text: "Are you sure you want to delete this user?",
@@ -263,7 +261,6 @@ deleteItem(row: any) {
  loadData1(){
   this._courseService.getUserById( this.currentId).subscribe(res => {
     this.aboutData1 = res;
-    console.log("edit",this.aboutData)
 
   })
 }
