@@ -8,7 +8,7 @@ import { CourseKit, CourseModel, CoursePaginationModel, Discount, Program, Vendo
 import { FundingGrant, Instructor, MainCategory, SubCategory, Survey } from "@core/models/course.model";
 import { isPlatformBrowser } from "@angular/common";
 import { AppConstants } from "@shared/constants/app.constants";
-
+import { timeout } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
@@ -690,13 +690,24 @@ export class CourseService {
       const apiUrl = `${this.prefix}admin/courses-new/createBulkCourses`;
       return this._Http.post<any>(apiUrl, payload).pipe(map((response) => response));
     }
-    uploadFile(file: File): Observable<any> {
-      const formData = new FormData();
-      formData.append('file', file);
-      const apiUrl = `${this.prefix}uploadppt`;
+   // import { timeout } from 'rxjs/operators';
+
+uploadFile(file: File): Observable<any> {
+  const formData = new FormData();
+  formData.append('file', file);
+  const apiUrl = `${this.prefix}uploadppt`;
+  return this._Http.post<any>(apiUrl, formData).pipe(
+    timeout(300000) // Increase timeout to 10 minutes
+  );
+}
+
+    // uploadFile(file: File): Observable<any> {
+    //   const formData = new FormData();
+    //   formData.append('file', file);
+    //   const apiUrl = `${this.prefix}uploadppt`;
   
-      return this._Http.post<any>(apiUrl, formData);
-    }
+    //   return this._Http.post<any>(apiUrl, formData);
+    // }
 }
 
 

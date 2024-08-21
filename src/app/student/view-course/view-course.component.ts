@@ -236,7 +236,7 @@ export class ViewCourseComponent implements OnDestroy {
   openDocumentDialog(url: string,filename: string): void {
    // console.log("viewCourse page ==",url);
     this.dialog.open(DocumentViewComponent, {
-      width: '80%',
+      width: '100%',
       height: '100%',
       data: { url }
     });
