@@ -4,8 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { AppsRoutingModule } from './apps-routing.module';
 import { ChatComponent } from './chat/chat.component';
-import { DragDropComponent } from './drag-drop/drag-drop.component';
-import { ContactGridComponent } from './contact-grid/contact-grid.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import {
@@ -18,8 +16,6 @@ import { SharedModule } from '../shared/shared.module';
 @NgModule({
   declarations: [
     ChatComponent,
-    DragDropComponent,
-    ContactGridComponent,
   ],
   imports: [
     CommonModule,

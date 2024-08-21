@@ -57,7 +57,7 @@ export type chartOptions = {
 import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
 import { LeaveService } from '@core/service/leave.service';
 import { AnnouncementService } from '@core/service/announcement.service';
-import { StudentNotificationComponent } from '@shared/components/student-notification/student-notification.component';
+// import { StudentNotificationComponent } from '@shared/components/student-notification/student-notification.component';
 import {
   MatSnackBar,
   MatSnackBarHorizontalPosition,

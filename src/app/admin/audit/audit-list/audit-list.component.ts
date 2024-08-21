@@ -146,15 +146,12 @@ export class AuditListComponent {
           title: 'Success',
           text: 'Record Deleted Successfully...!!!',
           icon: 'success',
-          // confirmButtonColor: '#526D82',
         });
       }
     });
     
   }
-  // export table data in excel file
   exportExcel() {
-    //k//ey name with space add in brackets
     const exportData: Partial<TableElement>[] = this.dataSource.map(
       (user: any) => ({
         'Name': user.name,
@@ -179,20 +176,13 @@ export class AuditListComponent {
       formatDate(new Date(user.loginTime), 'yyyy-MM-dd hh:mm:ss a', 'en') || '',
       user.logoutTime?formatDate(new Date(user.logoutTime), 'yyyy-MM-dd hh:mm:ss a', 'en'):''
     ]);
-    //const columnWidths = [60, 80, 40];
     const columnWidths = [20, 20, 20, 20, 20, 20, 20, 20, 20, 20];
-
-    // Add a page to the document (optional)
-    //doc.addPage();
-
-    // Generate the table using jspdf-autotable
     (doc as any).autoTable({
       head: headers,
       body: data,
       startY: 20,
     });
 
-    // Save or open the PDF
     doc.save('Audit-list.pdf');
   }
 }

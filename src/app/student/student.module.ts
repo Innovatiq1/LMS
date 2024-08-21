@@ -32,15 +32,14 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 
 import { SucessCourseComponent } from './sucess-course/sucess-course.component';
 import { FailureCourseComponent } from './failure-course/failure-course.component';
-import { ExamsSheduleComponent } from './exams-shedule/exams-shedule.component';
-import { ProgramSheduleComponent } from './program-shedule/program-shedule.component';
+// import { ExamsSheduleComponent } from './exams-shedule/exams-shedule.component';
+// import { ProgramSheduleComponent } from './program-shedule/program-shedule.component';
 import { SuccessProgramComponent } from './success-program/success-program.component';
 import { FailureProgramComponent } from './failure-program/failure-program.component';
 import { StudentVideoPlayerComponent } from './view-course/student-video-player/student-video-player.component';
 import { TimeFormatPipe } from '../../app/core/pipes/time-format.pipe';import { QuestionComponent } from './question/question.component';
-import { WelcomeComponent } from './welcome/welcome.component';
 import { ChangeBgDirective } from 'app/change-bg.directive';
-import { ExamScheduleService } from 'app/timetable/exam-schedule.service';
+// import { ExamScheduleService } from 'app/timetable/exam-schedule.service';
 import { LogoCoutomzationComponent } from './settings/logo-coutomzation/logo-coutomzation.component';
 import { SidemenuComponent } from './settings/sidemenu/sidemenu.component';
 import { FormCustomizationComponent } from './settings/form-customization/form-customization.component';
@@ -114,7 +113,6 @@ import { ApprovalWorkflowComponent } from './settings/approval-workflow/approval
 import { StudentDbComponent } from './settings/student-db/student-db.component';
 import { PreviewQuestionsComponent } from './settings/preview-questions/preview-questions.component';
 import { PreviewTestAnswersheetComponent } from './preview-test-answersheet/preview-test-answersheet.component';
-import { CheckoutComponent } from './checkout/checkout.component';
 import { CreateApprovalWorkflowComponent } from './settings/approval-workflow/create-approval-workflow/create-approval-workflow.component';
 import { ViewApprovalWorkflowComponent } from './settings/approval-workflow/view-approval-workflow/view-approval-workflow.component';
 import { InvoiceComponent } from './view-course/invoice/invoice.component';
@@ -144,14 +142,13 @@ import { UpdateTimeAlgorithmComponent } from './settings/time/update-time-algori
     FeedbackComponent,
     SucessCourseComponent,
     FailureCourseComponent,
-    ExamsSheduleComponent,
-    ProgramSheduleComponent,
+    // ExamsSheduleComponent,
+    // ProgramSheduleComponent,
     SuccessProgramComponent,
     FailureProgramComponent,
     StudentVideoPlayerComponent,
     TimeFormatPipe,
     QuestionComponent,
-    WelcomeComponent,
     ChangeBgDirective,
     LogoCoutomzationComponent,
     SidemenuComponent,
@@ -219,7 +216,6 @@ import { UpdateTimeAlgorithmComponent } from './settings/time/update-time-algori
     StudentDbComponent,
     PreviewQuestionsComponent,
     PreviewTestAnswersheetComponent,
-    CheckoutComponent,
     CreateApprovalWorkflowComponent,
     ViewApprovalWorkflowComponent,
     InvoiceComponent,
@@ -262,6 +258,6 @@ import { UpdateTimeAlgorithmComponent } from './settings/time/update-time-algori
 
   ],
   providers: [
-HomeworkService, stdLeaveReqService,StudentsService,ExamScheduleService,TeachersService,StaffService,DepartmentService]
+HomeworkService, stdLeaveReqService,StudentsService,TeachersService,StaffService,DepartmentService]
 })
 export class StudentModule {}

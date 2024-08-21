@@ -8,11 +8,6 @@ const routes: Routes = [
       import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
   },
   {
-    path: 'e-tms',
-    loadChildren: () =>
-      import('./E-TMS/e-tms.module').then((m) => m.ETmsModule),
-  },
-  {
     path: 'users',
     loadChildren: () =>
       import('./teachers/teachers.module').then((m) => m.TeachersModule),
@@ -58,18 +53,6 @@ const routes: Routes = [
     loadChildren: () =>
       import('./audit/audit.module').then((m) => m.AuditModule),
   },
-
-  {
-    path: 'certificate',
-    loadChildren: () =>
-    import('./certificate-builder/certificate.module').then((m) => m.CertificateModule)
-
-  },
-  {
-    path: 'library',
-    loadChildren: () =>
-      import('./library/library.module').then((m) => m.LibraryModule),
-  },
   {
     path: 'departments',
     loadChildren: () =>
@@ -81,35 +64,6 @@ const routes: Routes = [
     path: 'users',
     loadChildren: () =>
       import('./staff/staff.module').then((m) => m.StaffModule),
-  },
-  {
-    path: 'holidays',
-    loadChildren: () =>
-      import('./holidays/holidays.module').then((m) => m.HolidaysModule),
-  },
-  {
-    path: 'fees',
-    loadChildren: () => import('./fees/fees.module').then((m) => m.FeesModule),
-  },
-  {
-    path: 'attendance',
-    loadChildren: () =>
-      import('./attendance/attendance.module').then((m) => m.AttendanceModule),
-  },
-  {
-    path: 'payment',
-    loadChildren: () =>
-      import('./payments/payment.module').then((m) => m.PaymentModule),
-  },
-  {
-    path: 'questions',
-    loadChildren: () =>
-      import('./questions/questions.module').then((m) => m.QuestionsModule),
-  },
-  {
-    path: 'testimonials',
-    loadChildren: () =>
-      import('./testimonials/testimonials.module').then((m) => m.TestimonialsModule),
   },
   {
     path:'budgets',
