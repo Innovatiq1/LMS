@@ -210,7 +210,7 @@ deleteItem(row: any) {
              text: "User deleted successfully",
              icon: "success",
            });
-           this.router.navigate(['/student/settings/all-users'])
+           window.history.back(); 
            this.loadData()
          },
          (error: { message: any; error: any; }) => {
