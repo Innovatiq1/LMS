@@ -11,12 +11,8 @@ import {
 } from '@danielmoncada/angular-datetime-picker';
 //import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { StudentRoutingModule } from './student-routing.module';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { HomeworkComponent } from './homework/homework.component';
 import { DeleteDialogComponent as leaveDeleteComonent } from './leave-request/dialogs/delete/delete.component';
 import { FormDialogComponent } from './leave-request/dialogs/form-dialog/form-dialog.component';
-// import { TimetableComponent } from './timetable/timetable.component';
-import { HomeworkService } from './homework/homework.service';
 import { LeaveRequestService as stdLeaveReqService } from './leave-request/leave-request.service';
 import { SharedModule } from '@shared';
 import { ComponentsModule } from '@shared/components/components.module';
@@ -27,19 +23,13 @@ import { ProgramComponent } from './program/program.component';
 import { ViewProgramComponent } from './view-program/view-program.component';
 import { FeedbackComponent } from './feedback/feedback.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
-
-// import { ProgramTimetableComponent } from './program-timetable/program-timetable.component';
-
 import { SucessCourseComponent } from './sucess-course/sucess-course.component';
 import { FailureCourseComponent } from './failure-course/failure-course.component';
-// import { ExamsSheduleComponent } from './exams-shedule/exams-shedule.component';
-// import { ProgramSheduleComponent } from './program-shedule/program-shedule.component';
 import { SuccessProgramComponent } from './success-program/success-program.component';
 import { FailureProgramComponent } from './failure-program/failure-program.component';
 import { StudentVideoPlayerComponent } from './view-course/student-video-player/student-video-player.component';
 import { TimeFormatPipe } from '../../app/core/pipes/time-format.pipe';import { QuestionComponent } from './question/question.component';
 import { ChangeBgDirective } from 'app/change-bg.directive';
-// import { ExamScheduleService } from 'app/timetable/exam-schedule.service';
 import { LogoCoutomzationComponent } from './settings/logo-coutomzation/logo-coutomzation.component';
 import { SidemenuComponent } from './settings/sidemenu/sidemenu.component';
 import { FormCustomizationComponent } from './settings/form-customization/form-customization.component';
@@ -136,8 +126,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
-    DashboardComponent,
-    HomeworkComponent,
     leaveDeleteComonent,
     FormDialogComponent,
     CourseComponent,
@@ -147,8 +135,6 @@ import { MatDialogModule } from '@angular/material/dialog';
     FeedbackComponent,
     SucessCourseComponent,
     FailureCourseComponent,
-    // ExamsSheduleComponent,
-    // ProgramSheduleComponent,
     SuccessProgramComponent,
     FailureProgramComponent,
     StudentVideoPlayerComponent,
@@ -239,13 +225,6 @@ import { MatDialogModule } from '@angular/material/dialog';
     TutorialQuestionsComponent,
     DocumentViewComponent,
    // SafeUrlPipe,
-  
-    // CourseKitComponent,
-    // VideoPlayerComponent,
-    // CreateCourseKitComponent,
-    // EditCourseKitComponent,
-    // ViewCourseKitComponent,
-    // CreateTemplateComponent
   ],
   imports: [
     CommonModule,
@@ -272,7 +251,6 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatDialogModule
 
   ],
-  providers: [
-HomeworkService, stdLeaveReqService,StudentsService,TeachersService,StaffService,DepartmentService]
+  providers: [ stdLeaveReqService,StudentsService,TeachersService,StaffService,DepartmentService]
 })
 export class StudentModule {}

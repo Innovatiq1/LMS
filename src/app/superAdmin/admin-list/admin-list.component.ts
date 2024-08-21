@@ -38,23 +38,17 @@ export class AdminListComponent  extends UnsubscribeOnDestroyAdapter{
     },
   ];
   displayedColumns: string[] = [
-    // 'select',
-    // 'img',
     'Company',
     'Name',
     'Website',
     'User Type',
-   // 'gender',
-   // 'Qualification',
     'Mobile',
     'Email',
     'Status',
-    // 'Actions'
   ];
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild('filter', { static: true }) filter!: ElementRef;
   selection = new SelectionModel<CourseModel>(true, []);
-  // coursePaginationModel!: Partial<CoursePaginationModel>;
   searchTerm: string = '';
   dataSource: any[] = [];
   filteredData: any[] = [];
@@ -64,9 +58,8 @@ export class AdminListComponent  extends UnsubscribeOnDestroyAdapter{
   pageSizeArr = this.utils.pageSizeArr;
   coursePaginationModel = {
     page: 1,
-    limit: 100, // Adjust as necessary
-    docs: [] as Users[], //
-  };
+    limit: 100,
+    docs: [] as Users[],   };
   id: any;
   activeCount: number = 0;
   inactiveCount: number = 0;
@@ -81,10 +74,6 @@ export class AdminListComponent  extends UnsubscribeOnDestroyAdapter{
     super();
   }
   ngOnInit(): void {
-    // this.activatedRoute.queryParams.subscribe((params: any) => {
-    //   this.getBlogsList(params);
-    // });
-
     this.getAllData();
   }
 
@@ -141,12 +130,8 @@ export class AdminListComponent  extends UnsubscribeOnDestroyAdapter{
     let in_active = this.filteredData.filter(data => data.Active === false);
     this.inactiveCount = in_active.length;
     this.totalItems = this.filteredData.length;
-    console.log('Filtered Data', this.filteredData);
     this.updateDisplayedData();
   }
-  // createAdmin() {
-  //   this.dialog.open(CreateSuperAdminComponent);
-  // }
   resetData() {
     this.dataSource = [];
     this.filteredData = [];
@@ -185,7 +170,6 @@ export class AdminListComponent  extends UnsubscribeOnDestroyAdapter{
           title: 'Success',
           text: 'Record Deleted Successfully...!!!',
           icon: 'success',
-          // confirmButtonColor: '#526D82',
         });
       }
     });
@@ -229,7 +213,6 @@ export class AdminListComponent  extends UnsubscribeOnDestroyAdapter{
       );
   }
   exportExcel() {
-    //k//ey name with space add in brackets
     const exportData: Partial<TableElement>[] = this.filteredData.map(
       (user: any) => ({
         Name: user.name,
@@ -279,13 +262,7 @@ export class AdminListComponent  extends UnsubscribeOnDestroyAdapter{
       user.email,
       user.Active ? 'Active' : 'Inactive',
     ]);
-    //const columnWidths = [60, 80, 40];
     const columnWidths = [20, 20, 20, 20, 20, 20, 20, 20, 20, 20];
-
-    // Add a page to the document (optional)
-    //doc.addPage();
-
-    // Generate the table using jspdf-autotable
     (doc as any).autoTable({
       head: headers,
       body: data,
@@ -295,8 +272,6 @@ export class AdminListComponent  extends UnsubscribeOnDestroyAdapter{
         cellWidth: 'wrap',
       },
     });
-
-    // Save or open the PDF
     doc.save('AllUsers-list.pdf');
   }
 
@@ -306,6 +281,6 @@ export class AdminListComponent  extends UnsubscribeOnDestroyAdapter{
   pageSizeChange($event: any) {
     this.coursePaginationModel.page = $event?.pageIndex + 1;
     this.coursePaginationModel.limit = $event?.pageSize;
-    this.fetchData(); // Call method to update displayed data
+    this.fetchData();
   }
 }

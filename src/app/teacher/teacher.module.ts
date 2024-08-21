@@ -11,7 +11,6 @@ import {
 } from '@danielmoncada/angular-datetime-picker';
 
 import { TeacherRoutingModule } from './teacher-routing.module';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { LecturesComponent } from './lectures/lectures.component';
 import { DeleteDialogComponent } from './lectures/dialogs/delete/delete.component';
 import { FormDialogComponent } from './lectures/dialogs/form-dialog/form-dialog.component';
@@ -26,7 +25,6 @@ import { LectureProgramsComponent } from './lecture-programs/lecture-programs.co
 
 @NgModule({
   declarations: [
-    DashboardComponent,
     LecturesComponent,
     DeleteDialogComponent,
     FormDialogComponent,

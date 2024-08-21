@@ -102,7 +102,6 @@ export class CourseViewComponent {
   getSafeHtml(html: string): SafeHtml {
     return this.sanitizer.bypassSecurityTrustHtml(html);
   }
-/*Get active courses */
   getAllCourse() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
         this._courseService
@@ -113,7 +112,6 @@ export class CourseViewComponent {
         }
       });
   }
-/*Get in-active courses */
 getAllInActiveCourse() {
   let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     this._courseService
@@ -190,11 +188,8 @@ back() {
     }
   }
    openVidePlayer(videoLink: { video_url?: any; id?: any; }): void {
-    // const { videoLink } = videoLink;
     if (videoLink?.id) {
       const videoURL = videoLink.video_url;
-      // this.courseService.getVideoById(videoId).subscribe((res) => {
-      //   const videoURL = res.data.videoUrl;
         if (!videoURL) {
           Swal.fire({
             icon: "error",
@@ -204,18 +199,15 @@ back() {
           return
 
         }
-        // const videoType = "application/x-mpegURL";
         if (videoURL) {
           const initialState: ModalOptions = {
             initialState: {
               videoURL,
-              // videoType,
             },
             class: "videoPlayer-modal",
           };
           this.modalServices.show(VideoPlayerComponent, initialState);
         }
-      // });
     }
   }
   approveCourse(course: CourseModel): void {
@@ -234,7 +226,6 @@ back() {
             title: 'Success',
             text: 'Course approved successfully.',
             icon: 'success',
-            // confirmButtonColor: '#526D82',
           });
           this.getAllCourse();
           window.history.back();
@@ -243,7 +234,6 @@ back() {
             title: 'Error',
             text: 'Failed to approve course. Please try again.',
             icon: 'error',
-            // confirmButtonColor: '#526D82',
           });
         });
       }

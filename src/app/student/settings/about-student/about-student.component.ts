@@ -59,8 +59,6 @@ export class AboutStudentComponent {
       this.studentApprovedModel = {};
       this.studentCompletedModel = {};
    this.activeRoute.queryParams.subscribe(param =>{
-   console.log("params:",param['data'])
-
    this.aboutDataId = param['data'];
    })
   }
@@ -98,7 +96,6 @@ export class AboutStudentComponent {
   loadData(){
     this.StudentService.getStudentById( this.aboutDataId).subscribe(res => {
       this.aboutData = res;
-      console.log("edit",this.aboutData)
 
     })
 }
@@ -150,7 +147,6 @@ this.studentCompletedPrograms = response.data.docs;
 }
 
 editCall(row: Students) {
-  console.log("edit",row)
   this.router.navigate(['/student/settings/add-student'],{queryParams:{id:row.id}})
 }
 

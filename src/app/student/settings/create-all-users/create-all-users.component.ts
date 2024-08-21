@@ -336,7 +336,6 @@ export class CreateAllUsersComponent {
   getBlogsList(filters?: any) {
     this.userService.getUserById(this.currentId).subscribe(
       (response: any) => {
-        console.log('listing user', response);
         this.data = response.data.data;
         this.avatar = this.data?.avatar;
         this.uploaded = this.avatar?.split('/');

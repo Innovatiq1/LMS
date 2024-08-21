@@ -53,15 +53,10 @@ export class EditSuperAdminComponent {
   ngOnInit() {
     this.userForm = this._fb.group({
       name: new FormControl('', [Validators.required, Validators.pattern(/[a-zA-Z0-9]+/),...this.utils.validators.noLeadingSpace]),
-      //last_name: new FormControl('', []),
       website:new FormControl('', []),
-     // rollNo: new FormControl('', [Validators.required, ...this.utils.validators.noLeadingSpace,...this.utils.validators.roll_no]),
-    //  gender: new FormControl('', [Validators.required]),
       Active: new FormControl('true', [Validators.required]),
       company: new FormControl('', [Validators.required]),
       mobile: new FormControl('', [Validators.required,...this.utils.validators.mobile]),
-    //  qualification: new FormControl('', []),
-     // department: new FormControl('', []),
       address: new FormControl('', []),
       email: new FormControl('', [
         Validators.required,
@@ -69,12 +64,7 @@ export class EditSuperAdminComponent {
       ]),
       password: new FormControl('', [Validators.required]),
       re_passwords: new FormControl('', []),
-      // education: new FormControl('', [
-      //   Validators.required,
-      //   Validators.minLength(2),
-      // ]),
       type: new FormControl('admin', [Validators.required]),
-   //   dob: new FormControl('', [Validators.required,...this.utils.validators.dob]),
       joiningDate: new FormControl('', [Validators.required]),
      
     });
@@ -215,11 +205,8 @@ export class EditSuperAdminComponent {
   }
 
   updateBlog(formObj: any) {
-    //console.log('Form Value', formObj);
     let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     if (!formObj.invalid) {
-      // Prepare user data for update
-    //  formObj['Active'] = this.status;
       formObj['type'] = formObj.type;
       formObj['role'] = formObj.role;
       formObj['isLogin'] = true;
@@ -234,12 +221,9 @@ export class EditSuperAdminComponent {
           
         window.history.back();
         }
-      // this.updateUser(userData);
-      // Swal.close();
       }
   updateUser(obj: any) {
     return new Promise((resolve, reject) => {
-    //  obj['Active'] = this.status;
       this.userService.updateUsers(obj, this.currentId).subscribe(
         (response) => {
           this.isLoading = false;
@@ -271,34 +255,23 @@ export class EditSuperAdminComponent {
     this.userService.getUserById(this.currentId).subscribe(
       (response: any) => {
         this.data = response.data.data;
-        // this.fileName = this.data.filename
         this.avatar = this.data?.avatar;
         this.uploaded = this.avatar?.split('/');
         let image = this.uploaded?.pop();
         this.uploaded = image?.split('\\');
         this.fileName = this.uploaded?.pop();
         if (this.data) {
-         // const activeStatus = this.data.Active ? 'Active' : 'InActive';
           this.userForm.patchValue({
             name: this.data?.name,
             email: this.data?.email,
             password: this.data?.password,
             re_passwords: this.data.conformPassword,
             Active:this.data.Active.toString(),
-         //   education: this.data?.education,
             type: this.data?.type,
             fileName: this.data?.avatar,
-         //   last_name: this.data?.last_name,
             website:this.data.website,
-          //  rollNo: this.data?.rollNo,
-           // gender: this.data?.gender,
             mobile: this.data?.mobile,
-         //   department: this.data?.department,
-         //   parentsName: this.data?.parentsName,
-          //  parentsPhone: this.data?.parentsPhone,
-         //   dob: this.data?.dob,
             joiningDate: this.data?.joiningDate,
-          //  blood_group: this.data?.blood_group,
             address: this.data?.address,
             company:this.data?.company
           });

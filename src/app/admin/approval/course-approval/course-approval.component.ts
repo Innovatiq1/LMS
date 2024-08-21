@@ -130,7 +130,6 @@ export class CourseApprovalComponent {
             title: 'Success',
             text: 'Course approved successfully.',
             icon: 'success',
-            // confirmButtonColor: '#526D82',
           });
           this.getCoursesList();
         }, (error) => {
@@ -138,7 +137,6 @@ export class CourseApprovalComponent {
             title: 'Error',
             text: 'Failed to approve course. Please try again.',
             icon: 'error',
-            // confirmButtonColor: '#526D82',
           });
         });
       }
@@ -149,7 +147,6 @@ export class CourseApprovalComponent {
   private refreshTable() {
     this.paginator._changePageSize(this.paginator.pageSize);
   }
-  /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.length;
@@ -203,14 +200,12 @@ export class CourseApprovalComponent {
           title: 'Success',
           text: 'Record Deleted Successfully...!!!',
           icon: 'success',
-          // confirmButtonColor: '#526D82',
         });
       }
     });
 
     
   }
-  //search functinality
   performSearch() {
     if(this.searchTerm){
     this.dataSource = this.dataSource?.filter((item: any) =>{   
@@ -224,9 +219,7 @@ export class CourseApprovalComponent {
 
     }
   }
-  // export table data in excel file
   exportExcel() {
-    //k//ey name with space add in brackets
    const exportData: Partial<TableElement>[] = this.dataSource.map(
      (user: any) => ({
        'Course Name': user.title,
@@ -249,13 +242,7 @@ export class CourseApprovalComponent {
        user.sub_category_text,
        user.fee
     ] );
-    //const columnWidths = [60, 80, 40];
     const columnWidths = [20, 20, 20, 20, 20, 20, 20, 20, 20, 20];
-
-    // Add a page to the document (optional)
-    //doc.addPage();
-
-    // Generate the table using jspdf-autotable
     (doc as any).autoTable({
       head: headers,
       body: data,

@@ -123,7 +123,6 @@ export class UserTypeComponent {
     );
   }
   delete(data: any) {
-    console.log('data', data);
 
     Swal.fire({
       title: 'Confirm Deletion',

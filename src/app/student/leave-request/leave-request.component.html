@@ -59,12 +59,6 @@
                     <span class="mobile-label">Apply Date:</span>{{row.applyDate | date}}
                   </mat-cell>
                 </ng-container>
-                <!-- <ng-container matColumnDef="fromDate">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>From Date</mat-header-cell>
-                  <mat-cell *matCellDef="let row" (click)="viewCall(row.id)" (contextmenu)="onContextMenu($event, row)">
-                    <span class="mobile-label">From Date:</span> {{row.fromDate | date}}
-                  </mat-cell>
-                </ng-container> -->
                 <ng-container matColumnDef="toDate">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Reschedule Date</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="view ? viewCall(row.id) : null" (contextmenu)="onContextMenu($event, row)">
@@ -90,7 +84,6 @@
                   </mat-cell>
                 </ng-container>
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
                 <mat-row *matRowDef="let row; columns: displayedColumns;"
                   [style.cursor]="'pointer'" matRipple>
                 </mat-row>

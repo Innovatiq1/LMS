@@ -42,11 +42,6 @@
                   [ngClass]="sidebarSubItem.class">
                   {{sidebarSubItem.title}}
                  </a>
-
-                 <!-- <a *ngIf=isSettings [routerLink]="sidebarSubItem.children.length > 0 ? null : [sidebarSubItem.path]" (click)="navigateTo(sidebarSubItem.path)"
-                  (click)="callToggleMenu($event,sidebarItem.children.length)" [ngClass]="[sidebarSubItem.class]">
-                  {{sidebarSubItem.title | translate}}
-                </a> -->
                  <ul class="ml-menu-2" *ngIf="sidebarSubItem.children.length > 0">
                   <li *ngFor="let sidebarSubItem2 of sidebarSubItem.children|sideMenuFilter:false"
                     [routerLinkActive]="sidebarSubItem2.children.length > 0 ? '' : 'active'">

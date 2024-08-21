@@ -687,7 +687,6 @@ if(this.feeType=="paid")
                                 };
                                 this.generateInvoice(body);
                                 setTimeout(() => {
-                                  console.log('invoice', this.invoiceUrl);
                                   let payload = {
                                     email: userdata.user.email,
                                     name: userdata.user.name,

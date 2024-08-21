@@ -51,7 +51,6 @@ export class AddStudentComponent {
 
   ) {
     this.activatedRoute.queryParams.subscribe((params: any) => {
-      console.log('id', params);
       this.StudentId = params.id;
       this.patchValues(this.StudentId);
     });
@@ -173,7 +172,6 @@ export class AddStudentComponent {
 
 
   private createInstructor(userData: Student): void {
-    console.log("usdfs", userData)
     this.StudentService.CreateStudent(userData).subscribe(
       () => {
         Swal.fire({

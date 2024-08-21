@@ -17,16 +17,9 @@ import { AppConstants } from '@shared/constants/app.constants';
 })
 export class StudentCourseComponent {
   displayedColumns: string[] = [
-    // 'select',
     'img',
     'User Type',
     'Name',
-    // 'gender',
-    // 'Qualification',
-    // 'Mobile',
-    // 'Email',
-    // 'Status',
-    // 'Actions'
   ];
   breadscrums = [
     {

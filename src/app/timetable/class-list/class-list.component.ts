@@ -1,6 +1,3 @@
-// import { CourseId } from './../../../core/models/class.model';
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {
   ClassModel,
@@ -19,7 +16,6 @@ import {
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
 import { MatPaginator } from '@angular/material/paginator';
-// import { fromEvent } from 'rxjs';
 import { UnsubscribeOnDestroyAdapter } from '@shared/UnsubscribeOnDestroyAdapter';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
@@ -38,11 +34,8 @@ import { AuthenService } from '@core/service/authen.service';
 })
 export class ClassListComponent extends UnsubscribeOnDestroyAdapter implements OnInit{
   displayedColumns = [
-    // 'select',
-    // 'Instructor',
     'Course',
     'Code',
-    // 'Price',
     'Department',
     'Start Date',
     'End Date',
@@ -83,17 +76,6 @@ export class ClassListComponent extends UnsubscribeOnDestroyAdapter implements O
   ) {
     super();
     this.coursePaginationModel = {};
-    // let userType = localStorage.getItem('user_type');
-    // // if(userType == "Student"){
-    // //   this.getApprovedCourse();
-    // //   this.getApprovedProgram();
-    // // }
-    // if (userType == 'admin') {
-    //   this.getClassList();
-    // }
-    // if (userType == 'Instructor') {
-    //   this.getClassLectures();
-    // }
   }
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild('filter', { static: true }) filter!: ElementRef;
@@ -125,9 +107,6 @@ export class ClassListComponent extends UnsubscribeOnDestroyAdapter implements O
       this.isInstructor = true;
       this.getClassLectures();
     }
-   
-    // this.getClassList();
-    // this.getClassLectures();
   }
 
   getClassList() {
@@ -147,7 +126,6 @@ export class ClassListComponent extends UnsubscribeOnDestroyAdapter implements O
           }
         },
         (error) => {
-          console.log('error', error);
         }
       );
   }
@@ -162,7 +140,6 @@ export class ClassListComponent extends UnsubscribeOnDestroyAdapter implements O
         this.coursePaginationModel.docs = response.data.docs;
         this.coursePaginationModel.page = response.data.page;
         this.coursePaginationModel.limit = response.data.limit;
-        console.log("PV", this.dataSource)
         this.mapClassList();
         this.isLoading=false;
         
@@ -173,60 +150,15 @@ export class ClassListComponent extends UnsubscribeOnDestroyAdapter implements O
    
     
   }
-  // getSession() {
-  //   if(this.dataSource1){
-  //   this.dataSource1&&this.dataSource1?.forEach((item: any, index: any) => {
-  //     if (item.sessions[0]&& item.sessions[0]?.courseName&&item.sessions[0]?.courseCode) {
-  //       let starttimeObject = moment(item.sessions[0].sessionStartTime, "HH:mm");
-        
-  //       const duration = moment.duration(moment(item.sessions[0].sessionEndDate).diff(moment(item.sessions[0].sessionStartDate)));
-  //       let daysDifference = duration.asDays()+1
-        
-
-        
-  //       this.dataSource.push({
-  //         //sessionNumber: index + 1,
-  //         classId:item._id,
-  //         sessionStartDate: moment(item.sessions[0].sessionStartDate).format("YYYY-MM-DD"),
-  //         sessionEndDate: moment(item.sessions[0].sessionEndDate).format("YYYY-MM-DD"),
-  //         sessionStartTime: starttimeObject.format("hh:mm A"),
-  //         sessionEndTime: moment(item.sessions[0].end).format("hh:mm A"),
-  //         //instructorId: item.instructor,
-  //         laboratoryId: item.sessions[0].laboratoryId,
-  //         courseName: item.sessions[0].courseName,
-  //         courseCode: item.sessions[0].courseCode,
-  //         status: item.sessions[0].status,
-  //         _id:item.sessions[0]._id,
-  //         duration:daysDifference,
-
-  //         sessionNumber: 0,
-  //         instructorId: ''
-  //       });
-  //     } else {
-        
-  //     }
-      
-  //   });
-  //   this.cdr.detectChanges();
-  //   //console.log("ssssssssssss",this.dataSource)
-  //   //this.myArray.push(newItem);
-  //   // this.myArray.data = this.dataSource1;
-  // }
-  //   //return sessions;
-    
-  // }
-
   private refreshTable() {
     this.paginator._changePageSize(this.paginator.pageSize);
   }
-  /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.length;
     return numSelected === numRows;
   }
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
     this.isAllSelected()
       ? this.selection.clear()
@@ -234,7 +166,6 @@ export class ClassListComponent extends UnsubscribeOnDestroyAdapter implements O
   }
 
   pageSizeChange($event: any) {
-    console.log('event', $event);
     this.coursePaginationModel.page = $event?.pageIndex + 1;
     this.coursePaginationModel.limit = $event?.pageSize;
     let userType = localStorage.getItem('user_type');
@@ -366,7 +297,6 @@ export class ClassListComponent extends UnsubscribeOnDestroyAdapter implements O
   performSearch() {
     if (this.searchTerm) {
       this.dataSource = this.dataSource?.filter((item: any) =>
-        // console.log(item.courseId?.title)
         item.courseId?.title
           .toLowerCase()
           .includes(this.searchTerm.toLowerCase())

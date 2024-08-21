@@ -11,7 +11,6 @@ export class LeaveRequest {
   reason: string;
   rollNo:string;
   className:string;
-  //studentId:any;
   data:any;
   docs:any;
   studentId: any;

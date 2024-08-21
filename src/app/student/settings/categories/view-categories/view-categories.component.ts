@@ -37,7 +37,6 @@ export class ViewCategoriesComponent {
   ) {
     this.coursePaginationModel = {};
     this.activatedRoute.params.subscribe((params: any) => {
-      console.log("params.id", params.id)
       this.courseId = params.id;
     });
   }

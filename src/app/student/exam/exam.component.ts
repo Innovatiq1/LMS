@@ -40,7 +40,6 @@ export class ExamComponent {
   breadscrums = [
     {
       title: 'Assesment Answer List',
-      // items: ['Extra'],
       active: 'Assesment Answer',
     },
   ];

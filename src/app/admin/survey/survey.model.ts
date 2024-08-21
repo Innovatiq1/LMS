@@ -1,5 +1,3 @@
-
-
 export interface SurveyBuilderQuestionsModel {
 	_id: string;
 	choices: [string];
@@ -38,14 +36,3 @@ export class SurveyBuilderModel {
     }
   }
 }
-
-
-
-
-
-// export interface SurveyBuilderPaginationModel  {
-// 	docs: SurveyBuilderModel[];
-// 	filterText: string;
-// 	sortBy: string;
-// 	sortByDirection: string;
-// }

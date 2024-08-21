@@ -40,14 +40,9 @@ export class ViewProgramComponent {
     // constructor
 
     this.activatedRoute.queryParams.subscribe((params: any) => {
-      console.log("params.id", params)
       this.courseId = params?.id;
       this.status = params?.status;
       this.getProgramByID(this.courseId);
-      // if(this.courseId){
-      //   this.getProgramByID(this.courseId);
-      // }
-
     });
     if(this.status === 'pending'){
       this.button = true;
@@ -199,7 +194,6 @@ export class ViewProgramComponent {
             title: 'Success',
             text: 'Program approved successfully.',
             icon: 'success',
-            // confirmButtonColor: '#d33',
           });
           this.getPendingProgramLists();
           this.router.navigate(['/admin/program/program-list/program'])
@@ -208,7 +202,6 @@ export class ViewProgramComponent {
             title: 'Error',
             text: 'Failed to approve program. Please try again.',
             icon: 'error',
-            // confirmButtonColor: '#d33',
           });
         });
       }
@@ -247,11 +240,8 @@ export class ViewProgramComponent {
     }
   }
    openVidePlayer(videoLink: { video_url?: any; id?: any; }): void {
-    // const { videoLink } = videoLink;
     if (videoLink?.id) {
       const videoURL = videoLink.video_url;
-      // this.courseService.getVideoById(videoId).subscribe((res) => {
-      //   const videoURL = res.data.videoUrl;
         if (!videoURL) {
           Swal.fire({
             icon: "error",
@@ -261,18 +251,15 @@ export class ViewProgramComponent {
           return
 
         }
-        // const videoType = "application/x-mpegURL";
         if (videoURL) {
           const initialState: ModalOptions = {
             initialState: {
               videoURL,
-              // videoType,
             },
             class: "videoPlayer-modal",
           };
           this.modalServices.show(VideoPlayerComponent, initialState);
         }
-      // });
     }
   }
 }

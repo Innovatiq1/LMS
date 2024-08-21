@@ -31,7 +31,6 @@ export class ViewComponent {
     private authenService: AuthenService) {
 
     this.activatedRoute.queryParams.subscribe((params: any) => {
-      console.log(params['id']);
       this.loadData(params['id'])
     })
     const roleDetails =this.authenService.getRoleDetails()[0].menuItems
@@ -100,7 +99,6 @@ export class ViewComponent {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result === 1) {
-        console.log('iiiiddd',this.id)
         this.loadData(this.id);
       }
     });

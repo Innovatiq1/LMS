@@ -1,272 +1,94 @@
-<!-- <section class="content">
-  <div class="content-block"> -->
-    <!-- <div class="block-header" *ngFor="let breadscrum of breadscrums">
-      <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
-      </app-breadcrumb>
-    </div> -->
-    <!-- <div class="row mt-5">
-      <div class="col-lg-4 col-sm-6">
-        <div class="info-box7 l-bg-purple order-info-box7">
-          <div class="info-box7-block">
-            <h6 class="m-b-20">Course Payments</h6>
-            <h2 class="text-end"><i class="fas fa-graduation-cap float-start"></i><span>$358</span></h2>
-            <p class="m-b-0">18% Higher Then Last Month</p>
-          </div>
+<div class="row mt-5 clearfix">
+  <ng-container *ngFor="let component of dashboardCpm.components">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" *ngIf="component?.checked && component.id === 'trainer-list'">
+      <div class="card">
+        <div class="header mt-3">
+          <h2>{{commonRoles?.INSTRUCTOR_ROLE}}s List</h2>
         </div>
-      </div> -->
-      <!-- <div class="col-lg-3 col-sm-6">
-        <div class="info-box7 l-bg-blue order-info-box7">
-          <div class="info-box7-block">
-            <h6 class="m-b-20">Program Payments</h6>
-            <h2 class="text-end"><i class="fas fa-bookmark float-start"></i><span>$865</span></h2>
-            <p class="m-b-0">21% Higher Then Last Month</p>
-          </div>
-        </div>
-      </div> -->
-      <!-- <div class="col-lg-4 col-sm-6">
-        <div class="info-box7 l-bg-orange order-info-box7">
-          <div class="info-box7-block">
-            <h6 class="m-b-20">Pending Payments</h6>
-            <h2 class="text-end"><i class="fas fa-cart-arrow-down float-start"></i><span>$128</span></h2>
-            <p class="m-b-0">37% Higher Then Last Month</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-4 col-sm-6">
-        <div class="info-box7 l-bg-green order-info-box7">
-          <div class="info-box7-block">
-            <h6 class="m-b-20">Successful Payments</h6>
-            <h2 class="text-end"><i class="fas fa-cart-plus float-start"></i><span>$1351</span></h2>
-            <p class="m-b-0">10% Higher Then Last Month</p>
-          </div>
-        </div>
-      </div>
-    </div> -->
-
-    <!-- <div class="row">
-      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-        <div class="card">
-          <div class="header mt-3">
-            <h2>New Admission Report</h2>
-          </div>
-            <div class="body" *ngIf="isAdmissionLine">
-              <apx-chart 
-                [series]="admissionLineChartOptions.series!" 
-                [chart]="admissionLineChartOptions.chart!" 
-                [xaxis]="admissionLineChartOptions.xaxis!" 
-                [stroke]="admissionLineChartOptions.stroke!" 
-                [colors]="admissionLineChartOptions.colors!" 
-                [dataLabels]="admissionLineChartOptions.dataLabels!" 
-                [legend]="admissionLineChartOptions.legend!" 
-                [tooltip]="admissionLineChartOptions.tooltip!" 
-                [markers]="admissionLineChartOptions.markers!" 
-                [grid]="admissionLineChartOptions.grid!" 
-                [yaxis]="admissionLineChartOptions.yaxis!">
-              </apx-chart>
-            </div>
-            <div class="body" *ngIf="isAdmissionBar">
-              <apx-chart 
-                  [series]="admissionBarChartOptions.series!" 
-                  [chart]="admissionBarChartOptions.chart!" 
-                  [xaxis]="admissionBarChartOptions.xaxis!" 
-                  [stroke]="admissionBarChartOptions.stroke!" 
-                  [colors]="admissionBarChartOptions.colors!" 
-                  [dataLabels]="admissionBarChartOptions.dataLabels!" 
-                  [legend]="admissionBarChartOptions.legend!" 
-                  [tooltip]="admissionBarChartOptions.tooltip!" 
-                  [markers]="admissionBarChartOptions.markers!" 
-                  [grid]="admissionBarChartOptions.grid!" 
-                  [yaxis]="admissionBarChartOptions.yaxis!">
-              </apx-chart>
-          </div>
-          <div class="body" *ngIf="isAdmissionPie">
-            <apx-chart 
-                [series]="admissionPieChartOptions.series!" 
-                [chart]="admissionPieChartOptions.chart!" 
-                [labels]="admissionPieChartOptions.labels!" 
-                [colors]="admissionPieChartOptions.colors!" 
-                [legend]="admissionPieChartOptions.legend!" 
-                [tooltip]="admissionPieChartOptions.tooltip!" 
-                [dataLabels]="admissionPieChartOptions.dataLabels!" 
-                [responsive]="admissionPieChartOptions.responsive!">
-            </apx-chart>
-        </div>
-        </div>
-      </div>
-
-      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-        <div class="card">
-          <div class="header mt-3">
-            <h2>Fees Collection Report</h2>
-          </div>
-          <div class="body" *ngIf="isFeesLine">
-            <apx-chart [series]="feesLineChartOptions.series!" [chart]="feesLineChartOptions.chart!"
-              [xaxis]="feesLineChartOptions.xaxis!" [stroke]="feesLineChartOptions.stroke!"
-              [colors]="feesLineChartOptions.colors!" [dataLabels]="feesLineChartOptions.dataLabels!"
-              [legend]="feesLineChartOptions.legend!" [markers]="feesLineChartOptions.markers!"
-              [grid]="feesLineChartOptions.grid!" [yaxis]="feesLineChartOptions.yaxis!"
-              [tooltip]="feesLineChartOptions.tooltip!" [title]="feesLineChartOptions.title!">
-            </apx-chart>
-          </div>
-          <div class="body" *ngIf="isFeesBar">
-            <apx-chart [series]="feesBarChartOptions.series!" [chart]="feesBarChartOptions.chart!"
-            [xaxis]="feesBarChartOptions.xaxis!" [stroke]="feesBarChartOptions.stroke!"
-            [colors]="feesBarChartOptions.colors!" [dataLabels]="feesBarChartOptions.dataLabels!"
-            [legend]="feesBarChartOptions.legend!" [markers]="feesBarChartOptions.markers!"
-            [grid]="feesBarChartOptions.grid!" [yaxis]="feesBarChartOptions.yaxis!"
-            [tooltip]="feesBarChartOptions.tooltip!" [title]="feesBarChartOptions.title!">
-          </apx-chart>
-          </div>
-          <div class="body" *ngIf="isFeesPie">
-            <apx-chart [series]="feesPieChartOptions.series!" [chart]="feesPieChartOptions.chart!"
-              [labels]="feesPieChartOptions.labels!" [colors]="feesPieChartOptions.colors!"
-              [dataLabels]="feesPieChartOptions.dataLabels!" [legend]="feesPieChartOptions.legend!"
-              [tooltip]="feesPieChartOptions.tooltip!">
-            </apx-chart>
+        <div class="tableBody">
+          <div class="table-responsive">
+            <table class="table display product-overview mb-30" id="support_table">
+              <thead>
+                <tr>
+                  <th>Img</th>
+                  <th>{{commonRoles?.INSTRUCTOR_ROLE}}</th>
+                  <th>Department</th>
+                  <th>Gender</th>
+                  <th>Education</th>
+                  <th>Email</th>
+                  <th>Mobile</th>
+                  <th>Joining Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let instructor of instructors" style="cursor: pointer;"
+                  (click)="aboutInstructor(instructor.id)">
+                  <td class="table-img">
+                    <img src="{{instructor?.avatar|| 'assets/profile.png'}}" alt="">
+                  </td>
+                  <td>{{instructor?.name | titlecase}}</td>
+                  <td>
+                    <div class="badge col-green">{{instructor?.department}}</div>
+                  </td>
+                  <td *ngIf="instructor.gender==='male'"><span class="badge badge-solid-green">{{instructor?.gender |
+                      titlecase}}</span></td>
+                  <td *ngIf="instructor.gender==='female'"><span class="badge badge-solid-purple">{{instructor?.gender |
+                      titlecase}}</span></td>
+                  <td *ngIf="instructor.gender==='other'"><span class="badge badge-solid-orange">{{instructor?.gender |
+                      titlecase}}</span></td>
+                  <td>{{instructor?.education}}</td>
+                  <td>{{instructor?.email}}</td>
+                  <td>{{instructor?.mobile}}</td>
+                  <td>{{instructor?.joiningDate | date}}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
-      
-    </div> -->
- 
-    <div class="row mt-5 clearfix">
-      <ng-container *ngFor="let component of dashboardCpm.components">
-      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" *ngIf="component?.checked && component.id === 'trainer-list'">
-        <div class="card">
-          <div class="header mt-3">
-            <h2>{{commonRoles?.INSTRUCTOR_ROLE}}s List</h2>
-          
-          </div>
-          <div class="tableBody">
-            <div class="table-responsive">
-              <table class="table display product-overview mb-30" id="support_table">
-                <thead>
-                  <tr>
-                    <th>Img</th>
-                    <th>{{commonRoles?.INSTRUCTOR_ROLE}}</th>
-                    <th>Department</th>
-                    <th>Gender</th>
-                    <th>Education</th>
-                    <th>Email</th>
-                    <th>Mobile</th>
-                    <th>Joining Date</th>
-                    <!-- <th>Actions</th> -->
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let instructor of instructors" style="cursor: pointer;" (click)="aboutInstructor(instructor.id)">
-                    <td class="table-img">
-                      <img src="{{instructor?.avatar|| 'assets/profile.png'}}" alt="">
-                    </td>
-                    <td>{{instructor?.name | titlecase}}</td>
-                    <td>
-                      <div class="badge col-green">{{instructor?.department}}</div>
-                    </td>
-                    <td *ngIf="instructor.gender==='male'"><span class="badge badge-solid-green">{{instructor?.gender | titlecase}}</span></td>
-                    <td *ngIf="instructor.gender==='female'"><span class="badge badge-solid-purple">{{instructor?.gender | titlecase}}</span></td>
-                    <td *ngIf="instructor.gender==='other'"><span class="badge badge-solid-orange">{{instructor?.gender | titlecase}}</span></td>
-                    <td>{{instructor?.education}}</td>
-                    <td>{{instructor?.email}}</td>
-                    <td>{{instructor?.mobile}}</td>
-                    <td>{{instructor?.joiningDate | date}}</td>
-                 
-                  </tr>
-                 
-
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </ng-container>
     </div>
-    <div class="row">
-      <ng-container *ngFor="let component of dashboardCpm.components">
-      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4"  *ngIf="component?.checked && component.id === 'upcoming-courses'"  style="width: 100%;">
-        <div class="card">
-          <div class="header mt-3">
-            <h2>Upcoming Courses</h2>
-          </div>
-          <div class="body">
-            <div class="card-block" *ngFor="let data of upcomingCourses" style="cursor: pointer;" [routerLink]="['/admin/courses/all-courses']">
-              <div class="row m-b-20">
-                <div class="col-md-3">
-                  <img src="{{data.image_link}}" alt="user image" class="img-fluid">
-                </div>
-                <div class="col-md-8" style="margin-left: -15px;">
-                  <h6>{{data.title | titlecase |truncate : 25}}</h6>
-                  <div class="row">
-                    <div class="col-md-2">
-                      <b>{{ data?.courseCode }}</b>
-                    </div>
-                    <div class="col-md-2">
-                      <b>{{ data.training_hours}} Hours</b>
-                    </div>
-                    <div class="col-md-2">
-                      <b>{{data.course_duration_in_days}}</b>
-                    </div>
-                    <!-- <div class="col-md-3" [class]="data?.Active ? 'badge badge-solid-red' : 'badge badge-solid-green'">
-                      <b>{{ data?.classDeliveryType | titlecase }}</b>
-                    </div> -->
-                    <div class="col-md-3">
-                      <b style="color: blue;"><i class="fa fa-play-circle-o"></i> {{data.sessionStartDate | date}}</b>
-                    </div>
+  </ng-container>
+</div>
+<div class="row">
+  <ng-container *ngFor="let component of dashboardCpm.components">
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" *ngIf="component?.checked && component.id === 'upcoming-courses'"
+      style="width: 100%;">
+      <div class="card">
+        <div class="header mt-3">
+          <h2>Upcoming Courses</h2>
+        </div>
+        <div class="body">
+          <div class="card-block" *ngFor="let data of upcomingCourses" style="cursor: pointer;"
+            [routerLink]="['/admin/courses/all-courses']">
+            <div class="row m-b-20">
+              <div class="col-md-3">
+                <img src="{{data.image_link}}" alt="user image" class="img-fluid">
+              </div>
+              <div class="col-md-8" style="margin-left: -15px;">
+                <h6>{{data.title | titlecase |truncate : 25}}</h6>
+                <div class="row">
+                  <div class="col-md-2">
+                    <b>{{ data?.courseCode }}</b>
                   </div>
-
-                 
+                  <div class="col-md-2">
+                    <b>{{ data.training_hours}} Hours</b>
+                  </div>
+                  <div class="col-md-2">
+                    <b>{{data.course_duration_in_days}}</b>
+                  </div>
+                  <div class="col-md-3">
+                    <b style="color: blue;"><i class="fa fa-play-circle-o"></i> {{data.sessionStartDate | date}}</b>
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="text-center">
-              <button mat-stroked-button [routerLink]="['/admin/courses/all-courses/course']" color="primary">View More</button>
-            </div>
+          </div>
+          <div class="text-center">
+            <button mat-stroked-button [routerLink]="['/admin/courses/all-courses/course']" color="primary">View
+              More</button>
           </div>
         </div>
       </div>
-    </ng-container>
-      <!-- <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" style="width: 100%;">
-        <div class="card">
-          <div class="header mt-3">
-            <h2>Upcoming Programs</h2>
-          </div>
-          <div class="body">
-            <div class="card-block" *ngFor="let program of upcomingPrograms" style="cursor: pointer;" [routerLink]="['/admin/program/program-list']">
-              <div class="row m-b-20">
-                <div class="col-md-3">
-                  <img src="{{program?.image_link}}" alt="user image" class="img-fluid">
-                </div>
-                <div class="col-md-8" style="margin-left: -15px;">
-                  <h6>{{program?.title | titlecase}}</h6>
-                  <div class="row">
-                    <div class="col-md-2">
-                      <b>{{ program?.courseCode }}</b>
-                    </div>
-                    <div class="col-md-2">
-                      <b>{{ program?.duration }} Hours</b>
-                    </div>
-                    <div class="col-md-2">
-                      <b>{{ program?.courseFee }}$</b>
-                    </div>
-                    <div class="col-md-3" [class]="program?.Active ? 'badge badge-solid-red' : 'badge badge-solid-green'">
-                      <b>{{ program?.deliveryMode | titlecase }}</b>
-                    </div>
-                    <div class="col-md-3">
-                      <b style="color: blue;"><i class="fa fa-play-circle-o"></i> {{program?.sessionStartDate | date}}</b>
-                    </div>
-                  </div>
-
-                 
-                </div>
-              </div>
-            </div>
-            <div class="text-center">
-              <button mat-stroked-button [routerLink]="['/admin/program/program-list/program']" color="primary">View More</button>
-            </div>
-          </div>
-        </div>
-      </div> -->
-      
     </div>
-  <!-- </div>
-</section> -->
+  </ng-container>
+</div>

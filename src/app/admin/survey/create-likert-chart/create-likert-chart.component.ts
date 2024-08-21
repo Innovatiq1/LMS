@@ -49,7 +49,6 @@ constructor(private formBuilder: FormBuilder,private router: Router, public surv
 
   this.subscribeParams = this.activatedRoute.params.subscribe((params:any) => {
     this.questionId = params.id;
-    //console.log("=Id===",params.id)
   });
 }
 
@@ -76,16 +75,13 @@ addQuestion() {
 addOption(questionIndex: number) {
   const options = this.getOptions(questionIndex);
   options.push(this.createOption());
-  // options.push(this.createOption());
 }
 
 createQuestion(): FormGroup {
   return this.formBuilder.group({
-    // name: ['', Validators.required],
     questionText: ['', Validators.required],
     options: this.formBuilder.array([
       this.createOption(),
-      // this.createOption()
     ])
   });
 }
@@ -93,7 +89,6 @@ createQuestion(): FormGroup {
 createOption(): FormGroup {
   return this.formBuilder.group({
     text: '',
-    // correct: false // Default to false
   });
 }
 
@@ -109,7 +104,6 @@ save() {
         questionText: question.questionText,
         options: question.options.map((option: any) => ({
           text: option.text,
-          // correct: option.correct
         }))
       }))
     };
@@ -154,7 +148,6 @@ update(){
         questionText: question.questionText,
         options: question.options.map((option: any) => ({
           text: option.text,
-          // correct: option.correct
         }))
       })),
       id:this.questionId,
@@ -215,7 +208,6 @@ getData() {
             optionsArray.push(
               this.formBuilder.group({
                 text: option.text,
-                // correct: option.correct
               })
             );
           });

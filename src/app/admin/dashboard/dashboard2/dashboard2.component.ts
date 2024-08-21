@@ -121,16 +121,7 @@ export class Dashboard2Component implements OnInit,AfterViewInit {
   }
   
   ngOnInit() {
-  //   this.getInstructorsList();
-  //   this.getProgramList();
-  //   this.getAllCourse();
-  //   const role = this.authenticationService.currentUserValue.user.role;
-  //   if (role == 'Admin') {
-  //     this.getStudentDashboard();
-  //   }
-  //   this.cdr.detectChanges();
   if (this.dashboardCpm) {
-    console.log(this.dashboardCpm); 
   } else {
     console.warn('dashboardCpm is undefined or null.');
   }

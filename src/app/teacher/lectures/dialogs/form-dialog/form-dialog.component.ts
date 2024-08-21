@@ -67,9 +67,7 @@ export class FormDialogComponent {
   }
   createContactForm(): UntypedFormGroup {
     return this.fb.group({
-      //id: [this.lectures.id],
       courseName: [this.lectures.sessions[0].courseName, [Validators.required]],
-      // courseCode: [this.lectures.courseCode, [Validators.required]],
       sessionStartDate: [this.lectures.sessions[0].sessionStartDate, [Validators.required]],
       sessionStartTime: [this.lectures.sessions[0].sessionStartTime, [Validators.required]],
       status: [this.lectures.sessions[0].status, [Validators.required]],
@@ -92,6 +90,5 @@ export class FormDialogComponent {
       this.lecturesService.updateLectures(data);
 
     }
-    //this.lecturesService.addLectures(this.lecturesForm.getRawValue());
   }
 }

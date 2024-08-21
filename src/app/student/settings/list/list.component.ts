@@ -41,7 +41,6 @@ export class ListComponent {
 
 
   onButtonClicked(card: any) {
-    console.log('Button clicked for card:', card.title);
   }
 
   deleteAnnouncement(announcementId: any) {
@@ -131,11 +130,6 @@ export class ListComponent {
 
         this.isLoading = true;
       }
-      this.cdr.detectChanges();
-
-
-      console.log("res====", res.totalRecords);
-
       this.cdr.detectChanges();
     })
   }

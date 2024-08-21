@@ -75,7 +75,6 @@ export class EditStaffComponent {
     );
 
     this.active.queryParams.subscribe(params => {
-      console.log(params['id']);
       this.aboutDataId = params['id'];
       this.loadData(this.aboutDataId);
     })

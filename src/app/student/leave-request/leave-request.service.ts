@@ -37,7 +37,6 @@ export class LeaveRequestService extends UnsubscribeOnDestroyAdapter {
         },
         error: (error: HttpErrorResponse) => {
           this.isTblLoading = false;
-          console.log(error.name + ' ' + error.message);
         },
       });
   }
@@ -86,19 +85,4 @@ export class LeaveRequestService extends UnsubscribeOnDestroyAdapter {
       .delete<any>(apiUrl)
       .pipe(map((response: any) => response));
   }
-
-//   deleteLeaveRequest(id: number): void {
-//     
-
-//     // this.httpClient.delete(this.API_URL + id)
-//     //     .subscribe({
-//     //       next: (data) => {
-//     //         
-//     //       },
-//     //       error: (error: HttpErrorResponse) => {
-//     //          // error code here
-//     //       },
-//     //     });
-//   }
-// }
 }

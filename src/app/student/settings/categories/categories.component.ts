@@ -227,8 +227,7 @@ edit(id:any){
 
 performSearch() {
   if(this.searchTerm){
-  this.dataSource = this.dataSource?.filter((item: any) =>{   
-    console.log("vv", item)
+  this.dataSource = this.dataSource?.filter((item: any) =>{  
     const search = (item.category_name + item?.subCategories[0]?.category_name).toLowerCase()
     return search.indexOf(this.searchTerm.toLowerCase())!== -1;
     

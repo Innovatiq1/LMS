@@ -6,184 +6,145 @@
             </app-breadcrumb>
         </div>
 
-<div class="card">
-    <div class="row clearfix p-2">
-        <!-- <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-            <div class="card">
-                <div class="header ">
-                    <div class="d-flex justify-content-between w-100">
-                        <h2>All Classes</h2>
-                        <button type="button" class="btn btn-outline-danger btn-border-radius"
-                            routerLink="/admin/courses/class-list">Back</button>
-                    </div>
-                </div>
-                <div class="body">
-                    <div class="" [ngClass]="
-          row.id === classDataById ? ' sl-item sl-success ':'sl-item sl-danger'"
-                        *ngFor="let row of classData; let i = index">
-                        <div class="sl-content" style="cursor: pointer;" [ngClass]="
-            row.id === classDataById ? ' bg-c-green ' : 'border-class'
-          " (click)="getCategories(row.id)">
-                            <h6>{{row.courseId?.title}}</h6>
-                            <!-- <small class="text-muted">
-                <i class="fa fa-play-circle-o"></i> </small> -->
-                            <!-- <span class="feedLblStyle1 lblCommentStyle">Program {{i+1}}</span> --
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-        <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
-            <div class="card">
-                <div class="p-4">
-                    <div class="card-container">
-                        <div class="header">
-                            <h6>Program Class</h6>
-                        </div>
-                        <button class="icons" alt="Edit" mat-menu-item *ngIf="isAdmin && !isInstructor && edit" [routerLink]="['/admin/program/edit-class',aboutData1.id]">
-                            <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                        </button>
-                        <button class="icons" (click)="delete(aboutData1.id)" *ngIf="isAdmin && !isInstructor && isDelete" alt="Delete" mat-menu-item >
-                            <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                        </button>
-                    </div>
-                    <div class="row">
-                        <div class="col-6">
-                            <img class="image-link" src="{{aboutData1?.courseId?.image_link || 'assets/noimage.jpg'}}">
-                          </div>
-                        <div class="col-6">
-                            <div class="row mt-3 mx-auto">
+        <div class="card">
+            <div class="row clearfix p-2">
+                <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="card">
+                        <div class="p-4">
+                            <div class="card-container">
+                                <div class="header">
+                                    <h6>Program Class</h6>
+                                </div>
+                                <button class="icons" alt="Edit" mat-menu-item *ngIf="isAdmin && !isInstructor && edit"
+                                    [routerLink]="['/admin/program/edit-class',aboutData1.id]">
+                                    <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
+                                </button>
+                                <button class="icons" (click)="delete(aboutData1.id)"
+                                    *ngIf="isAdmin && !isInstructor && isDelete" alt="Delete" mat-menu-item>
+                                    <app-feather-icons [icon]="'trash-2'"
+                                        [class]="'tbl-fav-delete'"></app-feather-icons>
+                                </button>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <img class="image-link"
+                                        src="{{aboutData1?.courseId?.image_link || 'assets/noimage.jpg'}}">
+                                </div>
+                                <div class="col-6">
+                                    <div class="row mt-3 mx-auto">
                                         <div class="col-6">
-                                           <h6>Program</h6>
+                                            <h6>Program</h6>
                                         </div>
                                         <div class="col-6">
                                             <p>{{aboutData1?.courseId?.title}}</p>
                                         </div>
-                            </div>
-                            <div class="row mt-3 mx-auto">
-                                <div class="col-6">
-                                    <h6>Program Code</h6>
-                                </div>
-                                <div class="col-6" style="width: 40%;display: flex;">
-                                    <p>{{aboutData1?.courseId?.courseCode}}</p>
-                                </div>
-                            </div>
-                            <div class="row mt-3 mx-auto">
-                                <div class="col-6">
-                                    <h6>{{commonRoles?.INSTRUCTOR_ROLE}}</h6>
-                                </div>
-                                <div class="col-6">
-                                    <p>{{aboutData1.sessions[0]?.instructorId?.name | titlecase}}</p>
-                                </div>
-                            </div>
-                            <div class="row mt-3 mx-auto">
-                                <div class="col-6">
-                                    <h6>Class</h6>
-                                </div>
-                                <!-- <div class="col-6" [ngClass]="getStatusClass(aboutData1.classDeliveryType)">
-                                    <div class="status-container">
-                                        <span class="status-dot"></span>
-                                        <span class="status-text">{{aboutData1.classDeliveryType | titlecase}}</span>
-                                        </div> -->
+                                    </div>
+                                    <div class="row mt-3 mx-auto">
                                         <div class="col-6">
-                                            <h6
-                                      [ngClass]="
+                                            <h6>Program Code</h6>
+                                        </div>
+                                        <div class="col-6" style="width: 40%;display: flex;">
+                                            <p>{{aboutData1?.courseId?.courseCode}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3 mx-auto">
+                                        <div class="col-6">
+                                            <h6>{{commonRoles?.INSTRUCTOR_ROLE}}</h6>
+                                        </div>
+                                        <div class="col-6">
+                                            <p>{{aboutData1.sessions[0]?.instructorId?.name | titlecase}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3 mx-auto">
+                                        <div class="col-6">
+                                            <h6>Class</h6>
+                                        </div>
+                                        <div class="col-6">
+                                            <h6 [ngClass]="
                                       aboutData1.classDeliveryType === 'online'
                                       ? 'badge badge-solid-green'
                                       : aboutData1?.classDeliveryType === 'offline' ? 'badge badge-solid-red' : ''
-                                      "
-                                    >
-                                      <span
-                                        [ngClass]="
+                                      ">
+                                                <span [ngClass]="
                                         aboutData1?.classDeliveryType === 'online'
                                         ? 'status-dot' :
                                         aboutData1?.classDeliveryType === 'offline' ? 'status-red' : ''
-                                        "
-                                      ></span
-                                      >{{ aboutData1.classDeliveryType | titlecase}}
-                                    </h6>
+                                        "></span>{{ aboutData1.classDeliveryType | titlecase}}
+                                            </h6>
                                         </div>
-                                   
-                                <!-- </div> -->
+                                    </div>
+                                </div>
                             </div>
-                            
-                        </div>
-                        </div>
-                       
-                    <!-- </div> -->
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="p-2">
-                                <div class="row pt-2">
-                                    <div class="col-6">
-                                        <h6>Class Type</h6>
-                                    </div>
-                                    <div class="col-6">
-                                        <p>{{aboutData1?.classType == '2'?'Private':'Public'}}</p>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="p-2">
+                                        <div class="row pt-2">
+                                            <div class="col-6">
+                                                <h6>Class Type</h6>
+                                            </div>
+                                            <div class="col-6">
+                                                <p>{{aboutData1?.classType == '2'?'Private':'Public'}}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row pt-2">
+                                            <div class="col-6">
+                                                <h6>Start Date</h6>
+                                            </div>
+                                            <div class="col-6">
+                                                <p>{{aboutData1.sessions[0]?.sessionStartDate | date }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row pt-2">
+                                            <div class="col-6">
+                                                <h6>Minimum {{commonRoles.STUDENT_ROLE}}s</h6>
+                                            </div>
+                                            <div class="col-6">
+                                                <p>{{aboutData1?.minimumEnrollment}}
+                                                <p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="row pt-2">
-                                    <div class="col-6">
-                                        <h6>Start Date</h6>
-                                    </div>
-                                    <div class="col-6">
-                                        <p>{{aboutData1.sessions[0]?.sessionStartDate | date }}</p>
-                                    </div>
-                                </div>
-                                <div class="row pt-2">
-                                    <div class="col-6">
-                                        <h6>Minimum {{commonRoles.STUDENT_ROLE}}s</h6>
-                                    </div>
-                                    <div class="col-6">
-                                        <p>{{aboutData1?.minimumEnrollment}}<p>
-                                    </div>
-                                   
-                                </div>
+                                <div class="col-6">
+                                    <div class="p-2">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <h6>{{commonRoles?.INSTRUCTOR_ROLE}} Cost</h6>
+                                            </div>
+                                            <div class="col-6">
+                                                <p>$ {{aboutData1?.instructorCost}}.00</p>
+                                            </div>
+                                        </div>
+                                        <div class="row pt-2">
+                                            <div class="col-6">
+                                                <h6>End Date</h6>
+                                            </div>
+                                            <div class="col-6">
+                                                <p>{{aboutData1.sessions[0]?.sessionEndDate | date }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row pt-2">
+                                            <div class="col-6">
+                                                <h6>Maximum {{commonRoles.STUDENT_ROLE}}s</h6>
+                                            </div>
+                                            <div class="col-6">
+                                                <p>{{aboutData1?.maximumEnrollment}}</p>
+                                            </div>
+                                        </div>
 
+                                    </div>
+                                </div>
                             </div>
+                            <h2 class="text-end"><span></span></h2>
+                            <p class="m-b-0"></p>
                         </div>
-                        <div class="col-6">
-                            <div class="p-2">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <h6>{{commonRoles?.INSTRUCTOR_ROLE}} Cost</h6>
-                                    </div>
-                                    <div class="col-6">
-                                        <p>$ {{aboutData1?.instructorCost}}.00</p>
-                                    </div>
-                                </div>
-                                <div class="row pt-2">
-                                    <div class="col-6">
-                                        <h6>End Date</h6>
-                                    </div>
-                                    <div class="col-6">
-                                        <p>{{aboutData1.sessions[0]?.sessionEndDate | date }}</p>
-                                    </div>
-                                </div>
-                                <div class="row pt-2">
-                                    <div class="col-6">
-                                        <h6>Maximum {{commonRoles.STUDENT_ROLE}}s</h6>
-                                    </div>
-                                    <div class="col-6">
-                                        <p>{{aboutData1?.maximumEnrollment}}</p>
-                                    </div>
-                                </div>
-
-                            </div>
+                        <div class="col-md-10 m-3">
+                            <button mat-raised-button id="back"
+                                [routerLink]="['/timetable/schedule-class']">Back</button>
                         </div>
                     </div>
-                    <h2 class="text-end"><span></span></h2>
-                    <p class="m-b-0"></p>
                 </div>
-                <div class="col-md-10 m-3">
-                    <button mat-raised-button id="back" [routerLink]="['/timetable/schedule-class']">Back</button>
-                  </div>
             </div>
         </div>
-    </div>
-</div>
-
-        
     </div>
 </section>

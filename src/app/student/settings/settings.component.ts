@@ -1347,7 +1347,6 @@ export class SettingsComponent {
     this.adminService.getUserTypeList({ allRows: true }, userId).subscribe(
       (response: any) => {
         this.userTypeNames = response;
-        console.log('types', this.userTypeNames);
       },
       (error) => {}
     );
@@ -1427,7 +1426,6 @@ export class SettingsComponent {
     this.userService.getDashboardsByCompanyId(companyId).subscribe(
       (data: any) => {
         const dashboards = data.data;
-        console.log('dashboards', dashboards);
         const processedData = dashboards.map(
           (dashboard: { typeName: any; dashboards: any[] }) => {
             return {

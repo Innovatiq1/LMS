@@ -144,24 +144,6 @@ export class ExamQuestionsComponent {
         if(urlPath[urlPath.length-5] != "exam-questions"){
         this.studentClassId=urlPath[urlPath.length-5]
         }
-        // this.assessmentService.getAssignedExamAnswers().subscribe((response)=>{
-        //   console.log("getAssignedExamAnswers response ",response)
-        //   console.log("this getAss==",response.data.docs[0].studentClassId[0]._id)
-
-        // })
-        // this.assessmentService.getLatestExamAnswers().subscribe((response)=>{
-        //   console.log("this is getLatestExamAnswers",response);
-        // })
-        
-        // this.assessmentService.getAssignedExamAnswersByStudentId(this.studentId).subscribe((response)=>{
-        //   console.log("responce data:",response)
-
-        //   console.log("resopnse data is here",response.data.docs[0].studentClassId[0]._id);
-        //   this.studentClassId=response.data.docs[0].studentClassId[0]._id;
-        //   //console.log("resopnse data is here",response);
-
-        // })
-      
         this.assessmentService.getAnswerQuestionById(this.examAssessmentId).subscribe((response) => {
           this.questionList = response?.questions;
           this.timerInSeconds = response?.timer;
@@ -221,7 +203,6 @@ export class ExamQuestionsComponent {
       }
 
       submitAnswers() {
-       // console.log("Submit Answer ",this.studentClassId);
         let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
         const requestBody = {
           studentId: this.studentId,
@@ -244,7 +225,6 @@ export class ExamQuestionsComponent {
               this.updateExamStatus();
             }
           this.answerId = response.response;
-          // this.getAnswerById();
           this.submitFeedback(response.response);
           },
           (error: any) => {
@@ -269,11 +249,7 @@ export class ExamQuestionsComponent {
               icon: "success"
             });
           this.answerId = this.answerAssessmentId;
-          // this.getAnswerById()
           this.submitFeedback(this.answerAssessmentId);
-          // if(this.retake) {
-          //   this.updateRetakes()
-          // }
           },
           (error: any) => {
             console.error('Error:', error);
@@ -284,7 +260,6 @@ export class ExamQuestionsComponent {
       updateExamStatus(): void {
         this.assessmentService.updateExamStatus(this.answerAssessmentId).subscribe(
           () => {
-            console.log('Exam status updated successfully');
           },
           error => {
             console.error('Error updating exam status:', error);

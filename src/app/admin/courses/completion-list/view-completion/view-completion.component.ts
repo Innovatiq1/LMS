@@ -73,10 +73,6 @@ export class ViewCompletionComponent {
     this.showTab = true;
   }
   this.paramStatus =  params['status'];
-      // if(this.courseId){
-      //   this.getProgramByID(this.courseId);
-      // }
-
     });
   }
 
@@ -101,13 +97,6 @@ export class ViewCompletionComponent {
       }
       this.commonRoles = AppConstants
       this.getCompletedClasses();
-      // if (this.courseId) {
-      //   this.activatedRoute.params.subscribe((params: any) => {
-          
-      //     this.courseId = params.id;
-          
-      //   });
-      // }
     }
 
   getCompletedClasses() {
@@ -115,7 +104,6 @@ export class ViewCompletionComponent {
         this.classService
       .getSessionCompletedStudent(userId,this.studentPaginationModel.page, this.studentPaginationModel.limit)
       .subscribe((response: { docs: any; page: any; limit: any; totalDocs: any; }) => {
-        console.log("studentClasses==",response)
         this.completedData = response.docs;
 
       })
@@ -167,7 +155,6 @@ export class ViewCompletionComponent {
               title: 'Success',
               text: 'Verified successfully.',
               icon: 'success',
-              // confirmButtonColor: '#526D82',
             });
             window.history.back();
           }, (error) => {
@@ -175,7 +162,6 @@ export class ViewCompletionComponent {
                   title: 'Error',
                   text: 'Failed to verify. Please try again.',
                   icon: 'error',
-                  // confirmButtonColor: '#526D82',
                 });
               });
         }
@@ -209,7 +195,6 @@ export class ViewCompletionComponent {
               title: 'Success',
               text: 'Course approved successfully.',
               icon: 'success',
-              // confirmButtonColor: '#526D82',
             });
             window.history.back();
           }, (error) => {
@@ -217,7 +202,6 @@ export class ViewCompletionComponent {
                   title: 'Error',
                   text: 'Failed to approve course. Please try again.',
                   icon: 'error',
-                  // confirmButtonColor: '#526D82',
                 });
               });
         }
@@ -250,7 +234,6 @@ export class ViewCompletionComponent {
             title: 'Success',
             text: 'Course Withdraw successfully.',
             icon: 'success',
-            // confirmButtonColor: '#526D82',
           });
           this.getCompletedClasses();
           this._router.navigate(['/admin/courses/student-courses/pending-courses'])
@@ -259,7 +242,6 @@ export class ViewCompletionComponent {
             title: 'Error',
             text: 'Failed to approve course. Please try again.',
             icon: 'error',
-            // confirmButtonColor: '#526D82',
           });
         });
       }
@@ -278,7 +260,6 @@ export class ViewCompletionComponent {
   }
 
   assignExam() {
-    console.log("getting the response dddd=",this.response._id)
     Swal.fire({
       title: 'Are you sure?',
       text: 'Do you want to assign Exam!',
@@ -295,7 +276,6 @@ export class ViewCompletionComponent {
   }
 
   addEmptyRecord(){
-    console.log("getting the response dddd=",this.response._id)
     const studentClassId=this.response._id;
     const studentId = this.response.studentId._id;
     const examAssessmentId = this.response.courseId.exam_assessment;

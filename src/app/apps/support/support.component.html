@@ -19,15 +19,6 @@
                   </div>
                 </div>
               </div>
-              <!-- <div class="col-lg-3 col-sm-6">
-                <div class="info-box7 bg-c-green order-info-box7">
-                  <div class="info-box7-block">
-                    <h4 class="m-b-20">Reply</h4>
-                    <h2 class="text-end"><i class="fas fa-reply float-start"></i><span>865</span></h2>
-                    <p class="m-b-0">21% Higher Then Last Month</p>
-                  </div>
-                </div>
-              </div> -->
               <div class="col-lg-4 col-sm-6">
                 <div class="info-box7 bg-c-yellow order-info-box7">
                   <div class="info-box7-block">
@@ -49,24 +40,10 @@
             </div>
             <div class="table-responsive">
               <table mat-table [dataSource]="dataSource" class="w-100" >
-                <!-- <ng-container matColumnDef="checked">
-                  <th mat-header-cell *matHeaderCellDef width="10%"> # </th>
-                  <td mat-cell *matCellDef="let element">
-                    <mat-checkbox [(ngModel)]="element.checked"></mat-checkbox>
-                  </td>
-                </ng-container> -->
-                <!-- <ng-container matColumnDef="imageUrl">
-                  <th mat-header-cell *matHeaderCellDef width="8%"> User </th>
-                  <td mat-cell *matCellDef="let element" class="table-img"> <img [src]="element.imageUrl" /> </td>
-                </ng-container> -->
                 <ng-container matColumnDef="name">
                   <th mat-header-cell *matHeaderCellDef width="10%"> Opened By </th>
                   <td mat-cell *matCellDef="let element" (click)="view(element.id)" > {{element.messages[0].role}} </td>
                 </ng-container>
-                <!-- <ng-container matColumnDef="email">
-                  <th mat-header-cell *matHeaderCellDef> Email </th>
-                  <td mat-cell *matCellDef="let element"> {{element.email}} </td>
-                </ng-container> -->
                 <ng-container matColumnDef="ticket">
                   <th mat-header-cell *matHeaderCellDef width="8%"> Tickets </th>
                   <td mat-cell *matCellDef="let element" (click)="view(element.id)"> {{element.messages[0].text}} </td>
@@ -94,33 +71,16 @@
                     </div>
                   </td>
                 </ng-container>
-                <!-- <ng-container matColumnDef="assignTo">
-                  <th mat-header-cell *matHeaderCellDef width="10%"> Assign To </th>
-                  <td mat-cell *matCellDef="let element"> {{element.assignTo}} </td>
-                </ng-container> -->
                 <ng-container matColumnDef="date">
                   <th mat-header-cell *matHeaderCellDef width="10%"> Date </th>
                   <td mat-cell *matCellDef="let element" (click)="view(element.id)"> {{element.messages[0].date | date}} </td>
                 </ng-container>
-                <!-- <ng-container matColumnDef="action">
-                  <th mat-header-cell *matHeaderCellDef width="15%"> Actions </th>
-                  <td mat-cell *matCellDef="let element">
-                    <button mat-icon-button class="col-grey" (click)="view(element.id)">
-                      <app-feather-icons [icon]="'eye'" [class]="'tbl-fav-view'"></app-feather-icons>
-                    </button>
-                    <button mat-icon-button class="col-red" (click)="delete(element.id)">
-                      <mat-icon>delete_outline</mat-icon>
-                    </button>
-                  </td>
-                </ng-container> -->
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"  [style.cursor]="'pointer'"></tr>
               </table>
               <mat-paginator #paginator [length]="totalItems" (page)="pageSizeChange($event)"
               [pageSizeOptions]="pageSizeArr" aria-label="select pagination option">
             </mat-paginator>
-              <!-- <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
-              </mat-paginator> -->
             </div>
           </div>
         </div>

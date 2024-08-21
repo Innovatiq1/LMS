@@ -43,15 +43,6 @@
   .buttons {
       display: flex;
   }
-  // .selected {
-  //   background: linear-gradient(to right, rgb(97, 156, 137), rgb(25, 80, 33));
-  //   color: #fdfdfd;
-  //   border-radius: 5px 5px 5px 5px;
-  //   border-style: none;
-  //   padding-top: 4px;
-  //   padding-left: 5x;
-  // }
-  
   .border-class {
       margin: 3px;
   }
@@ -147,22 +138,15 @@
     border-radius: 10px;
     overflow-y: auto !important;
 }
-// .fluid-container{
-//     height: 500px;
-// }
 .table-wrapper{
     max-height: 260px; 
     overflow: hidden; 
     margin-bottom: 40px;
     margin-top: 40px;
   }
-//   td {
-//     padding: 8px;
-// }
  td:nth-child(3), td:nth-child(4), .price {
     text-align: right !important;
     padding-left: 0;
-    // padding-right: 45px;
 }
 
   

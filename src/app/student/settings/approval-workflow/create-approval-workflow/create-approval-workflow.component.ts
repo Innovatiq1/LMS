@@ -84,10 +84,8 @@ export class CreateApprovalWorkflowComponent implements OnInit{
     }
 
   submit(){
-    console.log('update', this.approvalForm);
     if (this.approvalForm.valid) {
       const approvalData = this.approvalForm.value;
-      console.log('updateddddd', this.approvalForm.valid);
       const payload = {
         title: approvalData?.title,
         level: approvalData?.level, 
@@ -120,10 +118,8 @@ export class CreateApprovalWorkflowComponent implements OnInit{
     }
   }
   update(){
-    console.log('update', this.approvalForm);
     if (this.approvalForm.valid) {
       const approvalData = this.approvalForm.value;
-      console.log('updateddddd', this.approvalForm.valid);
       const payload = {
         title: approvalData?.title,
         level: approvalData?.level, 

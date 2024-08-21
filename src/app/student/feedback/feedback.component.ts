@@ -222,7 +222,6 @@ export class FeedbackComponent {
 
         },
         (err) => {
-            console.log(err);
         }
     );
 }
@@ -270,49 +269,13 @@ skipCallback(){
       this.selectedOptions.push({ questionText: questionId, selectedOption: selectedOption});
     }
   }
-
-  // submit(){
-  //   // this.feedbackForm.patchValue({
-  //   //   question5: this.selectedIndex,
-  //   //   question6:this.question6
-  //   // });
-  //   this.selectedOptions.studentFirstName = this.userDetails.user.name;
-  //   this.selectedOptions.studentLastName = this.userDetails.user.last_name;
-
-  //   this.surveyService.addSurveyBuilder(this.selectedOptions).subscribe(
-  //     (response) => {
-  //       Swal.fire(
-  //         'Successful',
-  //         'Feedback submitted succesfully',
-  //         'success'
-  //       ).then((r) => {
-  //         this.feedbackForm.reset();
-  //         });
-  //     },
-  //     (err) => {
-  //       console.log(err);
-  //     }
-  //   );
-
-  // }
-
   public setRow(_index: number) {
     this.selectedIndex = _index;
   }
 
-
-  // selectcourseList(){
-  //   this.selectcourse = true;
-  // }
-
-  // selectprogramList(){
-  //   this.selectcourse = false;
-  // }
-
   getProgramList() {
     this.courseService.getCourseProgram({status:'active'}).subscribe(
       (response: any) => {
-        console.log("page",response)
         this.programData = response.docs;
       },
       (error) => {

@@ -133,7 +133,6 @@ export class EditCategoriesComponent {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subcategories.removeAt(index);
-        console.log('deleteSubCategory', sub.value.sub_id);
         const id = sub.value.sub_id;
         this.deleteSubCategory(id);
         Swal.fire({
@@ -146,7 +145,6 @@ export class EditCategoriesComponent {
   }
   createSubCategory(): void {
     this.isSubmitted = true;
-    console.log('createSubCategory', this.subCategoryForm);
     if (this.subCategoryForm.invalid) {
       this.validations = true;
       return;

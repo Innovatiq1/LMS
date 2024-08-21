@@ -37,11 +37,9 @@ export class ActiveCoursesComponent {
     'code',
     'Fee Type',
     'Main Category',
-    // 'creator',
     'Days',
     'Training Hours',
     'Vendor',
-    // 'Fees',
     'startDate',
     'endDate',
     'Fees',
@@ -167,48 +165,7 @@ export class ActiveCoursesComponent {
       queryParams: { id: id, status: 'approved' },
     });
   }
-  // delete(id: string) {
-  //   this.classService.getClassList({ courseId: id }).subscribe((classList: any) => {
-  //     const matchingClasses = classList.docs.filter((classItem: any) => {
-  //       return classItem.courseId && classItem.courseId.id === id;
-  //     });
-  //     if (matchingClasses.length > 0) {
-  //       Swal.fire({
-  //         title: 'Error',
-  //         text: 'Classes have been registered with this course. Cannot delete.',
-  //         icon: 'error',
-  //       });
-  //       return;
-  //     }
-  //     Swal.fire({
-  //       title: "Confirm Deletion",
-  //       text: "Are you sure you want to delete this  Course?",
-  //       icon: "warning",
-  //       showCancelButton: true,
-  //       confirmButtonColor: "#d33",
-  //       cancelButtonColor: "#3085d6",
-  //       confirmButtonText: "Delete",
-  //       cancelButtonText: "Cancel",
-  //     }).then((result) => {
-  //       if (result.isConfirmed) {
-  //     this._courseService.deleteCourse(id).subscribe(() => {
-  //       this.getAllCourse();
-  //       Swal.fire({
-  //         title: 'Success',
-  //         text: 'Course deleted successfully.',
-  //         icon: 'success',
-  //       });
-  //     });
-  //   }
-  //   });
-
-  // });
-
-  // }
-
-  // export table data in excel file
   exportExcel() {
-    // key name with space add in brackets
     const exportData: Partial<TableElement>[] = this.courseData.map(
       (x: any) => ({
         'Course': x.title,
@@ -243,8 +200,6 @@ export class ActiveCoursesComponent {
         'Payment',
         'Start Date   ',
         'End Date    ',
-        
-        
       ],
     ];
     const data = this.courseData.map((x: any) => [
@@ -260,12 +215,7 @@ export class ActiveCoursesComponent {
       formatDate(new Date(x.sessionEndDate), 'yyyy-MM-dd', 'en') || '',
       
     ]);
-    //const columnWidths = [60, 80, 40];
     const columnWidths = [20, 20, 20, 20, 20, 20, 20, 20, 20, 20];
-
-    
-
-    // Generate the table using jspdf-autotable
     (doc as any).autoTable({
       head: headers,
       body: data,
@@ -286,8 +236,6 @@ export class ActiveCoursesComponent {
           const searchList = item.title.toLowerCase();
           return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1;
         }
-
-        // item.classId.courseId?.title.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     } else {
       this.getAllCourse();
@@ -314,8 +262,6 @@ export class ActiveCoursesComponent {
           const index: number = this.courseData.renderedData.findIndex(
             (d: MainCategory) => d === item
           );
-          
-          // this.exampleDatabase?.dataChange.value.splice(index, 1);
           this.refreshTable();
           this.selection = new SelectionModel<MainCategory>(true, []);
         });
@@ -323,16 +269,8 @@ export class ActiveCoursesComponent {
           title: 'Success',
           text: 'Record Deleted Successfully...!!!',
           icon: 'success',
-          // confirmButtonColor: '#526D82',
         });
       }
     });
-
-    // this.showNotification(
-    //   'snackbar-danger',
-    //   totalSelect + ' Record Delete Successfully...!!!',
-    //   'bottom',
-    //   'center'
-    // );
   }
 }

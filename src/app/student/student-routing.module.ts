@@ -1,9 +1,6 @@
 import { Page404Component } from './../authentication/page404/page404.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { HomeworkComponent } from './homework/homework.component';
-import { LeaveRequestComponent } from './leave-request/leave-request.component';
 import { SettingsComponent } from './settings/settings.component';
 import { CourseComponent } from './course/course.component';
 import { ViewCourseComponent } from './view-course/view-course.component';
@@ -14,8 +11,6 @@ import { FeedbackComponent } from './feedback/feedback.component';
 
 import { SucessCourseComponent } from './sucess-course/sucess-course.component';
 import { FailureCourseComponent } from './failure-course/failure-course.component';
-// import { ExamsSheduleComponent } from './exams-shedule/exams-shedule.component';
-// import { ProgramSheduleComponent } from './program-shedule/program-shedule.component';
 import { SuccessProgramComponent } from './success-program/success-program.component';
 import { FailureProgramComponent } from './failure-program/failure-program.component';
 import { QuestionComponent } from './question/question.component';
@@ -153,12 +148,6 @@ const routes: Routes = [
     path: 'view-program/:id',
     component: ViewProgramComponent,
   },
-
-  {
-    path: 'schedule/homework',
-    component: HomeworkComponent,
-  },
-
   {
     path: 'feedback/courses/:classId/:studentId/:courseId',
     component: FeedbackComponent,
@@ -172,14 +161,6 @@ const routes: Routes = [
     path: 'feedback/programs',
     component: FeedbackComponent,
   },
-  // {
-  //   path: 'exams/courses',
-  //   component: ExamsSheduleComponent
-  // },
-  // {
-  //   path: 'exams/programs',
-  //   component: ProgramSheduleComponent
-  // },
   {
     path: 'questions/:id/:id/:id',
     component: QuestionComponent,

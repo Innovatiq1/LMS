@@ -50,7 +50,6 @@ export class SurveyService extends UnsubscribeOnDestroyAdapter {
     return params;
   }
   get data(): SurveyBuilderModel[] {
-    // console.log(this.dataChange.value)
     return this.dataChange.value;
   }
   getDialogData() {
@@ -68,7 +67,6 @@ export class SurveyService extends UnsubscribeOnDestroyAdapter {
       },
       error: (error: HttpErrorResponse) => {
         this.isTblLoading = false;
-        console.log(error.name + ' ' + error.message);
       },
     });
   }
