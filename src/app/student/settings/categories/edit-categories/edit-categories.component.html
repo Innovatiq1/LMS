@@ -9,7 +9,6 @@
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                 <div class="card">
                     <div class="header">
-                        <!-- <h2>Create Course</h2> -->
 
                     </div>
                     <form [formGroup]="mainCategoryForm" (ngSubmit)="createMainCategory()">
@@ -18,7 +17,6 @@
                                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
                                     <label>Main Category <span class="mandatory">&nbsp;*</span></label>
                                     <mat-form-field class="example-full-width mt-2" appearance="outline">
-                                        <!-- <mat-label>Course Name</mat-label> -->
 
                                         <input matInput type="text" id="category_name" formControlName="category_name"
                                             class="form-control" required>
@@ -28,9 +26,6 @@
                                               <mat-error  *ngIf="mainCategoryForm.get('category_name')?.hasError('pattern') && mainCategoryForm.get('category_name')?.touched">
                                                 Enter a valid Main Category
                                                </mat-error>
-                                        <!-- <mat-error *ngIf="mainCategoryForm.get('category_name')?.hasError('required')">
-                                            Enter Main Category
-                                        </mat-error> -->
                                     </mat-form-field>
                                 </div>
                                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
@@ -46,7 +41,6 @@
                           <div class="row cat" formArrayName="subcategories">
                             <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12" *ngFor="let subcategory of subcategories.controls; let i = index"
                               [formGroupName]="i">
-                              <!-- <label for="subcategory_name_{{i}}">Sub Category <span class="mandatory">&nbsp;*</span></label> -->
                               <div class="d-flex justify-content-between align-items-start">
                                 <label for="subcategory_name_{{i}}">Sub Category <span class="mandatory">&nbsp;*</span></label>
                                 <app-feather-icons (click)="deleteSubCategoryField(i,subcategory)"
@@ -76,38 +70,6 @@
                           </div>
                         </div>
                       </form>
-                    <!-- <form [formGroup]="subCategoryForm" (ngSubmit)="createSubCategory()">
-                        <div class="body">
-                            <input type="hidden" formControlName="main_category_id" [value]="mainCategoryId">
-                            <div class="row cat" formArrayName="subcategories">
-                                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12"
-                                    *ngFor="let subcategory of subcategories.controls; let i = index"
-                                    [formGroupName]="i">
-                                    <label for="subcategory_name_{{i}}">Sub Category Name <span class="mandatory">&nbsp;*</span></label>
-                                    <mat-form-field class="example-full-width mb-3" appearance="outline">
-                                        <input matInput type="text" id="subcategory_name_{{i}}"
-                                            formControlName="category_name" required>
-                                            <mat-error *ngIf="subCategoryForm.get('category_name')?.hasError('required')">
-                                                Enter Sub Category
-                                              </mat-error>
-                                              <mat-error  *ngIf="subCategoryForm.get('category_name')?.hasError('pattern') && subCategoryForm.get('category_name')?.touched">
-                                                Enter a valid Sub Category
-                                               </mat-error>
-                                        
-                                    </mat-form-field>
-                                </div>
-                                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
-                                    <button mat-button type="submit" class="btn crt-color">Update Sub Categories</button>
-                                </div>
-                                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
-                                <button class="btn sub"  (click)="addSubCategoryField()" >
-                                    <img src="/assets/Close.svg" alt="plus" style="display: inline;margin-top: -3px;">
-                                    Add Sub Categories</button>
-                                    </div>
-                            </div>
-                        </div>
-                    </form> -->
-
                     <div class="row body">
                         <div class="col-md-8">
                             <button mat-raised-button id="back" [routerLink]="['/student/settings/configuration/categories/view-categories/'+categoryId]">Back</button>

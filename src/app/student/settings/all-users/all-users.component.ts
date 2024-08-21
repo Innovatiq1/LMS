@@ -24,7 +24,6 @@ import { AuthenService } from '@core/service/authen.service';
 export class AllUsersComponent {
 
   displayedColumns: string[] = [
-    // 'select',
     'img',
     'Name',
     'User Type',
@@ -33,7 +32,6 @@ export class AllUsersComponent {
     'Mobile',
     'Email',
     'Status',
-    // 'Actions'
   ];
   breadscrums = [
     {
@@ -126,7 +124,6 @@ pageSizeChange($event: any) {
 private refreshTable() {
   this.paginator._changePageSize(this.paginator.pageSize);
 }
-/** Whether the number of selected elements matches the total number of rows. */
 isAllSelected() {
   const numSelected = this.selection.selected.length;
   const numRows = this.dataSource.length;
@@ -180,7 +177,6 @@ removeSelectedRows() {
         title: 'Success',
         text: 'Record Deleted Successfully...!!!',
         icon: 'success',
-        // confirmButtonColor: '#526D82',
       });
 }
 });
@@ -208,7 +204,6 @@ addNew(type: any) {
   });
 }
 exportExcel() {
-  //k//ey name with space add in brackets
  const exportData: Partial<TableElement>[] = this.dataSource.map(
    (user: any) => ({
      'Name': user.name,
@@ -235,13 +230,7 @@ generatePdf() {
      user.email,
      user.Active ? 'Active': 'Inactive'
   ] );
-  //const columnWidths = [60, 80, 40];
   const columnWidths = [20, 20, 20, 20, 20, 20, 20, 20, 20, 20];
-
-  // Add a page to the document (optional)
-  //doc.addPage();
-
-  // Generate the table using jspdf-autotable
   (doc as any).autoTable({
     head: headers,
     body: data,
@@ -254,7 +243,6 @@ generatePdf() {
 
   });
 
-  // Save or open the PDF
   doc.save('AllUsers-list.pdf');
 }
 

@@ -26,10 +26,8 @@ export class SBannerCreateListComponent {
   bannerFor: string;
   commonRoles: any;
   constructor(private bannerService :BannersService,private fb: FormBuilder, private router: Router,) {
-    // constructor
     this.instructorBanner= this.fb.group({
       bannerFor: new FormControl('', [Validators.required,]),
-      //'isActivated': ['true',Validators.required],
       imagePath: new FormControl('', [Validators.required,]),
 
 

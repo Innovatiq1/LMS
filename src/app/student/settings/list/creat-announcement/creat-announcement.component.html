@@ -36,15 +36,6 @@
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <mat-select multiple formControlName="announcementFor" required>
                       <mat-option value={{users.typeName}} [disabled]="viewUrl == true" *ngFor="let users of userTypeNames">{{users.typeName}}</mat-option>
-                      <!-- <mat-option value="Student" [disabled]="viewUrl == true" >Student</mat-option>
-                      <mat-option value="Instructor" [disabled]="viewUrl == true">Instructor</mat-option>
-                      <mat-option value="Course Manager" [disabled]="viewUrl == true">Course Manager</mat-option>
-                      <mat-option value="Training Administrator" [disabled]="viewUrl == true">Training Administrator</mat-option>
-                      <mat-option value="Training Manager" [disabled]="viewUrl == true">Training Co-ordinator</mat-option>
-                      <mat-option value="Head of Department" [disabled]="viewUrl == true">Head of Department</mat-option>
-                      <mat-option value="Supervisior" [disabled]="viewUrl == true">Supervisior</mat-option>
-                      <mat-option value="Program Manager" [disabled]="viewUrl == true">Program Manager</mat-option>
-                      <mat-option value="Program Co-ordinator" [disabled]="viewUrl == true">Program Co-ordinator</mat-option> -->
                     </mat-select>
                     <mat-error
                       *ngIf="announcementForm.get('announcementFor')?.hasError('required') ||announcementForm.get('announcementFor')?.touched">
@@ -57,35 +48,9 @@
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-5" *ngIf="labelStatusCheck('Course Detailed Description')">
                   <label>Course Detailed Description</label>
                   <angular-editor placeholder="Enter text..." formControlName="details" [config]="config"></angular-editor>
-                  <!-- <mat-form-field class="example-full-width mb-3" appearance="outline">
-                                    <ckeditor [editor]="Editor" ></ckeditor>
-                                    <input matInput formControlName="course_detailed_description" [readonly]="isInputReadonly()">
-                                    <mat-error  *ngIf="firstFormGroup.get('course_detailed_description')?.hasError('maxLength') && firstFormGroup.get('course_detailed_description')?.touched">
-
-                                    Enter Course Detailed Description
-                                  </mat-error>
-                                  </mat-form-field> -->
                 </div>
 
               </div>
-
-
-              <!-- <div class="row">
-                <label for="" class="form-label">Announcement For</label>
-                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2">
-
-                  <section class="example-section">
-                    <mat-checkbox class="example-margin" formControlName="forStudents"><span class="fs-6">To
-                        Students</span></mat-checkbox>
-                  </section>
-                </div>
-                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2">
-                  <section class="example-section">
-                    <mat-checkbox class="example-margin" formControlName="forTrianers"><span class="fs-6">To
-                        Instructor</span></mat-checkbox>
-                  </section>
-                </div>
-              </div> -->
               <div class="row">
                 <div class="col-md-10">
                   <button mat-raised-button  id="back" (click)="cancel()">Back</button>
@@ -96,22 +61,7 @@
                 </div>
               </div>
             </div>
-
           </form>
-          <!-- <div class="row m-3">
-            <div class="col-md-9">
-              <button mat-raised-button type="button" id="back" [routerLink]="['/admin/announcement/list']">Back</button>
-            </div>
-            <div class="col-md-2">
-
-              <button *ngIf="!editUrl" mat-raised-button type="button" color="primary" id="submit"
-                (click)="saveAnnouncement()">Create</button>
-                <button mat-raised-button *ngIf="editUrl" type="button" color="primary" id="submit"
-                (click)="saveAnnouncement()">Update</button>
-
-            </div>
-          </div> -->
-         
         </div>
       </div>
     </div>

@@ -48,7 +48,6 @@ export class InviteUserRejectComponent {
 
   toggle(_data: any){
     this.edit =!this.edit;
-    // this._id = _data._id;
     this.emailTemplateForm.patchValue({
       email_subject: _data.email_subject,
       email_top_header_text:_data.email_top_header_text,
@@ -75,7 +74,6 @@ export class InviteUserRejectComponent {
       email_top_header_text: pageContent?.email_top_header_text,
       email_content: pageContent?.email_content,
     });
-    // this.markAllTouched();
   }
 
   createForm() {

@@ -109,7 +109,6 @@ export class CreateUserTypeComponent {
         (response: any) => {
 
           this.typesList = response;
-          console.log("typelist", this.typesList)
           this. data = this.typesList.find((id: any) => id._id === this.paramId);
           if (this.data) {
             this.type = this.data.typeName;
@@ -123,10 +122,6 @@ export class CreateUserTypeComponent {
                 ],
               ],
             });
-
-            // this.data.menuItems.map((res: { id: any; checked: any }) => {
-            //   this.changeMenuChecked(res.checked, res.id);
-            // });
             this.populateCheckbox(this.data.menuItems)
             this.populateSettingsMenuCheckbox(this.data.settingsMenuItems)
           }
@@ -440,41 +435,16 @@ export class CreateUserTypeComponent {
           isAction: true,
         }));
       }
-      // if (v?.actions && v?.actions?.length) {
-      //   const actionChild = v?.actions.map((action: any) => {
-      //     const actionChecked = this.checkChecked(
-      //       menu_item?.children,
-      //       `${v.id}__${action.id}`
-      //     );
-      //     return {
-      //       title: action.action_name,
-      //       id: `${v.id}__${action.id}`,
-      //       isAction: true,
-      //       isLeaf: true,
-      //       checked: actionChecked?.checked || false,
-      //       indeterminate: actionChecked?.indeterminate || false,
-      //       icon: actionChecked?.iconsrc,
-      //       class: actionChecked?.class,
-      //     };
-      //   });
-      //   res = {
-      //     ...res,
-      //     children: actionChild,
-      //   };
-      // }
       return res;
     });
   }
 
   changeMenuChecked(checked?: any, id?: any) {
-    console.log("check",checked)
-    console.log("id",id)
     this.dataSourceArray = this.setChecked(this.dataSourceArray, {
       menu_id: id,
       checked,
     });
     const indeterminate = this.dataSourceArray.some((v) => !v.checked);
-    console.log("indeter", indeterminate)
     this.allMenus = {
       checked: indeterminate ? false : checked,
       indeterminate,

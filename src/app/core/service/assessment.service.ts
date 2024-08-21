@@ -94,6 +94,12 @@ import { ApiResponse } from '@core/models/general.response';
         params: this.buildParams(filter),
       });
     }
+    getTutorialQuestionJsonV2( filter?: Partial<AssessmentQuestionsPaginationModel>): Observable<ApiResponse> {
+      const apiUrl = `${this.defaultUrl}admin/tutorial-answers/v2`;
+      return this.http.get<any>(apiUrl, {
+        params: this.buildParams(filter),
+      });
+    }
 
     getAssessmentAnswerCount(studentId:string, courseId:string): Observable<ApiResponse> {
       const apiUrl = `${this.defaultUrl}admin/assesment-answers/count`;
@@ -206,7 +212,7 @@ import { ApiResponse } from '@core/models/general.response';
     }
 
     deleteTutorial(id: string): Observable<void> {
-      const url = `${this.defaultUrl}admin/assesment-answers/${id}`;
+      const url = `${this.defaultUrl}admin/tutorial-answers/${id}`;
       return this.http.delete<void>(url);
     }
 

@@ -69,8 +69,6 @@ export class TraineesDashboardComponent {
   completedCourses: any;
 
 ngOnInit(): void {
-  // this.studentBarChart();
-  // this.studentLineChart();
   this.studentPieChart();
 }
 
@@ -84,7 +82,6 @@ ngOnInit(): void {
         height: 330,
       },
       labels: ['Registered Courses', 'Approved Courses', 'Completed Courses'],
-      // colors: ['#25B9C1', '#4B4BCB', '#EA9022', '#9E9E9E'],
      
       responsive: [
         {
@@ -104,10 +101,6 @@ ngOnInit(): void {
         name: 'Courses',
         data: [20, 50, 30]
       },
-      // {
-      //   name: 'Programs',
-      //   data: [this.registeredPrograms, this.approvedPrograms, this.completedPrograms]
-      // }
     ],
       chart: {
         type: 'bar',
@@ -141,10 +134,6 @@ ngOnInit(): void {
         name: 'Courses',
         data: [this.registeredCourses, this.approvedCourses, this.completedCourses]
       }, 
-      // {
-      //   name: 'Programs',
-      //   data: [this.registeredPrograms, this.approvedPrograms, this.completedPrograms]
-      // }
     ],
       chart: {
         type: 'line',

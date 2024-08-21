@@ -12,7 +12,6 @@ export class InvoiceComponent {
     @Inject(MAT_DIALOG_DATA) public data: any
     
   ) {
-    console.log("PV", data)
   }
 
   submit() {
@@ -34,7 +33,6 @@ export class InvoiceComponent {
       this.dialogRef.close(this.data); 
 
   
-      // Send the calculated values back to the parent component
     }
   }
 

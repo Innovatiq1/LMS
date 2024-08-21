@@ -21,18 +21,6 @@
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="card">
                   <div class="materialTableHeader">
-                    <!-- <div class="left">
-                      <ul class="header-buttons-left ms-0">
-                        <li class="tbl-title">
-                          <h2>All Students</h2>
-                        </li>
-                        <li class="tbl-search-box">
-                          <label for="search-input"><i class="material-icons search-icon">search</i></label>
-                          <input placeholder="Search" type="text" #filter class="browser-default search-field"
-                            aria-label="Search box">
-                        </li>
-                      </ul>
-                    </div> -->
                     <div class="right">
                       <ul class="tbl-export-btn">
                         <li>
@@ -62,18 +50,8 @@
                             >
                               Create
                             </button>
-                            <!-- <button mat-mini-fab color="primary" (click)="addNew()">
-                              <mat-icon class="col-white">add</mat-icon>
-                            </button> -->
                           </div>
                         </li>
-                        <!--<li class="tbl-header-btn">
-                          <div class="m-l-10" matTooltip="REFRESH">
-                            <button mat-mini-fab color="primary" (click)="refresh()">
-                              <mat-icon class="col-white">refresh</mat-icon>
-                            </button>
-                          </div>
-                        </li> -->
                         <li class="tbl-header-btn">
                           <div
                             class="m-l-10"
@@ -118,38 +96,6 @@
                         matSort
                         class="mat-cell advance-table"
                       >
-                        <!-- Checkbox Column -->
-                        <!-- <ng-container matColumnDef="select">
-                          <mat-header-cell
-                            *matHeaderCellDef
-                            [ngClass]="'tbl-col-width-per-3'"
-                          >
-                            <mat-checkbox
-                              (change)="$event ? masterToggle() : null"
-                              [checked]="
-                                selection.hasValue() && isAllSelected()
-                              "
-                              [indeterminate]="
-                                selection.hasValue() && !isAllSelected()
-                              "
-                              [ngClass]="'tbl-checkbox'"
-                            >
-                            </mat-checkbox>
-                          </mat-header-cell>
-                          <mat-cell
-                            *matCellDef="let row"
-                            [ngClass]="'tbl-col-width-per-3'"
-                          >
-                            <mat-checkbox
-                              (click)="$event.stopPropagation()"
-                              (change)="$event ? selection.toggle(row) : null"
-                              [checked]="selection.isSelected(row)"
-                              [ngClass]="'tbl-checkbox'"
-                            >
-                            </mat-checkbox>
-                          </mat-cell>
-                        </ng-container> -->
-                        <!-- ID Column -->
                         <ng-container matColumnDef="id">
                           <mat-header-cell *matHeaderCellDef mat-sort-header
                             >Id
@@ -178,13 +124,6 @@
                             />
                           </mat-cell>
                         </ng-container>
-                        <!-- <ng-container matColumnDef="rollNo">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header>Roll No
-                          </mat-header-cell>
-                          <mat-cell *matCellDef="let row"  (click)="editCall(row)" (contextmenu)="onContextMenu($event, row)"> <span
-                              class="mobile-label">Roll No:</span>{{row?.rollNo}}
-                          </mat-cell>
-                        </ng-container> -->
                         <ng-container matColumnDef="name">
                           <mat-header-cell *matHeaderCellDef mat-sort-header
                             >Name
@@ -281,25 +220,9 @@
                               alt="Email Icon"
                               class="email-icon"
                             />
-                            <!-- Replace "email-icon.png" with the filename of your PNG icon -->
                             <span class="email-address"> {{ row.email }}</span>
                           </mat-cell>
                         </ng-container>
-                        <!-- <ng-container matColumnDef="email">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header>Email
-                          </mat-header-cell>
-                          <mat-cell *matCellDef="let row"  (click)="editCall(row)" (contextmenu)="onContextMenu($event, row)"><span
-                              class="mobile-label">Email:</span> {{row?.email}}
-                          </mat-cell>
-                        </ng-container> -->
-                        <!-- <ng-container matColumnDef="date">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header>Admission
-                            Date
-                          </mat-header-cell>
-                          <mat-cell *matCellDef="let row"  (click)="editCall(row)" (contextmenu)="onContextMenu($event, row)">
-                            <span class="mobile-label">Admission Date:</span>{{row?.joiningDate| date: 'MM/dd/yyyy'}}
-                          </mat-cell>
-                        </ng-container> -->
                         <ng-container matColumnDef="status">
                           <mat-header-cell *matHeaderCellDef mat-sort-header
                             >Status
@@ -322,64 +245,11 @@
                                 "
                               ></span>
                               {{ row.Active ? "Active" : "Inactive" }}
-                              <!-- {{row?.status?.Active == true?"Active":"Inactive"}} -->
                             </span>
                           </mat-cell>
                         </ng-container>
-                        <!-- actions -->
-                        <!-- <ng-container matColumnDef="actions">
-                          <mat-header-cell class="pr-0" *matHeaderCellDef>Actions
-                          </mat-header-cell>
-                          <!-- <mat-cell *matCellDef="let row; let i=index;" class="pr-0">
-                            <button mat-icon-button (click)="$event.stopPropagation()" (click)="editCall(row)"
-                              class="tbl-action-btn">
-                              <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                            </button>
-                            <button mat-icon-button (click)="$event.stopPropagation()" (click)="deleteItem(row)"
-                              class="tbl-action-btn">
-                              <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                            </button>
-                          </mat-cell> --
-                          <mat-cell *matCellDef="let row" class="pr-0">
-                            <button mat-button [matMenuTriggerFor]="menu" >
-                              <svg class="dropdown-toggle border rounded-circle" data-bs-toggle="dropdown" aria-expanded="false"
-                              xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                              class="bi bi-three-dots border rounded-circle bg" viewBox="0 0 16 16">
-                              <path
-                                d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
-                            </svg>
-
-                            </button>
-
-
-
-                                    <mat-menu #menu="matMenu" xPosition="before">
-                                      <!-- <button mat-menu-item [routerLink]="['/admin/courses/view-course-kit/',row.id]">
-                                        <app-feather-icons [icon]="'eye'" [class]="'tbl-fav-view'"></app-feather-icons>
-                                        <span class="menu-text">View</span>
-                                      </button> --
-                                      <button mat-menu-item (click)="editCall(row)" >
-                                        <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                                        <span class="menu-text px-3">Edit</span>
-                                      </button>
-                                      <button mat-menu-item  (click)="deleteItem(row)" class="align-items-center">
-                                        <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                                        <span class="menu-text px-3">Delete</span>
-                                      </button>
-                                      <div *ngIf="!row?.isLogin">
-                                      <button mat-menu-item  (click)="confirmItem(row)" class="align-items-center">
-                                        <img class="img-w" src="/assets/approve.svg" alt="approve">
-
-                                        <!-- <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons> --
-                                        <span class="menu-text px-3">Confirm</span>
-                                      </button>
-                                    </div>
-                                    </mat-menu>
-                          </mat-cell>
-                        </ng-container> -->
                         <mat-header-row *matHeaderRowDef="displayedColumns">
                         </mat-header-row>
-                        <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
                         <mat-row
                           *matRowDef="let row; columns: displayedColumns"
                           [style.cursor]="'pointer'"
@@ -387,7 +257,6 @@
                         >
                         </mat-row>
                       </table>
-                      <!-- Loading spinner -->
                       <div
                         *ngIf="exampleDatabase?.isTblLoading"
                         class="tbl-spinner"
@@ -399,7 +268,6 @@
                         >
                         </mat-progress-spinner>
                       </div>
-                      <!-- context menu start -->
                       <div
                         style="visibility: hidden; position: fixed"
                         [style.left]="contextMenuPosition.x"
@@ -451,11 +319,6 @@
                           <span>Item 3</span>
                         </button>
                       </mat-menu>
-                      <!-- context menu end -->
-                      <!-- <div *ngIf="!exampleDatabase?.isTblLoading" class="no-results"
-                        [style.display]="dataSource.renderedData.length === 0 ? '' : 'none'">
-                        No results
-                      </div> -->
                       <mat-paginator
                         #paginator
                         [length]="dataSource.filteredData.length"
@@ -485,7 +348,6 @@
                   style="height: 220px; margin-top: 20px; cursor: pointer"
                   (click)="aboutStudent(data.id)"
                 >
-                  <!-- <div class="m-b-20"> -->
                   <div class="contact-grid">
                     <div class="row">
                       <div class="col-5">
@@ -547,19 +409,8 @@
                       <div class="col-5">
                         {{ data.country_name | titlecase }}
                       </div>
-                      <!-- <div class="col-7">
-                        {{data?.mobile}}
-                      </div> -->
                     </div>
-                    <!-- <div>
-                        <span class="phone">
-                          <i class="material-icons">phone</i>{{data.mobile}}</span>
-                      </div> -->
-                    <!-- <div class="profile-userbuttons">
-                        <button mat-flat-button color="primary" (click)="aboutStudent(data.id)">Read More</button>
-                      </div> -->
                   </div>
-                  <!-- </div> -->
                 </div>
               </div>
               <mat-paginator

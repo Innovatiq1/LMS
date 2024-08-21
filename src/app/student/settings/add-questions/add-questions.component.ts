@@ -87,16 +87,13 @@ addQuestion() {
 addOption(questionIndex: number) {
   const options = this.getOptions(questionIndex);
   options.push(this.createOption());
-  // options.push(this.createOption());
 }
 
 createQuestion(): FormGroup {
   return this.formBuilder.group({
-    // name: ['', Validators.required],
     questionText: ['', Validators.required],
     options: this.formBuilder.array([
       this.createOption(),
-      // this.createOption()
     ])
   });
 }
@@ -104,7 +101,7 @@ createQuestion(): FormGroup {
 createOption(): FormGroup {
   return this.formBuilder.group({
     text: '',
-    correct: false // Default to false
+    correct: false
   });
 }
 

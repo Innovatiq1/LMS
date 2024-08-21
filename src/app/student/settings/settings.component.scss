@@ -2,15 +2,10 @@
   border: 1px dashed #7c7db3;
   border-radius: 15px;
   position: relative;
-  // max-width: 100%;
   margin-top: 5px;
-  // padding: 26px 20px 30px;
   transition: 0.2s;
 }
 
-// .file-drop-area button{
-//   border-radius: 12px;
-// }
 .file{
  text-align: center;
 }
@@ -24,12 +19,10 @@
   opacity: 0;
 }
 .file-msg {
-  // display: inline-block;
   margin-left: 20px;
   vertical-align: middle;
   font-size: 12px;
   font-weight: 500;
-  // color: #5b5bff;
 }
 .btn{
   margin-top: 6px;
@@ -46,13 +39,11 @@ h5{
     border: none;
     color: #3636f4;
     background: none;
-  //  background-color: rgba(179, 177, 177, 0.63);
   }
   #no-link{
     border: none;
     color: black;
     background: none;
-  //  background-color: rgba(179, 177, 177, 0.63);
   }
 .email{
   padding-left: 140px;
@@ -69,8 +60,6 @@ h5{
 .sidenav {
   width: 200px;
   background-color: #f1f1f1;
-  // padding-top: 20px;
-  // margin: 20px;
   display: flex;
   flex-direction: column;
   cursor: pointer;
@@ -101,7 +90,6 @@ h5{
   color: black;
   background-color: #f1f1f1;
   border: none;
-  // padding-top: 20px;
   text-align: start;
   font-size: 16px;
   margin-top: 10px;
@@ -111,7 +99,6 @@ h5{
   padding-left: 10px;
 }
 .factor{
-  // margin: auto;
   width: 90px;
   height: 90px;
 }
@@ -132,8 +119,6 @@ h5{
   padding: 8px;
   background-color: #f9f9f9;
   border-radius: 4px;
-  // height: 640px;
-  // box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 
 }
 
@@ -154,19 +139,12 @@ h5 {
 .menu{
   font-size: 12px;
   font-weight: 400;
-  // padding-top: 15px;
 }
 .material-icons {
   vertical-align: middle;
-  // margin-left: 111px; 
   cursor: pointer;  
 }
 
-
-//dashboard customz
-// .content-block {
-//   margin: 20px;
-// }
 
 .card {
   border-radius: 10px;
@@ -174,12 +152,6 @@ h5 {
   padding: 20px;
   background-color: #ffffff;
 }
-
-// .header h2 {
-//   font-size: 24px;
-//   font-weight: bold;
-//   margin-bottom: 20px;
-// }
 
 .body .row {
   display: flex;

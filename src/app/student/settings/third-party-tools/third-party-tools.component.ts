@@ -24,10 +24,6 @@ export class ThirdPartyToolsComponent {
       label: ['SMTP', [Validators.required]],
       url: ['http://203.118.55.27:4600/', [Validators.required]],
       protocol: ['http', [Validators.required]],
-      // email: [
-      //   '',
-      //   [Validators.required, Validators.email, Validators.minLength(5)],
-      // ],
       server: ['203.118.55.27'],
       port: ['44', [Validators.required]],
       user: ['admin', [Validators.required]],

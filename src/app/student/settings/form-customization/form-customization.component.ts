@@ -62,7 +62,7 @@ export class FormCustomizationComponent {
       text: 'Label updated successfully.',
       icon: 'success'
     }).then(() => {
-      window.history.back(); // Navigate to the forms page after closing the modal
+      window.history.back();
     });
    }
    })

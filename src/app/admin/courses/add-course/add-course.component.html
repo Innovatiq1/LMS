@@ -205,6 +205,60 @@
                   </mat-form-field>
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
+                  *ngIf="labelStatusCheck('Assign Tutorial') && isTestIssueCertificate && isAfterExamType">
+                  <div class="label-container">
+                    <label>Assign Tutorial <span class="mandatory">&nbsp;*</span></label>
+                    <button class="btn" [routerLink]="['/student/settings/add-questions']">
+                      <img src="/assets/Close.svg" alt="plus" />
+                    </button>
+                  </div>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-select formControlName="tutorial">
+                      <mat-option *ngFor="let item of tutorials" [value]="item.id" [disabled]="viewUrl == true">
+                        {{ item.name }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="
+                      firstFormGroup.get('tutorial')?.invalid &&
+                      firstFormGroup.get('tutorial')?.touched
+                    ">
+                      {{
+                      utils.getErrorMessage1(
+                      firstFormGroup.get("tutorial"),
+                      "tutorial"
+                      )
+                      }}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
+                  *ngIf="labelStatusCheck('Assign Tutorial') && isTestIssueCertificate && isAfterExamType">
+                  <div class="label-container">
+                    <label>Assign Tutorial <span class="mandatory">&nbsp;*</span></label>
+                    <button class="btn" [routerLink]="['/student/settings/add-questions']">
+                      <img src="/assets/Close.svg" alt="plus" />
+                    </button>
+                  </div>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-select formControlName="tutorial">
+                      <mat-option *ngFor="let item of tutorials" [value]="item.id" [disabled]="viewUrl == true">
+                        {{ item.name }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="
+                      firstFormGroup.get('tutorial')?.invalid &&
+                      firstFormGroup.get('tutorial')?.touched
+                    ">
+                      {{
+                      utils.getErrorMessage1(
+                      firstFormGroup.get("tutorial"),
+                      "tutorial"
+                      )
+                      }}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
                   *ngIf="(labelStatusCheck('Assign Coursekit') && isTestIssueCertificate && isAfterExamType) || isVideoIssueCertificate||isDocumentIssueCertificate">
                   <div class="label-container">
                     <label>Assign Coursekit <span class="mandatory">&nbsp;*</span></label>

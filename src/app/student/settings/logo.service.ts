@@ -15,40 +15,32 @@ export class LogoService {
   currentData = this.dataSource.asObservable();
   private defaultUrl: string = environment['apiUrl'];
   constructor(private http: HttpClient) { }
-
-  /* passing data to subscribed components */
   updateData(data: any) {
     this.dataSource.next(data);
   }
 
-  /* Get logos */
   getLogo(id:any): Observable<any> {
     const apiUrl = `${this.defaultUrl}admin/logo?companyId=${id}`;
     return this.http.get(apiUrl).pipe(
       map(response => {
-        this.updateData(response); // Pass the response to updateData
+        this.updateData(response);
         return response; 
       })
     );
   }
-/* get logo By Id  **/
       getLogoById(id: string){
         const apiUrl = `${this.defaultUrl}admin/logo/${id}`;
         return this.http.get<any>(apiUrl).pipe(map((response) => response));
       }
 
-      /* Update logo  **/
-
       updateLogo(id: string, data: any) {
         const apiUrl = `${this.defaultUrl}admin/logo/${id}`;
         return this.http.put<any>(apiUrl, data).pipe(map((response) => response));
       }
-    // get all sidemenu
       getSidemenu(id:any): Observable<any> {
         const apiUrl = `${this.defaultUrl}admin/sidemenu?companyId=${id}`;
         return this.http.get(apiUrl).pipe(
           map(response => {
-             // Pass the response to updateData
             return response; 
           })
         );
@@ -57,7 +49,6 @@ export class LogoService {
         const apiUrl = `${this.defaultUrl}admin/sidemenu/settings/sidemenu?companyId=${id}`;
         return this.http.get(apiUrl).pipe(
           map(response => {
-             // Pass the response to updateData
             return response; 
           })
         );
@@ -66,7 +57,6 @@ export class LogoService {
         const apiUrl = `${this.defaultUrl}admin/sidemenu`;
         return this.http.get(apiUrl).pipe(
           map(response => {
-             // Pass the response to updateData
             return response; 
           })
         );

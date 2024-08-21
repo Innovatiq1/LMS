@@ -46,9 +46,7 @@ export class AssesmentQuestionsComponent {
     'MYR',
     'AUD',
   ];
- // timerValues: string[] = ['15', '30', '45', '60', '90', '120', '150'];
   retakeCodesAssessment: string[] = ['1', '2', '3', '4', '5'];
-  //scoreAlgo: number[] = [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
   timerValues:any;
 scoreDataAlgo:any;
 
@@ -99,7 +97,6 @@ scoreDataAlgo:any;
     this.getAllScoreAlgo();
     this.getAllTimeAlgo();
     if (!this.editUrl) {
-      // this.getAlgorithm();
     }
   }
 
@@ -131,14 +128,12 @@ scoreDataAlgo:any;
   getAllScoreAlgo(){
     this.SettingsService.getScoreAlgorithm().subscribe((response:any) =>{
       this.scoreDataAlgo=response.data.docs;
-      //console.log("this.scoreAlgo==",this.scoreDataAlgo);
     })
   }
 
   getAllTimeAlgo(){
     this.SettingsService.getTimeAlgorithm().subscribe((response:any) =>{
       this.timerValues=response.data.docs;
-     // console.log("this.timerValues",this.timerValues);
     })
   }
 
@@ -156,23 +151,6 @@ scoreDataAlgo:any;
         }
       });
   }
-
-  // getAlgorithm(): any {
-  //   this.configurationSubscription =
-  //     this.studentsService.configuration$.subscribe((configuration) => {
-  //       this.configuration = configuration;
-  //       const config = this.configuration.find(
-  //         (v: any) => v.field === 'assessmentAlgorithm'
-  //       );
-  //       if (config) {
-  //         const assessmentAlgo = config.value;
-  //         this.questionFormTab3.patchValue({
-  //           scoreAlgorithm: assessmentAlgo,
-  //         });
-  //       }
-  //     });
-  // }
-
   getData() {
     if (this.questionId) {
       this.questionService
@@ -329,7 +307,6 @@ scoreDataAlgo:any;
 
   update() {
     if (this.questionFormTab3.valid) {
-    //  console.log("FormTab3 Value",this.questionFormTab3.value);
       if (this.editUrl) {
         
         this.updateAssesment();
@@ -413,9 +390,7 @@ scoreDataAlgo:any;
           text: 'Question Updated successfully',
           icon: 'success',
         });
-        // if (this.approved) {
           window.history.back();
-        // }
       },
       (err: any) => {
         Swal.fire('Failed to update Question', 'error');

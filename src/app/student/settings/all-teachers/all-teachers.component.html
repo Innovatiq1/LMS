@@ -17,18 +17,6 @@
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="card">
                   <div class="materialTableHeader">
-                    <!-- <div class="left">
-                      <ul class="header-buttons-left ms-0">
-                        <li class="tbl-title">
-                          <h2>Instructors</h2>
-                        </li>
-                        <li class="tbl-search-box">
-                          <label for="search-input"><i class="material-icons search-icon">search</i></label>
-                          <input placeholder="Search" type="text" #filter class="browser-default search-field"
-                            aria-label="Search box">
-                        </li>
-                      </ul>
-                    </div> -->
                     <div class="right">
                       <ul class="tbl-export-btn">
                         <li>
@@ -44,18 +32,8 @@
                           <div class="m-l-10" matTooltip="ADD">
                             <button mat-raised-button *ngIf="isCreate" (click)="addNew()"
                             id="submit">Create</button>
-                            <!-- <button mat-mini-fab color="primary" (click)="addNew()">
-                              <mat-icon class="col-white">add</mat-icon>
-                            </button> -->
                           </div>
                         </li>
-                        <!--<li class="tbl-header-btn">
-                          <div class="m-l-10" matTooltip="REFRESH">
-                            <button mat-mini-fab color="primary" (click)="refresh()">
-                              <mat-icon class="col-white">refresh</mat-icon>
-                            </button>
-                          </div>
-                        </li> -->
                         <li class="tbl-header-btn">
                           <div class="m-l-10" [hidden]=!selection.hasValue() matTooltip="DELETE">
                             <button mat-mini-fab color="warn" (click)="removeSelectedRows()">
@@ -80,22 +58,6 @@
                   <div class="body overflow-auto">
                     <div class="responsive_table">
                       <table mat-table [dataSource]="dataSource" matSort class="mat-cell advance-table">
-                        <!-- Checkbox Column -->
-                        <!-- <ng-container matColumnDef="select">
-                          <mat-header-cell *matHeaderCellDef [ngClass]="'tbl-col-width-per-6'">
-                            <mat-checkbox (change)="$event ? masterToggle() : null"
-                              [checked]="selection.hasValue() && isAllSelected()"
-                              [indeterminate]="selection.hasValue() && !isAllSelected()" [ngClass]="'tbl-checkbox'">
-                            </mat-checkbox>
-                          </mat-header-cell>
-                          <mat-cell *matCellDef="let row" [ngClass]="'tbl-col-width-per-6'">
-                            <mat-checkbox (click)="$event.stopPropagation()"
-                              (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"
-                              [ngClass]="'tbl-checkbox'">
-                            </mat-checkbox>
-                          </mat-cell>
-                        </ng-container> -->
-                        <!-- ID Column -->
                         <ng-container matColumnDef="id">
                           <mat-header-cell *matHeaderCellDef mat-sort-header>Id
                           </mat-header-cell>
@@ -159,17 +121,9 @@
                           <mat-cell *matCellDef="let row"  (click)="isView ? aboutInstructor(row.id) : null" (contextmenu)="onContextMenu($event, row)">
                             <span class="mobile-label">Email:</span>
                             <img src="assets/images/gmail.png" alt="Email Icon" class="email-icon">
-                            <!-- Replace "email-icon.png" with the filename of your PNG icon -->
                             <span class="email-address"> {{row.email}}</span>
                           </mat-cell>
                         </ng-container>
-                        <!-- <ng-container matColumnDef="email">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header>Email
-                          </mat-header-cell>
-                          <mat-cell *matCellDef="let row" [routerLink]="['/admin/users/edit-instructor',row.id]" (contextmenu)="onContextMenu($event, row)"> <span
-                              class="mobile-label">Email:</span>{{row.email}}
-                          </mat-cell>
-                        </ng-container> -->
                         <ng-container matColumnDef="Status">
                           <mat-header-cell *matHeaderCellDef mat-sort-header>Status
                           </mat-header-cell>
@@ -177,54 +131,15 @@
                               class="mobile-label">Status:</span><span [class]="row?.Active ? 'badge badge-solid-green' : 'badge badge-solid-red'">
                                 <span [class]="row?.Active ? 'status-dot' : 'status-red'"></span>
                                 {{row.Active ?  'Active': 'Inactive' }}
-                                <!-- {{row?.status?.Active == true?"Active":"Inactive"}} -->
                               </span>
                           </mat-cell>
                         </ng-container>
-                        <!-- <ng-container matColumnDef="date">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header>Joining Date
-                          </mat-header-cell>
-                          <mat-cell *matCellDef="let row" [routerLink]="['/admin/users/edit-instructor',row.id]" (contextmenu)="onContextMenu($event, row)">
-                            <span class="mobile-label">Joining Date:</span>{{row.joiningDate | date}}</mat-cell>
-                        </ng-container> -->
-                        <!-- actions -->
-                        <!-- <ng-container matColumnDef="actions">
-                          <mat-header-cell class="pr-0" *matHeaderCellDef>Actions
-                          </mat-header-cell>
-                          <mat-cell *matCellDef="let row"  let i=index; class="pr-0">
-                            <button mat-button [matMenuTriggerFor]="menu" >
-                              <svg class="dropdown-toggle border rounded-circle" data-bs-toggle="dropdown" aria-expanded="false"
-                              xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                              class="bi bi-three-dots border rounded-circle bg" viewBox="0 0 16 16">
-                              <path
-                                d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
-                            </svg>
-
-                            </button>
-
-
-
-                                    <mat-menu #menu="matMenu" xPosition="before">
-                                     
-                                      <button mat-menu-item [routerLink]="['/admin/users/edit-instructor',row.id]" >
-                                        <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                                        <span class="menu-text px-3">Edit</span>
-                                      </button>
-                                      <button mat-menu-item  (click)="deleteItem(row)" class="align-items-center">
-                                        <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                                        <span class="menu-text px-3">Delete</span>
-                                      </button>
-                                    </mat-menu>
-                          </mat-cell>
-                        </ng-container> -->
                         <mat-header-row *matHeaderRowDef="displayedColumns">
                         </mat-header-row>
-                        <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
                         <mat-row *matRowDef="let row; columns: displayedColumns;"
                         [style.cursor]="'pointer'" matRipple>
                       </mat-row>
                       </table>
-                      <!-- Loading spinner -->
                       <div *ngIf="exampleDatabase?.isTblLoading" class="tbl-spinner">
                         <mat-progress-spinner color="primary" [diameter]="40" mode="indeterminate">
                         </mat-progress-spinner>
@@ -293,7 +208,6 @@
             <div class="row mt-4 ml-0 mr-0">
               <div class="col-md-3"  *ngFor="let row of dataSource.filteredData">
                 <div class="card border-apply" style="height: 220px; margin-top: 20px;cursor: pointer;" (click)="aboutInstructor(row.id)">
-                  <!-- <div class="m-b-20"> -->
                     <div class="contact-grid">
                       <div class="row">
                         <div class="col-5">
@@ -332,74 +246,10 @@
                         {{row.country_name | titlecase}}
                       </div>
                      </div>
-                      <!-- <div>
-                        <span class="phone">
-                          <i class="material-icons">phone</i>{{data.mobile}}</span>
-                      </div> -->
-                      <!-- <div class="profile-userbuttons">
-                        <button mat-flat-button color="primary" (click)="aboutStudent(data.id)">Read More</button>
-                      </div> -->
                     </div>
-                  <!-- </div> -->
                 </div>
-                <!-- <div class="card border-apply"  style="height: 300px;cursor: pointer;"  (click)="aboutInstructor(row.id)">
-                  <div class="m-b-20">
-                    <div class="contact-grid">
-                      <div class="profile-header l-bg-blue">
-                        <div class="user-name">{{row.name}}</div>
-                        <!-- <div class="name-center">{{row.department}}</div> --
-                      </div>
-                      <!-- <div class="course-card-image"> --
-                        <img src="{{row.avatar}}" class="user-img" >
-                        <p>
-                          {{row.department | uppercase}}
-                          <br> {{row?.country_name}}
-                        </p>
-                       
-                        <div>
-                          <span class="phone">
-                            <i class="material-icons">phone</i>{{row.mobile}}</span>
-                        </div>
-                        <!-- <div>
-                          <span class="email">
-                            <i class="material-icons">email</i>{{row.email}}</span>
-                        </div> -->
-                      <!-- </div> -->
-                      <!-- <img src="assets/images/user/usrbig1.jpg" class="user-img" alt=""> -->
-                      <!-- <p>
-                        A-103, shyam gokul flats, Mahatma Road
-                        <br />Mumbai
-                      </p> -->
-                      <!-- <div class="row call">
-                        <div class="col-1">
-                          <i class="material-icons">phone</i>
-                        </div>
-                       <div class="col-6">
-                        {{row.mobile}}
-                       </div> -->
-                        
-                      <!-- </div>
-                      <div class="row mail mt-2">
-                        <div class="col-1">
-                          <i class="material-icons">email</i>
-                        </div>
-                        <div class="col-9">
-                          {{row.email}}
-                        </div>
-                      </div> -->
-                     
-                      <!-- <div class="profile-userbuttons">
-                        <button mat-flat-button color="primary" (click)="aboutInstructor(row.id)">Read More</button>
-                      </div> --
-                    </div>
-                  </div>
-                </div> -->
               </div>
             </div>
-            <!-- <mat-paginator class="paginator" #paginator [length]="totalItems" (page)="pageSizeChange($event)"
-            [pageSizeOptions]="pageSizeArr" aria-label="select pagination option">
-        </mat-paginator> -->
-
             <mat-paginator class="paginator" #paginator [length]="dataSource.filteredData.length" [pageIndex]="0"
             [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
           </mat-paginator>

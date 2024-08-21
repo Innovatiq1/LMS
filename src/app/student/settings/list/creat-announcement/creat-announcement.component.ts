@@ -89,9 +89,6 @@ export class CreatAnnouncementComponent {
 
     }).subscribe((response: { courses: CourseTitleModel[]; }) => {
       this.courseList = response.courses;
-      ////this.instructorList = response.instructors;
-      //this.labList = response.labs;
-      //this.cd.detectChanges();
     });
 
 
@@ -136,11 +133,7 @@ cancel(){
         },
       ];
     }
-
-    // if (this.editUrl) {
       this.getAnnouncementList()
-
-    // }
 
     this.announcementForm = this.formBuilder.group({
       subject: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0-9]/)]),
@@ -187,7 +180,6 @@ cancel(){
               icon: 'success',
             });
             window.history.back();
-            // this.router.navigateByUrl(['/admin/announcement/list'])
           },
           (err) => {
             Swal.fire(
@@ -258,10 +250,10 @@ cancel(){
 
 
   isInputReadonly(): boolean {
-    return this.mode === 'viewUrl'; // If mode is 'viewUrl', return true (readonly); otherwise, return false (editable).
+    return this.mode === 'viewUrl';
   }
   isInputDisabled(): boolean {
-    return this.mode === 'viewUrl'; // If mode is 'viewUrl', return true (disabled); otherwise, return false (enabled).
+    return this.mode === 'viewUrl';
   }
   student(event: any) {
     this.isChecked = event.target.checked
@@ -277,15 +269,11 @@ cancel(){
       this.isLoading = false;
       this.announcementList = response.data.data;
       let data = this.announcementList.find((id: any) => id._id === this.currentId);
-      // console.log(data,"data")
       if (data) {
 
         let anuFor:any =[];
         anuFor.push(data.announcementFor)
        let anuce = anuFor.map((res:any) => res).toString().replace(' / ',',').split(',');
-      //  anuFor = [];
-      //  anuFor.push(anuce);
-      //  console.log("var",anuce)
         this.announcementForm.patchValue({
           subject: data?.subject,
           details: data?.details,

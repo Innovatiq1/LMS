@@ -97,16 +97,9 @@ export class CompletedCourseComponent {
     this.patchForm(this.itemData);
   }
   removeTagsAndSpaces(inputString: string) {
-    // Remove <p> tags
     const stringWithoutPTags = inputString.replace(/<p>/gi, '').replace(/<\/p>/gi, '');
-  
-    // Remove <br> tags
     const stringWithoutBrTags = stringWithoutPTags.replace(/<br\s*\/?>/gi, '');
     const stringWithoutNbsp = stringWithoutBrTags.replace(/&nbsp;/g, '');
-  
-  
-    // Remove spaces
-    //const stringWithoutSpaces = stringWithoutBrTags.replace(/\s+/g, '');
   
     return stringWithoutNbsp;
   }
@@ -120,7 +113,6 @@ export class CompletedCourseComponent {
       email_content: pageContent?.email_content,
       bottom_button_text:pageContent?.bottom_button_text
     });
-    // this.markAllTouched();
   }
 
   createForm() {
@@ -166,19 +158,12 @@ update(){
 }
 updateTemplate(){
 return new Promise<void>((resolve, reject) => {
-  // this.markAllTouched();
   if (this.emailTemplateForm.valid) {
    
       let obj = this.emailTemplateForm.value;
       let test =obj.email_content
-        
-
-        //const stringWithoutSpaces = test.replace(/\s+/g, '');
-
-        // Remove <p> tags
         const stringWithoutPTags = this.removeTagsAndSpaces(test)
         obj['email_content']=stringWithoutPTags
-        console.log("stringWithoutPTags",stringWithoutPTags)
       
       obj['insertaction'] = 'completed_project_template';
       this.emailConfigurationService.updateForgetPasswordTemplate(obj,this.id).subscribe(

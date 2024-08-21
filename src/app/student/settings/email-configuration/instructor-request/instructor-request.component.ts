@@ -25,7 +25,6 @@ export class InstructorRequestComponent {
   sendcourseinvoiceUrl : any;
   adminnewmailUrl : any;
   _id:any ;
-  //forgot password
 
   assignData :any[] = [];
   public Editor: any = ClassicEditor;
@@ -61,7 +60,6 @@ export class InstructorRequestComponent {
       this.assignData  = response?.data?.docs[0]?.new_mentor_request_template;
      
     }, error => {
-      // this.isLoading = false;
     }); 
   }
 

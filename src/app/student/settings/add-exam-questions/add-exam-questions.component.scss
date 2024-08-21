@@ -3,15 +3,12 @@
   padding-left: 20px !important;
 }
 
-
 .name-container {
   padding: 10px;
 }
 .test {
   margin-top: 25px;
 }
-
-
 
 .mandatory{
   color: red;
@@ -23,11 +20,10 @@ margin-left: 0px !important;
 
 .name-container {
   display: flex;
-  // justify-content: space-between;
 }
 
 .input-container {
-  width: 30%; /* Adjust the width as needed */
+  width: 30%;
 }
 
 //file-upload styling
@@ -35,14 +31,9 @@ margin-left: 0px !important;
 border: 1px dashed #7c7db3;
 border-radius: 15px;
 position: relative;
-// max-width: 100%;
 margin-top: 5px;
-// padding: 26px 20px 30px;
 transition: 0.2s;
 }
-// .file-drop-area button{
-//   border-radius: 12px;
-// }
 .file{
 text-align: center;
 }
@@ -56,12 +47,10 @@ cursor: pointer;
 opacity: 0;
 }
 .file-msg {
-// display: inline-block;
 margin-left: 20px;
 vertical-align: middle;
 font-size: 12px;
 font-weight: 500;
-// color: #5b5bff;
 }
 h5{
 padding-top: 10px;

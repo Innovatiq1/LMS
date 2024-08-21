@@ -12,16 +12,9 @@ import { UtilsService } from '@core/service/utils.service';
 })
 export class RoleUserComponent {
   displayedColumns: string[] = [
-    // 'select',
     'img',
     'User Type',
     'Name',
-    // 'gender',
-    // 'Qualification',
-    // 'Mobile',
-    // 'Email',
-    // 'Status',
-    // 'Actions'
   ];
   breadscrums = [
     {

@@ -14,11 +14,6 @@
         <div class="card" style="height: fit-content">
           <div class="row m-3">
             <form [formGroup]="sideMenuForm">
-              <!-- <div class="col-md-8">
-                            <label class="py-4 px-5">Menu</label>
-                            <button class="btn" (click)="addSidemenu()"> <img src="/assets/Close.svg" alt="plus"
-                                style="display: inline;margin-bottom: 10px;"></button>
-                        </div> -->
               <div formArrayName="sidemenu">
                 <div
                   *ngFor="let side of sidemenu.controls; let i = index"
@@ -28,13 +23,6 @@
                     >Menu {{ i + 1
                     }}<span class="mandatory">&nbsp;*</span></label
                   >
-                  <!-- <button class="btn" (click)="addSidemenu()">
-                    <img
-                      src="/assets/Close.svg"
-                      alt="plus"
-                      style="display: inline; margin-bottom: 10px"
-                    />
-                  </button> -->
                   <div class="row">
                     <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 mb-2">
                       <label
@@ -56,13 +44,6 @@
                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 mb-2">
                       <label>Icon <span class="mandatory">&nbsp;*</span></label>
                       <div class="file-drop-area">
-                        <!-- <div *ngIf="uploadedImages[i];">
-                          <img
-                            [src]="uploadedImages[i]"
-                            alt="Uploaded Image Preview"
-                            style="width: 100px; height: auto"
-                          />
-                        </div> -->
                           <div class="file">
                             <button mat-raised-button color="primary">
                               Choose file
@@ -76,53 +57,13 @@
                               > {{uploadedImages[i] ? uploadedImages[i] :'Drag and Drop File Here' }}</span
                             >
                           </div>
-                        <!-- <div class="file">
-                                                <button mat-raised-button color="primary">Choose file <input
-                                                    class="file-input" formControlName="iconsrc"
-                                                    (change)="onFileUpload($event, i)" type="file"></button>
-                                                <span class="file-msg mt-1">
-                                                    <h5>{{ uploadedImages[i] ? uploadedImages[i] : 'Drag and Drop File Here' }}</h5>
-                                                </span>
-                                            </div> -->
                       </div>
-                      <!-- <div class="file-drop-area">
-                                                <div class="file">
-                                                    <button mat-raised-button color="primary">Choose file <input
-                                                            class="file-input" formControlName="iconsrc"
-                                                            (change)="onFileUpload($event,i)" type="file"></button>
-                                                    <span class="file-msg mt-1">
-                                                        <h5>{{uploadedImage ? uploadedImage : 'Drag and Drop File Here'
-                                                            }}</h5>
-                                                    </span>
-                                                </div>
-                                            </div> -->
                     </div>
-                    <!-- <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 mb-2">
-                      <label>ID <span class="mandatory">&nbsp;*</span></label>
-                      <mat-form-field
-                        class="example-full-width mb-3"
-                        appearance="outline"
-                      >
-                        <input
-                          type="text"
-                          matInput
-                          formControlName="id"
-                          placeholder="Enter ID"
-                        />
-                      </mat-form-field>
-                    </div> -->
                   </div>
                   <div formArrayName="submenu">
                     <ng-container *ngIf="getSubmenu(i).controls.length > 0">
                       <label>SubMenu <span class="mandatory">&nbsp;*</span></label>
                     </ng-container>
-                    <!-- <button class="btn" >
-                      <img
-                        src="/assets/Close.svg"
-                        alt="plus"
-                        style="display: inline; margin-bottom: 10px"
-                      />
-                    </button> -->
                     <div class="row">
                       <div
                         class="col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-2"
@@ -132,7 +73,6 @@
                         "
                         [formGroupName]="j"
                       >
-                        <!-- Use [formControlName] with respect to 'submenu' FormGroup -->
                         <label class="mt-2"
                           >Title<span class="mandatory">&nbsp;*</span></label
                         >
@@ -150,8 +90,6 @@
                         </mat-form-field>
                       </div>
                     </div>
-
-                    <!-- <button type="button" (click)="addOption(i)">Add Option</button> -->
                   </div>
                 </div>
               </div>
@@ -176,7 +114,6 @@
                 >
                   Update
                 </button>
-                <!-- <button *ngIf="editUrl" class="btn-space" mat-raised-button id="submit">Update</button> -->
               </div>
             </div>
           </div>

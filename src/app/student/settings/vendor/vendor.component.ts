@@ -75,7 +75,6 @@ export class VendorComponent {
           },);
           this.getAllVendors();
           this.vendorForm.reset();
-          // this.router.navigate(['/student/settings/create-department'])
         },
         (error) => {
           Swal.fire({

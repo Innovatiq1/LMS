@@ -5,7 +5,6 @@
         <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
         </app-breadcrumb>
       </div>
-      <!-- Your content goes here  -->
       <div class="row clearfix">
         <div class="col-lg-4 col-md-12">
           <div  class="card">
@@ -21,10 +20,6 @@
                 </p>
               
                 <div class="row">
-                  <!-- <div class="col-4">
-                    <h5>{{classDetails?.courseId?.course_duration_in_days}}</h5>
-                    <small>Days</small>
-                  </div> -->
                   <div class="col-6">
                     <h5>{{classDetails?.courseId?.duration}}</h5>
                     <small>Training Hours</small>
@@ -56,10 +51,6 @@
                       <b>Program Run </b>
                       <div class="profile-desc-item float-end">{{classDetails?.isGuaranteedToRun == true?'Yes':'No'}}</div>
                     </li>
-                    <!-- <li class="list-group-item">
-                      <b>Designation</b>
-                      <div class="profile-desc-item float-end">Sr. Teacher</div>
-                    </li> -->
                   </ul>
                 </div>
               </mat-tab>
@@ -73,7 +64,6 @@
             <mat-tab-group>
               <mat-tab>
                 <ng-template mat-tab-label>
-                  <!-- <mat-icon class="example-tab-icon msr-2">face</mat-icon> -->
                  Classes
                 </ng-template>
                 <div class="col-lg-12 col-md-12 col-sm-12">
@@ -81,9 +71,6 @@
                   
                     <div class="body">
                         <table mat-table [dataSource]="dataSource" >
-
-                            <!--- Note that these columns can be defined in any order.
-                                  The actual rendered columns are set as a property on the row definition" -->
                           
                             <ng-container matColumnDef="position">
                               <th mat-header-cell *matHeaderCellDef> Instructor </th>
@@ -119,10 +106,6 @@
                             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                           </table>
-                          
-                  
-                      <!-- <p class="m-t-30">{{classDetails?.courseId?.course_detailed_description}}</p> -->
-                      <!-- <br> -->
                     </div>
 
                   </div>
@@ -138,11 +121,6 @@
                         </li>
                         <li class="list-group-item" style="cursor: pointer;"  [routerLink]="['/student/view-programcourse', elective.electiveProgramName.id]" *ngFor="let elective of programDetails?.electiveprogramCourse">{{elective?.electiveProgramName?.title | titlecase}}</li>
 
-                    
-                        <!-- <li class="list-group-item">
-                          <b>Designation</b>
-                          <div class="profile-desc-item float-end">Sr. Teacher</div>
-                        </li> -->
                       </ul>
                   </div>
                 <div class="p-4">
@@ -159,87 +137,12 @@
                           <b>Maximum Enrollment </b>
                           <div class="profile-desc-item float-end">{{classDetails?.maximumEnrollment}}</div>
                         </li>
-                        <!-- <li class="list-group-item">
-                          <b>Designation</b>
-                          <div class="profile-desc-item float-end">Sr. Teacher</div>
-                        </li> -->
                       </ul>
                   </div>
-                <!-- <div class="col-lg-12 col-md-12 col-sm-12">
-                  <div class="project_widget">
-                    <div class="header">
-                      <h2><strong>Education</strong></h2>
-                    </div>
-                    <div class="body">
-                      <ul>
-                        <li>B.A.,Gujarat University, Ahmedabad,India.</li>
-                        <li>M.A.,Gujarat University, Ahmedabad, India.</li>
-                        <li>P.H.D., Shaurashtra University, Rajkot</li>
-                      </ul>
-                    </div>
-                  </div>
-                </div> -->
-                <!-- <div class="col-lg-12 col-md-12 col-sm-12">
-                  <div class="project_widget">
-                    <div class="header">
-                      <h2><strong>Experience</strong></h2>
-                    </div>
-                    <div class="body">
-                      <ul>
-                        <li>One year experience as Jr. Teacher from April-2009 to
-                          march-2010 at B. J. Arts College, Ahmedabad.</li>
-                        <li>Three year experience as Jr. Teacher at V.S. Arts &
-                          Commerse Collage from April - 2008 to April -
-                          2011.</li>
-                        <li>Lorem Ipsum is simply dummy text of the printing and
-                          typesetting industry. </li>
-                        <li>Lorem Ipsum is simply dummy text of the printing and
-                          typesetting industry. </li>
-                        <li>Lorem Ipsum is simply dummy text of the printing and
-                          typesetting industry. </li>
-                        <li>Lorem Ipsum is simply dummy text of the printing and
-                          typesetting industry. </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                  <div class="project_widget">
-                    <div class="header">
-                      <h2><strong>Conferences, Cources &amp; Workshop Attended</strong></h2>
-                    </div>
-                    <div class="body">
-                      <ul>
-                        <li>Lorem Ipsum is simply dummy text of the printing and typesetting
-                          industry.
-                        </li>
-                        <li>Lorem Ipsum is simply dummy text of the printing and typesetting
-                          industry.
-                        </li>
-                        <li>Lorem Ipsum is simply dummy text of the printing and typesetting
-                          industry.
-                        </li>
-                        <li>Lorem Ipsum is simply dummy text of the printing and typesetting
-                          industry.
-                        </li>
-                        <li>Lorem Ipsum is simply dummy text of the printing and typesetting
-                          industry.
-                        </li>
-                        <li>Lorem Ipsum is simply dummy text of the printing and typesetting
-                          industry.
-                        </li>
-                        <li>Lorem Ipsum is simply dummy text of the printing and typesetting
-                          industry.
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div> -->
               </mat-tab>
   
               <mat-tab *ngIf="isApproved || isCompleted" >
                 <ng-template mat-tab-label>
-                  <!-- <mat-icon class="example-tab-icon msr-2">settings</mat-icon> -->
                   Program
                 </ng-template>
                 <div class="col-lg-12 col-md-12 col-sm-12">

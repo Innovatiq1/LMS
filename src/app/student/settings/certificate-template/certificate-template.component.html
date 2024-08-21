@@ -10,44 +10,12 @@
 
         <div class="card">
           <div class="materialTableHeader">
-            <!-- <div class="left">
-              <ul class="header-buttons-left ms-0">
-                <li class="tbl-title">
-                  <h2>Course Payments</h2>
-                </li>
-                <li class="tbl-search-box">
-                  <label for="search-input"><i class="material-icons search-icon">search</i></label>
-                  <!-- <input placeholder="Search" type="text" #filter class="browser-default search-field"
-                    aria-label="Search box"  [(ngModel)]="courseKitModel.filterText" (ngModelChange)="fetchCourseKits()"
-                    (change)="fetchCourseKits()"> --
-                    <input placeholder="Search" type="text" #filter class="browser-default search-field"
-                    aria-label="Search box"  [(ngModel)]="searchTerm" (input)="performSearch()">
-                </li>
-              </ul>
-            </div> -->
             <div class="right">
               <ul class="tbl-export-btn">
-                <!-- <li class="tbl-header-btn">
-                  <div class="m-l-10" matTooltip="ADD">
-                    <button mat-mini-fab color="primary"  >
-                      <mat-icon class="col-white">add</mat-icon>
-                    </button>
-                  </div>
-                </li>
-                <li class="tbl-header-btn">
-                  <div class="m-l-10" matTooltip="REFRESH">
-                    <button mat-mini-fab color="primary" >
-                      <mat-icon class="col-white">refresh</mat-icon>
-                    </button>
-                  </div>
-                </li> -->
                 <li>
                   <ul class="header-buttons-left ms-0">
                     <li class="tbl-search-box">
                       <label for="search-input"><i class="material-icons search-icon">search</i></label>
-                      <!-- <input placeholder="Search" type="text" #filter class="browser-default search-field"
-                        aria-label="Search box"  [(ngModel)]="courseKitModel.filterText" (ngModelChange)="fetchCourseKits()"
-                        (change)="fetchCourseKits()"> -->
                         <input placeholder="Search" type="text" #filter class="browser-default search-field"
                         aria-label="Search box"  [(ngModel)]="searchTerm" (input)="performSearch()">
                     </li>
@@ -62,12 +30,6 @@
                       >Create</button>
                     </div>
                   </div>
-                  <!-- <div class="m-l-10" [hidden]=!selection.hasValue() matTooltip="DELETE">
-                    <button mat-mini-fab color="warn" (click)="removeSelectedRows()">
-                      <mat-icon class="col-white">delete123
-                      </mat-icon>
-                    </button>
-                  </div> -->
                 </li>
                 <li>
                   <div class="export-button m-l-10" matTooltip="XLSX" (click)="exportExcel()">
@@ -85,75 +47,22 @@
           <div class="body overflow-auto">
             <div class="responsive_table">
               <table mat-table matSort [dataSource]="dataSource" class="mat-cell advance-table">
-                <!-- Checkbox Column -->
-                <!-- Checkbox Column -->
-                <!-- <ng-container matColumnDef="select">
-                  <mat-header-cell *matHeaderCellDef [ngClass]="'tbl-col-width-per-6'">
-                    <mat-checkbox (change)="$event ? masterToggle() : null"
-                      [checked]="selection.hasValue() && isAllSelected()"
-                      [indeterminate]="selection.hasValue() && !isAllSelected()" [ngClass]="'tbl-checkbox'">
-                    </mat-checkbox>
-                  </mat-header-cell>
-                  <mat-cell *matCellDef="let row" (click)="view(row._id)" [ngClass]="'tbl-col-width-per-6'">
-                    <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
-                      [checked]="selection.isSelected(row)" [ngClass]="'tbl-checkbox'">
-                    </mat-checkbox>
-                  </mat-cell>
-                </ng-container> -->
-                 <!-- Course Name -->
                  <ng-container matColumnDef="Title">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Title</mat-header-cell>
-                  <!-- (click)="view(row._id)"add to see the view in mat-cell -->
                   <mat-cell *matCellDef="let row" class="name" (click)="isView ? view(row._id) : null">
                     <span class="mobile-label">Student Name:</span>{{row.title}}</mat-cell>
                 </ng-container>
               
-               
-                
-                
-                <!-- Short Description -->
                 <ng-container matColumnDef="Creation Date">
-                  <!-- (click)="view(row._id)"add to see the view in mat-cell -->
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Creation Date</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row._id) : null" >
                     <span class="mobile-label">Payment Date:</span>{{row.createdAt | date}}</mat-cell>
                 </ng-container>
-                
-              
-                <!-- actions -->
-                <!-- <ng-container matColumnDef="status">
-                  <mat-header-cell *matHeaderCellDef class="pr-0">Actions</mat-header-cell>
-                  <mat-cell *matCellDef="let row" class="pr-0">
-                    <button mat-button [matMenuTriggerFor]="menu">
-                      <svg class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"
-                      xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                      class="bi bi-three-dots rounded-circle" viewBox="0 0 16 16">
-                      <path
-                        d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
-                    </svg>
-
-                    </button>
-
-                            <mat-menu #menu="matMenu" xPosition="before">
-                              <button mat-menu-item   (click)="view(row._id)">
-                                <app-feather-icons [icon]="'eye'" [class]="'tbl-fav-view'"></app-feather-icons>
-                                <span class="menu-text">View</span>
-                              </button>
-                            </mat-menu>
-                  </mat-cell>
-                </ng-container> -->
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
                 <mat-row *matRowDef="let row; columns: displayedColumns;"
                   [style.cursor]="'pointer'" matRipple>
                 </mat-row>
               </table>
-              <!-- Loading spinner -->
-              <!-- <div  class="tbl-spinner">
-                <mat-progress-spinner *ngIf="isLoading" color="primary" [diameter]="40" mode="indeterminate">
-                </mat-progress-spinner>
-              </div> -->
-
               <mat-paginator #paginator [length]="totalItems" (page)="pageSizeChange($event)"
               [pageSizeOptions]="pageSizeArr" aria-label="select pagination option">
           </mat-paginator>
@@ -161,145 +70,6 @@
             </div>
           </div>
         </div>
-        <!-- <div class="card">
-
-
-          <div style="padding: 30px 10px">
-            <div class="row" style="float: right;">
-              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
-
-
-                <button mat-raised-button id="submit"  [routerLink]="['/student/settings/certificate/edit']"
-                >Edit</button>
-              </div>
-            </div>
-            <table width="800px" style="
-            margin: 0 auto;
-            background-image: url(/assets/certificates/pdf-bg.jpeg);
-            background-repeat: no-repeat;
-            background-position: center right;
-            background-size: 100% 100%;
-            border: 0.5px solid lightgray;
-            height: 700px;
-          ">
-              <tbody>
-                <tr>
-                  <td width="11%"></td>
-                  <td width="59%" style="padding: 30px 0">
-                    <table style="width: 100%">
-                      <tr>
-                        <td>
-                          
-                        </td>
-                        <td style="text-align: right; padding-right: 30px;">
-                          <p style="
-                          font-weight: 600;
-                          font-size: 28px;
-                          margin-bottom: 10px;
-                          line-height: 1.2;
-                        ">
-                            www.lms.com
-                          </p>
-                          <p style="
-                          font-weight: 300;
-                          font-size: 21px;
-                          margin-bottom: 5px;
-                          line-height: 1.2;
-                        ">
-                            India | Singapore
-                          </p>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td colspan="2">
-                          <p style="
-                          font-weight: 700;
-                          font-size: 32px;
-                          margin-bottom: 0;
-                          line-height: 1.2;
-                          text-transform: uppercase;
-                        ">
-                            LMS Inc.
-                          </p>
-                          <p style="
-                          font-weight: 500;
-                          font-size: 15px;
-                          margin: 8px 0;
-                          line-height: 1.2;
-                          font-style: italic;
-                        ">
-                            hereby recognizes that
-                          </p>
-                          <p style="
-                          font-weight: 700;
-                          font-size: 32px;
-                          margin-bottom: 8px;
-                          line-height: 1.2;
-                          font-style: italic;
-                        ">
-                            
-                            XYZ
-                          </p>
-
-                          <p style="
-                          font-weight: 400;
-                          font-size: 15px;
-                          margin-bottom: 10px;
-                          line-height: 1.2;
-                          font-style: italic;
-                        ">
-                            has successfully completed the <b>
-                            
-                              XYZ
-                            </b> course
-                            on <b> DD/MM/YYYY
-                              
-                            </b>
-                          </p>
-                        </td>
-                      </tr>
-                    </table>
-                    <table style="width: 100%">
-                      <tr>
-                        <td width="70%">
-                          <p style="
-                          font-weight: normal;
-                          font-size: 12px;
-                          margin-bottom: 8px;
-                          line-height: 1.2;
-                        ">
-                            Authorized and issued by:
-                          </p>
-                          <p style="
-                          font-weight: 600;
-                          font-size: 15px;
-                          margin-bottom: 8px;
-                          line-height: 1.2;
-                          text-transform: uppercase;
-                        ">
-                            lms inc.
-                          </p>
-                          <p style="
-                          font-weight: normal;
-                          font-size: 12px;
-                          margin-bottom: 8px;
-                          line-height: 1.2;
-                        ">
-                            Mountbatten Road, Mountbatten Square,Singapore | Hyderabad, TS, India
-                          </p>
-                        </td>
-                        <td width="30%" style="text-align: right; vertical-align: bottom; padding-right: 30px;">
-                         
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                  <td width="30%"></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div> -->
       </div>
     </div>
   </div>

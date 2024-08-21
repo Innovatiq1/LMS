@@ -55,20 +55,9 @@ h5 {
     cursor: pointer;
 }
 
-
-
-
-
 $green--success: #4eb36c;
 
-// .container {
-//   height: 100px;
-//   margin: 0 10px;
-//   width: 100px;
-// }
-
 .checkmark {
-    // background-color: $green--success;
     .check {
         border-width: 0px 5px 5px 0;
         border-color: $green--success;
@@ -82,14 +71,6 @@ $green--success: #4eb36c;
     
       }
     
-    // &--inverted {
-    //     background-color: white;
-    //     box-shadow: inset 0 0 0 5px $green--success;
-    
-    //     .check {
-    //       border-color: $green--success;
-    //     }
-    //   }
 
 }
 

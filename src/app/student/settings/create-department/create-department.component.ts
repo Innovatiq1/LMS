@@ -38,15 +38,7 @@ export class CreateDepartmentComponent {
     this.departmentForm = this.fb.group({
       department: ['', [Validators.required, ...this.utils.validators.noLeadingSpace,...this.utils.validators.dname]],
       description: ['', [Validators.required,...this.utils.validators.noLeadingSpace,...this.utils.validators.name]],
-      // hod: ['', [Validators.required]],
-      // mobile: ['', [Validators.required]],
-      // email: [
-      //   '',
-      //   [Validators.required, Validators.email, Validators.minLength(5)],
-      // ],
-      // departmentStartDate: [''],
-      // studentCapacity: ['', [Validators.required]],
-      // details: [''],
+     
     });
   
     this.departmentPaginationModel = {};
@@ -107,9 +99,6 @@ export class CreateDepartmentComponent {
     }else{
       this.departmentForm.markAllAsTouched(); 
     }
-   
-     
-    // }
  
   }
 

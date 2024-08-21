@@ -103,7 +103,6 @@ export class AboutStudentComponent {
     })
 }
 getRegisteredCourse(){
-  // let studentId=localStorage.getItem('id')
   let filterRegisteredCourse = this.filterRegistered
   const payload = {  filterRegisteredCourse,studentId:  this.aboutDataId, status: 'registered' ,...this.coursePaginationModel};
   this.classService.getStudentRegisteredClasses(payload).subscribe(response =>{
@@ -111,7 +110,6 @@ getRegisteredCourse(){
   })
 }
 getApprovedCourse(){
-  // let studentId=localStorage.getItem('id')
   let filterApprovedCourse = this.filterApproved
   const payload = {  filterApprovedCourse,studentId:  this.aboutDataId, status: 'approved' ,...this.coursePaginationModel};
   this.classService.getStudentRegisteredClasses(payload).subscribe(response =>{
@@ -120,7 +118,6 @@ getApprovedCourse(){
 }
 
 getCompletedCourse(){
-  // let studentId=localStorage.getItem('id')
   let filterCompletedCourse = this.filterCompleted
   const payload = {  filterCompletedCourse,studentId:  this.aboutDataId, status: 'completed' ,...this.coursePaginationModel};
   this.classService.getStudentRegisteredClasses(payload).subscribe(response =>{
@@ -131,7 +128,6 @@ getCompletedCourse(){
 
 
 getRegisteredProgram(){
-// let studentId=localStorage.getItem('id')
 let filterRegisteredCourse = this.filterRegistered
 const payload = {  filterRegisteredCourse,studentId: this.aboutDataId, status: 'registered' ,...this.coursePaginationModel};
 this.classService.getStudentRegisteredProgramClasses(payload).subscribe(response =>{
@@ -139,7 +135,6 @@ this.studentRegisteredPrograms = response.data.docs.length;
 })
 }
 getApprovedProgram(){
-// let studentId=localStorage.getItem('id')
 let filterApprovedCourse = this.filterApproved
 const payload = {  filterApprovedCourse,studentId: this.aboutDataId, status: 'approved' ,...this.coursePaginationModel};
 this.classService.getStudentRegisteredProgramClasses(payload).subscribe(response =>{
@@ -147,7 +142,6 @@ this.studentApprovedPrograms = response.data.docs;
 })
 }
 getCompletedProgram(){
-// let studentId=localStorage.getItem('id')
 let filterCompletedCourse = this.filterCompleted
 const payload = {  filterCompletedCourse,studentId: this.aboutDataId, status: 'completed' ,...this.coursePaginationModel};
 this.classService.getStudentRegisteredProgramClasses(payload).subscribe(response =>{
@@ -161,7 +155,6 @@ editCall(row: Students) {
 }
 
 deleteItem(row: any) {
-  // this.id = row.id;
    Swal.fire({
      title: "Confirm Deletion",
      text: "Are you sure you want to delete this Student?",
@@ -180,10 +173,8 @@ deleteItem(row: any) {
              text: "Student deleted successfully",
              icon: "success",
            });
-           //this.fetchCourseKits();
            this.loadData()
            window.history.back();
-          //  this.router.navigate(['/admin/users/all-students'])
          },
          (error: { message: any; error: any; }) => {
            Swal.fire(
@@ -198,9 +189,6 @@ deleteItem(row: any) {
 
  }
  confirmItem(row: any) {
-
-
-  // this.id = row.id;
    Swal.fire({
      title: "Confirm Active",
      text: "Are you sure you want to active this Student?",
@@ -219,7 +207,6 @@ deleteItem(row: any) {
              text: "Student Active successfully",
              icon: "success",
            });
-           //this.fetchCourseKits();
            this.loadData();
            window.history.back();
          },
