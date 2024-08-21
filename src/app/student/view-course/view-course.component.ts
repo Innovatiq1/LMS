@@ -70,9 +70,8 @@ export class ViewCourseComponent implements OnDestroy {
   displayedColumns1: string[] = ['video'];
   dataSource: any;
   currentPlaybackProgress: number = 0;
-  playbackProgress: number = 0; // Add this line to define the property
+  playbackProgress: number = 0;
   questionForm!: FormGroup;
-  //video
   isPlaying = false;
   lastPausedAt: number = 0;
 
@@ -343,13 +342,15 @@ export class ViewCourseComponent implements OnDestroy {
                     const targetURL = `/student/questions/${classId}/${studentId}/${this.courseId}`;
                     if(this.router.url!=targetURL){
                       if(issueCertificate=='test'){
+                      if (this.classDetails.courseId.tutorial != null) {
                         this.router.navigate([
                           '/student/questions/',
                           classId,
                           studentId,
                           this.courseId,
                         ]);
-
+                      } else {
+                      }
                       }
                       else{
                         let payload={
@@ -378,12 +379,16 @@ export class ViewCourseComponent implements OnDestroy {
                     const targetURL = `/student/questions/freecourse/${classId}/${studentId}/${this.courseId}`;
                     if(this.router.url!=targetURL){
                       if(issueCertificate=='test'){
-                      this.router.navigate([
-                        '/student/questions/freecourse/',
-                        classId,
-                        studentId,
-                        this.courseId,
-                      ]);
+                          if (this.classDetails.courseId.tutorial != null) {
+                            this.router.navigate([
+                              '/student/questions/freecourse/',
+                              classId,
+                              studentId,
+                              this.courseId,
+                            ]);
+                          } else {
+                          }
+                     
                     }
                     else{
                       let payload={
@@ -1155,6 +1160,7 @@ else if(this.feeType=="free"){
         }
       });
   }
+
   parseDate(dateString: string): Date {
     return new Date(dateString);
   }
@@ -1355,6 +1361,7 @@ else if(this.feeType=="free"){
   }
 
   submitFeedback(event: any) {
+    
     this.isFeedBackSubmitted = false;
     const studentId = localStorage.getItem('id');
     const userData = JSON.parse(localStorage.getItem('user_data') || '');

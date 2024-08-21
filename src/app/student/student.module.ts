@@ -128,6 +128,7 @@ import { ScoreComponent } from './settings/score/score.component';
 import { UpdateScoreAlgorithmComponent } from './settings/score/update-score-algorithm/update-score-algorithm.component';
 import { TimeComponent } from './settings/time/time.component';
 import { UpdateTimeAlgorithmComponent } from './settings/time/update-time-algorithm/update-time-algorithm.component';
+import { TutorialQuestionsComponent } from './settings/tutorial-questions/tutorial-questions.component';
 
 @NgModule({
   declarations: [
@@ -231,6 +232,14 @@ import { UpdateTimeAlgorithmComponent } from './settings/time/update-time-algori
     UpdateScoreAlgorithmComponent,
     TimeComponent,
     UpdateTimeAlgorithmComponent,
+    TutorialQuestionsComponent,
+  
+    // CourseKitComponent,
+    // VideoPlayerComponent,
+    // CreateCourseKitComponent,
+    // EditCourseKitComponent,
+    // ViewCourseKitComponent,
+    // CreateTemplateComponent
   ],
   imports: [
     CommonModule,

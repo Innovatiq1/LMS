@@ -128,9 +128,9 @@ export class QuestionComponent implements OnInit {
     this.classId = urlPath[urlPath.length - 3];
 
     this.courseService.getCourseById(this.courseId).subscribe((response) => {
-      this.questionList = response?.assessment?.questions;
-      this.assesmentId = response?.assessment?.id;
-      this.timerInSeconds = response?.assessment?.timer;
+      this.questionList = response?.tutorial?.questions;
+      this.assesmentId = response?.tutorial?.id;
+      this.timerInSeconds = response?.tutorial?.timer;
       this.calculateTotalTime();  
       this.answers = Array.from({ length: this.questionList.length }, () => ({
         questionText: null,
@@ -169,7 +169,7 @@ student(){
   submitAnswers() {
     const requestBody = {
       studentId: this.studentId,
-      assessmentId: this.assesmentId,
+      tutorialId: this.assesmentId,
       answers: this.answers,
       courseId: this.courseId,
       is_course_completed: true,
@@ -177,7 +177,7 @@ student(){
       classId: this.classId
     };
 
-    this.studentService.submitAssessment(requestBody).subscribe(
+    this.studentService.submitTutorial(requestBody).subscribe(
       (response: any) => {
         Swal.fire({
           title: "Submitted!",
@@ -198,12 +198,12 @@ correctAnswers(value:any) {
 }
 
 getAnswerById() {
- this.studentService.getAnswerById(this.answerId).subscribe((res: any) => {
-    this.answerResult  = res.assessmentAnswer;
-    const assessmentAnswer = res.assessmentAnswer;
-    const assessmentId = assessmentAnswer.assessmentId;
+ this.studentService.getTutorialAnswerById(this.answerId).subscribe((res: any) => {
+    this.answerResult  = res.tutorialAnswer;
+    const tutorialAnswer = res.tutorialAnswer;
+    const assessmentId = tutorialAnswer.tutorialId;
     this.questionList = assessmentId.questions.map((question: any) => {
-      const answer = assessmentAnswer.answers.find((ans: any) => ans.questionText === question.questionText);
+      const answer = tutorialAnswer.answers.find((ans: any) => ans.questionText === question.questionText);
       const correctOption = question.options.find((option: any) => option.correct);
       const selectedOption = answer ? answer.selectedOptionText : null;
       const status = selectedOption ? correctOption.text === selectedOption : false;
@@ -213,7 +213,7 @@ getAnswerById() {
         selectedOption: answer ? answer.selectedOptionText : 'No answer provided',
         status: status,
         options : question.options,
-        score : assessmentAnswer.score
+        score : tutorialAnswer.score
       };
     });
     this.isanswersSubmitted = true

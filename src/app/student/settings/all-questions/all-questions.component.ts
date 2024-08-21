@@ -121,7 +121,10 @@ export class AllQuestionsComponent {
   assessmentType(row: any) {
     if (row.collectionName === 'assesmentquestions') {
       return 'Assessment';
-    } else {
+    } else if (row.collectionName === 'tutorialquestions') {
+      return 'Tutorial';
+    }
+      else {
       return 'Exam';
     }
   }
