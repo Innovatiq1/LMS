@@ -33,9 +33,6 @@ export class EditUpdateDashboardComponent {
   displayedColumns = [
     'type',
     'Dashboards',
-    // 'Components',
-    // 'Status',
-    // 'actions'
   ];
   breadscrums = [
     {
@@ -81,8 +78,6 @@ export class EditUpdateDashboardComponent {
   edit(dashboard: any) {
     let type = dashboard.typeName;
     this.isEditChange.emit(type);
-    // this.isCreateDashboard = true;
-    // this.isCreateChange.emit(this.isCreateDashboard);
   }
 
   createDashboard() {
@@ -94,78 +89,16 @@ export class EditUpdateDashboardComponent {
     const doc = new jsPDF();
     const headers = [[' Role', 'Module', 'Sub Module     ', 'Status']];
 
-    // const data = this.typesList.map((x: any) => [
-    //   x?.typeName,
-    //   x.menuItems.map((x: any) => x.title),
-    //   x.menuItems.map((x: any) => x.children[0].title),
-    //   x.status,
-    // ]);
-    //const columnWidths = [60, 80, 40];
-
-    // Generate the table using jspdf-autotable
-    // (doc as any).autoTable({
-    //   head: headers,
-    //   body: data,
-    //   startY: 20,
-    //   headStyles: {
-    //     fontSize: 10,
-    //     cellWidth: 'wrap',
-    //   },
-    // });
-
-    // Save or open the PDF
     doc.save('Module Access-list.pdf');
   }
   exportExcel() {
-    // const exportData: Partial<TableElement>[] = this.typesList.map(
-    //   (x: any) => ({
-    //     Role: x.typeName,
-    //     Module: x.menuItems.map((x: any) => x.title).toString(),
-    //     SubModule: x.menuItems.map((x: any) => x.children[0].title).toString(),
-    //     Status: x.status,
-    //   })
-    // );
-    // TableExportUtil.exportToExcel(exportData, 'Module Access-list');
+  
   }
 
   removeSelectedRows() {
-    // const totalSelect = this.selection.selected.length;
-    // Swal.fire({
-    //   title: 'Confirm Deletion',
-    //   text: 'Are you sure you want to delete?',
-    //   icon: 'warning',
-    //   showCancelButton: true,
-    //   confirmButtonColor: '#d33',
-    //   cancelButtonColor: '#3085d6',
-    //   confirmButtonText: 'Delete',
-    //   cancelButtonText: 'Cancel',
-    // }).then((result) => {
-    //   if (result.isConfirmed) {
-    //     this.selection.selected.forEach((item) => {
-    //       const index: number = this.typesList.renderedData.findIndex(
-    //         (d: UserType) => d === item
-    //       );
-    //       this.refreshTable();
-    //       this.selection = new SelectionModel<UserType>(true, []);
-    //     });
-    //     Swal.fire({
-    //       title: 'Success',
-    //       text: 'Record Deleted Successfully...!!!',
-    //       icon: 'success',
-    //       // confirmButtonColor: '#526D82',
-    //     });
-    //   }
-    // });
-    // this.showNotification(
-    //   'snackbar-danger',
-    //   totalSelect + ' Record Delete Successfully...!!!',
-    //   'bottom',
-    //   'center'
-    // );
   }
   pageSizeChange($event: any) {
     this.coursePaginationModel.page = $event?.pageIndex + 1;
     this.coursePaginationModel.limit = $event?.pageSize;
-    // this.getUserTypeList();
   }
 }

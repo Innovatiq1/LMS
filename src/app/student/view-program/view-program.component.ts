@@ -230,7 +230,6 @@ export class ViewProgramComponent {
   }
 
   openVidePlayer(videoLink: { url?: any; id?: any; }): void {
-    // const { videoLink } = videoLink;
     if (videoLink?.id) {
       const videoId = videoLink.id;
       this.courseService.getVideoById(videoId).subscribe((res) => {

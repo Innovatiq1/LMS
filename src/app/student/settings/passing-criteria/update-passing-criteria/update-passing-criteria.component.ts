@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-//import { CourseService } from '@core/service/course.service';
 import { SettingsService } from '@core/service/settings.service';
 import { UtilsService } from '@core/service/utils.service';
 import Swal from 'sweetalert2';
@@ -30,7 +29,6 @@ export class UpdatePassingCriteriaComponent {
     private authenService: AuthenService) {
       this.passingCriteriaForm = this.fb.group({
         value: ['', [Validators.required,...this.utils.validators.name]],
-       // description: ['', [Validators.required,...this.utils.validators.name]]
 
       });
 
@@ -55,7 +53,6 @@ export class UpdatePassingCriteriaComponent {
       this.id = params['id'];
       this.passingCriteriaForm.patchValue({
         value: this.fund,
-       // description: this.description
       });
     });
   }
@@ -81,7 +78,6 @@ export class UpdatePassingCriteriaComponent {
               title: 'Success',
               text: 'Passing Criteriya updated successfully.',
               icon: 'success',
-              // confirmButtonColor: '#d33',
             });
             this.passingCriteriaForm.reset();
             () => {
@@ -89,7 +85,6 @@ export class UpdatePassingCriteriaComponent {
                 title: 'Error',
                 text: 'Failed to update. Please try again.',
                 icon: 'error',
-                // confirmButtonColor: '#d33',
               });
             };
           }
@@ -120,7 +115,6 @@ export class UpdatePassingCriteriaComponent {
         title: 'Success',
         text: 'Record Deleted Successfully...!!!',
         icon: 'success',
-        // confirmButtonColor: '#526D82',
       });
       window.history.back();
     });

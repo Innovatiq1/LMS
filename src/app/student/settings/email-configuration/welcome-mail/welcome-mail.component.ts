@@ -73,7 +73,6 @@ export class WelcomeMailComponent {
 
   toggle(_data: any){
     this.edit =!this.edit;
-    // this._id = _data._id;
     this.emailTemplateForm.patchValue({
       email_subject: _data.email_subject,
       email_top_welcome_text:_data.email_top_welcome_text,

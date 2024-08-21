@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { FormBuilder, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenService } from '@core/service/authen.service';
-//import { CourseService } from '@core/service/course.service';
 import { SettingsService } from '@core/service/settings.service';
 import { UtilsService } from '@core/service/utils.service';
 import Swal from 'sweetalert2';
@@ -29,7 +28,6 @@ export class ScoreComponent {
     private authenService: AuthenService) {
       this.scoreAlgorithmForm = this.fb.group({
         scores: ['', [Validators.required,...this.utils.validators.noLeadingSpace,...this.utils.validators.value]],
-        // description: ['', [Validators.required,...this.utils.validators.name, ...this.utils.validators.noLeadingSpace]]
 
       })
   }
@@ -56,8 +54,6 @@ export class ScoreComponent {
 
   onSubmit() {
     if(this.scoreAlgorithmForm.valid){
-      // let userId = localStorage.getItem('id');
-      // this.passingCriteriaForm.value.adminId=userId;
       let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
             this.scoreAlgorithmForm.value.companyId=userId;
     Swal.fire({
@@ -77,7 +73,6 @@ export class ScoreComponent {
           });
           this.getAllScoreAlgorithm();
           this.scoreAlgorithmForm.reset();
-          // this.router.navigate(['/student/settings/create-department'])
         },
         (error) => {
           Swal.fire({
@@ -96,11 +91,9 @@ export class ScoreComponent {
 getAllScoreAlgorithm(){
   this.SettingsService.getScoreAlgorithm().subscribe((response:any) =>{
     this.dataSource=response.data.docs;
-   //this.dataSource = response.reverse();
   })
 }
 update(data: any) {
-  //console.log("data score ==",data)
   this.router.navigate(['/student/settings/configuration/score-algorithm/update-score-algorithm'], {
     queryParams: {
       funding: data.scores,

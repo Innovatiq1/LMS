@@ -66,10 +66,6 @@
                   <ng-container matColumnDef="Approval Status">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
                     <mat-cell *matCellDef="let row" [routerLink]="getRouterLink(row)" [queryParams]="{ approved: true, assessmentType: assessmentType(row) }" [ngClass]="getStatusClass(row.status)">
-                      <!-- <div class="status-container">
-                        <span class="dot" [ngClass]="getDotClass(row.status)"></span> 
-                        <span class="status-text">{{row.status | titlecase}}</span>
-                      </div> -->
                       <span
                             [class]="row?.status === 'approved' ? 'badge badge-solid-green' : row?.status === 'open' ? 'badge badge-solid-red' : ''">
                             <span

@@ -51,7 +51,6 @@ export class EditTeacherComponent {
     private instructor: InstructorService,
     private router: Router
   ) {
-    //this.proForm = this.createContactForm();
     this.subscribeParams = this.activatedRoute.params.subscribe(
       (params: any) => {
         this.userId = params.id;
@@ -66,7 +65,6 @@ export class EditTeacherComponent {
       gender: ['', [Validators.required]],
       mobile: ['', [Validators.required]],
       password: ['', [Validators.required]],
-      // conformPassword: ['', [Validators.required]],
       department: [''],
       address: [''],
       email: [
@@ -81,74 +79,10 @@ export class EditTeacherComponent {
       attemptBlock: [''],
     });
   }
-  // onSubmit() {
-  //   console.log('Form Value', this.proForm.value);
-  //   if(this.proForm.valid){
-  //     this.instructor.uploadVideo(this.files).subscribe(
-  //       (response: any) => {
-  //         const inputUrl = response.inputUrl;
-
-  //         const userData: Users = this.proForm.value;
-  //         //this.commonService.setVideoId(videoId)
-
-  //         userData.avatar = inputUrl;
-  //         userData.filename= this.fileName
-  //         userData.type = "Instructor";
-  //         userData.role = "Instructor";
-
-  //         //this.currentVideoIds = [...this.currentVideoIds, ...videoId]
-  //         // this.currentVideoIds.push(videoId);
-  //         this.updateInstructor(userData);
-
-  //         Swal.close();
-  //      },
-  //      );
-  //     }
-  // }
-  // onSubmit() {
-  //   console.log('Form Value', this.proForm.value);
-
-  //   // Check if the form is valid
-  //   if (this.proForm.valid) {
-  //     if (this.files) {
-  //       // If files are present, upload the video
-  //       this.instructor.uploadVideo(this.files).subscribe(
-  //         (response: any) => {
-  //           const inputUrl = response.inputUrl;
-
-  //           const userData: Users = this.proForm.value;
-  //           userData.avatar = inputUrl;
-  //           userData.filename = this.fileName;
-  //           userData.type = "Instructor";
-  //           userData.role = "Instructor";
-
-  //           this.updateInstructor(userData);
-
-  //           Swal.close();
-  //         },
-  //         (error: any) => {
-  //           // Handle the error during file upload
-  //           console.error('File upload failed:', error);
-  //         }
-  //       );
-  //     } else {
-  //       // If no files are present, update the instructor directly
-  //       const userData: Users = this.proForm.value;
-  //       userData.type = "Instructor";
-  //       userData.role = "Instructor";
-
-  //       this.updateInstructor(userData);
-  //     }
-  //   }
-  // }
   onSubmit() {
     let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    // Check if the form is valid
     if (this.proForm.valid) {
-      // Create userData object with form values
       const userData: Users = this.proForm.value;
-
-      // Set the avatar path to the existing avatar URL
       userData.avatar = this.avatar;
       userData.type = AppConstants.INSTRUCTOR_ROLE;
       userData.role = AppConstants.INSTRUCTOR_ROLE;
@@ -157,9 +91,6 @@ export class EditTeacherComponent {
       userData.adminName = user.user.name;
       userData.companyId = user.user.companyId; 
       userData.attemptCalculation = 1;
-
-
-      // Call the updateInstructor function with userData
       Swal.fire({
         title: 'Are you sure?',
         text: 'Do You want to update this Trainer',
@@ -183,9 +114,7 @@ export class EditTeacherComponent {
           text: 'Trainer updated successfully',
           icon: 'success',
         });
-        //this.fileDropEl.nativeElement.value = "";
         this.proForm.reset();
-        //this.toggleList()
         this.router.navigateByUrl('/student/settings/all-user/all-instructors');
       },
       (error: { message: any; error: any }) => {
@@ -198,7 +127,6 @@ export class EditTeacherComponent {
     );
   }
   ngOnInit(): void {
-    //this.setup()
     this.getData();
     this.getDepartment();
     this.commonRoles = AppConstants
@@ -208,26 +136,11 @@ export class EditTeacherComponent {
       course: this.teachersService.getUserById(this.userId),
     }).subscribe((response: any) => {
       if (response) {
-        console.log('response?.course?.education', response?.course?.education);
-        console.log('====REsponnse===Gopal==', response);
-        //this.user = response.course;
-
-        console.log('response?.course?.education', response?.course?.education);
-        // this.fileName =response?.course?.filename
         this.avatar = response.course?.avatar;
         this.uploaded = this.avatar?.split('/');
         let image = this.uploaded?.pop();
         this.uploaded = image?.split('\\');
         this.fileName = this.uploaded?.pop();
-
-        // this.fileName=response?.course?.videoLink?response?.course?.videoLink[0].filename:null
-        // let startingDate=response?.course?.startDate;
-        // let endingDate=response?.course?.endDate;
-        // let startTime=response?.course?.startDate.split("T")[1];
-        // let startingTime=startTime?.split(".")[0];
-        // let endTime=response?.course?.endDate.split("T")[1];
-        // let endingTime=endTime?.split(".")[0];
-
         this.proForm.patchValue({
           education: response?.course?.education,
           name: response?.course?.name,
@@ -271,17 +184,6 @@ export class EditTeacherComponent {
         this.uploaded = image?.split('\\');
         this.fileName = this.uploaded?.pop();
       });
-    // this.fileName = event.target.files[0].name;
-    // this.files=event.target.files[0]
-    // this.authenticationService.uploadVideo(event.target.files[0]).subscribe(
-    //   (response: any) => {
-    //             //Swal.close();
-    //             
-    //   },
-    //   (error:any) => {
-
-    //   }
-    // );
   }
   cancel() {
     window.history.back();

@@ -77,7 +77,6 @@ export class DiscountComponent {
           },);
           this.getAllDiscounts();
           this.discountForm.reset();
-          // this.router.navigate(['/student/settings/create-department'])
         },
         (error) => {
           Swal.fire({

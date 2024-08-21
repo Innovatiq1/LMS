@@ -75,7 +75,6 @@ export class FundingComponent {
           });
           this.getAllFundingGrants();
           this.fundingForm.reset();
-          // this.router.navigate(['/student/settings/create-department'])
         },
         (error) => {
           Swal.fire({

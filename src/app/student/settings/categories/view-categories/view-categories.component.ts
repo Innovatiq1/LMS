@@ -39,10 +39,6 @@ export class ViewCategoriesComponent {
     this.activatedRoute.params.subscribe((params: any) => {
       console.log("params.id", params.id)
       this.courseId = params.id;
-      // if(this.courseId){
-      //   this.getProgramByID(this.courseId);
-      // }
-
     });
   }
   ngOnInit(): void {
@@ -92,12 +88,6 @@ export class ViewCategoriesComponent {
       this.categoryDataById = response?._id;
       this.response = response;
       this.subCategory = response.subCategories;
-      // if (response && response.data && response.data.id) {
-      //   this.response = response;
-      //   this.categoryDataById = this.response?._id;
-      // } else {
-       
-      // }
     });
   }
   edit(id:any){
@@ -126,7 +116,6 @@ export class ViewCategoriesComponent {
             
             this.fetchSubCategories();
             window.history.back();
-            // this.getCategoryByID(id);
           },
           (error: { message: any; error: any; }) => {
             Swal.fire(

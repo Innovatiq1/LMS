@@ -704,8 +704,6 @@
           </mat-tab-group>
         </div>
       </div>
-
-      <!-- video content -->
       <div *ngIf="isApproved || isCompleted" class="col-lg-12 col-md-8">
         <div class="row">
           <div class="col-lg-9 col-md-9">
@@ -809,7 +807,6 @@
                   </li>
                 </ul>
               </div>
-              <!-- Course Completed  -->
               <div class="card-body">
                 <div class="tab-content" id="myTabContent">
                   <div
@@ -1159,12 +1156,9 @@
               </div>
             </div>
           </div>
-
-          <!-- CourseKit -->
           <div class="col-lg-3" *ngIf="isApproved || isCompleted">
             <div class="card">
               <table mat-table [dataSource]="coursekitDetails">
-                <!-- Column Definitions -->
                 <ng-container matColumnDef="video">
                   <th mat-header-cell *matHeaderCellDef>
                     <span class="kit">Course Kit</span>
@@ -1216,8 +1210,6 @@
                     </div>
                   </td>
                 </ng-container>
-
-                <!-- Header and Rows -->
                 <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
                 <tr
                   mat-row
@@ -1228,8 +1220,6 @@
           </div>
         </div>
       </div>
-      <!-- video end -->
-
       <div class="col-lg-8 col-md-8" *ngIf="!isCompleted && !isApproved">
         <div class="card">
           <mat-tab-group>
@@ -1383,7 +1373,6 @@
 </section>
 
 <div class="container" *ngFor="let listpdfData of pdfData; let i = index">
-  <!-- <div class="container"> -->
   <div *ngIf="isInvoice" id="contentToConvert">
     <div class="container-fluid"
       style="cursor: pointer; height: 700px;width: 70%;margin: auto;background-color: rgb(255, 248, 238);border-radius: 10px;">
@@ -1469,8 +1458,6 @@
     </div>
   </div>
 </div>
-
-<!-- </div> -->
 </div>
 
 <ng-template #discountDialog let-dialogRef="dialogRef" let-data>

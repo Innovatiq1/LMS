@@ -1,4 +1,3 @@
-import { ExamScheduleComponent } from './exam-schedule/exam-schedule.component';
 import { LecturesComponent } from './lectures/lectures.component';
 import { Page404Component } from './../authentication/page404/page404.component';
 import { NgModule } from '@angular/core';
@@ -19,10 +18,6 @@ const routes: Routes = [
   {
     path: 'program-lectures',
     component: LectureProgramsComponent,
-  },
-  {
-    path: 'exam-schedule',
-    component: ExamScheduleComponent,
   },
   { path: '**', component: Page404Component },
 ];

@@ -66,7 +66,6 @@ constructor(private router:Router,public utils: UtilsService, private questionSe
     return numSelected === numRows;
   }
 
-   /** Selects all rows if they are not all selected; otherwise clear selection. */
    masterToggle() {
     this.isAllSelected()
       ? this.selection.clear()

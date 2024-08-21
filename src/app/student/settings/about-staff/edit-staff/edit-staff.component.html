@@ -28,14 +28,12 @@
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <label>Last name</label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <!-- <mat-label>Last name</mat-label> -->
                     <input matInput formControlName="last_name" />
                   </mat-form-field>
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <label>Education<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <!-- <mat-label>Education</mat-label> -->
                     <input matInput formControlName="qualification" required />
                     <mat-error *ngIf="staffForm.get('qualification')?.invalid && staffForm.get('qualification')?.touched ">
                       {{utils.getErrorMessage1(staffForm.get("qualification"), "edu") }}
@@ -45,7 +43,6 @@
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <label>Email<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <!-- <mat-label>Email</mat-label> -->
                     <input matInput formControlName="email" required />
                     <mat-error *ngIf=" staffForm.get('email')?.invalid && staffForm.get('email')?.touched">
                       {{ utils.getErrorMessage1(staffForm.get("email"), "email") }}
@@ -55,7 +52,6 @@
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <label>Password<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <!-- <mat-label>Password</mat-label> -->
                     <input matInput formControlName="password" type="password" required />
                     <mat-error *ngIf="staffForm.get('password')?.hasError('required')">
                       {{ utils.getErrorMessage1(staffForm.get("password"), "password") }}
@@ -65,7 +61,6 @@
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <label>Role<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <!-- <mat-label>User Type</mat-label> -->
                     <mat-select formControlName="type" required>
                       <mat-option [value]="user.typeName" *ngFor="let user of userTypes">
                         {{ user.typeName }}
@@ -79,7 +74,6 @@
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <label>Gender<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <!-- <mat-label>Gender</mat-label> -->
                     <mat-select formControlName="gender" required>
                       <mat-option [value]="'male'"> Male </mat-option>
                       <mat-option [value]="'female'"> Female </mat-option>
@@ -92,7 +86,6 @@
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <label>Mobile<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <!-- <mat-label>Mobile</mat-label> -->
                     <input matInput formControlName="mobile" type="number" required />
                     <mat-error *ngIf=" staffForm.get('mobile')?.invalid && staffForm.get('mobile')?.touched ">
                       {{ utils.getErrorMessage1(staffForm.get("mobile"),"mobile")}}
@@ -102,7 +95,6 @@
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <label>Date of Birth<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <!-- <mat-label>Date Of Birth</mat-label> -->
                     <input matInput [matDatepicker]="picker" formControlName="dob" required />
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
@@ -114,7 +106,6 @@
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <label>Registration Date<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <!-- <mat-label>Joining Date</mat-label> -->
                     <input matInput [matDatepicker]="picker1" formControlName="joiningDate" required />
                     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                     <mat-datepicker #picker1></mat-datepicker>
@@ -126,7 +117,6 @@
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <label>Salary<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <!-- <mat-label>Salary</mat-label> -->
                     <input matInput formControlName="salary" />
                     <mat-error *ngIf="staffForm.get('salary')?.hasError('required')">
                       {{utils.getErrorMessage1(staffForm.get("salary"), "salary") }}
@@ -136,7 +126,6 @@
                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-2">
                   <label>Address</label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <!-- <mat-label>Address</mat-label> -->
                     <textarea matInput formControlName="address"></textarea>
                   </mat-form-field>
                 </div>
@@ -156,7 +145,6 @@
                       </span>
                     </div>
                   </div>
-                  <!-- <app-file-upload formControlName="image_link" (change)="onFileUpload($event)"></app-file-upload> -->
                 </div>
               </div>
 

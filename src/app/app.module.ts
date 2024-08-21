@@ -43,7 +43,7 @@ import { InstructorLeaveRequestService } from './teacher/leave-request/leave-req
 import { LecturesService } from './teacher/lectures/lectures.service';
 import { LoginGuard } from '@core/guard/login.guard';
 import { ChatbotComponent } from './apps/chatbot/chatbot.component';
-import { TicketComponent } from './ticket/ticket.component';
+// import { TicketComponent } from './ticket/ticket.component';
 import { StudentsService } from './admin/students/students.service';
 import { UsersModule } from './admin/users/users.module';
 import { DashboardCustomzComponent } from './student/settings/dashboard-customz/dashboard-customz.component';
@@ -73,7 +73,7 @@ export function createTranslateLoader(http: HttpClient) {
     SettingsComponent,
     LeaveRequestComponent,
     ChatbotComponent,
-    TicketComponent,
+    // TicketComponent,
     ViewComponent,
     DashboardCustomzComponent,
     TrainerAnalyticsDashboardComponent,

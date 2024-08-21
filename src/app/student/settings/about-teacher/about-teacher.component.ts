@@ -36,7 +36,6 @@ export class AboutTeacherComponent {
   isDelete = false;
 
   constructor(private activeRoute:ActivatedRoute, 
-    // private StudentService:TeachersService,
     public lecturesService: LecturesService,
    private cdr: ChangeDetectorRef,
    public teachersService: TeachersService,
@@ -44,7 +43,6 @@ export class AboutTeacherComponent {
    private authenService: AuthenService) {
     this.coursePaginationModel = {};
     this.activeRoute.queryParams.subscribe(param =>{
-    console.log("params:",param['data'])
  
     this.aboutDataId = param['data'];
     })
@@ -79,7 +77,6 @@ export class AboutTeacherComponent {
    loadData(){
      this.teachersService.getUserById( this.aboutDataId).subscribe(res => {
        this.aboutData = res;
-       console.log("edit",this.aboutData)
  
      })
  }
@@ -88,13 +85,9 @@ export class AboutTeacherComponent {
 
 
  getClassList() {
-  //  let instructorId = localStorage.getItem('id')
    this.lecturesService.getClassListWithPagination(this.aboutDataId, this.filterName,{ ...this.coursePaginationModel }).subscribe(
      (response) => {
-       //console.log("this",response.data.ssions)
-  
        this.dataSource1 = response.data.docs;
-       //this.mapClassList()
        this.dataSource = [];
        
      },
@@ -105,13 +98,10 @@ export class AboutTeacherComponent {
    
  }
  getProgramList() {
-  // let instructorId = localStorage.getItem('id')
   this.lecturesService.getClassListWithPagination1(this.aboutDataId, this.filterName,{ ...this.coursePaginationModel }).subscribe(
     (response) => {
-      //console.log("this",response.data.ssions)
  
       this.dataSource2 = response.data.docs;
-      //this.mapClassList()
       this.dataSource = [];
       
     },
@@ -143,8 +133,6 @@ deleteItem(row: any) {
            });
            this.loadData()
            window.history.back();
-           //this.fetchCourseKits();
-           //this.instructorData()
          },
          (error: { message: any; error: any; }) => {
            Swal.fire(

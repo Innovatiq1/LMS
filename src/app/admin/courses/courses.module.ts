@@ -3,8 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CoursesRoutingModule } from './courses-routing.module';
 import { AddCourseComponent } from './add-course/add-course.component';
-import { EditCourseComponent } from './edit-course/edit-course.component';
-import { AboutCourseComponent } from './about-course/about-course.component';
 import { AllCourseComponent } from './all-course/all-course.component';
 import { SharedModule } from '@shared';
 import { ComponentsModule } from '@shared/components/components.module';
@@ -41,8 +39,6 @@ import { DraftedCoursesComponent } from './all-course/drafted-courses/drafted-co
 @NgModule({
   declarations: [
     AddCourseComponent,
-    EditCourseComponent,
-    AboutCourseComponent,
     AllCourseComponent,
     CreateClassComponent,
     CompletionListComponent,

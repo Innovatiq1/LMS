@@ -1,6 +1,3 @@
-
-
-
 <section class="content">
     <div class="content-block">
       <div class="block-header" *ngFor="let breadscrum of breadscrums">
@@ -13,32 +10,11 @@
           <div class="card" style="height: fit-content;">
             <div class="header d-flex justify-content-between">
               <h2>Update Passing Criteria</h2>
-              <!-- <button mat-mini-fab color="warn" matTooltip="Delete" (click)="deleteFunding(id)">
-                <mat-icon class="col-white">delete
-                </mat-icon>
-              </button> -->
               <button class="icons" *ngIf="isDelete" (click)="deletePassingCriteria(id)" alt="Delete" matTooltip="Delete" mat-menu-item>
                 <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
             </button>
             </div>
             <div class="body">
-                <!-- <div class="row">
-                  <form [formGroup]="userTypeFormGroup">
-                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
-                        <label>User Role</label>
-                        <mat-form-field class="example-full-width " appearance="outline">
-                            <input matInput type="text" formControlName="typeName"
-                            class="form-control" placeholder="Enter New User Type"
-                            >                                      
-                        </mat-form-field>
-                    </div>
-                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
-                        <div class="d-grid gap-3 d-md-flex">
-                        <button  mat-raised-button color="warn" [routerLink]="['/admin/users/user-type']"   > All User Role </button>
-                        </div>
-                      </div>
-                      </form>
-                </div> -->
                 <form [formGroup]="passingCriteriaForm">
 
                 <div class="row">
@@ -54,22 +30,6 @@
                                       
                         </mat-form-field>
                   </div>
-                  <!-- <div class="col-3">
-                    <label>Description <span class="mandatory">&nbsp;*</span></label>
-                        <mat-form-field class="example-full-width " appearance="outline">
-                            <input matInput type="text" formControlName="description"
-                            class="form-control" placeholder="Enter Description"
-                            >      
-                            <mat-error *ngIf="fundingForm.get('description')?.invalid ||fundingForm.get('description')?.touched">
-                              {{ utils.getErrorMessage1(fundingForm.get('description'), 'description') }}
-                            </mat-error>
-                                      
-                        </mat-form-field>
-                  </div> -->
-
-                  <!-- <div class="col mt-5 mx-5">
-                    <button  mat-flat-button color="accent" [routerLink]="['/student/settings/user-type']"   > All Roles </button>
-                  </div> -->
                 </div>
                 </form>
                 <hr/>
@@ -81,31 +41,6 @@
                     <button  mat-raised-button  id="submit" (click)="onUpdate()" > Update </button>
                     </div>
                   </div>
-                  <!-- <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
-                      <div class="header mt-3">
-                        <h2>Funding/Grant Listing</h2>
-                      </div>
-                      <div class="table-wrapper">
-                        <div class="table-responsive">
-                          <table class="table table-hover ">
-                            <thead>
-                              <tr>
-                                <th>Funding/grant</th>
-                                <th>Description</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr style="cursor: pointer;" *ngFor="let row of dataSource">
-                                <td>{{row.grant_type | capitalizeFirstLetter}}</td>                         
-                                <td>{{row.description | capitalizeFirstLetter}}</td>   
-                              </tr>
-    
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                  </div> -->
-
             </div>
           </div>
         </div>

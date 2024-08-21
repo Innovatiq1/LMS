@@ -111,7 +111,6 @@ export class CreateCategoriesComponent implements OnInit{
       return;
     }
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-       // const mainCategoryData = this.mainCategoryForm.value;
     const mainCategoryData = {...this.mainCategoryForm.value, companyId : userId}
     Swal.fire({
       title: 'Are you sure?',
@@ -158,7 +157,6 @@ export class CreateCategoriesComponent implements OnInit{
               text: "Category deleted successfully",
               icon: "success",
             });
-            // this.fetchSubCategories();
           },
           (error: { message: any; error: any; }) => {
             Swal.fire(
@@ -178,12 +176,7 @@ export class CreateCategoriesComponent implements OnInit{
   
   createSubCategory(): void {
     this.isSubmitted=true;
-   
-    // if (this.subCategoryForm.invalid) {
-    //   return;
-    // }
-    
-
+ 
     this.subCategoryData = this.subcategories.value;
     this.subCategoryData.forEach(subcategory => {
       subcategory.main_category_id = this.mainCategoryId;
