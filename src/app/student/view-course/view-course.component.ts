@@ -24,7 +24,7 @@ import * as Plyr from 'plyr';
 import { T } from '@angular/cdk/keycodes';
 import { MatDialog } from '@angular/material/dialog';
 import DomToImage from 'dom-to-image';
-
+import { DocumentViewComponent } from './document-view/document-view.component';
 import {
   AbstractControl,
   FormArray,
@@ -95,7 +95,8 @@ export class ViewCourseComponent implements OnDestroy {
   studentClassDetails: any;
   isStatus = false;
   isApproved = false;
-  isTest:boolean=false;
+  isTest:boolean=true;
+  isDocument:boolean=false;
   isCancelled = false;
   isCompleted = false;
   documentLink: any;
@@ -225,7 +226,21 @@ export class ViewCourseComponent implements OnDestroy {
     });
     this.commonRoles = AppConstants
   }
- 
+  // openDocumentDialog(documentLink: string, filename: string): void {
+  //   this.dialog.open(DocumentViewComponent, {
+  //     data: { documentLink, filename },
+  //     width: '80%',
+  //     height: '80%'
+  //   });
+  // }
+  openDocumentDialog(url: string,filename: string): void {
+   // console.log("viewCourse page ==",url);
+    this.dialog.open(DocumentViewComponent, {
+      width: '100%',
+      height: '100%',
+      data: { url }
+    });
+  }
   getClassDetails() {
     this.classService.getClassById(this.classId).subscribe((response) => {
       this.classDetails = response;
@@ -239,6 +254,7 @@ export class ViewCourseComponent implements OnDestroy {
       this.getExamAssessmentAnswerCount(this.courseId);
     });
   }
+  
  
   onTimeUpdate(event: any) {
     let time = this.commonService.getPlayBackTime();
@@ -336,7 +352,8 @@ export class ViewCourseComponent implements OnDestroy {
                 this.studentClassDetails = response.data.docs[0];
                 const issueCertificate=this.studentClassDetails.classId.courseId.issueCertificate;
            const playBackTimes=this.studentClassDetails.playbackTime;
-           this.isTest = (issueCertificate === 'test' && playBackTimes === 100) ? true : false;           
+           this.isTest = (issueCertificate === 'test' && playBackTimes === 100) ? true : false; 
+           this.isDocument=issueCertificate==='document'?false:true;          
                 if (this.studentClassDetails.status == 'approved') {
                   if (this.paid) {
                     const targetURL = `/student/questions/${classId}/${studentId}/${this.courseId}`;
@@ -904,6 +921,8 @@ else if(this.feeType=="free"){
         this.url = item?.videoLink[0]?.video_url;
       });
 
+      //console.log("get the courseKit Details==",this.courseKitDetails)
+
       this.courseKit = this.courseKitDetails.map((kit: any) => ({
         shortDescription: kit.shortDescription,
         longDescription: kit.longDescription,
@@ -1010,7 +1029,9 @@ else if(this.feeType=="free"){
 
 
         if (this.studentClassDetails.status == 'approved') {
+        //  console.log("this is the approved==",this.studentClassDetails)
           this.isTest = (issueCertificate === 'test' && playBackTimes === 100) ? true : false;
+          this.isDocument=issueCertificate==='document'?false:true;
           this.isRegistered == true;
           this.isApproved = true;
         }
@@ -1019,6 +1040,7 @@ else if(this.feeType=="free"){
           this.studentClassDetails.status == 'completed'
         ) {
           this.isTest = (issueCertificate === 'test' && playBackTimes === 100) ? true : false;
+          this.isDocument=issueCertificate==='document'?false:true;
           this.isRegistered == true;
           this.isCompleted = true;
         }

@@ -816,7 +816,7 @@
                     aria-labelledby="home-tab"
                     [ngClass]="{ 'show active': defaultTab === 'home' }"
                   >
-                    <h5 class="py-2">
+                    <h5 class="py-2" *ngIf="isDocument">
                       Course Completed :
                       <span
                         [ngClass]="{
@@ -1164,7 +1164,7 @@
                     <span class="kit">Course Kit</span>
                   </th>
                   <td mat-cell *matCellDef="let row; let i = index">
-                    <div
+                    <div 
                       class="pointer"
                       (click)="
                         playVideos({
@@ -1178,7 +1178,7 @@
                       <span class="font-bold top"
                         >Section:{{ i + 1 }} &nbsp;&nbsp;{{ row.name }}
                       </span>
-                      <div class="d-flex">
+                      <div class="d-flex" *ngIf="isDocument">
                         <span class="d-flex align-items-start"
                           ><i class="material-icons icon" color="warn"
                             >ondemand_video</i
@@ -1196,6 +1196,14 @@
                         <span class="d-flex align-items-start"
                           ><i class="material-icons icon">article</i>&nbsp;
                           <a
+                            href="javascript:void(0)"
+                            class="m-b-20 text-black"
+                            (click)="openDocumentDialog(row.documentLink, row.filename)"
+                             >
+                            <span class="duration">{{ row.filename | truncate: 20 }}</span>
+                            </a>
+
+                          <!-- <a
                             href="{{ row.documentLink }}"
                             href=""
                             class="m-b-20 text-black"
@@ -1204,7 +1212,7 @@
                             <span class="duration">{{
                               row.filename | truncate : 20
                             }}</span></a
-                          >
+                          > -->
                         </span>
                       </div>
                     </div>

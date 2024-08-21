@@ -283,9 +283,63 @@ export class CreateCourseKitComponent implements OnInit {
     //this.fileDropEl.nativeElement.value = "";
   }
 
-  onFileUpload(event: any) {
-    const file = event.target.files[0];
-    this.docs = file;
-    this.uploadedDocument = this.docs.name;
+ 
+
+//Here is for testing code to put the file ppt to ptd
+onFileUpload(event: any) {
+  const file = event.target.files[0];
+
+  if (file) {
+    if (
+      file.type === 'application/vnd.ms-powerpoint' ||
+      file.type === 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+    ) {
+      // Only call the API for PPT/PPTX files
+      this.courseService.uploadFile(file).subscribe(
+        (response) => {
+          //console.log("ppt response ==", response);
+
+          // Convert base64 string to Blob
+          const byteCharacters = atob(response.fileContent);
+          const byteNumbers = new Array(byteCharacters.length);
+          for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+          }
+          const byteArray = new Uint8Array(byteNumbers);
+          const blob = new Blob([byteArray], { type: 'application/pdf' });
+
+          // Create a File object from the Blob
+          const fileToUpload = new File([blob], response.filename, { type: 'application/pdf' });
+
+          // Update the view
+          //this.uploadedDocument = fileToUpload.name; // Display the file name
+          this.uploadedDocument = file.name;
+          this.docs = fileToUpload; // Store the file object for further processing
+
+          // Optional: Programmatically set the file input box with the converted PDF file
+          const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+          if (fileInput) {
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(fileToUpload);
+            fileInput.files = dataTransfer.files; // Set the converted file in the input box
+           // console.log("File added to input box:", fileInput.files[0]);
+          }
+        },
+        (error) => {
+          console.error('File upload failed', error);
+          Swal.fire('Upload Failed', 'Unable to convert the file.', 'error');
+        }
+      );
+    } else {
+      this.uploadedDocument = file.name;
+      this.docs = file;
+    }
   }
+}
+  
+  // onFileUpload(event: any) {
+  //   const file = event.target.files[0];
+  //   this.docs = file;
+  //   this.uploadedDocument = this.docs.name;
+  // }
 }

@@ -98,9 +98,11 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   CertificateIssue: any[] = [
     { code: 'test', label: 'After Test' },
     { code: 'video', label: 'After Video' },
+    { code: 'document', label: 'After Document Completion' },
   ];
   isTestIssueCertificate: boolean = false;
   isVideoIssueCertificate: boolean = false;
+  isDocumentIssueCertificate: boolean = false;
   isExamTypeCertificate: boolean = false;
   isAfterExamType: boolean = false;
   draftId!: string;
@@ -840,9 +842,9 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     const selectedValue = event.value;
     this.isTestIssueCertificate = selectedValue === 'test';
     this.isVideoIssueCertificate = selectedValue === 'video';
-  
+  this.isDocumentIssueCertificate= selectedValue === 'document';
     // Reset exam type if issueCertificate is 'video'
-    if (this.isVideoIssueCertificate) {
+    if (this.isVideoIssueCertificate||this.isDocumentIssueCertificate) {
         this.firstFormGroup.get('examType')?.reset();
         this.isExamTypeCertificate = false;
         this.isAfterExamType = false; // Ensure 'after' is also reset
@@ -1120,6 +1122,13 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         this.isVideoIssueCertificate = true;
         // Patch assign coursekit only
         this.firstFormGroup.patchValue({
+          course_kit: this.course?.course_kit?.map((item: { id: any }) => item?.id) || [],
+        });
+      }
+      else if(this.course?.issueCertificate==='document'){
+         // Patch assign coursekit only
+         this.isDocumentIssueCertificate=true;
+         this.firstFormGroup.patchValue({
           course_kit: this.course?.course_kit?.map((item: { id: any }) => item?.id) || [],
         });
       }

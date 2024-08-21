@@ -29,8 +29,8 @@
                                         </mat-error> -->
                                     </mat-form-field>
                                 </div>
-                                <!-- Document Field -->
-<div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
+                                <!-- Document Field or ppt to pdf -->
+<!-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
 *ngIf="labelStatusCheck('Document')"
 >
     <label>Document</label>
@@ -43,11 +43,31 @@
                 <h6>{{uploadedDocument ? uploadedDocument : 'Drag and Drop File Here' }}</h6>
             </span>
         </div>
-    </div>
+    </div> -->
+
+
     <!-- <mat-error class="error" *ngIf="courseKitForm.get('documentLink')?.touched">
         {{utils.getErrorMessage1(courseKitForm.get("documentLink"), "document") }}
     </mat-error> -->
-</div>
+
+
+<!-- </div> -->
+<!-- Document Field or ppt to pdf -->
+<div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('Document')">
+    <label>Document</label>
+    <div class="file-drop-area1">
+      <div class="file1">
+        <button mat-raised-button color="primary" class="btn">
+          Choose file
+          <input formControlName="documentLink" (change)="onFileUpload($event)" class="file-input" type="file">
+        </button>
+        <span class="file-msg">
+          <h6>{{uploadedDocument ? uploadedDocument : 'Drag and Drop File Here'}}</h6>
+        </span>
+      </div>
+    </div>
+  </div>
+  
 
                                 <!-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                                     <label>Document<span class="mandatory">&nbsp;*</span></label>

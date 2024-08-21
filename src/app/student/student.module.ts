@@ -9,7 +9,7 @@ import {
   OwlDateTimeModule,
   OwlNativeDateTimeModule,
 } from '@danielmoncada/angular-datetime-picker';
-
+//import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { StudentRoutingModule } from './student-routing.module';
 import { DeleteDialogComponent as leaveDeleteComonent } from './leave-request/dialogs/delete/delete.component';
 import { FormDialogComponent } from './leave-request/dialogs/form-dialog/form-dialog.component';
@@ -119,6 +119,10 @@ import { UpdateScoreAlgorithmComponent } from './settings/score/update-score-alg
 import { TimeComponent } from './settings/time/time.component';
 import { UpdateTimeAlgorithmComponent } from './settings/time/update-time-algorithm/update-time-algorithm.component';
 import { TutorialQuestionsComponent } from './settings/tutorial-questions/tutorial-questions.component';
+import { DocumentViewComponent } from './view-course/document-view/document-view.component';
+//import { SafeUrlPipe } from './view-course/document-view/safe-url.pipe';
+import { MatDialogModule } from '@angular/material/dialog';
+
 
 @NgModule({
   declarations: [
@@ -219,6 +223,8 @@ import { TutorialQuestionsComponent } from './settings/tutorial-questions/tutori
     TimeComponent,
     UpdateTimeAlgorithmComponent,
     TutorialQuestionsComponent,
+    DocumentViewComponent,
+   // SafeUrlPipe,
   ],
   imports: [
     CommonModule,
@@ -242,7 +248,7 @@ import { TutorialQuestionsComponent } from './settings/tutorial-questions/tutori
     CKEditorModule,
     AngularEditorModule,
     SurveyModule,
-
+    MatDialogModule
 
   ],
   providers: [ stdLeaveReqService,StudentsService,TeachersService,StaffService,DepartmentService]
