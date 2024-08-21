@@ -268,11 +268,6 @@ export class CreateProgramComponent {
       this.uploaded= image.split('\\');
       this.uploadedImage = this.uploaded.pop();
     })
-    // this.certificateService.uploadCourseThumbnail(formData).subscribe((response: any) => {
-    //   this.image_link = response.image_link;
-    //   this.uploaded = this.image_link.split('/')
-    //   this.uploadedImage = this.uploaded.pop();
-    // });
   }
 
   save() {
@@ -301,7 +296,6 @@ export class CreateProgramComponent {
           image_link: this.image_link,
           id: this.courseId,
           companyId:userId
-          // programKit: this.programFormGroup.value.programKit ? this.programFormGroup.value.programKit : null
         }
 
         Swal.fire({
@@ -321,7 +315,6 @@ export class CreateProgramComponent {
                   icon: 'success',
                 });
                 window.history.back();
-                // this.router.navigate(['/admin/program/program-list'])
               },
               (err: any) => {
                 Swal.fire(
@@ -359,7 +352,6 @@ export class CreateProgramComponent {
           creator:creator,
           id: this.courseId,
           companyId:userId
-          // programKit: this.programFormGroup.value.programKit ? this.programFormGroup.value.programKit : null
         }
 
         Swal.fire({
@@ -415,10 +407,8 @@ export class CreateProgramComponent {
     );
   }
   getData() {
-    console.log("courseID", this.courseId)
     this.courseService.getProgramById(this.courseId).subscribe((response: any) => {
       this.course = response.data;
-      console.log("course", this.course)
       this.image_link = this.course.image_link;
       this.uploaded = this.image_link?.split('/')
       let image  = this.uploaded?.pop();
@@ -441,7 +431,6 @@ export class CreateProgramComponent {
         attendees: this.course?.attendees,
         prerequisites: this.course?.prerequisites,
         electiveprogramCourse: this.course?.electiveprogramCourse,
-        // programKit: this.course?.programKit?.[0]?.id,
       });
 
       const itemControls = response.data.coreprogramCourse.map((item: {

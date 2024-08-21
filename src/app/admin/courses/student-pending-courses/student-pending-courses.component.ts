@@ -1,6 +1,3 @@
-import { StudenId } from './../../../core/models/class.model';
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {
   MatSnackBar,
@@ -29,20 +26,15 @@ import { AuthenService } from '@core/service/authen.service';
 })
 export class StudentPendingCoursesComponent {
   displayedColumns = [
-    // 'select',
-    
     'studentname',
     'status',
     'coursename',
     'Fee Type',
-    // 'programFee',
-    // 'instructorFee',
     'classstartDate',
     'classendDate',
     'registeredDate',
     'programFee',
     'instructorFee',
-    
   ];
 
   breadscrums = [
@@ -72,7 +64,6 @@ export class StudentPendingCoursesComponent {
     private authenService: AuthenService
   ) {
     this.studentPaginationModel = {} as StudentPaginationModel;
-    // super();
   }
 
   ngOnInit(): void {
@@ -148,7 +139,6 @@ export class StudentPendingCoursesComponent {
 
       item.classStartDate = !isNaN(minStartDate.valueOf()) ? moment(minStartDate).format("YYYY-DD-MM") : "";
       item.classEndDate = !isNaN(maxEndDate.valueOf()) ? moment(maxEndDate).format("YYYY-DD-MM") : "";
-      // item.registeredOn = item?.registeredOn ? moment(item.registeredOn).format("YYYY-DD-MM") : "";
       item.studentId.name = `${item?.studentId?.name}`;
     });
   }
@@ -184,7 +174,6 @@ export class StudentPendingCoursesComponent {
             title: 'Success',
             text: 'Course approved successfully.',
             icon: 'success',
-            // confirmButtonColor: '#526D82',
           });
           this.getRegisteredClasses();
         }, (error) => {
@@ -192,7 +181,6 @@ export class StudentPendingCoursesComponent {
                 title: 'Error',
                 text: 'Failed to approve course. Please try again.',
                 icon: 'error',
-                // confirmButtonColor: '#526D82',
               });
             });
       }
@@ -225,7 +213,6 @@ export class StudentPendingCoursesComponent {
             title: 'Success',
             text: 'Course Withdraw successfully.',
             icon: 'success',
-            // confirmButtonColor: '#526D82',
           });
           this.getRegisteredClasses();
         }, (error) => {
@@ -233,7 +220,6 @@ export class StudentPendingCoursesComponent {
             title: 'Error',
             text: 'Failed to approve course. Please try again.',
             icon: 'error',
-            // confirmButtonColor: '#526D82',
           });
         });
       }
@@ -246,9 +232,6 @@ export class StudentPendingCoursesComponent {
       const searchList = (item.classId?.courseId?.title + item.studentId?.name + item.studentId?.last_name).toLowerCase();
       return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1
     }
-
-
-    // item.classId.courseId?.title.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
     } else {
       this.getRegisteredClasses();
@@ -263,8 +246,6 @@ export class StudentPendingCoursesComponent {
     const numRows = this.dataSource.length;
     return numSelected === numRows;
   }
-
-   /** Selects all rows if they are not all selected; otherwise clear selection. */
    masterToggle() {
     this.isAllSelected()
       ? this.selection.clear()
@@ -283,7 +264,6 @@ export class StudentPendingCoursesComponent {
   }
 
   exportExcel() {
-    //k//ey name with space add in brackets
    const exportData: Partial<TableElement>[] =
       this.dataSource.map((user:any) => ({
         [AppConstants.STUDENT_ROLE]: user.studentId?.name,
@@ -298,7 +278,6 @@ export class StudentPendingCoursesComponent {
       }));
     TableExportUtil.exportToExcel(exportData, 'Student Pending-list');
   }
-  // pdf
   generatePdf() {
     const doc = new jsPDF();
     const headers = [
@@ -323,13 +302,7 @@ export class StudentPendingCoursesComponent {
       user.classEndDate,
       formatDate(new Date(user.registeredOn), 'yyyy-MM-dd', 'en') || '',
     ]);
-    //const columnWidths = [60, 80, 40];
     const columnWidths = [20, 20, 20, 20, 20, 20, 20, 20, 20, 20];
-
-    // Add a page to the document (optional)
-    //doc.addPage();
-
-    // Generate the table using jspdf-autotable
     (doc as any).autoTable({
       head: headers,
       body: data,

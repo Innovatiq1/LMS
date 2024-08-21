@@ -33,8 +33,6 @@ export class StudentApprovalListComponent {
     'Class Start Date',
     'Class End Date',
     'Registered Date',
-    // 'Program-Fee',
-    // 'Instructor Fee',
     
   ];
   breadscrums = [
@@ -63,7 +61,6 @@ export class StudentApprovalListComponent {
     private courseService: CourseService,
     private snackBar: MatSnackBar, private authenService: AuthenService,private route :Router,
     private utils:UtilsService) {
-    // this.displayedColumns = ["title", "studentName", "classStartDate", "classEndDate",  "action"];
     this.studentPaginationModel = {} as StudentPaginationModel;
   }
 
@@ -134,7 +131,6 @@ export class StudentApprovalListComponent {
             title: 'Success',
             text: 'Program approved successfully.',
             icon: 'success',
-            // confirmButtonColor: '#d33',
           });
           this.getRegisteredClasses();
         });
@@ -143,7 +139,6 @@ export class StudentApprovalListComponent {
                 title: 'Error',
                 text: 'Failed to approve course. Please try again.',
                 icon: 'error',
-                // confirmButtonColor: '#d33',
               });
             };
       }
@@ -157,9 +152,6 @@ export class StudentApprovalListComponent {
       const searchList = (item.classId.courseId?.title + item.studentId?.name).toLowerCase()
       return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1
     }
-
-
-    // item.classId.courseId?.title.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
     } else {
       this.getRegisteredClasses();
@@ -190,7 +182,6 @@ export class StudentApprovalListComponent {
             title: 'Success',
             text: 'Course approved successfully.',
             icon: 'success',
-            // confirmButtonColor: '#526D82',
           });
           this.getRegisteredClasses();
         }, (error) => {
@@ -198,7 +189,6 @@ export class StudentApprovalListComponent {
             title: 'Error',
             text: 'Failed to approve course. Please try again.',
             icon: 'error',
-            // confirmButtonColor: '#526D82',
           });
         });
       }
@@ -206,18 +196,6 @@ export class StudentApprovalListComponent {
 
    
   }
-  // exportExcel() {
-  //   const exportData: Partial<TableElement>[] =
-  //      this.dataSource.map((user:any) => ({
-  //        'Program Name':user?.program_name,
-  //        'Student Name': user?.student_name,
-  //        'Class Start Date': formatDate(new Date(user?.classId?.sessions[0]?.sessionStartDate), 'yyyy-MM-dd', 'en') || '',
-  //        'Class End Date': formatDate(new Date(user?.classId?.sessions[0]?.sessionEndDate ), 'yyyy-MM-dd', 'en') || '',
-  //        'Registered Date': formatDate(new Date(user?.registeredOn), 'yyyy-MM-dd', 'en') || '',
-        
-  //      }));
-  //    TableExportUtil.exportToExcel(exportData, 'excel');
-  //  }
    generatePdf() {
      const doc = new jsPDF();
   const headers = [[[AppConstants.STUDENT_ROLE], 'Status', 'Program ','Program Fee', [`${AppConstants.INSTRUCTOR_ROLE} Fee`], 'Start Date', 'End Date','Registered Date']];
@@ -259,10 +237,9 @@ export class StudentApprovalListComponent {
       } else if (status === 'inactive') {
           return 'pending';
       } else {
-          return status; // Handle other cases if needed
+          return status;
       }
   };
-    // key name with space add in brackets
     const exportData: Partial<TableElement>[] =
       this.dataSource.map((user: any) => ({
         [AppConstants.STUDENT_ROLE]: user?.student_name,
@@ -277,112 +254,6 @@ export class StudentApprovalListComponent {
 
     TableExportUtil.exportToExcel(exportData, 'Student-Approve-list');
   }
-//   generatePdf() {
-//     const doc = new jsPDF();
-//     const headers = [['Program Name', 'Status', 'Program Name','Program Fee','Instructor Fee', 'Start Date', 'End Date','Registered Date']];
-    
-//     // Map status values to desired strings
-//     const mapStatus = (status: string): string => {
-//         if (status === 'active') {
-//             return 'approved';
-//         } else if (status === 'inactive') {
-//             return 'pending';
-//         } else {
-//             return status; 
-//         }
-//     };
-
-//     const data = this.dataSource.map((user: any) =>
-//         [user?.title,
-//         mapStatus(user?.status), 
-//         user?.courseCode,
-//         user?.creator,
-//         user?.duration +' Hours',
-//         formatDate(new Date(user?.sessionStartDate), 'yyyy-MM-dd', 'en') || '',
-//         formatDate(new Date(user?.sessionEndDate), 'yyyy-MM-dd', 'en') || '',
-//         formatDate(new Date(user?.registeredOn), 'yyyy-MM-dd', 'en') || '',
-//         '$ ' + user?.courseFee,
-
-//     ]);
-
-//     // Adjust column widths
-//     const columnWidths = [30, 30, 25, 25, 20, 25, 25, 25, 25, 25];
-
-//     // Generate the table using jspdf-autotable
-//     (doc as any).autoTable({
-//         head: headers,
-//         body: data,
-//         startY: 20,
-//         columnStyles: {
-//             0: { cellWidth: 20 }, // Adjust cell width for each column
-//             1: { cellWidth: 20 },
-//             2: { cellWidth: 20 },
-//             3: { cellWidth: 17 },
-//             4: { cellWidth: 17 },
-//             5: { cellWidth: 20 },
-//             6: { cellWidth: 20 },
-//             7: { cellWidth: 20 },
-//             8: { cellWidth: 20 },
-//             9: { cellWidth: 20 }
-//         },
-//         margin: { top: 20, bottom: 20, left: 10, right: 10 }, // Adjust margins if needed
-//         pageBreak: 'auto' // Enable automatic page breaks
-//     });
-
-//     // Save or open the PDF
-//     doc.save('Program Approve-list.pdf');
-// }
-
- 
-  // exportExcel() {
-  //   //k//ey name with space add in brackets
-  //  const exportData: Partial<TableElement>[] =
-  //     this.dataSource.map((x: { program_name: any; student_name: any; classStartDate: string | number | Date; classEndDate: string | number | Date; registeredOn: string | number | Date; })=>({
-  //       "Program Name": x.program_name,
-  //       "Student Name": x.student_name,
-  //       'Class Start Date': formatDate(new Date(x.classStartDate), 'yyyy-MM-dd', 'en') || '',
-  //       'Class End Date': formatDate(new Date(x.classEndDate), 'yyyy-MM-dd', 'en') || '',
-  //       'Registered Date': formatDate(new Date(x.registeredOn), 'yyyy-MM-dd', 'en') || '',
-  //     }));
-
-  //   TableExportUtil.exportToExcel(exportData, 'excel');
-  // }
-  // generatePdf() {
-  //   const doc = new jsPDF();
-  //   const headers = [['Program Name', 'Student Name', 'Class Start Date','Class End Date','Registered Date']];
-  //   const data = this.dataSource.map((user: {
-  //     //formatDate(arg0: Date, arg1: string, arg2: string): unknown;
-
-  //     program_name: any; student_name: any; classStartDate: any; classEndDate: any; registeredOn: any;
-  //   }, index: any) => [user.program_name, user.student_name,
-
-  //     formatDate(new Date(user.classStartDate), 'yyyy-MM-dd', 'en') || '',
-  //     formatDate(new Date(user.classEndDate), 'yyyy-MM-dd', 'en') || '',
-  //     formatDate(new Date(user.registeredOn), 'yyyy-MM-dd', 'en') || '',
-
-
-  //   ]);
-  //   //const columnWidths = [60, 80, 40];
-  //   const columnWidths = [20, 20, 20, 20, 20, 20, 20, 20, 20, 20];
-
-  //   // Add a page to the document (optional)
-  //   //doc.addPage();
-
-  //   // Generate the table using jspdf-autotable
-  //   (doc as any).autoTable({
-  //     head: headers,
-  //     body: data,
-  //     startY: 20,
-
-
-
-  //   });
-
-  //   // Save or open the PDF
-  //   doc.save('student-approve.pdf');
-  // }
-
-
   getSessions(element: { classId: { sessions: any[]; }; }) {
     let sessions = element.classId?.sessions?.map((_: any, index: number) => {
       let session: Session = {} as Session;
@@ -448,16 +319,8 @@ export class StudentApprovalListComponent {
           title: 'Success',
           text: 'Record Deleted Successfully...!!!',
           icon: 'success',
-          // confirmButtonColor: '#526D82',
         });
       }
     });
- 
-    // this.showNotification(
-    //   'snackbar-danger',
-    //   totalSelect + ' Record Delete Successfully...!!!',
-    //   'top',
-    //   'right'
-    // );
   }
 }

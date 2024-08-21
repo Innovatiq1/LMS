@@ -1,8 +1,3 @@
-import { map } from 'rxjs';
-
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ChangeDetectorRef, Component, HostListener, ViewChild } from '@angular/core';
 import {
   FormArray,
@@ -166,11 +161,6 @@ export class CreateClassComponent {
     this.maxDate = new Date(currentYear + 1, 11, 31);
     this.coursePaginationModel = {};
   }
-
-  // toggleStatus() {
-  //   this.status = !this.status;
-  // }
-
   ngOnInit(): void {
     this.commonRoles = AppConstants
     this.subscribeParams = this._activeRoute.params.subscribe((params: any) => {
@@ -192,12 +182,9 @@ export class CreateClassComponent {
           type: this.commonRoles?.INSTRUCTOR_ROLE,
           companyId:userId
         }),
-        // labs: this._classService.getAllLaboratory(),
       }).subscribe((response) => {
         this.programList = response.courses;
         this.instructorList = response.instructors;
-        // this.labList = response.labs;
-
         this.cd.detectChanges();
       });
       this.dataSource = this.dataSourceArray;
@@ -214,12 +201,10 @@ export class CreateClassComponent {
           type: this.commonRoles?.INSTRUCTOR_ROLE,
           companyId:userId
         }),
-        // labs: this._classService.getAllLaboratory(),
         class: this._classService.getProgramClassById(this.classId),
       }).subscribe((response) => {
         this.programList = response.courses.docs;
         this.instructorList = response.instructors;
-        // this.labList = response.labs;
         let item = response.class;
         this.classForm.patchValue({
           courseId: item.courseId?.id,
@@ -327,7 +312,6 @@ export class CreateClassComponent {
       externalRoom: [false],
       minimumEnrollment: ['', [Validators.required]],
       maximumEnrollment: ['', [Validators.required]],
-      // status: ['open'],
       classStartDate: ['2023-05-20'],
       classEndDate: ['2023-06-10'],
       userGroupId: [null]
@@ -375,7 +359,6 @@ export class CreateClassComponent {
       if (
         this.isInstructorFailed == 0 &&
         item.instructor != '0'
-        // item.lab != '0'
       ) {
         sessions.push({
           sessionNumber: index + 1,
@@ -384,14 +367,12 @@ export class CreateClassComponent {
           sessionStartTime: moment(item.start).format('HH:mm'),
           sessionEndTime: moment(item.end).format('HH:mm'),
           instructorId: item.instructor,
-          // laboratoryId: item.lab,
           courseName: this.courseTitle,
           courseCode: this.courseCode,
           status: 'Pending',
           user_id: this.user_id,
         });
       } else {
-        // this.toaster.error("Please choose Instructor and Lab")
         sessions = null;
       }
     });
@@ -411,7 +392,6 @@ export class CreateClassComponent {
     const filteredData = this.instructorList.filter(
       (item: { _id: string }) => item._id === element.instructor
     );
-    console.log('filteredData', filteredData);
     this.user_id = filteredData[0]._id;
   }
 
@@ -443,7 +423,6 @@ export class CreateClassComponent {
                   title: 'Success',
                   text: 'Class Created successfully.',
                   icon: 'success',
-                  // confirmButtonColor: '#d33',
                 });
                 this.router.navigateByUrl(`/timetable/schedule-class`);
               });
@@ -472,7 +451,6 @@ export class CreateClassComponent {
                   title: 'Success',
                   text: 'Class updated successfully.',
                   icon: 'success',
-                  // confirmButtonColor: '#d33',
                 });
                 window.history.back();
               });
@@ -574,18 +552,6 @@ export class CreateClassComponent {
       this.instructorList.push(element);
     });
   }
-
-  // getLaboratoryList() {
-  //   this.labList = [];
-  //   this._classService.getAllLaboratory().subscribe((response) => {
-  //     this.mapPropertiesLab(response);
-  //   });
-  // }
-  // mapPropertiesLab(response: any) {
-  //   response.docs.forEach((element: LabListModel) => {
-  //     this.labList.push(element);
-  //   });
-  // }
   cancel() {
     window.history.back();
   }

@@ -53,7 +53,6 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
     
   )  {
     let urlPath = this.router.url.split('/');
-    console.log("questionList", this.questionList)
    
   }
 
@@ -68,7 +67,6 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
     this.getClassDetails() ;
     if (this.isCertificate) {
       this.isCertIssued = true;
-      console.log("QuestionComponent - isCertificate:", this.isCertificate);
     } else {
       this.isCertIssued = false;
     }
@@ -157,11 +155,7 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
     });
   }
   // getQuestionsById(){
-  //   console.log("this.sult",this.answersResult)
-  //     console.log("this.getAssessmentId",this.getAssessmentId);
   //   this.questionService.getQuestionsById("667bf7d5b0b47928d08d1360").subscribe((res:any)=>{
-     
-  //     console.log("getQuestionsById==",res);
   //   })
   // }
   

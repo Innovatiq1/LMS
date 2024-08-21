@@ -9,17 +9,10 @@
       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
         <div class="card">
           <div class="header">
-            <!-- <h2>Create Course</h2> -->
           </div>
-
-          <!-- <mat-horizontal-stepper linear labelPosition="bottom" #stepper> -->
-            <!-- <mat-step [stepControl]="classForm" completed="false"> -->
               <form [formGroup]="classForm">
                 <ng-template matSteplabel>{{classId? "Edit Class" :"Create Class" }}</ng-template>
                 <div class="body">
-                  <!-- <form class="m-4" [formGroup]="firstFormGroup" (ngSubmit)="onSubmit()"> -->
-                  <!-- <div class="row"> -->
-                    <!-- <div class="row"> -->
                   <div class="row">
 
                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-2">
@@ -68,18 +61,6 @@
                         </mat-error>
                       </mat-form-field>
                     </div>
-                    <!-- <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
-                      <label>Class Type</label>
-                      <mat-form-field class="example-full-width mb-3" appearance="outline">
-                        <mat-select formControlName="classType">
-                          <mat-option [value]="'2'"> Private </mat-option>
-                          <mat-option [value]="'1'"> Public </mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                    </div> -->
-                  <!-- </div> -->
-
-                
                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2">
                       <label>Minimum {{commonRoles.STUDENT_ROLE}}s<span class="mandatory">&nbsp;*</span></label>
                       <mat-form-field class="example-full-width mb-3" appearance="outline">
@@ -114,8 +95,6 @@
                         </mat-select>
                       </mat-form-field>
                     </div>
-                  <!-- </div> -->
-
 
                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2" *ngIf="labelStatusCheck('Select Currency Type')">
                       <label>Select Currency</label>
@@ -137,7 +116,6 @@
                   <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                     <div class="button-container">
                       <label>Select Department <span class="mandatory">&nbsp;*</span></label>
-                      <!-- <mat-icon class="cursor-pointer" (click)="openDialog()">add</mat-icon> -->
                     </div>
                     <mat-form-field
                       class="example-full-width mb-3"
@@ -182,24 +160,14 @@
                           Room</span></mat-checkbox>
                     </section>
                   </div>
-                  <!-- </form> -->
                 </div>
                 </div>
-
-
-                <!-- </div> -->
               </form>
-            <!-- </mat-step> -->
-            <!-- <mat-step completed="false"> -->
               <form>
               <div >
                 <h5 class="mx-3">Assign {{commonRoles.INSTRUCTOR_ROLE}}</h5>
-                <!-- <button (click)="addNewRow()" mat-mini-fab color="primary" style="margin-left: 300px;">
-                  <mat-icon class="col-white">add</mat-icon>
-                </button> -->
               </div>
               <div class="body">
-                <!-- <form class="m-4" [formGroup]="secondFormGroup" (ngSubmit)="onSubmit()"> -->
                 <div class="row " *ngFor="let element of dataSource; index as index">
                   <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 ">
                     <label>Start Date</label>
@@ -235,23 +203,6 @@
                       <mat-error> Enter Class Type </mat-error>
                     </mat-form-field>
                   </div>
-                  <!-- <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 mb-2">
-                    <label>Select Lab</label>
-                    <mat-form-field class="example-full-width mb-3" appearance="outline">
-                      <mat-label>Choose Lab</mat-label>
-                      <mat-select [(ngModel)]="element.lab" name="lab" (change)="onChangeLab(element,index)">
-                        <mat-option *ngFor="let lab of labList" [value]="lab.id">
-                          {{ lab?.name }}
-                        </mat-option>
-                      </mat-select>
-                      <mat-error> Class Type is required </mat-error>
-                    </mat-form-field>
-                  </div> -->
-                  <!-- <div class="col-xl-1 col-lg-1 col-md-12 col-sm-12 mt-4 mx-auto">
-                    <button mat-icon-button class="tbl-action-btn" (click)="deleteRecord(index)">
-                      <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                    </button>
-                  </div> -->
                 </div>
               </div>
               <div class="row mt-4 mx-2" style="float: right;">
@@ -265,19 +216,11 @@
                   <button *ngIf="classId" mat-raised-button id="submit" (click)="submit()">
                     Update
                   </button>
-                  <!-- <button mat-raised-button color="warn" matStepperPrevious >Back</button> -->
                 </div>
               </div>
                 </form>
-            <!-- </mat-step> -->
-
-          <!-- </mat-horizontal-stepper> -->
         </div>
       </div>
     </div>
   </div>
 </section>
-
-
-
-

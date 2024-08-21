@@ -112,7 +112,6 @@ export class EmailConfigService {
 
 
   deleteMailForever(mail: any){
-    console.log('mail',mail)
     const apiUrl = `${this.prefix}admin/internal-email/delete`;
     return this.http.post<ApiResponse>(apiUrl,mail);
   }

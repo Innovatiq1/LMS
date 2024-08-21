@@ -130,9 +130,7 @@ export class CreateCertificateComponent implements OnInit {
     const parentId = `${urlPath[1]}/${urlPath[2]}/${urlPath[3]}`;
     const childId =  `${urlPath[4]}/${urlPath[5]}`;
     let parentData = roleDetails.filter((item: any) => item.id == parentId);
-    console.log("pd", parentData)
     let childData = parentData[0].children.filter((item: any) => item.id == childId);
-    console.log("cd", childData)
     let actions = childData[0].actions
     let editAction = actions.filter((item:any) => item.title == 'Edit')
   
@@ -179,12 +177,10 @@ export class CreateCertificateComponent implements OnInit {
       const computedStyle = window.getComputedStyle(
         this.backgroundTable.nativeElement
       );
-      console.log('Computed background image:', computedStyle.backgroundImage);
     }, 1000);
   }
 
   saveCertificate() {
-    console.log(this.certificateForm);
     if (this.certificateForm.valid) {
       if (!this.editUrl) {
         let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;

@@ -104,9 +104,7 @@ export class EAttendanceComponent {
     var endtimezoneOffsetMinutes = enddateObj.getTimezoneOffset();
     var endtimezoneOffsetHours = Math.abs(Math.floor(endtimezoneOffsetMinutes / 60));
     var endtimezoneOffsetMinutesPart = Math.abs(endtimezoneOffsetMinutes % 60);
-    // var timezoneOffset = (timezoneOffsetMinutes >= 0 ? "-" : "+") + ("0" + timezoneOffsetHours).slice(-2) + ":" + ("0" + timezoneOffsetMinutesPart).slice(-2);
     var endDate = endyear + "-" + endmonth + "-" + endday + "T" + endhours + ":" + endminutes + ":" + endseconds + "." + endmilliseconds + '00:00';
-console.log('valiueee',this.attendanceForm.value)
 if (this.attendanceForm.value.course !== '') {
   let body ={
       course:this.attendanceForm.value.course,
@@ -134,7 +132,6 @@ if (this.attendanceForm.value.course !== '') {
               .subscribe((response: any) => {
               this.programData = response.data.data;
               this.dataSource=response.data.data;
-              console.log('dat',this.dataSource)
                 this.totalItems = response.data.totalDocs;
         
               })
@@ -145,7 +142,6 @@ if (this.attendanceForm.value.course !== '') {
   
       }
   onSelectCourse(event: any){
-   console.log("event", event)
    if(event.value == 'course'){
     this.isCourse = true;
     this.isProgram = false;

@@ -67,8 +67,6 @@ export class MyCoursesComponent {
         const events = this.studentApprovedClasses.flatMap((courseClass: any,classId:any) => {
         const startDate = new Date(courseClass?.sessions[0].sessionStartDate);
         const endDate = new Date(courseClass?.sessions[0]?.sessionEndDate);
-        // const sessionStartTime = courseClass?.sessions[0]?.sessionStartTime;
-        // const sessionEndTime = courseClass?.sessions[0]?.sessionEndTime;
         const sessionStartTime = this.formatTime(
           courseClass?.sessions[0]?.sessionStartTime
         );
@@ -168,16 +166,9 @@ export class MyCoursesComponent {
         const sessionEndDate = new Date(item?.classId?.sessions[0]?.sessionEndDate);
         return sessionEndDate >= tomorrow;
       });
-      //     this.studentApprovedClasses.sort((a: any, b: any) => {
-      //   const startDateA = new Date(a.classId.sessions[0].sessionStartDate);
-      //   const startDateB = new Date(b.classId.sessions[0].sessionStartDate);
-      //   return startDateA > startDateB ? 1 : startDateA < startDateB ? -1 : 0;
-      // });
           const events = this.studentApprovedClasses.flatMap((courseClass: any,classId:any) => {
         const startDate = new Date(courseClass?.classId?.sessions[0]?.sessionStartDate);
         const endDate = new Date(courseClass?.classId?.sessions[0]?.sessionEndDate);
-        // const sessionStartTime = courseClass?.classId?.sessions[0]?.sessionStartTime;
-        // const sessionEndTime = courseClass?.classId?.sessions[0]?.sessionEndTime;
         const sessionStartTime = this.formatTime(
           courseClass?.classId?.sessions[0]?.sessionStartTime
         );

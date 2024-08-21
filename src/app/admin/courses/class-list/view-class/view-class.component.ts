@@ -35,10 +35,6 @@ export class ViewClassComponent {
     this.activatedRoute.params.subscribe((params: any) => {
       
       this.courseId = params.id;
-      // if(this.courseId){
-      //   this.getProgramByID(this.courseId);
-      // }
-
     });
   }
 
@@ -101,21 +97,11 @@ export class ViewClassComponent {
      this._classService.getClassById(id).subscribe((response: any) => {
       this.classDataById = response?._id;
       this.response = response;
-      // this.subCategory = response.subCategories;
-      // if (response && response.data && response.data._id) {
-      //   this.classDataById = response?._id;
-      //   this.response = response.data;
-      // } else {
-       
-      // }
     });
   }
   editClass(id:string){
     this._router.navigate([`admin/courses/create-class`], { queryParams: {id: id}});
   }
-  // getStatusClass(classDeliveryType: string): string {
-  //   return classDeliveryType === 'online' ? 'success' : 'fail';
-  // }
   delete(id: string) {
     
     this._classService.getClassList({ courseId: id }).subscribe((classList: any) => {
@@ -150,7 +136,6 @@ export class ViewClassComponent {
             });
             this.getClassList();
             window.history.back();
-            // this._router.navigateByUrl(`/admin/courses/class-list`);
           });
     }
     });

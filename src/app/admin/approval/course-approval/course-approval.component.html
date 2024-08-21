@@ -10,27 +10,8 @@
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
           <div class="materialTableHeader">
-            <!-- <div class="left">
-              <ul class="header-buttons-left ms-0">
-                <li class="tbl-title">
-                  <h2>Course Approval</h2>
-                </li>
-                <li class="tbl-search-box">
-                  <label for="search-input"><i class="material-icons search-icon">search</i></label>
-                  <input placeholder="Search" type="text"  #filter class="browser-default search-field" [(ngModel)]="searchTerm" (input)="performSearch()"
-                    aria-label="Search box">
-                </li>
-              </ul>
-            </div> -->
             <div class="right">
               <ul class="tbl-export-btn">
-                <!-- <li class="tbl-header-btn">
-                  <div class="m-l-10" matTooltip="REFRESH">
-                    <button mat-mini-fab color="primary" >
-                      <mat-icon class="col-white">refresh</mat-icon>
-                    </button>
-                  </div>
-                </li> -->
                 <li>
                   <ul class="header-buttons-left ms-0">
                     <li class="tbl-search-box">
@@ -64,23 +45,6 @@
           <div class="body overflow-auto">
             <div class="responsive_table">
               <table mat-table matSort [dataSource]="dataSource" class="mat-cell advance-table">
-                <!-- Checkbox Column -->
-                <!-- Checkbox Column -->
-                <!-- <ng-container matColumnDef="select">
-                  <mat-header-cell *matHeaderCellDef [ngClass]="'tbl-col-width-per-6'">
-                    <mat-checkbox (change)="$event ? masterToggle() : null"
-                      [checked]="selection.hasValue() && isAllSelected()"
-                      [indeterminate]="selection.hasValue() && !isAllSelected()" [ngClass]="'tbl-checkbox'">
-                    </mat-checkbox>
-                  </mat-header-cell>
-                  <mat-cell *matCellDef="let row" [ngClass]="'tbl-col-width-per-6'">
-                    <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
-                      [checked]="selection.isSelected(row)" [ngClass]="'tbl-checkbox'">
-                    </mat-checkbox>
-                  </mat-cell>
-                </ng-container> -->
-
-                 <!-- Course Name -->
                 <ng-container matColumnDef="Course Name">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Course Name</mat-header-cell>
                   <mat-cell *matCellDef="let row" >
@@ -124,7 +88,6 @@
                   </mat-cell>
                 </ng-container>
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
                 <mat-row *matRowDef="let row; columns: displayedColumns;"
                   [style.cursor]="'pointer'" matRipple>
                 </mat-row>

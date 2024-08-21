@@ -1,147 +1,145 @@
-.img-w{
-    height: 20px;
-    margin-right: 25px;
-    // margin-top: 20px;
-    }
-    .feedLblStyle1 {
-        /* font-weight: bold; */
-        padding: 0px 7px 0px 7px;
-        border-radius: 10px;
-      }
-      .info-box7 {
-        color: #000;
-      }
-      .img {
-        width: 124px;
-        height: 101px;
-        padding: 3px;
-      }
-      .card-container {
-        position: relative;
-        display: flex;
-        justify-content: flex-end; 
-      }
-      
-      .menu-button {
-        position: absolute;
-        top: 0; 
-        right: 0;
-        width: fit-content;
-      }
-      .icons{
-        width: 10%;
-          margin: 10px;
-          border: none;
-          background: transparent;
-      }
-      
-      
-      // .selected {
-      //   background: linear-gradient(to right, rgb(97, 156, 137), rgb(25, 80, 33));
-      //   color: #fdfdfd;
-      //   border-radius: 5px 5px 5px 5px;
-      //   border-style: none;
-      //   padding-top: 4px;
-      //   padding-left: 5x;
-      // }
-      
-      .border-class {
-          margin: 3px;
-      }
-      
-      .bg-c-pink{
-        color: #fdfdfd;
-        border-radius: 5px;
-      }
-      
-      .res_img{
-        width: 100%;
-        height: 240px !important;
-      
-      }
-      
-      .period {
-        font-size: 16px;
-        font-weight: 500;
-      }
-      
-      .bg-c-green{
-        border-radius: 5px;
-        padding: 3px;
-      }
-      .image-link{
-        height: 200px;
-        border: 1px solid black;
-        border-radius: 10px;
-        margin-bottom: 20px;
-        padding: 10px;
-      }
-      .success .status-text {
-        color: green; // Text color for success
-        background-color: #d4edda; // Background color for success text
-      }
-      
-      .fail .status-text {
-        color: red; // Text color for failure
-        background-color: #f8d7da; // Background color for failure text
-      }
-      
-      .status-text {
-        padding: 2px 5px; // Adjust padding as needed
-        border-radius: 8px; // Add some border radius for rounded corners
-      }
-      
-      .custom-cell {
-        background-color: #f0f0f0; // Light background color for the cell
-      }
-      
-      .success {
-        .status-container {
-            background-color: #d4edda; // Background color for success
-        }
-      
-        .status-dot {
-            background-color: green; // Color of the dot for success
-        }
-      }
-      
-      .fail {
-        .status-container {
-            background-color: #f8d7da; // Background color for failure
-        }
-      
-        .status-dot {
-            background-color: red; // Color of the dot for failure
-        }
-      }
-      .status-container {
-        display: inline-block;
-        padding: 2px 5px; // Adjust padding as needed
-        border-radius: 5px; // Rounded corners for the background
-      }
-      
-      .status-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%; // To make it a circle
-        display: inline-block;
-        margin-right: 5px; // Space between dot and text
-      }
-      ::ng-deep .mat-mdc-tab-body-content{
-        overflow-x: hidden !important;
-      }
-      .img-w{
-        height: 20px;
-        margin-right: 25px;
-        // margin-top: 20px;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .buttons {
-            display: flex;
-        }
+.img-w {
+  height: 20px;
+  margin-right: 25px;
+}
+
+.feedLblStyle1 {
+  padding: 0px 7px 0px 7px;
+  border-radius: 10px;
+}
+
+.info-box7 {
+  color: #000;
+}
+
+.img {
+  width: 124px;
+  height: 101px;
+  padding: 3px;
+}
+
+.card-container {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.menu-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: fit-content;
+}
+
+.icons {
+  width: 10%;
+  margin: 10px;
+  border: none;
+  background: transparent;
+}
+
+.border-class {
+  margin: 3px;
+}
+
+.bg-c-pink {
+  color: #fdfdfd;
+  border-radius: 5px;
+}
+
+.res_img {
+  width: 100%;
+  height: 240px !important;
+
+}
+.period {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.bg-c-green {
+  border-radius: 5px;
+  padding: 3px;
+}
+
+.image-link {
+  height: 200px;
+  border: 1px solid black;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+.success .status-text {
+  color: green; // Text color for success
+  background-color: #d4edda; // Background color for success text
+}
+
+.fail .status-text {
+  color: red; // Text color for failure
+  background-color: #f8d7da; // Background color for failure text
+}
+
+.status-text {
+  padding: 2px 5px; // Adjust padding as needed
+  border-radius: 8px; // Add some border radius for rounded corners
+}
+
+.custom-cell {
+  background-color: #f0f0f0; // Light background color for the cell
+}
+
+.success {
+  .status-container {
+    background-color: #d4edda; // Background color for success
+  }
+
+  .status-dot {
+    background-color: green; // Color of the dot for success
+  }
+}
+
+.fail {
+  .status-container {
+    background-color: #f8d7da; // Background color for failure
+  }
+
+  .status-dot {
+    background-color: red; // Color of the dot for failure
+  }
+}
+
+.status-container {
+  display: inline-block;
+  padding: 2px 5px; // Adjust padding as needed
+  border-radius: 5px; // Rounded corners for the background
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%; // To make it a circle
+  display: inline-block;
+  margin-right: 5px; // Space between dot and text
+}
+
+::ng-deep .mat-mdc-tab-body-content {
+  overflow-x: hidden !important;
+}
+
+.img-w {
+  height: 20px;
+  margin-right: 25px;
+  // margin-top: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.buttons {
+  display: flex;
+}
       

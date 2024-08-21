@@ -161,7 +161,6 @@ export class SigninComponent
             this.openDialog(this.profileDialog)
 
           } else {
-            console.log('err', err)
           }
         }
       )
@@ -216,7 +215,6 @@ export class SigninComponent
                       this.openDialog(this.profileDialog)
 
                     } else {
-                      console.log('err', err)
                     }
                   }
                 )
@@ -359,7 +357,6 @@ export class SigninComponent
           let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
           this.superadminservice.getAllCustomRoleById(userId).subscribe(
             (response: any) => {
-              console.log('listing user', response);
               this.commonService.setRoleDetails(response)
               this.updateRoleConstants();
 
@@ -408,50 +405,4 @@ export class SigninComponent
   goBack() {
     this.router.navigate(['/authentication/signin-role']);
   }
-  // ngOnChanges() {
-  //   this.updateStrengthIndicator();
-  // }
-
-  // private calculatePasswordStrength(password: string): string {
-  //   let minLength = 8;
-  //   let lengthCount = 1;
-  //   let upperCaseCount = 1;
-  //   let lowerCaseCount = 1;
-  //   let numbersCount = 1;
-  //   let specialCharsCount = 1;
-
-  //   const upperCaseRegex = /[A-Z]/;
-  //   const lowerCaseRegex = /[a-z]/;
-  //   const numbersRegex = /[0-9]/;
-  //   const specialCharsRegex = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]/;
-
-  //   for (const char of password) {
-  //     lengthCount++;
-  //     if (upperCaseRegex.test(char)) {
-  //       upperCaseCount++;
-  //     } else if (lowerCaseRegex.test(char)) {
-  //       lowerCaseCount++;
-  //     } else if (numbersRegex.test(char)) {
-  //       numbersCount++;
-  //     } else if (specialCharsRegex.test(char)) {
-  //       specialCharsCount++;
-  //     }
-  //   }
-
-  //   if (lengthCount < minLength) {
-  //     return 'weak';
-  //   }
-
-  //   const typesCount = [upperCaseCount, lowerCaseCount, numbersCount, specialCharsCount].filter(count => count > 0).length;
-
-  //   if (typesCount < 3) {
-  //     return 'fair';
-  //   }
-
-  //   return 'strong';
-  // }
-
-  // private updateStrengthIndicator() {
-  //   this.strength = this.calculatePasswordStrength(this.password);
-  // }
 }

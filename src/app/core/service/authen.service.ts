@@ -49,7 +49,6 @@ export class AuthenService {
       return response.data;
       },
       (error: any) =>{
-        console.log('err',error)
       })
     );
 
@@ -66,7 +65,6 @@ export class AuthenService {
       return response.data;
       },
       (error: any) =>{
-        console.log('err',error)
       })
     );
   }
@@ -150,9 +148,6 @@ getUserProfile() {
 }
 
 updateUserProfile(updatedProfile: any) {
-  console.log(updatedProfile)
-  // Update the user's profile information here
-  //this.userProfile = { ...this.userProfile, ...updatedProfile };
   this.profileUpdated.emit(updatedProfile); 
 }
 private linkedInCredentials = {

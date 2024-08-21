@@ -98,8 +98,6 @@ export class CustomizationTimerComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('result: ', result);
-
         this.selectedTimer = result;
       }
     });

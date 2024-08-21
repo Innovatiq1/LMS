@@ -26,24 +26,14 @@ export class ChatbotComponent {
   ngOnInit() {}
 
   onIconClick() {
-    console.log('clicked');
     this.showBotSubject = !this.showBotSubject;
-    // this.msgInput.nativeElement.focus();
   }
-
-  // onCloseClick() {
-  //   this.showBotSubject = false;
-  //   this.showMessenger = false;
-  //   this.mainval = '';
-  //   this.msgInput.nativeElement.value = '';
-  // }
 
   onBotSubjectSubmit() {
     this.showBotSubject = false;
     this.showMessenger = true;
   }
   chooseIssues(selectedItem: string) {
-    // console.log('iteam', selectedItem);
     this.userMsg = selectedItem;
   }
   onMessengerSubmit(event: any) {
@@ -142,37 +132,18 @@ export class ChatbotComponent {
         }, 3000);
       });
     }
-    // setTimeout(() => {
-    //   const lastMsgElement = document.querySelector('.Messages_list .msg:last-child');
-    //   if (lastMsgElement) {
-    //     lastMsgElement.scrollIntoView({ behavior: 'smooth' });
-    //   }
-    // });
-
-    console.log('msg', this.messages);
   }
 
   sayBye() {
-    // console.log('res');
-    // let nowtime = new Date();
-    // let nowhoue = nowtime.getHours();
     this.messages.push({
       type: 'bot',
       text: 'We understood your issue .please wait for us to resolve.Thank you for your patience....! ',
     });
     this.messages.push({ type: 'bot', text: 'Have a nice day! :)' });
-    // if (nowhoue <= 10) {
-    //   this.messages.push({ type: 'bot', text: 'Have a nice day! :)' });
-    // } else if (nowhoue >= 11 || nowhoue <= 20) {
-    //   this.messages.push({ type: 'bot', text: 'Goodbye!' });
-    // } else {
-    //   this.messages.push({ type: 'bot', text: 'Good night!' });
-    // }
     let payload = {
       messages: this.messages,
     };
     this.courseService.saveChat(payload).subscribe((response) => {
-      console.log('res', response);
     });
   }
 }

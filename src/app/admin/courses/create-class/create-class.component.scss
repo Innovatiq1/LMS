@@ -9,84 +9,6 @@
 ::ng-deep .mat-stepper-horizontal-line {
 flex: none !important;
 }
-
-// .thumbnail-img{
-//   height:250px;
-//   width:600px;
-//   padding: 10px;
-//   border: 1px solid black;
-//   border-radius: 12px;
-// }
-// #back {
-//   margin-left: 15px;
-//   margin-bottom: 20px;
-//   background: #FFF;
-//   border: 1px solid #000000;
-//   width: 100px;
-//   height: 40px;
-//   border-radius: 10px;
-//   color: black;
-//   font-weight: 700;
-// }
-// #next {
-//   margin-left: 85px;
-//   margin-bottom: 20px;
-//   background: #6777ef;
-//   border: none;
-//   width: 100px;
-//   height: 40px;
-//   border-radius: 10px;
-//   color: #FFF;
-//   font-weight: 700;
-// }
-// @media only screen and (max-width: 912px) and (min-width: 280px) {
-//   #next,#submit {
-//     margin-left: 15px;
-//   }
-// }
-// @media only screen and (max-width: 912px) and (min-width: 280px) {
-//   #save {
-//     margin-left: 15px;
-//   }
-// }
-
-// #submit {
-//   margin-left: -10px;
-//   margin-bottom: 20px;
-//   background: #6777ef;
-//   border: none;
-//   width: 100px;
-//   height: 40px;
-//   border-radius: 10px;
-//   color: #FFF;
-//   font-weight: 700;
-// }
-// #save {
-//   margin-left: -10px;
-//   margin-bottom: 20px;
-//   background: #6777ef;
-//   border: none;
-//   width: 100px;
-//   height: 40px;
-//   border-radius: 10px;
-//   color: #FFF;
-//   font-weight: 700;
-// }
-
-// #cancel {
-//   margin-left: 50px;
-//   /* margin-bottom: 20px; */
-//   background: #FFF;
-//   border: 1px solid #000000;
-//   width: 100px;
-//   height: 40px;
-//   border-radius: 10px;
-//   color: black;
-//   font-weight: 700;
-// }
-
-
-
 .mandatory{
   color: red;
 }
@@ -171,7 +93,6 @@ flex: none !important;
   align-items: center;
 }
 .step-wizard-list{
-  /* box-shadow: 0 15px 25px rgba(0,0,0,0.1); */
   color: #333;
   list-style-type: none;
   border-radius: 10px;

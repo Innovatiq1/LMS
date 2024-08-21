@@ -8,7 +8,6 @@ import { MenuItemModel, UserType } from '@core/models/user.model';
 import { AdminService } from '@core/service/admin.service';
 import { UserService } from '@core/service/user.service';
 import { UtilsService } from '@core/service/utils.service';
-import { MENU_LIST } from '@shared/menu-item';
 import { LogoService } from 'app/student/settings/logo.service';
 import Swal from 'sweetalert2';
 
@@ -229,8 +228,6 @@ export class CreateUserTypeComponent {
       this.dataSource = new MatTableDataSource<MenuItemModel>(
         this.dataSourceArray
       );
-
-      console.log(this.dataSourceArray);
       if (this.isEdit) {
         this.getUserTypeList();
       }
@@ -240,7 +237,6 @@ export class CreateUserTypeComponent {
   }
 
   clicked(item: any) {
-    console.log('testinggg', item);
   }
 
   updateMenuItem(item: { checked: any; id: any; children: any[] }) {
@@ -338,7 +334,6 @@ export class CreateUserTypeComponent {
   //     // Update the checked state of the submenu item
   //     submenu.checked = checked;
   //     // Implement your logic here to handle the checked state change
-  //     console.log(`Submenu ${id} checked: ${checked}`);
   //   }
   // }
   setChecked(
@@ -455,8 +450,6 @@ export class CreateUserTypeComponent {
     );
   }
   delete(data: any) {
-    console.log('data', data);
-
     Swal.fire({
       title: 'Confirm Deletion',
       text: 'Are you sure you want to delete?',

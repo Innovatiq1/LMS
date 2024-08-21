@@ -98,7 +98,6 @@ export class ProgaramCompletionListComponent {
         this.studentPaginationModel.limit = response.limit;
         this.totalItems = response.totalDocs;
         this.dataSource = response.docs;
-        console.log("dataSource: ", this.dataSource);
       })
   }
   getCurrentUserId(): string {
@@ -129,7 +128,6 @@ export class ProgaramCompletionListComponent {
             title: 'Success',
             text: 'Program approved successfully.',
             icon: 'success',
-            // confirmButtonColor: '#526D82',
           });
 
           this.getCompletedClasses();
@@ -139,7 +137,6 @@ export class ProgaramCompletionListComponent {
             title: 'Error',
             text: 'Failed to approve course. Please try again.',
             icon: 'error',
-            // confirmButtonColor: '#526D82',
           });
         };
       }
@@ -154,27 +151,13 @@ export class ProgaramCompletionListComponent {
         return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1
       }
 
-
-        // item.classId.courseId?.title.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     } else {
       this.getCompletedClasses();
 
     }
   }
-  // exportExcel() {
-  //   //k//ey name with space add in brackets
-  //  const exportData: Partial<TableElement>[] =
-  //     this.dataSource.map((x: { program_name: any; student_name: any; classStartDate: string | number | Date; classEndDate: string | number | Date; registeredOn: string | number | Date; })=>({
-  //       "Program Name": x.program_name,
-  //       "Student Name": x.student_name,
-  //       'Class Start Date': formatDate(new Date(x.classStartDate), 'yyyy-MM-dd', 'en') || '',
-  //       'Class End Date': formatDate(new Date(x.classEndDate), 'yyyy-MM-dd', 'en') || '',
-  //       'Registered Date': formatDate(new Date(x.registeredOn), 'yyyy-MM-dd', 'en') || '',
-  //     }));
 
-  //   TableExportUtil.exportToExcel(exportData, 'excel');
-  // }
   generateCertificate(element: Student) {
     Swal.fire({
       title: 'Certificate Generating...',
@@ -248,7 +231,6 @@ export class ProgaramCompletionListComponent {
   }
 
   openCertificateInNewTab(url: string) {
-    console.log(url);
     if (url) {
       window.open(url, '_blank');
     }
@@ -288,32 +270,6 @@ export class ProgaramCompletionListComponent {
 
   }
 
-  // generatePdf() {
-  //   const doc = new jsPDF();
-  //   const headers = [['Program Name', 'Student Name', 'Class Start Date','Class End Date','Registered Date']];
-  //   const data = this.dataSource.map((user: {
-  //     program_name: any; student_name: any; classStartDate: any; classEndDate: any; registeredOn: any;
-  //   }, index: any) => [user.program_name, user.student_name,
-
-  //     formatDate(new Date(user.classStartDate), 'yyyy-MM-dd', 'en') || '',
-  //     formatDate(new Date(user.classEndDate), 'yyyy-MM-dd', 'en') || '',
-  //     formatDate(new Date(user.registeredOn), 'yyyy-MM-dd', 'en') || '',
-
-
-  //   ]);
-  //   //const columnWidths = [60, 80, 40];
-  //   const columnWidths = [20, 20, 20, 20, 20, 20, 20, 20, 20, 20];
-  //   (doc as any).autoTable({
-  //     head: headers,
-  //     body: data,
-  //     startY: 20,
-
-
-
-  //   });
-  //   doc.save('student-completion.pdf');
-  // }
-
   generatePdf() {
     const doc = new jsPDF();
     const headers = [[[AppConstants.STUDENT_ROLE], 'Email', 'Program', 'Start Date', 'End Date', 'Completed Date','Actions']];
@@ -349,7 +305,6 @@ export class ProgaramCompletionListComponent {
   }
   exportExcel() {
     
-    // key name with space add in brackets
     const exportData: Partial<TableElement>[] =
       this.dataSource.map((user: any) => ({
         [AppConstants.STUDENT_ROLE] : user?.student_name,

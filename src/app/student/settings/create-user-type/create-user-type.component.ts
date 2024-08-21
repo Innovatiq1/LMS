@@ -9,7 +9,6 @@ import { AdminService } from '@core/service/admin.service';
 import { AuthenService } from '@core/service/authen.service';
 import { UserService } from '@core/service/user.service';
 import { UtilsService } from '@core/service/utils.service';
-import { MENU_LIST } from '@shared/menu-item';
 import { LogoService } from 'app/student/settings/logo.service';
 import Swal from 'sweetalert2';
 

@@ -9,27 +9,8 @@
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
           <div class="materialTableHeader">
-            <!-- <div class="left">
-              <ul class="header-buttons-left ms-0">
-                <li class="tbl-title">
-                  <h2>Feedback</h2>
-                </li>
-                <li class="tbl-search-box">
-                  <label for="search-input"><i class="material-icons search-icon">search</i></label>
-                  <input placeholder="Search" type="text" #filter class="browser-default search-field"
-                    aria-label="Search box">
-                </li>
-              </ul>
-            </div> -->
             <div class="right">
               <ul class="tbl-export-btn">
-                <!-- <li class="tbl-header-btn">
-                  <div class="m-l-10" matTooltip="REFRESH">
-                    <button mat-mini-fab color="primary" (click)="refresh()">
-                      <mat-icon class="col-white">refresh</mat-icon>
-                    </button>
-                  </div>
-                </li> -->
                 <li>
                   <ul class="header-buttons-left ms-0">
                     <li class="tbl-search-box">
@@ -63,35 +44,14 @@
           <div class="body overflow-auto">
             <div class="responsive_table">
               <table mat-table [dataSource]="dataSource" matSort class="mat-cell advance-table">
-                <!-- Checkbox Column -->
-                <!-- <ng-container matColumnDef="select">
-                  <mat-header-cell *matHeaderCellDef [ngClass]="'tbl-col-width-per-6'">
-                    <mat-checkbox (change)="$event ? masterToggle() : null"
-                      [checked]="selection.hasValue() && isAllSelected()"
-                      [indeterminate]="selection.hasValue() && !isAllSelected()" [ngClass]="'tbl-checkbox'">
-                    </mat-checkbox>
-                  </mat-header-cell>
-                  <mat-cell *matCellDef="let row" (click)="editCall(row.id)" [ngClass]="'tbl-col-width-per-6'">
-                    <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
-                      [checked]="selection.isSelected(row)" [ngClass]="'tbl-checkbox'">
-                    </mat-checkbox>
-                  </mat-cell>
-                </ng-container> -->
-                <!-- ID Column -->
                 <ng-container matColumnDef="id">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="isView ? editCall(row.id) : null">{{row?.id}}</mat-cell>
                 </ng-container>
-                <!-- <ng-container matColumnDef="img">
-                  <mat-header-cell mat-header-cell *matHeaderCellDef [ngClass]="'tbl-col-width-per-6'"> Image
-                  </mat-header-cell>
-                  <mat-cell mat-cell *matCellDef="let row" class="table-img tbl-col-width-per-6"><span
-                      class="mobile-label">Image:</span> <img [src]="row.img" />
-                  </mat-cell>
-                </ng-container> -->
                 <ng-container matColumnDef="studentName">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>{{commonRoles.STUDENT_ROLE}} </mat-header-cell>
-                  <mat-cell *matCellDef="let row" (click)="isView ? editCall(row.id) : null" (contextmenu)="onContextMenu($event, row)">
+                  <mat-cell *matCellDef="let row" (click)="isView ? editCall(row.id) : null"
+                    (contextmenu)="onContextMenu($event, row)">
                     <span class="mobile-label">Student :</span> {{getStudentName(row) }}</mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="courseName">
@@ -104,49 +64,31 @@
                 <!-- actions -->
                 <ng-container matColumnDef="actions">
                   <mat-header-cell *matHeaderCellDef class="pr-0">Actions</mat-header-cell>
-                  <!-- <mat-cell *matCellDef="let row; let i=index;" class="pr-0">
-                    <button mat-icon-button (click)="$event.stopPropagation()" (click)="editCall(row)"
-                      class="tbl-action-btn">
-                      <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                    </button>
-                    <button mat-icon-button (click)="$event.stopPropagation()" (click)="deleteItem(row)"
-                      class="tbl-action-btn">
-                      <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                    </button>
-                  </mat-cell> -->
                   <mat-cell *matCellDef="let row" class="pr-0">
-                    <button mat-button [matMenuTriggerFor]="menu" >
+                    <button mat-button [matMenuTriggerFor]="menu">
                       <svg class="dropdown-toggle border rounded-circle" data-bs-toggle="dropdown" aria-expanded="false"
-                      xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                      class="bi bi-three-dots border rounded-circle bg" viewBox="0 0 16 16">
-                      <path
-                        d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
-                    </svg>
+                        xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                        class="bi bi-three-dots border rounded-circle bg" viewBox="0 0 16 16">
+                        <path
+                          d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+                      </svg>
 
                     </button>
-
-
-
-                            <mat-menu #menu="matMenu" xPosition="before">
-                              <!-- <button mat-menu-item [routerLink]="['/admin/courses/view-course-kit/',row.id]">
-                                <app-feather-icons [icon]="'eye'" [class]="'tbl-fav-view'"></app-feather-icons>
-                                <span class="menu-text">View</span>
-                              </button> -->
-                              <button mat-menu-item (click)="editCall(row.id)" >
-                                <app-feather-icons [icon]="'eye'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                                <span class="menu-text px-3">View</span>
-                              </button>
-                              <button mat-menu-item  (click)="deleteItem(row.id)" class="align-items-center">
-                                <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                                <span class="menu-text px-3">Delete</span>
-                              </button>
-                            </mat-menu>
+                    <mat-menu #menu="matMenu" xPosition="before">
+                      <button mat-menu-item (click)="editCall(row.id)">
+                        <app-feather-icons [icon]="'eye'" [class]="'tbl-fav-edit'"></app-feather-icons>
+                        <span class="menu-text px-3">View</span>
+                      </button>
+                      <button mat-menu-item (click)="deleteItem(row.id)" class="align-items-center">
+                        <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
+                        <span class="menu-text px-3">Delete</span>
+                      </button>
+                    </mat-menu>
                   </mat-cell>
                 </ng-container>
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                 <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
-                <mat-row *matRowDef="let row; columns: displayedColumns;"
-                  [style.cursor]="'pointer'" matRipple>
+                <mat-row *matRowDef="let row; columns: displayedColumns;" [style.cursor]="'pointer'" matRipple>
                 </mat-row>
               </table>
               <!-- Loading spinner -->
@@ -160,7 +102,7 @@
               </div>
               <mat-menu #contextMenu="matMenu">
                 <ng-template matMenuContent let-item="item">
-                  <button mat-menu-item >
+                  <button mat-menu-item>
                     <mat-icon>add_box</mat-icon>
                     <span>Add Record</span>
                   </button>

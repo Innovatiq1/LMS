@@ -9,34 +9,8 @@
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
           <div class="materialTableHeader">
-            <!-- <div class="left">
-              <ul class="header-buttons-left ms-0">
-                <li class="tbl-title">
-                  <h2>Completion List</h2>
-                </li>
-                <li class="tbl-search-box">
-                  <label for="search-input"><i class="material-icons search-icon">search</i></label>
-                  <input placeholder="Search" type="text" #filter class="browser-default search-field"
-                    aria-label="Search box" [(ngModel)]="searchTerm" class="browser-default search-field"  (keyup)="performSearch()">
-                </li>
-              </ul>
-            </div> -->
             <div class="right">
               <ul class="tbl-export-btn">
-                <!-- <li class="tbl-header-btn">
-                  <div class="m-l-10" matTooltip="ADD">
-                    <button mat-mini-fab color="primary" >
-                      <mat-icon class="col-white">add</mat-icon>
-                    </button>
-                  </div>
-                </li> -->
-                <!-- <li class="tbl-header-btn">
-                  <div class="m-l-10" matTooltip="REFRESH">
-                    <button mat-mini-fab color="primary" >
-                      <mat-icon class="col-white">refresh</mat-icon>
-                    </button>
-                  </div>
-                </li> -->
                 <li>
                   <ul class="header-buttons-left ms-0">
                     <li class="tbl-search-box">
@@ -62,20 +36,6 @@
           <div class="body overflow-auto">
             <div class="responsive_table">
               <table mat-table matSort [dataSource]="dataSource" class="mat-cell advance-table">
-                <!-- Checkbox Column -->
-                <!-- <ng-container matColumnDef="select">
-                  <mat-header-cell *matHeaderCellDef [ngClass]="'tbl-col-width-per-6'">
-                    <mat-checkbox
-                      [checked]=""
-                      [indeterminate]="" [ngClass]="'tbl-checkbox'">
-                    </mat-checkbox>
-                  </mat-header-cell>
-                  <mat-cell *matCellDef="let row" [ngClass]="'tbl-col-width-per-6'">
-                    <mat-checkbox (click)="$event.stopPropagation()"
-                      [checked]="" [ngClass]="'tbl-checkbox'">
-                    </mat-checkbox>
-                  </mat-cell>
-                </ng-container> -->
                 <ng-container matColumnDef="Student Name">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>{{commonRoles.STUDENT_ROLE}}
                   </mat-header-cell>
@@ -87,7 +47,6 @@
                   <mat-cell *matCellDef="let row" [routerLink]="view ? ['/admin/program/view-completion-list/',row.id] : null">
                     <span class="mobile-label">Email:</span>
                     <img src="assets/images/gmail.png" alt="Email Icon" class="email-icon">
-                    <!-- Replace "email-icon.png" with the filename of your PNG icon -->
                     <span class="email-address">{{row?.email}}</span>
                   </mat-cell>
                 </ng-container>
@@ -161,20 +120,6 @@
                 <mat-progress-spinner color="primary" [diameter]="40" mode="indeterminate">
                 </mat-progress-spinner>
               </div>
-            
-              <!-- context menu start -->
-              <!-- <div style="visibility: hidden; position: fixed" [style.left]="contextMenuPosition.x"
-                [style.top]="contextMenuPosition.y" [matMenuTriggerFor]="contextMenu">
-              </div> -->
-
-              <!-- context menu end -->
-              <!-- <div *ngIf="!exampleDatabase?.isTblLoading" class="no-results"
-                [style.display]="dataSource.renderedData.length === 0 ? '' : 'none'">
-                No results
-              </div> -->
-              <!-- <mat-paginator #paginator [length]="totalItems" [pageIndex]="0" [pageSize]="10"
-                [pageSizeOptions]="[5, 10, 25, 100]">
-              </mat-paginator> -->
               <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems" (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr"
               aria-label="select pagination option">
             </mat-paginator>
@@ -202,7 +147,6 @@
             <table style="width: 100%">
               <tr>
                 <td>
-                  <!-- <img src="../../assets/images/resources/label.png" width="96px" style="margin-bottom: 10px;" /> -->
                 </td>
                 <td style="text-align: right; padding-right: 30px;">
                   <p style="
@@ -251,7 +195,6 @@
                         font-style: italic;
                       ">
                     {{listpdfData?.name}}
-                    <!-- Vaishnavi -->
                   </p>
                   <p style="
                         font-weight: 400;
@@ -261,8 +204,6 @@
                         letter-spacing: 0.5px;
                       ">
                    <b>
-                      <!-- {{listpdfData?.student_school_name}} -->
-                      <!-- XYZ School -->
                   </b>
                   </p>
                   <p style="
@@ -284,25 +225,6 @@
             <table style="width: 100%">
               <tr>
                 <td width="70%">
-                  <!-- <p style="
-                        font-weight: 400;
-                        font-size: 15px;
-                        margin-bottom: 40px;
-                        line-height: 1.2;
-                        font-style: italic;
-                        max-width: 276px;
-                      ">
-                       {{listpdfData?.title}}
-                    
-                     Course is a rigorous 
-                     4 week
-                     
-                      UN
-                    SDG-aligned
-                    project that includes training and mentorship with
-                    peer-to-peer feedback, project management experience, and
-                    design thinking pedagogy.
-                  </p> -->
                   <p style="
                         font-weight: normal;
                         font-size: 12px;
@@ -330,7 +252,6 @@
                   </p>
                 </td>
                 <td width="30%" style="text-align: right; vertical-align: bottom; padding-right: 30px;">
-                  <!-- <img src="/assets/certificates/stamp.png" width="140px" /> -->
                 </td>
               </tr>
             </table>

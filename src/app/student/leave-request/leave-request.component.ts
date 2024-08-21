@@ -38,14 +38,11 @@ export class LeaveRequestComponent
   extends UnsubscribeOnDestroyAdapter
   implements OnInit {
   displayedColumns = [
-    // 'select',
     'class',
     'applyDate',
-    // 'fromDate',
     'toDate',
     'reason',
     'status',
-    // 'actions',
   ];
 
   exampleDatabase?: LeaveRequestService;
@@ -145,42 +142,12 @@ export class LeaveRequestComponent
     });
     this.subs.sink = dialogRef.afterClosed().subscribe((result) => {
       if (result === 1) {
-        // After dialog is closed we're doing frontend updates
-        // For add we're just pushing a new row inside DataServicex
         this.exampleDatabase?.dataChange.value.unshift(
           this.leaveRequestService.getDialogData()
         );
         this.refreshTable();
       }
     });
-
-    // Swal.fire({
-    //   title: 'Are you sure?',
-    //   text: 'Do you want to apply leave!',
-    //   icon: 'warning',
-    //   confirmButtonText: 'Yes',
-    //   showCancelButton: true,
-    //   cancelButtonColor: '#d33',
-    // }).then((result) => {
-    //   if (result.isConfirmed){
-    //     this.subs.sink = dialogRef.afterClosed().subscribe((result) => {
-    //       if (result === 1) {
-    //         // After dialog is closed we're doing frontend updates
-    //         // For add we're just pushing a new row inside DataService
-    //         this.exampleDatabase?.dataChange.value.unshift(
-    //           this.leaveRequestService.getDialogData()
-    //         );
-    //         this.refreshTable();
-    //         Swal.fire({
-    //           title: 'Successful',
-    //           text: "Leave applied successfully",
-    //           icon: 'success',
-    //         });
-      
-    //       }
-    //     });
-    //   }
-    // });
    
   }
   editCall(row: LeaveRequest) {
@@ -212,65 +179,11 @@ export class LeaveRequestComponent
         }
       }
     });
-    // Swal.fire({
-    //   title: 'Are you sure?',
-    //   text: 'Do you want to update leave!',
-    //   icon: 'warning',
-    //   confirmButtonText: 'Yes',
-    //   showCancelButton: true,
-    //   cancelButtonColor: '#d33',
-    // }).then((result) => {
-    //   if (result.isConfirmed){
-    //     this.subs.sink = dialogRef.afterClosed().subscribe((result) => {
-    //       if (result === 1) {
-    //         const foundIndex = this.exampleDatabase?.dataChange.value.findIndex(
-    //           (x) => x.id === this.id
-    //         );
-    //         if (foundIndex != null && this.exampleDatabase) {
-    //           this.exampleDatabase.dataChange.value[foundIndex] =
-    //             this.leaveRequestService.getDialogData();
-    //           this.refreshTable();
-    //           Swal.fire({
-    //             title: 'Successful',
-    //             text: "Leave edited successfully",
-    //             icon: 'success',
-    //           });
-    //         }
-    //       }
-    //     });
-    //   }
-    // });
     
   }
   viewCall(id: any): void {
     this.router.navigate(['reschedule/courses/programs-view'], {queryParams:{id:id}});
   }
-  // deleteItem(row: LeaveRequest) {
-  //   let id = row.id;
-  //   Swal.fire({
-  //     title: "Confirm Deletion",
-  //     text: "Are you sure you want to delete this leave?",
-  //     icon: "warning",
-  //     showCancelButton: true,
-  //     confirmButtonColor: "#d33",
-  //     cancelButtonColor: "#3085d6",
-  //     confirmButtonText: "Delete",
-  //     cancelButtonText: "Cancel",
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       this.leaveRequestService.deleteLeaveRequest(id).subscribe(() => {
-  //         Swal.fire({
-  //           title: 'Success',
-  //           text: 'Leave deleted successfully.',
-  //           icon: 'success',
-  //         });
-  //         this.loadData();
-    
-  //       });
-  // }
-  // });
-    
-  // }
   private refreshTable() {
     this.paginator._changePageSize(this.paginator.pageSize);
   }
@@ -280,8 +193,6 @@ export class LeaveRequestComponent
     const numRows = this.dataSource.renderedData.length;
     return numSelected === numRows;
   }
-
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
     this.isAllSelected()
       ? this.selection.clear()
@@ -304,7 +215,6 @@ export class LeaveRequestComponent
       title: 'Success',
       text: 'Record Deleted Successfully...!!!',
       icon: 'success',
-      // confirmButtonColor: '#526D82',
     });
   }
   public loadData() {
@@ -324,9 +234,7 @@ export class LeaveRequestComponent
     );
   }
 
-  // export table data in excel file
   exportExcel() {
-    // key name with space add in brackets
     const exportData: Partial<TableElement>[] =
       this.dataSource.filteredData.map((x) => ({
         Class: x.className,
@@ -382,12 +290,9 @@ export class ExampleDataSource extends DataSource<LeaveRequest> {
     public _sort: MatSort
   ) {
     super();
-    // Reset to the first page when the user changes the filter.
     this.filterChange.subscribe(() => (this.paginator.pageIndex = 0));
   }
-  /** Connect function called by the table to retrieve one stream containing the data to render. */
   connect(): Observable<LeaveRequest[]> {
-    // Listen for any changes in the base data, sorting, filtering, or pagination
     const displayDataChanges = [
       this.exampleDatabase.dataChange,
       this._sort.sortChange,
@@ -410,9 +315,7 @@ export class ExampleDataSource extends DataSource<LeaveRequest> {
             ).toLowerCase();
             return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
           });
-        // Sort filtered data
         const sortedData = this.sortData(this.filteredData.slice());
-        // Grab the page's slice of the filtered sorted data.
         const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
         this.renderedData = sortedData.splice(
           startIndex,
@@ -425,7 +328,6 @@ export class ExampleDataSource extends DataSource<LeaveRequest> {
   disconnect() {
     //disconnect
   }
-  /** Returns a sorted copy of the database data. */
   sortData(data: LeaveRequest[]): LeaveRequest[] {
     if (!this._sort.active || this._sort.direction === '') {
       return data;

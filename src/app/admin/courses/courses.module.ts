@@ -12,7 +12,6 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from '@danielmoncada/angular-datetime-picker';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { CreateClassComponent } from './create-class/create-class.component';
-// import { ClassListComponent } from './class-list/class-list.component';
 import { CompletionListComponent } from './completion-list/completion-list.component';
 
 import { AngularEditorModule } from '@kolkov/angular-editor';

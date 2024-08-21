@@ -40,10 +40,6 @@ export class CourseTimetableComponent implements OnInit {
     public dialog: MatDialog
   ) {
     let userType = localStorage.getItem('user_type');
-    // if(userType == "Student"){
-    //   this.getApprovedCourse();
-    //   this.getApprovedProgram();
-    // }
     if (userType == AppConstants.ADMIN_USERTYPE|| userType == AppConstants.ADMIN_ROLE|| userType == AppConstants.STUDENT_ROLE) {
       this.getClassList();
     } else {
@@ -90,8 +86,6 @@ export class CourseTimetableComponent implements OnInit {
               courseClass?.sessions[0].sessionStartDate
             );
             const endDate = new Date(courseClass?.sessions[0]?.sessionEndDate);
-            // const sessionStartTime = courseClass?.sessions[0]?.sessionStartTime;
-            // const sessionEndTime = courseClass?.sessions[0]?.sessionEndTime;
             const sessionStartTime = this.formatTime(
               courseClass?.sessions[0]?.sessionStartTime
             );
@@ -127,7 +121,7 @@ export class CourseTimetableComponent implements OnInit {
         const filteredEvents = events.filter(
           (event: { date: string | number | Date }) => {
             const eventDate = new Date(event.date);
-            return eventDate.getDay() !== 0; // Filter out events on Sundays
+            return eventDate.getDay() !== 0;
           }
         );
   
@@ -180,103 +174,8 @@ export class CourseTimetableComponent implements OnInit {
       },
     });
   }
-  
-  // getInstructorApprovedCourse() {
-  //   let studentId = localStorage.getItem('id');
-  //   const payload = { studentId: studentId, isAll: true, type: 'Instructor' };
-  //   let instructorId = localStorage.getItem('id');
-  //   this.lecturesService
-  //     .getClassListWithPagination(instructorId, this.filterName)
-  //     .subscribe((response: { data: { docs: string | any[] } }) => {
-  //       this.studentApprovedClasses = response.data.docs;
-  //       const currentDate = new Date();
-  //       const currentMonth = currentDate.getMonth();
-  //       const currentYear = currentDate.getFullYear();
-  //       const tomorrow = new Date(
-  //         currentYear,
-  //         currentMonth,
-  //         currentDate.getDate() + 1
-  //       );
-
-  //       const events = this.studentApprovedClasses.flatMap(
-  //         (courseClass: any, classId: any) => {
-  //           const startDate = new Date(
-  //             courseClass?.sessions[0].sessionStartDate
-  //           );
-  //           const endDate = new Date(courseClass?.sessions[0]?.sessionEndDate);
-  //           const sessionStartTime = courseClass?.sessions[0]?.sessionStartTime;
-  //           const sessionEndTime = courseClass?.sessions[0]?.sessionEndTime;
-  //           const title = courseClass?.courseName;
-
-  //           const datesArray = [];
-  //           let currentDate = startDate;
-  //           while (currentDate <= endDate) {
-  //             datesArray.push({
-  //               title: title,
-  //               date: new Date(currentDate),
-  //               extendedProps: {
-  //                 sessionStartTime: sessionStartTime,
-  //                 sessionEndTime: sessionEndTime,
-  //               },
-  //             });
-  //             currentDate.setDate(currentDate.getDate() + 1);
-  //           }
-  //           return datesArray;
-  //         }
-  //       );
-  //       const filteredEvents = events.filter(
-  //         (event: { date: string | number | Date }) => {
-  //           const eventDate = new Date(event.date);
-  //           return eventDate.getDay() !== 0; // Filter out events on Sundays
-  //         }
-  //       );
-
-  //       this.courseCalendarOptions = {
-  //         initialView: 'dayGridMonth',
-  //         plugins: [dayGridPlugin],
-  //         events: filteredEvents,
-  //         eventContent: function (arg, createElement) {
-  //           const title = arg.event.title;
-  //           const sessionStartTime =
-  //             arg.event.extendedProps['sessionStartTime'];
-  //           const sessionEndTime = arg.event.extendedProps['sessionEndTime'];
-  //           return {
-  //             html: `
-  //           <div style=" font-size:10px; color: white
-  //           ; white-space: normal; word-wrap: break-word;cursor: pointer;">
-  //             ${title}<br>
-  //              <span style ="color:white;cursor: pointer;">${sessionStartTime} - ${sessionEndTime}</span>
-  //           </div>`,
-  //           };
-  //         },
-  //         eventDisplay: 'block',
-  //         eventClick: (clickInfo) => this.openDialog(clickInfo.event),
-  //       };
-  //     });
-  // }
-  // openDialog(event: { title: any; extendedProps: { [x: string]: any } }) {
-  //   this.dialog.open(EventDetailDialogComponent, {
-  //     width: '700px',
-  //     data: {
-  //       title: event.title,
-  //       sessionStartTime: event.extendedProps['sessionStartTime'],
-  //       sessionEndTime: event.extendedProps['sessionEndTime'],
-  //       courseCode: event.extendedProps['courseCode'],
-  //       status: event.extendedProps['status'],
-  //       sessionStartDate: event.extendedProps['sessionStartDate'],
-  //       sessionEndDate: event.extendedProps['sessionEndDate'],
-  //       deliveryType: event.extendedProps['deliveryType'],
-  //       instructorCost: event.extendedProps['instructorCost'],
-  //       id: event.extendedProps['id'],
-  //       courseName: event.extendedProps['courseName'],
-  //     },
-  //   });
-  // }
-
   getClassList() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-        // let studentId=localStorage.getItem('id')
-    // const payload = { studentId: studentId, status: 'approved' ,isAll:true};
     this.classService.getClassListWithPagination({},userId).subscribe((response) => {
       this.allClasses = response.data.docs;
       const currentDate = new Date();
@@ -291,17 +190,10 @@ export class CourseTimetableComponent implements OnInit {
         const sessionEndDate = new Date(item.sessions[0].sessionEndDate);
         return sessionEndDate >= tomorrow;
       });
-      //     this.studentApprovedClasses.sort((a: any, b: any) => {
-      //   const startDateA = new Date(a.classId.sessions[0].sessionStartDate);
-      //   const startDateB = new Date(b.classId.sessions[0].sessionStartDate);
-      //   return startDateA > startDateB ? 1 : startDateA < startDateB ? -1 : 0;
-      // });
       const events = this.allClasses.flatMap(
         (courseClass: any, classId: any) => {
           const startDate = new Date(courseClass.sessions[0].sessionStartDate);
           const endDate = new Date(courseClass?.sessions[0]?.sessionEndDate);
-          // const sessionStartTime = courseClass?.sessions[0]?.sessionStartTime;
-          // const sessionEndTime = courseClass?.sessions[0]?.sessionEndTime;
           const sessionStartTime = this.formatTime(
             courseClass?.sessions[0]?.sessionStartTime
           );
@@ -391,11 +283,6 @@ export class CourseTimetableComponent implements OnInit {
             return sessionEndDate >= tomorrow;
           }
         );
-        //     this.studentApprovedClasses.sort((a: any, b: any) => {
-        //   const startDateA = new Date(a.classId.sessions[0].sessionStartDate);
-        //   const startDateB = new Date(b.classId.sessions[0].sessionStartDate);
-        //   return startDateA > startDateB ? 1 : startDateA < startDateB ? -1 : 0;
-        // });
         const events = this.studentApprovedClasses.flatMap(
           (courseClass: any, classId: any) => {
             const startDate = new Date(
@@ -404,10 +291,6 @@ export class CourseTimetableComponent implements OnInit {
             const endDate = new Date(
               courseClass?.classId?.sessions[0]?.sessionEndDate
             );
-            // const sessionStartTime =
-            //   courseClass?.classId?.sessions[0]?.sessionStartTime;
-            // const sessionEndTime =
-            //   courseClass?.classId?.sessions[0]?.sessionEndTime;
             const sessionStartTime = this.formatTime(
               courseClass?.sessions[0]?.sessionStartTime
             );
@@ -467,96 +350,5 @@ export class CourseTimetableComponent implements OnInit {
         };
       });
   }
-  getApprovedProgram() {
-    let studentId = localStorage.getItem('id');
-    const payload = { studentId: studentId, status: 'approved', isAll: true };
-    this.classService
-      .getStudentRegisteredProgramClasses(payload)
-      .subscribe((response) => {
-        this.studentApprovedPrograms = response.data.slice(0, 5);
-        const currentDate = new Date();
-        const currentMonth = currentDate.getMonth();
-        const currentYear = currentDate.getFullYear();
-        const tomorrow = new Date(
-          currentYear,
-          currentMonth,
-          currentDate.getDate() + 1
-        );
-        this.upcomingProgramClasses = this.studentApprovedPrograms.filter(
-          (item: any) => {
-            const sessionEndDate = new Date(
-              item.classId.sessions[0].sessionEndDate
-            );
-            return sessionEndDate >= tomorrow;
-          }
-        );
-        const events = this.studentApprovedPrograms.flatMap(
-          (courseClass: any, classId: any) => {
-            const startDate = new Date(
-              courseClass.classId.sessions[0].sessionStartDate
-            );
-            const endDate = new Date(
-              courseClass.classId.sessions[0].sessionEndDate
-            );
-            // const sessionStartTime =
-            //   courseClass.classId.sessions[0].sessionStartTime;
-            // const sessionEndTime =
-            //   courseClass.classId.sessions[0].sessionEndTime;
-            const sessionStartTime = this.formatTime(
-              courseClass?.classId.sessions[0]?.sessionStartTime
-            );
-            const sessionEndTime = this.formatTime(
-              courseClass?.classId.sessions[0]?.sessionEndTime
-            );
-            const title = courseClass.classId.courseId.title;
-            const datesArray = [];
-            let currentDate = startDate;
-            while (currentDate <= endDate) {
-              datesArray.push({
-                title: title,
-                date: new Date(currentDate),
-                extendedProps: {
-                  sessionStartTime: sessionStartTime,
-                  sessionEndTime: sessionEndTime,
-                },
-              });
-              currentDate.setDate(currentDate.getDate() + 1);
-            }
-            return datesArray;
-          }
-        );
-        const filteredEvents = events.filter(
-          (event: { date: string | number | Date }) => {
-            const eventDate = new Date(event.date);
-            return eventDate.getDay() !== 0; // Filter out events on Sundays
-          }
-        );
 
-        this.programCalendarOptions = {
-          initialView: 'dayGridMonth',
-          plugins: [dayGridPlugin],
-          events: filteredEvents,
-          eventContent: function (arg, createElement) {
-            const title = arg.event.title;
-            const sessionStartTime =
-              arg.event.extendedProps['sessionStartTime'];
-            const sessionEndTime = arg.event.extendedProps['sessionEndTime'];
-            return {
-              html: `
-            <div style=" font-size:10px; color: blue; white-space: normal; word-wrap: break-word;">
-              ${title}<br>
-               <span class="text-muted">${sessionStartTime} - ${sessionEndTime}</span>
-            </div>`,
-            };
-          },
-        };
-
-        // this.upcomingProgramClasses.sort((a:any,b:any) => {
-        //   const startDateA = a.classId.sessions[0].sessionStartDate;
-        //   const startDateB = b.classId.sessions[0].sessionEndDate;
-        //   return startDateA > startDateB ? 1 : startDateA < startDateB ? -1 : 0;
-        // });
-        this.upcomingProgramsLength = this.upcomingProgramClasses.length;
-      });
-  }
 }

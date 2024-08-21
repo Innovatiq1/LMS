@@ -92,7 +92,6 @@ export class AllstaffComponent
   }
 
   editCall(row: Staff) {
-    console.log("rowEdit",row)
     this.router.navigate(['/student/settings/add-staff'],{queryParams:row});
   }
 
@@ -299,7 +298,6 @@ export class ExampleDataSource extends DataSource<Staff> {
           startIndex,
           this.paginator.pageSize
         );
-        console.log("vkvk",this.renderedData)
         return this.renderedData;
       })
     );

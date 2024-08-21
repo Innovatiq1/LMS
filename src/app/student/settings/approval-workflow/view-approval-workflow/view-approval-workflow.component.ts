@@ -36,7 +36,6 @@ export class ViewApprovalWorkflowComponent {
   ) {
     this.coursePaginationModel = {};
     this.activatedRoute.params.subscribe((params: any) => {
-      console.log("params.id", params.id)
       this.approvalId = params.id;
     
 

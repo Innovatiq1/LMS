@@ -43,17 +43,12 @@ displayedColumns = [
 exampleDatabase?: LecturesService;
 dataSource: any[] = [];
 myArray = new MatTableDataSource<SessionModel>([]);
-//dataSource!: ExampleDataSource;
 selection = new SelectionModel<Lectures>(true, []);
 coursePaginationModel!: Partial<CoursePaginationModel>;
 
 id?: number;
 lectures?: Lectures;
 dataSource1:any;
-
-//dataSource: SessionModel[] = [];
-//dataSource = new MatTableDataSource<SessionModel>(dataSourceArray);
-// this.dataSource = new MatTableDataSource<DataSourceModel>(this.dataSourceArray);
 
 breadscrums = [
   {
@@ -65,9 +60,6 @@ breadscrums = [
 totalItems: any;
 filterName='';
 pageSizeArr = [10, 25, 50, 100];
-//dataSource: any=[];
-//dataSource:any[] = [];
-//dataSource: any;
 
 constructor(
   public httpClient: HttpClient,
@@ -96,12 +88,10 @@ getClassList() {
     (response) => {
  
       this.dataSource1 = response.data.docs;
-      //this.dataSource1 = response.data.sessions;
       this.totalItems = response.data.totalDocs
       this.coursePaginationModel.docs = response.data.docs;
       this.coursePaginationModel.page = response.data.page;
       this.coursePaginationModel.limit = response.data.limit;
-      //this.mapClassList()
       this.dataSource = [];
      this.getSession()
       
@@ -124,13 +114,11 @@ getSession() {
 
       
       this.dataSource.push({
-        //sessionNumber: index + 1,
         classId:item._id,
         sessionStartDate: moment(item.sessions[0].sessionStartDate).format("YYYY-MM-DD"),
         sessionEndDate: moment(item.sessions[0].sessionEndDate).format("YYYY-MM-DD"),
         sessionStartTime: starttimeObject.format("hh:mm A"),
         sessionEndTime: moment(item.sessions[0].end).format("hh:mm A"),
-        //instructorId: item.instructor,
         laboratoryId: item.sessions[0].laboratoryId,
         courseName: item.sessions[0].courseName,
         courseCode: item.sessions[0].courseCode,
@@ -147,11 +135,8 @@ getSession() {
     
   });
   this.cdr.detectChanges();
-  //this.myArray.push(newItem);
   this.myArray.data = this.dataSource1; 
 }
-  //return sessions;
-  
 }
 
 refresh() {
@@ -183,8 +168,6 @@ addNew() {
     if (result.isConfirmed){
       this.subs.sink = dialogRef.afterClosed().subscribe((result) => {
         if (result === 1) {
-          // After dialog is closed we're doing frontend updates
-          // For add we're just pushing a new row inside DataService
           this.exampleDatabase?.dataChange.value.unshift(
             this.lecturesService.getDialogData()
           );
@@ -193,7 +176,6 @@ addNew() {
             title: 'Success',
             text: 'Add Record Successfully...!!!',
             icon: 'success',
-            // confirmButtonColor: '#526D82',
           });
         }
       });
@@ -208,13 +190,6 @@ performSearch() {
     this.getClassList()
 
   }
-  // this.dataSource = this.dataSource?.filter((item: { name: string; }) =>
-  //   item.name.toLowerCase().includes(this.searchTerm.toLowerCase())
-  // );
-  // } else {
-  //   this.instructorData()
-
-  // }
 }
 editCall(row: Lectures) {
   this.id = row.id;
@@ -245,22 +220,18 @@ editCall(row: Lectures) {
       this.subs.sink = dialogRef.afterClosed().subscribe((result) => {
         if (result === 1) {
           this.getClassList()
-          // When using an edit things are little different, firstly we find record inside DataService by id
           const foundIndex = this.exampleDatabase?.dataChange.value.findIndex(
             (x) => x.id === this.id
           );
-          // Then you update that record using data from dialogData (values you enetered)
           if (foundIndex != null && this.exampleDatabase) {
             this.exampleDatabase.dataChange.value[foundIndex] =
               this.lecturesService.getDialogData();
-            // And lastly refresh table
             this.refreshTable();
             this.getClassList();
             Swal.fire({
               title: 'Success',
               text: 'Edit Record Successfully...!!!',
               icon: 'success',
-              // confirmButtonColor: '#526D82',
             });
           }
         }
@@ -286,7 +257,6 @@ deleteItem(row: Lectures) {
       const foundIndex = this.exampleDatabase?.dataChange.value.findIndex(
         (x) => x.id === this.id
       );
-      // for delete we use splice in order to remove single object from DataService
       if (foundIndex != null && this.exampleDatabase) {
         this.exampleDatabase.dataChange.value.splice(foundIndex, 1);
         this.refreshTable();
@@ -294,7 +264,6 @@ deleteItem(row: Lectures) {
           title: 'Success',
           text: 'Delete Record Successfully...!!!',
           icon: 'success',
-          // confirmButtonColor: '#526D82',
         });
       }
     }
@@ -307,23 +276,17 @@ pageSizeChange($event: any) {
   this.getClassList();
 }
 private refreshTable() {
- // this.paginator._changePageSize(this.paginator.pageSize);
 }
-/** Whether the number of selected elements matches the total number of rows. */
 isAllSelected() {
   const numSelected = this.selection.selected.length;
   const numRows = this.dataSource.length;
   return numSelected === numRows;
 }
 
-/** Selects all rows if they are not all selected; otherwise clear selection. */
 masterToggle() {
   this.isAllSelected()
     ? this.selection.clear()
     : ""
-    // this.dataSource.renderedData.forEach((row) =>
-    //     this.selection.select(row)
-    //   );
 }
 removeSelectedRows() {
   const totalSelect = this.selection.selected.length;
@@ -331,16 +294,9 @@ removeSelectedRows() {
     title: 'Success',
     text: 'Record Deleted Successfully...!!!',
     icon: 'success',
-    // confirmButtonColor: '#526D82',
   });
 }
 public loadData() {
-  //this.exampleDatabase = new LecturesService(this.httpClient);
-  // this.dataSource = new ExampleDataSource(
-  //   this.exampleDatabase,
-  //   this.paginator,
-  //   this.sort
-  // );
   this.subs.sink = fromEvent(this.filter.nativeElement, 'keyup').subscribe(
     () => {
       if (!this.dataSource) {
@@ -351,9 +307,7 @@ public loadData() {
   );
 }
 
-// export table data in excel file
 exportExcel() {
-  //key name with space add in brackets
   const exportData: Partial<TableElement>[] =
     this.myArray.data.map((x) => ({
     'Course Name': x.courseName,
@@ -371,7 +325,6 @@ generatePdf() {
   const doc = new jsPDF();
   const headers = [['Program Name', 'Class', 'Start Date','End Date','Duration','Time','Status']];
   const data = this.myArray.data.map((user: {
-    //formatDate(arg0: Date, arg1: string, arg2: string): unknown;
 
     courseName: any; courseCode: any; sessionStartDate: any; sessionEndDate: any; duration: any; sessionStartTime: any; status: string | number | Date;
   }, index: any) => [user.courseName, user.courseCode, 
@@ -383,13 +336,7 @@ generatePdf() {
 
 
   ]);
-  //const columnWidths = [60, 80, 40];
   const columnWidths = [20, 20, 20, 20, 20, 20, 20, 20, 20, 20];
-
-  // Add a page to the document (optional)
-  //doc.addPage();
-
-  // Generate the table using jspdf-autotable
   (doc as any).autoTable({
     head: headers,
     body: data,

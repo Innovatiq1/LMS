@@ -9,19 +9,6 @@
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
           <div class="materialTableHeader">
-            <!-- <div class="left">
-              <ul class="header-buttons-left ms-0">
-                <li class="tbl-title">
-                  <h2>All Survey Questions</h2>
-                </li>
-                <li class="tbl-search-box">
-                  <label for="search-input"><i class="material-icons search-icon">search</i></label>
-                  <input placeholder="Search" type="text" #filter class="browser-default search-field"
-                    aria-label="Search box">
-                </li>
-
-              </ul>
-            </div> -->
             <div class="right">
               <ul class="tbl-export-btn">
                 <li>
@@ -35,9 +22,6 @@
                       <div class="m-l-10" matTooltip="ADD" *ngIf="create">
                         <button mat-raised-button [routerLink]="['/student/settings/customize/create-feedback']"
                         id="submit">Create</button>
-                        <!-- <button mat-mini-fab color="primary" [routerLink]="['/admin/survey/create-survey-questions']">
-                          <mat-icon class="col-white">add</mat-icon>
-                        </button> -->
                       </div>
                     </li>
                     <li>
@@ -52,19 +36,6 @@
                     </li>
                   </ul>
                 </li>
-                <!-- <li class="tbl-header-btn">
-                  <div class="m-l-10" matTooltip="ADD">
-                    <button mat-raised-button [routerLink]="['/admin/survey/create-feedback']"
-                    id="submit">Create</button>
-                    <!-- <button mat-mini-fab color="primary" [routerLink]="['/admin/survey/create-survey-questions']">
-                      <mat-icon class="col-white">add</mat-icon>
-                    </button> --
-                  </div>
-                </li> -->
-
-
-
-
               </ul>
             </div>
           </div>
@@ -86,63 +57,10 @@
                   <mat-cell *matCellDef="let row" [routerLink]="isView ? ['/admin/survey/survey-list/view-feedback',row.id] : null"> <span class="mobile-label">Created At:</span>{{row.createdAt | date: 'MM/dd/yyyy' }}
                   </mat-cell>
                 </ng-container>
-
-                   <!-- actions -->
-              <!-- <ng-container matColumnDef="status">
-                <mat-header-cell *matHeaderCellDef class="pr-0">Actions</mat-header-cell>
-                <mat-cell *matCellDef="let row" class="pr-0">
-                  <button mat-button [matMenuTriggerFor]="menu">
-                    <svg class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"
-                    xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                    class="bi bi-three-dots rounded-circle" viewBox="0 0 16 16">
-                    <path
-                      d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
-                  </svg>
-
-                  </button>
-
-                          <mat-menu #menu="matMenu" xPosition="before">
-                            <button mat-menu-item [routerLink]="['/admin/survey/edit-survey-questions',row.id]">
-                              <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                              <span class="menu-text">Edit</span>
-                            </button>
-                            <button mat-menu-item>
-                              <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                              <span class="menu-text">Delete</span>
-                            </button>
-                          </mat-menu>
-                </mat-cell>
-              </ng-container> -->
-                <!-- <ng-container matColumnDef="roomNo">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>Room No
-                  </mat-header-cell>
-                  <mat-cell *matCellDef="let row" class="column-nowrap"> <span class="mobile-label">Room
-                      No:</span>{{row.roomNo}}</mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="totalMarks">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>Total Marks</mat-header-cell>
-                  <mat-cell *matCellDef="let row"> <span class="mobile-label">Total Marks:</span>{{row.totalMarks}}
-                  </mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="reqMarks">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>Require Marks</mat-header-cell>
-                  <mat-cell *matCellDef="let row"><span class="mobile-label">Require Marks:</span> {{row.reqMarks}}
-                  </mat-cell>
-                </ng-container> -->
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
                 <mat-row *matRowDef="let row; columns: displayedColumns;" [style.cursor]="'pointer'" matRipple>
                 </mat-row>
               </table>
-              <!-- Loading spinner -->
-              <!-- <div *ngIf="exampleDatabase?.isTblLoading" class="tbl-spinner">
-                <mat-progress-spinner color="primary" [diameter]="40" mode="indeterminate">
-                </mat-progress-spinner>
-              </div>
-              <div *ngIf="!exampleDatabase?.isTblLoading" class="no-results"
-                [style.display]="dataSource.renderedData.length === 0 ? '' : 'none'">
-                No results
-              </div> -->
               <mat-paginator #paginator [length]="totalItems" (page)="pageSizeChange($event)"
               [pageSizeOptions]="pageSizeArr" aria-label="select pagination option">
           </mat-paginator>
@@ -153,245 +71,3 @@
     </div>
   </div>
 </section>
-
-
-
-<!-- <section class="content">
-  <div class="content-block">
-    <div class="block-header" *ngFor="let breadscrum of breadscrums">
-      <!-- breadcrumb --
-      <app-breadcrumb
-        [title]="breadscrum.title"
-        [items]="breadscrum.items"
-        [active_item]="breadscrum.active"
-      >
-      </app-breadcrumb>
-    </div>
-    <div class="row clearfix">
-      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <div class="card">
-          <div class="header">
-            <h2>Likert Chart</h2>
-          </div>
-          <div class="body">
-            <div class="row">
-              <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
-                <label>Survey Category<span class="mandatory">&nbsp;*</span></label>
-                <mat-form-field class="example-full-width mb-3" appearance="outline">
-                  <mat-select >
-                    <mat-option value="Course" (click)="selectcourseList()">Course</mat-option>
-                    <mat-option value="Program" (click)="selectprogramList()">Program</mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-            </div>
-          </div>
-          <div class="body">
-            <div class="row">
-              <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2" *ngIf="selectcourse">
-                <label>Course Name<span class="mandatory">&nbsp;*</span></label>
-                <mat-form-field
-                  class="example-full-width mb-3"
-                  appearance="outline">
-                  <mat-select  required>
-                    <mat-option [value]="'mechanical'" *ngFor="let course of courseList">{{ course?.title }} </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-              <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2" *ngIf="!selectcourse">
-                <label>Program Name<span class="mandatory">&nbsp;*</span></label>
-                <mat-form-field
-                  class="example-full-width mb-3"
-                  appearance="outline">
-                  <mat-select  required>
-                    <mat-option [value]="'program.title'" *ngFor="let program of programData">{{ program?.title }}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-              <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
-                <label>User Type<span class="mandatory">&nbsp;*</span></label>
-
-                <mat-form-field
-                  class="example-full-width mb-3"
-                  appearance="outline"
-                >
-                  <mat-select  required>
-                    <mat-option [value]="type.id" *ngFor="let type of data">{{ type?.typeName | titlecase }}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                <div class="card">
-                  <div class="header">
-                    <h2>1.The Course objectives were clear</h2>
-                  </div>
-                  <div class="body">
-                    <mat-radio-group
-                      aria-labelledby="example-radio-group-label"
-                      class="example-radio-group"
-
-                    >
-                      <mat-radio-button
-                        class="example-radio-button ms-0"
-                        *ngFor="let season of course"
-                        [value]="season"
-                      >
-                        {{ season }}
-                      </mat-radio-button>
-                    </mat-radio-group>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                <div class="card">
-                  <div class="header">
-                    <h2>
-                      2.The Assignments were appropriate for the level of this
-                      course
-                    </h2>
-                  </div>
-                  <div class="body">
-                    <mat-radio-group
-                      aria-labelledby="example-radio-group-label"
-                      class="example-radio-group"
-
-                    >
-                      <mat-radio-button
-                        class="example-radio-button ms-0"
-                        *ngFor="let season of levelofcourse"
-                        [value]="season"
-                      >
-                        {{ season }}
-                      </mat-radio-button>
-                    </mat-radio-group>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                <div class="card">
-                  <div class="header">
-                    <h2>3.The course corresponded to my expectations</h2>
-                  </div>
-                  <div class="body">
-                    <mat-radio-group
-                      aria-labelledby="example-radio-group-label"
-                      class="example-radio-group"
-                    >
-                      <mat-radio-button
-                        class="example-radio-button ms-0"
-                        *ngFor="let season of expectations"
-                        [value]="season"
-                      >
-                        {{ season }}
-                      </mat-radio-button>
-                    </mat-radio-group>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                <div class="card">
-                  <div class="header">
-                    <h2>
-                      4.The Instructor demonstrated knowledge of the subject
-                      matter
-                    </h2>
-                  </div>
-                  <div class="body">
-                    <mat-radio-group
-                      aria-labelledby="example-radio-group-label"
-                      class="example-radio-group"
-                    >
-                      <mat-radio-button
-                        class="example-radio-button ms-0"
-                        *ngFor="let season of subject"
-                        [value]="season"
-                      >
-                        {{ season }}
-                      </mat-radio-button>
-                    </mat-radio-group>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="card p-4">
-              <div class="header">
-                <h2>Which is your overall satisfaction with the course?</h2>
-                </div>
-                <div class="body mt-2">
-                  <ngb-rating [max]="5" [(rate)]="starRating"></ngb-rating>
-                </div>
-            </div>
-            <div class="card p-3">
-              <div class="header">
-                <h2>How likely is that you would recommend this course to another student?</h2>
-                </div>
-                <div class="body">
-                  <div
-            class=" mt-4"
-            *ngFor="let cunts of countNumber; let i = index"
-            style="display: inline; padding: 15px"
-            [ngClass]="selected ? 'disabled' : ''"
-          >
-            <span
-              class="shadow border number rounded-circle px-3 py-2"
-              (click)="setRow(i)"
-              [ngClass]="{ highlight: selectedIndex == i }"
-            >
-              {{ cunts }}</span
-            >
-          </div>
-          <div class="mt-4">
-            <span style="color: #afaaaa">0- less likely at all</span>
-            <span style="color: #afaaaa">10- very likely </span>
-          </div>
-                </div>
-
-            </div>
-            <div class="card">
-              <div class="header">
-                <h2>Please provide any comments or suggestions that might help improve this course in the future!</h2></div>
-              <div class="body">
-                <div class="row">
-                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
-                    <mat-form-field class="example-full-width mb-3" appearance="outline">
-                      <textarea matInput formControlName="cDetails" required></textarea>
-                    </mat-form-field>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="row mt-4">
-              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
-                <button
-                class="btn-space"
-                mat-raised-button
-                color="primary"
-
-              >
-                Submit
-              </button>
-                <button
-                  type="button"
-                  mat-raised-button
-                  color="warn"
-                  [routerLink]="['/admin/survey/survey-list']"
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section> -->

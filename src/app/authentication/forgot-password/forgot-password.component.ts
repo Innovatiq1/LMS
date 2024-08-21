@@ -42,13 +42,9 @@ export class ForgotPasswordComponent implements OnInit {
         [Validators.required, Validators.email, Validators.minLength(5)],
       ],
     });
-    // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
   setLanguage(event: any) {  
-    
-    // this.countryName = text;
-    // this.flagvalue = flag;
     this.langStoreValue = event.target.value;
     this.translate.setLanguage(event.target.value);
   }
@@ -63,8 +59,6 @@ export class ForgotPasswordComponent implements OnInit {
   }
   onSubmit() {
     this.submitted = true;
-   
-    // stop here if form is invalid
     if (this.authForm.invalid) {
 
       return;
@@ -84,13 +78,11 @@ export class ForgotPasswordComponent implements OnInit {
           
           
         } else {
-         // this.error = 'Invalid Login';
         }
       },
       error: (error) => {
         this.error = error;
         this.submitted = false;
-        //this.loading = false;
       },
     });
       

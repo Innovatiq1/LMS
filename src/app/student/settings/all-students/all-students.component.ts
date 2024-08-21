@@ -112,7 +112,6 @@ export class AllStudentsComponent
     this.router.navigate(['/student/settings/add-student']);
   }
   editCall(row: Students) {
-    console.log('edit', row);
     this.router.navigate(['/student/settings/add-student'], {
       queryParams: { id: row.id },
     });
@@ -314,7 +313,6 @@ export class AllStudentsComponent
     }
   }
   onPageChange(event: any) {
-    console.log('page', this.dataSource.filteredData);
     const startIndex = event.pageIndex * event.pageSize;
     const endIndex = startIndex + event.pageSize;
     this.paginator.pageIndex = event.pageIndex;
@@ -379,7 +377,6 @@ export class ExampleDataSource extends DataSource<Students> {
           startIndex,
           this.paginator.pageSize
         );
-        console.log('filted', this.renderedData);
         return this.renderedData;
       })
     );

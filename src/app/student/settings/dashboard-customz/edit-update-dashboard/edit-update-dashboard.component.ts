@@ -52,7 +52,6 @@ export class EditUpdateDashboardComponent {
     this.userService.getDashboardsByCompanyId(companyId).subscribe(
       (data: any) => {
         const dashboards = data.data;
-        console.log('dashboards', dashboards);
         const processedData = dashboards.map(
           (dashboard: { typeName: any; dashboards: any[] }) => {
             return {

@@ -15,7 +15,6 @@ import { AppConstants } from '@shared/constants/app.constants';
 export class ExamScoresComponent {
 
   displayedColumns: string[] = [
-    // 'select',
     'img',
     'Student Name',
     'Email',
@@ -49,7 +48,7 @@ export class ExamScoresComponent {
   constructor(public utils: UtilsService, private assessmentService: AssessmentService){
     this.assessmentPaginationModel = {};
     this.keyupSubject.pipe(
-      debounceTime(300)  // Adjust the debounce time as needed
+      debounceTime(300)
     ).subscribe(event => {
       this.applyFilter(event);
     });

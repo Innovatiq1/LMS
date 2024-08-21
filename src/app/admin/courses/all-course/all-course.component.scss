@@ -9,12 +9,6 @@
     color: deepskyblue;
     font-weight: 500;
 }
-// tabs for under video section
-
-// button,
-// input {
-//     font-family: "Montserrat", "Helvetica Neue", Arial, sans-serif;
-// }
 svg{
     position: absolute;
     fill: #000;
@@ -57,14 +51,6 @@ svg{
   .img-w{
   width: 16%;
   }
-
-// @media (min-width: 768px) {
-//     .col-md-3 {
-//         flex: 0 0 auto;
-//         width: 100%;
-//     }
-// }
-
 .ccount {
     background: rgba(45, 67, 86, 0.90);
     color: white;
@@ -85,13 +71,7 @@ svg{
 
 .count {
     border-left: 1px solid #7A7A7A;
-    // height: 240px;
 }
-
-// .title {
-//     text-align: right;
-//     margin-top: -120px;
-// }
 .text {
     padding-left:50px;
     padding-top: 20px;
@@ -113,13 +93,6 @@ svg{
     margin-right: 8px;
     border-radius: 10px;
     padding: 3px;
-    // position: absolute;
-    // fill: #000;
-    // background-color: #d3cdcd;
-    // margin-left: 15px;
-    // border-radius: 10px;
-    // padding-left: 3px;
-    // padding-right: 3px;
 }
 
 // modal-box styling
@@ -137,16 +110,8 @@ svg{
 .menu-text{
     padding-left: 20px;
 }
-
-
-// .compulsory-count-header {
-//     min-width: 150px;
-//   }
-
-
   .modal-content {
     padding-left: 15px;
-    /* padding: 5px; */
     margin-bottom: 20px;
     margin-top: 10px;
   }
@@ -159,7 +124,6 @@ svg{
   .table th, .table td {
     padding: 8px;
     border-bottom: 1px solid #ddd;
-    // text-align: left;
   }
   
   .table th {

@@ -162,7 +162,6 @@ student(){
 
   handleRadioChange(index:any) {
     this.answers[index].questionText = this.questionList[index]?.questionText
-    // this.answers[index].selectedOptionText = this.selectedOption
     this.selectedOption = ''
   }
 
@@ -234,7 +233,6 @@ submitFeedback(){
   
   calculateTotalTime() {
     this.totalTime = this.questionList.length * this.timerInSeconds;
-    // this.startTimer();
 
   }
 

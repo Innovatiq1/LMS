@@ -96,41 +96,6 @@ export class SurveyListComponent
     this.router.navigate(['/admin/survey/feedbacks-list/view-survey'], {
       queryParams: { id: row },
     });
-    // this.id = row.id;
-    // let tempDirection: Direction;
-    // if (localStorage.getItem('isRtl') === 'true') {
-    //   tempDirection = 'rtl';
-    // } else {
-    //   tempDirection = 'ltr';
-    // }
-    // const dialogRef = this.dialog.open(FormDialogComponent, {
-    //   data: {
-    //     staff: row,
-    //     action: 'edit',
-    //   },
-    //   direction: tempDirection,
-    // });
-    // this.subs.sink = dialogRef.afterClosed().subscribe((result) => {
-    //   if (result === 1) {
-    //     // When using an edit things are little different, firstly we find record inside DataService by id
-    //     const foundIndex = this.exampleDatabase?.dataChange.value.findIndex(
-    //       (x) => x.id === this.id
-    //     );
-    //     // Then you update that record using data from dialogData (values you enetered)
-    //     if (foundIndex != null && this.exampleDatabase) {
-    //       this.exampleDatabase.dataChange.value[foundIndex] =
-    //         this.surveyService.getDialogData();
-    //       // And lastly refresh table
-    //       this.refreshTable();
-    //       this.showNotification(
-    //         'black',
-    //         'Edit Record Successfully...!!!',
-    //         'bottom',
-    //         'center'
-    //       );
-    //     }
-    //   }
-    // });
   }
   getStudentName(data: any) {
     return data.studentId
@@ -180,14 +145,12 @@ export class SurveyListComponent
   private refreshTable() {
     this.paginator._changePageSize(this.paginator.pageSize);
   }
-  /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.renderedData.length;
     return numSelected === numRows;
   }
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
     this.isAllSelected()
       ? this.selection.clear()
@@ -212,12 +175,6 @@ export class SurveyListComponent
       icon: 'success',
       // confirmButtonColor: '#526D82',
     });
-    // this.showNotification(
-    //   'snackbar-danger',
-    //   totalSelect + ' Record Delete Successfully...!!!',
-    //   'bottom',
-    //   'center'
-    // );
   }
   public loadData() {
     this.exampleDatabase = new SurveyService(this.httpClient);
@@ -290,12 +247,9 @@ export class ExampleDataSource extends DataSource<SurveyBuilderModel> {
     public _sort: MatSort
   ) {
     super();
-    // Reset to the first page when the user changes the filter.
     this.filterChange.subscribe(() => (this.paginator.pageIndex = 0));
   }
-  /** Connect function called by the table to retrieve one stream containing the data to render. */
   connect(): Observable<SurveyBuilderModel[]> {
-    // Listen for any changes in the base data, sorting, filtering, or pagination
     const displayDataChanges = [
       this.exampleDatabase.dataChange,
       this._sort.sortChange,
@@ -314,9 +268,7 @@ export class ExampleDataSource extends DataSource<SurveyBuilderModel> {
             )?.toLowerCase();
             return searchStr?.indexOf(this.filter?.toLowerCase()) !== -1;
           });
-        // Sort filtered data
         const sortedData = this.sortData(this.filteredData.slice());
-        // Grab the page's slice of the filtered sorted data.
         const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
         this.renderedData = sortedData.splice(
           startIndex,
@@ -329,7 +281,6 @@ export class ExampleDataSource extends DataSource<SurveyBuilderModel> {
   disconnect() {
     // disconnect
   }
-  /** Returns a sorted copy of the database data. */
   sortData(data: SurveyBuilderModel[]): SurveyBuilderModel[] {
     if (!this._sort.active || this._sort.direction === '') {
       return data;

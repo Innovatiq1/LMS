@@ -32,18 +32,6 @@
 
 
           </p>
-          <!-- <div class="d-flex justify-content-between lbl-alert mb-3">
-            <div>
-              <button mat-raised-button color="primary" type="button" (click)="adminSet();">Admin</button>
-            </div>
-            <div>
-              <button mat-raised-button color="accent" type="button" (click)="teacherSet();">Instructor</button>
-            </
-            div>
-            <div>
-              <button mat-raised-button color="warn" type="button" (click)="studentSet();">Student</button>
-            </div>
-          </div> -->
           <h2 class="login-title">{{ 'Sign in' | translate }}</h2>
           <form class="validate-form" [formGroup]="authForm" (ngSubmit)="loginUser()" >
             <div class="row">
@@ -79,11 +67,6 @@
                 <div  class="invalid-text"*ngIf="isSubmitted" >
                   {{email}}
                     </div>
-                <!-- <div class="password-strength"> 
-                  <div class="indicator weak"></div>
-                  <div class="indicator fair"></div>
-                  <div class="indicator strong"></div>
-                </div> -->
               </div>
             </div>
             <div class="d-flex justify-content-between align-items-center mb-2">
@@ -127,58 +110,10 @@
                   <span class="px-5" style="font-size: 15px;font-weight: bold;" > {{ "Login with LinkedIn" | translate }} </span>
                 </button>
               </a>
-              <!-- <a href="#"  class="google btn" (click)="loginWithlinkedin()">
-                <img src="assets/images/linkidein.png" width="22" alt="" /> LinkedIn
-              </a> -->
               
             </div>
-            <!-- <button (click)="socialSignIn('googleLogin')" type="button" class="btn btn-singPass d-flex align-items-center justify-content-center">
-              <span class="px-5" style="font-size: 15px;font-weight: bold;" > {{ "Login with Gmail" | translate }} </span>
-            </button> -->
-
-
-            
-            <!-- <div class="footer">
-              <div class="row">
-                <div class="col-md-1 uglms">
-                  <p>&copy; 2024 UGLMS. All Rights Reserved </p>
-                </div>
-                <div class="col-md-3 policy" style="white-space: nowrap;">
-                  <a href="https://www.globalpsa.com/termsofuse/" target="_blank" class="terms"><p>Terms of Use</p></a>
-                  |
-                  <a href="https://www.globalpsa.com/privacy-notice/" target="_blank" class="privacy"><p>Privacy Notice</p></a>
-                </div>
-                <div class="col-md-1 powered">
-                  <p>Powered by Innovatiq</p>
-                </div>
-              </div>
-            </div> -->
-            
-            
-
-            <!-- <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div> -->
            
           </form>
-          
-          <!-- <ul class="list-unstyled social-icon mb-0 mt-3">
-            <li class="list-inline-item"><a href="javascript:void(0)" class="rounded">
-                <i class="fab fa-google"></i>
-              </a></li>
-            <li class="list-inline-item"><a href="javascript:void(0)" class="rounded flex-c-m">
-                <i class="fab fa-facebook-f"></i>
-              </a></li>
-            <li class="list-inline-item"><a href="javascript:void(0)" class="rounded">
-                <i class="fab fa-twitter"></i>
-              </a></li>
-            <li class="list-inline-item"><a href="javascript:void(0)" class="rounded">
-                <i class="fab fa-linkedin-in"></i>
-                <div class="col-md-3" style="display: inline-block;">
-                  <a href="https://www.globalpsa.com/termsofuse/" target="_blank" style="text-decoration: none; color: black; display: inline-block; margin-top: 3px; margin-left: -76px; font-size: 12px;"><p>Terms of Use</p></a>
-                  | 
-                  <a href="https://www.globalpsa.com/privacy-notice/" target="_blank" style="text-decoration: none; color: black; display: inline-block; margin-left: -58px; font-size: 12px;"><p>Privacy Notice</p></a>
-                </div>
-              </a></li>
-          </ul> -->
         </div>
       </div>
     </div>
