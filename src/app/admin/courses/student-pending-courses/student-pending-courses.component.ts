@@ -314,8 +314,6 @@ export class StudentPendingCoursesComponent {
 
 
     });
-
-    // Save or open the PDF
     doc.save('Student Pending-list.pdf');
   }
 

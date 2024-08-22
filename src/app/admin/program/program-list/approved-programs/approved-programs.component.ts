@@ -247,8 +247,6 @@ export class ApprovedProgramsComponent {
         margin: { top: 20, bottom: 20, left: 10, right: 10 },
         pageBreak: 'auto'
     });
-
-    // Save or open the PDF
     doc.save('Program Approve-list.pdf');
 }
 

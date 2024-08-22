@@ -443,8 +443,6 @@ viewActiveProgram(id:string, status: string):void {
         margin: { top: 20, bottom: 20, left: 10, right: 10 },
         pageBreak: 'auto'
     });
-
-    // Save or open the PDF
     doc.save('AllPrograms-list.pdf');
 }
   refresh() {

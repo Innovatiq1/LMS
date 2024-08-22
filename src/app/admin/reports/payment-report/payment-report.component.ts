@@ -192,8 +192,6 @@ this.router.navigate(['/admin/budgets/view-course-payment/'], {queryParams:{id:i
 
 
     });
-
-    // Save or open the PDF
     doc.save('Payment Report.pdf');
   }
   getStatusClass(status: string): string {

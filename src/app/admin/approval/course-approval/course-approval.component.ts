@@ -251,8 +251,6 @@ export class CourseApprovalComponent {
 
 
     });
-
-    // Save or open the PDF
     doc.save('Course-approve-list.pdf');
   }
 

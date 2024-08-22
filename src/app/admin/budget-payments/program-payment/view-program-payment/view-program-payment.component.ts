@@ -38,8 +38,7 @@ export class ViewProgramPaymentComponent {
     private activeRoute: ActivatedRoute
   ) {
     this.activeRoute.queryParams.subscribe(id => {
-  this.paymentid = id['id'] 
-  console.log('id', this.paymentid)})
+  this.paymentid = id['id'] })
   }
 
   ngOnInit():void{

@@ -14,62 +14,16 @@ label {
 .error{
   padding-left: 20px;
 }
-// #next {
-//     margin-left: 85px;
-//     margin-bottom: 20px;
-//     background: #6777ef;
-//     border: none;
-//     width: 100px;
-//     height: 40px;
-//     border-radius: 10px;
-//     color: #FFF;
-//     font-weight: 700;
-// }
-
 #submit {
     margin-left: 35px;
 }
-
-// #save {
-//     margin-left: -10px;
-//     margin-bottom: 20px;
-//     background: #6777ef;
-//     border: none;
-//     width: 100px;
-//     height: 40px;
-//     border-radius: 10px;
-//     color: #FFF;
-//     font-weight: 700;
-// }
-
-// #cancel {
-//     margin-left: 50px;
-//     /* margin-bottom: 20px; */
-//     // background: #FFF;
-//     border: 1px solid #000000;
-//     width: 100px;
-//     height: 40px;
-//     border-radius: 10px;
-//     // color: black;
-//     font-weight: 700;
-// }
-
-
-
-
-//file-upload styling
 .file-drop-area {
     border: 1px dashed #7c7db3;
     border-radius: 15px;
     position: relative;
-    // max-width: 100%;
     margin-top: 5px;
-    // padding: 26px 20px 30px;
     transition: 0.2s;
   }
-  // .file-drop-area button{
-  //   border-radius: 12px;
-  // }
   .file{
    text-align: center;
   }
@@ -83,12 +37,10 @@ label {
     opacity: 0;
   }
   .file-msg {
-    // display: inline-block;
     margin-left: 20px;
     vertical-align: middle;
     font-size: 12px;
     font-weight: 500;
-    // color: #5b5bff;
   }
   h5{
     padding-top: 10px;
@@ -99,7 +51,6 @@ label {
     position: relative;
     max-width: 100%;
     margin-top: 0px;
-    // padding: 7px 0px 9px;
     transition: 0.2s;
   }
   .btn{
@@ -127,6 +78,5 @@ label {
     vertical-align: middle;
     font-size: 12px;
     font-weight: 500;
-    // color: #5b5bff;
   }
  

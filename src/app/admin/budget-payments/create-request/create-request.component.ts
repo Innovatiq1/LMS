@@ -168,32 +168,16 @@ export class CreateRequestComponent {
             ro: response?.roName,
             trainingAdmin: response?.trainingAdminName,
             directorName: response?.directorName,
-
-            // designation: ['', [...this.utils.validators.designation, this.utils.noLeadingSpace]],
-            // department: ['', [...this.utils.validators.designation, this.utils.noLeadingSpace]],
-            // email: ['', [...this.utils.validators.email, this.utils.noLeadingSpace]],
-            // supervisor: ['', [...this.utils.validators.ename, this.utils.noLeadingSpace]],
-            // learingAdmin: ['', [...this.utils.validators.ename, this.utils.noLeadingSpace]],
-            // departmentHead: ['',[...this.utils.validators.ename, this.utils.noLeadingSpace]],
-            // courseName: ['',[...this.utils.validators.dname, this.utils.noLeadingSpace]],
-            // vendorName: ['',[...this.utils.validators.dname, this.utils.noLeadingSpace]],
-            // courseCost: ['',[...this.utils.validators.value, this.utils.noLeadingSpace]],
-            // courseTimeline: ['',[...this.utils.validators.value, this.utils.noLeadingSpace]],
           });
       },
       () => {}
     );
   }
-
-
-  /** getting all course list */
   getCourseList() {
     this.etmsService.getAllCoursesTitle('active').subscribe((courses) => {
       this.sourceData = courses.reverse();
     });
   }
-
-  /** Performing course search */
 
   performSearch() {
     if (this.requestForm.value.courseName) {
@@ -209,12 +193,6 @@ export class CreateRequestComponent {
       this.getCourseList();
     }
   }
-
-  // filteredCourse(title:any) {
-  //   this.sourceData = this.sourceData.filter((course: { title: string; }) => {
-  //     return course.title.toLowerCase().indexOf(title.toLowerCase()) > -1;
-  //   });
-  // }
 
   onCourseSelected(event: MatAutocompleteSelectedEvent) {
     const selectedCourseTitle: string = event.option.value;

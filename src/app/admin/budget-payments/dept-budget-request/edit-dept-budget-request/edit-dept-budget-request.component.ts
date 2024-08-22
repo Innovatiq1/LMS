@@ -123,13 +123,8 @@ export class EditDeptBudgetRequestComponent {
         });
     }
   }
-
-  /** To approve  */
-
   approveRequest() {
     if (this.director) {
-      console.log('data',this.data)
-
       this.payload = {
         approval: 'Approved',
         reason: this.empRequestForm.value.reason,
@@ -140,15 +135,6 @@ export class EditDeptBudgetRequestComponent {
     }
 
     if (this.empRequestForm.valid) {
-  //     Swal.fire({
-  //   title: 'Are you sure?',
-  //   text: 'Do you want to approve!',
-  //   icon: 'warning',
-  //   confirmButtonText: 'Yes',
-  //   showCancelButton: true,
-  //   cancelButtonColor: '#d33',
-  // }).then((result) => {
-  //   if (result.isConfirmed){
       this.etmsService
       .updateDeptBudgetStatus(this.payload, this._id)
       .subscribe((response: any) => {
@@ -161,9 +147,6 @@ export class EditDeptBudgetRequestComponent {
           this.getAllRequestsByDirector();
         }
       });
-  //   }
-  // });
-     
     }
   }
 }

@@ -231,8 +231,6 @@ generatePdf() {
 
 
   });
-
-  // Save or open the PDF
   doc.save('User Report.pdf');
 }
 }

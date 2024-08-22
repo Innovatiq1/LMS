@@ -18,7 +18,6 @@ export class EmployeeStatusComponent {
   displayedColumns: string[] = [
     'ID',
     'course',
-    // 'payment',
     'created at',
     'ro approved on',
     'director approved on',
@@ -27,7 +26,6 @@ export class EmployeeStatusComponent {
     'status',
     'reason',
     'payment',
-    // 'actions',
   ];
   coursePaginationModel!: Partial<CoursePaginationModel>;
   totalItems: any;
@@ -59,18 +57,11 @@ export class EmployeeStatusComponent {
   createReq() {
     this.router.navigate(['/admin/budgets/create-request']);
   }
-
-  // createCourseReq(){
-  //   this.router.navigate(['/admin/e-tms/create-course-request'])
-  //     }
-
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.length;
     return numSelected === numRows;
   }
-
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
     this.isAllSelected()
       ? this.selection.clear()
@@ -115,7 +106,6 @@ export class EmployeeStatusComponent {
       [
         'REQUEST-ID ',
         'Course',
-        // 'Payment',
         'Created At',
         'Approver 1',
         'Approver 2',
@@ -150,10 +140,10 @@ export class EmployeeStatusComponent {
     const pageHeight = doc.internal.pageSize.height;
 
     let startY = margin;
-    let remainingData = data.slice(); // Copy the data array
+    let remainingData = data.slice();
 
     while (remainingData.length > 0) {
-        const currentData = remainingData.splice(0, 25); // Adjust 25 to the number of rows per page you want
+        const currentData = remainingData.splice(0, 25);
 
         (doc as any).autoTable({
             head: headers,
@@ -178,18 +168,15 @@ export class EmployeeStatusComponent {
         });
 
         if (remainingData.length > 0) {
-            doc.addPage(); // Add a new page if there's remaining data
-            startY = margin; // Reset startY for the new page
+            doc.addPage();
+            startY = margin;
         }
     }
-
-    // Save or open the PDF
     doc.save('Training-request.pdf');
 }
 
 
   exportExcel() {
-    //k//ey name with space add in brackets
     const exportData: Partial<TableElement>[] = this.dataSource.map(
       (user: any) => ({
         'REQUEST-ID': user.requestId,

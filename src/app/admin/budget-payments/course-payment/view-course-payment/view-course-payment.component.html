@@ -5,7 +5,6 @@
             <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
             </app-breadcrumb>
         </div>
-        <!-- Your content goes here  -->
         <div class="row clearfix">
             <div class="col-lg-4 col-md-12 ">
                 <form [formGroup]="feedbackForm">
@@ -51,10 +50,6 @@
                                             <b>Payment Date</b>
                                             <div class="profile-desc-item float-end">{{createdAt |date}}</div>
                                         </li>
-                                        <!-- <li class="list-group-item">
-                                            <b>Payment Type</b>
-                                            <div class="profile-desc-item float-end">{{paymentType | titlecase}}</div>
-                                        </li> -->
                                         <li class="list-group-item">
                                             <b>Amount</b>
                                             <div class="profile-desc-item float-end">${{price}}.00</div>
@@ -78,24 +73,12 @@
                                             </div>
                                         </li>
                                         <li class="list-group-item" *ngIf="isRazorpay">
-                                            <!-- <div class="row"> -->
-                                                <!-- <div class="col-6"> -->
                                                     <b>Order ID</b>
-                                                <!-- </div> -->
-                                                <!-- <div class="col-6" style="width: 50%;"> -->
-                                                    <div class="profile-desc-item float-end">{{orderId}}</div>   
-                                                <!-- </div> -->
-                                            <!-- </div> -->
+                                                    <div class="profile-desc-item float-end">{{orderId}}</div> 
                                         </li>
                                         <li class="list-group-item" *ngIf="isRazorpay">
-                                            <!-- <div class="row">
-                                                <div class="col-6"> -->
                                                     <b>Payment ID</b>
-                                                <!-- </div>
-                                                <div class="col-6" style="width: 50%;"> -->
-                                                    <div class="profile-desc-item float-end">{{paymentId}}</div>   
-                                                <!-- </div> -->
-                                            <!-- </div> -->
+                                                    <div class="profile-desc-item float-end">{{paymentId}}</div>  
                                         </li>
                                     </ul>
                                 </div>

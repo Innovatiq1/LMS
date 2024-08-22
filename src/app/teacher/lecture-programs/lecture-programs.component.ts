@@ -345,8 +345,6 @@ generatePdf() {
 
 
   });
-
-  // Save or open the PDF
   doc.save('lecture-list.pdf');
 }
 

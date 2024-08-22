@@ -225,8 +225,6 @@ export class ActiveCoursesComponent {
         cellWidth: 'wrap',
       },
     });
-
-    // Save or open the PDF
     doc.save('Approved Courses-list.pdf');
   }
   performSearch() {

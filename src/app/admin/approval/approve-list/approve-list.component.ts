@@ -339,8 +339,6 @@ export class ApproveListComponent {
         cellWidth: 'wrap',
       },
     });
-
-    // Save or open the PDF
     doc.save('Student-Approve-list.pdf');
   }
 }
