@@ -1,0 +1,373 @@
+<section class="content">
+    <div class="content-block">
+      <div class="block-header" *ngFor="let breadscrum of breadscrums">
+        <!-- breadcrumb -->
+        <app-breadcrumb
+          [title]="breadscrum.title"
+          [items]="breadscrum.items"
+          [active_item]="breadscrum.active"
+        >
+        </app-breadcrumb>
+      </div>
+      <div class="row">
+        <mat-tab-group>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <i class="material-icons-two-tone psr-3">list_alt</i>
+              List View
+            </ng-template>
+            <div class="mt-4">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                  <div class="materialTableHeader">
+                    <div class="right">
+                      <ul class="tbl-export-btn">
+                        <li>
+                          <ul class="header-buttons-left ms-0">
+                            <li class="tbl-search-box">
+                              <label for="search-input"
+                                ><i class="material-icons search-icon"
+                                  >search</i
+                                ></label
+                              >
+                              <input
+                                placeholder="Search"
+                                type="text"
+                                #filter
+                                class="browser-default search-field text"
+                                aria-label="Search box"
+                                [(ngModel)]="searchTerm"
+                                (input)="performSearch()"
+                              />
+                            </li>
+                          </ul>
+                        </li>
+                        <li class="tbl-header-btn">
+                          <div class="m-l-10" matTooltip="ADD">
+                            <button
+                              mat-raised-button
+                              [routerLink]="[
+                                '/admin/user-profile/create-all-users'
+                              ]"
+                              id="submit"
+                            >
+                              Create
+                            </button>
+                          </div>
+                        </li>
+                        <li class="tbl-header-btn">
+                          <div
+                            class="m-l-10"
+                            [hidden]="!selection.hasValue()"
+                            matTooltip="DELETE"
+                          >
+                            <button
+                              mat-mini-fab
+                              color="warn"
+                              (click)="removeSelectedRows()"
+                            >
+                              <mat-icon class="col-white">delete </mat-icon>
+                            </button>
+                          </div>
+                        </li>
+                        <li>
+                          <div
+                            class="export-button m-l-10"
+                            matTooltip="XLSX"
+                            (click)="exportExcel()"
+                          >
+                            <img src="assets/excel.svg" alt="" />
+                          </div>
+                        </li>
+                        <li>
+                          <div
+                            class="export-button m-l-10"
+                            matTooltip="PDF"
+                            (click)="generatePdf()"
+                          >
+                            <img src="assets/pdf (1).svg" alt="" />
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="body overflow-auto">
+                    <div class="responsive_table">
+                      <table
+                        mat-table
+                        matSort
+                        [dataSource]="dataSource"
+                        class="mat-cell advance-table"
+                      >
+                      
+                        <ng-container matColumnDef="img">
+                          <mat-header-cell
+                            mat-header-cell
+                            *matHeaderCellDef
+                            [ngClass]="'tbl-col-width-per-6'"
+                          >
+                            Image
+                          </mat-header-cell>
+                          <mat-cell
+                            mat-cell
+                            *matCellDef="let row"
+                            class="table-img tbl-col-width-per-6"
+                          >
+                            <span class="mobile-label">Image:</span
+                            ><img
+                              [src]="row.avatar || 'assets/profile.png'"
+                              
+                            />
+                          </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="Name">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header
+                            >Name</mat-header-cell
+                          >
+                          <mat-cell
+                            *matCellDef="let row"
+                            class="name"
+                            [routerLink]="[
+                            '/admin/user-profile/view-all-users',
+                            row.id
+                          ]"
+                          >
+                            <span class="mobile-label">Name:</span
+                            >{{ row.name | capitalizeFirstLetter }}</mat-cell
+                          >
+                        </ng-container>
+                        <!-- Course Code -->
+                        <ng-container matColumnDef="User Type">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header
+                            >Role
+                          </mat-header-cell>
+                          <mat-cell
+                            *matCellDef="let row"
+                            (click)="addNew(row.type)"
+                          >
+                            <span class="mobile-label">User Role:</span
+                            >{{ row.type | titlecase }}</mat-cell
+                          >
+                        </ng-container>
+                        
+                        <ng-container matColumnDef="department">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header
+                              >Department
+                            </mat-header-cell>
+                            <mat-cell
+                              *matCellDef="let row"
+                              [routerLink]="[
+                              '/admin/user-profile/view-all-users',
+                              row.id
+                            ]"
+                            >
+                              <span class="mobile-label">Department:</span
+                              >{{ row.department | capitalizeFirstLetter }}</mat-cell
+                            >
+                          </ng-container>
+                        <ng-container matColumnDef="gender">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Gender
+                          </mat-header-cell>
+                          <mat-cell
+                            mat-cell
+                            *matCellDef="let row"
+                            [routerLink]="[
+                            '/admin/user-profile/view-all-users',
+                            row.id
+                          ]"
+                          >
+                            <span class="mobile-label">Gender:</span>
+                            <div *ngIf="row.gender === 'male'">
+                              <span class="badge badge-solid-green">
+                                {{ row.gender | titlecase }}</span
+                              >
+                            </div>
+                            <div *ngIf="row.gender === 'female'">
+                              <span class="badge badge-solid-purple">
+                                {{ row.gender | titlecase }}</span
+                              >
+                            </div>
+                            <div *ngIf="row.gender === 'other'">
+                              <span class="badge badge-solid-orange">
+                                {{ row.gender | titlecase }}</span
+                              >
+                            </div>
+                          </mat-cell>
+                        </ng-container>
+                        
+                       
+                        <ng-container matColumnDef="Status">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header
+                            >Status
+                          </mat-header-cell>
+                          <mat-cell
+                            *matCellDef="let row"
+                            [routerLink]="[
+                              '/admin/user-profile/view-all-users',
+                              row.id
+                            ]"
+                          >
+                            <span class="mobile-label">Status:</span
+                            ><span
+                              [class]="
+                                row?.Active
+                                  ? 'badge badge-solid-green'
+                                  : 'badge badge-solid-red'
+                              "
+                            >
+                              <span
+                                [class]="
+                                  row?.Active ? 'status-dot' : 'status-red'
+                                "
+                              ></span>
+                              {{ row.Active ? "Active" : "Inactive" }}
+                              <!-- {{row?.status?.Active == true?"Active":"Inactive"}} -->
+                            </span>
+                          </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="sub-user">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header
+                              >Sub User
+                            </mat-header-cell>
+                            <mat-cell
+                              *matCellDef="let row"
+                            >
+                              <span class="mobile-label">Sub User:</span
+                              >
+                              <button mat-menu-item (click)="subuser(row.id)" >
+                                <app-feather-icons [icon]="'eye'" [class]="'tbl-fav-edit'"></app-feather-icons>
+                                <!-- <span class="menu-text px-3">View</span> -->
+                              </button></mat-cell
+                            >
+                          </ng-container>
+                      
+                        <mat-header-row
+                          *matHeaderRowDef="displayedColumns"
+                        ></mat-header-row>
+                        <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
+                        <mat-row
+                          *matRowDef="let row; columns: displayedColumns"
+                          [style.cursor]="'pointer'"
+                          matRipple
+                        >
+                        </mat-row>
+                      </table>
+                      <!-- Loading spinner -->
+                      <div class="tbl-spinner">
+                        <mat-progress-spinner
+                          *ngIf="isLoading"
+                          color="primary"
+                          [diameter]="40"
+                          mode="indeterminate"
+                        >
+                        </mat-progress-spinner>
+                      </div>
+  
+                      <mat-paginator
+                        #paginator
+                        [length]="totalItems"
+                        (page)="pageSizeChange($event)"
+                        [pageSizeOptions]="pageSizeArr"
+                        aria-label="select pagination option"
+                      >
+                      </mat-paginator>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <i class="material-icons-two-tone psr-3">grid_on</i>
+              Grid View
+            </ng-template>
+            <div class="row mt-2 ml-0 mr-0">
+              <div class="col-md-3" *ngFor="let row of dataSource">
+                <div
+                  class="card border-apply"
+                  style="height: 220px; margin-top: 20px; cursor: pointer"
+                  [routerLink]="['/admin/user-profile/view-all-users', row.id]"
+                >
+                  <!-- <div class="m-b-20"> -->
+                  <div class="contact-grid">
+                    <div class="row">
+                      <div class="col-5">
+                        <img
+                          src="{{ row.avatar || 'assets/profile.png' }}"
+                          class="user-img1"
+                          alt=""
+                        />
+                      </div>
+                      <div class="col-7">
+                        <div class="user-name1">
+                          {{ row.name | titlecase }}
+                          {{ row.last_name ? row.last_name : "" }}
+                        </div>
+                        <div>{{ row.role }}</div>
+                        <div>
+                          <span class="phone">
+                            <i class="material-icons">phone</i
+                            >{{ row.mobile }}</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="row mt-2"
+                      style="text-align: start; padding-left: 10px"
+                    >
+                      <div class="col-5">
+                        {{ row.gender | titlecase }}
+                      </div>
+                      <div class="col-6">
+                        {{ row?.joiningDate | date }}
+                      </div>
+                    </div>
+                    <div
+                      class="row"
+                      style="
+                        text-align: start;
+                        padding-left: 10px;
+                        white-space: nowrap;
+                      "
+                    >
+                      <div class="col-5">
+                        {{ row.department | titlecase }}
+                      </div>
+                      <div class="col-6">
+                        {{ row?.qualification }}
+                      </div>
+                    </div>
+                    <div
+                      class="row"
+                      style="
+                        text-align: start;
+                        padding-left: 10px;
+                        white-space: nowrap;
+                      "
+                    >
+                      <div class="col-5">
+                        {{ row.country_name | titlecase }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <mat-paginator
+              class="paginator"
+              #paginator
+              [length]="totalItems"
+              (page)="pageSizeChange($event)"
+              [pageSizeOptions]="pageSizeArr"
+              aria-label="select pagination option"
+            >
+            </mat-paginator>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+  </section>

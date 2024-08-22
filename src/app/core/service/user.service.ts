@@ -277,8 +277,16 @@ export class UserService {
       })
     );
   }
-  getAllUsersByRole(type:any,filter?: Partial<any>): Observable<any> {
-    const apiUrl = `${this.defaultUrl}admin/adminUserListing/user/role?type=${type}&isAll=true`;
+  // getAllUsersByRole(type:any,companyId: string,filter?: Partial<any>): Observable<any> {
+  //   const apiUrl = `${this.defaultUrl}admin/adminUserListing/user/role?type=${type}&isAll=true`;
+  //   return this.http
+  //     .get<ApiResponse>(apiUrl, {
+  //       params: this.buildParams(filter),
+  //     })
+  //     .pipe(map((response) => response));
+  // }
+  getAllUsersByRole(type: any, companyId?: string, filter?: Partial<any>): Observable<any> {
+    const apiUrl = `${this.defaultUrl}admin/adminUserListing/user/role?type=${type}&companyId=${companyId}&isAll=true`;
     return this.http
       .get<ApiResponse>(apiUrl, {
         params: this.buildParams(filter),
@@ -314,6 +322,47 @@ export class UserService {
       apiUrl = `${this.defaultUrl}customzDashboard/${companyId}`;
     }
     return this.http.get<ApiResponse>(apiUrl).pipe(map((response) => response));
+  }
+  getUsersById(head: any){
+    const apiUrl = `${this.defaultUrl}admin/user/headId?head=${head.headId}`;
+      return this.http
+        .get<ApiResponse>(apiUrl, {
+          params: this.buildParams(head),
+        })
+        .pipe(map((response) => response));
+   }
+  
+   getCoursesById(id: string) {
+    const apiUrl = `${this.defaultUrl}admin/studentClasses/course/${id}`;
+    return this.http.get<ApiResponse>(apiUrl).pipe(map((response) => response));
+  }
+  
+  
+  getTutorialAnswers(studentId: string, courseId: string, filter?: Partial<any>): Observable<any> {
+    const apiUrl = `${this.defaultUrl}admin/tutorial-answers/retakes?studentId=${studentId}&courseId=${courseId}`;
+    return this.http
+      .get<ApiResponse>(apiUrl, {
+        params: this.buildParams(filter),
+      })
+      .pipe(map((response) => response));
+  }
+
+  getExamAnswers(studentId: string, courseId: string, filter?: Partial<any>): Observable<any> {
+    const apiUrl = `${this.defaultUrl}admin/exam-assesment-answers/retakes?studentId=${studentId}&courseId=${courseId}`;
+    return this.http
+      .get<ApiResponse>(apiUrl, {
+        params: this.buildParams(filter),
+      })
+      .pipe(map((response) => response));
+  }
+
+  getAssesmentAnswers(studentId: string, courseId: string, filter?: Partial<any>): Observable<any> {
+    const apiUrl = `${this.defaultUrl}admin/assesment-answers/retakes?studentId=${studentId}&courseId=${courseId}`;
+    return this.http
+      .get<ApiResponse>(apiUrl, {
+        params: this.buildParams(filter),
+      })
+      .pipe(map((response) => response));
   }
 }
 
