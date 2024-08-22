@@ -5,8 +5,6 @@
             <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
             </app-breadcrumb>
         </div>
-
-        <!-- <div class="card"> -->
         <div class="row clearfix p-2">
 
             <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
@@ -68,7 +66,6 @@
                                     <span
                                       [class]="response?.roApproval === 'Approved' ? 'status-dot' : response?.roApproval === 'Pending' ? 'status-orange' :  (response?.roApproval === 'Rejected' ? 'status-red' : '') "></span>
                                     {{response.roApproval }}
-                                    <!-- {{row?.status?.Active == true?"Active":"Inactive"}} -->
                                   </span></h6>
                             </div>
                         </div>
@@ -88,7 +85,6 @@
                                     <span
                                       [class]="response?.directorApproval === 'Approved' ? 'status-dot' : response?.directorApproval === 'Pending' ? 'status-orange' :  (response?.directorApproval === 'Rejected' ? 'status-red' : '') "></span>
                                     {{response.directorApproval }}
-                                    <!-- {{row?.status?.Active == true?"Active":"Inactive"}} -->
                                   </span></h6>
                             </div>
                         </div>
@@ -108,7 +104,6 @@
                                     <span
                                       [class]="response?.trainingAdminApproval === 'Approved' ? 'status-dot' : response?.trainingAdminApproval === 'Pending' ? 'status-orange' :  (response?.trainingAdminApproval === 'Rejected' ? 'status-red' : '') "></span>
                                     {{response.trainingAdminApproval }}
-                                    <!-- {{row?.status?.Active == true?"Active":"Inactive"}} -->
                                   </span></h6>
                             </div>
                         </div>
@@ -149,6 +144,5 @@
                 </div>
             </div>
         </div>
-        <!-- </div> -->
     </div>
 </section>

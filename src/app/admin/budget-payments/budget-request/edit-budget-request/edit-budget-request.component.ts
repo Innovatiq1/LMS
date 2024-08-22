@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable prefer-const */
 import { Component, Inject } from '@angular/core';
 import {
   UntypedFormBuilder,
@@ -83,7 +81,6 @@ export class EditBudgetRequestComponent {
     });
   }
   submit() {
-    // emppty stuff
   }
   onNoClick(): void {
     this.dialogRef.close();
@@ -124,12 +121,8 @@ export class EditBudgetRequestComponent {
         });
     }
   }
-
-  /** To approve  */
-
   approveRequest() {
     if (this.director) {
-      console.log('data',this.data)
       this.payload = {
         approval: 'Approved',
         reason: this.empRequestForm.value.reason,
@@ -139,16 +132,6 @@ export class EditBudgetRequestComponent {
     }
 
     if (this.empRequestForm.valid) {
-
-      // Swal.fire({
-      //   title: 'Are you sure?',
-      //   text: 'Do you want to approve!',
-      //   icon: 'warning',
-      //   confirmButtonText: 'Yes',
-      //   showCancelButton: true,
-      //   cancelButtonColor: '#d33',
-      // }).then((result) => {
-      //   if (result.isConfirmed){
           this.etmsService
           .updateBudgetStatus(this.payload, this._id)
           .subscribe((response: any) => {
@@ -164,9 +147,6 @@ export class EditBudgetRequestComponent {
           });
           this.empRequestForm.reset();
         }
-    //   });
-      
-    // }
     
   }
 }

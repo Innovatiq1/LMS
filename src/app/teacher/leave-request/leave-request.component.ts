@@ -241,8 +241,6 @@ export class InstructorLeaveRequestComponent
   
   
     });
-  
-    // Save or open the PDF
     doc.save('leaverequest-list.pdf');
   }
   

@@ -256,8 +256,6 @@ export class DraftedCoursesComponent {
         cellWidth: 'wrap',
       },
     });
-
-    // Save or open the PDF
     doc.save('AllCourses-list.pdf');
   }
   performSearch() {

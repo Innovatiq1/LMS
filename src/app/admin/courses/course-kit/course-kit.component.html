@@ -10,18 +10,6 @@
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
           <div class="materialTableHeader">
-            <!-- <div class="left">
-              <ul class="header-buttons-left ms-0">
-                <li class="tbl-title">
-                  <h2>Course Kit</h2>
-                </li>
-                <li class="tbl-search-box">
-                  <label for="search-input"><i class="material-icons search-icon">search</i></label>
-                  <input placeholder="Search" type="text" #filter class="browser-default search-field"
-                    aria-label="Search box"  [(ngModel)]="searchTerm" (input)="performSearch()">
-                </li>
-              </ul>
-            </div> -->
             <div class="right">
               <ul class="tbl-export-btn">
                 <li>
@@ -36,18 +24,8 @@
                <li class="tbl-header-btn">
                   <div class="m-l-10" matTooltip="ADD">
                     <button mat-raised-button *ngIf="create" id="submit" [routerLink]="['/admin/courses/create-course-kit']">Create</button>
-                    <!-- <button mat-mini-fab color="primary"  [routerLink]="['/admin/courses/create-course-kit']">
-                      <mat-icon class="col-white">add</mat-icon>
-                    </button> -->
                   </div>
                 </li>
-               <!-- <li class="tbl-header-btn">
-                  <div class="m-l-10" matTooltip="REFRESH">
-                    <button mat-mini-fab color="primary" >
-                      <mat-icon class="col-white">refresh</mat-icon>
-                    </button>
-                  </div>
-                </li> -->
                 <li class="tbl-header-btn">
                   <div class="m-l-10" [hidden]=!selection.hasValue() matTooltip="DELETE">
                     <button mat-mini-fab color="warn" (click)="removeSelectedRows()">
@@ -72,22 +50,6 @@
           <div class="body overflow-auto">
             <div class="responsive_table">
               <table mat-table matSort [dataSource]="dataSource" class="mat-cell advance-table">
-                <!-- Checkbox Column -->
-                <!-- Checkbox Column -->
-                <!-- <ng-container matColumnDef="select">
-                  <mat-header-cell *matHeaderCellDef [ngClass]="'tbl-col-width-per-6'">
-                    <mat-checkbox (change)="$event ? masterToggle() : null"
-                      [checked]="selection.hasValue() && isAllSelected()"
-                      [indeterminate]="selection.hasValue() && !isAllSelected()" [ngClass]="'tbl-checkbox'">
-                    </mat-checkbox>
-                  </mat-header-cell>
-                  <mat-cell *matCellDef="let row" [ngClass]="'tbl-col-width-per-6'">
-                    <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
-                      [checked]="selection.isSelected(row)" [ngClass]="'tbl-checkbox'">
-                    </mat-checkbox>
-                  </mat-cell>
-                </ng-container> -->
-                 <!-- Course Name -->
                 <ng-container matColumnDef="Course">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Course Kit</mat-header-cell>
                   <mat-cell *matCellDef="let row" class="name" [routerLink]="view?['/admin/courses/course-kit/',row.id]:null">
@@ -118,10 +80,6 @@
                   </a>
                     <img   style="display: inline; float: right;margin-left: -30px;" src="/assets/video-icon.svg"
                     alt="">
-                <!-- <img class="info" [matTooltip]="'This video has ben expired, very soon we will upload latest course video.'"  *ngIf="parseDate(row.endDate) < currentDate"  style="display: inline; float: right;margin-left: -30px;" src="/assets/info.png"
-                    alt=""> -->
-                                          <!-- [class.disabled]="parseDate(row.endDate) < currentDate" -->
-
                    </mat-cell>
                 </ng-container>
                 <!-- Document Link -->
@@ -130,38 +88,7 @@
                   <mat-cell *matCellDef="let row" [routerLink]="view?['/admin/courses/course-kit/',row.id]:null">
                     <span class="mobile-label">Document Link:</span><a *ngFor="let doc of row.videoLink; let i = index" href="{{doc.document}}" target="_blank" class="dl-container">{{doc.doc_filename ? (doc.doc_filename |filename |truncate:10) : "--"}}</a></mat-cell>
                 </ng-container>
-                <!-- actions -->
-                <!-- <ng-container matColumnDef="status">
-                  <mat-header-cell *matHeaderCellDef class="pr-0">Actions</mat-header-cell>
-                  <mat-cell *matCellDef="let row" class="pr-0">
-                    <button mat-button [matMenuTriggerFor]="menu">
-                      <svg class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"
-                      xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                      class="bi bi-three-dots rounded-circle" viewBox="0 0 16 16">
-                      <path
-                        d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
-                    </svg>
-
-                    </button>
-
-                            <mat-menu #menu="matMenu" xPosition="before">
-                              <button mat-menu-item [routerLink]="['/admin/courses/view-course-kit/',row.id]">
-                                <app-feather-icons [icon]="'eye'" [class]="'tbl-fav-view'"></app-feather-icons>
-                                <span class="menu-text">View</span>
-                              </button>
-                              <button mat-menu-item [routerLink]="['/admin/courses/edit-course-kit',row.id]" >
-                                <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                                <span class="menu-text">Edit</span>
-                              </button>
-                              <button mat-menu-item  (click)="deleteItem(row)">
-                                <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                                <span class="menu-text">Delete</span>
-                              </button>
-                            </mat-menu>
-                  </mat-cell>
-                </ng-container> -->
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
                 <mat-row *matRowDef="let row; columns: displayedColumns;"
                   [style.cursor]="'pointer'" matRipple>
                 </mat-row>

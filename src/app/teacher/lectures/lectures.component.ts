@@ -349,8 +349,6 @@ export class LecturesComponent
 
 
     });
-
-    // Save or open the PDF
     doc.save('lecture-list.pdf');
   }
 

@@ -30,7 +30,6 @@ export class ViewTrainingReqComponent {
   ) {
     this.coursePaginationModel = {};
     this.activatedRoute.params.subscribe((params: any) => {
-      console.log("params.id", params.id)
       this.requestId = params.id;
      
 
@@ -46,21 +45,6 @@ export class ViewTrainingReqComponent {
       });
     }
   }
-  // getAllRequests(): void {
-  //   this.etmsService
-  //   .getAllRequestsByEmployeeId({ ...this.coursePaginationModel })
-  //     .subscribe(
-  //       (response) => {
-  //         this.requestData = response.data.docs;
-  //       },
-  //       (error) => {
-  //         console.error('Failed to fetch request:', error);
-  //       }
-  //     );
-  // }
-  // getRequest(id: string): void {
-  //   this.getRequestsByID(id);
-  // }
   getRequestsByID(id: string) {
     this.etmsService.getRequestById(id).subscribe((response: any) => {
       this.requestDataById = response?._id;

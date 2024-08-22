@@ -48,10 +48,8 @@ export class VideoPlayerComponent {
 
   private loadVideoWithHLS(currentVideo: string) {
     this.hls.config.xhrSetup = async function xhrSetup(xhr, url) {
-      // Assuming the URL string is stored in the variable 'urlString'
       const urlString = new URL(url);
       const baseURL = urlString.href.split("?")[0];
-      console.log(urlString);
       const signedURL: string = await new Promise((resolve, reject) => {
         let xhrSigned = new XMLHttpRequest();
         const key = url;
@@ -107,7 +105,6 @@ export class VideoPlayerComponent {
   }
 
   destroyModal(): void {
-    // this.modal.destroy();
     this.hls.destroy();
     this.bsModalRef.hide();
   }

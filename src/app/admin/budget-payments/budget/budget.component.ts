@@ -104,15 +104,10 @@ const ELEMENT_DATA: PeriodicElement[] = [
 export class BudgetComponent {
   SourceData: any;
   displayedColumns: string[] = [
-    // 'select',
-    // 'no',
-    // 'training budget',
     'percentage',
-    
     'type',
     'overall-budget',
     'status',
-    // 'action',
   ];
   dataSource = ELEMENT_DATA;
   dataSource2 = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
@@ -346,8 +341,6 @@ export class BudgetComponent {
         cellWidth: 'wrap',
       },
     });
-
-    // Save or open the PDF
     doc.save('Budget-list.pdf');
   }
   exportExcel() {

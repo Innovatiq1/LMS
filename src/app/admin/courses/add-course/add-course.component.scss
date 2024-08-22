@@ -36,7 +36,6 @@ font-weight: 500;
 }
 #draft{
   margin-left: 20px;
-  // background: #90706D;
   border: none;
   width: 150px;
   height: 35px;
@@ -61,30 +60,6 @@ font-weight: 500;
   border: none;
   margin-top: -15px;
 }
-
-// #submit {
-//   margin-left: -10px;
-//   margin-bottom: 20px;
-//   background: #6777ef;
-//   border: none;
-//   width: 100px;
-//   height: 40px;
-//   border-radius: 10px;
-//   color: #FFF;
-//   font-weight: 700;
-// }
-// #save {
-//   margin-left: -10px;
-//   margin-bottom: 20px;
-//   background: #6777ef;
-//   border: none;
-//   width: 100px;
-//   height: 40px;
-//   border-radius: 10px;
-//   color: #FFF;
-//   font-weight: 700;
-// }
-
 #cancel {
   margin-left: 25px;
 }
@@ -95,7 +70,6 @@ font-weight: 500;
   color: red;
 }
 
-// mat-stepper-icon & horizontal styling
 ::ng-deep.mat-stepper-label-position-bottom .mat-horizontal-stepper-header:not(:first-child)::before, [dir=rtl] .mat-stepper-label-position-bottom .mat-horizontal-stepper-header:not(:last-child)::before { 
   border-top-width: 3px!important;
   border-top-color: #6777ef;
@@ -134,14 +108,9 @@ font-weight: 500;
   border: 1px dashed #7c7db3;
   border-radius: 15px;
   position: relative;
-  // max-width: 100%;
   margin-top: 5px;
-  // padding: 26px 20px 30px;
   transition: 0.2s;
 }
-// .file-drop-area button{
-//   border-radius: 12px;
-// }
 .file{
  text-align: center;
 }
@@ -155,12 +124,10 @@ font-weight: 500;
   opacity: 0;
 }
 .file-msg {
-  // display: inline-block;
   margin-left: 20px;
   vertical-align: middle;
   font-size: 12px;
   font-weight: 500;
-  // color: #5b5bff;
 }
 h5{
   padding-top: 10px;

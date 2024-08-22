@@ -348,8 +348,6 @@ export class CompletionListComponent {
         cellWidth: 'wrap',
       },
     });
-
-    // Save or open the PDF
     doc.save('Student Completed-list.pdf');
   }
 

@@ -276,8 +276,6 @@ export class AllTeachersComponent
         cellWidth: 'wrap',
       },
     });
-
-    // Save or open the PDF
     doc.save('Instrucor-list.pdf');
   }
 

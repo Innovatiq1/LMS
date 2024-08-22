@@ -23,7 +23,6 @@ import { AuthenService } from '@core/service/authen.service';
 })
 export class CourseKitComponent implements OnInit{
   displayedColumns: string[] = [
-    // 'select',
     'Course',
     'Short Description',
     'Long Description',
@@ -117,29 +116,6 @@ export class CourseKitComponent implements OnInit{
       }, (error) => {
 
       });
-
-//  chaged by Ganesh
-
-// this.courseService.getAllCourseKit().subscribe(response => {
-//   console.log("allData",response.data);
-//   if(response){
-//   this.isLoading = false;
-//   this.dataSource = response.data.docs;
-//     this.courseKitModel.docs = response.data.docs;
-//     this.courseKitModel.page = response.data.page;
-//     this.courseKitModel.limit = response.data.limit;
-//     this.courseKitModel.totalDocs = response.data.totalDocs;
-//     this.getJobTemplates();
-
-//   }
-
-//  },
-//  (error) => {
-
-//  })
-
-
-
   }
 
   getJobTemplates() {
@@ -162,11 +138,8 @@ export class CourseKitComponent implements OnInit{
   }
 
   openVidePlayer(videoLink: { video_url?: any; id?: any; }): void {
-    // const { videoLink } = videoLink;
     if (videoLink?.id) {
       const videoURL = videoLink.video_url;
-      // this.courseService.getVideoById(videoId).subscribe((res) => {
-      //   const videoURL = res.data.videoUrl;
         if (!videoURL) {
           Swal.fire({
             icon: "error",
@@ -176,12 +149,10 @@ export class CourseKitComponent implements OnInit{
           return
 
         }
-        // const videoType = "application/x-mpegURL";
         if (videoURL) {
           const initialState: ModalOptions = {
             initialState: {
               videoURL,
-              // videoType,
             },
             class: "videoPlayer-modal",
           };
@@ -238,7 +209,6 @@ export class CourseKitComponent implements OnInit{
   private refreshTable() {
     this.paginator._changePageSize(this.paginator.pageSize);
   }
-  /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.length;
@@ -290,14 +260,12 @@ export class CourseKitComponent implements OnInit{
           title: 'Success',
           text: 'Record Deleted Successfully...!!!',
           icon: 'success',
-          // confirmButtonColor: '#526D82',
         });
       }
     });
 
 
   }
-  //serach functionality
   performSearch() {
     if(this.searchTerm){
     this.dataSource = this.dataSource?.filter((item: any) =>{
@@ -311,7 +279,6 @@ export class CourseKitComponent implements OnInit{
 
     }
   }
-  // export table data in excel file
   exportExcel() {
    const exportData: Partial<TableElement>[] = this.dataSource.map(
      (user: any) => ({
@@ -335,7 +302,6 @@ export class CourseKitComponent implements OnInit{
        user.videoLink[0].video_filename,
        user.videoLink[0].doc_filename
     ] );
-    // Generate the table using jspdf-autotable
     (doc as any).autoTable({
       head: headers,
       body: data,
@@ -348,8 +314,6 @@ export class CourseKitComponent implements OnInit{
 
 
     });
-
-    // Save or open the PDF
     doc.save('CourseKit-list.pdf');
   }
 

@@ -9,8 +9,6 @@
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                 <div class="card">
                     <div class="header">
-                        <!-- <h2>Create Course</h2> -->
-
                     </div>
                     <form [formGroup]="courseKitForm" (ngSubmit)="submitCourseKit()">
                         <div class="body m-4">
@@ -18,183 +16,133 @@
                                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                                     <label>Course Kit Name <span class="mandatory">&nbsp;*</span></label>
                                     <mat-form-field class="example-full-width mb-3" appearance="outline">
-                                        <!-- <mat-label>Course Name</mat-label> -->
-
                                         <input matInput type="text" id="name" formControlName="name"
                                             class="form-control" required>
-                                            <mat-error *ngIf=" courseKitForm.get('name')?.invalid && courseKitForm.get('name')?.touched ">
-                                                {{utils.getErrorMessage1(courseKitForm.get("name"), "coursekitName") }}
-                                            </mat-error>
+                                        <mat-error
+                                            *ngIf=" courseKitForm.get('name')?.invalid && courseKitForm.get('name')?.touched ">
+                                            {{utils.getErrorMessage1(courseKitForm.get("name"), "coursekitName") }}
+                                        </mat-error>
                                     </mat-form-field>
                                 </div>
                                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                                    <label>Document</label>              
+                                    <label>Document</label>
                                     <div class="file-drop-area1">
                                         <div class="file1">
-                                        <button mat-raised-button color="primary" class="btn">Choose file <input formControlName="documentLink" (change)="onFileUpload($event)" class="file-input" type="file"></button>
-                                        <span class="file-msg"><h6>{{uploadedDocument ? uploadedDocument : 'Drag and Drop File Here' }}</h6></span>
-                                     </div>
+                                            <button mat-raised-button color="primary" class="btn">Choose file <input
+                                                    formControlName="documentLink" (change)="onFileUpload($event)"
+                                                    class="file-input" type="file"></button>
+                                            <span class="file-msg">
+                                                <h6>{{uploadedDocument ? uploadedDocument : 'Drag and Drop File Here' }}
+                                                </h6>
+                                            </span>
+                                        </div>
                                     </div>
-                                    <mat-error class="error" *ngIf=" courseKitForm.get('documentLink')?.invalid && courseKitForm.get('documentLink')?.touched ">
+                                    <mat-error class="error"
+                                        *ngIf=" courseKitForm.get('documentLink')?.invalid && courseKitForm.get('documentLink')?.touched ">
                                         {{utils.getErrorMessage1(courseKitForm.get("documentLink"), "document") }}
                                     </mat-error>
                                 </div>
                                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                                     <label>Short Description</label>
                                     <mat-form-field class="example-full-width mb-3" appearance="outline">
-                                        <!-- <mat-label>Course Name</mat-label> -->
-
                                         <input matInput type="text" id="name" formControlName="shortDescription"
-                                            class="form-control" >
-                                            <mat-error *ngIf=" courseKitForm.get('shortDescription')?.invalid && courseKitForm.get('shortDescription')?.touched ">
-                                                {{utils.getErrorMessage1(courseKitForm.get("shortDescription"), "shortDescription") }}
-                                            </mat-error>
+                                            class="form-control">
+                                        <mat-error
+                                            *ngIf=" courseKitForm.get('shortDescription')?.invalid && courseKitForm.get('shortDescription')?.touched ">
+                                            {{utils.getErrorMessage1(courseKitForm.get("shortDescription"),
+                                            "shortDescription") }}
+                                        </mat-error>
                                     </mat-form-field>
                                 </div>
                             </div>
 
                             <div class="row">
-                                
+
                                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                                     <label>Long Description</label>
                                     <mat-form-field class="example-full-width mb-3" appearance="outline">
-                                        <!-- <mat-label>Course Name</mat-label> -->
-
                                         <input matInput type="text" id="name" formControlName="longDescription"
-                                            class="form-control" >
-                                            <mat-error *ngIf=" courseKitForm.get('longDescription')?.invalid && courseKitForm.get('longDescription')?.touched ">
-                                                {{utils.getErrorMessage1(courseKitForm.get("longDescription"), "longDescription") }}
-                                            </mat-error>
+                                            class="form-control">
+                                        <mat-error
+                                            *ngIf=" courseKitForm.get('longDescription')?.invalid && courseKitForm.get('longDescription')?.touched ">
+                                            {{utils.getErrorMessage1(courseKitForm.get("longDescription"),
+                                            "longDescription") }}
+                                        </mat-error>
                                     </mat-form-field>
                                 </div>
                                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 mb-2">
                                     <label>Upload Media</label>
                                     <div class="file-drop-area">
-                                      <div class="file">
-                                      <button mat-raised-button color="primary" class="btn">Choose file <input formControlName="videoLink" (fileDropped)="onFileDropped($event)" (change)="fileBrowseHandler($event)" class="file-input" type="file"></button>
-                                      <span class="file-msg"><h6>{{videoSrc ? videoSrc : 'Drag and Drop File Here' }}</h6></span>
-                                      
-                                      <div class="files-list">
-                                          <div class="single-file" *ngFor="let file of files; let i = index">
-                                              <img src="../../assets/images/dnd/ic-file.svg" alt="" class="file-icon" />
-                                              <div class="infos">
-                                                  <p class="name">{{ file?.name }}</p>
-                                                  <!-- <p class="size">{{ formatBytes(file?.size) }}</p> -->
-                                                  <!-- <app-progress [progress]="file?.progress"></app-progress> -->
-                                              </div>
-                                              <!-- <img
-                                              src="../../assets/images/dnd/ic-delete-file.svg"
-                                              class="delete"
-                                              width="20px"
-                                              alt="file"
-                                              
-                                            /> -->
-                                          </div>
-                                      </div>
-                                      </div>
-                                    </div>
-                                    <mat-error class="error" *ngIf=" courseKitForm.get('videoLink')?.invalid && courseKitForm.get('videoLink')?.touched ">
-                                      {{utils.getErrorMessage1(courseKitForm.get("videoLink"), "media") }}
-                                  </mat-error>
-                                    <!-- <app-file-upload formControlName="videoLink" (fileDropped)="onFileDropped($event)" (change)="fileBrowseHandler($event)"></app-file-upload> -->
-                                  </div>
-                            </div>
+                                        <div class="file">
+                                            <button mat-raised-button color="primary" class="btn">Choose file <input
+                                                    formControlName="videoLink" (fileDropped)="onFileDropped($event)"
+                                                    (change)="fileBrowseHandler($event)" class="file-input"
+                                                    type="file"></button>
+                                            <span class="file-msg">
+                                                <h6>{{videoSrc ? videoSrc : 'Drag and Drop File Here' }}</h6>
+                                            </span>
 
-                           
-<!-- 
-                              <div class="row">
-                                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
-                                    <label>Video Start Date</label>
-                                    <mat-form-field class="example-full-width mb-3" appearance="outline">
-                                        <input
-                                        matInput
-                                        [owlDateTimeTrigger]="date"
-                                        [owlDateTime]="date"
-                                        formControlName="startDate"
-                                        
-                                      />
-                                      <mat-icon
-                                        matSuffix
-                                        [owlDateTimeTrigger]="date"
-                                        class="date-icon"
-                                        >today</mat-icon
-                                      >
-                                      <owl-date-time #date></owl-date-time>
-                                                                            </mat-form-field>
+                                            <div class="files-list">
+                                                <div class="single-file" *ngFor="let file of files; let i = index">
+                                                    <img src="../../assets/images/dnd/ic-file.svg" alt=""
+                                                        class="file-icon" />
+                                                    <div class="infos">
+                                                        <p class="name">{{ file?.name }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <mat-error class="error"
+                                        *ngIf=" courseKitForm.get('videoLink')?.invalid && courseKitForm.get('videoLink')?.touched ">
+                                        {{utils.getErrorMessage1(courseKitForm.get("videoLink"), "media") }}
+                                    </mat-error>
                                 </div>
-                                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
-                                    <label>Video End Date<span class="mandatory">&nbsp;*</span></label>
-                                    <mat-form-field class="example-full-width mb-3" appearance="outline">
-                                        <input
-                                        matInput
-                                        [owlDateTimeTrigger]="date2"
-                                        [owlDateTime]="date2"
-                                        formControlName="endDate"
-                                       
-                                      />
-                                      <mat-icon
-                                        matSuffix
-                                        [owlDateTimeTrigger]="date2"
-                                        class="date-icon"
-                                        >today</mat-icon
-                                      >
-                                      <owl-date-time #date2></owl-date-time>
-                                        
-                                        <mat-error *ngIf="courseKitForm.get('endDate')?.hasError('required')">
-                                            End Date should be greater than Start Date.
-                                        </mat-error>
-                                    </mat-form-field>
-                                </div>
-                            </div> -->
-                        
+                            </div>
                         </div>
                     </form>
                     <div class="row body">
                         <div class="col-md-9">
-                          <button mat-raised-button id="back"  (click)="cancel()">Back</button>
+                            <button mat-raised-button id="back" (click)="cancel()">Back</button>
                         </div>
                         <div class="col-md-3">
-                          <div class="d-grid d-md-flex">
-                          <button mat-raised-button class="btn-space"  type="button" color="warn"  (click)="cancel()">Cancel</button>
-                          <button mat-raised-button id="save" (click)="submitCourseKit()"> Save </button>
-                          </div>
+                            <div class="d-grid d-md-flex">
+                                <button mat-raised-button class="btn-space" type="button" color="warn"
+                                    (click)="cancel()">Cancel</button>
+                                <button mat-raised-button id="save" (click)="submitCourseKit()"> Save </button>
+                            </div>
                         </div>
-                      </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div  *ngIf="viewUrl" class="row clearfix">
+        <div *ngIf="viewUrl" class="row clearfix">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                 <div class="card">
                     <div class="header">
-                        <!-- <h2>Create Course</h2> -->
-
                     </div>
                     <form [formGroup]="courseKitForm" (ngSubmit)="submitCourseKit()">
                         <div class="body m-4">
                             <div class="row">
                                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
                                     <label>Course Kit Name <span class="mandatory">&nbsp;*</span></label>
-                                    <mat-form-field class="example-full-width mb-3" appearance="outline" >
-                                        <!-- <mat-label>Course Name</mat-label> -->
-
+                                    <mat-form-field class="example-full-width mb-3" appearance="outline">
                                         <input matInput type="text" id="name" formControlName="name"
                                             class="form-control" [readonly]="true">
-                                        
+
                                     </mat-form-field>
                                 </div>
                                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
-                                    <label>Document<span class="mandatory">&nbsp;*</span></label>              
+                                    <label>Document<span class="mandatory">&nbsp;*</span></label>
                                     <div class="file-drop-area1">
                                         <div class="file1">
-                                        <input formControlName="documentLink" (change)="onFileUpload($event)" class="file-input1" type="file">
-                                        <div class="infos">
-                                            <h5 class="name">{{ uploadedDocument | titlecase }}</h5>
+                                            <input formControlName="documentLink" (change)="onFileUpload($event)"
+                                                class="file-input1" type="file">
+                                            <div class="infos">
+                                                <h5 class="name">{{ uploadedDocument | titlecase }}</h5>
+                                            </div>
                                         </div>
-
-                                        <!-- <span class="file-msg"><h5>{{uploadedDocument ? uploadedDocument : 'Drag and Drop File Here' }}</h5></span> -->
-                                     </div>
                                     </div>
                                 </div>
                             </div>
@@ -203,10 +151,8 @@
                                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
                                     <label>Short Description</label>
                                     <mat-form-field class="example-full-width mb-3" appearance="outline">
-                                        <!-- <mat-label>Course Name</mat-label> -->
-
                                         <input matInput type="text" id="name" formControlName="shortDescription"
-                                            class="form-control" [readonly]="true" >
+                                            class="form-control" [readonly]="true">
                                         <mat-error *ngIf="courseKitForm.get('shortDescription')?.hasError('required')">
                                             Enter Short Description
                                         </mat-error>
@@ -215,8 +161,6 @@
                                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
                                     <label>Long Description</label>
                                     <mat-form-field class="example-full-width mb-3" appearance="outline">
-                                        <!-- <mat-label>Course Name</mat-label> -->
-
                                         <input matInput type="text" id="name" formControlName="longDescription"
                                             class="form-control" [readonly]="true">
                                         <mat-error *ngIf="courseKitForm.get('longDescription')?.hasError('required')">
@@ -226,52 +170,42 @@
                                 </div>
                             </div>
 
-                            <div class="row" >
+                            <div class="row">
                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-5">
-                                  <label>Upload Media</label>
-                                  <div class="file-drop-area">
-                                    <div class="file">
-                                    
-                                    
-                                    <input formControlName="videoLink" (fileDropped)="onFileDropped($event)" (change)="fileBrowseHandler($event)" class="file-input" type="file">
-                                    <div class="files-list">
-                                        <div class="single-file" *ngFor="let file of files; let i = index">
-                                            <img src="../../assets/images/dnd/ic-file.svg" alt="" class="file-icon" />
-                                            <div class="infos">
-                                                <p class="name">{{ file?.name }}</p>
-                                                <!-- <p class="size">{{ formatBytes(file?.size) }}</p> -->
-                                                <!-- <app-progress [progress]="file?.progress"></app-progress> -->
+                                    <label>Upload Media</label>
+                                    <div class="file-drop-area">
+                                        <div class="file">
+
+
+                                            <input formControlName="videoLink" (fileDropped)="onFileDropped($event)"
+                                                (change)="fileBrowseHandler($event)" class="file-input" type="file">
+                                            <div class="files-list">
+                                                <div class="single-file" *ngFor="let file of files; let i = index">
+                                                    <img src="../../assets/images/dnd/ic-file.svg" alt=""
+                                                        class="file-icon" />
+                                                    <div class="infos">
+                                                        <p class="name">{{ file?.name }}</p>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <!-- <img
-                                            src="../../assets/images/dnd/ic-delete-file.svg"
-                                            class="delete"
-                                            width="20px"
-                                            alt="file"
-                                            
-                                          /> -->
                                         </div>
+                                        <h5 class="name">{{ fileName }}</h5>
                                     </div>
-                                    </div>
-                                    <h5 class="name">{{ fileName }}</h5>
-                                  </div>
-                                  
-                                  <!-- <app-file-upload formControlName="videoLink" (fileDropped)="onFileDropped($event)" (change)="fileBrowseHandler($event)"></app-file-upload> -->
                                 </div>
-                           </div>
+                            </div>
                         </div>
                     </form>
                     <div class="row body">
                         <div class="col-md-10">
-                          <button mat-raised-button id="back" (click)="cancel()">Back</button>
+                            <button mat-raised-button id="back" (click)="cancel()">Back</button>
                         </div>
                         <div class="col-md-2">
-                          <div class="d-grid  d-md-flex">
-                          <button mat-raised-button id="cancel" type="button" color="warn" (click)="cancel()">Cancel</button>
-                        
-                          </div>
-                          
+                            <div class="d-grid  d-md-flex">
+                                <button mat-raised-button id="cancel" type="button" color="warn"
+                                    (click)="cancel()">Cancel</button>
+                            </div>
                         </div>
-                      </div>
+                    </div>
                 </div>
             </div>
         </div>

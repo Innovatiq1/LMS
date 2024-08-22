@@ -206,8 +206,6 @@ export class ReportsComponent implements OnInit{
         cellWidth: 'wrap',
       },
     });
-
-    // Save or open the PDF
     doc.save('Report.pdf');
   }
   performSearch() {

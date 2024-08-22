@@ -314,8 +314,6 @@ export class VerificationListComponent {
 
 
     });
-
-    // Save or open the PDF
     doc.save('Student Pending-list.pdf');
   }
 

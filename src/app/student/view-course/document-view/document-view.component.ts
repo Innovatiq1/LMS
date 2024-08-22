@@ -1,12 +1,11 @@
 import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { getDocument, GlobalWorkerOptions, PDFDocumentProxy } from 'pdfjs-dist';
-import * as XLSX from 'xlsx'; // Import XLSX
+import * as XLSX from 'xlsx';
 import { renderAsync } from 'docx-preview'; // Import docx-preview
 import { ClassService } from 'app/admin/schedule-class/class.service';
 import { CourseService } from '@core/service/course.service';
 import Swal from 'sweetalert2';
-//import { ClassService } from 'app/admin/schedule-class/class.service';
 @Component({
   selector: 'app-document-view',
   templateUrl: './document-view.component.html',
@@ -207,19 +206,12 @@ export class DocumentViewComponent implements OnInit, OnDestroy {
   }
 
   onScroll(event: any): void {
-  //   const element = event.target;
-  //   console.log('scrollHeight:', element.scrollHeight);
-  // console.log('scrollTop:', element.scrollTop);
-  // console.log('clientHeight:', element.clientHeight);
-  //   if (element.scrollHeight - element.scrollTop === element.clientHeight) {
-  //     this.allPagesRendered = true; // User has scrolled to the bottom
-  //   }
   const element = event.target;
-  const tolerance = 5; // Adjust this value if necessary
+  const tolerance = 5;
   const isAtBottom = (element.scrollHeight - element.scrollTop <= element.clientHeight + tolerance);
   
   if (isAtBottom) {
-    this.allPagesRendered = true; // User has scrolled to the bottom
+    this.allPagesRendered = true;
   }
   }
 
@@ -249,12 +241,8 @@ export class DocumentViewComponent implements OnInit, OnDestroy {
     if (event.checked) {
       const currentDocumentIndex = this.studentClassDetails.coursekit.findIndex((doc: any) => doc.documentLink === this.data.url);
       const currentDocument = this.studentClassDetails.coursekit[currentDocumentIndex];
-      //console.log("currentDocument==>",currentDocument)
-      // Check if documentStatus is undefined or not 'completed'
       if (currentDocument.documentStatus !== 'completed') {
-        // Update current document status to completed
         currentDocument.documentStatus = 'completed';
-       // console.log("current Document updated")
   
         let payload = {
           classId: this.classId,
@@ -270,15 +258,9 @@ export class DocumentViewComponent implements OnInit, OnDestroy {
             text: 'Please continue with the other documents.',
             icon: 'success',
           });
-  
-          // Check if all documents are completed
           const allDocumentsCompleted = this.studentClassDetails.coursekit.every((doc: any) => doc.documentStatus === 'completed');
           
           if (allDocumentsCompleted) {
-            // If all documents are completed, update the overall course status
-           // payload.status = 'completed';
-
-        //   console.log("checking for all document ==",allDocumentsCompleted)
           let payload = {
             classId: this.classId,
             playbackTime: 100,
@@ -300,11 +282,9 @@ export class DocumentViewComponent implements OnInit, OnDestroy {
           }
         });
       } else {
-        // Check if all documents are completed
         const allDocumentsCompleted = this.studentClassDetails.coursekit.every((doc: any) => doc.documentStatus === 'completed');
         
         if (allDocumentsCompleted) {
-          // If all documents are completed, update the overall course status
           let payload = {
             classId: this.classId,
             playbackTime: 100,

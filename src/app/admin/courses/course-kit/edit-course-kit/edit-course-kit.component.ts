@@ -32,11 +32,9 @@ export class EditCourseKitComponent {
   fileDropEl!: ElementRef;
 
   files: any[] = [];
-  //mode: string = 'editUrl';
   course: any;
 
   courseKitModel!: Partial<CourseKitModel>;
-  //files: any[] = [];
   templates: any[] = [];
   list = true;
   isSubmitted = false;
@@ -56,7 +54,6 @@ export class EditCourseKitComponent {
   videoLink: any;
   videoSrc: any;
   videoId: any;
-  //activatedRoute: any;
   constructor(
     private router: Router,
 
@@ -88,24 +85,15 @@ export class EditCourseKitComponent {
         ...this.utils.validators.noLeadingSpace,
       ]),
       documentLink: new FormControl('', [
-        // Validators.required,
-        //...this.utils.validators.imagePath,
         ...this.utils.validators.noLeadingSpace,]),
       shortDescription: new FormControl('', [
-        // Validators.required,
         ...this.utils.validators.descripton,
         ...this.utils.validators.noLeadingSpace,]),
       longDescription: new FormControl('', [ 
-        //Validators.required,
         ...this.utils.validators.longDescription,
         ...this.utils.validators.noLeadingSpace,]),
       videoLink: new FormControl('', [ 
-        //Validators.required,
-       // ...this.utils.validators.imagePath,
         ...this.utils.validators.noLeadingSpace,]),
-      // startDate: ['', [Validators.required]],
-      // endDate: ['', [Validators.required]]
-      // sections: new FormControl('', [ Validators.required,...this.utils.validators.sections]),
     });
 
     this.subscribeParams = this.activatedRoute.params.subscribe(
@@ -113,9 +101,6 @@ export class EditCourseKitComponent {
         this.courseId = params.id;
       }
     );
-    // if(this.editUrl || this.viewUrl){
-    //   this.getData();
-    //   }
   }
   dateValidator(group: FormGroup) {
     const startDate = group.get('startDate')?.value;
@@ -130,20 +115,9 @@ export class EditCourseKitComponent {
     }
   }
   ngOnInit(): void {
-    //this.setup()
     this.getData();
-
-    console.log('sday', this.courseKitForm.value);
-
   }
-
-  // submitCourseKit(): void {
-
-  // }
-  //
-
   private editCourseKit(courseKitData: CourseKit): void {
-    // courseKitData.documentLink = this.documentLink;
     const updatedCourseKit: CourseKit = {
       id: this.courseId,
       ...this.courseKitForm.value,
@@ -165,11 +139,8 @@ export class EditCourseKitComponent {
               text: 'Course Kit Updated successfully',
               icon: 'success',
             });
-            // this.fileDropEl.nativeElement.value = "";
             this.courseKitForm.reset();
-            // this.toggleList()
             window.history.back();
-            // this.router.navigateByUrl('/admin/courses/course-kit');
           },
           (error) => {
             Swal.fire(
@@ -186,14 +157,6 @@ export class EditCourseKitComponent {
 
   }
   submitCourseKit(): void {
-    // const courseKitData: CourseKit = this.courseKitForm.value;
-    // courseKitData.documentLink = this.documentLink;
-    // console.log('sday', this.courseKitForm.value);
-
-      // const updatedCourseKit: CourseKit = {
-      //   id: this.courseId,
-      //   ...this.courseKitForm.value,
-      // };
       const formdata = new FormData();
       formdata.append('files', this.docs);
       formdata.append('files', this.videoLink);
@@ -205,44 +168,12 @@ export class EditCourseKitComponent {
         allowOutsideClick: false,
         timer: 90000,
         timerProgressBar: true,
-        // onBeforeOpen: () => {
-        //   Swal.showLoading();
-        //  },
       });
-      // Swal.fire({
-      //   // title: "Updated",
-      //   // text: "Course Kit updated successfully",
-      //   // icon: "success",
-      //   title: 'Uploading...',
-      //   text: 'Please wait...',
-      //   allowOutsideClick: false,
-      //   timer: 18000,
-      //   timerProgressBar: true,
-      // });
-      // this.courseService.editCourseKit(this.courseId, updatedCourseKit).subscribe(() => {
-      //     Swal.fire({
-      //       // title: "Updated",
-      //       // text: "Course Kit updated successfully",
-      //       // icon: "success",
-
-      //     });
-      //     //this.modalRef.close();
-      //     this.router.navigateByUrl('/admin/courses/course-kit');
-      // });
-      // this.courseService.saveVideo(formdata).subscribe(
-      //   (response: any) => {
-        // console.log("videoid", this.videoId)
           this.courseService.updateVideo(this.videoId,formdata).subscribe((data) => {
-            console.log('data', data.data);
-
             const courseKitData: CourseKit = this.courseKitForm.value;
             courseKitData.videoLink = data.data._id;
             courseKitData.documentLink = data.data.document;
             this.editCourseKit(courseKitData);
-
-
-            // const courseKitData: CourseKit = this.courseKitForm.value;
-            // courseKitData.documentLink = this.documentLink;
           },
           (error) => {
             Swal.fire({
@@ -252,27 +183,7 @@ export class EditCourseKitComponent {
             });
             Swal.close();
           });
-
-          // const videoId = response.videoIds;
-          // this.commonService.setVideoId(videoId);
-
-          // courseKitData.videoLink = videoId;
-
-          //this.currentVideoIds = [...this.currentVideoIds, ...videoId]
-          // this.currentVideoIds.push(videoId);
-          // this.editCourseKit(courseKitData);
-
-          // Swal.close();
-      //   },
-      // );
     } 
-
-    
-  
-  // toggleList() {
-  //   this.router.navigateByUrl("Course/Course Kit")
-
-  // }
   cancel() {
     window.history.back();
   }
@@ -282,21 +193,12 @@ export class EditCourseKitComponent {
     }).subscribe((response: any) => {
       if (response) {
         this.course = response.course;
-        console.log('56', this.course);
         this.fileName = response?.course?.videoLink
           ? response?.course?.videoLink[0].filename
           : null;
-        // let startingDate=response?.course?.startDate;
-        // let endingDate=response?.course?.endDate;
-        // let startTime=response?.course?.startDate?.split("T")[1];
-        // let startingTime=startTime?.split(".")[0];
-        // let endTime=response?.course?.endDate.split("T")[1];
-        // let endingTime=endTime?.split(".")[0];
         this.documentLink = response.course?.documentLink;
         this.docs = response.course?.documentLink;
         this.videoLink = response.course?.videoLink;
-        // this.uploaded=this.documentLink.split('/')
-        // this.uploadedDocument = this.uploaded.pop();
 
         let courseKitDetails = response.course.videoLink[0];
         this.videoId = courseKitDetails._id
@@ -306,20 +208,10 @@ export class EditCourseKitComponent {
           name: response?.course?.name,
           shortDescription: response?.course?.shortDescription,
           longDescription: response?.course?.longDescription,
-          // videoLink: response?.course?.videoLink
-          //   ? response?.course?.videoLink[0].video_url
-          //   : null,
-          // startDate:this.courseKitForm.get('startDate')?.patchValue(startingDate),
-          // moment(startingDate).format("MM/DD/YYYY,h:mm A"),
-          // endDate:this.courseKitForm.get('endDate')?.patchValue(endingDate),
         });
       }
     });
   }
-
-  /**
-   * on file drop handler
-   */
   onFileDropped($event: any) {
     this.prepareFilesList($event);
     this.fileName = '';
@@ -341,9 +233,7 @@ export class EditCourseKitComponent {
       item.progress = 0;
       this.files.push(item);
       this.fileName = '';
-      //this.model.vltitle = item.name;
     }
-    //this.fileDropEl.nativeElement.value = "";
   }
   fileBrowseHandler(event: any) {
     const file = event.target.files[0];
@@ -360,21 +250,13 @@ export class EditCourseKitComponent {
     }
   onFileUpload(event: any) {
     const file = event.target.files[0];
-    //this.docs = file;
-   // this.uploadedDocument = this.docs.name;
-
-    //changes from here
     if (file) {
       if (
         file.type === 'application/vnd.ms-powerpoint' ||
         file.type === 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
       ) {
-        // Only call the API for PPT/PPTX files
         this.courseService.uploadFile(file).subscribe(
           (response) => {
-            console.log("ppt response ==", response);
-  
-            // Convert base64 string to Blob
             const byteCharacters = atob(response.fileContent);
             const byteNumbers = new Array(byteCharacters.length);
             for (let i = 0; i < byteCharacters.length; i++) {
@@ -382,22 +264,14 @@ export class EditCourseKitComponent {
             }
             const byteArray = new Uint8Array(byteNumbers);
             const blob = new Blob([byteArray], { type: 'application/pdf' });
-  
-            // Create a File object from the Blob
             const fileToUpload = new File([blob], response.filename, { type: 'application/pdf' });
-  
-            // Update the view
-           // this.uploadedDocument = fileToUpload.name; // Display the file name
            this.uploadedDocument = file.name;
-            this.docs = fileToUpload; // Store the file object for further processing
-  
-            // Optional: Programmatically set the file input box with the converted PDF file
+            this.docs = fileToUpload;
             const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
             if (fileInput) {
               const dataTransfer = new DataTransfer();
               dataTransfer.items.add(fileToUpload);
-              fileInput.files = dataTransfer.files; // Set the converted file in the input box
-              console.log("File added to input box:", fileInput.files[0]);
+              fileInput.files = dataTransfer.files; 
             }
           },
           (error) => {
@@ -410,16 +284,5 @@ export class EditCourseKitComponent {
         this.docs = file;
       }
     }
-
-    // const file = event.target.files[0];
-    // const formData = new FormData();
-    // formData.append('files', file);
-    // this.certificateService
-    //   .uploadCourseThumbnail(formData)
-    //   .subscribe((response: any) => {
-    //     this.documentLink = response.image_link;
-    //     this.uploaded = this.documentLink.split('/');
-    //     this.uploadedDocument = this.uploaded.pop();
-    //   });
   }
 }

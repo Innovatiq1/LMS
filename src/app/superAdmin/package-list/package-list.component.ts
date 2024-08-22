@@ -216,8 +216,6 @@ export class PackageListComponent extends UnsubscribeOnDestroyAdapter {
         cellWidth: 'wrap',
       },
     });
-
-    // Save or open the PDF
     doc.save('AllUsers-list.pdf');
   }
 

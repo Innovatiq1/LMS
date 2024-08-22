@@ -327,8 +327,6 @@ export class InActiveCoursesComponent {
       body: data,
       startY: 20,
     });
-
-    // Save or open the PDF
     doc.save('Pending Course List.pdf');
   }
   viewCourse(id: string) {

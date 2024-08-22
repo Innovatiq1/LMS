@@ -48,8 +48,6 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   uploaded: any;
   fundingGrant!: FormControl;
   fundingGrants!: FundingGrant[];
-  // survey!: Survey[];
-  // surveyCategoryControl!: FormControl;
   instuctorCategoryControl!: FormControl;
   courseKitCategoryControl!: FormControl;
   assessmentControl!: FormControl;
@@ -57,14 +55,12 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   tutorialControl!: FormControl;
   feedbackControl!: FormControl;
   certificatesCategoryControl!: FormControl;
-  // instructors!: Instructor[];
   courseKits!: CourseKit[];
   courseKits1: any;
   assessments!: Assessment[];
   exam_assessments!: ExamAssessment[];
   tutorials!: Tutorial[];
   feedbacks!: Feedback[];
-  // certificates!:Certificate[];
   next = true;
   isSubmitted = false;
   isWbsSubmitted = false;
@@ -80,7 +76,6 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   mode: string = 'editUrl';
   public Editor: any = ClassicEditor;
   thumbnail: any;
-  // instructorList: any = [];
   forms!: any[];
   isPaid = false;
   studentId: any;
@@ -219,18 +214,12 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         ),
       ]),
       funding_grant: new FormControl('', [Validators.required]),
-      // survey: new FormControl('',[Validators.required]),
       id: new FormControl(''),
       feeType: new FormControl('', [Validators.required]),
-
-      // course_instructor: new FormControl('', [Validators.required]),
-      // assign_exam: new FormControl('', []),
       assessment: new FormControl(null, [
         ...this.utils.validators.noLeadingSpace,
         ...this.utils.validators.assessment,
       ]),
-      // assessment: new FormControl('', [Validators.required, ...this.utils.validators.noLeadingSpace,...this.utils.validators.assessment]),
-      // exam_assessment: new FormControl('', [Validators.required,...this.utils.validators.noLeadingSpace,...this.utils.validators.e_assessment]),
       exam_assessment: new FormControl(null, [
         ...this.utils.validators.noLeadingSpace,
         ...this.utils.validators.e_assessment,
@@ -247,10 +236,6 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       issueCertificate: new FormControl('', [Validators.required]),
       certificate_temp: new FormControl(null, [Validators.required]),
     });
-    // this.secondFormGroup = this._formBuilder.group({
-
-    // // certificates: new FormControl('',[Validators.required]),
-    // });
     this.subscribeParams = this.activatedRoute.params.subscribe(
       (params: any) => {
         this.courseId = params.id;
@@ -319,21 +304,18 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       this.startAutoSave();
     }
     if (!this.isAnyFieldFilled()) {
-      return; // Do not save the draft if no field is filled
+      return;
     }
   }
 
   isAnyFieldFilled(): boolean {
-    console.log("vvvvvv", this.firstFormGroup.valid)
     const courseData = this.firstFormGroup.value;
-    console.log("Checking if any field is filled:", courseData); // Debug log
     const filled = Object.values(courseData).some(field => field !== null && field !== '');
-    console.log("Any field filled:", filled); // Debug log
     return filled;
   }
   startAutoSave() {
     if (!this.isAnyFieldFilled()) {
-      return; // Do not start auto-save if no field is filled
+      return;
     }
     if (this.isAnyFieldFilled()) {
     this.draftSubscription = timer(0, 10000).subscribe(() => {
@@ -350,8 +332,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
 
   saveDraft(data?: string) {
     if (!this.isAnyFieldFilled()) {
-      console.log('not filled');
-      return; // Do not save the draft if no field is filled
+      return;
     }
     let certicate_temp_id = this.certificates?.filter(
       (certificate: any) =>
@@ -404,7 +385,6 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       examType: courseData?.examType,
       issueCertificate: courseData?.issueCertificate,
       certificate_template: courseData?.certificate_temp,
-      // certificate_template_id:certicate_temp_id[0].id?certicate_temp_id[0].id:null,
       companyId: userId,
       courses: courses,
       status: 'draft',
@@ -421,75 +401,16 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         }
       },
       (error: any) => {
-        console.log('err', error);
       }
     );
   }
 
   isInputReadonly(): boolean {
-    return this.mode === 'viewUrl'; // If mode is 'viewUrl', return true (readonly); otherwise, return false (editable).
+    return this.mode === 'viewUrl';
   }
   isInputDisabled(): boolean {
-    return this.mode === 'viewUrl'; // If mode is 'viewUrl', return true (disabled); otherwise, return false (enabled).
+    return this.mode === 'viewUrl';
   }
-
-  // setMainCategoryControlState(): void {
-  //   if (this.mode === 'viewUrl') {
-  //     this.mainCategoryControl.disable({ emitEvent: false }); // Disable the control when in viewUrl mode.
-  //   } else {
-  //     this.mainCategoryControl.enable({ emitEvent: false }); // Enable the control for other modes.
-  //   }
-  // }
-  // setSubCategoryControlState(): void {
-  //   if (this.mode === 'viewUrl') {
-  //     this.subCategoryControl.disable({ emitEvent: false }); // Disable the control when in viewUrl mode.
-  //   } else {
-  //     this.subCategoryControl.enable({ emitEvent: false }); // Enable the control for other modes.
-  //   }
-  // }
-  // setCurrencyControlState(): void {
-  //   if (this.mode === 'viewUrl') {
-  //     this.currencyControl.disable({ emitEvent: false }); // Disable the control when in viewUrl mode.
-  //   } else {
-  //     this.currencyControl.enable({ emitEvent: false }); // Enable the control for other modes.
-  //   }
-  // }
-  // setFundingControlState(): void {
-  //   if (this.mode === 'viewUrl') {
-  //     this.fundingGrant.disable({ emitEvent: false }); // Disable the control when in viewUrl mode.
-  //   } else {
-  //     this.fundingGrant.enable({ emitEvent: false }); // Enable the control for other modes.
-  //   }
-  // }
-  // setSurveyControlState(): void {
-  //   if (this.mode === 'viewUrl') {
-  //     this.surveyCategoryControl.disable({ emitEvent: false }); // Disable the control when in viewUrl mode.
-  //   } else {
-  //     this.surveyCategoryControl.enable({ emitEvent: false }); // Enable the control for other modes.
-  //   }
-  // }
-  // setInstructorControlState(): void {
-  //   if (this.mode === 'viewUrl') {
-  //     this.instuctorCategoryControl.disable({ emitEvent: false }); // Disable the control when in viewUrl mode.
-  //   } else {
-  //     this.instuctorCategoryControl.enable({ emitEvent: false }); // Enable the control for other modes.
-  //   }
-  // }
-  // setCourseKitControlState(): void {
-  //   if (this.mode === 'viewUrl') {
-  //     this.courseKitCategoryControl.disable({ emitEvent: false }); // Disable the control when in viewUrl mode.
-  //   } else {
-  //     this.courseKitCategoryControl.enable({ emitEvent: false }); // Enable the control for other modes.
-  //   }
-  // }
-  // setCertificatesControlState(): void {
-  //   if (this.mode === 'viewUrl') {
-  //     this.certificatesCategoryControl.disable({ emitEvent: false }); // Disable the control when in viewUrl mode.
-  //   } else {
-  //     this.certificatesCategoryControl.enable({ emitEvent: false }); // Enable the control for other modes.
-  //   }
-  // }
-
   getForms(): void {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     this.formService
@@ -502,7 +423,6 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     this.certificateService.getAllCertificate().subscribe(
       (response: { data: { docs: any } }) => {
         this.certificates = response.data.docs;
-        console.log('ertificate', this.certificates.title);
       },
       () => {}
     );
@@ -552,16 +472,6 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         this.uploaded = image?.split('\\');
         this.uploadedImage = this.uploaded?.pop();
       });
-    // this.certificateService.uploadCourseThumbnail(formData).subscribe((response:any) => {
-    //   this.image_link = response.image_link;
-    //   console.log("imagesss",this.image_link)
-    //   this.uploaded=this.image_link.split('/')
-    //   this.uploadedImage = this.uploaded.pop();
-    //   console.log("uploaded",this.uploadedImage)
-    //   this.firstFormGroup.patchValue({
-    //     // image_link: response,
-    //   });
-    // });
   }
 
   onFileChange(event: any) {
@@ -636,19 +546,6 @@ export class AddCourseComponent implements OnInit, OnDestroy {
                 icon: 'error',
               });
             }
-
-            // const instructorObj = this.instructors.find((i) => {
-            //   return assignInstructors === i.user_id?.name + ' ' + i.user_id?.last_name;
-            // });
-
-            // if (instructorObj === undefined) {
-            //   Swal.fire({
-            //     title: 'Error',
-            //     text: 'Cannot find Instructor',
-            //     icon: 'error',
-            //   });
-            // }
-
             const courseKitObj = this.courseKits.find((i) => {
               return assignCourseKit === i.name;
             });
@@ -723,7 +620,6 @@ export class AddCourseComponent implements OnInit, OnDestroy {
               pdu_leadership: parseInt(pdu_leadership),
               pdu_strategic: parseInt(pdu_strategic),
               funding_grant: [fundingGrantObj!.id],
-              // course_instructor: [instructorObj!.id],
               assessment: [assessmentObj!.id],
               exam_assessment: [assessmentExamObj!.id],
               tutorial: [tutorialObj!.id],
@@ -735,7 +631,6 @@ export class AddCourseComponent implements OnInit, OnDestroy {
           });
         }
       } catch (error) {
-        // console.error('Error reading file:', error);
       }
     };
 
@@ -746,7 +641,6 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       (certificate: any) =>
         certificate.title === this.firstFormGroup.value.certificate_temp
     );
-    console.log(certicate_temp_id, 'temp');
     if (this.firstFormGroup.valid) {
       const courseData = this.firstFormGroup.value;
       let creator = JSON.parse(localStorage.getItem('user_data')!).user.name;
@@ -777,15 +671,12 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         pdu_strategic: courseData?.pdu_strategic,
         funding_grant: courseData?.funding_grant,
         feeType: courseData?.feeType,
-        // survey:courseData?.survey,
-        // course_instructor:courseData?.course_instructor,
         assessment: courseData?.assessment,
         exam_assessment: courseData?.exam_assessment,
         tutorial: this.course?.tutorial,
         survey: courseData?.survey,
         course_kit: courseData.course_kit ? courseData.course_kit : null,
         vendor: courseData?.vendor,
-        // certificates:courseData?.certificates,
         image_link: this.image_link,
         creator: creator,
         id: this.courseId,
@@ -821,7 +712,6 @@ export class AddCourseComponent implements OnInit, OnDestroy {
                 icon: 'success',
               });
               window.history.back();
-              // this.router.navigate(['/admin/courses/all-courses'])
             });
         }
       });
@@ -843,11 +733,10 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     this.isTestIssueCertificate = selectedValue === 'test';
     this.isVideoIssueCertificate = selectedValue === 'video';
   this.isDocumentIssueCertificate= selectedValue === 'document';
-    // Reset exam type if issueCertificate is 'video'
     if (this.isVideoIssueCertificate||this.isDocumentIssueCertificate) {
         this.firstFormGroup.get('examType')?.reset();
         this.isExamTypeCertificate = false;
-        this.isAfterExamType = false; // Ensure 'after' is also reset
+        this.isAfterExamType = false;
     }
 }
   
@@ -863,8 +752,6 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       mainCategory: this.courseService.getMainCategories(),
       subCategory: this.courseService.getSubCategories(),
       fundingGrant: this.courseService.getFundingGrant(),
-      // survey: this.courseService.getSurvey(),
-      // instructor: this.courseService.getInstructors(),
       courseKit: this.courseService.getCourseKit(),
       assessment: this.questionService.getQuestionJson({
         status: 'approved',
@@ -878,7 +765,6 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         companyId: userId,
       }),
       survey: this.surveyService.getSurvey(),
-      // certificates: this.certificateService.getcertificateBuilders(),
     }).subscribe(
       (response: {
         assessment: any;
@@ -893,20 +779,16 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         this.mainCategories = response.mainCategory;
         this.allSubCategories = response.subCategory;
         this.fundingGrants = response.fundingGrant.reverse();
-        // this.survey = response.survey;
-        // this.instructors = response.instructor;
         this.courseKits = response.courseKit?.docs;
         this.assessments = response.assessment.data.docs;
         this.exam_assessments = response.exam_assessment.data.docs;
         this.tutorials = response.tutorial.data.docs;
         this.feedbacks = response.survey.data.docs;
-        // this.certificates = response.certificates.data.docs;
       }
     );
   }
 
   onSubmit() {
-    console.log('Form Value', this.firstFormGroup.value);
   }
 
   submit() {
@@ -914,7 +796,6 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       (certificate: any) =>
         certificate.title === this.firstFormGroup.value.certificate_temp
     );
-    console.log(certicate_temp_id, 'temppppp');
     if (this.firstFormGroup.valid) {
       const courseData = this.firstFormGroup.value;
       let creator = JSON.parse(localStorage.getItem('user_data')!).user.name;
@@ -947,14 +828,11 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         pdu_leadership: courseData?.pdu_leadership,
         pdu_strategic: courseData?.pdu_strategic,
         funding_grant: courseData?.funding_grant,
-        // survey:courseData?.survey,
-        // course_instructor:courseData?.course_instructor,
         assessment: courseData?.assessment,
         exam_assessment: courseData?.exam_assessment,
         tutorial: courseData?.tutorial,
         survey: courseData?.survey,
         course_kit: courseData.course_kit ? courseData.course_kit : null,
-        // certificates:courseData?.certificates,
         image_link: this.image_link,
         vendor: courseData?.vendor,
         creator: creator,
@@ -1006,7 +884,6 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     forkJoin({
       mainCategory: this.courseService.getMainCategories(),
       subCategory: this.courseService.getSubCategories(),
-      // survey: this.courseService.getSurvey(),
       fundingGrant: this.courseService.getFundingGrant(),
       courseKit: this.courseService.getCourseKit(),
       assessment: this.questionService.getQuestionJson({ status: 'approved' }),
@@ -1014,8 +891,6 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       survey: this.surveyService.getSurvey(),
       course: this.courseService.getCourseById(this.courseId),
       exam_assessment: this.questionService.getExamQuestionJson(),
-      // instructor: this.courseService.getInstructors(),
-      // certificates: this.certificateService.getcertificateBuilders()
     }).subscribe((response: any) => {
       this.mainCategories = response.mainCategory;
       this.fundingGrants = response.fundingGrant;
@@ -1024,13 +899,8 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       this.exam_assessments = response.exam_assessment.data.docs;
       this.tutorials = response.tutorial?.data.docs;
       this.feedbacks = response.survey?.data.docs;
-      // this.survey = response.survey;
       this.allSubCategories = response.subCategory;
       this.course = response.course;
-      // this. = response.assign_exam;
-      // this.instructors = response.instructor;
-      // this.surveys = response.surveys.data.docs;
-      // this.certificates = response.certificates.data.docs;
       this.draftId = this.course.draftId;
       this.image_link = this.course.image_link;
       this.uploaded = this.image_link?.split('/');
@@ -1078,14 +948,10 @@ export class AddCourseComponent implements OnInit, OnDestroy {
           this.course?.course_duration_in_days?.toString(),
         website_link: this.course?.website_link,
         funding_grant: fundingGrantId,
-        // assign_exam: this.assign_exam?.assign_exam,
-        // certificates: this.course?.certificates,
-        // survey: this.course?.survey?.id,
         id: this.course?.id,
         pdu_technical: this.course?.pdu_technical?.toString(),
         pdu_leadership: this.course?.pdu_leadership?.toString(),
         pdu_strategic: this.course?.pdu_strategic?.toString(),
-        // course_instructor: this.course?.course_instructor?.id,
         course_kit: courseKitId,
         assessment: assessmentId,
         exam_assessment: exam_assessmentId,
@@ -1103,14 +969,12 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         if (this.course?.examType === 'direct') {
           this.isExamTypeCertificate = true;
           this.isAfterExamType = false;
-          // Patch only assign exam
           this.firstFormGroup.patchValue({
             exam_assessment: this.course?.exam_assessment?.id,
           });
         } else if (this.course?.examType === 'after') {
           this.isAfterExamType = true;
           this.isExamTypeCertificate = false;
-          // Patch assign exam, assign assessment, and assign coursekit
           this.firstFormGroup.patchValue({
             exam_assessment: this.course?.exam_assessment?.id,
             assessment: this.course?.assessment?.id,
@@ -1120,13 +984,11 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         }
       } else if (this.course?.issueCertificate === 'video') {
         this.isVideoIssueCertificate = true;
-        // Patch assign coursekit only
         this.firstFormGroup.patchValue({
           course_kit: this.course?.course_kit?.map((item: { id: any }) => item?.id) || [],
         });
       }
       else if(this.course?.issueCertificate==='document'){
-         // Patch assign coursekit only
          this.isDocumentIssueCertificate=true;
          this.firstFormGroup.patchValue({
           course_kit: this.course?.course_kit?.map((item: { id: any }) => item?.id) || [],
@@ -1143,10 +1005,6 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   }
 
   labelStatusCheck(labelName: string): any {
-    // if (this.forms) {
-    //   const  status = this.forms[0]?.labels?.filter((v : any) => v?.name === labelName)
-    //   return status[0]?.checked
-    // }
     if (this.forms && this.forms.length > 0) {
       const status = this.forms[0]?.labels?.filter(
         (v: any) => v?.name === labelName
