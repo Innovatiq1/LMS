@@ -80,3 +80,23 @@
   font-size: 12px;
   font-weight: 500;
 }
+
+
+.file-drop-area1 {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+mat-progress-spinner {
+  position: absolute;
+  top: -20px; /* Adjust this value to control how far above the button the spinner appears */
+  z-index: 10;
+  transform: translate(-50%, -50%);
+  color: #ff4081; /* This sets a more highlighted color, you can adjust it as needed */
+}
+
+// .file1 {
+//   margin-top: 50px; /* Add some top margin to the file1 div to accommodate the spinner */
+// }

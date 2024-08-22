@@ -248,6 +248,7 @@ export class EditCourseKitComponent {
         });
       }
     }
+    isUploading = false;
   onFileUpload(event: any) {
     const file = event.target.files[0];
     if (file) {
@@ -255,6 +256,8 @@ export class EditCourseKitComponent {
         file.type === 'application/vnd.ms-powerpoint' ||
         file.type === 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
       ) {
+        this.isUploading = true;
+
         this.courseService.uploadFile(file).subscribe(
           (response) => {
             const byteCharacters = atob(response.fileContent);
@@ -273,9 +276,11 @@ export class EditCourseKitComponent {
               dataTransfer.items.add(fileToUpload);
               fileInput.files = dataTransfer.files; 
             }
+            this.isUploading = false;
           },
           (error) => {
-            console.error('File upload failed', error);
+            //console.error('File upload failed', error);
+            this.isUploading = false;
             Swal.fire('Upload Failed', 'Unable to convert the file.', 'error');
           }
         );

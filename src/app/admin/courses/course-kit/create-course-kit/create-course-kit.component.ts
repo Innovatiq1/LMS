@@ -254,42 +254,49 @@ export class CreateCourseKitComponent implements OnInit {
       this.model.vltitle = item.name;
     }
   }
+  isUploading = false;
 
-onFileUpload(event: any) {
-  const file = event.target.files[0];
-
-  if (file) {
-    if (
-      file.type === 'application/vnd.ms-powerpoint' ||
-      file.type === 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
-    ) {
-      this.courseService.uploadFile(file).subscribe(
-        (response) => {
-          const byteCharacters = atob(response.fileContent);
-          const byteNumbers = new Array(byteCharacters.length);
-          for (let i = 0; i < byteCharacters.length; i++) {
-            byteNumbers[i] = byteCharacters.charCodeAt(i);
+  onFileUpload(event: any) {
+    const file = event.target.files[0];
+  
+    if (file) {
+      if (
+        file.type === 'application/vnd.ms-powerpoint' ||
+        file.type === 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+      ) {
+        this.isUploading = true;  
+  
+        this.courseService.uploadFile(file).subscribe(
+          (response) => {
+            const byteCharacters = atob(response.fileContent);
+            const byteNumbers = new Array(byteCharacters.length);
+            for (let i = 0; i < byteCharacters.length; i++) {
+              byteNumbers[i] = byteCharacters.charCodeAt(i);
+            }
+            const byteArray = new Uint8Array(byteNumbers);
+            const blob = new Blob([byteArray], { type: 'application/pdf' });
+            const fileToUpload = new File([blob], response.filename, { type: 'application/pdf' });
+            this.uploadedDocument = file.name;
+            this.docs = fileToUpload; 
+            const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+            if (fileInput) {
+              const dataTransfer = new DataTransfer();
+              dataTransfer.items.add(fileToUpload);
+              fileInput.files = dataTransfer.files;
+            }
+            this.isUploading = false;  
+          },
+          (error) => {
+            this.isUploading = false; 
+            Swal.fire('Upload Failed', 'Unable to convert the file.', 'error');
           }
-          const byteArray = new Uint8Array(byteNumbers);
-          const blob = new Blob([byteArray], { type: 'application/pdf' });
-          const fileToUpload = new File([blob], response.filename, { type: 'application/pdf' });
-          this.uploadedDocument = file.name;
-          this.docs = fileToUpload; 
-          const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
-          if (fileInput) {
-            const dataTransfer = new DataTransfer();
-            dataTransfer.items.add(fileToUpload);
-            fileInput.files = dataTransfer.files;
-          }
-        },
-        (error) => {
-          Swal.fire('Upload Failed', 'Unable to convert the file.', 'error');
-        }
-      );
-    } else {
-      this.uploadedDocument = file.name;
-      this.docs = file;
+        );
+      } else {
+        this.uploadedDocument = file.name;
+        this.docs = file;
+      }
     }
   }
-}
+  
+
 }
