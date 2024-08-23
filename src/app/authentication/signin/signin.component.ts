@@ -105,12 +105,21 @@ export class SigninComponent
           this.handleGmailLogin(res)
         }
       })
-      google.accounts.id.renderButton(document.getElementById("google-btn"), {
-        theme: 'filled_blue',
-        size: 'large',
-        shape: 'rectangle',
-        width: 450
-      })
+      // google.accounts.id.renderButton(document.getElementById("google-btn"), {
+      //   theme: 'filled_blue',
+      //   size: 'large',
+      //   shape: 'rectangle',
+      //   width: 450
+      // })
+    const googleBtnContainer = document.getElementById("google-btn")?.querySelector("button");
+    if (googleBtnContainer) {
+      google.accounts.id.renderButton(googleBtnContainer, {
+          type: 'icon',
+      });
+
+      // Apply your custom styling by adding a class
+      googleBtnContainer.classList.add("login-btn");
+  }
     }
 
 

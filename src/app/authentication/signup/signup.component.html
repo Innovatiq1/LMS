@@ -23,10 +23,10 @@
             <div>
               <span style="font-style: italic;">{{"Already Registered?" | translate}} 
                 <a *ngIf ="tmsUrl" routerLink="/authentication/TMS/signin"
-                class="sign-up-link">{{"Login" | translate}}
+                class="sign-up-link">{{"Sign in" | translate}}
               </a>
               <a *ngIf="lmsUrl" routerLink="/authentication/LMS/signin"
-              class="sign-up-link"> {{"Login" | translate}}
+              class="sign-up-link"> {{"Sign in" | translate}}
             </a>
               </span>
             </div>
@@ -59,7 +59,7 @@
            <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
               <mat-form-field
-                class="example-full-width mb-3"
+                class="example-full-width"
                 appearance="outline"
               >
               <mat-label>{{"Gender" | translate}}</mat-label>
