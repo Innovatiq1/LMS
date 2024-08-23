@@ -4,7 +4,7 @@
   <div id="pdf-viewer-container" (scroll)="onScroll($event)" style="max-height: 600px; overflow-y: auto;"></div>
 </div>
 <div class="mat-dialog-actions">
-  <mat-checkbox *ngIf="allPagesRendered && issueCertificate == 'document'" (change)="onCheckboxChange($event)" class="completed-checkbox">Completed</mat-checkbox>
+  <mat-checkbox *ngIf="allPagesRendered &&  inputUrl" (change)="onCheckboxChange($event)" class="completed-checkbox">Completed</mat-checkbox>
   <span class="spacer"></span>
   <button class="mat-button close-button" (click)="onClose()">Close</button>
 </div>

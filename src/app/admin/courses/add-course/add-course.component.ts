@@ -92,8 +92,8 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   ];
   CertificateIssue: any[] = [
     { code: 'test', label: 'After Test' },
-    { code: 'video', label: 'After Video' },
-    { code: 'document', label: 'After Document Completion' },
+    { code: 'video', label: 'After Video/Document' },
+    // { code: 'document', label: 'After Document Completion' },
   ];
   isTestIssueCertificate: boolean = false;
   isVideoIssueCertificate: boolean = false;

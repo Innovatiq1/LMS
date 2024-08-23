@@ -2,7 +2,7 @@ import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { getDocument, GlobalWorkerOptions, PDFDocumentProxy } from 'pdfjs-dist';
 import * as XLSX from 'xlsx';
-import { renderAsync } from 'docx-preview'; // Import docx-preview
+import { renderAsync } from 'docx-preview'; 
 import { ClassService } from 'app/admin/schedule-class/class.service';
 import { CourseService } from '@core/service/course.service';
 import Swal from 'sweetalert2';
@@ -18,6 +18,7 @@ export class DocumentViewComponent implements OnInit, OnDestroy {
   allPagesRendered: boolean = false;
   studentClassDetails:any;
   issueCertificate:any;
+  inputUrl:boolean=false;
   studentId:any;
   classId:any;
   courseKitDetails:any;
@@ -230,8 +231,19 @@ export class DocumentViewComponent implements OnInit, OnDestroy {
     .getStudentClass(this.studentId, this.classId)
     .subscribe((response) => {
       this.studentClassDetails = response.data.docs[0];
+    //  console.log("studentClassDetails==",this.studentClassDetails)
        this.issueCertificate=this.studentClassDetails.classId.courseId.issueCertificate;
-      
+      let currentInputUrl=this.studentClassDetails.coursekit.findIndex((doc: any) => doc.documentLink === this.data.url);
+      const currentDocument = this.studentClassDetails.coursekit[currentInputUrl];
+  
+      const videoLink=currentDocument.inputUrl;
+      this.inputUrl==currentDocument.inputUrl;
+      // if(videoLink==="undefined")
+      // {
+      //   this.inputUrl=true;
+      // }
+      this.inputUrl=currentDocument.inputUrl !== undefined?false:true;
+     // console.log("this==",this.inputUrl);
 
      
     })
@@ -241,13 +253,19 @@ export class DocumentViewComponent implements OnInit, OnDestroy {
     if (event.checked) {
       const currentDocumentIndex = this.studentClassDetails.coursekit.findIndex((doc: any) => doc.documentLink === this.data.url);
       const currentDocument = this.studentClassDetails.coursekit[currentDocumentIndex];
+      
       if (currentDocument.documentStatus !== 'completed') {
         currentDocument.documentStatus = 'completed';
-  
+        
+        // Calculate the average playback time
+        const totalPlaybackTime = this.studentClassDetails.coursekit.reduce((sum: number, doc: any) => sum + doc.playbackTime, 100);
+        const averagePlaybackTime = totalPlaybackTime / this.studentClassDetails.coursekit.length;
+        
         let payload = {
           classId: this.classId,
+          averagePlaybackTime:averagePlaybackTime,
           playbackTime: 100,
-          currentIndex:currentDocumentIndex,
+          currentIndex: currentDocumentIndex,
           documentStatus: 'completed',
           studentId: this.studentId
         };
@@ -258,19 +276,22 @@ export class DocumentViewComponent implements OnInit, OnDestroy {
             text: 'Please continue with the other documents.',
             icon: 'success',
           });
+          
           const allDocumentsCompleted = this.studentClassDetails.coursekit.every((doc: any) => doc.documentStatus === 'completed');
           
           if (allDocumentsCompleted) {
-          let payload = {
-            classId: this.classId,
-            playbackTime: 100,
-            status:'completed',
-            documentStatus: 'completed',
-            studentId: this.studentId
-          };
+            let payload = {
+              classId: this.classId,
+              averagePlaybackTime:averagePlaybackTime,
+              playbackTime:100,
+              status: this.issueCertificate === 'test' ? 'approved' : 'completed',
+              documentStatus: 'completed',
+              studentId: this.studentId
+            };
+            
             this.classService.saveApprovedClasses(this.classId, payload).subscribe(() => {
               Swal.fire({
-                title: 'Course Completed Successfully',
+                title: this.issueCertificate === 'test' ? 'Course Approved Successfully' : 'Course Completed Successfully',
                 text: 'Please Wait For the Certificate',
                 icon: 'success',
               }).then((result) => {
@@ -285,17 +306,22 @@ export class DocumentViewComponent implements OnInit, OnDestroy {
         const allDocumentsCompleted = this.studentClassDetails.coursekit.every((doc: any) => doc.documentStatus === 'completed');
         
         if (allDocumentsCompleted) {
+          // Recalculate the average playback time
+          const totalPlaybackTime = this.studentClassDetails.coursekit.reduce((sum: number, doc: any) => sum + doc.playbackTime, 0);
+          const averagePlaybackTime = totalPlaybackTime / this.studentClassDetails.coursekit.length;
+          
           let payload = {
             classId: this.classId,
-            playbackTime: 100,
-            status: 'completed',
+            averagePlaybackTime:averagePlaybackTime,
+            playbackTime:100,
+            status: this.issueCertificate === 'test' ? 'approved' : 'completed',
             documentStatus: 'completed',
             studentId: this.studentId
           };
           
           this.classService.saveApprovedClasses(this.classId, payload).subscribe(() => {
             Swal.fire({
-              title: 'Course Completed Successfully',
+              title: this.issueCertificate === 'test' ? 'Course Approved Successfully' : 'Course Completed Successfully',
               text: 'Please Wait For the Certificate',
               icon: 'success',
             }).then((result) => {
@@ -315,68 +341,86 @@ export class DocumentViewComponent implements OnInit, OnDestroy {
     }
   }
   
-
   // onCheckboxChange(event: any): void {
-   
   //   if (event.checked) {
-     
-  //     console.log('completed');
-
-  //     console.log("hell==",this.issueCertificate)
-  //    // if(this.issueCertificate==='document'){
-  //       console.log("hell==",this.issueCertificate)
-  //          let payload={
-  //         classId:this.classId,
-  //         playbackTime:100,
-  //         status:'completed',
-  //         documentStatus:'completed',
-  //         studentId:this.studentId
-
-  //       }
-  //       this.classService.saveApprovedClasses(this.classId,payload).subscribe((response)=>{
-  //         console.log("response  documentStatus==",response);
-  //        Swal.fire({
-  //         title: 'Course Completed Successfully',
-  //         text: 'Please Wait For the Certificate',
-  //         icon: 'success',
-  //       }).then((result) => {
-  //         if (result.isConfirmed) {
-  //           // Reload the page after the alert is closed
-  //           location.reload();
+  //     const currentDocumentIndex = this.studentClassDetails.coursekit.findIndex((doc: any) => doc.documentLink === this.data.url);
+  //     const currentDocument = this.studentClassDetails.coursekit[currentDocumentIndex];
+  //     if (currentDocument.documentStatus !== 'completed') {
+  //       currentDocument.documentStatus = 'completed';
+  
+  //       let payload = {
+  //         classId: this.classId,
+  //         playbackTime: 100,
+  //         currentIndex:currentDocumentIndex,
+  //         documentStatus: 'completed',
+  //         studentId: this.studentId
+  //       };
+  
+  //       this.classService.saveApprovedClasses(this.classId, payload).subscribe((response) => {
+  //         Swal.fire({
+  //           title: 'Document Completed Successfully',
+  //           text: 'Please continue with the other documents.',
+  //           icon: 'success',
+  //         });
+  //         const allDocumentsCompleted = this.studentClassDetails.coursekit.every((doc: any) => doc.documentStatus === 'completed');
+          
+  //         if (allDocumentsCompleted) {
+  //         let payload = {
+  //           classId: this.classId,
+  //           playbackTime: 100,
+  //           status: this.issueCertificate === 'test' ? 'approved' : 'completed',
+  //           documentStatus: 'completed',
+  //           studentId: this.studentId
+  //         };
+  //           this.classService.saveApprovedClasses(this.classId, payload).subscribe(() => {
+  //             Swal.fire({
+  //               title: 'Course Completed Successfully',
+  //               text: 'Please Wait For the Certificate',
+  //               icon: 'success',
+  //             }).then((result) => {
+  //               if (result.isConfirmed) {
+  //                 location.reload();
+  //               }
+  //             });
+  //           });
   //         }
   //       });
-
-  //       })
-  //    // }
-
-  //     // else{
-  //     //   let payload={
-  //     //     classId:this.classId,
-  //     //     playbackTime:100,
-  //     //     status:'completed',
-  //     //     studentId:studentId
-
-  //     //   }
-  //     //   this.classService.saveApprovedClasses(this.classId,payload).subscribe((response)=>{
-  //     //    Swal.fire({
-  //     //     title: 'Course Completed Successfully',
-  //     //     text: 'Please Wait For the Certificate',
-  //     //     icon: 'success',
-  //     //   }).then((result) => {
-  //     //     if (result.isConfirmed) {
-  //     //       // Reload the page after the alert is closed
-  //     //       location.reload();
-  //     //     }
-  //     //   });
-
-  //     //   })
-  //     // }
-
+  //     } else {
+  //       const allDocumentsCompleted = this.studentClassDetails.coursekit.every((doc: any) => doc.documentStatus === 'completed');
+        
+  //       if (allDocumentsCompleted) {
+  //         let payload = {
+  //           classId: this.classId,
+  //           playbackTime: 100,
+  //           status: this.issueCertificate === 'test' ? 'approved' : 'completed',
+  //           documentStatus: 'completed',
+  //           studentId: this.studentId
+  //         };
+          
+  //         this.classService.saveApprovedClasses(this.classId, payload).subscribe(() => {
+  //           Swal.fire({
+  //             title: 'Course Completed Successfully',
+  //             text: 'Please Wait For the Certificate',
+  //             icon: 'success',
+  //           }).then((result) => {
+  //             if (result.isConfirmed) {
+  //               location.reload();
+  //             }
+  //           });
+  //         });
+  //       } else {
+  //         Swal.fire({
+  //           title: 'Incomplete Documents',
+  //           text: 'Please complete all other documents before proceeding.',
+  //           icon: 'warning',
+  //         });
+  //       }
+  //     }
   //   }
-  //   console.log("before if event.checked",this.issueCertificate,"event.checked=",event.checked)
-    
   // }
+  
 
+ 
   onClose(): void {
     this.dialogRef.close();
   }
