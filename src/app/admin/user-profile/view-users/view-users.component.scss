@@ -1,0 +1,33 @@
+.card-container {
+    position: relative;
+    display: flex;
+    justify-content: flex-end; 
+  }
+  
+  .menu-button {
+    position: absolute;
+    top: 0; 
+    right: 0;
+    width: fit-content;
+  }
+  .icons{
+    width: 10%;
+      margin: 10px;
+      border: none;
+      background: transparent;
+  }
+  .img-w{
+    height: 20px;
+    margin-right: 25px;
+    margin-top: 20px;
+    }
+    .table-wrapper{
+      max-height: 260px; 
+      overflow-y: auto; 
+      margin-left: 20px;
+      margin-right: 20px;
+      margin-bottom: 40px;
+    }
+  ::ng-deep .mat-mdc-tab-body-content{
+      overflow-x: hidden !important;
+    }
