@@ -73,6 +73,17 @@ getInstructor(body:any): Observable<ApiResponse> {
       })
     );
 }
+
+getInstructorLists(body:any): Observable<ApiResponse> {
+  const apiUrl = `${this.defaultUrl}auth/listofUsers/`;
+  return this.http
+    .post<ApiResponse>(apiUrl,body)
+    .pipe(
+      map((response:any) => {
+        return response.data;
+      })
+    );
+}
 deleteUser(userId: string): Observable<ApiResponse> {
   const apiUrl = `${this.defaultUrl}auth/instructorDelete/${userId}`;
   return this.http.delete<ApiResponse>(apiUrl);
