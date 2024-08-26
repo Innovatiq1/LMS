@@ -149,7 +149,8 @@ export class CreateClassComponent {
 
     };
 
-    this.instructorService.getInstructor(payload).subscribe((res) => {
+    this.instructorService.getInstructorLists(payload).subscribe((res) => {
+      console.log("userrs",res)
       this.instructorList = res;
     });
 
