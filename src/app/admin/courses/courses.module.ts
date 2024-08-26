@@ -31,7 +31,7 @@ import { StudentPendingCoursesComponent } from './student-pending-courses/studen
 import { VerificationListComponent } from './verification-list/verification-list.component';
 import { StudentCourseComponent } from './all-course/student-course/student-course.component';
 import { DraftedCoursesComponent } from './all-course/drafted-courses/drafted-courses.component';
-
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 
@@ -73,6 +73,7 @@ import { DraftedCoursesComponent } from './all-course/drafted-courses/drafted-co
     OwlNativeDateTimeModule,
     CKEditorModule,
     AngularEditorModule,
+    MatProgressSpinnerModule,
   ],
 })
 export class CoursesModule {}

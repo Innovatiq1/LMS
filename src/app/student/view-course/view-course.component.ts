@@ -1030,7 +1030,7 @@ else if(this.feeType=="free"){
 
         if (this.studentClassDetails.status == 'approved') {
         //  console.log("this is the approved==",this.studentClassDetails)
-          this.isTest = (issueCertificate === 'test' && playBackTimes === 100) ? true : false;
+          this.isTest = (issueCertificate=== 'test' && playBackTimes === 100) ? true : false;
           this.isDocument=issueCertificate==='document'?false:true;
           this.isRegistered == true;
           this.isApproved = true;
