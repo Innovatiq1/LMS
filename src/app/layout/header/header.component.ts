@@ -304,6 +304,9 @@ export class HeaderComponent
     }
   }
   checkViewSettings(role:any){
+    if(this.settingsItems.length > 0){
+      return true;
+    }
     return role ? AppConstants.ALLTHREEROLES.includes(role):false;
   }
 }
