@@ -86,7 +86,7 @@
         </li>
         <li>
 
-          <button mat-button  *ngIf="checkViewSettings(role)"[matMenuTriggerFor]="menu">
+          <button mat-button  *ngIf="checkViewSettings(role)" [matMenuTriggerFor]="menu">
             <app-feather-icons [icon]="'settings'" [class]="'user-menu-icons'"></app-feather-icons>
           </button>
           <mat-menu #menu="matMenu" class="horizontal-menu">
