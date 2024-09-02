@@ -77,7 +77,6 @@ export class ProgramApprovalComponent {
 
   toggle(_data: any){
     this.edit =!this.edit;
-    // this._id = _data._id;
     this.emailTemplateForm.patchValue({
       email_subject: _data.email_subject,
       email_top_header_text:_data.email_top_header_text,
@@ -104,7 +103,6 @@ export class ProgramApprovalComponent {
       email_top_header_text: pageContent?.email_top_header_text,
       email_content: pageContent?.email_content,
     });
-    // this.markAllTouched();
   }
 
   createForm() {
@@ -127,17 +125,9 @@ export class ProgramApprovalComponent {
   }
 )}
 removeTagsAndSpaces(inputString: string) {
-  // Remove <p> tags
   const stringWithoutPTags = inputString.replace(/<p>/gi, '').replace(/<\/p>/gi, '');
-
-  // Remove <br> tags
   const stringWithoutBrTags = stringWithoutPTags.replace(/<br\s*\/?>/gi, '');
   const stringWithoutNbsp = stringWithoutBrTags.replace(/&nbsp;/g, '');
-
-
-  // Remove spaces
-  //const stringWithoutSpaces = stringWithoutBrTags.replace(/\s+/g, '');
-
   return stringWithoutNbsp;
 }
 update(){
@@ -161,20 +151,12 @@ update(){
 }
 updateTemplate(){
     return new Promise<void>((resolve, reject) => {
-      // this.markAllTouched();
       if (this.emailTemplateForm.valid) {
 
           let obj = this.emailTemplateForm.value;
-          // let obj = this.emailTemplateForm.value;
           let test =obj.email_content
-          
-  
-          //const stringWithoutSpaces = test.replace(/\s+/g, '');
-  
-          // Remove <p> tags
           const stringWithoutPTags = this.removeTagsAndSpaces(test)
           obj['email_content']=stringWithoutPTags
-          console.log("stringWithoutPTags",stringWithoutPTags)
           obj['insertaction'] = 'new_waitlist_template';
           this.emailConfigurationService.updateForgetPasswordTemplate(obj,this.id).subscribe(
             (res) => {

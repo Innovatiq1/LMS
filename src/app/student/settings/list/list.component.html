@@ -22,9 +22,6 @@
                   <div class="m-l-10" matTooltip="ADD">
                     <button mat-raised-button *ngIf="isCreate" [routerLink]="['/student/settings/create-announcement']"
                     id="submit">Create</button>
-                    <!-- <button mat-mini-fab color="primary" [routerLink]="['/student/settings/create-announcement']">
-                      <mat-icon class="col-white">add</mat-icon>
-                    </button> -->
                   </div>
                 </li>
                 <li>
@@ -65,43 +62,10 @@
                   </mat-cell>
 
                 </ng-container>
-                <!-- actions -->
-                <!-- <ng-container matColumnDef="Actions">
-                  <mat-header-cell *matHeaderCellDef class="pr-0">Actions</mat-header-cell>
-                  <mat-cell *matCellDef="let row" class="pr-0">
-                    <button mat-button [matMenuTriggerFor]="menu">
-                      <svg class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"
-                        xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                        class="bi bi-three-dots rounded-circle" viewBox="0 0 16 16">
-                        <path
-                          d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
-                      </svg>
-                    </button>
-                    <mat-menu #menu="matMenu" xPosition="before">
-                      <button mat-menu-item [routerLink]="['/student/settings/view-announcement',row.id]">
-                        <app-feather-icons [icon]="'eye'" [class]="'tbl-fav-view'"></app-feather-icons>
-                        <span class="menu-text">View</span>
-                      </button>
-                      <button mat-menu-item [routerLink]="['/student/settings/edit-announcement',row.id]">
-                        <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                        <span class="menu-text">Edit</span>
-                      </button>
-                      <button mat-menu-item (click)="deleteAnnouncement(row._id)">
-                        <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                        <span class="menu-text">Delete</span>
-                      </button>
-                    </mat-menu>
-                  </mat-cell>
-                </ng-container> -->
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayedColumns;" [style.cursor]="'pointer'" matRipple>
                 </mat-row>
               </table>
-              <!-- Loading spinner -->
-              <!-- <div  class="tbl-spinner">
-                  <mat-progress-spinner *ngIf="isLoading" color="primary" [diameter]="40" mode="indeterminate">
-                  </mat-progress-spinner>
-                </div> -->
             </div>
           </div>
         </div>

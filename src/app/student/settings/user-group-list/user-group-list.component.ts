@@ -89,9 +89,6 @@ performSearch() {
     const searchList = (item.type + item.qualification + item.name).toLowerCase()
     return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1
   }
-
-
-  // item.classId.courseId?.title.toLowerCase().includes(this.searchTerm.toLowerCase())
   );
   } else {
     this.getUserGroups();

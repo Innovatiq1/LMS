@@ -69,15 +69,12 @@ export class EditStaffComponent {
         avatar: [''],
         salary: ['', [Validators.required,...this.utils.validators.noLeadingSpace,...this.utils.validators.fee]],
         password: ['', [Validators.required,...this.utils.validators.password]],
-        // conformPassword: ['', []],
       },
       {
-        // validator: ConfirmedValidator('password', 'conformPassword'),
       }
     );
 
     this.active.queryParams.subscribe(params => {
-      console.log(params['id']);
       this.aboutDataId = params['id'];
       this.loadData(this.aboutDataId);
     })
@@ -85,7 +82,6 @@ export class EditStaffComponent {
   loadData(id:string) {
     this.courseService.getUserById(id).subscribe(res => {
       this.aboutData = res;
-      console.log("edit",this.aboutData)
       this.staffForm.patchValue({
         name: this.aboutData?.name,
         last_name: this.aboutData?.last_name,
@@ -108,17 +104,13 @@ export class EditStaffComponent {
     });
   }
   updateBlog(formObj: any) {
-    console.log('Form Value', formObj.value);
     if (!formObj.invalid) {
-      // Prepare user data for update
       formObj['Active'] = this.status;
       formObj['role'] = formObj.type;
       formObj['isLogin'] = true;
 
       const userData: Users = formObj;
-
-      // Ensure that the avatar property contains the correct URL
-      userData.avatar = this.avatar; // Replace 'your_existing_avatar_url' with the actual avatar URL
+      userData.avatar = this.avatar;
       Swal.fire({
         title: 'Are you sure?',
         text: 'Do You want to update this staff profile!',
@@ -151,7 +143,6 @@ ngOnInit(){
             resolve(response);
           });
           this.router.navigate(['student/settings/all-staff']);
-          // this.router.navigate(['/admin/users/all-staff']);
         },
         (error) => {
           this.isLoading = false;
@@ -213,17 +204,5 @@ ngOnInit(){
         this.uploaded = image?.split('\\');
         this.fileName = this.uploaded?.pop();
       });
-    // this.fileName = event.target.files[0].name;
-    // this.files=event.target.files[0];
-    // this.uploadedImage =event.target.files[0].name;
-
-    // // const file = event.target.files[0];
-    // const formData = new FormData();
-    // // formData.append('files', file);
-    // this.certificateService.uploadCourseThumbnail(formData).subscribe((response:any) => {
-    // this.avatar = response.fileName;
-    //   this.uploaded=this.avatar.split('/')
-    //   this.uploadedImage = this.uploaded.pop();
-    // });
   }
 }

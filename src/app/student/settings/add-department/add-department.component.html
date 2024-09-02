@@ -22,14 +22,11 @@
                         {{items.department | capitalizeFirstLetter}}
                       </mat-option>
                     </mat-select>
-                    <!-- <input matInput formControlName="department" required> -->
                     <mat-error *ngIf="departmentForm.get('department')?.hasError('required')">
                       Enter Department
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <!-- </div> -->
-                <!-- <div class="row"> -->
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <label>Head Of Department<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
@@ -40,8 +37,6 @@
                     </mat-select>
                   </mat-form-field>
                 </div>
-                <!-- </div> -->
-                <!-- <div class="row"> -->
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <label>Mobile<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
@@ -52,21 +47,6 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <!-- </div> -->
-                <!-- <div class="row"> -->
-                <!-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                  <label>Email<span class="mandatory">&nbsp;*</span></label>
-                  <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <input matInput formControlName="email" required>
-                    <mat-icon class="material-icons-two-tone color-icon p-3" matSuffix>email</mat-icon>
-                    <mat-error
-                      *ngIf="departmentForm.get('email')?.hasError('required') || departmentForm.get('email')?.touched">
-                      Please enter a valid email address
-                    </mat-error>
-                  </mat-form-field>
-                </div> -->
-                <!-- </div> -->
-                <!-- <div class="row"> -->
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <label>Department Start Date<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
@@ -78,8 +58,6 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <!-- </div> -->
-                <!-- <div class="row"> -->
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <label>Student Capacity<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
@@ -90,8 +68,6 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <!-- </div> -->
-                <!-- <div class="row"> -->
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <label>Details</label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">

@@ -21,7 +21,6 @@ import Swal from 'sweetalert2';
 })
 export class PaymentReportComponent {
   displayedColumns: string[] = [
-    // 'select',
     'Student Name',
     'email',
     'Course Name',
@@ -29,12 +28,10 @@ export class PaymentReportComponent {
     'Payment Date',
     'Amount',
     'Payment Status',
-    // 'status',
   ];
   
   breadscrums = [
     {
-      // title: 'Programs',
       items: ['Reports'],
       active: 'Payment Reports',
     },
@@ -82,7 +79,6 @@ export class PaymentReportComponent {
   private refreshTable() {
     this.paginator._changePageSize(this.paginator.pageSize);
   }
-  /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.length;
@@ -99,7 +95,6 @@ export class PaymentReportComponent {
 view(id:any){
 
 this.router.navigate(['/admin/budgets/view-course-payment/'], {queryParams:{id:id}})
-// [routerLink]="['/admin/payment/view-payments/']"
 }
 
   showNotification(
@@ -143,19 +138,10 @@ this.router.navigate(['/admin/budgets/view-course-payment/'], {queryParams:{id:i
           title: 'Success',
           text: 'Record Deleted Successfully...!!!',
           icon: 'success',
-          // confirmButtonColor: '#526D82',
         });
       }
     });
-   
-    // this.showNotification(
-    //   'snackbar-danger',
-    //   totalSelect + ' Record Delete Successfully...!!!',
-    //   'top',
-    //   'right'
-    // );
   }
-   //search functinality
    performSearch() {
     
     
@@ -172,7 +158,6 @@ this.router.navigate(['/admin/budgets/view-course-payment/'], {queryParams:{id:i
     }
   }
   exportExcel() {
-    //k//ey name with space add in brackets
    const exportData: Partial<TableElement>[] =
       this.dataSource.map((user:any) => ({
         User:user.name,
@@ -198,13 +183,7 @@ this.router.navigate(['/admin/budgets/view-course-payment/'], {queryParams:{id:i
        user.status
 
     ] );
-    //const columnWidths = [60, 80, 40];
     const columnWidths = [20, 20, 20, 20, 20, 20, 20, 20, 20, 20];
-
-    // Add a page to the document (optional)
-    //doc.addPage();
-
-    // Generate the table using jspdf-autotable
     (doc as any).autoTable({
       head: headers,
       body: data,
@@ -213,8 +192,6 @@ this.router.navigate(['/admin/budgets/view-course-payment/'], {queryParams:{id:i
 
 
     });
-
-    // Save or open the PDF
     doc.save('Payment Report.pdf');
   }
   getStatusClass(status: string): string {

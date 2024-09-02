@@ -41,37 +41,6 @@
 .menu-text {
    padding-left: 20px;
 }
-
-// .name {
-//     color: deepskyblue;
-//     font-weight: 500;
-// }
-
-// .email-address {
-//     overflow: hidden;
-//     text-overflow: ellipsis;
-//     white-space: nowrap;
-// }
-
- // .mat-cell {
- //   width: fit-content;
- //   height: 1px;
- //   border-color: white;
- //   align-self: stretch;
- // }
- // .mat-header-cell {
- //   color: white;
- //   background-color: #000046;
- //   padding: 20px;
- //   border-color: white;
- //   align-self: stretch;
- // }
- // .email-icon {
- //   height: 10px;
- //   margin-right: 8px; / Adjust spacing as needed /
- //   vertical-align: middle; / Align icon vertically with text /
- // }
- 
  .center-icon {
    margin: auto; 
  }
@@ -92,9 +61,7 @@
    border: 1px dashed #7c7db3;
    border-radius: 15px;
    position: relative;
-   // max-width: 100%;
    margin-top: 5px;
-   // padding: 26px 20px 30px;
    transition: 0.2s;
  }
  .file{
@@ -110,12 +77,10 @@
    opacity: 0;
  }
  .file-msg {
-   // display: inline-block;
    margin-left: 20px;
    vertical-align: middle;
    font-size: 12px;
    font-weight: 500;
-   // color: #5b5bff;
  }
  h5{
    padding-top: 10px;

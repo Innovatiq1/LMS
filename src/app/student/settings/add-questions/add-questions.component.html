@@ -11,12 +11,15 @@
     </div>
     <div class="row">
       <div class="col-md-12">
-        <mat-tab-group>
+        <mat-tab-group (selectedTabChange)="onTabChange($event.index)">
           <mat-tab *ngIf="formType === 'Assessment' || formType === 'Create'" label="Assessment Form">
             <app-assesment-questions class="mt-2 mb-3" [approved]="approved"></app-assesment-questions>
           </mat-tab>
           <mat-tab *ngIf="formType === 'Exam' || formType === 'Create'" label="Exam Form">
             <app-add-exam-questions class="mt-2" [approved]="approved"></app-add-exam-questions>
+          </mat-tab>
+          <mat-tab *ngIf="formType === 'Tutorial' || formType === 'Create'" label="Tutorial Form">
+            <app-tutorial-questions class="mt-2" [approved]="approved"></app-tutorial-questions>
           </mat-tab>
         </mat-tab-group>
       </div>

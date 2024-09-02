@@ -43,11 +43,7 @@ export class ViewAllRequestComponent {
     private _activeRouter: ActivatedRoute
   ) {
     // constructor
-
-    /**getting id from all request page */
-
     this._activeRouter.queryParams.subscribe((params) => {
-      console.log('params', params);
       this._id = params['id'];
     });
     
@@ -56,8 +52,6 @@ export class ViewAllRequestComponent {
   ngOnInit() {
     this.viewRequest(this._id);
   }
-
-  /** View request */
   viewRequest(id: string) {
     this.etmsServie.getRequestById(id).subscribe((data) => {
 

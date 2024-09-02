@@ -23,10 +23,6 @@ export class SingpassComponent {
       client: ['Innovatiq', [Validators.required]],
       signing: ['*****', [Validators.required]],
       endpoint: ['https://rp.com/.well-known/jwks.json', [Validators.required]],
-      // email: [
-      //   '',
-      //   [Validators.required, Validators.email, Validators.minLength(5)],
-      // ],
       key: ['**********'],
       kid: ['**********', [Validators.required]],
     });

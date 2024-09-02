@@ -13,8 +13,6 @@
               <i class="material-icons-two-tone psr-3">list_alt</i>
               List View
             </ng-template>
-            <!-- <mat-tab-group> -->
-            <!-- <mat-tab> -->
             <div class="row mt-4">
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="card">
@@ -39,18 +37,8 @@
                         <li class="tbl-header-btn">
                           <div class="m-l-10" matTooltip="ADD">
                             <button mat-raised-button id="submit" *ngIf="create" (click)="addNew()">Create</button>
-                            <!-- <button mat-mini-fab color="primary" (click)="addNew()">
-                              <mat-icon class="col-white">add</mat-icon>
-                            </button> -->
                           </div>
                         </li>
-                        <!--<li class="tbl-header-btn">
-                          <div class="m-l-10" matTooltip="REFRESH">
-                            <button mat-mini-fab color="primary" (click)="refresh()">
-                              <mat-icon class="col-white">refresh</mat-icon>
-                            </button>
-                          </div>
-                        </li> -->
                         <li class="tbl-header-btn">
                           <div class="m-l-10" [hidden]=!selection.hasValue() matTooltip="DELETE">
                             <button mat-mini-fab color="warn" (click)="removeSelectedRows()">
@@ -105,21 +93,6 @@
                             </mat-select>
                           </mat-form-field>
                           </div>
-                          <!-- <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
-                            <mat-form-field class="example-full-width mb-3" appearance="outline">
-                              <mat-label>Start Date</mat-label>
-                              <input matInput [owlDateTimeTrigger]="date" (change)="onSelectionChange($event, 'startDate')" formControlName="startDate" [owlDateTime]="date" name="start"/>
-                              <mat-icon matSuffix [owlDateTimeTrigger]="date" class="date-icon">today</mat-icon>
-                              <owl-date-time #date></owl-date-time>
-                            </mat-form-field>                                                          </div>
-                          <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
-                            <mat-form-field class="example-full-width mb-3"  appearance="outline">
-                              <mat-label>End Date</mat-label>
-                              <mat-select formControlName ="endDate" >
-                                <mat-option *ngFor="let edate of endDate" [value]="edate"> {{edate | date}} </mat-option>
-                              </mat-select>
-                            </mat-form-field>
-                          </div> -->
                           <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
                             <mat-form-field class="example-full-width mb-3" appearance="outline">
                               <mat-label>Status</mat-label>
@@ -130,24 +103,16 @@
                             </mat-form-field>
                             </div>
                           <div class="col-8 mt-2 d-flex justify-content-end" >
-                            <!-- <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2"> -->
                               <button mat-raised-button id="submit"(click)="applyFilter()">Apply</button>
                               <button mat-raised-button id="back"(click)="clearFilter()">Clear</button>
-
-                            <!-- </div> -->
                           </div>
                         </div>
                       </form>
-
-
-                         
                         </div>
-                       
                       </div>
                     </div>
                     <div class="responsive_table">
                       <table mat-table [dataSource]="programData" matSort class="mat-cell advance-table">
-                        <!-- Checkbox Column -->
                         <ng-container matColumnDef="select">
                           <mat-header-cell *matHeaderCellDef [ngClass]="'tbl-col-width-per-6'">
                             <mat-checkbox (change)="$event ? masterToggle() : null"
@@ -162,20 +127,6 @@
                             </mat-checkbox>
                           </mat-cell>
                         </ng-container>
-                        <!-- ID Column -->
-                        <!-- <ng-container matColumnDef="id">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header>Id
-                          </mat-header-cell>
-                          <mat-cell *matCellDef="let row">{{row.id}}</mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="img">
-                          <mat-header-cell mat-header-cell *matHeaderCellDef [ngClass]="'tbl-col-width-per-6'"> Image
-                          </mat-header-cell>
-                          <mat-cell mat-cell *matCellDef="let row" class="table-img tbl-col-width-per-6"><span
-                              class="mobile-label">Image:</span> <img [src]="row?.image_link || 'assets/profile.png'"
-                              (click)="viewActiveProgram(row.id)" />
-                          </mat-cell>
-                        </ng-container> -->
                         <ng-container matColumnDef="program">
                           <mat-header-cell *matHeaderCellDef mat-sort-header >Program Name
                           </mat-header-cell>
@@ -252,119 +203,11 @@
                               class="mobile-label">Elective Count:</span>{{row.electiveCourseCount}}
                           </mat-cell>
                         </ng-container>
-                        
-
-                        <!-- actions -->
-                        <!-- <ng-container matColumnDef="actions">
-                          <mat-header-cell class="pr-0" *matHeaderCellDef>Actions
-                          </mat-header-cell>
-                          <mat-cell *matCellDef="let row" let i=index; class="pr-0">
-                            <button mat-button [matMenuTriggerFor]="menu">
-                              <svg class="dropdown-toggle border rounded-circle" data-bs-toggle="dropdown"
-                                aria-expanded="false" xmlns="http://www.w3.org/2000/svg" width="25" height="25"
-                                fill="currentColor" class="bi bi-three-dots border rounded-circle bg"
-                                viewBox="0 0 16 16">
-                                <path
-                                  d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
-                              </svg>
-
-                            </button>
-
-
-
-                            <mat-menu #menu="matMenu" xPosition="before">
-                              <!-- <button mat-menu-item [routerLink]="['/admin/courses/view-course-kit/',row.id]">
-                                        <app-feather-icons [icon]="'eye'" [class]="'tbl-fav-view'"></app-feather-icons>
-                                        <span class="menu-text">View</span>
-                                      </button>
-                              <button mat-menu-item [routerLink]="['/admin/program/edit-program/',row.id]">
-                                <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                                <span class="menu-text px-3">Edit</span>
-                              </button>
-                              <button mat-menu-item (click)="delete(row.id)" class="align-items-center">
-                                <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                                <span class="menu-text px-3">Delete</span>
-                              </button>
-                            </mat-menu>
-                          </mat-cell>
-
-
-
-
-                          <!-- <mat-cell *matCellDef="let row; let i=index;" class="pr-0">
-                            
-                            <button mat-icon-button (click)="$event.stopPropagation()"  [routerLink]="['/admin/teachers/edit-teacher',row.id]"
-                              class="tbl-action-btn">
-                              <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                            </button>
-                            <button mat-icon-button (click)="$event.stopPropagation()" (click)="deleteItem(row)"
-                              class="tbl-action-btn">
-                              <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                            </button>
-                          </mat-cell>   
-                        </ng-container> -->
                         <mat-header-row *matHeaderRowDef="displayedColumns">
                         </mat-header-row>
-                        <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
                         <mat-row *matRowDef="let row; columns: displayedColumns;" [style.cursor]="'pointer'" matRipple>
                         </mat-row>
                       </table>
-                      <!-- Loading spinner -->
-                      <!-- <div *ngIf="exampleDatabase?.isTblLoading" class="tbl-spinner">
-                        <mat-progress-spinner color="primary" [diameter]="40" mode="indeterminate">
-                        </mat-progress-spinner>
-                      </div> -->
-                      <!-- context menu start -->
-                      <!-- <div style="visibility: hidden; position: fixed" [style.left]="contextMenuPosition.x"
-                        [style.top]="contextMenuPosition.y" [matMenuTriggerFor]="contextMenu">
-                      </div>
-                      <mat-menu #contextMenu="matMenu">
-                        <ng-template matMenuContent let-item="item">
-                          <button mat-menu-item (click)="addNew()">
-                            <mat-icon>add_box</mat-icon>
-                            <span>Add Record</span>
-                          </button>
-                          <button mat-menu-item (click)="editCall(item)">
-                            <mat-icon>create</mat-icon>
-                            <span>Edit Record</span>
-                          </button>
-                          <button mat-menu-item (click)="deleteItem(item)">
-                            <mat-icon>delete</mat-icon>
-                            <span>Delete Record</span>
-                          </button>
-                          <button mat-menu-item (click)="refresh()">
-                            <mat-icon>refresh</mat-icon>
-                            <span>Refresh Record</span>
-                          </button>
-                          <button mat-menu-item disabled>
-                            <mat-icon>no_encryption</mat-icon>
-                            <span>Disable</span>
-                          </button>
-                          <button mat-menu-item [matMenuTriggerFor]="nestedmenu">
-                            <mat-icon>list_alt</mat-icon>
-                            <span> Nested Menu</span>
-                          </button>
-                        </ng-template>
-                      </mat-menu>
-                      <mat-menu #nestedmenu="matMenu">
-                        <button mat-menu-item>
-                          <mat-icon>mail_outline</mat-icon>
-                          <span>Item 1</span>
-                        </button>
-                        <button mat-menu-item>
-                          <mat-icon>call</mat-icon>
-                          <span>Item 2</span>
-                        </button>
-                        <button mat-menu-item>
-                          <mat-icon>chat</mat-icon>
-                          <span>Item 3</span>
-                        </button>
-                      </mat-menu> -->
-                      <!-- context menu end -->
-                      <!-- <div *ngIf="!exampleDatabase?.isTblLoading" class="no-results"
-                        [style.display]="programData.filteredData.length === 0 ? '' : 'none'">
-                        No results
-                      </div> -->
                       <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems"
                         (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr"
                         aria-label="select pagination option">
@@ -384,19 +227,6 @@
               <div class="col-md-12">
                 <div class="card">
                   <div class="materialTableHeader">
-                    <!-- <div class="left">
-                              <ul class="header-buttons-left ms-0">
-                                  <li class="tbl-title">
-                                      <h2>All Programs</h2>
-                                  </li>
-                                  <li class="tbl-search-box">
-                                    <label for="search-input"><i class="material-icons search-icon">search</i></label>
-                                    <input placeholder="Search" type="text" #filter class="browser-default search-field"
-                                      aria-label="Search box" [(ngModel)]="searchTerm" (input)="performSearch()">
-                                  </li>
-    
-                  </ul>
-                </div> -->
                     <div class="right">
                       <ul class="tbl-export-btn">
                         <li>
@@ -409,9 +239,6 @@
                             <li class="tbl-header-btn">
                               <div class="m-l-10" matTooltip="ADD">
                                 <button mat-raised-button id="submit" (click)="addNew()">Create</button>
-                                <!-- <button mat-mini-fab color="primary" (click)="addNew()">
-                                  <mat-icon class="col-white">add</mat-icon>
-                                </button> -->
                               </div>
                             </li>
                           </ul>
@@ -484,27 +311,6 @@
                                 </div>
                               </div>
                             </span>
-                            <!-- <span class="ms-4">
-                              <button mat-button [matMenuTriggerFor]="menu">
-                                <svg class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"
-                                  xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                                  class="bi bi-three-dots rounded-circle" viewBox="0 0 16 16">
-                                  <path
-                                    d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
-                                </svg>
-
-                              </button>
-                              <mat-menu #menu="matMenu" xPosition="before">
-                                <button mat-menu-item [routerLink]="['/admin/program/edit-program/',program.id]">
-                                  <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                                  <span class="menu-text">Edit</span>
-                                </button>
-                                <button mat-menu-item (click)="delete(program.id)">
-                                  <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                                  <span class="menu-text">Delete</span>
-                                </button>
-                              </mat-menu>
-                            </span> -->
                           </div>
                           <div class="row" style="cursor: pointer;"
                           (click)="viewActiveProgram(program.id, program.status)">
@@ -584,215 +390,8 @@
               </div>
             </div>
           </mat-tab>
-          <!-- </mat-tab-group> -->
-          <!-- </mat-tab> -->
-
-          <!-- <mat-tab>
-          <ng-template mat-tab-label>
-            <i class="material-icons-two-tone psr-3">list_alt</i>
-            Pending Programs
-          </ng-template>
-          <app-pending-programs></app-pending-programs>
-        </mat-tab> -->
         </mat-tab-group>
       </div>
     </div>
   </div>
 </section>
-
-
-
-
-<div class="content-block">
-  <div class="block-header" *ngFor="let breadscrum of breadscrums">
-    <!-- breadcrumb --
-          <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
-          </app-breadcrumb>
-      </div>
-
-      <div class="row">
-          <div class="col-md-12">
-              <div class="card">
-                  <div class="materialTableHeader">
-                      <div class="left">
-                          <ul class="header-buttons-left ms-0">
-                              <li class="tbl-title">
-                                  <h2>All Program</h2>
-                              </li>
-
-              </ul>
-            </div>
-            <div class="right">
-              <ul class="tbl-export-btn">
-                <li class="tbl-header-btn">
-                  <div class="m-l-10" matTooltip="ADD" [routerLink]="['/admin/program/create-program']">
-                    <button mat-mini-fab color="primary">
-                      <mat-icon class="col-white">add</mat-icon>
-                    </button>
-                  </div>
-                </li>
-                <li>
-                  <div class="export-button m-l-10" matTooltip="XLSX" (click)="exportExcel()">
-                    <img src="assets/excel.svg" alt="" />
-                  </div>
-                </li>
-                <li>
-                  <div class="export-button m-l-10" matTooltip="PDF" (click)="generatePdf()">
-                    <img src="assets/pdf (1).svg" alt="" />
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="body">
-            <div class="row">
-              <div class="col-md-3" *ngFor="let program of programData">
-                <div class="program-card" >
-                  <div class="cards" style="display: flex;">
-                    <div style="cursor: pointer;" [routerLink]="['/admin/program/view-program/',program.id]">
-                      <img class="img mb-3" src="{{program?.image_link}}"  height="200" width="400">
-                    </div>
-                    
-                    <span class="text" style="cursor: pointer;" [routerLink]="['/admin/program/edit-program/',program.id]">
-                      <h5>{{program?.title | truncate:35}}
-                      </h5>
-                      <div class="row">
-                        <div class="col-7">
-                          <h6>Program Period</h6>
-                        </div>
-                        <div class="col-5">
-                          <p style="width: 150%;">{{program?.sessionStartDate |date }} -
-                            {{program?.sessionEndDate |date }} </p>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-7">
-                          <h6>Duration</h6>
-                        </div>
-                        <div class="col-3">
-                          <p>{{program?.duration}} Hours </p>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-7">
-                          <h6>Payment</h6>
-                        </div>
-                        <div class="col-3">
-                          <p>{{program?.courseFee}}$</p>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-7">
-                          <h6>Compulsory Courses</h6>
-                        </div>
-                        <div class="col-3">
-                          <p>{{program?.coreCourseCount}}</p>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-7">
-                          <h6>Elective Courses</h6>
-                        </div>
-                        <div class="col-3">
-                          <p>{{program?.electiveCourseCount || 0}}</p>
-                        </div>
-                      </div>
-                    </span>
-                    <span class="ms-4">
-                      <button mat-button  [matMenuTriggerFor]="menu">
-                        <svg class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"
-                        xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                        class="bi bi-three-dots rounded-circle" viewBox="0 0 16 16">
-                        <path
-                          d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
-                      </svg>
-  
-                      </button>
-                      <mat-menu #menu="matMenu" xPosition="before">
-                        <button mat-menu-item [routerLink]="['/admin/program/edit-program/',program.id]">
-                          <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                          <span class="menu-text">Edit</span>
-                        </button>
-                        <button mat-menu-item  (click)="delete(program.id)">
-                          <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                          <span class="menu-text">Delete</span>
-                        </button>
-                      </mat-menu>
-                    </span>
-                  </div>
-                  <div class="row" style="cursor: pointer;" [routerLink]="['/admin/program/edit-program/',program.id]">
-                    <div class="col">
-                      <div class="m-4">
-                        <div class="d-flex justify-content-between mt-3">
-                          <p class="fw-semibold" style="color: #979595">
-                            Compulsory Count
-                            <span class="ccount">{{program?.coreCourseCount}}</span>
-                          </p>
-                        </div>
-                        <div *ngFor="let core of program?.coreprogramCourse">
-                          <div class="row">
-                            <div class="col-3">
-                              <p class="fw-semibold" style="color: #979595;">
-                                Compulsory Course
-                              </p>
-                            </div>
-                            <div class="col">
-                              <p style="margin-left: 20px;"> {{core?.coreProgramName?.title}}</p>
-                            </div>
-                          </div>
-
-                          <div class="row">
-                            <div class="col-3">
-                              <p class="fw-semibold fs-6" style="color: #979595">Description</p>
-                            </div>
-                            <div class="col" style="margin-left: 20px;">
-                              <p [innerHTML]="core?.coreProgramDescription | bulletPoints | truncate:150">
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col count" *ngIf="program?.electiveCourseCount > 0">
-                      <div class="m-4">
-                        <div class="d-flex justify-content-between mt-4">
-                          <p class="fw-semibold" style="color: #979595">
-                            Elective Count
-                            <span class="ecount">
-                              {{program?.electiveCourseCount}}</span>
-                          </p>
-                        </div>
-                        <div *ngFor="let elective of program?.electiveprogramCourse">
-                          <div class="row">
-                            <div class="col-3">
-                              <p class="fw-semibold" style="color: #979595">Elective Course</p>
-                            </div>
-                            <div class="col">
-                              <p style="margin-left: 0px;">{{elective?.electiveProgramName?.title}}</p>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-3">
-                              <p class="fw-semibold fs-6" style="color: #979595">Description</p>
-                            </div>
-                            <div class="col">
-                              <p [innerHTML]="elective?.electiveProgramDescription | bulletPoints | truncate:150">
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-         
-          <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems" (page)="pageSizeChange($event)"
-            [pageSizeOptions]="pageSizeArr" aria-label="select pagination option">
-          </mat-paginator>
-        </div>
-      </div>
-    </div>
-  </div>
-</section> -->

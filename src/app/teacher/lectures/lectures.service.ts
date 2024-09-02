@@ -74,7 +74,6 @@ export class LecturesService extends UnsubscribeOnDestroyAdapter {
       },
       error: (error: HttpErrorResponse) => {
         this.isTblLoading = false;
-        console.log(error.name + ' ' + error.message);
       },
     });
   }
@@ -93,7 +92,6 @@ export class LecturesService extends UnsubscribeOnDestroyAdapter {
   }
   updateProgramLectures(lectures: Lectures): void {
     this.dialogData = lectures;
-    console.log("data",lectures)
     let apiUrl = `${this.prefix}admin/class/updateProgramSession`;
 
     this.httpClient.post(apiUrl, lectures)
@@ -111,7 +109,6 @@ export class LecturesService extends UnsubscribeOnDestroyAdapter {
   }
   updateLectures(lectures: Lectures): void {
     this.dialogData = lectures;
-    console.log("data",lectures)
     let apiUrl = `${this.prefix}admin/class/updateSession`;
 
     this.httpClient.post(apiUrl, lectures)

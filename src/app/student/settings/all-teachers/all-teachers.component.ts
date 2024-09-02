@@ -14,7 +14,6 @@ import { map } from 'rxjs/operators';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Direction } from '@angular/cdk/bidi';
-//import { MatMenuTrigger } from '@angular/material/menu';
 import {
   TableExportUtil,
   TableElement,
@@ -25,7 +24,6 @@ import { UsersModel } from '@core/models/user.model';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import jsPDF from 'jspdf';
-//import 'jspdf-autotable';
 import 'jspdf-autotable';
 import { Location } from '@angular/common';
 import { UtilsService } from '@core/service/utils.service';
@@ -44,7 +42,6 @@ export class AllTeachersComponent
   implements OnInit
 {
   displayedColumns = [
-    // 'select',
     'img',
     'name',
     'department',
@@ -53,8 +50,6 @@ export class AllTeachersComponent
     'mobile',
     'email',
     'Status',
-    // 'date',
-    // 'actions',
   ];
   exampleDatabase?: TeachersService;
   dataSource!: ExampleDataSource;
@@ -62,8 +57,6 @@ export class AllTeachersComponent
   id?: number;
   teachers?: Teachers;
   UsersModel!: Partial<UsersModel>;
-  //dataSource!: any;
-  //isTblLoading = true;
   breadscrums = [
     {
       title: 'Instructors',
@@ -75,7 +68,6 @@ export class AllTeachersComponent
   pageSizeArr = this.utils.pageSizeArr;
   isCreate: boolean = false;
   isView: boolean = false;
-  // rowData:any
   constructor(
     public httpClient: HttpClient,
     public dialog: MatDialog,
@@ -117,13 +109,9 @@ export class AllTeachersComponent
       this.isView = true;
     }
     this.loadData();
-    //this.instructorData()
   }
   refresh() {
-    //this.loadData();
     window.location.reload();
-
-    //this.location.re
   }
   addNew() {
     this.route.navigateByUrl('/student/settings/add-instructor');
@@ -133,24 +121,7 @@ export class AllTeachersComponent
       queryParams: { data: id },
     });
   }
-  // performSearch() {
-  //
-  //
-  //   if(this.searchTerm){
-  //   this.dataSource = this.dataSource?.filter((item: { name: string; }) =>
-  //     item.name.toLowerCase().includes(this.searchTerm.toLowerCase())
-  //   );
-  //   } else {
-  //     this.instructorData()
-
-  //   }
-  // }
-  // editCall(row: Teachers) {
-  //   console.log("edit",row)
-  //   this.router.navigate(['/admin/teachers/edit-teacher'],{queryParams:{id:row.id}})
-  // }
   deleteItem(row: any) {
-    // this.id = row.id;
     Swal.fire({
       title: 'Confirm Deletion',
       text: 'Are you sure you want to delete this Instructor?',
@@ -170,8 +141,6 @@ export class AllTeachersComponent
               icon: 'success',
             });
             this.loadData();
-            //this.fetchCourseKits();
-            //this.instructorData()
           },
           (error: { message: any; error: any }) => {
             Swal.fire(
@@ -187,14 +156,11 @@ export class AllTeachersComponent
   private refreshTable() {
     this.paginator._changePageSize(this.paginator.pageSize);
   }
-  /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.renderedData.length;
     return numSelected === numRows;
   }
-
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
     this.isAllSelected()
       ? this.selection.clear()
@@ -217,14 +183,7 @@ export class AllTeachersComponent
       title: 'Success',
       text: 'Record Deleted Successfully...!!!',
       icon: 'success',
-      // confirmButtonColor: '#526D82',
     });
-    // this.showNotification(
-    //   'snackbar-danger',
-    //   totalSelect + ' Record Delete Successfully...!!!',
-    //   'bottom',
-    //   'center'
-    // );
   }
 
   pageSizeChange($event: any) {
@@ -259,22 +218,17 @@ export class AllTeachersComponent
         page: any;
         limit: any;
       }) => {
-        // this.isTblLoading=false;
         this.totalItems = response.totalDocs;
         this.dataSource = response?.docs;
         this.UsersModel.docs = response?.docs;
         this.UsersModel.page = response?.page;
         this.UsersModel.limit = response?.limit;
         this.UsersModel.totalDocs = response?.totalDocs;
-
-        //this.getJobTemplates();
       },
       (error) => {}
     );
   }
-  // export table data in excel file
   exportExcel() {
-    //k//ey name with space add in brackets
     const exportData: Partial<TableElement>[] =
       this.dataSource.filteredData.map((x) => ({
         Name: x.name,
@@ -312,13 +266,7 @@ export class AllTeachersComponent
         user.Active ? 'Active' : 'Inactive',,
       ]
     );
-    //const columnWidths = [60, 80, 40];
     const columnWidths = [20, 20, 20, 20, 20, 20, 20, 20, 20, 20];
-
-    // Add a page to the document (optional)
-    //doc.addPage();
-
-    // Generate the table using jspdf-autotable
     (doc as any).autoTable({
       head: headers,
       body: data,
@@ -328,8 +276,6 @@ export class AllTeachersComponent
         cellWidth: 'wrap',
       },
     });
-
-    // Save or open the PDF
     doc.save('Instrucor-list.pdf');
   }
 
@@ -357,11 +303,6 @@ export class AllTeachersComponent
       this.contextMenu.openMenu();
     }
   }
-  // pageSizeChange($event: any) {
-  //   this.UsersModel.page = $event?.pageIndex + 1;
-  //   this.UsersModel.limit = $event?.pageSize;
-  //   this.instructorData();
-  // }
 }
 export class ExampleDataSource extends DataSource<Teachers> {
   rowData: any;
@@ -381,12 +322,9 @@ export class ExampleDataSource extends DataSource<Teachers> {
     public _sort: MatSort
   ) {
     super();
-    // Reset to the first page when the user changes the filter.
     this.filterChange.subscribe(() => (this.paginator.pageIndex = 0));
   }
-  /** Connect function called by the table to retrieve one stream containing the data to render. */
   connect(): Observable<Teachers[]> {
-    // Listen for any changes in the base data, sorting, filtering, or pagination
     const displayDataChanges = [
       this.exampleDatabase.dataChange,
       this._sort.sortChange,
@@ -402,8 +340,6 @@ export class ExampleDataSource extends DataSource<Teachers> {
     this.rowData = this.exampleDatabase.data;
     return merge(...displayDataChanges).pipe(
       map(() => {
-        //this.exampleDatabase.data.slice
-        // Filter data
         this.filteredData = this.exampleDatabase.data
           .slice()
           .filter((teachers: Teachers) => {
@@ -417,9 +353,7 @@ export class ExampleDataSource extends DataSource<Teachers> {
             ).toLowerCase();
             return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
           });
-        // Sort filtered data
         const sortedData = this.sortData(this.filteredData.slice());
-        // Grab the page's slice of the filtered sorted data.
         const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
         this.renderedData = sortedData.splice(
           startIndex,
@@ -430,9 +364,7 @@ export class ExampleDataSource extends DataSource<Teachers> {
     );
   }
   disconnect() {
-    //disconnect
   }
-  /** Returns a sorted copy of the database data. */
   sortData(data: Teachers[]): Teachers[] {
     if (!this._sort.active || this._sort.direction === '') {
       return data;

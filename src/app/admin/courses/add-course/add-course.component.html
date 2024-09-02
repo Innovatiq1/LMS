@@ -9,11 +9,9 @@
       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
         <div class="card">
           <div class="header">
-            <!-- <h2>Create Course</h2> -->
           </div>
           <form [formGroup]="firstFormGroup">
             <div class="body">
-              <!-- <form class="m-4" [formGroup]="firstFormGroup" (ngSubmit)="onSubmit()"> -->
               <div class="row">
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <label>Course Name <span class="mandatory">&nbsp;*</span></label>
@@ -205,7 +203,34 @@
                   </mat-form-field>
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
-                  *ngIf="(labelStatusCheck('Assign Coursekit') && isTestIssueCertificate && isAfterExamType) || isVideoIssueCertificate">
+                  *ngIf="labelStatusCheck('Assign Tutorial') && isTestIssueCertificate && isAfterExamType">
+                  <div class="label-container">
+                    <label>Assign Tutorial <span class="mandatory">&nbsp;*</span></label>
+                    <button class="btn" [routerLink]="['/student/settings/add-questions']">
+                      <img src="/assets/Close.svg" alt="plus" />
+                    </button>
+                  </div>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-select formControlName="tutorial">
+                      <mat-option *ngFor="let item of tutorials" [value]="item.id" [disabled]="viewUrl == true">
+                        {{ item.name }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="
+                      firstFormGroup.get('tutorial')?.invalid &&
+                      firstFormGroup.get('tutorial')?.touched
+                    ">
+                      {{
+                      utils.getErrorMessage1(
+                      firstFormGroup.get("tutorial"),
+                      "tutorial"
+                      )
+                      }}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
+                  *ngIf="(labelStatusCheck('Assign Coursekit') && isTestIssueCertificate && isAfterExamType) || isVideoIssueCertificate||isDocumentIssueCertificate">
                   <div class="label-container">
                     <label>Assign Coursekit <span class="mandatory">&nbsp;*</span></label>
                     <button class="btn" [routerLink]="['/admin/courses/create-course-kit']">
@@ -228,10 +253,6 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
-
-
-                <!-- <div class="row"> -->
-
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
                   *ngIf="labelStatusCheck('Assign Feedback Questionnaire')">
                   <div class="label-container">
@@ -321,13 +342,6 @@
                       Enter Vendor
                     </mat-error>
                   </mat-form-field>
-                  <!-- <mat-form-field class="example-full-width mb-3" appearance="outline">
-                <input matInput formControlName="vendor" [readonly]="isInputReadonly()" placeholder="Enter Vendor">
-                <mat-error
-                  *ngIf="firstFormGroup.get('vendor')?.hasError('maxLength') && firstFormGroup.get('vendor')?.touched">
-                  Enter Vendor
-                </mat-error>
-              </mat-form-field> -->
                 </div>
 
                 <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2" *ngIf="labelStatusCheck('Fee Type')">
@@ -376,9 +390,6 @@
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <input matInput type="number" formControlName="course_duration_in_days"
                       [readonly]="isInputReadonly()" placeholder="Enter Days" />
-                    <!-- <mat-error *ngIf="firstFormGroup.get('course_duration_in_days')?.hasError('required')">
-                           Enter Days
-                          </mat-error> -->
                     <mat-error *ngIf="
                         firstFormGroup
                           .get('course_duration_in_days')
@@ -394,9 +405,6 @@
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <input matInput formControlName="training_hours" type="number" [readonly]="isInputReadonly()"
                       placeholder="Enter Training Days" />
-                    <!-- <mat-error *ngIf="firstFormGroup.get('training_hours')?.hasError('required')">
-                            Enter Training Hours
-                           </mat-error> -->
                     <mat-error *ngIf="
                         firstFormGroup
                           .get('training_hours')
@@ -421,9 +429,6 @@
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <input matInput formControlName="skill_connect_code" [readonly]="isInputReadonly()"
                       placeholder="Enter Skill Connect Code" />
-                    <!-- <mat-error *ngIf="firstFormGroup.get('skill_connect_code')?.hasError('maxLength')">
-                            Enter Days
-                           </mat-error> -->
                     <mat-error *ngIf="
                         firstFormGroup
                           .get('skill_connect_code')
@@ -529,7 +534,6 @@
                       </span>
                     </div>
                   </div>
-                  <!-- <app-file-upload formControlName="image_link" (change)="onFileUpload($event)"></app-file-upload> -->
                 </div>
 
 
@@ -538,17 +542,14 @@
               <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
                   <label>Course Detailed Description</label>
-                  <!-- <ckeditor [editor]="Editor" id="editor" formControlName="course_detailed_description" ></ckeditor> -->
                   <angular-editor placeholder="Enter text..." id="editor" formControlName="course_detailed_description"
                     [config]="config"></angular-editor>
                 </div>
               </div>
-              <!-- </form> -->
             </div>
 
             <div class="row">
               <div class="col-md-9">
-                <!-- <button mat-raised-button matStepperPrevious id="back">Back</button> -->
               </div>
               <div class="col-md-3 mb-5">
                 <div class="d-grid d-md-flex">

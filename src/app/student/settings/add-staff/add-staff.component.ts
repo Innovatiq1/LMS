@@ -71,15 +71,12 @@ export class AddStaffComponent {
         avatar: [''],
         salary: ['', [Validators.required,...this.utils.validators.noLeadingSpace,...this.utils.validators.fee]],
         password: ['', [Validators.required,...this.utils.validators.password]],
-        // conformPassword: ['', []],
       },
       {
-        // validator: ConfirmedValidator('password', 'conformPassword'),
       }
     );
 
     this.active.queryParams.subscribe((param) => {
-      console.log('param', param['id']);
       this.paramId = param['id'];
       if (this.paramId != undefined) {
         this.updateBtn = true;
@@ -119,63 +116,16 @@ export class AddStaffComponent {
       salary: _data.salary,
     });
   }
-  // get passwordMatchError() {
-  //   return (
-  //     this.staffForm.getError('mismatch') &&
-  //     this.staffForm.get('confirmPassword')?.touched
-  //   );
-  // }
-  // addBlog(formObj:any) {
-  //   console.log('Form Value', formObj.value);
-  //    if (!formObj.invalid) {
-  //      this.studentService.uploadVideo(this.files).subscribe(
-  //        (response: any) => {
-  //          console.log("======",formObj.type)
-  //          const inputUrl = response.inputUrl;
-
-  //          formObj['Active']= this.status
-  //          formObj['role']=formObj.type
-  //          formObj['isLogin']=true
-
-  //          const userData: Users = formObj;
-  //          //this.commonService.setVideoId(videoId)
-
-  //          userData.avatar = inputUrl;
-  //          userData.filename = response.filename;
-
-  //          //this.currentVideoIds = [...this.currentVideoIds, ...videoId]
-  //          // this.currentVideoIds.push(videoId);
-  //          this.createUser(userData);
-
-  //          Swal.close();
-  //        },
-  //        (error) => {
-  //          Swal.fire({
-  //            icon: 'error',
-  //            title: 'Upload Failed',
-  //            text: 'An error occurred while uploading the video',
-  //          });
-  //          Swal.close();
-  //        }
-  //      );
-  //    }
-  //   }
   addBlog(formObj: any) {
     let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     if (!formObj.invalid) {
-      // Process form data without uploading anything
-      // Additional logic can be added here as needed
       formObj['Active'] = this.status;
       formObj['role'] = formObj.type;
       formObj['isLogin'] = true;
       formObj['companyId'] = user.user.companyId;
 
-
       const userData: Users = formObj;
       userData.avatar = this.avatar;
-      // You may want to set avatar and filename if needed
-      // userData.avatar = 'your_avatar_url';
-      // userData.filename = 'your_filename';
       Swal.fire({
         title: 'Are you sure?',
         text: 'Do You want to create a staff profile!',
@@ -249,75 +199,17 @@ export class AddStaffComponent {
         this.uploaded = image?.split('\\');
         this.fileName = this.uploaded?.pop();
       });
-    // this.fileName = event.target.files[0].name;
-    // this.files=event.target.files[0];
-    // this.uploadedImage =event.target.files[0].name;
-
-    // // const file = event.target.files[0];
-    // const formData = new FormData();
-    // // formData.append('files', file);
-    // this.certificateService.uploadCourseThumbnail(formData).subscribe((response:any) => {
-    // this.avatar = response.fileName;
-    //   this.uploaded=this.avatar.split('/')
-    //   this.uploadedImage = this.uploaded.pop();
-    // });
   }
-  //   updateBlog(formObj:any) {
-  //     console.log('Form Value', formObj.value);
-  //       if (!formObj.invalid) {
-  //     if (this.files) {
-  //       // If files are present, upload the video
-  //       this.studentService.uploadVideo(this.files).subscribe(
-  //         (response: any) => {
-  //           console.log("======", formObj.type);
-
-  //           formObj['Active'] = this.status;
-  //           formObj['role'] = formObj.type;
-  //           formObj['isLogin'] = true;
-
-  //           const userData: Users = formObj;
-
-  //           // Process response if needed
-  //           // const inputUrl = response.inputUrl;
-  //           // userData.avatar = inputUrl;
-  //           // userData.filename = response.filename;
-
-  //           this.updateUser(userData);
-
-  //           Swal.close();
-  //         },
-  //         (error) => {
-  //           Swal.fire({
-  //             icon: 'error',
-  //             title: 'Upload Failed',
-  //             text: 'An error occurred while uploading the video',
-  //           });
-  //           Swal.close();
-  //         }
-  //       );
-  //     } else {
-  //       // If no files are present, update the user directly
-  //       formObj['Active'] = this.status;
-  //       formObj['role'] = formObj.type;
-  //       formObj['isLogin'] = true;
-
-  //       const userData: Users = formObj;
-  //       this.updateUser(userData);
-  //       Swal.close();
-  //     }
-  //   }
-  // }
   updateBlog(formObj: any) {
     if (!formObj.invalid) {
-      // Prepare user data for update
       formObj['Active'] = this.status;
       formObj['role'] = formObj.type;
       formObj['isLogin'] = true;
 
       const userData: Users = formObj;
 
-      // Ensure that the avatar property contains the correct URL
-      userData.avatar = this.avatar; // Replace 'your_existing_avatar_url' with the actual avatar URL
+     
+      userData.avatar = this.avatar;
       Swal.fire({
         title: 'Are you sure?',
         text: 'Do You want to update this staff profile!',
@@ -348,7 +240,6 @@ export class AddStaffComponent {
             resolve(response);
           });
           window.history.back();
-          // this.router.navigate(['/admin/users/all-staff']);
         },
         (error) => {
           this.isLoading = false;

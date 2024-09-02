@@ -23,11 +23,10 @@
 
 .name-container {
     display: flex;
-    // justify-content: space-between;
   }
   
   .input-container {
-    width: 30%; /* Adjust the width as needed */
+    width: 30%;
   }
   
   //file-upload styling
@@ -35,14 +34,9 @@
   border: 1px dashed #7c7db3;
   border-radius: 15px;
   position: relative;
-  // max-width: 100%;
   margin-top: 5px;
-  // padding: 26px 20px 30px;
   transition: 0.2s;
 }
-// .file-drop-area button{
-//   border-radius: 12px;
-// }
 .file{
  text-align: center;
 }
@@ -56,12 +50,10 @@
   opacity: 0;
 }
 .file-msg {
-  // display: inline-block;
   margin-left: 20px;
   vertical-align: middle;
   font-size: 12px;
   font-weight: 500;
-  // color: #5b5bff;
 }
 h5{
   padding-top: 10px;
@@ -83,4 +75,11 @@ h5{
 .bupload{
   margin-left: -100%;
     margin-right: -20px;
+}
+#draft{
+  margin-left: 45px;
+  border: none;
+  width: 145px;
+  height: 35px;
+  color: #FFF;
 }

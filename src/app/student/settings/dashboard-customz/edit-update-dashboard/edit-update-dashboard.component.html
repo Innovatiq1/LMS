@@ -66,10 +66,6 @@
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
               <mat-row *matRowDef="let row; columns: displayedColumns;" [style.cursor]="'pointer'" matRipple></mat-row>
             </table>
-        
-            <!-- <mat-paginator #paginator [length]="totalItems" (page)="pageSizeChange($event)"
-              [pageSizeOptions]="pageSizeArr" aria-label="select pagination option">
-            </mat-paginator> -->
           </div>
         </div>
         

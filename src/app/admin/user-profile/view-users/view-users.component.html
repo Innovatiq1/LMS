@@ -1,0 +1,745 @@
+<section class="content" *ngIf="userType == 'Staff'">
+    <div class="content-block">
+      <div class="block-header" *ngFor="let breadscrum of breadscrums">
+        <!-- breadcrumb -->
+        <app-breadcrumb
+          [title]="breadscrum.title"
+          [items]="breadscrum.items"
+          [active_item]="breadscrum.active"
+        >
+        </app-breadcrumb>
+      </div>
+      <!-- Your content goes here  -->
+      <div class="row clearfix">
+        <div class="col-lg-4 col-md-12">
+          <div class="card">
+            <div class="m-b-20">
+              <div class="contact-grid">
+                <div class="profile-header bg-dark">
+                  <div class="user-name">{{ aboutData?.name }}</div>
+                  <div class="name-center">
+                    {{ aboutData?.department }} Department
+                  </div>
+                </div>
+                <img
+                  src="{{ aboutData?.avatar || 'assets/profile.png' }}"
+                  class="user-img"
+                  alt=""
+                />
+                <p>
+                  {{ aboutData?.country_name }}
+                </p>
+                <div>
+                  <span class="phone">
+                    <i class="material-icons">phone</i
+                    >{{ aboutData?.mobile }}</span
+                  >
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    <h5 class="col-green">{{ studentRegisteredPrograms }}</h5>
+                    <b>Registered Programs</b>
+                  </div>
+                  <div class="col-6">
+                    <h5 class="col-green">{{ studentRegisteredClasses }}</h5>
+                    <b>Registered Courses</b>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <mat-tab-group mat-align-tabs="start">
+              <mat-tab label="About">
+                <div class="p-4">
+                  <!-- <p class="text-default">Hello I am Sarah Smith a student in Sanjivni College Surat. I love
+                      to study with all my class friends and professors.</p> -->
+                  <ul class="list-group list-group-unbordered">
+                    <li class="list-group-item">
+                      <b>Gender </b>
+                      <div class="profile-desc-item float-end">
+                        {{ aboutData?.gender | titlecase }}
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <b>Date of birth</b>
+                      <div class="profile-desc-item float-end">
+                        {{ aboutData?.dob | date }}
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <b>Department</b>
+                      <div class="profile-desc-item float-end">
+                        {{ aboutData?.department }}
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <b>Education</b>
+                      <div class="profile-desc-item float-end">
+                        {{ aboutData?.education }}
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <b>Registration Date</b>
+                      <div class="profile-desc-item float-end">
+                        {{ aboutData?.joiningDate | date }}
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </mat-tab>
+            </mat-tab-group>
+            <button
+              type="button"
+              mat-raised-button
+              color="warn"
+              (click)="cancel()"
+            >
+              Back to all staff
+            </button>
+          </div>
+        </div>
+  
+        <div class="col-lg-8 col-md-12">
+          <div class="card">
+            <div class="card-container">
+              <button
+                class="icons"
+                alt="Edit"
+                mat-menu-item
+                [routerLink]="['/admin/user-profile/edit-all-users', aboutData1.id]"
+              >
+                <app-feather-icons
+                  [icon]="'edit'"
+                  [class]="'tbl-fav-edit'"
+                ></app-feather-icons>
+              </button>
+              <button
+                class="icons"
+                alt="Delete"
+                mat-menu-item
+                (click)="deleteItem(aboutData)"
+              >
+                <app-feather-icons
+                  [icon]="'trash-2'"
+                  [class]="'tbl-fav-delete'"
+                ></app-feather-icons>
+              </button>
+              <div *ngIf="!aboutData?.isLogin">
+                <button
+                  mat-menu-item
+                  (click)="confirmItem(aboutData)"
+                  class="align-items-center"
+                >
+                  <img class="img-w" src="/assets/approve.svg" alt="approve" />
+  
+                  <!-- <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons> -->
+                </button>
+              </div>
+            </div>
+            <mat-tab-group>
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <!-- <mat-icon class="example-tab-icon msr-2">face</mat-icon> -->
+                  Details
+                </ng-template>
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                  <div class="project_widget">
+                    <!-- <div class="header">
+                        <h2><strong>About</strong></h2>
+                      </div> -->
+                    <div class="body">
+                      <div class="row">
+                        <div class="col-md-3 col-6 b-r">
+                          <strong>Full Name</strong>
+                          <br />
+                          <p>
+                            {{ aboutData?.name + aboutData?.last_name }}
+                          </p>
+                        </div>
+                        <div class="col-md-3 col-6 b-r">
+                          <strong>Mobile</strong>
+                          <br />
+                          <p>{{ aboutData?.mobile }}</p>
+                        </div>
+                        <div class="col-md-3 col-6 b-r">
+                          <strong>Email</strong>
+                          <br />
+                          <p>{{ aboutData?.email }}</p>
+                        </div>
+                        <div class="col-md-3 col-6">
+                          <strong>Location</strong>
+                          <br />
+                          <p>
+                            {{ aboutData?.country_name }}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
+                  <!-- <div class="card" style="border-radius: 31px;"> -->
+                  <div class="header mt-3">
+                    <h2>Enrolled Programs</h2>
+                  </div>
+                  <div class="table-wrapper">
+                    <div class="table-responsive">
+                      <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th>Program Name</th>
+                            <th>Program Code</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr
+                            style="cursor: pointer"
+                            *ngFor="let data of studentApprovedPrograms"
+                          >
+                            <!-- <td class="table-img">
+                                  <img src="{{class?.courseId?.image_link}}" alt="course">
+                                </td> -->
+                            <td>
+                              {{ data?.classId?.courseId?.title | truncate : 30 }}
+                            </td>
+                            <td>
+                              {{
+                                data?.classId?.courseId?.courseCode
+                                  | truncate : 45
+                              }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <!-- </div> -->
+                </div>
+                <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
+                  <!-- <div class="card" style="border-radius: 31px;"> -->
+                  <div class="header mt-3">
+                    <h2>Enrolled Courses</h2>
+                  </div>
+                  <div class="table-wrapper">
+                    <div class="table-responsive">
+                      <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th>Course Name</th>
+                            <th>Course Code</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr
+                            style="cursor: pointer"
+                            *ngFor="let data of studentApprovedClasses"
+                          >
+                            <!-- <td class="table-img">
+                                  <img src="{{class?.courseId?.image_link}}" alt="course">
+                                </td> -->
+                            <td>
+                              {{ data?.classId?.courseId?.title | truncate : 45 }}
+                            </td>
+                            <td>
+                              {{
+                                data?.classId?.courseId?.courseCode
+                                  | truncate : 45
+                              }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <!-- </div> -->
+                </div>
+  
+                <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
+                  <div class="project_widget">
+                    <div class="body">
+                      <div class="row">
+                        <div class="col-6">
+                          <div class="header mt-3">
+                            <h2>Program Certificates</h2>
+                          </div>
+                        </div>
+                        <div class="col-6">
+                          <div class="header mt-3">
+                            <h2>Course Certificates</h2>
+                          </div>
+                        </div>
+                      </div>
+  
+                      <div class="row">
+                        <div
+                          class="col-6"
+                          *ngFor="let data of studentCompletedPrograms"
+                        >
+                          <a
+                            class="px-3"
+                            href="{{ data.certifiacteUrl }}"
+                            target="_blank"
+                            >{{
+                              data?.classId?.courseId?.title | truncate : 45
+                            }}</a
+                          >
+                        </div>
+                        <div
+                          class="col-6"
+                          *ngFor="let data of studentCompletedClasses"
+                        >
+                          <a
+                            class="px-3"
+                            href="{{ data.certifiacteUrl }}"
+                            target="_blank"
+                            >{{
+                              data?.classId?.courseId?.title | truncate : 45
+                            }}</a
+                          >
+                        </div>
+                      </div>
+  
+                      <!-- <ul>
+                          <li>1st Prise in Music competition</li>
+                          <li>1st Prise in Acting & Drama</li>
+                          <li>Gold Medal in Betchler in Arts</li>
+                        </ul> -->
+                    </div>
+                  </div>
+                </div>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="content" *ngIf="userType == 'IT Manager' || userType == 'HR Manager' || userType == 'Admin Manager' || userType == 'Finance Manager'">
+    <div class="content-block">
+      <div class="block-header" *ngFor="let breadscrum of breadscrums">
+        <!-- breadcrumb -->
+        <app-breadcrumb
+          [title]="breadscrum.title"
+          [items]="breadscrum.items"
+          [active_item]="breadscrum.active"
+        >
+        </app-breadcrumb>
+      </div>
+      <!-- Your content goes here  -->
+      <div class="row clearfix">
+        <div class="col-lg-4 col-md-12">
+          <div class="card">
+            <div class="m-b-20">
+              <div class="contact-grid">
+                <div class="profile-header bg-dark">
+                  <div class="user-name">{{ aboutData1?.name }}</div>
+                  <div class="name-center">
+                    {{ aboutData1?.department }} Department
+                  </div>
+                </div>
+                <img
+                  src="{{ aboutData1?.avatar || 'assets/profile.png' }}"
+                  class="user-img"
+                  alt=""
+                />
+                <p>
+                  {{ aboutData1?.country_name }}
+                </p>
+                <div>
+                  <span class="phone">
+                    <i class="material-icons">phone</i
+                    >{{ aboutData1?.mobile }}</span
+                  >
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    <h5 class="col-green">{{ dataSource2.length }}</h5>
+                    <b>Program Lectures</b>
+                  </div>
+                  <div class="col-6">
+                    <h5 class="col-green">{{ dataSource1.length }}</h5>
+                    <b>Course Lectures</b>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <mat-tab-group mat-align-tabs="start">
+              <mat-tab label="About">
+                <div class="p-4">
+                  <!-- <p class="text-default">Hello I am John Deo a Teacher in xyz College Surat. I love to work
+                      with
+                      all my college staff and seniour
+                      teachers.</p> -->
+                  <ul class="list-group list-group-unbordered">
+                    <li class="list-group-item">
+                      <b>Gender </b>
+                      <div class="profile-desc-item float-end">
+                        {{ aboutData1?.gender | titlecase }}
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <b>Date of birth</b>
+                      <div class="profile-desc-item float-end">
+                        {{ aboutData1?.dob | date }}
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <b>Department</b>
+                      <div class="profile-desc-item float-end">
+                        {{ aboutData1?.department }}
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <b>Education</b>
+                      <div class="profile-desc-item float-end">
+                        {{ aboutData1?.qualification }}
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <b>Registration Date</b>
+                      <div class="profile-desc-item float-end">
+                        {{ aboutData1?.joiningDate | date }}
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </mat-tab>
+            </mat-tab-group>
+            <button
+              type="button"
+              mat-raised-button
+              color="warn"
+              (click)="cancel()"
+            >
+              Back to all managers
+            </button>
+          </div>
+        </div>
+  
+        <div class="col-lg-8 col-md-12">
+          <div class="card">
+            <div class="card-container">
+              <button
+                class="icons"
+                alt="Edit"
+                [routerLink]="['/admin/user-profile/edit-all-users', aboutData1.id]"
+              >
+                <app-feather-icons
+                  [icon]="'edit'"
+                  [class]="'tbl-fav-edit'"
+                ></app-feather-icons>
+              </button>
+              <button
+                class="icons"
+                alt="Delete"
+                mat-menu-item
+                (click)="deleteItem1(aboutData1)"
+              >
+                <app-feather-icons
+                  [icon]="'trash-2'"
+                  [class]="'tbl-fav-delete'"
+                ></app-feather-icons>
+              </button>
+            </div>
+            <mat-tab-group>
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <!-- <mat-icon class="example-tab-icon msr-2">face</mat-icon> -->
+                  Details
+                </ng-template>
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                  <div class="project_widget">
+                    <!-- <div class="header">
+                        <h2><strong>About</strong></h2>
+                      </div> -->
+                    <div class="body">
+                      <div class="row">
+                        <div class="col-md-3 col-6 b-r">
+                          <strong>Full Name</strong>
+                          <br />
+                          <p>
+                            {{ aboutData1?.name + aboutData1?.last_name }}
+                          </p>
+                        </div>
+                        <div class="col-md-3 col-6 b-r">
+                          <strong>Mobile</strong>
+                          <br />
+                          <p>{{ aboutData1?.mobile }}</p>
+                        </div>
+                        <div class="col-md-3 col-6 b-r">
+                          <strong>Email</strong>
+                          <br />
+                          <p>{{ aboutData1?.email }}</p>
+                        </div>
+                        <div class="col-md-3 col-6">
+                          <strong>Location</strong>
+                          <br />
+                          <p>
+                            {{ aboutData1?.country_name }}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
+                  <!-- <div class="card" style="border-radius: 31px;"> -->
+                  <div class="header mt-3">
+                    <h2>Program Lectures</h2>
+                  </div>
+                  <div class="table-wrapper">
+                    <div class="table-responsive">
+                      <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th>Program Name</th>
+                            <th>Instructor Fee</th>
+                            <th>Class</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr
+                            style="cursor: pointer"
+                            *ngFor="let data of dataSource2"
+                          >
+                            <!-- <td class="table-img">
+                                  <img src="{{class?.courseId?.image_link}}" alt="course">
+                                </td> -->
+                            <td>{{ data?.programName }}</td>
+                            <td>$ {{ data?.instructorCost }}</td>
+                            <td
+                              [ngClass]="getStatusClass(data.classDeliveryType)"
+                            >
+                              <div class="status-container">
+                                <span class="status-dot"></span>
+                                <span class="status-text">{{
+                                  data.classDeliveryType | titlecase
+                                }}</span>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <!-- </div> -->
+                </div>
+  
+                <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
+                  <!-- <div class="card" style="border-radius: 31px;"> -->
+                  <div class="header mt-3">
+                    <h2>Course Lectures</h2>
+                  </div>
+                  <div class="table-wrapper">
+                    <div class="table-responsive">
+                      <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th>Course Name</th>
+                            <th>Instructor Fee</th>
+                            <th>Class</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr
+                            style="cursor: pointer"
+                            *ngFor="let data of dataSource1"
+                          >
+                            <!-- <td class="table-img">
+                                  <img src="{{class?.courseId?.image_link}}" alt="course">
+                                </td> -->
+                            <td>{{ data?.courseName }}</td>
+                            <td>$ {{ data?.instructorCost }}</td>
+                            <td
+                              [ngClass]="getStatusClass(data.classDeliveryType)"
+                            >
+                              <div class="status-container">
+                                <span class="status-dot"></span>
+                                <span class="status-text">{{
+                                  data.classDeliveryType | titlecase
+                                }}</span>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <!-- </div> -->
+                </div>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="content" *ngIf="!isStudent && !isInstructor">
+    <div class="content-block">
+      <div class="block-header" *ngFor="let breadscrum of breadscrums">
+        <!-- breadcrumb -->
+        <app-breadcrumb
+          [title]="breadscrum.title"
+          [items]="breadscrum.items"
+          [active_item]="breadscrum.active"
+        >
+        </app-breadcrumb>
+      </div>
+      <!-- Your content goes here  -->
+      <div class="row clearfix">
+        <div class="col-lg-4 col-md-12">
+          <div class="card">
+            <div class="m-b-20">
+              <div class="contact-grid">
+                <div class="profile-header bg-dark">
+                  <div class="user-name">{{ aboutData1.name }}</div>
+                  <div class="name-center">{{ aboutData1.type | titlecase }}</div>
+                </div>
+                <img
+                  src="{{ aboutData1.avatar || 'assets/profile.png' }}"
+                  class="user-img"
+                  alt=""
+                />
+                <p>
+                  {{ aboutData1.country_name }}
+                </p>
+                <div>
+                  <span class="phone">
+                    <i class="material-icons">phone</i
+                    >{{ aboutData1.mobile }}</span
+                  >
+                </div>
+                <!-- <div class="row">
+                    <div class="col-4">
+                      <h5>564</h5>
+                      <small>Following</small>
+                    </div>
+                    <div class="col-4">
+                      <h5>18k</h5>
+                      <small>Followers</small>
+                    </div>
+                    <div class="col-4">
+                      <h5>565</h5>
+                      <small>Post</small>
+                    </div>
+                  </div> -->
+              </div>
+            </div>
+            <button
+              type="button"
+              mat-raised-button
+              color="warn"
+              [routerLink]="['/admin/user-profile/all-users']"
+            >
+              Back to all users
+            </button>
+          </div>
+          </div>
+    
+          <div class="col-lg-8 col-md-12">
+            <div class="card">
+              <div class="card-container">
+                <button class="icons" alt="Edit" [routerLink]="['/admin/user-profile/edit-all-users',aboutData1.id]" >
+                    <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
+                </button>
+                <button class="icons" alt="Delete" mat-menu-item (click)="deleteItem(aboutData1)">
+                  <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
+              </button>
+            </div>
+            <mat-tab-group>
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <!-- <mat-icon class="example-tab-icon msr-2">face</mat-icon> -->
+                  Details
+                </ng-template>
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                  <div class="project_widget">
+                    <!-- <div class="header">
+                        <h2><strong>About</strong></h2>
+                      </div> -->
+                    <div class="body">
+                      <div class="row">
+                        <div class="col-md-4 col-6 b-r">
+                          <strong>Full Name</strong>
+                          <br />
+                          <p>{{ aboutData1.name }}</p>
+                        </div>
+                        <div class="col-md-4 col-6 b-r">
+                          <strong>Mobile</strong>
+                          <br />
+                          <p>{{ aboutData1.mobile }}</p>
+                        </div>
+                        <div class="col-md-4 col-6 b-r">
+                          <strong>Email</strong>
+                          <br />
+                          <p>{{ aboutData1.email }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                  <div class="project_widget">
+                    <!-- <div class="header">
+                        <h2><strong>About</strong></h2>
+                      </div> -->
+                    <div class="body">
+                      <div class="row">
+                        <div class="col-md-4 col-6">
+                          <strong>Education</strong>
+                          <br />
+                          <p>{{ aboutData1?.education }}</p>
+                        </div>
+                        <div class="col-md-4 col-6 b-r">
+                          <strong>Gender</strong>
+                          <br />
+                          <p>
+                            {{ aboutData1?.gender | titlecase }}
+                          </p>
+                        </div>
+                        <div class="col-md-4 col-6 b-r">
+                          <strong>Date of birth</strong>
+                          <br />
+                          <p>{{ aboutData1?.dob | date }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                  <div class="project_widget">
+                    <!-- <div class="header">
+                        <h2><strong>About</strong></h2>
+                      </div> -->
+                    <div class="body">
+                      <div class="row">
+                        <div class="col-md-4 col-6 b-r">
+                          <strong>Department</strong>
+                          <br />
+                          <p>{{ aboutData1?.department }}</p>
+                        </div>
+                        <div class="col-md-4 col-6">
+                          <strong>Registration Date</strong>
+                          <br />
+                          <p>
+                            {{ aboutData1?.joiningDate | date }}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  

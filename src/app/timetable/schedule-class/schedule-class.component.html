@@ -13,18 +13,6 @@
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
           <div class="materialTableHeader">
-            <!-- <div class="left">
-              <ul class="header-buttons-left ms-0">
-                <li class="tbl-title">
-                  <h2>Classes</h2>
-                </li>
-                <li class="tbl-search-box">
-                  <label for="search-input"><i class="material-icons search-icon">search</i></label>
-                  <input placeholder="Search" type="text" #filter class="browser-default search-field"
-                    [(ngModel)]="searchTerm" (input)="performSearch()" aria-label="Search box" />
-                </li>
-              </ul>
-            </div> -->
             <div class="right">
               <ul class="tbl-export-btn">
                 <li>
@@ -54,25 +42,8 @@
                     >
                       Create
                     </button>
-                    <!-- <button mat-mini-fab color="primary" [routerLink]="['/admin/program/create-class']">
-                      <mat-icon class="col-white">add</mat-icon>
-                    </button> -->
                   </div>
                 </li>
-                <!--<li class="tbl-header-btn">
-                  <div class="m-l-10" matTooltip="REFRESH">
-                    <button mat-mini-fab color="primary">
-                      <mat-icon class="col-white">refresh</mat-icon>
-                    </button>
-                  </div>
-                </li> -->
-                <!-- <li class="tbl-header-btn">
-                  <div class="m-l-10" [hidden]=!selection.hasValue() matTooltip="DELETE">
-                    <button mat-mini-fab color="warn">
-                      <mat-icon class="col-white">delete </mat-icon>
-                    </button>
-                  </div>
-                </li> -->
                 <li>
                   <div
                     class="export-button m-l-10"
@@ -103,34 +74,6 @@
                 matSort
                 class="mat-cell advance-table"
               >
-                <!-- Checkbox Column -->
-                <!-- <ng-container matColumnDef="select">
-                  <mat-header-cell *matHeaderCellDef [ngClass]="'tbl-col-width-per-6'">
-                    <mat-checkbox (change)="$event ? masterToggle() : null"
-                      [checked]="selection.hasValue() && isAllSelected()"
-                      [indeterminate]="selection.hasValue() && !isAllSelected()" [ngClass]="'tbl-checkbox'">
-                    </mat-checkbox>
-                  </mat-header-cell>
-                  <mat-cell *matCellDef="let row" [ngClass]="'tbl-col-width-per-6'">
-                    <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
-                      [checked]="selection.isSelected(row)" [ngClass]="'tbl-checkbox'">
-                    </mat-checkbox>
-                  </mat-cell>
-                </ng-container> -->
-                <!-- ID Column -->
-                <!-- <ng-container matColumnDef="id">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header
-                    >Id</mat-header-cell
-                  >
-                  <mat-cell *matCellDef="let row"></mat-cell>
-                </ng-container> -->
-                <!-- <ng-container matColumnDef="img">
-                  <mat-header-cell mat-header-cell *matHeaderCellDef [ngClass]="'tbl-col-width-per-6'"> Image
-                  </mat-header-cell>
-                  <mat-cell mat-cell *matCellDef="let row" class="table-img tbl-col-width-per-6"><span
-                      class="mobile-label">Image:</span> <img [src]="row.courseId?.image_link" />
-                  </mat-cell>
-                </ng-container> -->
                 <ng-container matColumnDef="courseName" *ngIf="isAdmin">
                   <mat-header-cell *matHeaderCellDef mat-sort-header
                     >Program</mat-header-cell
@@ -157,9 +100,6 @@
                     {{ row.programName }}</mat-cell
                   >
                 </ng-container>
-                <!-- student name  -->
-
-                <!-- Class start date -->
                 <ng-container matColumnDef="Code" *ngIf="isAdmin">
                   <mat-header-cell *matHeaderCellDef mat-sort-header
                     >Program Code</mat-header-cell
@@ -243,10 +183,6 @@
                   >
                     <span class="mobile-label">Class:</span>
                     <div class="status-container">
-                      <!-- <span class="status-dot"></span>
-                      <span class="status-text">{{
-                        row.classDeliveryType | titlecase
-                      }}</span> -->
                       <span
                       [class]=" row.classDeliveryType === 'online' ? 'badge badge-solid-green' :  row.classDeliveryType === 'offline' ? 'badge badge-solid-red' : ''">
                       <span
@@ -280,42 +216,9 @@
                     {{ row.maximumEnrollment }}</mat-cell
                   >
                 </ng-container>
-
-                <!-- actions -->
-                <!-- <ng-container matColumnDef="Options">
-                  <mat-header-cell *matHeaderCellDef
-                    >Options</mat-header-cell
-                  >
-                  <mat-cell *matCellDef="let row" class="pr-0">
-                    <button mat-button [matMenuTriggerFor]="menu" >
-                      <svg class="dropdown-toggle border rounded-circle" data-bs-toggle="dropdown" aria-expanded="false"
-                      xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                      class="bi bi-three-dots border rounded-circle bg" viewBox="0 0 16 16">
-                      <path
-                        d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
-                    </svg>
-
-                    </button>
-
-
-
-                            <mat-menu #menu="matMenu" xPosition="before">
-                              <button mat-menu-item [routerLink]="['/admin/program/edit-class',row.id]">
-                                <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                                <span class="menu-text px-3">Edit</span>
-                              </button>
-                              <button  (click)="delete(row.id)"mat-menu-item  class="align-items-center">
-                                <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                                <span class="menu-text px-3">Delete</span>
-                              </button>
-                            </mat-menu>
-                  </mat-cell>
-
-                </ng-container> -->
                 <mat-header-row
                   *matHeaderRowDef="displayedColumns"
                 ></mat-header-row>
-                <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
                 <mat-row
                   *matRowDef="let row; columns: displayedColumns"
                   [style.cursor]="'pointer'"
@@ -333,10 +236,6 @@
                 >
                 </mat-progress-spinner>
               </div>
-              <!-- context menu start -->
-              <!-- <div style="visibility: hidden; position: fixed" [style.left]="contextMenuPosition.x"
-                [style.top]="contextMenuPosition.y" [matMenuTriggerFor]="contextMenu">
-              </div> -->
               <mat-menu #contextMenu="matMenu">
                 <ng-template matMenuContent let-item="item">
                   <button mat-menu-item>

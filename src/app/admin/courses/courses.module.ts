@@ -3,8 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CoursesRoutingModule } from './courses-routing.module';
 import { AddCourseComponent } from './add-course/add-course.component';
-import { EditCourseComponent } from './edit-course/edit-course.component';
-import { AboutCourseComponent } from './about-course/about-course.component';
 import { AllCourseComponent } from './all-course/all-course.component';
 import { SharedModule } from '@shared';
 import { ComponentsModule } from '@shared/components/components.module';
@@ -14,7 +12,6 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from '@danielmoncada/angular-datetime-picker';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { CreateClassComponent } from './create-class/create-class.component';
-// import { ClassListComponent } from './class-list/class-list.component';
 import { CompletionListComponent } from './completion-list/completion-list.component';
 
 import { AngularEditorModule } from '@kolkov/angular-editor';
@@ -34,15 +31,13 @@ import { StudentPendingCoursesComponent } from './student-pending-courses/studen
 import { VerificationListComponent } from './verification-list/verification-list.component';
 import { StudentCourseComponent } from './all-course/student-course/student-course.component';
 import { DraftedCoursesComponent } from './all-course/drafted-courses/drafted-courses.component';
-
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 
 @NgModule({
   declarations: [
     AddCourseComponent,
-    EditCourseComponent,
-    AboutCourseComponent,
     AllCourseComponent,
     CreateClassComponent,
     CompletionListComponent,
@@ -78,6 +73,7 @@ import { DraftedCoursesComponent } from './all-course/drafted-courses/drafted-co
     OwlNativeDateTimeModule,
     CKEditorModule,
     AngularEditorModule,
+    MatProgressSpinnerModule,
   ],
 })
 export class CoursesModule {}

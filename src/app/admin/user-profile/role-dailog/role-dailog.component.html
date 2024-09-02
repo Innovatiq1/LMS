@@ -1,0 +1,24 @@
+<div class="body overflow-auto" style="cursor: pointer;">
+    <div class="responsive_table">
+        <ng-container>
+            <div class="card m-4">
+                <div class="card-body">
+                  <h5 class="card-title text-center">Modules & Sub Modules</h5>
+                  <div class="row mt-4 items">
+                      <div class="col-md-12" *ngFor="let row of dataSource">
+                          <div class="menu-wrapper" *ngFor="let menu of row.menuItems">
+                              <p class="menu">{{ menu?.title | capitalizeFirstLetter }}</p>
+                              <div class="sub-menu-wrapper">
+                                  <div *ngFor="let child of menu.children">
+                                      <p class="sub-menu"><img src="assets/tick.svg">{{ child?.title | capitalizeFirstLetter }}</p>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              
+              </div>
+        </ng-container>
+    </div>
+</div>

@@ -102,57 +102,6 @@ export class HeaderComponent
     { text: 'Chinese', flag: 'assets/images/flags/spain.svg', lang: 'ch' },
     { text: 'Tamil', flag: 'assets/images/flags/germany.svg', lang: 'ts' },
   ];
-  // notifications: Notifications[] = [
-  //   {
-  //     message: 'Please check your mail',
-  //     time: '14 mins ago',
-  //     icon: 'mail',
-  //     color: 'nfc-green',
-  //     status: 'msg-unread',
-  //   },
-  //   {
-  //     message: 'New Patient Added..',
-  //     time: '22 mins ago',
-  //     icon: 'person_add',
-  //     color: 'nfc-blue',
-  //     status: 'msg-read',
-  //   },
-  //   {
-  //     message: 'Your leave is approved!! ',
-  //     time: '3 hours ago',
-  //     icon: 'event_available',
-  //     color: 'nfc-orange',
-  //     status: 'msg-read',
-  //   },
-  //   {
-  //     message: 'Lets break for lunch...',
-  //     time: '5 hours ago',
-  //     icon: 'lunch_dining',
-  //     color: 'nfc-blue',
-  //     status: 'msg-read',
-  //   },
-  //   {
-  //     message: 'Patient report generated',
-  //     time: '14 mins ago',
-  //     icon: 'description',
-  //     color: 'nfc-green',
-  //     status: 'msg-read',
-  //   },
-  //   {
-  //     message: 'Please check your mail',
-  //     time: '22 mins ago',
-  //     icon: 'mail',
-  //     color: 'nfc-red',
-  //     status: 'msg-read',
-  //   },
-  //   {
-  //     message: 'Salary credited...',
-  //     time: '3 hours ago',
-  //     icon: 'paid',
-  //     color: 'nfc-purple',
-  //     status: 'msg-read',
-  //   },
-  // ];
   callLogo() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
         this.logoService.getLogo(userId).subscribe((data) => {
@@ -168,7 +117,6 @@ export class HeaderComponent
         let userType = localStorage.getItem('user_type');
         let data = response.filter((item: any) => item.typeName === userType);
          this.settingsItems = data[0].settingsMenuItems
-        console.log("data", data)
       })
     this.commonRoles = AppConstants
     /* getting logo details from logoservice **/
@@ -206,17 +154,6 @@ export class HeaderComponent
 
     const userRole = this.authService.currentUserValue.role;
     this.docElement = document.documentElement;
-
-    // if (userRole === AppConstants.ADMIN_ROLE) {
-    //   this.homePage = 'admin/dashboard/main';
-    // } else if (userRole === AppConstants.INSTRUCTOR_ROLE) {
-    //   this.homePage = 'teacher/dashboard';
-    // } else if (userRole === AppConstants.STUDENT_ROLE) {
-    //   this.homePage = 'student/dashboard';
-    // } else {
-    //   this.homePage = 'admin/dashboard/main';
-    // }
-
     this.langStoreValue = localStorage.getItem('lang') as string;
     const val = this.listLang.filter((x) => x.lang === this.langStoreValue);
     this.countryName = val.map((element) => element.text);
@@ -251,16 +188,6 @@ export class HeaderComponent
   navigateToConfigSettings() {
     this.router.navigate(['/student/settings/config']);
   }
-  // onClick() {
-  //   let role = localStorage.getItem('user_type');
-  //   if (role == AppConstants.ADMIN_USERTYPE || AppConstants.ADMIN_ROLE) {
-  //     this.router.navigate(['/settings/admin-settings']);
-  //   } else if (role == AppConstants.STUDENT_ROLE) {
-  //     this.router.navigate(['/settings/student-settings']);
-  //   } else if (role == AppConstants.INSTRUCTOR_ROLE) {
-  //     this.router.navigate(['/settings/instructor-settings']);
-  //   }
-  // }
 
   getAnnouncementForStudents(filter?: any) {
     let payload = {
@@ -294,9 +221,7 @@ export class HeaderComponent
 
   student() {
     this.studentId = localStorage.getItem('id');
-    // let studentId = localStorage.getItem('id')?localStorage.getItem('id'):null
     this.studentService.getStudentById(this.studentId).subscribe((res: any) => {
-      // this.editData = res;
       this.userProfile = res?.avatar;
     });
   }
@@ -376,12 +301,12 @@ export class HeaderComponent
       }
     } else if (userType === AppConstants.STUDENT_ROLE) {
       const logoSpan = document.querySelector('.logo-name');
-      // if (logoSpan) {
-      //   logoSpan.textContent = 'LMS';
-      // }
     }
   }
   checkViewSettings(role:any){
+    if(this.settingsItems.length > 0){
+      return true;
+    }
     return role ? AppConstants.ALLTHREEROLES.includes(role):false;
   }
 }

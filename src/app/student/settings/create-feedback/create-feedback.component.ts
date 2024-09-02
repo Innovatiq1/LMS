@@ -5,7 +5,6 @@ import { MatChipEditedEvent, MatChipInputEvent } from '@angular/material/chips';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SurveyService } from 'app/admin/survey/survey.service';
 import Swal from 'sweetalert2';
-// import { SurveyService } from '../survey.service';
 
 @Component({
   selector: 'app-create-feedback',
@@ -221,10 +220,8 @@ export class CreateFeedbackComponent  {
 
   save() {
     if (this.feedbackForm.valid) {
-     // const payload = this.feedbackForm.value;
      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
            const payload = {...this.feedbackForm.value, companyId : userId}
-      console.log(payload);
       payload.questions = payload?.questions.map((v: any) => {
         const data = v;
         if (!['select', 'radio'].includes(v.type)) {

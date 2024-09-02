@@ -1,306 +1,3 @@
-<section
-  class="content"
-  *ngIf="
-    !isAdmin &&
-    !showAccountSettings &&
-    !showProfileSettings &&
-    !show2FaSettings &&
-    !showEmailConfig &&
-    !showBanners &&
-    !showCustomSettings &&
-    !showUsers &&
-    !showAllUsers &&
-    !showIntegration &&
-    !showAutomation &&
-    !showCustoms &&
-    !showCustomForms &&
-    !showLms &&
-    !showConfig &&
-    !showForms &&
-    !showSidemenu &&
-    !showSettingsSidemenu &&
-    !showStudentDb &&
-    !showCourseForms &&
-    !showProgramForms &&
-    !showUsersForms &&
-    !showFinanceForms &&
-    !showBannerForms &&
-    !showDashboards
-  "
->
-  <div class="content-block">
-    <div class="block-header" *ngFor="let breadscrum of breadscrums">
-      <!-- breadcrumb -->
-      <app-breadcrumb
-        [title]="breadscrum.title"
-        [items]="breadscrum.items"
-        [active_item]="breadscrum.active"
-      >
-      </app-breadcrumb>
-    </div>
-    <div class="card">
-      <div class="header">
-        <h2>Profile Settings</h2>
-      </div>
-      <div class="body">
-        <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
-          <div class="example-container">
-            <div class="row">
-              <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                <label
-                  >Employee Name<span class="mandatory">&nbsp;*</span></label
-                >
-                <mat-form-field class="example-full-width" appearance="outline">
-                  <input matInput formControlName="empName" />
-                </mat-form-field>
-              </div>
-              <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                <label>Designation</label>
-                <mat-form-field class="example-full-width" appearance="outline">
-                  <input matInput formControlName="designation" />
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                <label>Department<span class="mandatory">&nbsp;*</span></label>
-                <mat-form-field class="example-full-width" appearance="outline">
-                  <input matInput formControlName="department" />
-                  <!-- <mat-icon matSuffix (click)="hide = !hide">
-              {{hide ? 'visibility_off' : 'visibility'}}</mat-icon> -->
-                </mat-form-field>
-              </div>
-              <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                <label>RO Name<span class="mandatory">&nbsp;*</span></label>
-                <mat-form-field class="example-full-width" appearance="outline">
-                  <input matInput formControlName="roName" readonly="true" />
-                  <!-- <mat-select formControlName="roName" required>
-                    <mat-option [value]= "roname" >{{roname}}</mat-option>
-                  </mat-select> -->
-                  <mat-error
-                    *ngIf="
-                      profileForm.get('director')?.hasError('required') ||
-                      profileForm.get('director')?.touched
-                    "
-                  >
-                    Select a training admin
-                  </mat-error>
-                </mat-form-field>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                <label
-                  >Training Admin<span class="mandatory">&nbsp;*</span></label
-                >
-                <mat-form-field class="example-full-width" appearance="outline">
-                  <input matInput formControlName="director" readonly="true" />
-                  <!-- <mat-select formControlName="director" required>
-                      <mat-option value=''></mat-option>
-                    </mat-select> -->
-                  <mat-error
-                    *ngIf="
-                      profileForm.get('director')?.hasError('required') ||
-                      profileForm.get('director')?.touched
-                    "
-                  >
-                    Select a training admin
-                  </mat-error>
-                </mat-form-field>
-              </div>
-              <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                <label>Director<span class="mandatory">&nbsp;*</span></label>
-                <mat-form-field class="example-full-width" appearance="outline">
-                  <input matInput formControlName="TA" readonly="true" />
-                  <!-- <mat-select formControlName="TA" required>
-                    <mat-option value=''>TA</mat-option>
-                  </mat-select> -->
-                  <mat-error
-                    *ngIf="
-                      profileForm.get('TA')?.hasError('required') ||
-                      profileForm.get('TA')?.touched
-                    "
-                  >
-                    Select a training admin
-                  </mat-error>
-                </mat-form-field>
-              </div>
-            </div>
-          </div>
-          <button mat-raised-button id="submit" style="float: right">
-            Update
-          </button>
-        </form>
-      </div>
-    </div>
-    <div class="card">
-      <div class="header">
-        <h2>Security Settings</h2>
-      </div>
-      <div class="body">
-        <form [formGroup]="stdForm" (ngSubmit)="onSubmit()">
-          <div class="example-container">
-            <label>User Name<span class="mandatory">&nbsp;*</span></label>
-            <mat-form-field class="example-full-width" appearance="outline">
-              <input matInput formControlName="name" />
-            </mat-form-field>
-            <label>Current Password</label>
-            <mat-form-field class="example-full-width" appearance="outline">
-              <input
-                matInput
-                type="password"
-                formControlName="currentpassword"
-              />
-            </mat-form-field>
-            <label>New Password<span class="mandatory">&nbsp;*</span></label>
-            <mat-form-field class="example-full-width" appearance="outline">
-              <input
-                matInput
-                type="password"
-                formControlName="password"
-                [type]="hide ? 'password' : 'text'"
-                required
-              />
-              <mat-icon matSuffix (click)="hide = !hide">
-                {{ hide ? "visibility_off" : "visibility" }}</mat-icon
-              >
-            </mat-form-field>
-          </div>
-
-          <button mat-raised-button id="submit" style="float: right">
-            Update
-          </button>
-        </form>
-      </div>
-    </div>
-    <div class="card" id="account-settings">
-      <div class="header">
-        <h2>Account Settings</h2>
-      </div>
-      <div class="body">
-        <form [formGroup]="stdForm1" (ngSubmit)="onSubmit1()">
-          <div class="row clearfix">
-            <div class="col-lg-4 col-md-4">
-              <div class="form-group">
-                <label>First Name<span class="mandatory">&nbsp;*</span></label>
-                <mat-form-field class="example-full-width" appearance="outline">
-                  <input matInput formControlName="name" />
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="col-lg-4 col-md-4">
-              <div class="form-group">
-                <label>Last Name</label>
-                <mat-form-field class="example-full-width" appearance="outline">
-                  <mat-label>Last Name</mat-label>
-                  <input matInput formControlName="last_name" />
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="col-lg-4 col-md-4">
-              <div class="form-group">
-                <label>Mobile Number</label>
-                <mat-form-field class="example-full-width" appearance="outline">
-                  <input matInput formControlName="mobile" />
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="col-lg-4 col-md-4">
-              <div class="form-group">
-                <label>City<span class="mandatory">&nbsp;*</span></label>
-                <mat-form-field class="example-full-width" appearance="outline">
-                  <input matInput formControlName="city_name" />
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="col-lg-4 col-md-4">
-              <div class="form-group">
-                <label>Email<span class="mandatory">&nbsp;*</span></label>
-                <mat-form-field class="example-full-width" appearance="outline">
-                  <input matInput formControlName="email" readonly />
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="col-lg-4 col-md-4">
-              <div class="form-group">
-                <label>Country<span class="mandatory">&nbsp;*</span></label>
-                <mat-form-field class="example-full-width" appearance="outline">
-                  <input matInput formControlName="country_name" />
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                <label>Address<span class="mandatory">&nbsp;*</span></label>
-                <mat-form-field class="example-full-width" appearance="outline">
-                  <textarea matInput formControlName="address"></textarea>
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 mb-5">
-                <label>Upload</label>
-                <div class="file-drop-area">
-                  <div class="file">
-                    <button mat-raised-button color="primary">
-                      Choose file
-                      <input
-                        formControlName="avatar"
-                        (change)="onFileUpload($event)"
-                        class="file-input"
-                        type="file"
-                      />
-                    </button>
-                    <span class="file-msg">
-                      <h5>
-                        {{
-                          uploadedImage
-                            ? uploadedImage
-                            : "Drag and Drop File Here"
-                        }}
-                      </h5>
-                    </span>
-                  </div>
-                </div>
-                <!-- <app-file-upload formControlName="image_link" (change)="onFileUpload($event)"></app-file-upload> -->
-              </div>
-              <!-- <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-5">
-              <label>Upload <span class="mandatory">&nbsp;*</span></label>
-              <div class="file-drop-area">
-                <div class="file">
-                  <button mat-raised-button color="primary">Choose file</button> --
-                  <img src="/assets/add-image-icon.svg" />
-                  <h5>
-                    {{uploadedImage ? uploadedImage : 'Drag and Drop File Here' }}
-                  </h5>
-                  <input
-                    formControlName="avatar"
-                    (change)="onFileUpload($event)"
-                    class="file-input"
-                    type="file"
-                  />
-                </div>
-              </div>
-               <div class="file-drop-area">
-                <button mat-raised-button color="primary">Choose file</button>
-                <span>{{fileName ? fileName : ' or drag and drop file here' }}</span>
-                <input formControlName="avatar" (change)="onFileUpload($event)" class="file-input" type="file">
-              </div> --
-            </div> -->
-            </div>
-            <div class="col-md-12">
-              <button mat-raised-button id="submit" style="float: right">
-                Update
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</section>
-
 <section class="content" *ngIf="isAdmin || isStudent">
   <div class="content-block">
     <div class="block-header" *ngFor="let breadscrum of breadscrums">
@@ -311,262 +8,6 @@
         [active_item]="breadscrum.active"
       >
       </app-breadcrumb>
-    </div>
-    <!-- </div> -->
-
-    <div
-      class="card"
-      *ngIf="
-        !showAccountSettings &&
-        !showProfileSettings &&
-        !show2FaSettings &&
-        !showEmailConfig &&
-        !showBanners &&
-        !showCustomSettings &&
-        !showUsers &&
-        !showAllUsers &&
-        !showIntegration &&
-        !showAutomation &&
-        !showCustoms &&
-        !showCustomForms &&
-        !showLms &&
-        !showConfig &&
-        !showForms &&
-        !showSidemenu &&
-        !showSettingsSidemenu &&
-        !showStudentDb &&
-        !showCourseForms &&
-        !showProgramForms &&
-        !showUsersForms &&
-        !showFinanceForms &&
-        !showBannerForms &&
-        !showDashboards
-      "
-    >
-      <div class="header">
-        <h2>Settings</h2>
-      </div>
-      <div class="body">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="card" style="background-color: rgb(214 209 209 / 63%)">
-              <div class="row">
-                <div class="col-md-8 m-3">
-                  <label>User Management</label>
-                </div>
-                <div class="col-md-2 mt-3">
-                  <img
-                    src="assets/images/settings/User-Profile.png"
-                    style="width: 80px; height: 80px"
-                  />
-                </div>
-              </div>
-              <hr />
-              <div class="m-3">
-                <div class="row">
-                  <div class="col-3">
-                    <!-- <a href="admin/users/all-users">All Users</a> -->
-                    <button
-                      id="saved"
-                      [routerLink]="['/admin/settings/all-users']"
-                    >
-                      All Users
-                    </button>
-                  </div>
-                  <div class="col-3">
-                    <button
-                      id="saved"
-                      [routerLink]="['/admin/users/all-students']"
-                    >
-                      Students
-                    </button>
-                  </div>
-                  <div class="col-3">
-                    <button
-                      id="saved"
-                      [routerLink]="['/admin/users/all-instructors']"
-                    >
-                      Instructors
-                    </button>
-                  </div>
-                  <div class="col-3">
-                    <button
-                      id="saved"
-                      [routerLink]="['/admin/users/all-staff']"
-                    >
-                      Staff
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card" style="background-color: rgb(214 209 209 / 63%)">
-              <div class="row">
-                <div class="col-md-8 m-3">
-                  <label>Security</label>
-                </div>
-                <div class="col-md-2 mt-3">
-                  <img
-                    src="assets/images/settings/security1.png"
-                    style="width: 85px; height: 85px"
-                  />
-                </div>
-              </div>
-              <hr />
-              <div class="m-3">
-                <div class="row">
-                  <div class="col-5">
-                    <!-- <a href="admin/users/all-users">Account Settings</a> -->
-                    <button id="saved" (click)="navigateToAccountSettings()">
-                      Account Settings
-                    </button>
-                    <!-- <button id="save"  [routerLink]="['/student/account-settings']" > Account Settings</button> -->
-                  </div>
-                  <!-- <div class="card" *ngIf="showAccountSettings">
-                     Content of Account Settings Card --
-                  </div> -->
-                  <div class="col-5">
-                    <!-- <a href="admin/students/all-students">Security Settings</a> -->
-                    <button id="saved" (click)="navigateToProfileSettings()">
-                      Security Settings
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <div
-              class="card"
-              style="height: 240px; background-color: rgb(214 209 209 / 63%)"
-            >
-              <div class="row">
-                <div class="col-md-8 m-3">
-                  <label>Roles</label>
-                </div>
-                <div class="col-md-2 my-3">
-                  <img
-                    src="assets/images/settings/role.png"
-                    style="width: 80px; height: 80px"
-                  />
-                </div>
-              </div>
-              <hr />
-              <div class="m-3">
-                <div class="row">
-                  <div class="col-3">
-                    <button
-                      id="saved"
-                      [routerLink]="['/admin/users/user-type']"
-                    >
-                      User Types
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card" style="background-color: rgb(214 209 209 / 63%)">
-              <div class="row">
-                <div class="col-md-8 m-3">
-                  <label>System Configuration</label>
-                </div>
-                <div class="col-md-2 my-3">
-                  <img
-                    src="assets/images/settings/system-configuration1.png"
-                    style="width: 80px; height: 80px"
-                  />
-                </div>
-              </div>
-              <hr />
-              <div class="m-3">
-                <div class="row">
-                  <div class="col-3">
-                    <button
-                      id="saved"
-                      [routerLink]="['/admin/departments/all-departments']"
-                    >
-                      Departments
-                    </button>
-                  </div>
-                  <div class="col-5">
-                    <button id="saved" (click)="navigateToEmailSettings()">
-                      Email Configuration
-                    </button>
-                  </div>
-                  <div class="col-3" style="margin-left: -35px">
-                    <button id="saved" (click)="navigateToBannerSettings()">
-                      Banners
-                    </button>
-                  </div>
-                </div>
-                <div class="row py-2">
-                  <div class="col-3">
-                    <button
-                      id="saved"
-                      [routerLink]="['/admin/questions/all-questions']"
-                    >
-                      Assessments
-                    </button>
-                  </div>
-                  <div class="col-4">
-                    <button
-                      id="saved"
-                      [routerLink]="['/admin/announcement/list']"
-                    >
-                      Announcements
-                    </button>
-                  </div>
-
-                  <div class="col-3">
-                    <button
-                      id="saved"
-                      [routerLink]="['/admin/certificate/template']"
-                    >
-                      Certificate
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <div
-              class="card"
-              style="height: 240px; background-color: rgb(214 209 209 / 63%)"
-            >
-              <div class="row">
-                <div class="col-md-8 m-3">
-                  <label>Customization</label>
-                </div>
-                <div class="col-md-2 my-3">
-                  <img
-                    src="assets/images/settings/customization.png"
-                    style="width: 80px; height: 80px"
-                  />
-                </div>
-              </div>
-              <hr />
-              <div class="m-3">
-                <div class="row">
-                  <div class="col-5">
-                    <button id="saved" (click)="navigateToCustomSettings()">
-                      Field Customization
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
     <div class="card" *ngIf="showAccountSettings">
       <div class="header">
@@ -657,96 +98,6 @@
                 </mat-form-field>
               </div>
             </div>
-            <!-- <div
-              class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-2"
-              *ngIf="!isStudent"
-            >
-              <div class="button-container">
-                <label>Approver 1<span class="mandatory">&nbsp;*</span></label>
-                <!-- <mat-icon class="cursor-pointer" (click)="openDialog()">add</mat-icon> --
-              </div>
-              <mat-form-field
-                class="example-full-width mb-3"
-                appearance="outline"
-              >
-                <mat-select
-                  (selectionChange)="onSelectionChange($event, 'approver1')"
-                  formControlName="approver1"
-                  required
-                >
-                  <mat-option *ngFor="let user of roUsers" [value]="user.id">
-                    {{ user.name | titlecase }}
-                  </mat-option>
-                </mat-select>
-                <mat-error
-                  *ngIf="stdForm1.get('approver1')?.hasError('required')"
-                >
-                  Select Any User
-                </mat-error>
-              </mat-form-field>
-            </div>
-            <div
-              class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-2"
-              *ngIf="!isStudent"
-            >
-              <div class="button-container">
-                <label>Approver 2 <span class="mandatory">&nbsp;*</span></label>
-                <!-- <mat-icon class="cursor-pointer" (click)="openDialog()">add</mat-icon> --
-              </div>
-              <mat-form-field
-                class="example-full-width mb-3"
-                appearance="outline"
-              >
-                <mat-select
-                  (selectionChange)="onSelectionChange($event, 'approver2')"
-                  formControlName="approver2"
-                  required
-                >
-                  <mat-option
-                    *ngFor="let user of directorUsers"
-                    [value]="user.id"
-                  >
-                    {{ user.name | titlecase }}
-                  </mat-option>
-                </mat-select>
-                <mat-error
-                  *ngIf="stdForm1.get('approver2')?.hasError('required')"
-                >
-                  Select Any User
-                </mat-error>
-              </mat-form-field>
-            </div>
-            <div
-              class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-2"
-              *ngIf="!isStudent"
-            >
-              <div class="button-container">
-                <label>Approver 3 <span class="mandatory">&nbsp;*</span></label>
-                <!-- <mat-icon class="cursor-pointer" (click)="openDialog()">add</mat-icon> --
-              </div>
-              <mat-form-field
-                class="example-full-width mb-3"
-                appearance="outline"
-              >
-                <mat-select
-                  (selectionChange)="onSelectionChange($event, 'approver3')"
-                  formControlName="approver3"
-                  required
-                >
-                  <mat-option
-                    *ngFor="let user of trainingAdminUsers"
-                    [value]="user.id"
-                  >
-                    {{ user.name | titlecase }}
-                  </mat-option>
-                </mat-select>
-                <mat-error
-                  *ngIf="stdForm1.get('approver3')?.hasError('required')"
-                >
-                  Select Any User
-                </mat-error>
-              </mat-form-field>
-            </div> -->
             <div class="col-lg-4 col-md-4">
               <div class="form-group">
                 <label>City<span class="mandatory">&nbsp;*</span></label>
@@ -804,7 +155,6 @@
                 </mat-form-field>
               </div>
             </div>
-            <!-- <div class="row"> -->
             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 mb-5">
               <label>Upload</label>
               <div class="file-drop-area">
@@ -830,8 +180,6 @@
                 </div>
               </div>
             </div>
-
-            <!-- </div> -->
             <div class="col-md-12">
               <button mat-raised-button id="submit" style="float: right">
                 Update
@@ -969,44 +317,6 @@
             />
           </div>
         </div>
-
-        <!-- <form [formGroup]="stdForm">
-          <div class="example-container">
-            <div class="row clearfix justify-content-center">
-              <img src="assets/images/icons/2fa.jpg" alt="" class="factor mx-auto"/>
-              <p class="para">Please enter OTP (one time password) to verify your account. <br> A code has been sent to +91 ********88</p>
-            
-             <div class="row clearfix justify-content-center">
-              <div class="col-1">
-                <mat-form-field class="example-full-width" appearance="outline">
-                  <input matInput required />
-                </mat-form-field>
-              </div>
-              <div class="col-1">
-                <mat-form-field class="example-full-width" appearance="outline">
-                  <input matInput required />
-                </mat-form-field>
-              </div>
-              <div class="col-1">
-                <mat-form-field class="example-full-width" appearance="outline">
-                  <input matInput  required />
-                </mat-form-field>
-              </div>
-              <div class="col-1">
-                <mat-form-field class="example-full-width" appearance="outline">
-                  <input matInput required />
-                </mat-form-field>
-              </div>
-             </div>
-                  <button mat-raised-button id="verify">Verify</button>
-                  <p class="para">Not received your code ? <a href="">Resend code</a></p>
-                  <a class="text-center mb-3" href="">Call me</a>
-               
-            </div>
-          </div>
-
-         
-        </form> -->
       </div>
     </div>
     <div
@@ -1014,9 +324,6 @@
       style="margin: auto; height: fit-content; width: 95%"
       *ngIf="showEmailConfig"
     >
-      <!-- <div class="header">
-        <h2>Email Configuration</h2>
-      </div> -->
       <div class="row">
         <div class="col-md-9">
           <label class="p-5">Email Templates</label>
@@ -1052,16 +359,6 @@
           </div>
         </div>
         <div class="row py-3">
-          <!-- <div class="col-md-6 email">
-            <button
-              id="saved"
-              [routerLink]="[
-                '/student/email-configuration/settings/program-registration-email'
-              ]"
-            >
-              Program Registered E-mail
-            </button>
-          </div> -->
           <div class="col-md-6 email">
             <button
               id="saved"
@@ -1083,56 +380,6 @@
             </button>
           </div>
         </div>
-        <!-- <div class="row py-3"> -->
-        <!-- <div class="col-md-6 email">
-            <button
-              id="saved"
-              [routerLink]="[
-                '/student/email-configuration/settings/program-approval-email'
-              ]"
-            >
-              Program Approval
-            </button>
-          </div> -->
-
-        <!-- </div> -->
-        <!-- <div class="row py-3"> -->
-        <!-- <div class="col-md-6 email">
-            <button
-              id="saved"
-              [routerLink]="[
-                '/student/email-configuration/settings/program-completion-email'
-              ]"
-            >
-              Completed Program
-            </button>
-          </div> -->
-        <!-- <div class="col-md-6 email"> -->
-        <!-- <button
-              id="saved"
-              [routerLink]="[
-                '/student/email-configuration/settings/new-training-request'
-              ]"
-            >
-              New Training Request
-            </button> -->
-        <!-- </div> -->
-
-        <!-- <div class="col-md-6">
-         </div> -->
-        <!-- </div> -->
-        <!-- <div class="row py-3">
-          <div class="col-md-6">
-            <button
-              id="saved"
-              [routerLink]="[
-                '/student/email-configuration/settings/training-request-expiry'
-              ]"
-            >
-              Training Request Expiry
-            </button>
-          </div>
-        </div> -->
         <div class="row py-3">
           <div class="col-md-6 email">
             <button
@@ -1143,15 +390,6 @@
             >
               Completed Course
             </button>
-
-            <!-- <button
-              id="saved"
-              [routerLink]="[
-                '/student/email-configuration/settings/ro-course-notification'
-              ]"
-            >
-              Approver 1 Training Request
-            </button> -->
           </div>
           <div class="col-md-6">
             <button
@@ -1185,53 +423,8 @@
             >
               Discount Approved
             </button>
-
-            <!-- <button
-              id="saved"
-              [routerLink]="[
-                '/student/email-configuration/settings/ro-training-request-approval'
-              ]"
-            >
-              Approver 1 Training Request Approval
-            </button> -->
           </div>
         </div>
-        <!-- <div class="row py-3">
-
-          <div class="col-md-5">
-            <button
-              id="saved"
-              [routerLink]="[
-                '/student/email-configuration/settings/training-admin-training-request-approval'
-              ]"
-            >
-              Approver 3 Training Request Approval
-            </button>
-          </div>
-        </div> -->
-        <!-- <div class="row py-3">
-          <div class="col-md-6 email">
-            <button
-              id="saved"
-              [routerLink]="[
-                '/student/email-configuration/settings/ro-training-request-rejected'
-              ]"
-            >
-              Approver 1 Training Request Rejected
-            </button>
-          </div>
-
-          <div class="col-md-5">
-            <button
-              id="saved"
-              [routerLink]="[
-                '/student/email-configuration/settings/director-training-request-rejected'
-              ]"
-            >
-              Approver 2 Training Request Rejected
-            </button>
-          </div>
-        </div> -->
         <div class="row py-3">
           <div class="col-md-6 email">
             <button
@@ -1242,15 +435,6 @@
             >
               Budget Request
             </button>
-
-            <!-- <button
-              id="saved"
-              [routerLink]="[
-                '/student/email-configuration/settings/training-admin-training-request-rejected'
-              ]"
-            >
-              Approver 3 Training Request Rejected
-            </button> -->
           </div>
 
           <div class="col-md-5">
@@ -1333,156 +517,6 @@
           </div>
         </div>
         <div class="row py-3 mb-3"></div>
-        <!-- <div class="col-md-12 py-3">
-          <button
-            mat-raised-button
-            id="back"
-            [routerLink]="['/student/settings/integration']"
-          >
-            Back
-          </button>
-        </div> -->
-      </div>
-    </div>
-    <div
-      class="card"
-      style="margin: auto; height: 300px; width: 65%"
-      *ngIf="showBanners"
-    >
-      <!-- <div class="header">
-        <h2>Email Configuration</h2>
-      </div> -->
-      <div class="row">
-        <div class="col-md-8">
-          <label class="py-4 px-5">Advertisement Banners</label>
-        </div>
-        <div class="col-md-2 my-3 mx-auto">
-          <img
-            src="assets/images/settings/banner.png"
-            style="width: 80px; height: 80px"
-          />
-        </div>
-      </div>
-      <div class="body">
-        <div class="row px-4">
-          <div class="col-md-6 banner">
-            <button
-              id="saved"
-              [routerLink]="[
-                '/student/banners/settings/instructor-banner-list'
-              ]"
-            >
-              {{ commonRoles?.INSTRUCTOR_ROLE }} Banners
-            </button>
-          </div>
-          <div class="col-md-5">
-            <button
-              id="saved"
-              [routerLink]="['/student/banners/settings/student-banner-list']"
-            >
-              {{ commonRoles.STUDENT_ROLE }} Banners
-            </button>
-          </div>
-        </div>
-
-        <!-- <div class="col-md-12 px-4 py-5">
-          <button mat-raised-button id="back" [routerLink]="['/student/customization']">Back</button>
-        </div> -->
-      </div>
-    </div>
-    <div
-      class="card"
-      style="margin: auto; height: fit-content; width: 65%"
-      *ngIf="showUsers"
-    >
-      <div class="row">
-        <div class="col-md-8">
-          <label class="py-4 px-5">Manage Users</label>
-        </div>
-        <div class="col-md-2 my-3 mx-auto">
-          <img
-            src="assets/images/settings/role.png"
-            style="width: 80px; height: 80px"
-          />
-        </div>
-      </div>
-      <div class="body">
-        <div class="row px-4">
-          <div class="col-md-6 banner">
-            <button id="saved" [routerLink]="['/student/settings/user-type']">
-              Module Access
-            </button>
-          </div>
-          <div class="col-md-5">
-            <button
-              id="saved"
-              [routerLink]="['/student/settings/create-user-role']"
-            >
-              Role
-            </button>
-          </div>
-        </div>
-        <div class="row px-4 py-4">
-          <div class="col-md-6 banner">
-            <button
-              id="saved"
-              [routerLink]="['/student/settings/all-departments']"
-            >
-              Department Profile
-            </button>
-          </div>
-          <div class="col-md-5">
-            <button
-              id="saved"
-              [routerLink]="['/student/settings/create-department']"
-            >
-              Department
-            </button>
-          </div>
-        </div>
-
-        <!-- <div class="row px-4 py-4">
-          <div class="col-md-6 banner">
-            <button id="saved" [routerLink]="['/student/settings/all-users']"> All Users </button>
-          </div>
-          <div class="col-md-5">
-            <button id="saved" [routerLink]="['/student/settings/all-students']"> Students</button>
-          </div>
-        </div>
-        <div class="row px-4">
-          <div class="col-md-6 banner">
-            <button id="saved" [routerLink]="['/student/settings/all-instructors']"> Instructors </button>
-          </div>
-          <div class="col-md-5">
-            <button id="saved" [routerLink]="['/student/settings/all-staff']"> Staff </button>
-          </div>
-        </div> -->
-        <div class="row px-4">
-          <div class="col-md-6 banner">
-            <button id="saved">
-              User Profile
-            </button>
-          </div>
-          <div class="col-md-5">
-            <button id="saved" [routerLink]="['/student/settings/user-group']">
-              User Group
-            </button>
-
-            <!-- <button id="no-link"> Role type Name </button> -->
-
-            <!-- <button id="no-link"> User type Name </button> -->
-          </div>
-        </div>
-        <!-- <div class="row px-4 py-4">
-          <div class="col-md-6 banner">
-            <button id="saved" [routerLink]="['/student/settings/create-department']"> Department </button>
-          </div>
-
-          <div class="col-md-5">
-            <button id="saved" [routerLink]="['/student/settings/user-list-group']"> Group Profile  </button>
-          </div>
-
-        </div> -->
       </div>
     </div>
     <div
@@ -1527,248 +561,6 @@
             </button>
           </div>
           <div class="col-md-5">
-            <!-- <button id="saved" [routerLink]="['/student/settings/all-user/all-staff']">
-              Staff
-            </button> -->
-          </div>
-        </div>
-        <!-- <div class="row px-4 py-4">
-          <div class="col-md-6 banner">
-            <button id="saved" [routerLink]="['/student/settings/all-departments']"> Departments </button>
-          </div>
-          <div class="col-md-5">
-            <button id="saved" [routerLink]="['/student/settings/user-group']"> User Group </button>
-
-          </div>
-        </div> -->
-        <!-- <div class="row px-4">
-          <div class="col-md-6 banner">
-            <button id="no-link"> Import/Export Users </button>
-          </div>
-
-        </div> -->
-      </div>
-    </div>
-    <div
-      class="card"
-      style="margin: auto; height: 350px; width: 65%"
-      *ngIf="showIntegration"
-    >
-      <div class="row">
-        <div class="col-md-8">
-          <label class="py-4 px-5">Integration</label>
-        </div>
-        <div class="col-md-2 my-3 mx-auto">
-          <img
-            src="assets/images/settings/integrate.jpg"
-            style="width: 80px; height: 80px"
-          />
-        </div>
-      </div>
-      <div class="body">
-        <div class="row px-4">
-          <div class="col-md-6 banner">
-            <button
-              id="saved"
-              [routerLink]="['/student/settings/3rd-party-integrations']"
-            >
-              Third Party Integration
-            </button>
-          </div>
-          <div class="col-md-5">
-            <button id="saved" [routerLink]="['/student/settings/smtp']">
-              SMTP
-            </button>
-          </div>
-        </div>
-        <div class="row px-4 py-4">
-          <div class="col-md-6 banner">
-            <button id="saved" [routerLink]="['/student/settings/singpass']">
-              SingPass
-            </button>
-          </div>
-          <div class="col-md-5">
-            <button
-              id="saved"
-              [routerLink]="['/student/settings/payment-gateway']"
-            >
-              Payment Gateway
-            </button>
-          </div>
-        </div>
-        <!-- <div class="row px-4">
-          <div class="col-md-6 banner">
-            <button id="no-link"> Storage </button>
-          </div>
-        </div> -->
-      </div>
-    </div>
-    <div
-      class="card"
-      style="margin: auto; height: 350px; width: 65%"
-      *ngIf="showAutomation"
-    >
-      <div class="row">
-        <div class="col-md-8">
-          <label class="py-4 px-5">Automation</label>
-        </div>
-        <div class="col-md-2 my-3 mx-auto">
-          <img
-            src="assets/images/settings/automate1.png"
-            style="width: 80px; height: 80px"
-          />
-        </div>
-      </div>
-      <div class="body">
-        <div class="row px-4">
-          <div class="col-md-6 banner">
-            <button
-              id="saved"
-              [routerLink]="['/student/settings/announcement']"
-            >
-              Announcement
-            </button>
-          </div>
-          <div class="col-md-5">
-            <button id="no-link">Notification</button>
-          </div>
-        </div>
-        <div class="row px-4 py-4">
-          <div class="col-md-6 banner">
-            <button
-              id="saved"
-              [routerLink]="['/student/settings/approval-workflow']"
-            >
-              Approval Workflow
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      class="card"
-      style="margin: auto; height: 350px; width: 65%"
-      *ngIf="showCustoms"
-    >
-      <div class="row">
-        <div class="col-md-8">
-          <label class="py-4 px-5">Customize</label>
-        </div>
-        <div class="col-md-2 my-3 mx-auto">
-          <img
-            src="assets/images/settings/custom.png"
-            style="width: 80px; height: 80px"
-          />
-        </div>
-      </div>
-      <div class="body">
-        <div
-          class="row px-4"
-          *ngIf="role == commonRoles.ADMIN_USERTYPE || commonRoles.ADMIN_ROLE"
-        >
-          <div class="col-md-6 banner">
-            <button id="saved" [routerLink]="['/student/settings/sidemenu']">
-              Sidemenu
-            </button>
-          </div>
-          <div class="col-md-5">
-            <button id="saved" (click)="navigateToCustomFormsSettings()">
-              Forms
-            </button>
-          </div>
-        </div>
-        <div
-          class="row px-4 py-4"
-          *ngIf="role == commonRoles.ADMIN_USERTYPE || commonRoles.ADMIN_ROLE"
-        >
-          <div class="col-md-6 banner">
-            <button
-              id="saved"
-              [routerLink]="['/student/settings/certificate/template']"
-            >
-              Certificates
-            </button>
-          </div>
-          <div class="col-md-5">
-            <button id="saved" (click)="navigateToBannerSettings()">
-              Banners
-            </button>
-          </div>
-        </div>
-        <div class="row px-4">
-          <div class="col-md-6 banner">
-            <button
-              id="saved"
-              [routerLink]="['/student/settings/create-feedback']"
-            >
-              Survey
-            </button>
-          </div>
-          <div
-            class="col-md-5"
-            *ngIf="role == commonRoles.ADMIN_USERTYPE || commonRoles.ADMIN_ROLE"
-          >
-            <button
-              id="saved"
-              routerLink="/student/settings/logo-customization"
-            >
-              Logo
-            </button>
-          </div>
-        </div>
-        <div
-          class="row px-4 py-4"
-          *ngIf="role == commonRoles.ADMIN_USERTYPE || commonRoles.ADMIN_ROLE"
-        >
-          <div class="col-md-6 banner">
-            <button id="saved" (click)="navigateToEmailSettings()">
-              Email Templates
-            </button>
-          </div>
-          <div
-            class="col-md-5"
-            *ngIf="role == commonRoles.ADMIN_USERTYPE || commonRoles.ADMIN_ROLE"
-          >
-            <button id="saved" (click)="navigateToStudentDbSettings()">
-              Dashboards
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      class="card"
-      style="margin: auto; height: 350px; width: 65%"
-      *ngIf="showLms"
-    >
-      <div class="row">
-        <div class="col-md-8">
-          <label class="py-4 px-5">LMS TAE</label>
-        </div>
-        <div class="col-md-2 my-3 mx-auto">
-          <img
-            src="assets/images/settings/lms.png"
-            style="width: 80px; height: 80px"
-          />
-        </div>
-      </div>
-      <div class="body">
-        <div class="row px-4">
-          <div class="col-md-6 banner">
-            <button id="no-link">Tutorial Configuration</button>
-          </div>
-          <div class="col-md-5">
-            <button
-              id="saved"
-              [routerLink]="['/admin/questions/add-questions']"
-            >
-              Assessment Configuration
-            </button>
-          </div>
-        </div>
-        <div class="row px-4 py-4">
-          <div class="col-md-6 banner">
-            <button id="no-link">Exam Configuration</button>
           </div>
         </div>
       </div>
@@ -1816,11 +608,20 @@
         </div>
         <div class="row px-4">
           <div class="col-md-6 banner">
-            <button id="saved" (click)="navigateToBannerFormsSettings()">
+            <button
+            id="saved"
+            [routerLink]="[
+              '/student/settings/customize/customization-forms',
+              'create-announcement'
+            ]"
+          >
+            Announcement
+          </button>
+            <!-- <button id="saved" (click)="navigateToBannerFormsSettings()">
               Banners
-            </button>
+            </button> -->
           </div>
-          <div class="col-md-5">
+          <!-- <div class="col-md-5">
             <button
               id="saved"
               [routerLink]="[
@@ -1830,96 +631,8 @@
             >
               Announcement
             </button>
-          </div>
+          </div> -->
         </div>
-        <!-- <div class="row px-4">
-          <div class="col-md-6 banner">
-            <button id="saved" [routerLink]="['/admin/courses/add-course']">Course Creation </button>
-          </div>
-          <div class="col-md-5">
-            <button id="saved" [routerLink]="['/admin/program/create-program']"> Program Creation </button>
-          </div>
-        </div>
-        <div class="row px-4 py-4">
-          <div class="col-md-6 banner">
-            <button id="saved"  [routerLink]="['/admin/program/create-class']">Course Class Creation  </button>
-          </div>
-          <div class="col-md-5">
-            <button id="saved"  [routerLink]="['/admin/program/create-class']">Program Class Creation</button>
-          </div>
-        </div>
-        <div class="row px-4">
-          <div class="col-md-6 banner">
-            <button id="saved" [routerLink]="['/admin/courses/create-course-kit']">Course Kit </button>
-          </div>
-          <div class="col-md-5">
-            <button id="saved" [routerLink]="['/student/settings/create-categories']">Categories </button>
-          </div>
-        </div>
-        <div class="row px-4 py-4">
-          <div class="col-md-6 banner">
-            <button id="saved" [routerLink]="['/admin/users/create-all-users']">User </button>
-          </div>
-          <div class="col-md-5">
-            <button id="saved" [routerLink]="['/admin/users/add-instructor']">Instructor </button>
-          </div>
-        </div>
-        <div class="row px-4">
-          <div class="col-md-6 banner">
-            <button id="saved" [routerLink]="['/admin/users/add-student']">Student </button>
-          </div>
-          <div class="col-md-5">
-            <button id="saved" [routerLink]="['/admin/users/add-staff']">Staff </button>
-          </div>
-        </div>
-        <div class="row px-4 py-4">
-          <div class="col-md-6 banner">
-            <button id="saved" [routerLink]="['/timetable/program-exam-add']">Program Exam Schedule </button>
-          </div>
-          <div class="col-md-5">
-            <button id="saved" [routerLink]="['/timetable/course-exam-add']">Course Exam Schedule </button>
-          </div>
-        </div>
-        <div class="row px-4">
-          <div class="col-md-6 banner">
-            <button id="saved" [routerLink]="['/admin/departments/add-department']">Department </button>
-          </div>
-          <div class="col-md-5">
-            <button id="saved" [routerLink]="['/admin/budgets/create-budget']">New Budget </button>
-          </div>
-        </div>
-        <div class="row px-4 py-4">
-          <div class="col-md-6 banner">
-            <button id="saved" [routerLink]="['/admin/budgets/create-dept-budget-request']">Department Budget </button>
-          </div>
-          <div class="col-md-5">
-            <button id="saved" [routerLink]="['/admin/budgets/create-request']">Training Budget </button>
-          </div>
-        </div>
-        <div class="row px-4">
-          <div class="col-md-6 banner">
-            <button id="saved" [routerLink]="['/student/settings/create-announcement']">Announcement </button>
-          </div>
-          <div class="col-md-5">
-            <button id="saved" [routerLink]="['/admin/banners/create-instructor-banner']">Instructor Banner </button>
-          </div>
-        </div>
-        <div class="row px-4 py-4">
-          <div class="col-md-6 banner">
-            <button id="saved" [routerLink]="['/admin/banners/create-student-banner']">Student Banner </button>
-            <!-- <button id="no-link">Course Kit </button> --
-          </div>
-        </div> -->
-
-        <!-- <div class="col-md-12 py-3">
-          <button
-            mat-raised-button
-            id="back"
-            [routerLink]="['/student/settings/configuration']"
-          >
-            Back
-          </button>
-        </div> -->
       </div>
     </div>
     <div
@@ -1969,13 +682,13 @@
             </button>
           </div>
         </div>
-        <div class="row px-4">
+        <!-- <div class="row px-4">
           <div class="col-md-6 banner">
             <button id="saved" [routerLink]="['/timetable/course-exam-add']">
               Course Exam Schedule
             </button>
           </div>
-        </div>
+        </div> -->
 
         <div class="col-md-12 py-3">
           <button
@@ -2018,13 +731,13 @@
             </button>
           </div>
         </div>
-        <div class="row px-4 py-4">
+        <!-- <div class="row px-4 py-4">
           <div class="col-md-6 banner">
             <button id="saved" [routerLink]="['/timetable/program-exam-add']">
               Program Exam Schedule
             </button>
           </div>
-        </div>
+        </div> -->
 
         <div class="col-md-12 py-3">
           <button
@@ -2147,7 +860,7 @@
         </div>
       </div>
     </div>
-    <div
+    <!-- <div
       class="card"
       style="margin: auto; height: fit-content; width: 65%"
       *ngIf="showBannerForms"
@@ -2195,49 +908,7 @@
           </button>
         </div>
       </div>
-    </div>
-    <div
-      class="card"
-      style="margin: auto; height: fit-content; width: 65%"
-      *ngIf="showDashboards"
-    >
-      <div class="row">
-        <div class="col-md-8">
-          <label class="py-4 px-5">Dashboards</label>
-        </div>
-        <div class="col-md-2 my-3 mx-auto">
-          <img
-            src="assets/images/settings/dashboard.png"
-            style="width: 80px; height: 80px"
-          />
-        </div>
-      </div>
-      <div class="body">
-        <div class="row px-4">
-          <div class="col-md-6 banner">
-            <button id="saved" (click)="navigateToStudentDbSettings()">
-              Student Dashboard
-            </button>
-          </div>
-          <div class="col-md-5">
-            <button id="saved">Instructor Dashboard</button>
-          </div>
-        </div>
-
-        <div class="row px-4 py-4">
-          <div class="col-md-6 banner">
-            <button id="saved">Admin Dashboard</button>
-          </div>
-          <!-- <div class="col-md-5">
-            <button id="no-link" >Admin Dashboard </button>
-          </div> -->
-        </div>
-
-        <!-- <div class="col-md-12 py-3">
-          <button mat-raised-button id="back" [routerLink]="['/student/settings/dashboards']">Back</button>
-        </div> -->
-      </div>
-    </div>
+    </div> -->
     <div
       class="card"
       style="margin: auto; height: fit-content; width: 65%"
@@ -2356,142 +1027,6 @@
           </div>
 
         </div>
-
-        <!-- <div class="col-md-12 py-3">
-          <button
-            mat-raised-button
-            id="back"
-            [routerLink]="['/student/settings/configuration']"
-          >
-            Back
-          </button>
-        </div> -->
-      </div>
-    </div>
-    <div
-      class="card"
-      style="margin: auto; height: fit-content; width: 65%"
-      *ngIf="showConfig"
-    >
-      <div class="row">
-        <div class="col-md-8">
-          <label class="py-4 px-5">Configuration</label>
-        </div>
-        <div class="col-md-2 my-3 mx-auto">
-          <img
-            src="assets/images/settings/system-configuration1.png"
-            style="width: 80px; height: 80px"
-          />
-        </div>
-      </div>
-      <div class="body">
-        <div class="row px-4 py-4">
-          <div class="col-md-6 banner">
-            <button id="saved" [routerLink]="['/student/settings/categories']">
-              Categories
-            </button>
-          </div>
-          <div class="col-md-5">
-            <button id="saved" (click)="navigateToFormSettings()">Forms</button>
-            <!-- <button id="saved" [routerLink]="['/student/settings/form-customization']"> Forms </button> -->
-          </div>
-        </div>
-        <div class="row px-4">
-          <div class="col-md-6 banner">
-            <button id="saved" [routerLink]="['/student/settings/vendor']">
-              Vendor
-            </button>
-          </div>
-          <div class="col-md-5">
-            <button
-              id="saved"
-              [routerLink]="['/student/settings/funding-grant']"
-            >
-              Funding/Grant
-            </button>
-          </div>
-        </div>
-        <div class="row px-4 pt-4">
-          <div class="col-md-6 banner">
-            <button
-              id="saved"
-              [routerLink]="['/student/settings/all-questions']"
-            >
-              Assessment Configuration
-            </button>
-          </div>
-          <div class="col-md-5">
-            <button id="saved" (click)="openDialog(currencyDialog, 'currency')">
-              Currency
-            </button>
-          </div>
-        </div>
-        <!-- <div class="row px-4 pt-4"> -->
-        <!-- <div class="col-md-6 banner">
-            <button id="no-link"> Managed Access Time </button>
-          </div>
-          <div class="col-md-5">
-            <button id="no-link"> Control Storage Usage </button>
-          </div> -->
-        <!-- <div class="col-md-5">
-            <button id="no-link"> Managed Access Time </button>
-          </div> -->
-        <!-- </div> -->
-        <!-- <div class="row px-4">
-          <div class="col-md-6 banner">
-
-          </div>
-                </div> -->
-        <!-- <div class="row px-4 pt-4">
-          <div class="col-md-6 banner">
-            <button id="saved" (click)="openDialog(timerDialog, 'timer')">
-              Assessment Timer
-            </button>
-          </div>
-          <div class="col-md-5">
-            <button
-              id="saved"
-              (click)="openDialog(examTimerDialog, 'examTimer')"
-            >
-              Exam Timer
-            </button>
-          </div>
-        </div>
-
-        <div class="row px-4 pt-4">
-          <div class="col-md-6 banner">
-            <button
-              id="saved"
-              (click)="openDialog(assessmentDialog, 'assessment')"
-            >
-              Assessment Retake
-            </button>
-          </div>
-          <div class="col-md-5">
-            <button
-              id="saved"
-              (click)="openDialog(examAssessmentDialog, 'examAssessment')"
-            >
-              Exam Retake
-            </button>
-          </div>
-        </div> -->
-
-        <div class="row px-4 py-4">
-          <div class="col-md-6 banner">
-            <button
-              id="saved"
-              [routerLink]="['/student/settings/passing-criteria']"
-            >
-              Passing Criteria
-            </button>
-          </div>
-          <div class="col-md-5">
-            <button id="saved" [routerLink]="['/student/settings/discount']">
-              Discount
-            </button>
-          </div>
-        </div>
       </div>
     </div>
     <div *ngIf="showSidemenu">
@@ -2507,7 +1042,6 @@
               </div>
               <div class="body">
                 <div class="row">
-                  <!-- Logo List section -->
                   <div class="col-md-4">
                     <ul
                       class="list-unstyled user-progress list-unstyled-border list-unstyled-noborder"
@@ -2536,7 +1070,6 @@
           </div>
         </div>
       </div>
-    <!-- </div> -->
     </mat-tab>
       <mat-tab label="Settings Side menu">
     <!-- <div *ngIf="showSettingsSidemenu"> -->
@@ -2549,7 +1082,6 @@
               </div>
               <div class="body">
                 <div class="row">
-                  <!-- Logo List section -->
                   <div class="col-md-4">
                     <ul
                       class="list-unstyled user-progress list-unstyled-border list-unstyled-noborder"
@@ -2581,7 +1113,6 @@
           </div>
         </div>
       </div>
-    <!-- </div> -->
     </mat-tab>
     </mat-tab-group>
     </div>
@@ -2597,7 +1128,6 @@
                   </div>
                   <div class="body">
                     <div class="row">
-                      <!-- Logo List section -->
                       <div class="col-md-4">
                         <ul
                           class="list-unstyled user-progress list-unstyled-border list-unstyled-noborder"
@@ -2773,13 +1303,13 @@
         </mat-tab>
       </mat-tab-group>
     </div>
-    <div class="card" *ngIf="showCustomSettings">
+    <!-- <div class="card" *ngIf="showCustomSettings">
       <div class="header">
         <h2>Customization Settings</h2>
       </div>
       <div class="body">
         <div class="container">
-          <!-- Sidebar -->
+          <!-- Sidebar --
           <div class="sidenav">
             <label>Custom Fields</label>
             <button
@@ -2800,12 +1330,7 @@
             >
               <p>Email Id</p>
             </button>
-            <!-- <a [class.active]="currentContent === 1" (click)="showMainContent(1)">Course Name</a>
-            <a [class.active]="currentContent === 2" (click)="showMainContent(2)">Course Code</a>
-            <a [class.active]="currentContent === 3" (click)="showMainContent(3)">Email Id</a> -->
           </div>
-
-          <!-- Main Content Sections -->
           <div class="main-content" *ngIf="currentContent === 1">
             <form>
               <div class="row clearfix">
@@ -2910,29 +1435,8 @@
             </form>
           </div>
         </div>
-
-        <!-- <form [formGroup]="stdForm1">
-          <div class="row clearfix">
-            <div class="col-lg-6 col-md-12">
-              <div class="form-group">
-                <label>First Name<span class="mandatory">&nbsp;*</span></label>
-                <mat-form-field class="example-full-width" appearance="outline">
-                  <input matInput formControlName="name" />
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-8">
-                <button mat-raised-button color="primary">Back</button>
-              </div>
-              <div class="col-md-4">
-                <button mat-raised-button color="primary">Save Changes</button>
-              </div>
-            </div>
-          </div>
-        </form> -->
       </div>
-    </div>
+    </div> -->
   </div>
   <ng-template #currencyDialog let-dialogRef="dialogRef" let-data>
     <h2 mat-dialog-title>Select Currency</h2>

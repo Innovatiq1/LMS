@@ -59,14 +59,12 @@ export class CreateUserRoleComponent {
 
   edit(id:any){
     this.router.navigate(['/student/settings/create-user-type'],{queryParams:{id:id}});
-  // this.router.navigate(['/Users/Type/edit'],{queryParams:{id:id}});
   }
   getAllUserTypes(filters?: any) {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
         this.adminService.getUserTypeList({ 'allRows':true },userId).subscribe(
       (response: any) => {
         this.userTypeNames = response;
-        console.log("types", this.userTypeNames)
       },
       (error) => {
       }
@@ -74,7 +72,6 @@ export class CreateUserRoleComponent {
   }
 
   createUserType(): any {
-    console.log("createUserType", this.userTypeFormGroup);
     if(this.userTypeFormGroup.valid){
       let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
             let formData = this.userTypeFormGroup.getRawValue();
@@ -92,7 +89,6 @@ export class CreateUserRoleComponent {
               text: 'Role created succesfully.Add modules by selecting the role from existing roles',
               icon: 'success',
             }).then((result) => {
-              // this.router.navigate(['student/settings/create-user-type'])
             }
             );
             this.userTypeFormGroup.reset();

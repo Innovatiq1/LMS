@@ -46,11 +46,6 @@
                   </mat-error>
                   </mat-form-field>
                 </div>
-              <!-- </div>
-              <div class="row"> -->
-              
-              <!-- </div>
-              <div class="row"> -->
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <label>Email<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
@@ -67,8 +62,6 @@
                   </mat-error>
                   </mat-form-field>
                 </div>
-              <!-- </div>
-              <div class="row"> -->
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <label>Gender<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
@@ -150,68 +143,12 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <!-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                  <label>Re-Enter Password<span class="mandatory">&nbsp;*</span></label>
-                  <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <input matInput formControlName="conformPassword" type="password" required>
-                    <mat-error *ngIf="proForm.get('conformPassword')?.hasError('required')">
-                      Re-Enter Password
-                    </mat-error>
-                    <mat-error *ngIf="proForm.get('conformPassword')?.hasError('confirmedValidator')">
-                      Password and Re-Enter Password must be match
-                    </mat-error>
-                  </mat-form-field>
-                </div> -->
-
-                <!-- <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
-                  <label>Select Department<span class="mandatory">&nbsp;*</span></label>
-                  <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <mat-select formControlName="department" required>
-                      <mat-option [value]="'mechanical'">
-                        Mechanical
-                      </mat-option>
-                      <mat-option [value]="'science'">
-                        Science
-                      </mat-option>
-                      <mat-option [value]="'mathematics'">
-                        Mathematics
-                      </mat-option>
-                      <mat-option [value]="'computer'">
-                        Computer
-                      </mat-option>
-                      <mat-option [value]="'civil'">
-                        Civil
-                      </mat-option>
-                    </mat-select>
-                    <mat-error *ngIf="proForm.get('department')?.hasError('required')">
-                      Select Any Department
-                    </mat-error>
-                  </mat-form-field>
-                </div> -->
-              <!-- </div>
-              <div class="row"> -->
-             
-                
-              <!-- </div>
-              <div class="row"> -->
-              
-               
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <label>Address</label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <textarea matInput formControlName="address"></textarea>
                   </mat-form-field>
                 </div>
-              <!-- </div>
-              <div class="row"> -->
-                <!-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                  <label>Education</label>
-                  <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <textarea matInput formControlName="education"></textarea>
-                  </mat-form-field>
-                </div> -->
-              <!-- </div>
-              <div class="row"> -->
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-5" *ngIf="labelStatusCheck('Upload')">
                   <label>Upload</label>
                   <div class="file-drop-area">
@@ -226,10 +163,6 @@
                     
                     </div>
                   </div>
-                  <!-- <mat-error *ngIf="submitClicked && proForm.get('avatar')?.hasError('required')">
-                   Upload a file
-                  </mat-error> -->
-                  <!-- <app-file-upload formControlName="image_link" (change)="onFileUpload($event)"></app-file-upload> -->
                 </div>
                
               </div>

@@ -54,7 +54,6 @@ export class ViewAnnouncementComponent {
       if(deleteAction.length >0){
         this.isDelete = true;
       }
-    // this.loadData();
     this.loadData()
   }
 

@@ -15,503 +15,307 @@
             </ng-template>
             <div class="mt-4">
               <div class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
-                          <div class="card">
-                            <div class="materialTableHeader">
-                              <!-- <div class="left">
-                                <ul class="header-buttons-left ms-0">
-                                  <li class="tbl-title">
-                                    <h2> Active Courses</h2>
-                                  </li>
-                                  <li class="tbl-search-box">
-                                    <label for="search-input"><i class="material-icons search-icon">search</i></label>
-                                    <input placeholder="Search" type="text" #filter class="browser-default search-field"
-                                      aria-label="Search box" [(ngModel)]="searchTerm" (input)="performSearch()" />
-                                  </li>
-                                </ul>
-                              </div> -->
-                              <div class="right">
-                                <ul class="tbl-export-btn">
-                                  <li class="tbl-header-btn">
-                                    <div class="m-l-10" (click)="openFilterCard();" matTooltip="Filters">
-                                      <i id="filterIcon" class="material-icons" style="color: red; cursor: pointer;">filter_list</i>
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <ul class="header-buttons-left ms-0">
-                                      <li class="tbl-search-box">
-                                        <label for="search-input"><i class="material-icons search-icon">search</i></label>
-                                        <input placeholder="Search" type="text" #filter class="browser-default search-field"
-                                          aria-label="Search box" [(ngModel)]="searchTerm" (input)="performSearch()" />
-                                      </li>
-                                    </ul>
-                                  </li>
-                                  <li class="tbl-header-btn">
-                                    <div class="m-l-10" matTooltip="ADD" *ngIf="create" [routerLink]="['/admin/courses/add-course']">
-                                      <button mat-raised-button id="submit">Create</button>
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div class="upload-btn m-l-10" matTooltip="Bulk Upload">
-                                        <input
-                                          type="file"
-                                          (change)="onBulkUpload($event)"
-                                        />
-                                    </div>
-                                  </li>
-                                  
-                                  <li>
-                                    <div class="export-button m-l-10" matTooltip="XLSX">
-                                      <img src="assets/excel.svg" alt="" (click)="exportExcel()" />
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div class="export-button m-l-10" matTooltip="PDF">
-                                      <img src="assets/pdf (1).svg" alt="" (click)="generatePdf()" />
-                                    </div>
-                                  </li>
-                                  <!-- <li>
-                                    <div class="upload-btn m-l-10" matTooltip="Bulk Upload">
-                                        <input
-                                          type="file"
-                                          (change)="onBulkUpload($event)"
-                                        />
-                                    </div>
-                                  </li> -->
-                                </ul>
-                              </div>
-                            </div>
-                            <div class="body overflow-auto">
-                              <div class="card" *ngIf="isFilter">
-                                <div class="row m-3">
-                                  <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3">
-                                    <img src="assets/images/icons/filter.png" style="height: 80px; width: 80px;margin-top: 30px;">
-                                  </div>
-                                  <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
-                                    <form [formGroup]="filterForm">
-                                    <div class="row">
-                                      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
-                                        <mat-form-field class="example-full-width mb-3"  appearance="outline">
-                                          <mat-label>Course</mat-label>
-                                          <mat-select (selectionChange)="onSelectionChange($event,'course')" formControlName ="course" multiple>
-                                            <mat-option *ngFor="let title of courseList" [value]="title.title"> {{title.title | titlecase}} </mat-option>
-                                          </mat-select>
-                                        </mat-form-field>
-                                      </div>
-                                      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
-                                        <mat-form-field class="example-full-width mb-3"  appearance="outline">
-                                          <mat-label>Creator</mat-label>
-                                          <mat-select (selectionChange)="onSelectionChange($event,'creator')"  formControlName ="creator" multiple>
-                                            <mat-option *ngFor="let user of users" [value]="user.name"> {{user.name | titlecase}} </mat-option>
-                                          </mat-select>
-                                        </mat-form-field>
-                                      </div>
-                                      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
-                                      <mat-form-field class="example-full-width mb-3"   appearance="outline">
-                                        <mat-label>Vendor</mat-label>
-                                        <mat-select (selectionChange)="onSelectionChange($event,'vendor')" formControlName ="vendor"  multiple>
-                                          <mat-option *ngFor="let vendor of vendors" [value]="vendor.vendor"> {{vendor.vendor | titlecase}} </mat-option>
-                                        </mat-select>
-                                      </mat-form-field>
-                                      </div>
-                                      <!-- <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
-                                        <mat-form-field class="example-full-width mb-3" appearance="outline">
-                                          <mat-label>Start Date</mat-label>
-                                          <input matInput [owlDateTimeTrigger]="date" (change)="onSelectionChange($event, 'startDate')" formControlName="startDate" [owlDateTime]="date" name="start"/>
-                                          <mat-icon matSuffix [owlDateTimeTrigger]="date" class="date-icon">today</mat-icon>
-                                          <owl-date-time #date></owl-date-time>
-                                        </mat-form-field>                                                          </div>
-                                      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
-                                        <mat-form-field class="example-full-width mb-3"  appearance="outline">
-                                          <mat-label>End Date</mat-label>
-                                          <mat-select formControlName ="endDate" >
-                                            <mat-option *ngFor="let edate of endDate" [value]="edate"> {{edate | date}} </mat-option>
-                                          </mat-select>
-                                        </mat-form-field>
-                                      </div> -->
-                                      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
-                                        <mat-form-field class="example-full-width mb-3" appearance="outline">
-                                          <mat-label>Status</mat-label>
-                                          <mat-select (selectionChange)="onSelectionChange($event,'status')"  formControlName ="status"  multiple>
-                                            <mat-option value="active"> Approved</mat-option>
-                                            <mat-option value="inactive"> Pending</mat-option>
-                                          </mat-select>
-                                        </mat-form-field>
-                                        </div>
-                                        <div class="col-8 mt-2 d-flex justify-content-end">
-                                          <button mat-raised-button id="submit" (click)="applyFilter()">Apply</button>
-                                          <button mat-raised-button id="back" (click)="clearFilter()">Clear</button>
-                                          
-                                      </div>
-                                    
-                                    </div>
-                                  </form>
-                                   
-                                  </div>
-                                 
-                                </div>
-                              </div>
-                              <div class="responsive_table">
-                                <table mat-table [dataSource]="courseData" matSort class="mat-cell advance-table">
-                                  <ng-container matColumnDef="name">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Course
-                                    </mat-header-cell>
-                                    <mat-cell class="name" [class.name]="isCourse" *matCellDef="let row" (click)= "view ? viewCourse(row.id) : null"><span
-                                        class="mobile-label">Course Name:</span> <span>{{ row.title ? (row.title | titlecase) : '--' }}</span>
-                                    </mat-cell>
-                                  </ng-container>
-                                  <ng-container matColumnDef="code">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Course Code
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let row" (click)= "view ? viewCourse(row.id) : null"><span
-                                        class="mobile-label">Course Code:</span> {{row.courseCode ? (row.courseCode) : "--"}}
-                                    </mat-cell>
-                                  </ng-container>
-                                  <ng-container matColumnDef="creator">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Creator</mat-header-cell>
-                                    <mat-cell *matCellDef="let row" [class.name]="isCreator" (click)= "view ? viewCourse(row.id) : null">
-                                      <span class="mobile-label">Creator:</span> {{row.creator ? (row.creator) : "--"}}
-                                    </mat-cell>
-                                  </ng-container>
-                                 
-                                  <ng-container matColumnDef="Days">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Days
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let row" (click)= "view ? viewCourse(row.id) : null"> <span
-                                        class="mobile-label">Days:</span>{{row.course_duration_in_days ||0}}  {{ (row.course_duration_in_days === 1) ? 'Day' : 'Days' }}
-                                    </mat-cell>
-                                  </ng-container>
-            
-                                  <ng-container matColumnDef="Training Hours">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Hours
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let row" (click)= "view ? viewCourse(row.id) : null"> <span
-                                        class="mobile-label">Traning Hours:</span>{{row.training_hours || 0}} Hours
-                                    </mat-cell>
-                                  </ng-container>
-                                  <ng-container matColumnDef="Fee Type">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">Fee Type
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let row" (click)= "view ? viewCourse(row.id) : null"> <span
-                                        class="mobile-label">Fee Type:</span>{{row.feeType ? (row.feeType | titlecase) : "--"}}
-                                    </mat-cell>
-                                  </ng-container>
-                                  <ng-container matColumnDef="Vendor">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">Vendor
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let row" (click)= "view ? viewCourse(row.id) : null"> <span
-                                        class="mobile-label">Vendor:</span>{{row.vendor ? (row.vendor) : "--"}}
-                                    </mat-cell>
-                                  </ng-container>
-                                  <ng-container matColumnDef="Users">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">{{commonRoles?.STUDENT_ROLE}}
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let row" [routerLink]="['/admin/courses/student-courses/',row.title,row.id]"> <span
-                                        class="mobile-label">Users:</span>
-                                         <button mat-icon-button class="tbl-action-btn">
-                                  <app-feather-icons [icon]="'eye'" [class]="'tbl-fav-view'"></app-feather-icons>
-                                </button>
-                                    </mat-cell>
-                                  </ng-container>
-                                  <ng-container matColumnDef="startDate">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">Start Date
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let row" (click)= "view ? viewCourse(row.id) : null"> <span
-                                        class="mobile-label">Start Date:</span><span>{{row.sessionStartDate ? (row.sessionStartDate | date) : "--"}}</span>
-                                    </mat-cell>
-                                  </ng-container>
-                                  <ng-container matColumnDef="endDate">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">End Date
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let row" (click)= "view ? viewCourse(row.id) : null"> <span
-                                        class="mobile-label">End date:</span><span>{{ row.sessionEndDate ?(row.sessionEndDate
-                                          | date) : "--"}}</span>
-                                    </mat-cell>
-                                  </ng-container>
-                                  <ng-container matColumnDef="status">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header" style="width: 400px;">Status
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let row" class="pr-0">
-                                      <span
-                                        [class]="row?.status === 'active' ? 'badge badge-solid-green' : row?.status === 'inactive' ? 'badge badge-solid-red' : ''">
-                                        <span
-                                          [class]="row?.status === 'active' ? 'status-dot' : row?.status === 'inactive' ? 'status-red' : ''"></span>
-                                        {{row.status ==='active'? 'Approved':' Pending' | titlecase}}</span>
-                                    </mat-cell>
-                                  </ng-container>
-                                  <ng-container matColumnDef="Fees">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="amount">Payment
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let row" (click)= "view ? viewCourse(row.id) : null" class="payment-cell"> <span
-                                        class="mobile-label">Payment:</span><span >$</span> {{row.fee ||0}} .00
-                                    </mat-cell>
-                                  </ng-container>
-                                  <mat-header-row *matHeaderRowDef="displayedColumns">
-                                  </mat-header-row>
-                                  <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
-                                  <mat-row *matRowDef="let row; columns: displayedColumns;" [style.cursor]="'pointer'" matRipple>
-                                  </mat-row>
-                                </table>
-                               
-                                <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems"
-                                  (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr"
-                                  aria-label="select pagination option">
-                                </mat-paginator>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                   <!-- 2nd Tab -->
-                   
-                  
-                </div>
-            </mat-tab>
-
-            <!-- Tab-2 -->
-            <mat-tab class="grid">
-              <ng-template mat-tab-label>
-                <i class="material-icons-two-tone psr-3">list_alt</i>
-               Grid View
-              </ng-template>
-              <div class="row mt-4">
-                <div class="col-md-12">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <div class="card">
                     <div class="materialTableHeader">
                       <div class="right">
                         <ul class="tbl-export-btn">
+                          <li class="tbl-header-btn">
+                            <div class="m-l-10" (click)="openFilterCard();" matTooltip="Filters">
+                              <i id="filterIcon" class="material-icons"
+                                style="color: red; cursor: pointer;">filter_list</i>
+                            </div>
+                          </li>
                           <li>
                             <ul class="header-buttons-left ms-0">
                               <li class="tbl-search-box">
-                                <label for="search-input"
-                                  ><i class="material-icons search-icon">search</i></label
-                                >
-                                <input
-                                  placeholder="Search"
-                                  type="text"
-                                  #filter
-                                  class="browser-default search-field"
-                                  aria-label="Search box"
-                                  [(ngModel)]="searchTerm" (input)="performSearch()"
-              
-                                />
+                                <label for="search-input"><i class="material-icons search-icon">search</i></label>
+                                <input placeholder="Search" type="text" #filter class="browser-default search-field"
+                                  aria-label="Search box" [(ngModel)]="searchTerm" (input)="performSearch()" />
                               </li>
                             </ul>
                           </li>
                           <li class="tbl-header-btn">
-                            <div class="m-l-10" matTooltip="ADD" [routerLink]="['/admin/courses/add-course']">
+                            <div class="m-l-10" matTooltip="ADD" *ngIf="create"
+                              [routerLink]="['/admin/courses/add-course']">
                               <button mat-raised-button id="submit">Create</button>
                             </div>
                           </li>
                           <li>
-                            <div class="export-button m-l-10" matTooltip="XLSX" (click)="exportExcel()">
-                              <img src="assets/excel.svg" alt="" />
+                            <div class="upload-btn m-l-10" matTooltip="Bulk Upload">
+                              <input type="file" (change)="onBulkUpload($event)" />
+                            </div>
+                          </li>
+
+                          <li>
+                            <div class="export-button m-l-10" matTooltip="XLSX">
+                              <img src="assets/excel.svg" alt="" (click)="exportExcel()" />
                             </div>
                           </li>
                           <li>
-                            <div class="export-button m-l-10" matTooltip="PDF" (click)="generatePdf()">
-                              <img src="assets/pdf (1).svg" alt="" />
+                            <div class="export-button m-l-10" matTooltip="PDF">
+                              <img src="assets/pdf (1).svg" alt="" (click)="generatePdf()" />
                             </div>
                           </li>
                         </ul>
                       </div>
                     </div>
-                    <div class="body">
-                      <div class="row"  >
-                        <div class="col-md-3" *ngFor="let data of courseData" >
-                          <div class="course-card course-card-blog"style="cursor: pointer; height: 300px;"(click)=viewCourse(data.id)>
-                            <div class="course-card-image" style="height: 125px;">
-                              <img class="img" src="{{data.image_link || 'assets/noimage.jpg'}}">
-                            </div>
-                            <div class="blog-table">
-                              <div class="post-user mt-3">
-                                <!-- <span class="float-start msr-3">
-                                  <img class="img-circle" src="{{data.image_link}}" alt="...">
-                                </span> -->
-                                <h6 class="mb-xs mt-xs title"> {{data.title |truncate : 25}}</h6>
-                                <p class="text-muted"><time>{{data.training_hours}} hours</time></p>
-                              </div>
-                              <!-- <h6>John Deo</h6> -->
-                              <!-- <p class="course-card-description">{{data.course_detailed_description |truncate : 30}}
-                              </p> -->
-                              <div class="col">
-                                <p class="course-card-description" [innerHTML]="data?.course_detailed_description | truncate:30">
-                              </div>
-                              <!-- <div class="text-center mb-3">
-                                <button mat-icon-button class="tbl-action-btn" [routerLink]="['/admin/courses/view-course/',data.id]">
-                                  <app-feather-icons [icon]="'eye'" [class]="'tbl-fav-view'"></app-feather-icons>
-                                </button>
-                                <button mat-icon-button class="tbl-action-btn" [routerLink]="['/admin/courses/edit-course/',data.id]">
-                                  <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                                </button>
-                                <button mat-icon-button class="tbl-action-btn" (click)="delete(data.id)">
-                                  <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                                </button>
-                               
-                              </div> -->
-                              <!-- <div class="ftr">
-                                <div class="author">
-                                  <a href="#"><span class="text-danger"><i class="fa fa-heart"></i>
-                                      368</span></a>
+                    <div class="body overflow-auto">
+                      <div class="card" *ngIf="isFilter">
+                        <div class="row m-3">
+                          <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3">
+                            <img src="assets/images/icons/filter.png"
+                              style="height: 80px; width: 80px;margin-top: 30px;">
+                          </div>
+                          <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
+                            <form [formGroup]="filterForm">
+                              <div class="row">
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
+                                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                    <mat-label>Course</mat-label>
+                                    <mat-select (selectionChange)="onSelectionChange($event,'course')"
+                                      formControlName="course" multiple>
+                                      <mat-option *ngFor="let title of courseList" [value]="title.title"> {{title.title
+                                        | titlecase}} </mat-option>
+                                    </mat-select>
+                                  </mat-form-field>
                                 </div>
-                                <div class="stats"> <a href="#"><i class="far fa-comment-dots"></i>48</a> </div>
-                              </div> -->
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
+                                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                    <mat-label>Creator</mat-label>
+                                    <mat-select (selectionChange)="onSelectionChange($event,'creator')"
+                                      formControlName="creator" multiple>
+                                      <mat-option *ngFor="let user of users" [value]="user.name"> {{user.name |
+                                        titlecase}} </mat-option>
+                                    </mat-select>
+                                  </mat-form-field>
+                                </div>
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
+                                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                    <mat-label>Vendor</mat-label>
+                                    <mat-select (selectionChange)="onSelectionChange($event,'vendor')"
+                                      formControlName="vendor" multiple>
+                                      <mat-option *ngFor="let vendor of vendors" [value]="vendor.vendor">
+                                        {{vendor.vendor | titlecase}} </mat-option>
+                                    </mat-select>
+                                  </mat-form-field>
+                                </div>
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
+                                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                    <mat-label>Status</mat-label>
+                                    <mat-select (selectionChange)="onSelectionChange($event,'status')"
+                                      formControlName="status" multiple>
+                                      <mat-option value="active"> Approved</mat-option>
+                                      <mat-option value="inactive"> Pending</mat-option>
+                                    </mat-select>
+                                  </mat-form-field>
+                                </div>
+                                <div class="col-8 mt-2 d-flex justify-content-end">
+                                  <button mat-raised-button id="submit" (click)="applyFilter()">Apply</button>
+                                  <button mat-raised-button id="back" (click)="clearFilter()">Clear</button>
+
+                                </div>
+
+                              </div>
+                            </form>
+
+                          </div>
+
+                        </div>
+                      </div>
+                      <div class="responsive_table">
+                        <table mat-table [dataSource]="courseData" matSort class="mat-cell advance-table">
+                          <ng-container matColumnDef="name">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Course
+                            </mat-header-cell>
+                            <mat-cell class="name" [class.name]="isCourse" *matCellDef="let row"
+                              (click)="view ? viewCourse(row.id) : null"><span class="mobile-label">Course Name:</span>
+                              <span>{{ row.title ? (row.title | titlecase) : '--' }}</span>
+                            </mat-cell>
+                          </ng-container>
+                          <ng-container matColumnDef="code">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Course Code
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row" (click)="view ? viewCourse(row.id) : null"><span
+                                class="mobile-label">Course Code:</span> {{row.courseCode ? (row.courseCode) : "--"}}
+                            </mat-cell>
+                          </ng-container>
+                          <ng-container matColumnDef="creator">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Creator</mat-header-cell>
+                            <mat-cell *matCellDef="let row" [class.name]="isCreator"
+                              (click)="view ? viewCourse(row.id) : null">
+                              <span class="mobile-label">Creator:</span> {{row.creator ? (row.creator) : "--"}}
+                            </mat-cell>
+                          </ng-container>
+
+                          <ng-container matColumnDef="Days">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Days
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row" (click)="view ? viewCourse(row.id) : null"> <span
+                                class="mobile-label">Days:</span>{{row.course_duration_in_days ||0}} {{
+                              (row.course_duration_in_days === 1) ? 'Day' : 'Days' }}
+                            </mat-cell>
+                          </ng-container>
+
+                          <ng-container matColumnDef="Training Hours">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Hours
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row" (click)="view ? viewCourse(row.id) : null"> <span
+                                class="mobile-label">Traning Hours:</span>{{row.training_hours || 0}} Hours
+                            </mat-cell>
+                          </ng-container>
+                          <ng-container matColumnDef="Fee Type">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">Fee Type
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row" (click)="view ? viewCourse(row.id) : null"> <span
+                                class="mobile-label">Fee Type:</span>{{row.feeType ? (row.feeType | titlecase) : "--"}}
+                            </mat-cell>
+                          </ng-container>
+                          <ng-container matColumnDef="Vendor">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">Vendor
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row" (click)="view ? viewCourse(row.id) : null"> <span
+                                class="mobile-label">Vendor:</span>{{row.vendor ? (row.vendor) : "--"}}
+                            </mat-cell>
+                          </ng-container>
+                          <ng-container matColumnDef="Users">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header
+                              class="compulsory-count-header">{{commonRoles?.STUDENT_ROLE}}
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row"
+                              [routerLink]="['/admin/courses/student-courses/',row.title,row.id]"> <span
+                                class="mobile-label">Users:</span>
+                              <button mat-icon-button class="tbl-action-btn">
+                                <app-feather-icons [icon]="'eye'" [class]="'tbl-fav-view'"></app-feather-icons>
+                              </button>
+                            </mat-cell>
+                          </ng-container>
+                          <ng-container matColumnDef="startDate">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">Start
+                              Date
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row" (click)="view ? viewCourse(row.id) : null"> <span
+                                class="mobile-label">Start Date:</span><span>{{row.sessionStartDate ?
+                                (row.sessionStartDate | date) : "--"}}</span>
+                            </mat-cell>
+                          </ng-container>
+                          <ng-container matColumnDef="endDate">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">End Date
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row" (click)="view ? viewCourse(row.id) : null"> <span
+                                class="mobile-label">End date:</span><span>{{ row.sessionEndDate ?(row.sessionEndDate
+                                | date) : "--"}}</span>
+                            </mat-cell>
+                          </ng-container>
+                          <ng-container matColumnDef="status">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header"
+                              style="width: 400px;">Status
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row" class="pr-0">
+                              <span
+                                [class]="row?.status === 'active' ? 'badge badge-solid-green' : row?.status === 'inactive' ? 'badge badge-solid-red' : ''">
+                                <span
+                                  [class]="row?.status === 'active' ? 'status-dot' : row?.status === 'inactive' ? 'status-red' : ''"></span>
+                                {{row.status ==='active'? 'Approved':' Pending' | titlecase}}</span>
+                            </mat-cell>
+                          </ng-container>
+                          <ng-container matColumnDef="Fees">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="amount">Payment
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row" (click)="view ? viewCourse(row.id) : null"
+                              class="payment-cell"> <span class="mobile-label">Payment:</span><span>$</span> {{row.fee
+                              ||0}} .00
+                            </mat-cell>
+                          </ng-container>
+                          <mat-header-row *matHeaderRowDef="displayedColumns">
+                          </mat-header-row>
+                          <mat-row *matRowDef="let row; columns: displayedColumns;" [style.cursor]="'pointer'"
+                            matRipple>
+                          </mat-row>
+                        </table>
+
+                        <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems"
+                          (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr"
+                          aria-label="select pagination option">
+                        </mat-paginator>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </mat-tab>
+          <mat-tab class="grid">
+            <ng-template mat-tab-label>
+              <i class="material-icons-two-tone psr-3">list_alt</i>
+              Grid View
+            </ng-template>
+            <div class="row mt-4">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="materialTableHeader">
+                    <div class="right">
+                      <ul class="tbl-export-btn">
+                        <li>
+                          <ul class="header-buttons-left ms-0">
+                            <li class="tbl-search-box">
+                              <label for="search-input"><i class="material-icons search-icon">search</i></label>
+                              <input placeholder="Search" type="text" #filter class="browser-default search-field"
+                                aria-label="Search box" [(ngModel)]="searchTerm" (input)="performSearch()" />
+                            </li>
+                          </ul>
+                        </li>
+                        <li class="tbl-header-btn">
+                          <div class="m-l-10" matTooltip="ADD" [routerLink]="['/admin/courses/add-course']">
+                            <button mat-raised-button id="submit">Create</button>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="export-button m-l-10" matTooltip="XLSX" (click)="exportExcel()">
+                            <img src="assets/excel.svg" alt="" />
+                          </div>
+                        </li>
+                        <li>
+                          <div class="export-button m-l-10" matTooltip="PDF" (click)="generatePdf()">
+                            <img src="assets/pdf (1).svg" alt="" />
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="body">
+                    <div class="row">
+                      <div class="col-md-3" *ngFor="let data of courseData">
+                        <div class="course-card course-card-blog" style="cursor: pointer; height: 300px;"
+                          (click)=viewCourse(data.id)>
+                          <div class="course-card-image" style="height: 125px;">
+                            <img class="img" src="{{data.image_link || 'assets/noimage.jpg'}}">
+                          </div>
+                          <div class="blog-table">
+                            <div class="post-user mt-3">
+                              <h6 class="mb-xs mt-xs title"> {{data.title |truncate : 25}}</h6>
+                              <p class="text-muted"><time>{{data.training_hours}} hours</time></p>
+                            </div>
+                            <div class="col">
+                              <p class="course-card-description"
+                                [innerHTML]="data?.course_detailed_description | truncate:30">
                             </div>
                           </div>
                         </div>
-                        </div>
+                      </div>
                     </div>
-                    <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems" (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr"
-                  aria-label="select pagination option">
-                </mat-paginator>
                   </div>
+                  <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems"
+                    (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr"
+                    aria-label="select pagination option">
+                  </mat-paginator>
                 </div>
               </div>
-              </mat-tab>
-            </mat-tab-group>
             </div>
-            </div>
-
-
-
-
-
-
-    <!-- <div class="card" >
-      <div class="card-header">
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-          <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">
-              <i class="now-ui-icons shopping_shop"></i>
-              Active Courses</button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link" id="des-tab" data-bs-toggle="tab" data-bs-target="#des" type="button" role="tab" aria-controls="des" aria-selected="false">
-              <i class="now-ui-icons ui-2_settings-90"></i>
-              In-Active Courses</button>
-          </li>
-        </ul>
+          </mat-tab>
+        </mat-tab-group>
       </div>
-      </div> -->
-      <!-- Course Completed  -->
-      <!-- <div class="card-body">
-        <div class="tab-content" id="myTabContent">
-          <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-            <app-active-courses></app-active-courses>
-          </div>
-          <div class="tab-pane fade" id="des" role="tabpanel" aria-labelledby="des-tab">
-            <app-in-active-courses></app-in-active-courses>
-          </div>
-        </div>
-      </div> -->
+    </div>
   </div>
 </section>
-
-
-<!-- <section class="content">
-  <div class="content-block">
-    <div class="block-header" *ngFor="let breadscrum of breadscrums">
-      <!-- breadcrumb --
-      <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
-      </app-breadcrumb>
-    </div>
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="materialTableHeader">
-            <div class="left">
-              <ul class="header-buttons-left ms-0">
-                <li class="tbl-title">
-                  <h2>All Courses</h2>
-                </li>
-                <li class="tbl-search-box">
-                  <label for="search-input"
-                    ><i class="material-icons search-icon">search</i></label
-                  >
-                  <input
-                    placeholder="Search"
-                    type="text"
-                    #filter
-                    class="browser-default search-field"
-                    aria-label="Search box"
-                    [(ngModel)]="searchTerm" (input)="performSearch()"
-
-                  />
-                </li>
-              </ul>
-            </div>
-            <div class="right">
-              <ul class="tbl-export-btn">
-                <!-- <li class="tbl-header-btn">
-                  <div class="m-l-10" matTooltip="ADD" [routerLink]="['/admin/courses/add-course']">
-                    <button mat-mini-fab color="primary">
-                      <mat-icon class="col-white">add</mat-icon>
-                    </button>
-                  </div>
-                </li> --
-                <li>
-                  <div class="export-button m-l-10" matTooltip="XLSX" (click)="exportExcel()">
-                    <img src="assets/excel.svg" alt="" />
-                  </div>
-                </li>
-                <li>
-                  <div class="export-button m-l-10" matTooltip="PDF" (click)="generatePdf()">
-                    <img src="assets/pdf (1).svg" alt="" />
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="body">
-            <div class="row" >
-              <div class="col-md-3" *ngFor="let data of courseData">
-                <div class="course-card course-card-blog">
-                  <div class="course-card-image" style= "cursor: pointer;" [routerLink]="['/admin/courses/view-course/',data.id]">
-                    <img class="img" src="{{data.image_link || 'assets/noimage.jpg'}}">
-                  </div>
-                  <div class="blog-table">
-                    <div class="post-user mt-3">
-                      <!-- <span class="float-start msr-3">
-                        <img class="img-circle" src="{{data.image_link}}" alt="...">
-                      </span> --
-                      <h6 class="mb-xs mt-xs title"> {{data.title |truncate : 25}}</h6>
-                      <p class="text-muted"><time>{{data.training_hours}} hours</time></p>
-                    </div>
-                    <!-- <h6>John Deo</h6> --
-                    <!-- <p class="course-card-description">{{data.course_detailed_description |truncate : 30}}
-                    </p> --
-                    <div class="col">
-                      <p class="course-card-description" [innerHTML]="data?.course_detailed_description | truncate:30">
-                    </div>
-                    <div class="text-center mb-3">
-                      <button mat-icon-button class="tbl-action-btn" [routerLink]="['/admin/courses/view-course/',data.id]">
-                        <app-feather-icons [icon]="'eye'" [class]="'tbl-fav-view'"></app-feather-icons>
-                      </button>
-                      <button mat-icon-button class="tbl-action-btn" [routerLink]="['/admin/courses/edit-course/',data.id]">
-                        <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                      </button>
-                      <button mat-icon-button class="tbl-action-btn" (click)="delete(data.id)">
-                        <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                      </button>
-                     
-                    </div>
-                    <!-- <div class="ftr">
-                      <div class="author">
-                        <a href="#"><span class="text-danger"><i class="fa fa-heart"></i>
-                            368</span></a>
-                      </div>
-                      <div class="stats"> <a href="#"><i class="far fa-comment-dots"></i>48</a> </div>
-                    </div> --
-                  </div>
-                </div>
-              </div>
-              </div>
-          </div>
-          <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems" (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr"
-        aria-label="select pagination option">
-      </mat-paginator>
-        </div>
-      </div>
-    </div>
-  </div>
-</section> -->

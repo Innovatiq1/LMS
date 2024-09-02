@@ -1,7 +1,3 @@
-/* eslint-disable no-empty */
-/* eslint-disable prefer-const */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Router, NavigationEnd } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
 import {
@@ -16,7 +12,6 @@ import {
   EventEmitter,
   Output,
 } from '@angular/core';
-import { ROUTES, SettingsMenu } from './sidebar-items';
 import { AuthService, Role } from '@core';
 import { MenuItem, RouteInfo } from './sidebar.metadata';
 import { AuthenService } from '@core/service/authen.service';
@@ -67,16 +62,13 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
     this.routerObj = this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        // close sidebar on mobile screen after menu select
         this.renderer.removeClass(this.document.body, 'overlay-open');
         if (!event.url.includes('settings')) {
           this.isSettings = false;
           this.menuitem = this.orgMenuItems;
-          console.log('menu',this.orgMenuItems)
         } else {
           if (this.userType == AppConstants.ADMIN_ROLE || AppConstants.INSTRUCTOR_ROLE) {
             this.isSettings = true;
-            this.menuitem = SettingsMenu;
             this.menuitem = this.orgMenuItem;
           } else {
             this.isSettings = false;
@@ -104,10 +96,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
       const activeClass = parentElement?.classList.contains('active');
       if (activeClass) {
         this.renderer.removeClass(parentElement, 'active');
-        console.log('added');
       } else {
         this.renderer.addClass(parentElement, 'active');
-        console.log('removed');
       }
     }
   }
@@ -123,7 +113,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
         const settingsItems = data[0].settingsMenuItems?.filter(
           (item: any) => item.title !== 'Support'
         );
-        console.log("ssettings", settingsItems)
         this.orgMenuItems = items;
         this.orgMenuItem = settingsItems;
         if (!this.isSettings) {
@@ -143,11 +132,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
   navigateTo(menu: any, url?: any, length?: any): void {
     this.menuItemClick.emit();
     let userType = localStorage.getItem('user_type');
-    console.log(userType,"userType");
       this.router.navigateByUrl(menu + '/' + url);
   }
   navigateToMian(url: string, menu: string) {
-    console.log(url);
     this.router.navigateByUrl(url + '/' + menu);
   }
   navigateToSubItem2(menu: any, url?: any, subUrl?: any) {
@@ -204,9 +191,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.routerObj.unsubscribe();
   }
   initLeftSidebar() {
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const _this = this;
-    // Set menu height
     _this.setMenuHeight();
     _this.checkStatuForResize(true);
   }
@@ -218,9 +203,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
   student() {
     this.studentId = localStorage.getItem('id');
-    // let studentId = localStorage.getItem('id')?localStorage.getItem('id'):null
     this.studentService.getStudentById(this.studentId).subscribe((res: any) => {
-      // this.editData = res;
       this.userProfile = res?.avatar;
     });
   }

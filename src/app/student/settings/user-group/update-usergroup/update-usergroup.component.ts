@@ -77,7 +77,6 @@ export class UpdateUsergroupComponent {
         });
       },
       (error) => {
-        console.log(error);
       }
     );
   }
@@ -111,14 +110,12 @@ export class UpdateUsergroupComponent {
               title: 'Success',
               text: 'User Group updated successfully.',
               icon: 'success',
-              // confirmButtonColor: '#d33',
             });
             () => {
               Swal.fire({
                 title: 'Error',
                 text: 'Failed to update. Please try again.',
                 icon: 'error',
-                // confirmButtonColor: '#d33',
               });
             };
           }
@@ -148,7 +145,6 @@ export class UpdateUsergroupComponent {
         title: 'Success',
         text: 'Record Deleted Successfully...!!!',
         icon: 'success',
-        // confirmButtonColor: '#526D82',
       });
       window.history.back();
     });

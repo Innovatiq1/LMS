@@ -39,7 +39,6 @@ export class CreateBudgetComponent {
     public activeRoute: ActivatedRoute,
     
     private fb: FormBuilder){
-      /**getting id from budget list */
       this.activeRoute.queryParams.subscribe((params) => {
         this._id = params['id'];
         this.action = params['action'];

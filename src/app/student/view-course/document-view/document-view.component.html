@@ -1,0 +1,10 @@
+<h1 mat-dialog-title>Document Preview</h1>
+<mat-progress-bar mode="indeterminate" *ngIf="loading">Loading </mat-progress-bar>
+<div mat-dialog-content class="fullscreen-dialog">
+  <div id="pdf-viewer-container" (scroll)="onScroll($event)" style="max-height: 600px; overflow-y: auto;"></div>
+</div>
+<div class="mat-dialog-actions">
+  <mat-checkbox *ngIf="allPagesRendered &&  inputUrl" (change)="onCheckboxChange($event)" class="completed-checkbox">Completed</mat-checkbox>
+  <span class="spacer"></span>
+  <button class="mat-button close-button" (click)="onClose()">Close</button>
+</div>

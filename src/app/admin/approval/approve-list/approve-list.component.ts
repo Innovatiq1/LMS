@@ -1,6 +1,3 @@
-import { StudenId } from './../../../core/models/class.model';
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {
   MatSnackBar,
@@ -17,7 +14,6 @@ import {
 } from '@shared';
 import { formatDate } from '@angular/common';
 import jsPDF from 'jspdf';
-//import 'jspdf-autotable';
 import 'jspdf-autotable';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
@@ -47,14 +43,10 @@ import { AuthenService } from '@core/service/authen.service';
 })
 export class ApproveListComponent {
   displayedColumns = [
-    // 'select',
-
     'studentname',
     'status',
     'coursename',
     'Fee Type',
-    // 'programFee',
-    // 'instructorFee',
     'classstartDate',
     'classendDate',
     'registeredDate',
@@ -171,7 +163,6 @@ export class ApproveListComponent {
       item.classEndDate = !isNaN(maxEndDate.valueOf())
         ? moment(maxEndDate).format('YYYY-DD-MM')
         : '';
-      // item.registeredOn = item?.registeredOn ? moment(item.registeredOn).format("YYYY-DD-MM") : "";
       item.studentId.name = `${item?.studentId?.name}`;
     });
   }
@@ -205,7 +196,6 @@ export class ApproveListComponent {
               title: 'Success',
               text: 'Course approved successfully.',
               icon: 'success',
-              // confirmButtonColor: '#526D82',
             });
             this.getRegisteredClasses();
           },
@@ -214,7 +204,6 @@ export class ApproveListComponent {
               title: 'Error',
               text: 'Failed to approve course. Please try again.',
               icon: 'error',
-              // confirmButtonColor: '#526D82',
             });
           }
         );
@@ -246,7 +235,6 @@ export class ApproveListComponent {
               title: 'Success',
               text: 'Course Withdraw successfully.',
               icon: 'success',
-              // confirmButtonColor: '#526D82',
             });
             this.getRegisteredClasses();
           },
@@ -255,7 +243,6 @@ export class ApproveListComponent {
               title: 'Error',
               text: 'Failed to approve course. Please try again.',
               icon: 'error',
-              // confirmButtonColor: '#526D82',
             });
           }
         );
@@ -273,8 +260,6 @@ export class ApproveListComponent {
           ).toLowerCase();
           return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1;
         }
-
-        // item.classId.courseId?.title.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     } else {
       this.getRegisteredClasses();
@@ -288,8 +273,6 @@ export class ApproveListComponent {
     const numRows = this.dataSource.length;
     return numSelected === numRows;
   }
-
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
     this.isAllSelected()
       ? this.selection.clear()
@@ -306,7 +289,6 @@ export class ApproveListComponent {
   }
 
   exportExcel() {
-    //k//ey name with space add in brackets
     const exportData: Partial<TableElement>[] = this.dataSource.map(
       (user: any) => ({
         [AppConstants.STUDENT_ROLE] : user.studentId?.name,
@@ -347,12 +329,7 @@ export class ApproveListComponent {
       user.classEndDate,
       formatDate(new Date(user.registeredOn), 'yyyy-MM-dd', 'en') || '',
     ]);
-    //const columnWidths = [60, 80, 40];
     const columnWidths = [20, 20, 20, 20, 20, 20, 20, 20, 20, 20];
-
-
-
-    // Generate the table using jspdf-autotable
     (doc as any).autoTable({
       head: headers,
       body: data,
@@ -362,8 +339,6 @@ export class ApproveListComponent {
         cellWidth: 'wrap',
       },
     });
-
-    // Save or open the PDF
     doc.save('Student-Approve-list.pdf');
   }
 }

@@ -1,5 +1,3 @@
-
-
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,16 +12,9 @@ import { UtilsService } from '@core/service/utils.service';
 })
 export class ViewDepartmentComponent{
   displayedColumns: string[] = [
-    // 'select',
     'img',
     'User Type',
     'Name',
-    // 'gender',
-    // 'Qualification',
-    // 'Mobile',
-    // 'Email',
-    // 'Status',
-    // 'Actions'
   ];
   breadscrums = [
     {
@@ -50,7 +41,6 @@ export class ViewDepartmentComponent{
 
     this.subscribeParams = this.activatedRoute.params.subscribe((params:any) => {
       this.type = params.id;
-      console.log("paramas here",params)
       this.breadscrums = [
         {
           title: this.type,
@@ -81,8 +71,6 @@ getUsersDepartmentList(filters?:any) {
     this.coursePaginationModel.docs = response.results.docs;
     this.coursePaginationModel.page = response.results.page;
     this.coursePaginationModel.limit = response.results.limit;
-
-    console.log("data sourese",response.results)
 
   }, error => {
   });

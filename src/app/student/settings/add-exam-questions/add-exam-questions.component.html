@@ -25,14 +25,6 @@
                     code.times
                   }}Seconds</mat-option>
                 </mat-select>
-  
-                <!-- <input
-                  matInput
-                  formControlName="timer"
-                  type="number"
-                  placeholder="Enter time in seconds"
-                  [readonly]="true"
-                /> -->
               </mat-form-field>
           </div>
 
@@ -78,14 +70,6 @@
                       code.scores
                     }}</mat-option>
                   </mat-select>
-                  <!-- <input
-                    matInput
-                    formControlName="scoreAlgorithm"
-                    type="number"
-                    placeholder="Enter Score"
-                    min="0.5"
-                    step="0.5"
-                  /> -->
                 </mat-form-field>
 
               </div>
@@ -100,44 +84,10 @@
                       code.value
                     }}</mat-option>
                   </mat-select>
-                  <!-- <input
-                    matInput
-                    formControlName="scoreAlgorithm"
-                    type="number"
-                    placeholder="Enter Score"
-                    min="0.5"
-                    step="0.5"
-                  /> -->
                 </mat-form-field>
 
               </div>
-              
-              <!-- <div class="col-md-4">
-                <h6>
-                  Passing Criteria <span class="mandatory">&nbsp;*</span>
-                </h6>
-               
-                <mat-form-field class="example-full-width mb-3" appearance="outline">
-                  <mat-select formControlName="passingCriteria" required>
-                    <mat-option [value]="row.value" *ngFor="let row of dataSource">
-                      
-                      {{ row.value }}
-                       
-                    </mat-option>
-                  </mat-select>
-                  <mat-error  *ngIf="questionFormTab2.get('passingCriteria')?.hasError('required')">
-                    
-                    Select Passing Criteria
-                  </mat-error>
-                </mat-form-field>
-              </div> -->
-
             </div>
-
-            
-
-            
-
           </div>
           <div class="table-responsive">
             <table class="table">
@@ -193,21 +143,35 @@
         </form>
       </div>
       <div class="row body">
-        <div class="col-md-10">
+        <div class="col-md-6">
           <button mat-raised-button id="back" [routerLink]="['/student/settings/configuration/all-questions']">
             Back
           </button>
         </div>
 
-        <div class="col-md-2">
+        <div class="col-md-6">
           <div class="d-flex justify-content-between">
 
 
-            <button *ngIf="editUrl && approved"  mat-raised-button color="success" type="submit" id="back" style="margin-left: -80px; margin-right: 10px;"
-              (click)="approve()">
-              Publish
-            </button>
-
+            <button
+            class="btn-space"
+            id="draft"
+            mat-raised-button
+            color="warn"
+            (click)="saveDraft('draft')"
+          > Save as draft
+          </button>
+          <button
+          *ngIf="editUrl && approved"
+          mat-raised-button
+          color="success"
+          type="submit"
+          id="back"
+          style="margin-left: 10px; margin-right: 10px"
+          (click)="approve()"
+        >
+          Publish
+        </button>
             <button class="btn-space" id="submit" mat-raised-button color="primary"  id="submit"
             (click)="update()">
             {{editUrl? 'Update': 'Create'}}

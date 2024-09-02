@@ -30,47 +30,15 @@ export class DepartmentService extends UnsubscribeOnDestroyAdapter {
       },
       error: (error: HttpErrorResponse) => {
         this.isTblLoading = false;
-        console.log(error.name + ' ' + error.message);
       },
     });
   }
   addDepartment(department: Department): void {
     this.dialogData = department;
-
-    // this.httpClient.post(this.API_URL, department)
-    //   .subscribe({
-    //     next: (data) => {
-    //       this.dialogData = department;
-    //     },
-    //     error: (error: HttpErrorResponse) => {
-    //        // error code here
-    //     },
-    //   });
   }
   updateDepartment(department: Department): void {
     this.dialogData = department;
-
-    // this.httpClient.put(this.API_URL + department.id, department)
-    //     .subscribe({
-    //       next: (data) => {
-    //         this.dialogData = department;
-    //       },
-    //       error: (error: HttpErrorResponse) => {
-    //          // error code here
-    //       },
-    //     });
   }
   deleteDepartment(id: number): void {
-    
-
-    // this.httpClient.delete(this.API_URL + id)
-    //     .subscribe({
-    //       next: (data) => {
-    //         
-    //       },
-    //       error: (error: HttpErrorResponse) => {
-    //          // error code here
-    //       },
-    //     });
   }
 }

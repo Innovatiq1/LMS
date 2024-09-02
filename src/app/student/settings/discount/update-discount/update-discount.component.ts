@@ -51,7 +51,6 @@ export class UpdateDiscountComponent {
       }
       this.activatedRoute.queryParams.subscribe(params => {
         this.id = params['id'];
-        // this.getDiscountById(this.id)
         this.getDiscountById(this.id);
       })
   }
@@ -75,14 +74,12 @@ export class UpdateDiscountComponent {
               title: 'Success',
               text: 'Discount updated successfully.',
               icon: 'success',
-              // confirmButtonColor: '#d33',
             });
             () => {
               Swal.fire({
                 title: 'Error',
                 text: 'Failed to update. Please try again.',
                 icon: 'error',
-                // confirmButtonColor: '#d33',
               });
             };
           }
@@ -123,7 +120,6 @@ export class UpdateDiscountComponent {
             title: 'Success',
             text: 'Record Deleted Successfully...!!!',
             icon: 'success',
-            // confirmButtonColor: '#526D82',
           });
           window.history.back();
         });

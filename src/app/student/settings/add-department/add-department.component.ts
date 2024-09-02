@@ -53,10 +53,6 @@ export class AddDepartmentComponent  implements OnInit {
       department: ['', [Validators.required]],
       hod: ['', [Validators.required]],
       mobile: ['', [Validators.required]],
-      // email: [
-      //   '',
-      //   [Validators.required, Validators.email, Validators.minLength(5)],
-      // ],
       departmentStartDate: [''],
       studentCapacity: ['', [Validators.required]],
       details: [''],
@@ -77,7 +73,6 @@ export class AddDepartmentComponent  implements OnInit {
      if(this.editUrl){
       this.getDepartmentById();
     }
-     console.log("pv", this.depts)
     })
     
   }
@@ -85,40 +80,14 @@ export class AddDepartmentComponent  implements OnInit {
     const selectedValue = event.value;
     
     let userfindEmail:Users[]=this.users.filter(event=>event.id===selectedValue)
-    console.log(userfindEmail)
     this.hod=selectedValue
     this.hodName=userfindEmail[0].name + " "+ (userfindEmail[0].last_name?userfindEmail[0].last_name:'')
     
-    // if (userfindEmail && userfindEmail.length > 0 && userfindEmail[0]?.name) {
-    //   this.ro=userfindEmail[0]?._id
-    //   console.log("====",userfindEmail[0]?.name +" " + userfindEmail[0]?.last_name)
-    //   this.roName=userfindEmail[0]?.name +" " + userfindEmail[0]?.last_name
-      
-    // } else {
-    //   // Handle the case where userfindEmail is null, empty, or userfindEmail[0].email is undefined
-    //   console.error('userfindEmail or email property is null or undefined');
-    // }
-    // console.log('Selected Value:', userfindEmail[0].email);
   }
   
   userList(){
   this.userService.getUserList1().subscribe((response: any) => {
     this.users=response.data
-    //response.data.data;
-    
-    // let data=this.blogsList.find((id:any)=>id._id === this.currentId);
-    // console.log('data',data)
-    // this.fileName = data.filename
-    // if(data){
-    //   this.userForm.patchValue({
-    //     name: data?.name,
-    //     email:data?.email,
-    //     password: data?.password,
-    //     qualification: data?.qualification,
-    //     type:data?.type,
-    //     avatar:data?.avatar,
-    //   });
-    // }
   }, error => {
   });
   }
@@ -129,7 +98,6 @@ export class AddDepartmentComponent  implements OnInit {
         department:this.deptName,
         hod:response?.hodId,
         mobile:response?.mobile,
-        // email:response?.email,
         departmentStartDate:response?.departmentStartDate,
         studentCapacity:response?.studentCapacity,
         details:response?.details

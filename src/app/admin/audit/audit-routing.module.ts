@@ -7,10 +7,6 @@ const routes: Routes = [
     path:'audit-list', 
     component: AuditListComponent
     },
-    // {
-    // path:'e-attendance', 
-    // component: EAttendanceComponent
-    // },
 ];
 
 @NgModule({

@@ -25,32 +25,15 @@
                         <div class="inbox-header">
                           <div class="mail-option no-pad-left">
                             <div class="email-btn-group m-l-15">
-                                <!-- <button mat-icon-button aria-label="Example icon-button with a heart icon">
-                                  <mat-icon>keyboard_return</mat-icon>
-                                </button> -->
-                                <!-- <button matTooltip="Spam" mat-icon-button aria-label="Example icon-button with a heart icon">
-                                  <mat-icon>error</mat-icon>
-                                </button> -->
                                 <button  matTooltip="Delete Forever" (click)="deleteSelectedEmails()" mat-icon-button aria-label="Example icon-button with a heart icon">
                                   <mat-icon>delete</mat-icon>
                                 </button>
-                                <!-- <button mat-icon-button aria-label="Example icon-button with a heart icon">
-                                  <mat-icon>folder</mat-icon>
-                                </button> -->
                               </div>
                             </div>
                         </div>
                       </th>
                       <th class="hidden-xs" colspan="2">
                         <div class="float-end">
-                          <!-- <div class="email-btn-group m-l-15">
-                            <button mat-icon-button aria-label="Example icon-button with a heart icon">
-                              <mat-icon>navigate_before</mat-icon>
-                            </button>
-                            <button mat-icon-button aria-label="Example icon-button with a heart icon">
-                              <mat-icon>navigate_next</mat-icon>
-                            </button>
-                          </div> -->
                         </div>
                       </th>
                     </tr>
@@ -68,9 +51,6 @@
                         <a  [routerLink]="['/email/read-email',email.id]">{{email?.subject}}</a>
   
                       </td>
-                      <!-- <td class="hidden-xs">
-                        <i class="material-icons">attach_file</i>
-                      </td> -->
                       <td class="text-end"> {{email?.createdAt | date}} </td>
                     </tr>
                   

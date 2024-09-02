@@ -58,7 +58,6 @@ export class FormDialogComponent {
   }
   formControl = new UntypedFormControl('', [
     Validators.required,
-    // Validators.email,
   ]);
   getErrorMessage() {
     return this.formControl.hasError('required')
@@ -82,7 +81,6 @@ export class FormDialogComponent {
       id: [this.leaveRequest.id],
       className: [this.leaveRequest.className, [Validators.required]],
       applyDate: [this.leaveRequest.applyDate, [Validators.required]],
-      // fromDate: [this.leaveRequest.fromDate, [Validators.required]],
       toDate: [this.leaveRequest.toDate, [Validators.required]],
       reason: [this.leaveRequest.reason, [Validators.required]],
     });
@@ -100,7 +98,6 @@ export class FormDialogComponent {
         ? this.leaveRequestForm.value?.className
         : this.leaveRequestForm.value?.className?.classId?.courseId?.title,
       applyDate: this.leaveRequestForm.value?.applyDate,
-      // fromDate: this.leaveRequestForm.value?.fromDate,
       toDate: this.leaveRequestForm.value?.toDate,
       reason: this.leaveRequestForm.value?.reason,
      headId:
@@ -111,23 +108,12 @@ export class FormDialogComponent {
       status: 'applied',
     };
     if (this.action === 'edit') {
-      // Swal.fire({
-      //   title: 'Are you sure?',
-      //   text: 'Do you want to update Reschedule request!',
-      //   icon: 'warning',
-      //   confirmButtonText: 'Yes',
-      //   showCancelButton: true,
-      //   cancelButtonColor: '#d33',
-      // }).then((result) => {
-      //   if (result.isConfirmed) {
           this.leaveRequestService.updateLeaveRequest(payload, this.id);
           Swal.fire({
             title: 'Successful',
             text: 'Reschedule request edited successfully',
             icon: 'success',
           });
-      //   }
-      // });
     } else {
       this.leaveRequestService.addLeaveRequest(payload);
       Swal.fire({

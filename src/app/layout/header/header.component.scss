@@ -21,18 +21,10 @@ select{
     border-radius: 12px;
 }
 
-// .mat-mdc-menu-content {
-//   width: 100%;
-// }
-
 .mat-list {
   text-align: left;
   border: none;
 }
-// .nfc-menu.nfc-dropdown.menu button {
-//   height: 74px;
-// }
-
 .align-left{
 text-align: left;
 }
@@ -42,41 +34,9 @@ text-align: left;
   border-radius: 15px!important;
   max-width: 550px !important;
 }
-
-// .menu-row {
-//   display: grid;
-//   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-//   justify-content: center;
-//   width: 100%;
-// }
-
-// .single-item .menu-row {
-//   grid-template-columns: 1fr;
-// }
-
-// .user-container {
-//   display: contents;
-// }
-
-// .user-options {
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   cursor: pointer;
-// }
-
-// .user-image {
-//   width: 80px;
-//   height: 80px;
-// }
-
-// .menu-title {
-//   text-align: center;
-// }
 .menu-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  // gap: 30px;
   justify-content: center;
 }
 

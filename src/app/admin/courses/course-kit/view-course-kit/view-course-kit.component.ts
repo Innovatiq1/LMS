@@ -47,10 +47,6 @@ export class ViewCourseKitComponent {
     this.activatedRoute.params.subscribe((params: any) => {
 
       this.courseId = params.id;
-      // if(this.courseId){
-      //   this.getProgramByID(this.courseId);
-      // }
-
     });
 
     this.adminService.filterAndReturnValue("course-kit").subscribe(value=>{
@@ -118,16 +114,8 @@ export class ViewCourseKitComponent {
   }
   getCategoryByID(id: string) {
    course: this.courseService.getCourseKitById(id).subscribe((response: any) => {
-    // this.course = response.course;
       this.classDataById = response?._id;
       this.response = response;
-      // this.subCategory = response.subCategories;
-      // if (response && response.data && response.data._id) {
-      //   this.classDataById = response?._id;
-      //   this.response = response.data;
-      // } else {
-
-      // }
     });
   }
   playVideo(video: { video_url: any; }): void {
@@ -139,11 +127,8 @@ export class ViewCourseKitComponent {
     }
   }
    openVidePlayer(videoLink: { video_url?: any; id?: any; }): void {
-    // const { videoLink } = videoLink;
     if (videoLink?.id) {
       const videoURL = videoLink.video_url;
-      // this.courseService.getVideoById(videoId).subscribe((res) => {
-      //   const videoURL = res.data.videoUrl;
         if (!videoURL) {
           Swal.fire({
             icon: "error",
@@ -153,18 +138,15 @@ export class ViewCourseKitComponent {
           return
 
         }
-        // const videoType = "application/x-mpegURL";
         if (videoURL) {
           const initialState: ModalOptions = {
             initialState: {
               videoURL,
-              // videoType,
             },
             class: "videoPlayer-modal",
           };
           this.modalServices.show(VideoPlayerComponent, initialState);
         }
-      // });
     }
   }
 

@@ -26,7 +26,6 @@ export class ListComponent {
     'Title',
     'Decription',
     'User Role',
-    // 'Actions'
   ];
   dataSource: any;
   create = true;
@@ -42,7 +41,6 @@ export class ListComponent {
 
 
   onButtonClicked(card: any) {
-    console.log('Button clicked for card:', card.title);
   }
 
   deleteAnnouncement(announcementId: any) {
@@ -133,18 +131,12 @@ export class ListComponent {
         this.isLoading = true;
       }
       this.cdr.detectChanges();
-
-
-      console.log("res====", res.totalRecords);
-
-      this.cdr.detectChanges();
     })
   }
-   // export table data in excel file
    exportExcel() {
     const exportData: Partial<TableElement>[] = this.dataSource.map((x: any) => ({
         'Title': x.subject,
-        'Description': this.removeHtmlTags(x.details), // Remove HTML tags from description
+        'Description': this.removeHtmlTags(x.details),
         'Role': x.announcementFor,
     }));
 

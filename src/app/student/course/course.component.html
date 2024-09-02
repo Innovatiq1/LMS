@@ -72,12 +72,8 @@
 
             <mat-tab *ngIf="allCourses">
               <ng-template mat-tab-label>
-                <!-- <mat-icon class="example-tab-icon msr-2">face</mat-icon> -->
                 <div class="course mx-4">Total Courses</div>
               </ng-template>
-
-              <!-- <h2>All Courses</h2> -->
-              <!-- </div> -->
               <div class="body">
                 <div *ngIf="totalItems > 0" class="row">
                   <div class="col-md-3" *ngFor="let data of classesData">
@@ -101,9 +97,6 @@
                       </div>
                       <div class="blog-table">
                         <div class="post-user mt-3">
-                          <!-- <span class="float-start msr-3">
-                          <img class="img-circle" src="{{data.image_link}}" alt="...">
-                        </span> -->
                           <h6 class="mb-xs mt-xs title">
                             {{ data?.courseId?.title | truncate : 45 }}
                           </h6>
@@ -113,9 +106,6 @@
                             >
                           </p>
                         </div>
-                        <!-- <div class="feeType-ribbon">
-                          <h6 class="feeType">{{ data?.courseId?.feeType | titlecase }}</h6>
-                        </div> -->
                         <p
                           class="course-card-description"
                           [innerHTML]="
@@ -125,30 +115,7 @@
                           "
                         ></p>
                         <div class="text-center mb-3">
-                          <!-- <button
-                            mat-icon-button
-                            class="tbl-action-btn"
-                            [routerLink]="['/student/view-course/', data.id]"
-                          >
-                            <app-feather-icons
-                              [icon]="'eye'"
-                              [class]="'tbl-fav-view'"
-                            ></app-feather-icons>
-                          </button> -->
-                          <!-- <button mat-icon-button class="tbl-action-btn" [routerLink]="['/admin/courses/edit-course/',data.id]">
-                          <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                        </button> -->
-                          <!-- <button mat-icon-button class="tbl-action-btn" (click)="delete(data.id)">
-                          <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                        </button> -->
                         </div>
-                        <!-- <div class="ftr">
-                        <div class="author">
-                          <a href="#"><span class="text-danger"><i class="fa fa-heart"></i>
-                              368</span></a>
-                        </div>
-                        <div class="stats"> <a href="#"><i class="far fa-comment-dots"></i>48</a> </div>
-                      </div> -->
                       </div>
                     </div>
                   </div>
@@ -169,7 +136,6 @@
             </mat-tab>
             <mat-tab *ngIf="register">
               <ng-template mat-tab-label>
-                <!-- <mat-icon class="example-tab-icon msr-2">face</mat-icon> -->
                 Registered Courses
               </ng-template>
               <div class="body">
@@ -202,9 +168,6 @@
 
                       <div class="blog-table">
                         <div class="post-user mt-3">
-                          <!-- <span class="float-start msr-3">
-                          <img class="img-circle" src="{{data.image_link}}" alt="...">
-                        </span> -->
                           <h6 class="mb-xs mt-xs title">
                             {{ data.courseId.title | truncate : 45 }}
                           </h6>
@@ -222,33 +185,7 @@
                           "
                         ></p>
                         <div class="text-center mb-3">
-                          <!-- <button
-                            mat-icon-button
-                            class="tbl-action-btn"
-                            [routerLink]="[
-                              '/student/view-course/',
-                              data.classId?.id
-                            ]"
-                          >
-                            <app-feather-icons
-                              [icon]="'eye'"
-                              [class]="'tbl-fav-view'"
-                            ></app-feather-icons>
-                          </button> -->
-                          <!-- <button mat-icon-button class="tbl-action-btn" [routerLink]="['/admin/courses/edit-course/',data.id]">
-                          <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                        </button> -->
-                          <!-- <button mat-icon-button class="tbl-action-btn" (click)="delete(data.id)">
-                          <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                        </button> -->
                         </div>
-                        <!-- <div class="ftr">
-                        <div class="author">
-                          <a href="#"><span class="text-danger"><i class="fa fa-heart"></i>
-                              368</span></a>
-                        </div>
-                        <div class="stats"> <a href="#"><i class="far fa-comment-dots"></i>48</a> </div>
-                      </div> -->
                       </div>
                     </div>
                   </div>
@@ -266,7 +203,6 @@
             </mat-tab>
             <mat-tab *ngIf="approve">
               <ng-template mat-tab-label>
-                <!-- <mat-icon class="example-tab-icon msr-2">face</mat-icon> -->
                 Approved Courses
               </ng-template>
               <div class="body">
@@ -300,9 +236,6 @@
 
                       <div class="blog-table">
                         <div class="post-user mt-3">
-                          <!-- <span class="float-start msr-3">
-                          <img class="img-circle" src="{{data.image_link}}" alt="...">
-                        </span> -->
                           <h6 class="mb-xs mt-xs title">
                             {{ data?.courseId?.title | truncate : 45 }}
                           </h6>
@@ -320,33 +253,7 @@
                           "
                         ></p>
                         <div class="text-center mb-3">
-                          <!-- <button
-                            mat-icon-button
-                            class="tbl-action-btn"
-                            [routerLink]="[
-                              '/student/view-course/',
-                              data.classId?.id
-                            ]"
-                          >
-                            <app-feather-icons
-                              [icon]="'eye'"
-                              [class]="'tbl-fav-view'"
-                            ></app-feather-icons>
-                          </button> -->
-                          <!-- <button mat-icon-button class="tbl-action-btn" [routerLink]="['/admin/courses/edit-course/',data.id]">
-                          <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                        </button> -->
-                          <!-- <button mat-icon-button class="tbl-action-btn" (click)="delete(data.id)">
-                          <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                        </button> -->
                         </div>
-                        <!-- <div class="ftr">
-                        <div class="author">
-                          <a href="#"><span class="text-danger"><i class="fa fa-heart"></i>
-                              368</span></a>
-                        </div>
-                        <div class="stats"> <a href="#"><i class="far fa-comment-dots"></i>48</a> </div>
-                      </div> -->
                       </div>
                     </div>
                   </div>
@@ -364,7 +271,6 @@
             </mat-tab>
             <mat-tab *ngIf="complete">
               <ng-template mat-tab-label>
-                <!-- <mat-icon class="example-tab-icon msr-2">face</mat-icon> -->
                 Completed Courses
               </ng-template>
               <div class="body">
@@ -397,9 +303,6 @@
 
                       <div class="blog-table">
                         <div class="post-user mt-3">
-                          <!-- <span class="float-start msr-3">
-                          <img class="img-circle" src="{{data.image_link}}" alt="...">
-                        </span> -->
                           <h6 class="mb-xs mt-xs title">
                             {{ data?.courseId?.title | truncate : 45 }}
                           </h6>
@@ -417,33 +320,7 @@
                           "
                         ></p>
                         <div class="text-center mb-3">
-                          <!-- <button
-                            mat-icon-button
-                            class="tbl-action-btn"
-                            [routerLink]="[
-                              '/student/view-course/',
-                              data.classId?.id
-                            ]"
-                          >
-                            <app-feather-icons
-                              [icon]="'eye'"
-                              [class]="'tbl-fav-view'"
-                            ></app-feather-icons>
-                          </button> -->
-                          <!-- <button mat-icon-button class="tbl-action-btn" [routerLink]="['/admin/courses/edit-course/',data.id]">
-                          <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                        </button> -->
-                          <!-- <button mat-icon-button class="tbl-action-btn" (click)="delete(data.id)">
-                          <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                        </button> -->
                         </div>
-                        <!-- <div class="ftr">
-                        <div class="author">
-                          <a href="#"><span class="text-danger"><i class="fa fa-heart"></i>
-                              368</span></a>
-                        </div>
-                        <div class="stats"> <a href="#"><i class="far fa-comment-dots"></i>48</a> </div>
-                      </div> -->
                       </div>
                     </div>
                   </div>

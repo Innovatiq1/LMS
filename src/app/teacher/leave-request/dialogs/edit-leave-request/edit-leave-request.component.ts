@@ -38,8 +38,6 @@ export class EditLeaveRequestComponent {
    private courseService: CourseService,
    private classService: ClassService,
   ) {
-    //this.getApprovedCourse();
-    // Set the defaults
     this.action = data.action;
     if (this.action === "edit") {
       
@@ -64,13 +62,6 @@ export class EditLeaveRequestComponent {
       ? "Not a valid email"
       : "";
   }
-  // getApprovedCourse(){
-  //   let studentId=localStorage.getItem('id')
-  //   const payload = { studentId: studentId, status: 'approved' };
-  //   this.classService.getStudentRegisteredClasses(payload).subscribe(response =>{
-  //    this.studentApprovedClasses = response.data.docs;
-  //   })
-  // }
   
   createContactForm(): UntypedFormGroup {
     return this.fb.group({
@@ -83,7 +74,6 @@ export class EditLeaveRequestComponent {
     });
   }
   submit() {
-    // emppty stuff
   }
   onNoClick(): void {
     this.dialogRef.close();
@@ -95,7 +85,6 @@ export class EditLeaveRequestComponent {
     this.courseService
       .getStudentClass(learnerId, classId)
       .subscribe((response) => {
-        console.log("re", response)
         let element = response.data.docs[0];
         const item = {
           classId: element?.classId.id,
@@ -111,27 +100,4 @@ export class EditLeaveRequestComponent {
         }, );
       })
   }
-  // public confirmAdd(): void {
-  //   let data=this.leaveRequestForm.value
-  //   //data['classId']=this.classId
-  //   //data['_id']=this.id
-  //   //this.lecturesService.updateLectures(data);
-  //   this.leaveRequestService.updateLeaveRequest(data,this._id)
-  //   //this.lecturesService.addLectures(this.lectuthisresForm.getRawValue());
-  // }
-  // public confirmAdd(): void {
-  //   let payload={
-  //     className:this.leaveRequestForm.value?.className?.classId?.courseId?.title,
-  //     applyDate:this.leaveRequestForm.value?.applyDate,
-  //     fromDate:this.leaveRequestForm.value?.fromDate,
-  //     toDate:this.leaveRequestForm.value?.toDate,
-  //     reason:this.leaveRequestForm.value?.reason,
-  //     instructorId:this.leaveRequestForm.value?.className?.classId?.sessions[0]?.instructorId,
-  //     classId:this.leaveRequestForm.value?.className?.classId?.id,
-  //     studentId:this.leaveRequestForm.value?.className?.studentId?.id,
-  //     status:'applied'
-
-  //   }
-  //   this.leaveRequestService.addLeaveRequest(payload);
-  // }
 }

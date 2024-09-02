@@ -14,15 +14,7 @@
             <div class="body">
               <form class="m-4" [formGroup]="departmentForm">
                 <div class="row">
-                  <!-- Budget -->
-                  <!-- <div class="col-lg-4">
-                    <label>Department Name<span class="mandatory">&nbsp;*</span> </label>
-                    <mat-form-field class="example-full-width mb-3" appearance="outline">
-                      <input matInput formControlName="department" required>
-                    </mat-form-field>
-                  </div> -->
                 <div class="col-lg-4">
-                  <!-- Percentage -->
                   <label
                     >Department Name<span class="mandatory"
                       >&nbsp;*</span
@@ -39,16 +31,11 @@
                         value="{{ dept.department }}"
                         >{{ dept.department }}</mat-option
                       >
-                      <!-- <mat-option value="1">option1</mat-option> -->
                     </mat-select>
-                    <!-- <mat-error *ngIf="departmentForm.get('director')?.invalid && departmentForm.get('director')?.touched">
-                        {{ utils.getErrorMessage(departmentForm.get('director'), 'director') }}
-                      </mat-error> -->
                   </mat-form-field>
                 </div>
 
                 <div class="col-lg-4">
-                  <!-- Percentage -->
                   <label
                     >Training Budget
                     <span class="mandatory">&nbsp;*</span></label
@@ -58,14 +45,10 @@
                     appearance="outline"
                   >
                     <input matInput formControlName="trainingBudget" required />
-                    <!-- <mat-error *ngIf="departmentForm.get('trainingBudget')?.invalid && departmentForm.get('trainingBudget')?.touched">
-                        {{ utils.getErrorMessage(departmentForm.get('trainingBudget'), 'budget') }}
-                      </mat-error> -->
                   </mat-form-field>
                 </div>
 
                 <div class="col-lg-4">
-                  <!-- Percentage -->
                   <label
                     >Head of Department
                     <span class="mandatory">&nbsp;*</span></label
@@ -75,10 +58,6 @@
                     appearance="outline"
                   >
                     <input matInput formControlName="hod" required />
-
-                    <!-- <mat-error *ngIf="departmentForm.get('director')?.invalid && departmentForm.get('director')?.touched">
-                        {{ utils.getErrorMessage(departmentForm.get('director'), 'director') }}
-                      </mat-error> -->
                   </mat-form-field>
                 </div>
               </div>
@@ -102,9 +81,6 @@
                       <mat-option [value]="'2026'"> 2026 </mat-option>
                       <mat-option [value]="'2027'"> 2027 </mat-option>
                     </mat-select>
-                    <!-- <mat-error *ngIf="courseForm.get('pName')?.hasError('required')">
-                        Select any professor
-                      </mat-error> -->
                   </mat-form-field>
                 </div>
                 <div class="col-lg-4">
@@ -114,9 +90,6 @@
                     appearance="outline"
                   >
                     <input matInput formControlName="name" required />
-                    <!-- <mat-error *ngIf="departmentForm.get('value')?.invalid && departmentForm.get('value')?.touched">
-                        {{ utils.getErrorMessage(departmentForm.get('value'), 'value') }}
-                      </mat-error> -->
                   </mat-form-field>
                 </div>
                 <div class="col-lg-4">
@@ -129,9 +102,6 @@
                     appearance="outline"
                   >
                     <input matInput formControlName="approvedEmail" required />
-                    <!-- <mat-error *ngIf="departmentForm.get('budget')?.invalid && departmentForm.get('budget')?.touched">
-                        {{ utils.getErrorMessage(departmentForm.get('budget'), 'total') }}
-                      </mat-error> -->
                   </mat-form-field>
                 </div>
               </div>
@@ -157,29 +127,6 @@
                   
                 </div>
               </div>
-              <!-- <div class="d-flex justify-content-between">
-                <button
-                  class="btn btn-outline-primary"
-                  routerLink="/admin/budgets/allocation"
-                >
-                  <span class="btn-txt">Cancel</span>
-                </button>
-                <button
-                  *ngIf="action !== 'edit'"
-                  class="btn btn-outline-primary"
-                  (click)="onSubmit()"
-                >
-                  <span class="btn-txt">Submit</span>
-                </button>
-                <button
-                  *ngIf="action === 'edit'"
-                  class="btn btn-outline-primary"
-                  (click)="updateRequest()"
-                >
-                  <span class="btn-txt">Update</span>
-                </button>
-                <!-- <button class="btn btn-outline-primary" (click)="onSubmit()"><span class=" btn-txt">{{editUrl?'Update':'Create'}}</span></button> --
-              </div> -->
             </form>
           </div>
         </div>

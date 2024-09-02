@@ -73,8 +73,6 @@ export class EditRequestComponent {
   }
  
   ngOnInit(): void {
-    // this.confirmAdd();
-    // this.approveRequest();
     if (this.ro) {
       this.getAllRequestsByRo();
     } else if (this.director) {
@@ -166,10 +164,6 @@ export class EditRequestComponent {
     });
   }
   }
-
-
-  /** To approve  */
-
   approveRequest(){
     if (this.ro) {
       this.payload = {

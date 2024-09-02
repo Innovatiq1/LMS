@@ -39,14 +39,11 @@ export class AllDepartmentsComponent
   implements OnInit
 {
   displayedColumns = [
-    // 'select',
     'dName',
     'hod',
     'phone',
-    // 'email',
     'sYear',
     'sCapacity',
-    // 'status',
   ];
   exampleDatabase?: DepartmentService;
   dataSource!: any;
@@ -99,7 +96,6 @@ export class AllDepartmentsComponent
     if(viewAction.length >0){
       this.isView = true;
     }
-    // this.loadData();
     this.getAllDepartments()
   }
   refresh() {
@@ -109,18 +105,6 @@ export class AllDepartmentsComponent
 
   }
   delete(id: string) {
-    // this.classService.getClassList({ courseId: id }).subscribe((classList: any) => {
-    //   const matchingClasses = classList.docs.filter((classItem: any) => {
-    //     return classItem.courseId && classItem.courseId.id === id;
-    //   });
-      // if (matchingClasses.length > 0) {
-      //   Swal.fire({
-      //     title: 'Error',
-      //     text: 'Classes have been registered with this course. Cannot delete.',
-      //     icon: 'error',
-      //   });
-      //   return;
-      // }
       this.deptService.deleteDepartment(id).subscribe(() => {
         this.getAllDepartments();
         Swal.fire({
@@ -129,7 +113,6 @@ export class AllDepartmentsComponent
           icon: 'success',
         });
       });
-    // });
   }
 
 
@@ -171,14 +154,12 @@ export class AllDepartmentsComponent
   private refreshTable() {
     this.paginator._changePageSize(this.paginator.pageSize);
   }
-  /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.renderedData.length;
     return numSelected === numRows;
   }
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
     this.isAllSelected()
       ? this.selection.clear()
@@ -211,7 +192,6 @@ export class AllDepartmentsComponent
           title: 'Success',
           text: 'Record Deleted Successfully...!!!',
           icon: 'success',
-          // confirmButtonColor: '#526D82',
         });
       }
     });
@@ -235,9 +215,8 @@ export class AllDepartmentsComponent
       }
     );
   }
-  // export table data in excel file
+  
   exportExcel() {
-    // key name with space add in brackets
     const exportData: Partial<TableElement>[] =
       this.dataSource.map((x: any) => ({
         'Department': x.department,
@@ -260,13 +239,7 @@ export class AllDepartmentsComponent
         formatDate(new Date(x?.departmentStartDate), 'yyyy-MM-dd', 'en') || '',
         x.studentCapacity
     ] );
-    //const columnWidths = [60, 80, 40];
     const columnWidths = [20, 20, 20, 20, 20, 20, 20, 20, 20, 20];
-  
-    // Add a page to the document (optional)
-    //doc.addPage();
-  
-    // Generate the table using jspdf-autotable
     (doc as any).autoTable({
       head: headers,
       body: data,
@@ -276,7 +249,6 @@ export class AllDepartmentsComponent
   
     });
   
-    // Save or open the PDF
     doc.save('AllDepartments-list.pdf');
   }
   showNotification(
@@ -292,7 +264,6 @@ export class AllDepartmentsComponent
       panelClass: colorName,
     });
   }
-  // context menu
   onContextMenu(event: MouseEvent, item: Department) {
     event.preventDefault();
     this.contextMenuPosition.x = event.clientX + 'px';
@@ -321,13 +292,10 @@ export class ExampleDataSource extends DataSource<Department> {
     public _sort: MatSort,
   ) {
     super();
-    // Reset to the first page when the user changes the filter.
     this.filterChange.subscribe(() => (this.paginator.pageIndex = 0));
 
   }
-  /** Connect function called by the table to retrieve one stream containing the data to render. */
   connect(): Observable<Department[]> {
-    // Listen for any changes in the base data, sorting, filtering, or pagination
     const displayDataChanges = [
       this.exampleDatabase.dataChange,
       this._sort.sortChange,
@@ -337,7 +305,6 @@ export class ExampleDataSource extends DataSource<Department> {
     this.exampleDatabase.getAllDepartments();
     return merge(...displayDataChanges).pipe(
       map(() => {
-        // Filter data
         this.filteredData = this.exampleDatabase.data
           .slice()
           .filter((department: Department) => {
@@ -349,9 +316,7 @@ export class ExampleDataSource extends DataSource<Department> {
             ).toLowerCase();
             return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
           });
-        // Sort filtered data
         const sortedData = this.sortData(this.filteredData.slice());
-        // Grab the page's slice of the filtered sorted data.
         const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
         this.renderedData = sortedData.splice(
           startIndex,
@@ -362,9 +327,7 @@ export class ExampleDataSource extends DataSource<Department> {
     );
   }
   disconnect() {
-    // disconnect
   }
-  /** Returns a sorted copy of the database data. */
   sortData(data: Department[]): Department[] {
     if (!this._sort.active || this._sort.direction === '') {
       return data;
@@ -382,7 +345,6 @@ export class ExampleDataSource extends DataSource<Department> {
         case 'hod':
           [propertyA, propertyB] = [a.hod, b.hod];
           break;
-        // case 'date': [propertyA, propertyB] = [a.date, b.date]; break;
         case 'phone':
           [propertyA, propertyB] = [a.phone, b.phone];
           break;

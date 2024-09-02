@@ -38,7 +38,6 @@ export class DraftedCoursesComponent {
     'status',
     'code',
     'creator',
-    // 'Fee Type',
     'Days',
     'Training Hours',
     'Fee Type',
@@ -48,15 +47,6 @@ export class DraftedCoursesComponent {
     'Users',
     'Fees',
   ];
-  // displayedColumns = [
-  //   'name',
-  //   'code',
-  //   'Days',
-  //   'Training Hours',
-  //   'Fees',
-  //   'Vendor',
-  //   'status'
-  // ];
   coursePaginationModel: Partial<CoursePaginationModel>;
   courseData: any;
   pagination: any;
@@ -73,7 +63,6 @@ export class DraftedCoursesComponent {
   selection = new SelectionModel<MainCategory>(true, []);
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   isFilter = false;
-  // programData: any;
   titles: string[] = [];
   codes: string[] = [];
   creator: string[] = [];
@@ -106,13 +95,10 @@ export class DraftedCoursesComponent {
     // constructor
     this.coursePaginationModel = { limit: 10 };
     let urlPath = this.route.url.split('/');
-    // this.editUrl = urlPath.includes('edit-program');
     this.path = urlPath[urlPath.length - 1];
     this.filterForm = this.fb.group({
       course: ['', []],
       creator: ['', []],
-      // startDate: ['', []],
-      // endDate: ['', []],
       status: ['', []],
       vendor: ['', []],
     });
@@ -161,7 +147,6 @@ export class DraftedCoursesComponent {
   openFilterCard() {
     this.isFilter = !this.isFilter;
   }
-  // export table data in excel file
   exportExcel() {
     const exportData: Partial<TableElement>[] = this.courseData.map(
       (x: any) => ({
@@ -260,13 +245,7 @@ export class DraftedCoursesComponent {
       x.vendor,
       
     ]);
-    //const columnWidths = [60, 80, 40];
     const columnWidths = [50, 20, 30, 20, 20, 20, 30, 30, 30, 20];
-
-    // Add a page to the document (optional)
-    //doc.addPage();
-
-    // Generate the table using jspdf-autotable
     (doc as any).autoTable({
       head: headers,
       columnWidths: columnWidths,
@@ -277,8 +256,6 @@ export class DraftedCoursesComponent {
         cellWidth: 'wrap',
       },
     });
-
-    // Save or open the PDF
     doc.save('AllCourses-list.pdf');
   }
   performSearch() {
@@ -288,8 +265,6 @@ export class DraftedCoursesComponent {
           const searchList = item.title.toLowerCase();
           return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1;
         }
-
-        // item.classId.courseId?.title.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     } else {
       this.getAllCourses();
@@ -339,14 +314,11 @@ export class DraftedCoursesComponent {
   private refreshTable() {
     this.paginator._changePageSize(this.paginator.pageSize);
   }
-  /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.courseData.renderedData.length;
     return numSelected === numRows;
   }
-
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
     this.isAllSelected()
       ? this.selection.clear()

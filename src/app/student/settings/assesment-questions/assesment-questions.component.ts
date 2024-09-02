@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -10,19 +10,22 @@ import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { QuestionService } from '@core/service/question.service';
 import { number } from 'echarts';
-import { Subscription } from 'rxjs';
+import { Subscription, timer } from 'rxjs';
 import { StudentsService } from 'app/admin/students/students.service';
 import { SettingsService } from '@core/service/settings.service';
 import * as XLSX from 'xlsx';
 import { TestPreviewComponent } from '@shared/components/test-preview/test-preview.component';
 import { MatDialog } from '@angular/material/dialog';
+import { CommonService } from '@core/service/common.service';
 
 @Component({
   selector: 'app-assesment-questions',
   templateUrl: './assesment-questions.component.html',
   styleUrls: ['./assesment-questions.component.scss'],
 })
-export class AssesmentQuestionsComponent {
+export class AssesmentQuestionsComponent implements OnInit, OnDestroy{
+  draftSubscription: Subscription | null = null;
+  @Input() formType: string = '';
   @Input() approved: boolean = false;
   questionFormTab3: FormGroup;
   editUrl: any;
@@ -46,11 +49,10 @@ export class AssesmentQuestionsComponent {
     'MYR',
     'AUD',
   ];
- // timerValues: string[] = ['15', '30', '45', '60', '90', '120', '150'];
   retakeCodesAssessment: string[] = ['1', '2', '3', '4', '5'];
-  //scoreAlgo: number[] = [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
   timerValues:any;
 scoreDataAlgo:any;
+draftId!: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -59,7 +61,8 @@ scoreDataAlgo:any;
     private questionService: QuestionService,
     private studentsService: StudentsService,
     private SettingsService:SettingsService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private commonService: CommonService
   ) {
     let urlPath = this.router.url.split('/');
     this.editUrl = urlPath.includes('edit-questions');
@@ -98,11 +101,60 @@ scoreDataAlgo:any;
     this.getAllPassingCriteria();
     this.getAllScoreAlgo();
     this.getAllTimeAlgo();
+    if (this.formType === 'Assessment' || this.formType === 'Create') {
+      this.startAutoSave();
+    }
     if (!this.editUrl) {
-      // this.getAlgorithm();
+      this.draftId = this.commonService.generate4DigitId();
+    }
+  }
+  startAutoSave() {
+    setTimeout(() => {
+      if (!this.draftSubscription) {
+        this.draftSubscription = timer(0, 30000).subscribe(() => {
+          this.saveDraft();
+        });
+      }
+    }, 30000); 
+  }
+
+  ngOnDestroy() {
+    if (this.draftSubscription) {
+      this.draftSubscription.unsubscribe(); // Unsubscribe to stop auto-save
+      this.draftSubscription = null;
     }
   }
 
+saveDraft(data?: string) {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+      const payload = {
+        draftId: this.draftId,
+        name: this.questionFormTab3.value.name,
+        timer: this.questionFormTab3.value.timer,
+        retake: this.questionFormTab3.value.retake,
+        passingCriteria:this.questionFormTab3.value.passingCriteria,
+        scoreAlgorithm: this.questionFormTab3.value.scoreAlgorithm,
+        resultAfterFeedback: this.questionFormTab3.value.resultAfterFeedback,
+        status: 'draft',
+        companyId:userId,
+        questions: this.questionFormTab3.value.questions.map((v: any) => ({
+          options: v.options,
+          questionText: v.questionText,
+        })),
+      };
+      this.questionService.createQuestion(payload).subscribe(
+              (res: any) => {
+                if (data) {
+                  Swal.fire({
+                    title: 'Successful',
+                    text: 'Assessment Questions drafted successfully',
+                    icon: 'success',
+                  });
+                  window.history.back();
+                }
+              },
+            );
+  }
   loadData() {
     this.studentId = localStorage.getItem('id');
     this.studentsService.getStudentById(this.studentId).subscribe((res) => {});
@@ -131,14 +183,12 @@ scoreDataAlgo:any;
   getAllScoreAlgo(){
     this.SettingsService.getScoreAlgorithm().subscribe((response:any) =>{
       this.scoreDataAlgo=response.data.docs;
-      //console.log("this.scoreAlgo==",this.scoreDataAlgo);
     })
   }
 
   getAllTimeAlgo(){
     this.SettingsService.getTimeAlgorithm().subscribe((response:any) =>{
       this.timerValues=response.data.docs;
-     // console.log("this.timerValues",this.timerValues);
     })
   }
 
@@ -156,23 +206,6 @@ scoreDataAlgo:any;
         }
       });
   }
-
-  // getAlgorithm(): any {
-  //   this.configurationSubscription =
-  //     this.studentsService.configuration$.subscribe((configuration) => {
-  //       this.configuration = configuration;
-  //       const config = this.configuration.find(
-  //         (v: any) => v.field === 'assessmentAlgorithm'
-  //       );
-  //       if (config) {
-  //         const assessmentAlgo = config.value;
-  //         this.questionFormTab3.patchValue({
-  //           scoreAlgorithm: assessmentAlgo,
-  //         });
-  //       }
-  //     });
-  // }
-
   getData() {
     if (this.questionId) {
       this.questionService
@@ -186,7 +219,7 @@ scoreDataAlgo:any;
               resultAfterFeedback: response.resultAfterFeedback,
               passingCriteria:passingCriteriaAsString,
                retake:String(response.retake),
-               timer:response?.timer
+               timer:response?.timer,
             });
 
             const questionsArray = this.questionFormTab3.get(
@@ -329,7 +362,6 @@ scoreDataAlgo:any;
 
   update() {
     if (this.questionFormTab3.valid) {
-    //  console.log("FormTab3 Value",this.questionFormTab3.value);
       if (this.editUrl) {
         
         this.updateAssesment();
@@ -413,9 +445,7 @@ scoreDataAlgo:any;
           text: 'Question Updated successfully',
           icon: 'success',
         });
-        // if (this.approved) {
           window.history.back();
-        // }
       },
       (err: any) => {
         Swal.fire('Failed to update Question', 'error');

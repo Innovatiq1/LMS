@@ -21,7 +21,6 @@ export class EventDetailDialogComponent implements OnInit {
     private activeRoute: ActivatedRoute,
     public router: Router
   ) {
-    console.log("data", data)
     'programCode' in data ? (this.code = true) : (this.code = false);
 
     let userType = localStorage.getItem('user_type');

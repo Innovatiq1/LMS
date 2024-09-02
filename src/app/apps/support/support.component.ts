@@ -7,27 +7,7 @@ import { SupportService } from './support.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { CourseModel, CoursePaginationModel, MainCategory, SubCategory } from '@core/models/course.model';
-// export interface PeriodicElement {
-//   checked: boolean;
-//   name: string;
-//   subject: string;
-//   status: string;
-//   assignTo: string;
-//   date: string;
-//   action: string;
-// }
-// const ELEMENT_DATA: PeriodicElement[] = [
-//   {
-//     checked: false,
-//     name: 'Tim Hank',
-//     subject: 'Image not Proper',
-//     status: 'closed',
-//     assignTo: 'John Deo',
-//     date: '27/05/2016',
-//     action: '',
-//   }
 
-// ];
 @Component({
   selector: 'app-support',
   templateUrl: './support.component.html',
@@ -36,22 +16,16 @@ import { CourseModel, CoursePaginationModel, MainCategory, SubCategory } from '@
 export class SupportComponent implements OnInit {
   displayedColumns: string[] = ['name', 'ticket', 'status', 'date'];
   count: any;
-  // dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
   dataSource: any;
   mainCategories!: MainCategory[];
   subCategories!: SubCategory[];
   allSubCategories!: SubCategory[];
   coursePaginationModel: Partial<CoursePaginationModel>;
   totalItems: any;
-  // coursePaginationModel: Partial<CoursePaginationModel>;
-  // dataSource: any;
   totalTickets:any;
   pageSizeArr = [10, 2, 50, 100];
   @Input() dashboardCpm : any;
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
-  // 'status',
-  // 'assignTo',
-  // 'date',
   breadscrums = [
     {
       title: 'Support',
@@ -65,13 +39,10 @@ export class SupportComponent implements OnInit {
     //constructor
     this.coursePaginationModel = {};
     this.getCount();
-    // this.coursePaginationModel.main_category = '0';
-    // this.coursePaginationModel.sub_category = '0';
   }
   ngOnInit() {
     this.listOfTicket();
     this.getCount();
-    // this.dataSource.paginator = this.paginator;
   }
 
   pageSizeChange($event: any) {
@@ -84,9 +55,6 @@ export class SupportComponent implements OnInit {
       this.count = response?.data;
       this.resolved=this.count?.resolved;
       this.pending=this.count?.pending;
-      // this.studentCount=this.count?.students
-      // this.chart4();
-  
     })
        
   }

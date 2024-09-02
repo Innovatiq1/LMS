@@ -21,13 +21,11 @@ import { EtmsService } from '@core/service/etms.service';
 })
 export class AllocationComponent implements OnInit{
   displayedColumns: string[] = [
-    // 'select',
     'Department Name',
     'Percentage Allocated',
     'By Value',
     'Budget-Allocated',
     'Approval',
-    // 'Details'
   ];
 
   breadscrums = [
@@ -58,7 +56,6 @@ export class AllocationComponent implements OnInit{
     this.coursePaginationModel = {};
     this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
-        console.log('NavigationStart event:', event);
       }
     });
   }
@@ -70,11 +67,6 @@ export class AllocationComponent implements OnInit{
   ngOnInit(): void {
    this.getAllDepartmentBudgets();
   }
-  // edit(row: CourseModel) {
-  //   this.id = row.id;
-  //   this.router.navigate(['/admin/e-tms/edit-department-budget/' + this.id])
-
-  // }
   edit(id: any) {
     this.router.navigate(['/admin/budgets/edit-dept-budget-request'], {
       queryParams: { id: id, action: 'edit' },
@@ -100,7 +92,6 @@ export class AllocationComponent implements OnInit{
   private refreshTable() {
     this.paginator._changePageSize(this.paginator.pageSize);
   }
-  /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.length;
@@ -158,22 +149,6 @@ export class AllocationComponent implements OnInit{
       }
     });
 
-
-
-
-    // Swal.fire({
-    //   title: 'Are you sure?',
-    //   text: 'Do you want to update this user!',
-    //   icon: 'warning',
-    //   confirmButtonText: 'Yes',
-    //   showCancelButton: true,
-    //   cancelButtonColor: '#d33',
-    // }).then((result) => {
-    //   if (result.isConfirmed){
-        
-    //   }
-    // });
-
   
   }
   approveCourse(): void {
@@ -188,7 +163,6 @@ export class AllocationComponent implements OnInit{
   }
 
   exportExcel() {
-    // key name with space add in brackets
     const exportData: Partial<TableElement>[] =
       this.dataSource.map((x: any) => ({
         'Department': x.departmentName,
@@ -212,13 +186,7 @@ export class AllocationComponent implements OnInit{
         x.approval,
   
     ] );
-    //const columnWidths = [60, 80, 40];
     const columnWidths = [20, 20, 20, 20, 20, 20, 20, 20, 20, 20];
-  
-    // Add a page to the document (optional)
-    //doc.addPage();
-  
-    // Generate the table using jspdf-autotable
     (doc as any).autoTable({
       head: headers,
       body: data,
@@ -227,8 +195,6 @@ export class AllocationComponent implements OnInit{
   
   
     });
-  
-    // Save or open the PDF
     doc.save('Department-budget-allocation.pdf');
   }
 

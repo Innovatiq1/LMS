@@ -56,7 +56,6 @@ export class AddTeacherComponent {
       gender: ['', [Validators.required]],
       mobile: ['', [Validators.required,...this.utils.validators.noLeadingSpace,...this.utils.validators.mobile]],
       password: ['', [Validators.required]],
-      // conformPassword: ['', [Validators.required]],
       department: [''],
       address: [''],
       email: [
@@ -68,7 +67,6 @@ export class AddTeacherComponent {
       education: ['', [Validators.required,...this.utils.validators.designation]],
       avatar: ['',],
     },{
-      // validator: ConfirmedValidator('password', 'conformPassword')
     });
   }
 
@@ -94,67 +92,17 @@ export class AddTeacherComponent {
     this.uploaded= image.split('\\');
     this.fileName = this.uploaded.pop();
   });
-    // this.fileName = event.target.files[0].name;
-    // this.files=event.target.files[0]
-    // this.authenticationService.uploadVideo(event.target.files[0]).subscribe(
-    //   (response: any) => {
-    //             //Swal.close();
-    //             
-    //   },
-    //   (error:any) => {
-
-    //   }
-    // );
-
-
   }
   getDepartment(){
     this.StudentService.getAllDepartments().subscribe((response: any) =>{
       this.dept = response.data.docs;
-      console.log("dept",this.dept)
      })
 
   }
-  // onSubmit() {
-  //   console.log('Form Value', this.proForm.value);
-  //   if(!this.proForm.invalid){
-  //   this.instructor.uploadVideo(this.files).subscribe(
-  //     (response: any) => {
-  //       const inputUrl = response.inputUrl;
-
-  //       const userData: Users = this.proForm.value;
-  //       //this.commonService.setVideoId(videoId)
-
-  //       userData.avatar = inputUrl;
-  //       userData.filename= response.filename
-  //       userData.type = "Instructor";
-  //       userData.role = "Instructor";
-  //       userData.isLogin = true;
-
-  //       //this.currentVideoIds = [...this.currentVideoIds, ...videoId]
-  //       // this.currentVideoIds.push(videoId);
-  //       this.createInstructor(userData);
-
-  //       Swal.close();
-  //     },
-  //     (error) => {
-  //       Swal.fire({
-  //         icon: 'error',
-  //         title: 'Upload Failed',
-  //         text: 'An error occurred while uploading the video',
-  //       });
-  //       Swal.close();
-  //     }
-  //   );
-  //   }
-  // }
   onSubmit() {
-    console.log('Form Value', this.proForm.value);
     let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     if (!this.proForm.invalid) {
         const userData: any = this.proForm.value;
-        
-        // Set the avatar path to the URL received during file upload
         userData.avatar = this.avatar;
         
         userData.type = AppConstants.INSTRUCTOR_ROLE;
@@ -223,9 +171,7 @@ export class AddTeacherComponent {
               text: "Trainer created successfully",
               icon: "success",
             });
-            //this.fileDropEl.nativeElement.value = "";
           this.proForm.reset();
-          //this.toggleList()
           this.router.navigateByUrl('/student/settings/all-user/all-instructors');
           },
           (error) => {
@@ -241,7 +187,6 @@ export class AddTeacherComponent {
    
   }
   cancel(){
-    // this.router.navigateByUrl('/admin/users/all-instructors');
 window.history.back();
   }
 }

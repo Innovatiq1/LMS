@@ -9,7 +9,6 @@
       >
       </app-breadcrumb>
     </div>
-    <!-- Your content goes here  -->
     <div class="row clearfix">
       <div class="col-lg-4 col-md-12">
         <div class="card">
@@ -52,8 +51,6 @@
           <mat-tab-group mat-align-tabs="start">
             <mat-tab label="About">
               <div class="p-4">
-                <!-- <p class="text-default">Hello I am Sarah Smith a student in Sanjivni College Surat. I love
-                  to study with all my class friends and professors.</p> -->
                 <ul class="list-group list-group-unbordered">
                   <li class="list-group-item">
                     <b>Gender </b>
@@ -132,22 +129,16 @@
                 class="align-items-center"
               >
                 <img class="img-w" src="/assets/approve.svg" alt="approve" />
-
-                <!-- <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons> -->
               </button>
             </div>
           </div>
           <mat-tab-group>
             <mat-tab>
               <ng-template mat-tab-label>
-                <!-- <mat-icon class="example-tab-icon msr-2">face</mat-icon> -->
                 Details
               </ng-template>
               <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="project_widget">
-                  <!-- <div class="header">
-                    <h2><strong>About</strong></h2>
-                  </div> -->
                   <div class="body">
                     <div class="row">
                       <div class="col-md-3 col-6 b-r">
@@ -179,7 +170,6 @@
                 </div>
               </div>
               <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
-                <!-- <div class="card" style="border-radius: 31px;"> -->
                 <div class="header mt-3">
                   <h2>Enrolled Programs</h2>
                 </div>
@@ -200,9 +190,6 @@
                           style="cursor: pointer"
                           *ngFor="let data of studentApprovedPrograms"
                         >
-                          <!-- <td class="table-img">
-                              <img src="{{class?.courseId?.image_link}}" alt="course">
-                            </td> -->
                           <td>
                             {{ data?.classId?.courseId?.title | truncate : 30 }}
                           </td>
@@ -217,10 +204,8 @@
                     </table>
                   </div>
                 </div>
-                <!-- </div> -->
               </div>
               <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
-                <!-- <div class="card" style="border-radius: 31px;"> -->
                 <div class="header mt-3">
                   <h2>Enrolled Courses</h2>
                 </div>
@@ -241,9 +226,6 @@
                           style="cursor: pointer"
                           *ngFor="let data of studentApprovedClasses"
                         >
-                          <!-- <td class="table-img">
-                              <img src="{{class?.courseId?.image_link}}" alt="course">
-                            </td> -->
                           <td>
                             {{ data?.classId?.courseId?.title | truncate : 45 }}
                           </td>
@@ -258,10 +240,8 @@
                     </table>
                   </div>
                 </div>
-                <!-- </div> -->
               </div>
               <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
-                <!-- <div class="card" style="border-radius: 31px;"> -->
                 <div class="header mt-3">
                   <h2>Completed Programs</h2>
                 </div>
@@ -282,9 +262,6 @@
                           style="cursor: pointer"
                           *ngFor="let data of studentCompletedPrograms"
                         >
-                          <!-- <td class="table-img">
-                              <img src="{{class?.courseId?.image_link}}" alt="course">
-                            </td> -->
                           <td>
                             {{
                               data?.classId?.courseId?.title | truncate : 45
@@ -303,10 +280,8 @@
                     </table>
                   </div>
                 </div>
-                <!-- </div> -->
               </div>
               <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
-                <!-- <div class="card" style="border-radius: 31px;"> -->
                 <div class="header mt-3">
                   <h2>Completed Courses</h2>
                 </div>
@@ -327,9 +302,6 @@
                           style="cursor: pointer"
                           *ngFor="let data of studentCompletedClasses"
                         >
-                          <!-- <td class="table-img">
-                              <img src="{{class?.courseId?.image_link}}" alt="course">
-                            </td> -->
                           <td>
                             {{
                               data?.classId?.courseId?.title | truncate : 45
@@ -348,64 +320,7 @@
                     </table>
                   </div>
                 </div>
-                <!-- </div> -->
               </div>
-              <!-- <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="project_widget">
-                  <div class="body">
-                    <div class="row">
-                      <div class="col-6">
-                        <div class="header mt-3">
-                          <h2>Program Certificates</h2>
-                        </div>
-                      </div>
-                      <div class="col-6">
-                        <div class="header mt-3">
-                          <h2>Course Certificates</h2>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="row">
-                      <div class="col-12" *ngIf="studentCompletedPrograms.length === 0 && studentCompletedClasses.length === 0">
-                        <p class="text-center">No records</p>
-                      </div>
-                      <div
-                        class="col-6"
-                        *ngFor="let data of studentCompletedPrograms"
-                      >
-                        <a
-                          class="px-3"
-                          href="{{ data.certifiacteUrl }}"
-                          target="_blank"
-                          >{{
-                            data?.classId?.courseId?.title | truncate : 45
-                          }}</a
-                        >
-                      </div>
-                      <div
-                        class="col-6"
-                        *ngFor="let data of studentCompletedClasses"
-                      >
-                        <a
-                          class="px-3"
-                          href="{{ data.certifiacteUrl }}"
-                          target="_blank"
-                          >{{
-                            data?.classId?.courseId?.title | truncate : 45
-                          }}</a
-                        >
-                      </div>
-                    </div>
-
-                    <!-- <ul>
-                      <li>1st Prise in Music competition</li>
-                      <li>1st Prise in Acting & Drama</li>
-                      <li>Gold Medal in Betchler in Arts</li>
-                    </ul> --
-                  </div>
-                </div>
-              </div> -->
             </mat-tab>
           </mat-tab-group>
         </div>

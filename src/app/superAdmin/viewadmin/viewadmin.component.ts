@@ -21,7 +21,6 @@ export class ViewadminComponent {
   aboutData1: any;
   viewPackageUrl: any;
   
-  // mode: string = 'viewPackageUrl';
 
   constructor(
     private activeRoute: ActivatedRoute,
@@ -31,7 +30,6 @@ export class ViewadminComponent {
   ) {
     this.activeRoute.queryParams.subscribe((params) => {
       this.currentId = params['id'];
-      console.log(this.currentId);
     });
 
     
@@ -55,15 +53,12 @@ ngOnInit(){
   loadData(filters?: any) {
     this.userService.getUserById(this.currentId).subscribe(
       (response: any) => {
-        console.log('listing user', response);
         this.aboutData1 = response.data.data;
       },
       () => {}
     );
   }
   deleteItem(row: any) {
-    // this.id = row.id;
-    console.log('kjkj', row);
     Swal.fire({
       title: 'Confirm Deletion',
       text: 'Are you sure you want to delete this user?',
@@ -82,7 +77,6 @@ ngOnInit(){
               text: 'User deleted successfully',
               icon: 'success',
             });
-            //this.fetchCourseKits();
             this.router.navigate(['/super-admin/admin-list']);
             this.loadData();
           },

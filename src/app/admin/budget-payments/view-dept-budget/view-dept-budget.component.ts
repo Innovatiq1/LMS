@@ -31,7 +31,6 @@ export class ViewDeptBudgetComponent {
   ) {
     this.coursePaginationModel = {};
     this.activatedRoute.params.subscribe((params: any) => {
-      console.log("params.id", params.id)
       this.deptBudgetId = params.id;
      
 

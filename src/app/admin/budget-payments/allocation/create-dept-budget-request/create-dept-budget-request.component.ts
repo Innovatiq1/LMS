@@ -143,30 +143,6 @@ export class CreateDeptBudgetRequestComponent {
       );
 
   }
-  // private loadUsers() {
-  //   this.authService.getDirectorHeads().subscribe(
-  //     (response: any) => {
-  //       this.users = response.data;
-  //     },
-  //     (error) => {
-  //     }
-  //   );
-  // }
-
-  // getDepartmentById(){
-  //   this.courseService.getDepartmentById(this.departmentId).subscribe((response:any)=>{
-  //     let details = response;
-  //     this.departmentForm.patchValue({
-  //       department:response?.department,
-  //       hod:response?.hod,
-  //       trainingBudget:response?.trainingBudget,
-  //       percentage:response?.percentage,
-  //       value:response?.value,
-  //       budget:response?.budget,
-  //     })
-
-  //   })
-  // }
   getUserId() {
     let userId = localStorage.getItem('id');
 
@@ -182,8 +158,6 @@ export class CreateDeptBudgetRequestComponent {
           this.directorName = response?.directorName,
 
             this.departmentForm.patchValue({
-              // trainingBudget: "",
-              // year: "",
               name: this.directorName,
               approvedEmail: res?.email,
 
@@ -240,29 +214,6 @@ export class CreateDeptBudgetRequestComponent {
         }) 
       }
     });
-    
-    // if (this.departmentForm.valid) {
-    //   if (this.editUrl) {
-    //     this.courseService.updateDepartment(this.departmentForm.value, this.departmentId).subscribe((response: any) => {
-    //       Swal.fire({
-    //         title: 'Successful',
-    //         text: 'Department updated successfully',
-    //         icon: 'success',
-    //       });
-    //       this.router.navigate(['/admin/budget/dept-budget'])
-    //     });
-    //   } else {
-    //     this.courseService.saveDepartment(this.departmentForm.value).subscribe((response: any) => {
-    //       Swal.fire({
-    //         title: 'Successful',
-    //         text: 'Department created successfully',
-    //         icon: 'success',
-    //       });
-    //       this.router.navigate(['/admin/e-tms/department-budget-allocation'])
-    //     });
-    //   }
-    // } else {
-    // }
   }
 cancel(){
   window.history.back()
@@ -289,8 +240,6 @@ updateRequest(){
   trainingBudget: this.departmentForm.value.trainingBudget,
   name: this.departmentForm.value.name,
   email: this.departmentForm.value.approvedEmail,
-  // director: this.directorId,
-  // approval: "Pending",
   employeeName: this.employeName
  }
 
@@ -318,8 +267,5 @@ updateRequest(){
         }) 
       }
     });
- 
-
-  // this.router.navigate(['/admin/e-tms/edit-department-budget/']);
 }
 }

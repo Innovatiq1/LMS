@@ -7,6 +7,8 @@ import { AssessmentService } from '@core/service/assessment.service';
 import { UtilsService } from '@core/service/utils.service';
 import Swal from 'sweetalert2';
 import { CourseService } from '@core/service/course.service';
+import { MatTabChangeEvent } from '@angular/material/tabs';
+import { AuthenService } from '@core/service/authen.service';
 
 @Component({
   selector: 'app-exam',
@@ -31,11 +33,13 @@ export class ExamComponent {
   dataSource: any;
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild('filter', { static: true }) filter!: ElementRef;
+  isAssessment = false;
+  isTutorial = false;
+  tab: number = 0;
 
   breadscrums = [
     {
       title: 'Assesment Answer List',
-      // items: ['Extra'],
       active: 'Assesment Answer',
     },
   ];
@@ -44,27 +48,65 @@ export class ExamComponent {
     private router: Router,
     public utils: UtilsService,
     private assessmentService: AssessmentService,
-    private courseService: CourseService
+    private courseService: CourseService,
+    private authenService: AuthenService
   ) {
     this.assessmentPaginationModel = {};
   }
 
   ngOnInit() {
-    this.getAllAnswers();
+    const roleDetails =this.authenService.getRoleDetails()[0].menuItems
+    let urlPath = this.router.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}`;
+    const childId =  urlPath[urlPath.length - 1];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let actions = childData[0].actions
+    let assessmentAction = actions.filter((item:any) => item.title == 'Assessment')
+    let tutorialAction = actions.filter((item:any) => item.title == 'Tutorial')
+
+   
+  if (assessmentAction.length > 0) {
+    this.isAssessment = true;
+    this.tab = 0;
   }
 
+  if (tutorialAction.length > 0) {
+    this.isTutorial = true;
+    if (!this.isAssessment) {
+      this.tab = 1;
+    }
+  }
+  this.getAllAnswers();
+  }
+  onTabChange(event: MatTabChangeEvent) {
+    this.tab = event.index;
+    this.getAllAnswers();
+  }
   getAllAnswers() {
-    let studentId =localStorage.getItem('id') || '';
-    this.assessmentService
-      .getExamQuestionJsonV2({ ...this.assessmentPaginationModel, studentId })
-      .subscribe((res) => {
-        console.log("hello this is res==",res)
-        this.dataSource = res.data.docs;
-        this.totalItems = res.data.totalDocs;
-        this.assessmentPaginationModel.docs = res.docs;
-        this.assessmentPaginationModel.page = res.page;
-        this.assessmentPaginationModel.limit = res.limit;
-      });
+    let studentId = localStorage.getItem('id') || '';
+  
+    if (this.tab === 0 && this.isAssessment) {
+      this.assessmentService
+        .getExamQuestionJsonV2({ ...this.assessmentPaginationModel, studentId })
+        .subscribe((res) => {
+          this.dataSource = res.data.docs;
+          this.totalItems = this.dataSource.length;
+          this.assessmentPaginationModel.docs = this.dataSource;
+          this.assessmentPaginationModel.page = res.page;
+          this.assessmentPaginationModel.limit = res.limit;
+        });
+    } else if (this.tab === 1 && this.isTutorial) { 
+      this.assessmentService
+        .getTutorialQuestionJsonV2({ ...this.assessmentPaginationModel, studentId })
+        .subscribe((res) => {
+          this.dataSource = res.data.docs;
+          this.totalItems = this.dataSource.length;
+          this.assessmentPaginationModel.docs = this.dataSource;
+          this.assessmentPaginationModel.page = res.page;
+          this.assessmentPaginationModel.limit = res.limit;
+        });
+    }
   }
 
   pageSizeChange($event: any) {
@@ -93,8 +135,6 @@ export class ExamComponent {
     }
   }
   calculateRetakesLeft(row: any) {
-     console.log("this is the retake ===",row);
-    // return 0;
     if (row.is_tutorial) {
       return 'Unlimited'; 
     } else {

@@ -11,7 +11,6 @@ import { ClassService } from 'app/admin/schedule-class/class.service';
 import * as moment from 'moment';
 import Swal from 'sweetalert2';
 import { MatSort } from '@angular/material/sort';
-//import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { TableElement, TableExportUtil } from '@shared';
 import { jsPDF } from 'jspdf';
@@ -37,7 +36,6 @@ import { AuthenService } from '@core/service/authen.service';
 })
 export class CompletionListComponent {
   displayedColumns = [
-    // 'select',
     'Student',
     'email',
     'Course',
@@ -73,16 +71,13 @@ export class CompletionListComponent {
   studentPaginationModel: StudentPaginationModel;
   isLoading: boolean = true;
   searchTerm: string = '';
-  // @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild(MatSort) matSort!: MatSort;
   commonRoles: any;
   certificateDetails: any;
   certificateUrl: any;
   isCertificate: boolean = false;
   certificateId: any;
-
   image_link: any;
-  // imageUrl: any;
   uploaded: any;
   uploadedImage: any;
   certificateForm!: FormGroup;
@@ -177,11 +172,8 @@ export class CompletionListComponent {
     if (this.searchTerm) {
       this.dataSource = this.dataSource?.filter(
         (item: any) => console.log(item.courseId?.title)
-
-        // item.classId.courseId?.title.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     } else {
-      // this.getCompletedClasses();
     }
   }
   performSearch() {
@@ -193,8 +185,6 @@ export class CompletionListComponent {
           ).toLowerCase();
           return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1;
         }
-
-        // item.classId.courseId?.title.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     } else {
       this.getCompletedClasses();
@@ -307,7 +297,6 @@ export class CompletionListComponent {
               title: 'Success',
               text: 'Course approved successfully.',
               icon: 'success',
-              // confirmButtonColor: '#d33',
             });
 
             this.getCompletedClasses();
@@ -317,7 +306,6 @@ export class CompletionListComponent {
             title: 'Error',
             text: 'Failed to approve course. Please try again.',
             icon: 'error',
-            // confirmButtonColor: '#d33',
           });
         };
       }
@@ -350,13 +338,7 @@ export class CompletionListComponent {
       user.registeredOn ,
      formatDate(new Date( user.updatedAt), 'yyyy-MM-dd', 'en') || '',
     ]);
-    //const columnWidths = [60, 80, 40];
     const columnWidths = [20, 20, 20, 20, 20, 20, 20, 20, 20, 20];
-
-    // Add a page to the document (optional)
-    //doc.addPage();
-
-    // Generate the table using jspdf-autotable
     (doc as any).autoTable({
       head: headers,
       body: data,
@@ -366,13 +348,10 @@ export class CompletionListComponent {
         cellWidth: 'wrap',
       },
     });
-
-    // Save or open the PDF
     doc.save('Student Completed-list.pdf');
   }
 
   exportExcel() {
-    //k//ey name with space add in brackets
     const exportData: Partial<TableElement>[] = this.dataSource.map(
       (user: any) => ({
         [AppConstants.STUDENT_ROLE]: user.studentId?.name,
@@ -409,12 +388,10 @@ export class CompletionListComponent {
 
 
             this.certificateForm.patchValue({
-            // title: response.title,
             text1: response.text1,
           })
          
     })
-    console.log("form", this.certificateForm)
   
     this.dialogRef = this.dialog.open(templateRef, {
       width: '1000px',
@@ -437,7 +414,6 @@ export class CompletionListComponent {
        this.dafaultGenratepdf = true;
        var convertIdDynamic = 'contentToConvert';
        const dashboard = document.getElementById('contentToConvert');
-       console.log("dddddd", dashboard)
        this.genratePdf3(
             convertIdDynamic,
             this.studentData?.studentId._id,
@@ -468,8 +444,6 @@ export class CompletionListComponent {
       if (dashboard != null) {
         const dashboardHeight = dashboard.clientHeight;
         const dashboardWidth = dashboard.clientWidth;
-        console.log("dash", dashboard)
- 
         const options = {
           background: 'white',
           width: dashboardWidth,
@@ -577,9 +551,6 @@ export class CompletionListComponent {
     return result;
   }
 
-  // Example: Generate a random string of length 10
-
-  //c//onsole.log(randomString);
 
   updateCertificte(objpdf: any) {
     Swal.fire({
@@ -600,7 +571,6 @@ export class CompletionListComponent {
 
 
             this.getCertificates();
-            //let certifiacteUrl =response.data.certifiacteUrl
             Swal.fire({
               title: 'Updated',
               text: 'Certificate Created successfully',

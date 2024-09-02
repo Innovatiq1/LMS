@@ -126,8 +126,6 @@ pageSizeChange($event: any) {
         this.getAllRejectedRequestsByDirector()
       }
     }
-  
-  console.log("pagination", this.coursePaginationModel.page)
 }
 
 
@@ -174,7 +172,6 @@ getAllRejectedRequestsByDirector() {
 }
 
 approve(req: any) {
-  console.log("id",req.director.id);
   this.id = req.director.id;
   let tempDirection: Direction;
   if (localStorage.getItem('isRtl') === 'true') {

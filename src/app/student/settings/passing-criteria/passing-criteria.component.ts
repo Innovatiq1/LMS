@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { FormBuilder, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenService } from '@core/service/authen.service';
-//import { CourseService } from '@core/service/course.service';
 import { SettingsService } from '@core/service/settings.service';
 import { UtilsService } from '@core/service/utils.service';
 import Swal from 'sweetalert2';
@@ -30,7 +29,6 @@ export class PassingCriteriaComponent {
     private authenService: AuthenService) {
       this.passingCriteriaForm = this.fb.group({
         value: ['', [Validators.required,...this.utils.validators.noLeadingSpace]],
-        // description: ['', [Validators.required,...this.utils.validators.name, ...this.utils.validators.noLeadingSpace]]
 
       })
   }
@@ -57,8 +55,6 @@ export class PassingCriteriaComponent {
 
   onSubmit() {
     if(this.passingCriteriaForm.valid){
-      // let userId = localStorage.getItem('id');
-      // this.passingCriteriaForm.value.adminId=userId;
       let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
             this.passingCriteriaForm.value.companyId=userId;
     Swal.fire({
@@ -78,7 +74,6 @@ export class PassingCriteriaComponent {
           });
           this.getAllPassingCriteria();
           this.passingCriteriaForm.reset();
-          // this.router.navigate(['/student/settings/create-department'])
         },
         (error) => {
           Swal.fire({
@@ -97,7 +92,6 @@ export class PassingCriteriaComponent {
 getAllPassingCriteria(){
   this.SettingsService.getPassingCriteria().subscribe((response:any) =>{
     this.dataSource=response.data.docs;
-   //this.dataSource = response.reverse();
   })
 }
 update(data: any) {

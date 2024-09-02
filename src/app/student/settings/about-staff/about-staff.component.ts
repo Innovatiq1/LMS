@@ -31,8 +31,6 @@ export class AboutStaffComponent implements OnInit{
     public staffService: StaffService ) {
     this.coursePaginationModel = {};
     this.activeRoute.queryParams.subscribe(param =>{
-    console.log("params:",param['data'])
- 
     this.aboutDataId = param['data'];
     })
   }
@@ -42,7 +40,6 @@ export class AboutStaffComponent implements OnInit{
   loadData(){
     this._courseService.getUserById( this.aboutDataId).subscribe(res => {
       this.aboutData = res;
-      console.log("edit",this.aboutData)
   
     })
   }

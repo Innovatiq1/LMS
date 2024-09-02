@@ -67,7 +67,7 @@ export class ClassService extends UnsubscribeOnDestroyAdapter {
     return params;
   }
   getStudentRegisteredProgramClasses(data:any) {
-    return this.http.get(`${this.prefix}admin/studentClasses/studentApproveList`,{ params: this.buildParams(data) }).pipe(
+    return this.http.get(`${this.prefix}admines/studentApproveList`,{ params: this.buildParams(data) }).pipe(
       map((response:any) => {
         return response;
       })
@@ -123,7 +123,6 @@ export class ClassService extends UnsubscribeOnDestroyAdapter {
     return this.http.put<ApiResponse>(apiUrl, item);
   }
   getClassList(filter?:any): Observable<ClassListingModel> {
-    console.log('file',filter)
     const apiUrl = `${this.prefix}admin/class/`;
     return this.http.get<ApiResponse>(apiUrl, { params: this.buildParams(filter) }).pipe(
       map((response:any) => {

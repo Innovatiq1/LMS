@@ -91,27 +91,17 @@ export class CreateCourseKitComponent implements OnInit {
         ...this.utils.validators.noLeadingSpace,
       ]),
       documentLink: new FormControl('', [
-        //Validators.required,
-       // ...this.utils.validators.imagePath,
-        //...this.utils.validators.noLeadingSpace,
       ]),
       shortDescription: new FormControl('', [
-       // Validators.required,
         ...this.utils.validators.descripton,
         ...this.utils.validators.noLeadingSpace,
       ]),
       longDescription: new FormControl('', [
-      //  Validators.required,
         ...this.utils.validators.longDescription,
         ...this.utils.validators.noLeadingSpace,
       ]),
       videoLink: new FormControl('', [
-        // Validators.required,
-        //...this.utils.validators.imagePath,
         ...this.utils.validators.noLeadingSpace,]),
-      // startDate: ['', [Validators.required]],
-      // endDate: ['', [Validators.required]]
-      // sections: new FormControl('', [ Validators.required,...this.utils.validators.sections]),
     });
 
     this.subscribeParams = this.activatedRoute.params.subscribe(
@@ -160,19 +150,12 @@ export class CreateCourseKitComponent implements OnInit {
       }
       formdata.append('video_filename', this.videoSrc || '');
       formdata.append('doc_filename', this.uploadedDocument || '');
-      // formdata.append('files', this.docs);
-      // formdata.append('files', this.videoLink);
-      // formdata.append('video_filename', this.videoSrc);
-      // formdata.append('doc_filename', this.uploadedDocument);
       Swal.fire({
         title: 'Uploading...',
         text: 'Please wait...',
         allowOutsideClick: false,
         timer: 90000,
         timerProgressBar: true,
-        // onBeforeOpen: () => {
-        //   Swal.showLoading();
-        //  },
       });
       setTimeout(() => {
         if(formdata){
@@ -180,7 +163,6 @@ export class CreateCourseKitComponent implements OnInit {
             const courseKitData: CourseKit = this.courseKitForm.value;
             courseKitData.videoLink = data.data._id;
            courseKitData.documentLink = data.data.document || '';
-           // courseKitData.documentLink = data.data.document ||'';
             if(courseKitData){
               this.createCourseKit(courseKitData);
             }
@@ -208,15 +190,12 @@ export class CreateCourseKitComponent implements OnInit {
          courseKitData.companyId=userId;
         this.courseService.createCourseKit(courseKitData).subscribe(
           (res) => {
-            console.log('res', res);
             Swal.fire({
               title: 'Successful',
               text: 'Course Kit created successfully',
               icon: 'success',
             });
-            // this.fileDropEl.nativeElement.value = "";
             this.courseKitForm.reset();
-            // this.toggleList()
             this.router.navigateByUrl('/admin/courses/course-kit');
           },
           (error) => {
@@ -252,7 +231,6 @@ export class CreateCourseKitComponent implements OnInit {
     return false;
   }
 
-  //videoUpload
   fileBrowseHandler(event: any) {
     const file = event.target.files[0];
     if(file.size <= 10000000){
@@ -266,11 +244,6 @@ export class CreateCourseKitComponent implements OnInit {
       });
     }
   }
-
-  // fileBrowseHandler(event: any) {
-  //   const files = event.target.files;
-  //   this.onFileDropped(files);
-  // }
   onFileDropped($event: any) {
     this.prepareFilesList($event);
   }
@@ -280,12 +253,50 @@ export class CreateCourseKitComponent implements OnInit {
       this.files.push(item);
       this.model.vltitle = item.name;
     }
-    //this.fileDropEl.nativeElement.value = "";
   }
+  isUploading = false;
 
   onFileUpload(event: any) {
     const file = event.target.files[0];
-    this.docs = file;
-    this.uploadedDocument = this.docs.name;
+  
+    if (file) {
+      if (
+        file.type === 'application/vnd.ms-powerpoint' ||
+        file.type === 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+      ) {
+        this.isUploading = true;  
+  
+        this.courseService.uploadFile(file).subscribe(
+          (response) => {
+            const byteCharacters = atob(response.fileContent);
+            const byteNumbers = new Array(byteCharacters.length);
+            for (let i = 0; i < byteCharacters.length; i++) {
+              byteNumbers[i] = byteCharacters.charCodeAt(i);
+            }
+            const byteArray = new Uint8Array(byteNumbers);
+            const blob = new Blob([byteArray], { type: 'application/pdf' });
+            const fileToUpload = new File([blob], response.filename, { type: 'application/pdf' });
+            this.uploadedDocument = file.name;
+            this.docs = fileToUpload; 
+            const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+            if (fileInput) {
+              const dataTransfer = new DataTransfer();
+              dataTransfer.items.add(fileToUpload);
+              fileInput.files = dataTransfer.files;
+            }
+            this.isUploading = false;  
+          },
+          (error) => {
+            this.isUploading = false; 
+            Swal.fire('Upload Failed', 'Unable to convert the file.', 'error');
+          }
+        );
+      } else {
+        this.uploadedDocument = file.name;
+        this.docs = file;
+      }
+    }
   }
+  
+
 }

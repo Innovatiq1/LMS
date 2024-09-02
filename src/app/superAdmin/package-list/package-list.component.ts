@@ -48,7 +48,6 @@ export class PackageListComponent extends UnsubscribeOnDestroyAdapter {
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild('filter', { static: true }) filter!: ElementRef;
   selection = new SelectionModel<CourseModel>(true, []);
-  // coursePaginationModel!: Partial<CoursePaginationModel>;
   searchTerm: string = '';
   dataSource: any[] = [];
   filteredData: any[] = [];
@@ -132,7 +131,6 @@ export class PackageListComponent extends UnsubscribeOnDestroyAdapter {
     let in_active = this.filteredData.filter(data => data.Active === false);
     this.inactiveCount = in_active.length;
     this.totalItems = this.filteredData.length;
-    console.log('Filtered Data', this.filteredData);
     this.updateDisplayedData();
   }
   
@@ -208,13 +206,7 @@ export class PackageListComponent extends UnsubscribeOnDestroyAdapter {
       10,
       user.Active ? 'Active' : 'Inactive',
     ]);
-    //const columnWidths = [60, 80, 40];
     const columnWidths = [20, 20, 20, 20, 20, 20, 20, 20, 20, 20];
-
-    // Add a page to the document (optional)
-    //doc.addPage();
-
-    // Generate the table using jspdf-autotable
     (doc as any).autoTable({
       head: headers,
       body: data,
@@ -224,15 +216,13 @@ export class PackageListComponent extends UnsubscribeOnDestroyAdapter {
         cellWidth: 'wrap',
       },
     });
-
-    // Save or open the PDF
     doc.save('AllUsers-list.pdf');
   }
 
   pageSizeChange($event: any) {
     this.coursePaginationModel.page = $event?.pageIndex + 1;
     this.coursePaginationModel.limit = $event?.pageSize;
-    this.fetchData(); // Call method to update displayed data
+    this.fetchData();
   }
 
   viewPackage(id:string){

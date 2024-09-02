@@ -29,7 +29,6 @@ export class EditCategoriesComponent {
   subCategoryData: SubCategory[] = [];
   fb: any;
   validations: boolean | undefined;
-  //mainCategoryForm: any;
 
   breadscrums = [
     {
@@ -49,7 +48,6 @@ export class EditCategoriesComponent {
     this.subscribeParams = this.activatedRoute.params.subscribe(
       (params: any) => {
         this.categoryId = params.id;
-        //console.log("=Id===",params.id)
       }
     );
   }
@@ -57,8 +55,6 @@ export class EditCategoriesComponent {
     return this.subCategoryForm.get('subcategories') as FormArray;
   }
   ngOnInit(): void {
-    //this.setup()
-
     this.initMainCategoryForm();
     this.initSubCategoryForm();
     this.addSubCategoryField();
@@ -93,13 +89,6 @@ export class EditCategoriesComponent {
       category_name: ['', Validators.required],
     });
   }
-  // initSubCategoryForm(): void {
-  //   this.subCategoryForm = this.formBuilder.group({
-  //     sub_id: [''],
-  //     main_category_id: [''],
-  //     subcategories: this.formBuilder.array([]),
-  //   });
-  // }
   getData() {
     this.courseService
       .getcategoryById(this.categoryId)
@@ -144,21 +133,18 @@ export class EditCategoriesComponent {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subcategories.removeAt(index);
-        console.log('deleteSubCategory', sub.value.sub_id);
         const id = sub.value.sub_id;
         this.deleteSubCategory(id);
         Swal.fire({
           title: 'Success',
           text: 'Record Deleted Successfully...!!!',
           icon: 'success',
-          // confirmButtonColor: '#526D82',
         });
       }
     });
   }
   createSubCategory(): void {
     this.isSubmitted = true;
-    console.log('createSubCategory', this.subCategoryForm);
     if (this.subCategoryForm.invalid) {
       this.validations = true;
       return;
@@ -196,10 +182,6 @@ export class EditCategoriesComponent {
               this.initSubCategoryForm();
               this.addSubCategoryField();
               window.history.back();
-              //this.list = !this.list;
-              //this.create = !this.create;
-              // this.list = !this.list;
-              //this.fetchSubCategories();
             },
             (error) => {
               Swal.fire('Error', 'Failed to update subcategories!', 'error');
@@ -236,7 +218,6 @@ export class EditCategoriesComponent {
                 'Main category Updated successfully!',
                 'success'
               );
-              //this.mainCategoryId = response.data._id;
             },
             (error) => {
               Swal.fire('Error', 'Failed to update main category!', 'error');

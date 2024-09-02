@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, ViewChild } from '@angular/core';
 import { CourseService } from '@core/service/course.service';
 import {
@@ -42,7 +41,6 @@ export class AllCourseComponent {
     'status',
     'code',
     'creator',
-    // 'Fee Type',
     'Days',
     'Training Hours',
     'Fee Type',
@@ -52,15 +50,6 @@ export class AllCourseComponent {
     'Users',
     'Fees',
   ];
-  // displayedColumns = [
-  //   'name',
-  //   'code',
-  //   'Days',
-  //   'Training Hours',
-  //   'Fees',
-  //   'Vendor',
-  //   'status'
-  // ];
   coursePaginationModel: Partial<CoursePaginationModel>;
   courseData: any;
   pagination: any;
@@ -77,7 +66,6 @@ export class AllCourseComponent {
   selection = new SelectionModel<MainCategory>(true, []);
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   isFilter = false;
-  // programData: any;
   titles: string[] = [];
   codes: string[] = [];
   creator: string[] = [];
@@ -112,13 +100,10 @@ export class AllCourseComponent {
     // constructor
     this.coursePaginationModel = { limit: 10 };
     let urlPath = this.route.url.split('/');
-    // this.editUrl = urlPath.includes('edit-program');
     this.path = urlPath[urlPath.length - 1];
     this.filterForm = this.fb.group({
       course: ['', []],
       creator: ['', []],
-      // startDate: ['', []],
-      // endDate: ['', []],
       status: ['', []],
       vendor: ['', []],
     });
@@ -133,7 +118,6 @@ export class AllCourseComponent {
         'Fee Type',
         'Days',
         'Training Hours',
-      //  'Fees',
         'startDate',
         'endDate',
         'Vendor',
@@ -151,7 +135,6 @@ export class AllCourseComponent {
         'Fee Type',
         'Days',
         'Training Hours',
-        // 'Fees',
         'startDate',
         'endDate',
         'Vendor',
@@ -202,7 +185,6 @@ export class AllCourseComponent {
   openFilterCard() {
     this.isFilter = !this.isFilter;
   }
-  // export table data in excel file
   exportExcel() {
     const exportData: Partial<TableElement>[] = this.courseData.map(
       (x: any) => ({
@@ -301,13 +283,7 @@ export class AllCourseComponent {
       x.vendor,
       
     ]);
-    //const columnWidths = [60, 80, 40];
     const columnWidths = [50, 20, 30, 20, 20, 20, 30, 30, 30, 20];
-
-    // Add a page to the document (optional)
-    //doc.addPage();
-
-    // Generate the table using jspdf-autotable
     (doc as any).autoTable({
       head: headers,
       columnWidths: columnWidths,
@@ -318,8 +294,6 @@ export class AllCourseComponent {
         cellWidth: 'wrap',
       },
     });
-
-    // Save or open the PDF
     doc.save('AllCourses-list.pdf');
   }
   performSearch() {
@@ -329,8 +303,6 @@ export class AllCourseComponent {
           const searchList = item.title.toLowerCase();
           return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1;
         }
-
-        // item.classId.courseId?.title.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     } else {
       this.getAllCourses();
@@ -380,14 +352,11 @@ export class AllCourseComponent {
   private refreshTable() {
     this.paginator._changePageSize(this.paginator.pageSize);
   }
-  /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.courseData.renderedData.length;
     return numSelected === numRows;
   }
-
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
     this.isAllSelected()
       ? this.selection.clear()
@@ -448,8 +417,6 @@ export class AllCourseComponent {
       ) {
         this.parseWord(selectedFile);
       } 
-  console.log("hi")
-      // If it's not an Excel file, we just handle it as a PDF or other file
       this.logFormData(formData);
       this.courseService.uploadFiles(formData);
       this.showAlert = true;
@@ -460,13 +427,10 @@ export class AllCourseComponent {
   
   public logFormData(formData: FormData) {
     formData.forEach((value, key) => {
-      console.log(`${key}:`, value);
-      
       let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
       let courses = JSON.parse(localStorage.getItem('user_data')!).user.courses;
   
       if (typeof value === 'string') {
-        // Remove quotes around the array if they exist
         let cleanedValue = value.replace(/^"|"$/g, '');
         let parsedValue;
         
@@ -481,10 +445,7 @@ export class AllCourseComponent {
           companyId: userId,
           courses: courses,
           formData: parsedValue,
-          // excel: true
         };
-      
-        console.log("payload", payload);
   
         this.courseService.createBulkCourses(payload).subscribe(
           (response: any) => {
@@ -496,11 +457,9 @@ export class AllCourseComponent {
             this.getAllCourses();
           },
           (error: any) => {
-            console.log('err', error);
           }
         );
       } else {
-        // Handle the case where value is not a string (e.g., it's a File)
         console.error("The value is not a string and cannot be parsed as JSON:", value);
       }
     });
@@ -513,20 +472,14 @@ export class AllCourseComponent {
     reader.onload = async (e: any) => {
       try {
         const arrayBuffer = e.target.result as ArrayBuffer;
-  
-        // Load PDF document
         const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
         const numPages = pdf.numPages;
         let pdfText = '';
-  
-        // Iterate through pages and extract text
         for (let pageNum = 1; pageNum <= numPages; pageNum++) {
           const page = await pdf.getPage(pageNum);
           const textContent = await page.getTextContent();
           pdfText += textContent.items.map((item: any) => item.str).join(' ');
         }
-  
-        // Log the content to the console
         console.log('Extracted Text Content:', pdfText);
   
       } catch (error) {
@@ -551,7 +504,6 @@ export class AllCourseComponent {
           const worksheet = workbook.Sheets[sheetName];
           const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
           formData.append('excelData', JSON.stringify(jsonData));
-          console.log("data1111", formData)
         this.logFormData(formData);
           this.courseService.uploadFiles(formData);
           this.showAlert = true;
@@ -559,7 +511,7 @@ export class AllCourseComponent {
           e.target.value = null;
         };
         reader.readAsArrayBuffer(selectedFile);
-        return; // Exit the function as we're processing the file asynchronously
+        return;
       }
       async parseWord(selectedFile: File) {
         const reader = new FileReader();
@@ -569,11 +521,8 @@ export class AllCourseComponent {
             const arrayBuffer = e.target.result as ArrayBuffer;
             const zip = new JSZip();
             const content = await zip.loadAsync(arrayBuffer);
-      
-            // Check if the file exists in the zip
             const documentFile = content.file('word/document.xml');
             if (documentFile) {
-              // Extract document XML
               const documentXML = await documentFile.async('text');
               const parser = new DOMParser();
               const xmlDoc = parser.parseFromString(documentXML, 'application/xml');
@@ -583,41 +532,21 @@ export class AllCourseComponent {
               for (let i = 0; i < textNodes.length; i++) {
                 plainText += textNodes[i].textContent + ' ';
               }
-      
-              // Log the content to the console
-              console.log('Extracted Text Content:', plainText);
-      
-              // Split plain text into an array
               const elements = plainText.split(/\s+/).filter(item => item.trim() !== '');
-      
-              // Identify headers and data
-              const headers = elements.slice(0, 18); // Assuming first 18 elements are headers
-              console.log('Headers:', headers);
-      
+              const headers = elements.slice(0, 18);
               const data = [];
               for (let i = headers.length; i < elements.length; i += headers.length) {
                 data.push(elements.slice(i, i + headers.length));
               }
-      
-              console.log('Data:', data);
-      
-              // Combine headers and data into a single array
               const combinedData = [headers, ...data];
-              console.log('Combined Data:', combinedData);
-      
-              // Format the payload
               let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
               let courses = JSON.parse(localStorage.getItem('user_data')!).user.courses;
       
               let payload = {
                 companyId: userId,
                 courses: courses,
-                formData: combinedData, // Pass the formatted data
+                formData: combinedData,
               };
-      
-              console.log("Payload:", payload);
-      
-              // Send the payload to the backend
               this.courseService.createBulkCourses(payload).subscribe(
                 (response: any) => {
                   Swal.fire({
@@ -627,7 +556,6 @@ export class AllCourseComponent {
                   });
                 },
                 (error: any) => {
-                  console.log('Error:', error);
                 }
               );
             } else {

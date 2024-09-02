@@ -32,7 +32,6 @@ export class EditDepartmentComponent {
     this.departmentForm = this.createContactForm();
   }
   onSubmit() {
-    console.log('Form Value', this.departmentForm.value);
   }
   createContactForm(): UntypedFormGroup {
     return this.fb.group({

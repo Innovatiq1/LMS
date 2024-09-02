@@ -86,7 +86,6 @@ export class SucessCourseComponent implements OnInit {
   registerClass(classId: string) {
     let userdata = JSON.parse(localStorage.getItem('currentUser')!)
     let studentId=localStorage.getItem('id')
-    console.log('title',this.classDetails.courseId.title)
     let payload ={
       email:userdata.user.email,
       courseTitle:this.classDetails?.courseId?.title,
@@ -132,11 +131,6 @@ export class SucessCourseComponent implements OnInit {
       }
     });
   }
-  // getCourseKitDetails(){
-  //   this.courseService.getClassList(this.courseId).subscribe((response) => {
-  //     this.courseKitDetails=response?.course_kit;
-  //   });
-  // }
   getJobTemplates() {
     this.courseService.getJobTempletes().subscribe(
       (data: any) => {
@@ -157,7 +151,6 @@ export class SucessCourseComponent implements OnInit {
   }
 
   openVidePlayer(videoLink: { url?: any; id?: any; }): void {
-    // const { videoLink } = videoLink;
     if (videoLink?.id) {
       const videoId = videoLink.id;
       this.courseService.getVideoById(videoId).subscribe((res) => {

@@ -212,9 +212,26 @@ export class StudentsService extends UnsubscribeOnDestroyAdapter {
         map(response => response)
       );
     }
+    submitTutorial(data: any): Observable<ApiResponse> {
+      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+      data.companyId = userId
+      const apiUrl = `${this.defaultUrl}admin/tutorial-answers`;
+
+      return this.httpClient.post<ApiResponse>(apiUrl, data).pipe(
+        map(response => response)
+      );
+    }
 
     getAnswerById(id: string): Observable<any> {
       const apiUrl = `${this.defaultUrl}admin/assesment-answers/${id}`;
+      return this.httpClient.get<any>(apiUrl).pipe(
+        map(response => {
+          return response;
+        })
+      );
+    }
+    getTutorialAnswerById(id: string): Observable<any> {
+      const apiUrl = `${this.defaultUrl}admin/tutorial-answers/${id}`;
       return this.httpClient.get<any>(apiUrl).pipe(
         map(response => {
           return response;

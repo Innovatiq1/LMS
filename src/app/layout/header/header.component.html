@@ -45,50 +45,11 @@
           <mat-menu #notificationMenu="matMenu" class="nfc-menu">
             <div class="nfc-header">
               <h5 class="mb-0">Notitications</h5>
-              <!-- <a class="nfc-mark-as-read">Mark all as read</a> -->
             </div>
             <div class="nfc-dropdown">
               <ng-scrollbar style="height: 350px" visibility="hover">
                 <div class="noti-list header-menu">
                   <div class="menu">
-                    <!-- <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                      <p>A title with a text under</p>
-                      <button mat-raised-button color="primary" (click)="showWithTitleMessage()">CLICK
-                        ME</button>
-                    </div> -->
-                    <!-- <div>
-                      <button mat-menu-item *ngFor="let notification of notifications" onClick="return false;"
-                        [ngClass]="[notification.status]">
-                        <span class="table-img msg-user ">
-                          <i class="material-icons-two-tone nfc-type-icon"
-                            [ngClass]="[notification.color]">{{notification.icon}}</i>
-                        </span>
-                        <span class="menu-info">
-                          <span class="menu-title">{{notification.message}}</span>
-                          <span class="menu-desc mt-2">
-                            <i class="material-icons">access_time</i> {{notification.time}}
-                          </span>
-                        </span>
-                        <span class="nfc-close">
-                          <app-feather-icons [icon]="'x'" [class]="'user-menu-icons'"></app-feather-icons>
-                        </span>
-                      </button>
-                    </div> -->
-                    <!-- <div class="row">
-                      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="card">
-                          <div class="header">
-                            <h2>Announcement </h2>
-                          </div>
-                          <div class="body">
-                            <h6>Simple Dialog With Action Button</h6>
-                            <br>
-                            <button mat-raised-button color="primary" (click)="dialog()">Click Me To Open Dialog</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div> -->
-
                     <div>
                       <button class="mat-list" *ngFor="let notification of announcements">
                         <span class="table-img msg-user ">
@@ -125,7 +86,7 @@
         </li>
         <li>
 
-          <button mat-button  *ngIf="checkViewSettings(role)"[matMenuTriggerFor]="menu">
+          <button mat-button  *ngIf="checkViewSettings(role)" [matMenuTriggerFor]="menu">
             <app-feather-icons [icon]="'settings'" [class]="'user-menu-icons'"></app-feather-icons>
           </button>
           <mat-menu #menu="matMenu" class="horizontal-menu">
@@ -142,14 +103,10 @@
               </div>
             </div>
           </mat-menu>
-          <!-- <button mat-menu-item class="user-item-list" (click)="onClick()" >
-            <app-feather-icons [icon]="'settings'" [class]="'user-menu-icons'"></app-feather-icons>
-          </button> -->
         </li>
         <li class="nav-item user_profile">
           <button mat-button [matMenuTriggerFor]="profilemenu">
             <div class="chip dropdown-toggle" ngbDropdownToggle class="pt-0">
-              <!-- <img [src]="userImg || '../../../assets/profile.png'" class="user_img" width="32" height="32" alt="User Image" /> -->
               <img [src]="userProfile || '../../../assets/profile.png'" class="user_img" width="32" height="32"
                 alt="User Image" />
 
@@ -167,9 +124,6 @@
                   <button mat-menu-item class="user-item-list" [routerLink]="['/student/settings/security-settings']">
                     <app-feather-icons [icon]="'lock'" [class]="'user-menu-icons'"></app-feather-icons>Change Password
                   </button>
-                  <!-- <button mat-menu-item class="user-item-list" (click)="onClick()" >
-                    <app-feather-icons [icon]="'settings'" [class]="'user-menu-icons'"></app-feather-icons>Settings
-                  </button> -->
                   <button mat-menu-item (click)="logout()" class="user-item-list">
                     <app-feather-icons [icon]="'log-out'" [class]="'user-menu-icons'"></app-feather-icons>Logout
                   </button>

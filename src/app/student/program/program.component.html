@@ -1,257 +1,200 @@
 <section class="content">
-    <div class="content-block">
-      <div class="block-header" *ngFor="let breadscrum of breadscrums">
-        <!-- breadcrumb -->
-        <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
-        </app-breadcrumb>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <div class="card">
-            <div class="materialTableHeader">
-              <div class="right" >
-                <ul class="tbl-export-btn">
-                  <li>
-                <ul class="header-buttons-left ms-0">
-                  <li class="tbl-search-box">
-                    <label for="search-input"><i class="material-icons search-icon">search</i></label>
-                    <input *ngIf ="tab == 0"
-                    placeholder="Search"
-                    type="text"
-                    #filter
-                    class="browser-default search-field text"
-                    aria-label="Search box"
-                    [(ngModel)]="filterName" (input)="performSearch()"
+  <div class="content-block">
+    <div class="block-header" *ngFor="let breadscrum of breadscrums">
+      <!-- breadcrumb -->
+      <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
+      </app-breadcrumb>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="materialTableHeader">
+            <div class="right">
+              <ul class="tbl-export-btn">
+                <li>
+                  <ul class="header-buttons-left ms-0">
+                    <li class="tbl-search-box">
+                      <label for="search-input"><i class="material-icons search-icon">search</i></label>
+                      <input *ngIf="tab == 0" placeholder="Search" type="text" #filter
+                        class="browser-default search-field text" aria-label="Search box" [(ngModel)]="filterName"
+                        (input)="performSearch()" />
+                      <input *ngIf="tab == 1" placeholder="Search" type="text" #filter
+                        class="browser-default search-field text" aria-label="Search box" [(ngModel)]="filterRegistered"
+                        (input)="performSearch()" />
+                      <input *ngIf="tab == 2" placeholder="Search" type="text" #filter
+                        class="browser-default search-field text" aria-label="Search box" [(ngModel)]="filterApproved"
+                        (input)="performSearch()" />
+                      <input *ngIf="tab == 3" placeholder="Search" type="text" #filter
+                        class="browser-default search-field text" aria-label="Search box" [(ngModel)]="filterCompleted"
+                        (input)="performSearch()" />
 
-                  />
-                  <input *ngIf ="tab == 1"
-                  placeholder="Search"
-                  type="text"
-                  #filter
-                  class="browser-default search-field text"
-                  aria-label="Search box"
-                  [(ngModel)]="filterRegistered" (input)="performSearch()"
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <mat-tab-group (selectedTabChange)="tabChanged($event)">
+            <mat-tab *ngIf="allPrograms">
+              <ng-template mat-tab-label>
+                <div class="course mx-4">All Programs</div>
+              </ng-template>
 
-                />
-                <input *ngIf ="tab == 2"
-                placeholder="Search"
-                type="text"
-                #filter
-                class="browser-default search-field text"
-                aria-label="Search box"
-                [(ngModel)]="filterApproved" (input)="performSearch()"
-
-              />
-              <input *ngIf ="tab == 3"
-              placeholder="Search"
-              type="text"
-              #filter
-              class="browser-default search-field text"
-              aria-label="Search box"
-              [(ngModel)]="filterCompleted" (input)="performSearch()"
-
-            />
-
-                  </li>
-                </ul>
-              </li>
-            </ul>
-              </div>
-            </div>  
-            <mat-tab-group (selectedTabChange)="tabChanged($event)">
-              <mat-tab *ngIf="allPrograms">  
-                <ng-template mat-tab-label>
-                  <div class="course mx-4">All Programs</div>                  
-                </ng-template>
-  
-            <div class="body">
-              <div *ngIf = "totalItems>0" class="row" >
-                <div class="col-md-3" *ngFor="let data of dataSource">
-                  <div class="student-program-card course-card-blog" style="cursor: pointer;" [routerLink]="['/student/view-program/',data.id]">
-                    <div class="course-card-image">
-                      <img class="img" [src]="data?.courseId?.image_link || '../../../assets/noimage.jpg'" alt="Image">
-                    </div>
-                    <div class="blog-table">
-                      <div class="post-user mt-3">
-                        <!-- <span class="float-start msr-3">
-                          <img class="img-circle" src="{{data.image_link}}" alt="...">
-                        </span> -->
-                        <h6 class="mb-xs mt-xs title"> {{data?.courseId?.title |truncate : 40}}</h6>
-                        <p class="text-muted"><time>{{data?.courseId?.duration}} Hours</time></p>
+              <div class="body">
+                <div *ngIf="totalItems>0" class="row">
+                  <div class="col-md-3" *ngFor="let data of dataSource">
+                    <div class="student-program-card course-card-blog" style="cursor: pointer;"
+                      [routerLink]="['/student/view-program/',data.id]">
+                      <div class="course-card-image">
+                        <img class="img" [src]="data?.courseId?.image_link || '../../../assets/noimage.jpg'"
+                          alt="Image">
                       </div>
-                      <h6><time>{{data?.classDeliveryType | titlecase}}</time></h6>
-                      <h6 style="font-size: 15px;">Compulsory Course <span class="ccount">{{data?.courseId?.coreCourseCount}}</span></h6>
-                      <h6 style="font-size: 15px;">Elective Course <span class="ecount"> {{data?.courseId?.electiveCourseCount}}</span></h6>
-
-
-                      <!-- <h6>Core Course:{{data?.courseId?.coreCourseCount}}</h6>
-                      <h6 class="course-card-description">Elective Course:{{data?.courseId?.electiveCourseCount}}</h6> -->
-                      <!-- <div class="text-center mb-3">
-                        <button mat-icon-button class="tbl-action-btn" [routerLink]="['/student/view-program/',data.id]">
-                          <app-feather-icons [icon]="'eye'" [class]="'tbl-fav-view'"></app-feather-icons>
-                        </button>
-                        <button mat-icon-button class="tbl-action-btn" [routerLink]="['/admin/courses/edit-course/',data.id]">
-                          <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                        </button>
-                        <button mat-icon-button class="tbl-action-btn" (click)="delete(data.id)">
-                          <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                        </button>
-                       
-                      </div> -->
-                      <!-- <div class="ftr">
-                        <div class="author">
-                          <a href="#"><span class="text-danger"><i class="fa fa-heart"></i>
-                              368</span></a>
+                      <div class="blog-table">
+                        <div class="post-user mt-3">
+                          <h6 class="mb-xs mt-xs title"> {{data?.courseId?.title |truncate : 40}}</h6>
+                          <p class="text-muted"><time>{{data?.courseId?.duration}} Hours</time></p>
                         </div>
-                        <div class="stats"> <a href="#"><i class="far fa-comment-dots"></i>48</a> </div>
-                      </div> -->
+                        <h6><time>{{data?.classDeliveryType | titlecase}}</time></h6>
+                        <h6 style="font-size: 15px;">Compulsory Course <span
+                            class="ccount">{{data?.courseId?.coreCourseCount}}</span></h6>
+                        <h6 style="font-size: 15px;">Elective Course <span class="ecount">
+                            {{data?.courseId?.electiveCourseCount}}</span></h6>
+                      </div>
                     </div>
                   </div>
                 </div>
-                </div>
-                <div *ngIf = "totalItems ==0">
+                <div *ngIf="totalItems ==0">
                   No Programs related to your department
                 </div>
 
-            </div>
-            <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems" (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr"
-          aria-label="select pagination option">
-        </mat-paginator>
-      </mat-tab>
-      <mat-tab *ngIf="register">  
-        <ng-template mat-tab-label>
-          <!-- <mat-icon class="example-tab-icon msr-2">face</mat-icon> -->
-          Registered Programs
-        </ng-template>
-  <div class="body">
-          <div class="row" >
-            <div class="col-md-3" *ngFor="let data of studentRegisteredClasses">
-              <div class="student-program-card course-card-blog" style="cursor: pointer;" [routerLink]="['/student/view-program/',data.classId?.id]">
-                <div class="course-card-image">
-                  <img class="img" [src]="data?.classId?.courseId?.image_link || '../../../assets/noimage.jpg'" alt="Image">
+              </div>
+              <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems"
+                (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr" aria-label="select pagination option">
+              </mat-paginator>
+            </mat-tab>
+            <mat-tab *ngIf="register">
+              <ng-template mat-tab-label>
+                Registered Programs
+              </ng-template>
+              <div class="body">
+                <div class="row">
+                  <div class="col-md-3" *ngFor="let data of studentRegisteredClasses">
+                    <div class="student-program-card course-card-blog" style="cursor: pointer;"
+                      [routerLink]="['/student/view-program/',data.classId?.id]">
+                      <div class="course-card-image">
+                        <img class="img" [src]="data?.classId?.courseId?.image_link || '../../../assets/noimage.jpg'"
+                          alt="Image">
 
-                </div>
-                <div class="blog-table">
-                  <div class="post-user mt-3">
-                    <!-- <span class="float-start msr-3">
-                      <img class="img-circle" src="{{data.image_link}}" alt="...">
-                    </span> -->
-                    <h6 class="mb-xs mt-xs title"> {{data?.classId?.courseId?.title |truncate : 40}}</h6>
-                    <p class="text-muted"><time>{{data?.classId?.courseId?.duration}} Hours</time></p>
-                  </div>
-                  <h6><time>{{data?.classId?.classDeliveryType | titlecase}}</time></h6>
-                  <h6 style="font-size: 15px;">Compulsory Course <span class="ccount">{{data?.classId?.courseId?.coreCourseCount}}</span></h6>
-                  <h6 style="font-size: 15px;">Elective Course <span class="ecount"> {{data?.classId?.courseId?.electiveCourseCount}}</span></h6>
-                  <!-- <h6>Core Course:{{data?.courseId?.coreCourseCount}}</h6>
-                  <h6 class="course-card-description">Elective Course:{{data?.courseId?.electiveCourseCount}}</h6> -->
-                  <div class="text-center mb-3">
-                    <button mat-icon-button class="tbl-action-btn" [routerLink]="['/student/view-program/',data.classId?.id]">
-                      <app-feather-icons [icon]="'eye'" [class]="'tbl-fav-view'"></app-feather-icons>
-                    </button>
-                    <!-- <button mat-icon-button class="tbl-action-btn" [routerLink]="['/admin/courses/edit-course/',data.id]">
-                      <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                    </button> -->
-                    <!-- <button mat-icon-button class="tbl-action-btn" (click)="delete(data.id)">
-                      <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                    </button> -->
-                   
-                  </div>
-                  <!-- <div class="ftr">
-                    <div class="author">
-                      <a href="#"><span class="text-danger"><i class="fa fa-heart"></i>
-                          368</span></a>
+                      </div>
+                      <div class="blog-table">
+                        <div class="post-user mt-3">
+                          <h6 class="mb-xs mt-xs title"> {{data?.classId?.courseId?.title |truncate : 40}}</h6>
+                          <p class="text-muted"><time>{{data?.classId?.courseId?.duration}} Hours</time></p>
+                        </div>
+                        <h6><time>{{data?.classId?.classDeliveryType | titlecase}}</time></h6>
+                        <h6 style="font-size: 15px;">Compulsory Course <span
+                            class="ccount">{{data?.classId?.courseId?.coreCourseCount}}</span></h6>
+                        <h6 style="font-size: 15px;">Elective Course <span class="ecount">
+                            {{data?.classId?.courseId?.electiveCourseCount}}</span></h6>
+                        <div class="text-center mb-3">
+                          <button mat-icon-button class="tbl-action-btn"
+                            [routerLink]="['/student/view-program/',data.classId?.id]">
+                            <app-feather-icons [icon]="'eye'" [class]="'tbl-fav-view'"></app-feather-icons>
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                    <div class="stats"> <a href="#"><i class="far fa-comment-dots"></i>48</a> </div>
-                  </div> -->
+                  </div>
                 </div>
               </div>
-            </div>
-            </div>
-        </div>
-        <mat-paginator class="paginator rounded-5" #paginator [length]="totalRegisteredItems" (page)="pageStudentRegisteredSizeChange($event)" [pageSizeOptions]="pageSizeArr"
-      aria-label="select pagination option">
-    </mat-paginator>
-  </mat-tab>
-  <mat-tab *ngIf="approve">  
-    <ng-template mat-tab-label>
-      <!-- <mat-icon class="example-tab-icon msr-2">face</mat-icon> -->
-      Approved Programs
-    </ng-template>
-<div class="body">
-      <div class="row" >
-        <div class="col-md-3" *ngFor="let data of studentApprovedClasses">
-          <div class="student-program-card course-card-blog" style="cursor: pointer;" [routerLink]="['/student/view-program/',data.classId?.id]">
-            <div class="course-card-image">
-              <img class="img" [src]="data?.classId?.courseId?.image_link || '../../../assets/noimage.jpg'" alt="Image">
+              <mat-paginator class="paginator rounded-5" #paginator [length]="totalRegisteredItems"
+                (page)="pageStudentRegisteredSizeChange($event)" [pageSizeOptions]="pageSizeArr"
+                aria-label="select pagination option">
+              </mat-paginator>
+            </mat-tab>
+            <mat-tab *ngIf="approve">
+              <ng-template mat-tab-label>
+                Approved Programs
+              </ng-template>
+              <div class="body">
+                <div class="row">
+                  <div class="col-md-3" *ngFor="let data of studentApprovedClasses">
+                    <div class="student-program-card course-card-blog" style="cursor: pointer;"
+                      [routerLink]="['/student/view-program/',data.classId?.id]">
+                      <div class="course-card-image">
+                        <img class="img" [src]="data?.classId?.courseId?.image_link || '../../../assets/noimage.jpg'"
+                          alt="Image">
 
-            </div>
-            <div class="blog-table">
-              <div class="post-user mt-3">
-                <h6 class="mb-xs mt-xs title"> {{data?.classId?.courseId?.title |truncate : 40}}</h6>
-                <p class="text-muted"><time>{{data?.classId?.courseId?.duration}} Hours</time></p>
+                      </div>
+                      <div class="blog-table">
+                        <div class="post-user mt-3">
+                          <h6 class="mb-xs mt-xs title"> {{data?.classId?.courseId?.title |truncate : 40}}</h6>
+                          <p class="text-muted"><time>{{data?.classId?.courseId?.duration}} Hours</time></p>
+                        </div>
+                        <h6><time>{{data?.classId?.classDeliveryType | titlecase}}</time></h6>
+                        <h6 style="font-size: 15px;">Compulsory Course <span
+                            class="ccount">{{data?.classId?.courseId?.coreCourseCount}}</span></h6>
+                        <h6 style="font-size: 15px;">Elective Course <span class="ecount">
+                            {{data?.classId?.courseId?.electiveCourseCount}}</span></h6>
+                        <div class="text-center mb-3">
+                          <button mat-icon-button class="tbl-action-btn"
+                            [routerLink]="['/student/view-program/',data.classId?.id]">
+                            <app-feather-icons [icon]="'eye'" [class]="'tbl-fav-view'"></app-feather-icons>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <h6><time>{{data?.classId?.classDeliveryType | titlecase}}</time></h6>
-              <h6 style="font-size: 15px;">Compulsory Course <span class="ccount">{{data?.classId?.courseId?.coreCourseCount}}</span></h6>
-              <h6 style="font-size: 15px;">Elective Course <span class="ecount"> {{data?.classId?.courseId?.electiveCourseCount}}</span></h6>
-              <div class="text-center mb-3">
-                <button mat-icon-button class="tbl-action-btn" [routerLink]="['/student/view-program/',data.classId?.id]">
-                  <app-feather-icons [icon]="'eye'" [class]="'tbl-fav-view'"></app-feather-icons>
-                </button>
-               
+              <mat-paginator class="paginator rounded-5" #paginator [length]="totalApprovedItems"
+                (page)="pageStudentApprovedSizeChange($event)" [pageSizeOptions]="pageSizeArr"
+                aria-label="select pagination option">
+              </mat-paginator>
+            </mat-tab>
+            <mat-tab *ngIf="complete">
+              <ng-template mat-tab-label>
+                Completed Programs
+              </ng-template>
+              <div class="body">
+                <div class="row">
+                  <div class="col-md-3" *ngFor="let data of studentCompletedClasses">
+                    <div class="student-program-card course-card-blog" style="cursor: pointer;"
+                      [routerLink]="['/student/view-program/',data.classId?.id]">
+                      <div class="course-card-image">
+                        <img class="img" [src]="data?.classId?.courseId?.image_link || '../../../assets/noimage.jpg'"
+                          alt="Image">
+                      </div>
+                      <div class="blog-table">
+                        <div class="post-user mt-3">
+                          <h6 class="mb-xs mt-xs title"> {{data?.classId?.courseId?.title |truncate : 40}}</h6>
+                          <p class="text-muted"><time>{{data?.classId?.courseId?.duration}} Hours</time></p>
+                        </div>
+                        <h6><time>{{data?.classId?.classDeliveryType | titlecase}}</time></h6>
+                        <h6 style="font-size: 15px;">Compulsory Course <span
+                            class="ccount">{{data?.classId?.courseId?.coreCourseCount}}</span></h6>
+                        <h6 style="font-size: 15px;">Elective Course <span class="ecount">
+                            {{data?.classId?.courseId?.electiveCourseCount}}</span></h6>
+                        <div class="text-center mb-3">
+                          <button mat-icon-button class="tbl-action-btn"
+                            [routerLink]="['/student/view-program/',data.classId?.id]">
+                            <app-feather-icons [icon]="'eye'" [class]="'tbl-fav-view'"></app-feather-icons>
+                          </button>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+              <mat-paginator class="paginator rounded-5" #paginator [length]="totalCompletedItems"
+                (page)="pageStudentCompletedSizeChange($event)" [pageSizeOptions]="pageSizeArr"
+                aria-label="select pagination option">
+              </mat-paginator>
+            </mat-tab>
+          </mat-tab-group>
         </div>
-        </div>
+      </div>
     </div>
-    <mat-paginator class="paginator rounded-5" #paginator [length]="totalApprovedItems" (page)="pageStudentApprovedSizeChange($event)" [pageSizeOptions]="pageSizeArr"
-  aria-label="select pagination option">
-</mat-paginator>
-</mat-tab>
-<mat-tab *ngIf="complete">  
-  <ng-template mat-tab-label>
-    <!-- <mat-icon class="example-tab-icon msr-2">face</mat-icon> -->
-    Completed Programs
-  </ng-template>
-<div class="body">
-    <div class="row" >
-      <div class="col-md-3" *ngFor="let data of studentCompletedClasses">
-        <div class="student-program-card course-card-blog" style="cursor: pointer;" [routerLink]="['/student/view-program/',data.classId?.id]">
-          <div class="course-card-image">
-            <img class="img" [src]="data?.classId?.courseId?.image_link || '../../../assets/noimage.jpg'" alt="Image">
-
-          </div>
-          <div class="blog-table">
-            <div class="post-user mt-3">
-              <h6 class="mb-xs mt-xs title"> {{data?.classId?.courseId?.title |truncate : 40}}</h6>
-              <p class="text-muted"><time>{{data?.classId?.courseId?.duration}} Hours</time></p>
-            </div>
-            <h6><time>{{data?.classId?.classDeliveryType | titlecase}}</time></h6>
-            <h6 style="font-size: 15px;">Compulsory Course <span class="ccount">{{data?.classId?.courseId?.coreCourseCount}}</span></h6>
-            <h6 style="font-size: 15px;">Elective Course <span class="ecount"> {{data?.classId?.courseId?.electiveCourseCount}}</span></h6>
-            <div class="text-center mb-3">
-              <button mat-icon-button class="tbl-action-btn" [routerLink]="['/student/view-program/',data.classId?.id]">
-                <app-feather-icons [icon]="'eye'" [class]="'tbl-fav-view'"></app-feather-icons>
-              </button>
-             
-            </div>
-          </div>
-        </div>
-      </div>
-      </div>
   </div>
-  <mat-paginator class="paginator rounded-5" #paginator [length]="totalCompletedItems" (page)="pageStudentCompletedSizeChange($event)" [pageSizeOptions]="pageSizeArr"
-aria-label="select pagination option">
-</mat-paginator>
-</mat-tab>
-
-
-
-
-      </mat-tab-group>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  
+</section>

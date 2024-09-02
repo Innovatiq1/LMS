@@ -1,23 +1,12 @@
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-// import { StudentsService } from './students.service';
-import { HttpClient } from '@angular/common/http';
-import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-// import { Students } from './students.model';
-import { DataSource } from '@angular/cdk/collections';
 import {
   MatSnackBar,
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
 import { BehaviorSubject, forkJoin, fromEvent, merge, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-// import { FormDialogComponent } from './dialogs/form-dialog/form-dialog.component';
-// import { DeleteDialogComponent } from './dialogs/delete/delete.component';
-// import { MatMenuTrigger } from '@angular/material/menu';
 import { SelectionModel } from '@angular/cdk/collections';
-import { Direction } from '@angular/cdk/bidi';
 import {
   TableExportUtil,
   TableElement,
@@ -122,9 +111,6 @@ implements OnInit{
       const searchList = (item?.title).toLowerCase()
       return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1
     }
-
-
-    // item.classId.courseId?.title.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
     } else {
       this.getProgramList();
@@ -148,7 +134,6 @@ implements OnInit{
             title: 'Success',
             text: 'Program approved successfully.',
             icon: 'success',
-            // confirmButtonColor: '#d33',
           });
           this.getProgramList();
         }, (error) => {
@@ -156,7 +141,6 @@ implements OnInit{
             title: 'Error',
             text: 'Failed to approve program. Please try again.',
             icon: 'error',
-            // confirmButtonColor: '#d33',
           });
         });
       }
@@ -197,7 +181,6 @@ implements OnInit{
   private refreshTable() {
     this.paginator._changePageSize(this.paginator.pageSize);
   }
-  /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.length;
@@ -250,17 +233,9 @@ implements OnInit{
           title: 'Success',
           text: 'Record Deleted Successfully...!!!',
           icon: 'success',
-          // confirmButtonColor: '#526D82',
         });
       }
     });
-   
-    // this.showNotification(
-    //   'snackbar-danger',
-    //   totalSelect + ' Record Delete Successfully...!!!',
-    //   'top',
-    //   'right'
-    // );
   }
 }
 

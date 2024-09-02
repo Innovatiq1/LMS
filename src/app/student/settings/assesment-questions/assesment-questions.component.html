@@ -34,14 +34,6 @@
                       code.times
                     }}Seconds</mat-option>
                   </mat-select>
-    
-                  <!-- <input
-                    matInput
-                    formControlName="timer"
-                    type="number"
-                    placeholder="Enter time in seconds"
-                    [readonly]="true"
-                  /> -->
                 </mat-form-field>
               </div>
               <div class="col-md-4">
@@ -88,14 +80,6 @@
                       code.scores
                     }}</mat-option>
                   </mat-select>
-                  <!-- <input
-                    matInput
-                    formControlName="scoreAlgorithm"
-                    type="number"
-                    placeholder="Enter Score"
-                    min="0.5"
-                    step="0.5"
-                  /> -->
                 </mat-form-field>
               </div>
               <div class="col-md-4">
@@ -229,7 +213,7 @@
         </form>
       </div>
       <div class="row body">
-        <div class="col-md-10">
+        <div class="col-md-6">
           <button
             mat-raised-button
             id="back"
@@ -239,20 +223,27 @@
           </button>
         </div>
 
-        <div class="col-md-2">
+        <div class="col-md-6">
           <div class="d-flex justify-content-between">
             <button
-              *ngIf="editUrl && approved"
-              mat-raised-button
-              color="success"
-              type="submit"
-              id="back"
-              style="margin-left: -80px; margin-right: 10px"
-              (click)="approve()"
-            >
-              Publish
-            </button>
-
+            class="btn-space"
+            id="draft"
+            mat-raised-button
+            color="warn"
+            (click)="saveDraft('draft')"
+          > Save as draft
+          </button>
+          <button
+          *ngIf="editUrl && approved"
+          mat-raised-button
+          color="success"
+          type="submit"
+          id="back"
+          style="margin-left: 10px; margin-right: 10px"
+          (click)="approve()"
+        >
+          Publish
+        </button>
             <button
               class="btn-space"
               id="submit"
@@ -263,11 +254,6 @@
             >
               {{ editUrl ? "Update" : "Create" }}
             </button>
-
-            <!-- <button *ngIf="editUrl" id="submit" class="btn-space" mat-raised-button style="background-color: #6777ef; color: white;"
-              (click)="update()">
-              Update
-            </button> -->
           </div>
         </div>
       </div>

@@ -47,18 +47,15 @@ export class ProgramListComponent {
     'Payment',
     'Compulsory Count',
     'Elective Count',
-    // 'Payment',
     
   ];
   isLoading = false;
   isNoMoreData = false;
   programData: any = [];
   programCourse!: ProgramCourse;
-  // Mode = Mode;
   pageSizeArr = this.utils.pageSizeArr;
   coursePaginationModel!: Partial<CoursePaginationModel>;
   totalItems: any;
-  // filterName='';
   searchTerm: string = '';
   selection = new SelectionModel<ProgramCourse>(true, []);
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
@@ -69,7 +66,6 @@ export class ProgramListComponent {
   isProgram = false;
   isCreator = false;
   isFilter = false;
-  // programData: any;
   titles: string[] = []; 
   codes: string[] = []; 
   creator: string[] = [];
@@ -107,14 +103,11 @@ row: any;
     private authenService: AuthenService
   ) { this.coursePaginationModel = {};
   let urlPath = this.route.url.split('/')
-  // this.editUrl = urlPath.includes('edit-program');
   this.path = urlPath[urlPath.length - 1];
   
   this.filterForm = this.fb.group({
     program: ['', []],
     creator: ['', []],
-    // startDate: ['', []],
-    // endDate: ['', []],
     status: ['', []],
     vendor: ['', []]
 
@@ -133,7 +126,6 @@ row: any;
       'Payment',
       'Compulsory Count',
       'Elective Count',
-      // 'Payment',
       
     ];
 
@@ -158,7 +150,6 @@ row: any;
       'Payment',
       'Compulsory Count',
       'Elective Count',
-      // 'Payment',
       
     ];
     this.breadscrums = [
@@ -189,7 +180,6 @@ onSelectionChange(event: any, field: any) {
     this.selectedPrograms = event.value;
   }
   if (field == 'vendor') {
-    // this.selectedVendors = event.value;
   }
   if (field == 'status') {
     this.selectedStatus = event.value;
@@ -237,11 +227,9 @@ applyFilter() {
 }
 
 getFilterData(filters?: any) {
-  // let filterText = this.filterName
   this.courseService.getAllPrograms().subscribe(
     (response: any) => {
       this.programData = response.docs;
-      console.log(this.programData);
       this.titles = this.programData.map((doc: any) => doc.title);
       this.codes = this.programData.map((doc: any) => doc.courseCode);
       this.creator = this.programData.map((doc: any) => doc.creator);
@@ -259,7 +247,6 @@ getFilterData(filters?: any) {
     this.isLoading = true;
     this.isNoMoreData = false;
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-    // let filterText = this.filterName
     this.courseService.getAllPrograms({...this.coursePaginationModel},userId).subscribe(
       (response: any) => {
         this.isLoading = false;
@@ -381,7 +368,6 @@ performSearch() {
 viewActiveProgram(id:string, status: string):void {
   this.route.navigate(['/admin/program/view-program'],{queryParams:{id:id, status: status}});
 }
-  // export table data in excel file
   exportExcel() {
     const mapStatus = (status: string): string => {
       if (status === 'active') {
@@ -389,10 +375,9 @@ viewActiveProgram(id:string, status: string):void {
       } else if (status === 'inactive') {
           return 'pending';
       } else {
-          return status; // Handle other cases if needed
+          return status;
       }
   };
-    // key name with space add in brackets
     const exportData: Partial<TableElement>[] =
       this.programData.map((x: any) => ({
         'Program Name': x.title,
@@ -415,7 +400,6 @@ viewActiveProgram(id:string, status: string):void {
     const doc = new jsPDF();
     const headers = [['Program Name', 'Status', 'Program Code', 'Creator', 'Duration', 'Payment', 'Start Date', 'End Date', 'Compulsory Count', 'Elective Count']];
     
-    // Map status values to desired strings
     const mapStatus = (status: string): string => {
         if (status === 'active') {
             return 'approved';
@@ -439,16 +423,13 @@ viewActiveProgram(id:string, status: string):void {
         x.electiveCourseCount
     ]);
 
-    // Adjust column widths
     const columnWidths = [30, 30, 25, 25, 20, 25, 25, 25, 25, 25];
-
-    // Generate the table using jspdf-autotable
     (doc as any).autoTable({
         head: headers,
         body: data,
         startY: 20,
         columnStyles: {
-            0: { cellWidth: 20 }, // Adjust cell width for each column
+            0: { cellWidth: 20 },
             1: { cellWidth: 20 },
             2: { cellWidth: 20 },
             3: { cellWidth: 17 },
@@ -459,18 +440,13 @@ viewActiveProgram(id:string, status: string):void {
             8: { cellWidth: 20 },
             9: { cellWidth: 20 }
         },
-        margin: { top: 20, bottom: 20, left: 10, right: 10 }, // Adjust margins if needed
-        pageBreak: 'auto' // Enable automatic page breaks
+        margin: { top: 20, bottom: 20, left: 10, right: 10 },
+        pageBreak: 'auto'
     });
-
-    // Save or open the PDF
     doc.save('AllPrograms-list.pdf');
 }
   refresh() {
-    //this.loadData();
     window.location.reload();
-
-    //this.location.re
   }
   addNew() {
     this.route.navigateByUrl("/admin/program/create-program")
@@ -480,14 +456,11 @@ viewActiveProgram(id:string, status: string):void {
   private refreshTable() {
     this.paginator._changePageSize(this.paginator.pageSize);
   }
-  /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.programData.renderedData.length;
     return numSelected === numRows;
   }
-
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
     this.isAllSelected()
       ? this.selection.clear()
@@ -514,7 +487,6 @@ viewActiveProgram(id:string, status: string):void {
             (d: ProgramCourse) => d === item
           );
           
-          // this.exampleDatabase?.dataChange.value.splice(index, 1);
           this.refreshTable();
           this.selection = new SelectionModel<ProgramCourse>(true, []);
         });
@@ -522,16 +494,8 @@ viewActiveProgram(id:string, status: string):void {
           title: 'Success',
           text: 'Record Deleted Successfully...!!!',
           icon: 'success',
-          // confirmButtonColor: '#526D82',
         });
       }
     });
-   
-    // this.showNotification(
-    //   'snackbar-danger',
-    //   totalSelect + ' Record Delete Successfully...!!!',
-    //   'bottom',
-    //   'center'
-    // );
   }
 }

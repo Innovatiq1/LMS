@@ -111,8 +111,6 @@ export class UserGroupComponent {
             });
             this.getUserGroups();
             this.userTypeFormGroup.reset();
-            // this.courseAdded=true;
-            // this.router.navigate(['/admin/courses/submitted-courses/pending-courses'])
           },
           (error) => {
             Swal.fire({

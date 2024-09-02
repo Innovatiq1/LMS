@@ -60,8 +60,6 @@ this.listOfTicket();
 
   }
 
-  // console.log();
-
   getAllStudents(){
     let payload = {
       type: AppConstants.STUDENT_ROLE
@@ -74,29 +72,21 @@ this.listOfTicket();
 
   getDetailedAboutTickets(){
    this.supportService.getTicketById(this.chatId).subscribe(res =>{
-//console.log("res",res);
  this.dataToUpdate = res;
   this.source = res.messages;
  this.user = res.messages[0].role;
- //this.id=res.messages[0]._id;
  
 
    })
   }
   cancel(){
     window.history.back()
-    //this.router.navigate(['apps/support'])
   }
  update(){
-  // console.log("source",this.dataToUpdate);
   this.dataToUpdate.messages[0].status="closed";
   let data=this.dataToUpdate.messages;
   this.id=this.dataToUpdate.id;
- // this.id=this.dataToUpdate.messages[0]._id;
   this.supportService.updateChat(this.id,data).subscribe(res =>{
-    //this.router.navigate(['apps/support'])
-    //window.history.back();
-    // this.getDetailedAboutTickets();
   })
 }
 listOfTicket() {

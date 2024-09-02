@@ -75,23 +75,6 @@ export class SuccessProgramComponent implements OnInit{
       this.getCourseKitDetails();
     })
   }
-  // registerClass(classId: string) {
-  //   let userdata = JSON.parse(localStorage.getItem('currentUser')!)
-  //   let studentId=localStorage.getItem('id')
-  //   let payload ={
-  //     email:userdata.user.email,
-  //     name:userdata.user.name,
-  //     courseTitle:this.classDetails?.courseId?.title,
-  //     courseFee:this.classDetails?.courseId?.fee,
-  //     studentId:studentId,
-  //     classId:this.classId,
-  //     title:this.title
-  //   }
-  //   this.courseService.saveRegisterClass(payload).subscribe((response) => {
-  //     this.document.location.href = response.data.session.url;
-  //     this.getClassDetails();
-  //   });
-  // }
   registerProgram(classId: string) {
     let userdata = JSON.parse(localStorage.getItem('currentUser')!)
     let studentId=localStorage.getItem('id')
@@ -102,25 +85,11 @@ export class SuccessProgramComponent implements OnInit{
       programFee:this.classDetails?.courseId?.fee,
       studentId:studentId,
       classId:this.classId,
-      // title:this.title
     }
-    // console.log('data',data)
-    // let studentId=localStorage.getItem('id')
-    // let programName=this.courseName;
     this.courseService.registerProgramClass(payload).subscribe((response) => {
       this.document.location.href = response.data.session.url;
       this.getClassDetails();
     });
-    // this.courseService.registerProgramClass(studentId,programName, this.classId).subscribe((response) => {
-    //   let studentId=localStorage.getItem('user_data');
-    //     Swal.fire({
-    //       title: 'Thank you',
-    //       text: 'We will approve once verified',
-    //       icon: 'success',
-    //     });
-    //   this.isRegistered = true;
-    //   this.getClassDetails();
-    // });
   }
   getCourseKitDetails(){
     this.courseService.getProgramById(this.courseId).subscribe((response) => {
@@ -149,11 +118,6 @@ export class SuccessProgramComponent implements OnInit{
       }
     });
   }
-  // getCourseKitDetails(){
-  //   this.courseService.getClassList(this.courseId).subscribe((response) => {
-  //     this.courseKitDetails=response?.course_kit;
-  //   });
-  // }
   getJobTemplates() {
     this.courseService.getJobTempletes().subscribe(
       (data: any) => {
@@ -174,7 +138,6 @@ export class SuccessProgramComponent implements OnInit{
   }
 
   openVidePlayer(videoLink: { url?: any; id?: any; }): void {
-    // const { videoLink } = videoLink;
     if (videoLink?.id) {
       const videoId = videoLink.id;
       this.courseService.getVideoById(videoId).subscribe((res) => {

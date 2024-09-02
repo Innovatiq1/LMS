@@ -38,15 +38,6 @@ export class ReportsComponent implements OnInit{
     'endDate',
     'Users'
   ];
-  // displayedColumns = [
-  //   'name',
-  //   'code',
-  //   'Days',
-  //   'Training Hours',
-  //   'Fees',
-  //   'Vendor',
-  //   'status'
-  // ];
   coursePaginationModel: Partial<CoursePaginationModel>;
   courseData: any;
   pagination: any;
@@ -92,13 +83,10 @@ export class ReportsComponent implements OnInit{
     // constructor
     this.coursePaginationModel = { limit: 10 };
     let urlPath = this.route.url.split('/');
-    // this.editUrl = urlPath.includes('edit-program');
     this.path = urlPath[urlPath.length - 1];
     this.filterForm = this.fb.group({
       course: ['', []],
       creator: ['', []],
-      // startDate: ['', []],
-      // endDate: ['', []],
       status: ['', []],
       vendor: ['', []],
     });
@@ -127,7 +115,6 @@ export class ReportsComponent implements OnInit{
   openFilterCard() {
     this.isFilter = !this.isFilter;
   }
-  // export table data in excel file
   exportExcel() {
     const exportData: Partial<TableElement>[] = this.courseData.map(
       (x: any) => ({
@@ -208,13 +195,7 @@ export class ReportsComponent implements OnInit{
       formatDate(new Date(x.sessionEndDate), 'yyyy-MM-dd', 'en') || '',
       
     ]);
-    //const columnWidths = [60, 80, 40];
     const columnWidths = [50, 20, 30, 20, 20, 20, 30, 30, 30, 20];
-
-    // Add a page to the document (optional)
-    //doc.addPage();
-
-    // Generate the table using jspdf-autotable
     (doc as any).autoTable({
       head: headers,
       columnWidths: columnWidths,
@@ -225,8 +206,6 @@ export class ReportsComponent implements OnInit{
         cellWidth: 'wrap',
       },
     });
-
-    // Save or open the PDF
     doc.save('Report.pdf');
   }
   performSearch() {
@@ -237,7 +216,6 @@ export class ReportsComponent implements OnInit{
           return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1;
         }
 
-        // item.classId.courseId?.title.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     } else {
       this.getAllCourses();
@@ -287,14 +265,12 @@ export class ReportsComponent implements OnInit{
   private refreshTable() {
     this.paginator._changePageSize(this.paginator.pageSize);
   }
-  /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.courseData.renderedData.length;
     return numSelected === numRows;
   }
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
     this.isAllSelected()
       ? this.selection.clear()
@@ -334,45 +310,4 @@ export class ReportsComponent implements OnInit{
       this.coursePaginationModel.totalDocs = response.data.totalDocs;
     });
   }
-  // displayedColumns: string[] = [
-  //   // 'select',
-  //   'Report Generated',
-  //   'Download',
-    
-  // ];
-  // dataSource : any;
-  // pageSizeArr = this.utils.pageSizeArr;
-  // coursePaginationModel!: Partial<CoursePaginationModel>;
-  // totalItems: any;
-
-  // constructor(
-  //   private courseService: CourseService,
-  //   private utils: UtilsService,
-  //  ) {
-  //   this.coursePaginationModel = {};
-    
-  //    }
-
-  // ngOnInit(): void {
-  // this.getReportsList();
-  // }
-
-  // getReportsList(filters?: any) {
-  //   this.courseService.getAllSavedReports({...this.coursePaginationModel}).subscribe(
-  //     (response: any) => {
-  //       this.dataSource = response.data.docs;
-  //       this.totalItems = response.data.totalDocs;
-  //       this.coursePaginationModel.docs = response.data.docs;
-  //       this.coursePaginationModel.page = response.data.page;
-  //       this.coursePaginationModel.limit = response.data.limit;
-  //       this.coursePaginationModel.totalDocs = response.data.totalDocs;
-  //     },
-      
-  //   );
-  // }
-  // pageSizeChange($event: any) {
-  //   this.coursePaginationModel.page = $event?.pageIndex + 1;
-  //   this.coursePaginationModel.limit = $event?.pageSize;
-  //   this.getReportsList();
-  // }
 }

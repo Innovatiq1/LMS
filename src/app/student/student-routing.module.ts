@@ -1,9 +1,6 @@
 import { Page404Component } from './../authentication/page404/page404.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { HomeworkComponent } from './homework/homework.component';
-import { LeaveRequestComponent } from './leave-request/leave-request.component';
 import { SettingsComponent } from './settings/settings.component';
 import { CourseComponent } from './course/course.component';
 import { ViewCourseComponent } from './view-course/view-course.component';
@@ -14,12 +11,9 @@ import { FeedbackComponent } from './feedback/feedback.component';
 
 import { SucessCourseComponent } from './sucess-course/sucess-course.component';
 import { FailureCourseComponent } from './failure-course/failure-course.component';
-import { ExamsSheduleComponent } from './exams-shedule/exams-shedule.component';
-import { ProgramSheduleComponent } from './program-shedule/program-shedule.component';
 import { SuccessProgramComponent } from './success-program/success-program.component';
 import { FailureProgramComponent } from './failure-program/failure-program.component';
 import { QuestionComponent } from './question/question.component';
-import { WelcomeComponent } from './welcome/welcome.component';
 import { LogoCoutomzationComponent } from './settings/logo-coutomzation/logo-coutomzation.component';
 import { SidemenuComponent } from './settings/sidemenu/sidemenu.component';
 import { SettingsSidemenuComponent } from './settings/settings-sidemenu/settings-sidemenu.component';
@@ -154,20 +148,6 @@ const routes: Routes = [
     path: 'view-program/:id',
     component: ViewProgramComponent,
   },
-
-  {
-    path: 'schedule/homework',
-    component: HomeworkComponent,
-  },
-  // {
-  //   path: 'timetable/course-timetable',
-  //   component: TimetableComponent,
-  // },
-  // {
-  //   path: 'timetable/program-timetable',
-  //   component: ProgramTimetableComponent,
-  // },
-
   {
     path: 'feedback/courses/:classId/:studentId/:courseId',
     component: FeedbackComponent,
@@ -180,14 +160,6 @@ const routes: Routes = [
   {
     path: 'feedback/programs',
     component: FeedbackComponent,
-  },
-  {
-    path: 'exams/courses',
-    component: ExamsSheduleComponent
-  },
-  {
-    path: 'exams/programs',
-    component: ProgramSheduleComponent
   },
   {
     path: 'questions/:id/:id/:id',
@@ -209,10 +181,6 @@ const routes: Routes = [
   {
     path: 'exam-questions/:id/:id/:id/:id', // 1.assessmentAnswerId, 2.studentId, 3.courseId, 4.examAssessmentId
     component: ExamQuestionsComponent,
-  },
-  {
-    path: 'welcome',
-    component: WelcomeComponent,
   },
   {
     path: 'settings/account-settings',
@@ -459,29 +427,6 @@ const routes: Routes = [
     path:"settings/create-department",
     component: CreateDepartmentComponent
   },
-// {
-//   path: 'settings/course-kit',
-//   component: CourseKitComponent
-// },
-// {
-//   path: 'settings/create-course-kit',
-//   component: CreateCourseKitComponent
-// },
-// {
-//   path: 'settings/edit-course-kit/:id',
-//   component:  EditCourseKitComponent
-// },
-// {
-//   path: 'settings/create-template',
-//   component: CreateTemplateComponent
-// },
-// {
-//   path:'settings/view-course-kit/:id',
-//   component:ViewCourseKitComponent
-// },
-
-
-
 
   {
     path: 'settings/side-menu/:id',

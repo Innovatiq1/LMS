@@ -11,17 +11,13 @@ import {
 } from '@danielmoncada/angular-datetime-picker';
 
 import { TeacherRoutingModule } from './teacher-routing.module';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { LecturesComponent } from './lectures/lectures.component';
 import { DeleteDialogComponent } from './lectures/dialogs/delete/delete.component';
 import { FormDialogComponent } from './lectures/dialogs/form-dialog/form-dialog.component';
 import { InstructorLeaveRequestComponent } from './leave-request/leave-request.component';
-import { InstructorSettingsComponent } from './settings/settings.component';
-import { ExamScheduleComponent } from './exam-schedule/exam-schedule.component';
 import { LecturesService } from './lectures/lectures.service';
 import { InstructorLeaveRequestService } from './leave-request/leave-request.service';
 //import { FormDialogComponent } from './leave-request/dialogs/form-dialog/form-dialog.component';
-import { ExamScheduleService } from './exam-schedule/exam-schedule.service';
 import { SharedModule } from '@shared';
 import { ComponentsModule } from '@shared/components/components.module';
 import { EditLeaveRequestComponent } from './leave-request/dialogs/edit-leave-request/edit-leave-request.component';
@@ -29,14 +25,11 @@ import { LectureProgramsComponent } from './lecture-programs/lecture-programs.co
 
 @NgModule({
   declarations: [
-    DashboardComponent,
     LecturesComponent,
     DeleteDialogComponent,
     FormDialogComponent,
     FormDialogComponent,
     InstructorLeaveRequestComponent,
-    InstructorSettingsComponent,
-    ExamScheduleComponent,
     EditLeaveRequestComponent,
     LectureProgramsComponent,
   ],
@@ -56,6 +49,6 @@ import { LectureProgramsComponent } from './lecture-programs/lecture-programs.co
     ComponentsModule,
     SharedModule,
   ],
-  providers: [LecturesService, InstructorLeaveRequestService, ExamScheduleService],
+  providers: [LecturesService, InstructorLeaveRequestService],
 })
 export class TeacherModule {}

@@ -82,7 +82,6 @@ export class UserTypeComponent {
     this.router.navigate(['/student/settings/user-type/edit-user-type'], {
       queryParams: { id: id },
     });
-    // this.router.navigate(['/Users/Type/edit'],{queryParams:{id:id}});
   }
 
   changeInActive(dataDetails: UserType): void {
@@ -124,7 +123,6 @@ export class UserTypeComponent {
     );
   }
   delete(data: any) {
-    console.log('data', data);
 
     Swal.fire({
       title: 'Confirm Deletion',
@@ -210,17 +208,9 @@ export class UserTypeComponent {
           title: 'Success',
           text: 'Record Deleted Successfully...!!!',
           icon: 'success',
-          // confirmButtonColor: '#526D82',
         });
       }
     });
-
-    // this.showNotification(
-    //   'snackbar-danger',
-    //   totalSelect + ' Record Delete Successfully...!!!',
-    //   'bottom',
-    //   'center'
-    // );
   }
   exportExcel() {
     const exportData: Partial<TableElement>[] = this.typesList.map(
@@ -243,9 +233,6 @@ export class UserTypeComponent {
       x.menuItems.map((x: any) => x.children[0].title),
       x.status,
     ]);
-    //const columnWidths = [60, 80, 40];
-
-    // Generate the table using jspdf-autotable
     (doc as any).autoTable({
       head: headers,
       body: data,
@@ -255,8 +242,6 @@ export class UserTypeComponent {
         cellWidth: 'wrap',
       },
     });
-
-    // Save or open the PDF
     doc.save('Module Access-list.pdf');
   }
 }

@@ -12,7 +12,6 @@ export class Page404Component {
     let urlPath = this.router.url.split('/')
     this.tmsUrl = urlPath.includes('TMS');
     this.lmsUrl = urlPath.includes('LMS');
-    console.log('ss',this.lmsUrl,this.tmsUrl)
 
     // constructor
   }

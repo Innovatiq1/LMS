@@ -31,10 +31,8 @@ export class IBannerListComponent {
   bannerFor: string;
   commonRoles: any;
   constructor(private bannerService :BannersService,private fb: FormBuilder, private router: Router,) {
-    // constructor
     this.instructorBanner= this.fb.group({
       bannerFor: new FormControl('', [Validators.required,]),
-      //'isActivated': ['true',Validators.required],
       imagePath: new FormControl('', [Validators.required,]),
 
 
@@ -103,30 +101,5 @@ export class IBannerListComponent {
       }
     });
 
-
-    // this.bannerService.removeBannerImage(obj).subscribe(
-    //   (res) => {
-    //     Swal.fire({
-    //       title: 'Successful',
-    //       text: "Banner remove successfully",
-    //       icon: 'success',
-    //     });
-    //     //this.ref.detectChanges();
-    //     this.getBanner(this.bannerFor);
-    //   },
-    //   (err) => {
-    //     debugger;
-    //     Swal.fire(
-    //       'Banner remove failed',
-    //       'error'
-    //     );
-    //   },
-    // );
   }
-  // openDialog(): void {
-  //   this.dialogModel.open(DailogFormComponent, {
-  //     width: '640px',
-  //     disableClose: true,
-  //   });
-  // }
 }

@@ -109,7 +109,6 @@ export class InstructorCourseInviteComponent {
       email_content: pageContent?.email_content,
       bottom_button_text: pageContent?.bottom_button_text
     });
-    // this.markAllTouched();
   }
 
   createForm() {
@@ -133,16 +132,9 @@ export class InstructorCourseInviteComponent {
   }
 )}
 removeTagsAndSpaces(inputString: string) {
-  // Remove <p> tags
   const stringWithoutPTags = inputString.replace(/<p>/gi, '').replace(/<\/p>/gi, '');
-
-  // Remove <br> tags
   const stringWithoutBrTags = stringWithoutPTags.replace(/<br\s*\/?>/gi, '');
   const stringWithoutNbsp = stringWithoutBrTags.replace(/&nbsp;/g, '');
-
-
-  // Remove spaces
-  //const stringWithoutSpaces = stringWithoutBrTags.replace(/\s+/g, '');
 
   return stringWithoutNbsp;
 }

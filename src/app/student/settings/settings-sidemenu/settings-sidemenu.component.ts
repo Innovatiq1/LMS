@@ -108,7 +108,6 @@ export class SettingsSidemenuComponent {
             class: menuItem.class
           });
 
-          // Patch actions array
           const actionsArray = newSidemenuGroup.get('actions') as FormArray;
           menuItem?.actions?.forEach((action: any) => {
             actionsArray.push(this.formBuilder.group({
@@ -126,8 +125,6 @@ export class SettingsSidemenuComponent {
               id: submenus?.id,
               class: submenus?.class
             });
-
-            // Patch actions array in submenu
             const submenuActionsArray = submenuGroup.get('actions') as FormArray;
             submenus?.actions?.forEach((action: any) => {
               submenuActionsArray.push(this.formBuilder.group({
@@ -146,7 +143,6 @@ export class SettingsSidemenuComponent {
                   class: submenu?.class
                 });
 
-                // Patch actions array in subsubmenu
                 const subsubmenuActionsArray = subSubmenuGroup.get('actions') as FormArray;
                 submenu?.actions?.forEach((action: any) => {
                   subsubmenuActionsArray.push(this.formBuilder.group({

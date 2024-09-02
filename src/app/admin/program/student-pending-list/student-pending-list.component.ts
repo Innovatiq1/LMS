@@ -159,8 +159,6 @@ export class StudentPendingListComponent {
       return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1
     }
 
-
-    // item.classId.courseId?.title.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
     } else {
       this.getRegisteredClasses();
@@ -191,7 +189,6 @@ export class StudentPendingListComponent {
             title: 'Success',
             text: 'Course approved successfully.',
             icon: 'success',
-            // confirmButtonColor: '#526D82',
           });
           this.getRegisteredClasses();
         }, (error) => {
@@ -199,7 +196,6 @@ export class StudentPendingListComponent {
             title: 'Error',
             text: 'Failed to approve course. Please try again.',
             icon: 'error',
-            // confirmButtonColor: '#526D82',
           });
         });
       }
@@ -266,55 +262,6 @@ export class StudentPendingListComponent {
 
    TableExportUtil.exportToExcel(exportData, 'Student Pending-Programs-list');
  }
-  // exportExcel() {
-  //   //k//ey name with space add in brackets
-  //  const exportData: Partial<TableElement>[] =
-  //     this.dataSource.map((x: { program_name: any; student_name: any; classStartDate: string | number | Date; classEndDate: string | number | Date; registeredOn: string | number | Date; })=>({
-  //       "Program Name": x.program_name,
-  //       "Student Name": x.student_name,
-  //       'Class Start Date': formatDate(new Date(x.classStartDate), 'yyyy-MM-dd', 'en') || '',
-  //       'Class End Date': formatDate(new Date(x.classEndDate), 'yyyy-MM-dd', 'en') || '',
-  //       'Registered Date': formatDate(new Date(x.registeredOn), 'yyyy-MM-dd', 'en') || '',
-  //     }));
-
-  //   TableExportUtil.exportToExcel(exportData, 'excel');
-  // }
-  // generatePdf() {
-  //   const doc = new jsPDF();
-  //   const headers = [['Program Name', 'Student Name', 'Class Start Date','Class End Date','Registered Date']];
-  //   const data = this.dataSource.map((user: {
-  //     //formatDate(arg0: Date, arg1: string, arg2: string): unknown;
-
-  //     program_name: any; student_name: any; classStartDate: any; classEndDate: any; registeredOn: any;
-  //   }, index: any) => [user.program_name, user.student_name,
-
-  //     formatDate(new Date(user.classStartDate), 'yyyy-MM-dd', 'en') || '',
-  //     formatDate(new Date(user.classEndDate), 'yyyy-MM-dd', 'en') || '',
-  //     formatDate(new Date(user.registeredOn), 'yyyy-MM-dd', 'en') || '',
-
-
-  //   ]);
-  //   //const columnWidths = [60, 80, 40];
-  //   const columnWidths = [20, 20, 20, 20, 20, 20, 20, 20, 20, 20];
-
-  //   // Add a page to the document (optional)
-  //   //doc.addPage();
-
-  //   // Generate the table using jspdf-autotable
-  //   (doc as any).autoTable({
-  //     head: headers,
-  //     body: data,
-  //     startY: 20,
-
-
-
-  //   });
-
-  //   // Save or open the PDF
-  //   doc.save('student-approve.pdf');
-  // }
-
-
   getSessions(element: { classId: { sessions: any[]; }; }) {
     let sessions = element.classId?.sessions?.map((_: any, index: number) => {
       let session: Session = {} as Session;
@@ -326,7 +273,6 @@ export class StudentPendingListComponent {
   private refreshTable() {
     this.paginator._changePageSize(this.paginator.pageSize);
   }
-  /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.length;
@@ -380,17 +326,9 @@ export class StudentPendingListComponent {
           title: 'Success',
           text: 'Record Deleted Successfully...!!!',
           icon: 'success',
-          // confirmButtonColor: '#526D82',
         });
       }
     });
- 
-    // this.showNotification(
-    //   'snackbar-danger',
-    //   totalSelect + ' Record Delete Successfully...!!!',
-    //   'top',
-    //   'right'
-    // );
   }
 
 }

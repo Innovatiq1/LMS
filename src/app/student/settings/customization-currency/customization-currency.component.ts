@@ -98,8 +98,6 @@ export class CustomizationCurrencyComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('result: ', result);
-
         this.selectedCurrency = result;
       }
     });

@@ -12,7 +12,6 @@ import Swal from 'sweetalert2';
   styleUrls: ['./compose.component.scss'],
 })
 export class ComposeComponent {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public Editor: any = ClassicEditor;
 
   breadscrums = [

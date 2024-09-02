@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ChangeDetectorRef, Component, HostListener } from '@angular/core';
 import { CoursePaginationModel } from '@core/models/course.model';
-// import { ProgramService } from '../program.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ClassService } from 'app/admin/schedule-class/class.service';
 import { forkJoin } from 'rxjs';
@@ -31,15 +29,6 @@ import { AuthenService } from '@core/service/authen.service';
 export class ScheduleClassComponent {
   status: boolean = false;
   sessions: any;
-  // @HostListener('document:keypress', ['$event'])
-  // keyPressNumbers(event: KeyboardEvent) {
-  //   const charCode = event.which ? event.which : event.keyCode;
-  //   if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57)) {
-  //     event.preventDefault();
-  //     return false;
-  //   }
-  //   return true;
-  // }
   isLoading: boolean = false;
   edit: boolean = false;
   next: boolean = false;
@@ -68,7 +57,6 @@ export class ScheduleClassComponent {
   displayedColumns = [
     'courseName',
     'Code',
-    // 'Price',
     'Department',
     'startDate',
     'endDate',
@@ -281,7 +269,6 @@ export class ScheduleClassComponent {
     }
   }
   editRow(_id: string) {
-    console.log('id', _id);
   }
   delete(id: string) {
     this.courseService
@@ -396,7 +383,6 @@ export class ScheduleClassComponent {
           laboratoryId: item.lab,
         });
       } else {
-        // this.toaster.error("Please choose Instructor and Lab")
         sessions = null;
       }
     });

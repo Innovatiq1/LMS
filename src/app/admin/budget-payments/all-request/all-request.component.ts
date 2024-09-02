@@ -63,7 +63,6 @@ export class AllRequestComponent {
     if(this.employeeText.length>2){
      if(this.employeeText){
       this.searchType="Employee"
-      //this.coursePaginationModel.page=
       this.searchValue= this.employeeText
       this.empService.getAllRequests(this.searchValue,this.searchType,{...this.coursePaginationModel}).subscribe((res) => {
         
@@ -72,7 +71,7 @@ export class AllRequestComponent {
       })
       this.pageSizeChange({
         pageIndex: this.coursePaginationModel?.page ? this.coursePaginationModel.page - 1 : 0,
-        pageSize: this.coursePaginationModel?.limit || 10 // Provide a default pageSize if limit is undefined
+        pageSize: this.coursePaginationModel?.limit || 10
       });
 
      } 
@@ -100,7 +99,7 @@ export class AllRequestComponent {
       })
       this.pageSizeChange({
         pageIndex: this.coursePaginationModel?.page ? this.coursePaginationModel.page - 1 : 0,
-        pageSize: this.coursePaginationModel?.limit || 10 // Provide a default pageSize if limit is undefined
+        pageSize: this.coursePaginationModel?.limit || 10
       });
     }
       } else if(this.roText.length===0){
@@ -122,14 +121,11 @@ export class AllRequestComponent {
         this.totalItems = res.data.totalDocs;
   
       })
-      // You can perform actions with the search texts here
+     
       this.pageSizeChange({
         pageIndex: this.coursePaginationModel?.page ? this.coursePaginationModel.page - 1 : 0,
-        pageSize: this.coursePaginationModel?.limit || 10 // Provide a default pageSize if limit is undefined
+        pageSize: this.coursePaginationModel?.limit || 10
       });
-
-     // this.searchType=""
-     
       } else if(this.directorText.length===0){
         this.searchType=""
         this.searchValue=""
@@ -149,14 +145,10 @@ export class AllRequestComponent {
         this.SourceData = res.data.docs.docs;
         this.totalItems = res.data.totalDocs;
       })
-      // You can perform actions with the search texts here
       this.pageSizeChange({
         pageIndex: this.coursePaginationModel?.page ? this.coursePaginationModel.page - 1 : 0,
-        pageSize: this.coursePaginationModel?.limit || 10 // Provide a default pageSize if limit is undefined
+        pageSize: this.coursePaginationModel?.limit || 10
       });
-
-      //this.searchType=""
-     
       }else if(this.trainingadminText.length===0){
         this.searchType=""
         this.searchValue=""
@@ -164,10 +156,6 @@ export class AllRequestComponent {
       
     }
   }
-
-  /**
-   * navigates to the view request page
-   */
   viewReq(id: string) {
     this.router.navigate(['/admin/budgets/view-request'], { queryParams: {id: id} });
   }
