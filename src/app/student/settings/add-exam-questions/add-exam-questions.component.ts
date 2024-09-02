@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -9,12 +9,13 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { QuestionService } from '@core/service/question.service';
-import { Subscription } from 'rxjs';
+import { Subscription, timer } from 'rxjs';
 import * as XLSX from 'xlsx';
 import { StudentsService } from 'app/admin/students/students.service';
 import { SettingsService } from '@core/service/settings.service';
 import { MatDialog } from '@angular/material/dialog';
 import { TestPreviewComponent } from '@shared/components/test-preview/test-preview.component';
+import { CommonService } from '@core/service/common.service';
 
 
 @Component({
@@ -22,7 +23,9 @@ import { TestPreviewComponent } from '@shared/components/test-preview/test-previ
   templateUrl: './add-exam-questions.component.html',
   styleUrls: ['./add-exam-questions.component.scss']
 })
-export class AddExamQuestionsComponent {
+export class AddExamQuestionsComponent implements OnInit, OnDestroy{
+  draftSubscription: Subscription | null = null;
+  @Input() formType: string = '';
   @Input() approved: boolean = false;
 
   questionFormTab2: FormGroup;
@@ -50,7 +53,7 @@ export class AddExamQuestionsComponent {
   retakeCodesAssessment: string[] = ['1', '2', '3', '4', '5'];
   scoreAlgo:any;
   timerValues:any;
-
+  draftId!: string;
 
 
   constructor(
@@ -60,7 +63,8 @@ export class AddExamQuestionsComponent {
     private questionService: QuestionService,
     private studentsService: StudentsService,
     private SettingsService:SettingsService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private commonService: CommonService
   ) {
     let urlPath = this.router.url.split('/');
     this.editUrl = urlPath.includes('edit-questions');
@@ -97,12 +101,59 @@ export class AddExamQuestionsComponent {
     this.getAllscoreAlgo();
     this.getAllTimesAlgo();
 
-    if(!this.editUrl){
-      // this.getAlgorithm()
+    if (this.formType === 'Exam' || this.formType === 'Create') {
+      this.startAutoSave();
+    }
+    if (!this.editUrl) {
+      this.draftId = this.commonService.generate4DigitId();
     }
     this.loadData()
    }
+   startAutoSave() {
+    setTimeout(() => {
+      if (!this.draftSubscription) {
+        this.draftSubscription = timer(0, 30000).subscribe(() => {
+          this.saveDraft();
+        });
+      }
+    }, 30000); 
+  }
 
+  ngOnDestroy() {
+    if (this.draftSubscription) {
+      this.draftSubscription.unsubscribe(); // Unsubscribe to stop auto-save
+      this.draftSubscription = null;
+    }
+  }
+saveDraft(data?: string) {
+  let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        const payload = {
+          draftId: this.draftId,
+          name: this.questionFormTab2.value.name,
+          timer: this.questionFormTab2.value.timer,
+          retake: this.questionFormTab2.value.retake,
+          passingCriteria:this.questionFormTab2.value.passingCriteria,
+          scoreAlgorithm: this.questionFormTab2.value.scoreAlgorithm,
+          status: 'draft',
+          companyId:userId,
+          questions: this.questionFormTab2.value.questions.map((v: any) => ({
+          options: v.options,
+          questionText: v.questionText,
+      })),
+      };
+      this.questionService.createAnswerQuestion(payload).subscribe(
+              (res: any) => {
+                if (data) {
+                  Swal.fire({
+                    title: 'Successful',
+                    text: 'Exam Questions drafted successfully',
+                    icon: 'success',
+                  });
+                  window.history.back();
+                }
+              },
+            );
+  }
    loadData(){
     this.studentId = localStorage.getItem('id')
     this.studentsService.getStudentById(this.studentId).subscribe(res => {

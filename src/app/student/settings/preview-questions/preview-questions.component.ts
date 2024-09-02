@@ -66,6 +66,8 @@ export class PreviewQuestionsComponent {
     this.assessmentType = this.route.snapshot.queryParamMap.get('assessmentType');
     if(this.assessmentType === 'Assessment'){
       this.fetchAssessmentDetails()
+    } else if(this.assessmentType === 'Tutorial'){
+      this.fetchTutorialDetails()
     }else{
       this.fetchExamAssessmentDetails();
     }
@@ -130,6 +132,24 @@ export class PreviewQuestionsComponent {
 
     this.questionService
     .getQuestionsById(this.examAssessmentId)
+      .subscribe((response:any) => {
+        this.questionList = response?.questions;
+        this.timerInSeconds = response?.timer;
+        this.question = response;
+        this.calculateTotalTime();
+   
+        this.totalQuestions = this.questionList.length;
+        this.goToPage(0);
+      });
+  }
+  fetchTutorialDetails(): void {
+    this.route.queryParamMap.subscribe
+    let urlPath = this.router.url.split('/');
+    const examId = urlPath[urlPath.length - 1];
+    this.examAssessmentId = examId.split('?')[0];
+
+    this.questionService
+    .getTutorialQuestionsById(this.examAssessmentId)
       .subscribe((response:any) => {
         this.questionList = response?.questions;
         this.timerInSeconds = response?.timer;

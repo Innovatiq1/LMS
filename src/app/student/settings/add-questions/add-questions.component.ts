@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, NgZone, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Input, NgZone, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,6 +8,9 @@ import { QuestionService } from '@core/service/question.service';
 import { UtilsService } from '@core/service/utils.service';
 import { forkJoin } from 'rxjs';
 import Swal from 'sweetalert2';
+import { AddExamQuestionsComponent } from '../add-exam-questions/add-exam-questions.component';
+import { AssesmentQuestionsComponent } from '../assesment-questions/assesment-questions.component';
+import { TutorialQuestionsComponent } from '../tutorial-questions/tutorial-questions.component';
 
 @Component({
   selector: 'app-add-questions',
@@ -31,7 +34,11 @@ questionId!: string;
 editUrl: any;
 question: any;
 subscribeParams: any;
-selectedTabIndex = 0;
+// selectedTabIndex = 0;
+selectedTabIndex: number = 0;
+@ViewChild(AssesmentQuestionsComponent) assessmentComponent!: AssesmentQuestionsComponent;
+  @ViewChild(AddExamQuestionsComponent) examComponent!: AddExamQuestionsComponent;
+  @ViewChild(TutorialQuestionsComponent) tutorialComponent!: TutorialQuestionsComponent;
 
 constructor(private formBuilder: FormBuilder,private router: Router, private questionService: QuestionService, private cdr: ChangeDetectorRef,private activatedRoute: ActivatedRoute,private ngZone: NgZone) {
 
@@ -73,6 +80,32 @@ ngOnInit() {
   });
   this.getData();
 }
+
+
+onTabChange(index: number): void {
+  this.selectedTabIndex = index;
+
+  // Properly stop auto-save for all components first
+  if (this.assessmentComponent) this.assessmentComponent.ngOnDestroy();
+  if (this.examComponent) this.examComponent.ngOnDestroy();
+  if (this.tutorialComponent) this.tutorialComponent.ngOnDestroy();
+
+  // Start auto-save only for the selected component
+  switch (index) {
+    case 0:
+      this.assessmentComponent?.startAutoSave();
+      break;
+    case 1:
+      this.examComponent?.startAutoSave();
+      break;
+    case 2:
+      this.tutorialComponent?.startAutoSave();
+      break;
+    default:
+      break;
+  }
+}
+
 
 
 get questions(): FormArray {
