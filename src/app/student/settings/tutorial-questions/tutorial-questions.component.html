@@ -171,7 +171,7 @@
           </form>
         </div>
         <div class="row body">
-          <div class="col-md-10">
+          <div class="col-md-6">
             <button
               mat-raised-button
               id="back"
@@ -181,20 +181,28 @@
             </button>
           </div>
   
-          <div class="col-md-2">
+          <div class="col-md-6">
             <div class="d-flex justify-content-between">
+            
               <button
-                *ngIf="editUrl && approved"
-                mat-raised-button
-                color="success"
-                type="submit"
-                id="back"
-                style="margin-left: -80px; margin-right: 10px"
-                (click)="approve()"
-              >
-                Publish
-              </button>
-  
+              class="btn-space"
+              id="draft"
+              mat-raised-button
+              color="warn"
+              (click)="saveDraft('draft')"
+            > Save as draft
+            </button>
+            <button
+            *ngIf="editUrl && approved"
+            mat-raised-button
+            color="success"
+            type="submit"
+            id="back"
+            style="margin-left: 10px; margin-right: 10px"
+            (click)="approve()"
+          >
+            Publish
+          </button>
               <button
                 class="btn-space"
                 id="submit"
