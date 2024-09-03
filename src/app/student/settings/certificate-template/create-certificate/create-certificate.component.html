@@ -7,118 +7,192 @@
       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
         <div class="card">
           <div style="padding: 30px 10px">
+            <button class="icons" *ngIf="viewUrl && isEdit" (click)="edit()">
+              <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
+            </button>
 
-            <form [formGroup]="certificateForm" style="display: flex; flex-wrap: wrap; gap: 20px;">
-              <div *ngIf="!viewUrl"  style="display: flex; width: 100%; gap: 20px;">
-                <label>Title</label>
-                <mat-form-field class="example-full-width" appearance="outline" style="flex: 1;">
-                  <input matInput formControlName="title">
+            <!-- Title Input Box -->
+         
+            <div *ngIf="!viewUrl" class="form-row">
+            <form [formGroup]="certificateForm">
+              <div class="form-group">
+                <label for="certificate-title">Certificate Title</label>
+                <mat-form-field appearance="outline" style="width: 100%;">
+                  <input matInput id="certificate-title" placeholder="Enter Certificate Title" formControlName="title" />
                 </mat-form-field>
-                
               </div>
+            </form>
 
-              <div *ngIf="!viewUrl" style="display: flex; width: 100%; gap: 20px;">
-                  <div class="row">
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
-                      <label>Text 1</label>
-                      <angular-editor
-                        placeholder="Enter text..."
-                        id="editor"
-                        formControlName="text1"
-                        [config]="config"
-                      ></angular-editor>
-                    </div>
-                  </div>
-              </div>
-              <div *ngIf="!viewUrl" style="display: flex; width: 100%; gap: 20px;">
-              
-                <div
-                class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
+              <!-- Dropdown and Insert Button -->
+              <div class="form-group">
+                <!-- Label for the Select Element -->
+                <label for="element-select" class="form-label">Select Element</label>
                 
-              >
+                <!-- Flex container for Select and Button -->
+                <div class="select-button-container">
+                  <!-- Select Element -->
+                  <mat-form-field appearance="outline" class="dynamic-select">
+                    <mat-select [(ngModel)]="selectedElement" id="element-select">
+                      <mat-option *ngFor="let option of elementOptions" [value]="option">{{ option }}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  
+                 
+                </div>
+              </div>
+              
+              
+              
+
+              <!-- Background Image Upload -->
+              <div class="form-group">
                 <label>Background Image</label>
                 <div class="file-drop-area">
                   <div class="file">
                     <button mat-raised-button color="primary" class="btn">
                       Choose file
-                      <input
-                        formControlName="image_link"
-                        (change)="onFileUpload($event)"
-                      
-                        class="file-input"
-                        type="file"
-                      />
+                      <input formControlName="image_link" (change)="onFileUpload($event)" class="file-input" type="file" />
                     </button>
                     <span class="file-msg">
-                      <h6>
-                        {{
-                          uploadedImage
-                            ? uploadedImage
-                            : "Drag and Drop File Here"
-                        }}
-                      </h6>
+                      <h6>{{ uploadedImage ? uploadedImage : "Drag and Drop File Here" }}</h6>
                     </span>
                   </div>
                 </div>
-               
               </div>
-                
-
-
-                
-              </div>
-            </form>
-            <button class="icons" *ngIf="viewUrl && isEdit" (click)="edit()" >
-              <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-          </button>
-          <table #backgroundTable
-            style="margin: 0 auto;
-                   background-repeat: no-repeat;
-                   background-position: center right;
-                   background-size: 100% 100%;
-                   border: 0.5px solid lightgray;
-                   height: 700px;
-                   width: 800px;">
-              <tbody>
-                <tr>
-                  <td width="11%"></td>
-                  <td width="59%" style="padding: 30px 0">
+            </div>
           
-            <p
-              class="text-default"
-              [innerHTML]="
-                
-                getSafeHtml(certificateForm.get('text1')?.value)
-                  
-              "
-            ></p>
-          </td>
-          <td width="30%"></td>
-        </tr>
-      </tbody>
-    </table>
-            <table width="800px" [style.background-image]="'url(' + this.image_link + ')'" style="
-            margin: 0 auto;
-            background-repeat: no-repeat;
-            background-position: center right;
-            background-size: 100% 100%;
-            border: 0.5px solid lightgray;
-            height: fit-content;
-          "> </table>
-          </div>
-          <button mat-raised-button id="submit"  *ngIf="!editUrl"  style="margin-left: 800px; margin-top: 10px;" (click)="saveCertificate()">
+
+            <!-- Customization Controls -->
+            <div *ngIf="!viewUrl" class="form-row">
+              <div class="form-group">
+                <label>Font Size</label>
+                <mat-form-field appearance="outline" style="flex: 1;">
+                  <input matInput type="number" [(ngModel)]="currentElement.fontSize" placeholder="Font Size" (ngModelChange)="updateElementStyle()">
+                </mat-form-field>
+              </div>
+
+             
+              <div class="form-group">
+                <label>Alignment</label>
+                <mat-radio-group [(ngModel)]="currentElement.alignment" (ngModelChange)="updateElementStyle()">
+                  <mat-radio-button value="left">Left</mat-radio-button>
+                  <mat-radio-button value="center">Center</mat-radio-button>
+                  <mat-radio-button value="right">Right</mat-radio-button>
+                </mat-radio-group>
+              </div>
+
+              <div class="form-group font-color-insert-group">
+                <label>Font Color</label>
+                <div class="color-insert-container">
+                  <input
+                    type="color"
+                    class="color-picker"
+                    [(ngModel)]="currentElement.color"
+                    (ngModelChange)="updateElementStyle()"
+                  />
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    class="insert-button"
+                    (click)="insertElement()"
+                  >
+                    Insert
+                  </button>
+                </div>
+              </div>
+              
+              
+
+            </div>
+
+            <!-- Certificate Preview -->
+            <div class="certificate-preview">
+              <div
+                class="certificate-canvas"
+                [ngStyle]="{
+                  'background-image': 'url(' + image_link + ')',
+                  'margin': '0 auto',
+                  'background-repeat': 'no-repeat',
+                  'background-position': 'center right',
+                  'background-size': '100% 100%',
+                  'border': '0.5px solid lightgray',
+                  'height': '700px',
+                  'width': '800px',
+                  'position': 'relative'
+                }"
+                (drop)="onDrop($event)"
+                (dragover)="onDragOver($event)"
+              >
+                <div
+                  *ngFor="let element of elements; let i = index"
+                  class="element-container"
+                  [ngStyle]="{
+                    'display': 'flex',
+                    'justify-content': element.alignment,
+                    'position': 'absolute',
+                    'top': element.top + 'px',
+                    'left': element.left + 'px'
+                  }"
+                  [attr.draggable]="true"
+                  (dragstart)="onDragStart($event, i)"
+                  (dragend)="onDragEnd($event)"
+                >
+                  <div class="certificate-element">
+                    <!-- Delete Button -->
+                    <button
+                      *ngIf="isEditingElement(i) && !viewUrl"
+                      class="delete-icon"
+                      (click)="deleteElement(i); $event.stopPropagation();"
+                      style="position: absolute; top: -10px; left: -35px; z-index: 10;"
+                    >
+                      <app-feather-icons [icon]="'trash'" class="tbl-fav-delete"></app-feather-icons>
+                    </button>
+
+                    <!-- Contenteditable div -->
+                    <div
+                      [attr.contenteditable]="element.editable"
+                      [ngStyle]="{
+                        'font-size': element.fontSize + 'px',
+                        'color': element.color
+                      }"
+                      (input)="updateElementContent($event, element)"
+                      (click)="selectElement(i)"
+                      class="certificate-element-content"
+                    >
+                      <!-- Resizable Logo Element -->
+                      <ng-container *ngIf="element.type === 'Logo'; else textElement">
+                        <div
+                          class="resizable-logo"
+                          [ngStyle]="{
+                            width: element.width + 'px',
+                            height: element.height + 'px'
+                          }"
+                          (mousedown)="startResizing($event, i)"
+                        >
+                          <img [src]="element.imageUrl" alt="Logo" style="max-width: 100%; height: auto;">
+                          <div class="resizer"></div>
+                        </div>
+                      </ng-container>
+
+                      <ng-template #textElement>
+                        {{ element.content }}
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Submit/Update Button -->
+            <button mat-raised-button id="submit" *ngIf="!editUrl&&!viewUrl" style="margin-left: 800px; margin-top: 10px;" (click)="saveCertificate()">
               Submit
             </button>
-            <button mat-raised-button id="submit" *ngIf="editUrl"  style="margin-left: 800px; margin-top: 10px;" (click)="saveCertificate()">
+            <button mat-raised-button id="submit" *ngIf="editUrl" style="margin-left: 800px; margin-top: 10px;" (click)="saveCertificate()">
               Update
             </button>
-            <br>
-                
+          </div>
         </div>
       </div>
-
     </div>
-
-
   </div>
 </section>

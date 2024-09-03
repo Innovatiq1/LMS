@@ -181,266 +181,93 @@
 </section>
 
 <ng-template #certificateDialog let-dialogRef="dialogRef" let-data>
-      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12" style="max-height: 600px; overflow-y: auto;">
-        <div class="card">
-          <div style="padding: 30px 10px">
-            <form [formGroup]="certificateForm" style="display: flex; flex-wrap: wrap; gap: 20px;">
-              <div style="display: flex; width: 100%; gap: 20px;">
-
-              </div>
-
-              <div style="display: flex; width: 100%; gap: 20px;">
-                <div class="row">
-                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
-                    <label>Text 1</label>
-                    <angular-editor placeholder="Enter text..." id="editor" formControlName="text1"
-                      [config]="config"></angular-editor>
-                  </div>
-                </div>
-
-
-
-              </div>
-              <div style="display: flex; width: 100%; gap: 20px;">
-              
-                <div
-                class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
-                
-              >
-                <label>Background Image</label>
-                <div class="file-drop-area">
-                  <div class="file">
-                    <button mat-raised-button color="primary" class="btn">
-                      Choose file
-                      <input
-                        formControlName="image_link"
-                        (change)="onFileUpload($event)"
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12" style="max-height: 600px;width: 100%; overflow-y: auto;">
+        
+          <section class="content">
                       
-                        class="file-input"
-                        type="file"
-                      />
-                    </button>
-                    <span class="file-msg">
-                      <h6>
-                        {{
-                          uploadedImage
-                            ? uploadedImage
-                            : "Drag and Drop File Here"
-                        }}
-                      </h6>
-                    </span>
-                  </div>
-                </div>
-               
-              </div>
-                
- 
+                      <!-- Certificate Preview -->
+                      <div class="certificate-preview">
+                        <div
+                          class="certificate-canvas"
+                          [ngStyle]="{
+                            'background-image': 'url(' + image_link + ')',
+                            'margin': '0 auto',
+                            'background-repeat': 'no-repeat',
+                            'background-position': 'center right',
+                            'background-size': '100% 100%',
+                            'border': '0.5px solid lightgray',
+                            'height': '700px',
+                            'width': '800px',
+                            'position': 'relative'
+                          }"
+                         
+                        >
+                          <div
+                            *ngFor="let element of elements; let i = index"
+                            class="element-container"
+                            [ngStyle]="{
+                              'display': 'flex',
+                              'justify-content': element.alignment,
+                              'position': 'absolute',
+                              'top': element.top + 'px',
+                              'left': element.left + 'px'
+                            }"
+                           
+                          >
+                            <div class="certificate-element">
+                              
+          
+                              <!-- Contenteditable div -->
+                              <div
+                                [attr.contenteditable]="element.editable"
+                                [ngStyle]="{
+                                  'font-size': element.fontSize + 'px',
+                                  'color': element.color
+                                }"
+                                
+                                class="certificate-element-content"
+                              >
+                                <!-- Resizable Logo Element -->
+                                <ng-container *ngIf="element.type === 'Logo'; else textElement">
+                                  <div
+                                    class="resizable-logo"
+                                    [ngStyle]="{
+                                      width: element.width + 'px',
+                                      height: element.height + 'px'
+                                    }"
+                                    
+                                  >
+                                    <img [src]="element.imageUrl" alt="Logo" style="max-width: 100%; height: auto;">
+                                    <div class="resizer"></div>
+                                  </div>
+                                </ng-container>
+          
+                                <ng-template #textElement>
+                                  {{ element.content }}
+                                </ng-template>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+          
+                      <button mat-raised-button id="submit" (click)="generateCertificatePDF()" style="margin-left: 700px; margin-top: 10px;">
+                        Generate Certificate
+                      </button>
+                      
+                      <!-- <button mat-raised-button id="submit" (click)="update()" style="margin-left: 700px; margin-top: 10px;">
+                        Generate Certificate
+                      </button> -->
+          </section>
 
-
-          </div>
-          </form>
-
-          <table #backgroundTable style="margin: 0 auto;
-                   background-repeat: no-repeat;
-                   background-position: center right;
-                   background-size: 100% 100%;
-                   border: 0.5px solid lightgray;
-                   height: 700px;
-                   width: 800px;">
-            <tbody>
-              <tr>
-                <td width="11%"></td>
-                <td width="59%" style="padding: 30px 0">
-
-                  <p class="text-default" [innerHTML]="
-                
-                getSafeHtml(certificateForm.get('text1')?.value)
-                  
-              "></p>
-                </td>
-                <td width="30%"></td>
-              </tr>
-            </tbody>
-          </table>
-          <table width="800px" [style.background-image]="'url(' + this.image_link + ')'" style="
-            margin: 0 auto;
-            background-repeat: no-repeat;
-            background-position: center right;
-            background-size: 100% 100%;
-            border: 0.5px solid lightgray;
-            height: fit-content;
-          "> </table>
-
-        </div>
-        <button mat-raised-button id="submit" (click)="update()" style="margin-left: 700px; margin-top: 10px;">
-          Generate Certificate
-        </button>
-        <br>
+        
+       
+       
 
       </div>
-    </div>
+   
 </ng-template>
 
-
-<!-- <div class="container"> -->
-  <div *ngIf="dafaultGenratepdf" id="contentToConvert">
-    <table #backgroundTable style="margin: 0 auto;
-                   background-repeat: no-repeat;
-                   background-position: center right;
-                   background-size: 100% 100%;
-                   border: 0.5px solid lightgray;
-                   height: 700px;
-                   width: 800px;">
-            <tbody>
-              <tr>
-                <td width="11%"></td>
-                <td width="59%" style="padding: 30px 0">
-
-                  <p class="text-default" [innerHTML]="
-                
-                getSafeHtml(certificateForm.get('text1')?.value)
-                  
-              "></p>
-                </td>
-                <td width="30%"></td>
-              </tr>
-            </tbody>
-          </table>
-          <table   width="800px" [style.background-image]="'url(' +this.image_link + ')'" style="
-            margin: 0 auto;
-            background-repeat: no-repeat;
-            background-position: center right;
-            background-size: 100% 100%;
-            border: 0.5px solid lightgray;
-            height: fit-content;
-          "> </table>
+<div *ngIf="dafaultGenratepdf" id="contentToConvert">
 
 </div>
-    <!-- <table #backgroundTable style="margin: 0 auto;
-           background-repeat: no-repeat;
-           background-position: center right;
-           background-size: 100% 100%;
-           border: 0.5px solid lightgray;
-           height: 700px;
-           width: 800px">
-      <tbody>
-        <tr>
-          <td width="11%"></td>
-          <td width="59%" style="padding: 30px 0">
-            <p class="text-default" [innerHTML]="
-              
-              getSafeHtml(certificateDetails?.text1)
-                
-            "></p>
-            <!-- <table style="width: 100%">
-              <tr>
-                <td></td>
-                <td style="text-align: right; padding-right: 30px;">
-                  <p style="
-                    font-weight: 600;
-                    font-size: 28px;
-                    margin-bottom: 10px;
-                    line-height: 1.2;
-                  ">
-                    {{ certificateDetails?.text1 || 'https://www.tms.com' }}
-                  </p>
-                  <p style="
-                    font-weight: 300;
-                    font-size: 21px;
-                    margin-bottom: 5px;
-                    line-height: 1.2;
-                  ">
-                  {{ certificateDetails?.text2 || ' India | Singapore' }}
-                    <!-- India | Singapore --
-                  </p>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2">
-                  <p style="
-                    font-weight: 700;
-                    font-size: 32px;
-                    margin-bottom: 0;
-                    line-height: 1.2;
-                    text-transform: uppercase;
-                  ">
-                    {{ certificateDetails?.text3 || 'LMS Inc.' }}
-                  </p>
-                  <p style="
-                    font-weight: 500;
-                    font-size: 15px;
-                    margin: 8px 0;
-                    line-height: 1.2;
-                    font-style: italic;
-                  ">
-                    {{ certificateDetails?.text4 || 'hereby recognizes that' }}
-                  </p>
-                  <p style="
-                    font-weight: 700;
-                    font-size: 32px;
-                    margin-bottom: 8px;
-                    line-height: 1.2;
-                    font-style: italic;
-                  ">
- {{listpdfData?.name}}                  </p>
- 
-                  <p style="
-                    font-weight: 400;
-                    font-size: 15px;
-                    margin-bottom: 10px;
-                    line-height: 1.2;
-                    font-style: italic;
-                  ">
-                    {{ certificateDetails?.text5 || 'has successfully completed the' }} <b>
-                      {{listpdfData?.title}}
-                    </b> course
-                    on <b>
-                      {{  listpdfData?.completdDate || 'DD/MM/YYYY' }}
-                    </b>
-                  </p>
-                </td>
-              </tr>
-            </table> -->
-            <!-- <table style="width: 100%">
-              <tr>
-                <td width="70%">
-                  <p style="
-                    font-weight: normal;
-                    font-size: 12px;
-                    margin-bottom: 8px;
-                    line-height: 1.2;
-                  ">
-                    {{ certificateDetails?.text6 || 'Authorized and issued by:' }}
-                  </p>
-                  <p style="
-                    font-weight: 600;
-                    font-size: 15px;
-                    margin-bottom: 8px;
-                    line-height: 1.2;
-                    text-transform: uppercase;
-                  ">
-                   {{ certificateDetails?.text7 || 'tms inc.' }}
-                    <!-- lms inc. --
-                  </p>
-                  <p style="
-                    font-weight: normal;
-                    font-size: 12px;
-                    margin-bottom: 8px;
-                    line-height: 1.2;
-                  ">
-                  {{ certificateDetails?.text8 || 'Mountbatten Road, Mountbatten Square, Singapore | Hyderabad, TS, India' }}
-                    <!-- Mountbatten Road, Mountbatten Square, Singapore | Hyderabad, TS, India --
-                  </p>
-                </td>
-                <td width="30%" style="text-align: right; vertical-align: bottom; padding-right: 30px;">
-                  <!-- <img src="/assets/certificates/stamp.png" width="140px" /> --
-                </td>
-              </tr>
-            </table> --
-          </td>
-          <td width="30%"></td>
-        </tr>
-      </tbody>
-    </table> -->
-  <!-- </div> -->
-<!-- </div> -->
