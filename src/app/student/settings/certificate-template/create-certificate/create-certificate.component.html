@@ -23,14 +23,11 @@
               </div>
             </form>
 
-              <!-- Dropdown and Insert Button -->
               <div class="form-group">
-                <!-- Label for the Select Element -->
                 <label for="element-select" class="form-label">Select Element</label>
                 
-                <!-- Flex container for Select and Button -->
                 <div class="select-button-container">
-                  <!-- Select Element -->
+
                   <mat-form-field appearance="outline" class="dynamic-select">
                     <mat-select [(ngModel)]="selectedElement" id="element-select">
                       <mat-option *ngFor="let option of elementOptions" [value]="option">{{ option }}</mat-option>
@@ -41,9 +38,6 @@
                 </div>
               </div>
               
-              
-              
-
               <!-- Background Image Upload -->
               <div class="form-group">
                 <label>Background Image</label>
@@ -60,6 +54,7 @@
                 </div>
               </div>
             </div>
+           
           
 
             <!-- Customization Controls -->
@@ -104,6 +99,31 @@
               
 
             </div>
+            
+            <div class="form-row">
+              <div *ngIf="selectedElement === 'Signature' " class="signature-pad-container ">
+                <label >Draw Your Signature</label>
+                <canvas
+                  id="signaturePad"
+                  width="500"
+                  height="300"
+                  style="border: 1px solid #000;color: #000;"
+                  (mousedown)="startDrawing($event)"
+                  (mousemove)="draw($event)"
+                  (mouseup)="stopDrawing()"
+                  (mouseleave)="stopDrawing()"
+                  
+                ></canvas>
+                <div class="button-container">
+                <button mat-raised-button color="primary" (click)="saveSignature()">Save Signature</button>
+                <button mat-raised-button color="warn" (click)="clearSignature()">Clear</button>
+              </div>
+              </div>
+              
+
+            </div>
+
+          
 
             <!-- Certificate Preview -->
             <div class="certificate-preview">
@@ -138,7 +158,6 @@
                   (dragend)="onDragEnd($event)"
                 >
                   <div class="certificate-element">
-                    <!-- Delete Button -->
                     <button
                       *ngIf="isEditingElement(i) && !viewUrl"
                       class="delete-icon"
@@ -159,7 +178,6 @@
                       (click)="selectElement(i)"
                       class="certificate-element-content"
                     >
-                      <!-- Resizable Logo Element -->
                       <ng-container *ngIf="element.type === 'Logo'; else textElement">
                         <div
                           class="resizable-logo"
@@ -173,6 +191,10 @@
                           <div class="resizer"></div>
                         </div>
                       </ng-container>
+                      <ng-container *ngIf="element.type === 'Signature';">
+                        <img [src]="element.imageUrl" alt="Signature" style="max-width: 100%; height: auto;">
+                      </ng-container>
+                      
 
                       <ng-template #textElement>
                         {{ element.content }}
@@ -183,7 +205,6 @@
               </div>
             </div>
 
-            <!-- Submit/Update Button -->
             <button mat-raised-button id="submit" *ngIf="!editUrl&&!viewUrl" style="margin-left: 800px; margin-top: 10px;" (click)="saveCertificate()">
               Submit
             </button>

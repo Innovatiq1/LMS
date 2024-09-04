@@ -241,6 +241,9 @@
                                     <div class="resizer"></div>
                                   </div>
                                 </ng-container>
+                                <ng-container *ngIf="element.type === 'Signature';">
+                                  <img [src]="element.imageUrl" alt="Signature" style="max-width: 100%; height: auto;">
+                                </ng-container>
           
                                 <ng-template #textElement>
                                   {{ element.content }}

@@ -1,5 +1,3 @@
-//Implemented Drag and drop 
-
 import {
   Component,
   OnInit,
@@ -17,6 +15,7 @@ import { CourseService } from '@core/service/course.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { AuthenService } from '@core/service/authen.service';
+import SignaturePad from 'signature_pad';
 @Component({
   selector: 'app-create-certificate',
   templateUrl: './create-certificate.component.html',
@@ -31,6 +30,11 @@ export class CreateCertificateComponent implements OnInit {
     },
   ];
   @ViewChild('backgroundTable') backgroundTable!: ElementRef;
+ 
+  isDrawing = false;
+  context: CanvasRenderingContext2D | null = null;
+  isInserted=false;
+
   certificateForm!: FormGroup;
   isSubmitted = false;
   editUrl!: boolean;
@@ -91,7 +95,8 @@ export class CreateCertificateComponent implements OnInit {
     private courseService: CourseService,
     private renderer: Renderer2,
     private sanitizer: DomSanitizer,
-    private authenService: AuthenService
+    private authenService: AuthenService,
+    private el: ElementRef
   ) {
     this._activeRoute.queryParams.subscribe((params) => {
       this.classId = params['id'];
@@ -181,7 +186,18 @@ stopResizing() {
   }
 
   insertElement() {
-    if (this.selectedElement === 'Logo') {
+    if (this.selectedElement === 'Signature') {
+      this.isInserted=true;
+      const canvas = this.el.nativeElement.querySelector('#signaturePad') as HTMLCanvasElement;
+      if (canvas) {
+        this.context = canvas.getContext('2d');
+        if (this.context) {
+          this.context.strokeStyle = '#000';
+          this.context.lineWidth = 2; 
+        }
+      }
+    }
+    else if (this.selectedElement === 'Logo') {
       const fileInput = document.createElement('input');
       fileInput.type = 'file';
       fileInput.accept = 'image/*';
@@ -354,6 +370,73 @@ stopResizing() {
       title: ['title value'],
       // title: ['', Validators.required],
     });
+    
+  }
+  // ngAfterViewInit() {
+  //   if (this.selectedElement === 'Signature') {
+  //     const canvas = this.el.nativeElement.querySelector('#signaturePad') as HTMLCanvasElement;
+  //     if (canvas) {
+  //       this.context = canvas.getContext('2d');
+  //       if (this.context) {
+  //         this.context.strokeStyle = '#000';
+  //         this.context.lineWidth = 2; 
+  //       }
+  //     }
+  //   }
+  // }
+
+  startDrawing(event: MouseEvent) {
+   
+    if (this.context) {
+      console.log("hello start draw",this.context)
+      this.isDrawing = true;
+      const rect = (event.target as HTMLCanvasElement).getBoundingClientRect();
+      const offsetX = event.clientX - rect.left;
+      const offsetY = event.clientY - rect.top;
+      this.context.beginPath();
+      this.context.moveTo(offsetX, offsetY);
+    }
+  }
+  draw(event: MouseEvent) {
+    // console.log("hello draw",this.context)
+    if (this.isDrawing && this.context) {
+      console.log("hello draw",this.context)
+      const rect = (event.target as HTMLCanvasElement).getBoundingClientRect();
+      const offsetX = event.clientX - rect.left;
+      const offsetY = event.clientY - rect.top;
+      this.context.lineTo(offsetX, offsetY);
+      this.context.stroke();
+    }
+  }
+  stopDrawing() {
+    if (this.isDrawing) {
+      this.isDrawing = false;
+    }
+  }
+  
+  saveSignature() {
+    if (this.context) {
+      const canvas = this.el.nativeElement.querySelector('#signaturePad') as HTMLCanvasElement;
+      const dataURL = canvas.toDataURL('image/png');
+      const newElement = {
+        type: 'Signature',
+        imageUrl: dataURL,
+        top: 100,
+        left: 100,
+        width: 100,
+        height: 50,
+      };
+      this.elements.push(newElement);
+    }
+  }
+
+  clearSignature() {
+    if (this.context) {
+      const canvas = this.el.nativeElement.querySelector('#signaturePad') as HTMLCanvasElement;
+      if (this.context) {
+        this.context.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    }
   }
   selectElement(index: number) {
     if (this.isEdit) {

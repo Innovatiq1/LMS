@@ -411,7 +411,7 @@ imgUrl:any;
     this.certificateService.getCertificateById(this.studentData.courseId.certificate_template_id).subscribe((response: any) => {
 
       this.course = response;
-      
+      console.log("response===>",response)
       let imageUrl = this.course.image;
       imageUrl = imageUrl.replace(/\\/g, '/');
       imageUrl = encodeURI(imageUrl);
