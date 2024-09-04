@@ -20,6 +20,11 @@
                     </li>
                   </ul>
                 </li>
+                <li class="tbl-header-btn"  *ngIf="isAnyRowSelected()">
+                  <div class="m-l-10" matTooltip="ADD">
+                    <button mat-raised-button id="submit" (click)="enableExam()">Enable Exam</button>
+                  </div>
+                </li>
                 <li>
                   <div class="export-button m-l-10" matTooltip="XLSX">
                     <img src="assets/excel.svg" alt="" (click)=" exportExcel()">
@@ -36,6 +41,21 @@
           <div class="body overflow-auto">
             <div class="responsive_table">
               <table mat-table matSort [dataSource]="dataSource" class="mat-cell advance-table">
+                <ng-container matColumnDef="select">
+                  <mat-header-cell *matHeaderCellDef [ngClass]="'tbl-col-width-per-6'">
+                    <mat-checkbox (change)="$event ? masterToggle() : null"
+                      [checked]="selection.hasValue() && isAllSelected()"
+                      [indeterminate]="selection.hasValue() && !isAllSelected()" [ngClass]="'tbl-checkbox'">
+                    </mat-checkbox>
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let row" [ngClass]="'tbl-col-width-per-6'">
+                    <mat-checkbox (click)="$event.stopPropagation()" 
+                    (change)="$event ? toggleRowSelection(row) : null"
+                    [checked]="selection.isSelected(row)" 
+                    [ngClass]="'tbl-checkbox'">
+                    </mat-checkbox>
+                  </mat-cell>
+                </ng-container>
                 <ng-container matColumnDef="Student">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>{{commonRoles.STUDENT_ROLE}}
                   </mat-header-cell>

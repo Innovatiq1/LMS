@@ -31,6 +31,10 @@ import { AuthenService } from '@core/service/authen.service';
 
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
+import { SelectionModel } from '@angular/cdk/collections';
+import { MatPaginator } from '@angular/material/paginator';
+import { AssessmentService } from '@core/service/assessment.service';
+import { CourseModel } from '@core/models/course.model';
 @Component({
   selector: 'app-completion-list',
   templateUrl: './completion-list.component.html',
@@ -38,6 +42,7 @@ import { jsPDF } from 'jspdf';
 })
 export class CompletionListComponent {
   displayedColumns = [
+    'select',
     'Student',
     'email',
     'Course',
@@ -61,6 +66,7 @@ export class CompletionListComponent {
     },
   ];
   @ViewChild('certificateDialog') certificateDialog!: TemplateRef<any>;
+  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
 
   pdfData: any = [];
   dafaultGenratepdf: boolean = false;
@@ -83,6 +89,8 @@ export class CompletionListComponent {
   uploaded: any;
   uploadedImage: any;
   certificateForm!: FormGroup;
+  selection = new SelectionModel<any>(true, []);
+  selectedRows: any[] = [];
 
   
 
@@ -129,7 +137,8 @@ export class CompletionListComponent {
   constructor(private classService: ClassService, private changeDetectorRef: ChangeDetectorRef,public router: Router, public dialog: MatDialog,
     private certificateService: CertificateService,  private sanitizer: DomSanitizer,private _activeRouter: ActivatedRoute,
     private courseService: CourseService,private fb: FormBuilder,
-    private authenService: AuthenService) {
+    private authenService: AuthenService,
+    private assessmentService: AssessmentService) {
     this.studentPaginationModel = {} as StudentPaginationModel;
     let urlPath = this.router.url.split('/')
     this.certificateUrl = urlPath.includes('edit');
@@ -572,6 +581,98 @@ updateCertificte(objpdf: any) {
       );
     }
   });
+}
+isAllSelected() {
+  const numSelected = this.selection.selected.length;
+  const numRows = this.dataSource.length;
+  return numSelected === numRows;
+}
+
+
+masterToggle() {
+  this.isAllSelected()
+    ? this.selection.clear()
+    : this.dataSource.forEach((row: CourseModel) =>
+        this.selection.select(row)
+      );
+}
+
+updateSelectedRows() {
+  this.selectedRows = this.selection.selected;
+}
+
+toggleRowSelection(row: any): void  {
+  this.selection.toggle(row);
+  this.updateSelectedRows();
+}
+
+
+isAnyRowSelected(): boolean {
+  return this.selection.hasValue();
+}
+
+
+enableExam() {
+  if (this.selectedRows.length === 0) {
+    console.log('No rows selected');
+    return;
+  }
+
+  let examAlreadyAssigned = false;
+
+  this.selectedRows.forEach((row: any) => {
+    if (row.isExamAssigned || row.examassessmentanswers?.answers?.length === 0) {
+      examAlreadyAssigned = true;
+    }
+  });
+  if (examAlreadyAssigned) {
+    Swal.fire({
+      title: 'Warning',
+      text: 'Exam already enabled for one or more selected records.',
+      icon: 'warning'
+    });
+    return;
+  }
+
+  this.selectedRows.forEach((row: any) => {
+    const isExamAssessmentEmpty = Object.keys(row.examassessmentanswers).length === 0;
+
+    if (isExamAssessmentEmpty && row.assessmentanswers && !row.isExamAssigned) {
+      const studentClassId = row._id;
+      const studentId = row.studentId._id;
+      const examAssessmentId = row.courseId.exam_assessment;
+      const assessmentAnswerId = row.assessmentanswers.id;
+      const courseId = row.courseId._id;
+      let companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+
+      const requestBody = {
+        studentId,
+        examAssessmentId,
+        assessmentAnswerId,
+        studentClassId,
+        companyId,
+        courseId
+      };
+
+      this.assessmentService.assignExamAssessment(requestBody).subscribe(
+        (response: any) => {
+          Swal.fire({
+            title: 'Assigned!',
+            text: 'Exam Assigned Successfully!',
+            icon: 'success'
+          });
+          this.clearSelection();
+        }
+      );
+    } else {
+      console.log(`Exam not enabled for row with student ID: ${row.studentId._id} - Conditions not met.`);
+    }
+  });
+  
+}
+clearSelection() {
+  this.selection.clear();
+  this.updateSelectedRows();
 }
 
 }
