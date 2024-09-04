@@ -13,7 +13,7 @@ import Swal from 'sweetalert2';
 import { MatSort } from '@angular/material/sort';
 import 'jspdf-autotable';
 import { TableElement, TableExportUtil } from '@shared';
-import { jsPDF } from 'jspdf';
+//import { jsPDF } from 'jspdf';
 import DomToImage from 'dom-to-image';
 import { number } from 'echarts';
 import { StudentService } from '@core/service/student.service';
@@ -29,6 +29,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { CourseService } from '@core/service/course.service';
 import { AuthenService } from '@core/service/authen.service';
 
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
 @Component({
   selector: 'app-completion-list',
   templateUrl: './completion-list.component.html',
@@ -81,6 +83,8 @@ export class CompletionListComponent {
   uploaded: any;
   uploadedImage: any;
   certificateForm!: FormGroup;
+
+  
 
   config: AngularEditorConfig = {
     editable: true,
@@ -373,24 +377,62 @@ export class CompletionListComponent {
   getSafeHtml(html: string): SafeHtml {
     return this.sanitizer.bypassSecurityTrustHtml(html);
   }
+
+
+
+
+// Certificate preview Code 
+
+  classId!: any;
+  
+  title: boolean = false;
+  submitted: boolean = false;
+  course: any;
+  elements: any[] = [];
+
+
+  
+  private setBackgroundImage(imageUrl: string) {
+    this.image_link = imageUrl; 
+    this.backgroundTable.nativeElement.style.backgroundImage = `url(${imageUrl})`;
+    setTimeout(() => {
+      const computedStyle = window.getComputedStyle(
+        this.backgroundTable.nativeElement
+      );
+    }, 1000);
+  }
+  
+  
+
+
+imgUrl:any;
+
   openDialog(templateRef: any): void {
     this.certificateService.getCertificateById(this.studentData.courseId.certificate_template_id).subscribe((response: any) => {
-      this.certificateDetails = response;
-      let imageUrl = this.certificateDetails?.image;
+
+      this.course = response;
+      console.log("response===>",response)
+      let imageUrl = this.course.image;
       imageUrl = imageUrl.replace(/\\/g, '/');
       imageUrl = encodeURI(imageUrl);
+      this.imgUrl=imageUrl;
+      // console.log("imageUrl==",this.course.image)
+
+      this.certificateForm.patchValue({
+        title: this.course.title,
+      });
+       // Update content based on type
+      this.course.elements.forEach((element: any) => {
+        if (element.type === 'UserName') {
+          element.content = this.studentData.studentId?.name || 'Default Name';
+        } else if (element.type === 'Course') {
+          element.content = this.studentData.title || 'Default Course';
+        } else if (element.type === 'Date') {
+          element.content = this.studentData.updatedAt ? new Date(this.studentData.updatedAt).toLocaleDateString() : '--';
+        }
+      });
+      this.elements = this.course.elements || [];
       this.setBackgroundImage(imageUrl);
-      
-      this.uploaded = imageUrl?.split('/');
-      let image = this.uploaded?.pop();
-      this.uploaded = image?.split('\\');
-      this.uploadedImage = this.uploaded?.pop();
-
-
-            this.certificateForm.patchValue({
-            text1: response.text1,
-          })
-         
     })
   
     this.dialogRef = this.dialog.open(templateRef, {
@@ -399,211 +441,137 @@ export class CompletionListComponent {
     });    
 }
 
-  generateCertificate(element: Student) {
-    this.studentData = element
-    this.openDialog(this.certificateDialog)
-  }
-  update(){
-    Swal.fire({
-      title: 'Certificate Generating...',
-      text: 'Please wait...',
-      allowOutsideClick: false,
-      timer: 24000,
-      timerProgressBar: true,
-    });
-       this.dafaultGenratepdf = true;
-       var convertIdDynamic = 'contentToConvert';
-       const dashboard = document.getElementById('contentToConvert');
-       this.genratePdf3(
-            convertIdDynamic,
-            this.studentData?.studentId._id,
-            this.studentData?.courseId._id,
-          );
-          this.dialogRef.close();
 
-  
-  }
-  private setBackgroundImage(imageUrl: string) {  
-    console.log('setBackgroundImage',imageUrl);
- this.image_link = imageUrl;
-    this.backgroundTable.nativeElement.style.backgroundImage = `url("${imageUrl}")`;
-    setTimeout(() => {
-      const computedStyle = window.getComputedStyle(this.backgroundTable.nativeElement);
-      console.log('Computed background image:', computedStyle.backgroundImage);
 
-    }, 1000);
+// end of displaying the certificate 
+
+generateCertificate(element: Student) {
+  this.studentData = element;
+  this.openDialog(this.certificateDialog);
+  setTimeout(() => {
+    this.copyPreviewToContentToConvert();
+  }, 1000);
+}
+copyPreviewToContentToConvert() {
+  const certificatePreview = document.querySelector('.certificate-preview') as HTMLElement;
+  const contentToConvert = document.getElementById('contentToConvert') as HTMLElement;
+
+  if (certificatePreview && contentToConvert) {
+    contentToConvert.innerHTML = certificatePreview.innerHTML;
+    contentToConvert.style.backgroundImage = certificatePreview.style.backgroundImage;
+    contentToConvert.style.backgroundSize = certificatePreview.style.backgroundSize;
+    contentToConvert.style.backgroundPosition = certificatePreview.style.backgroundPosition;
+    contentToConvert.style.backgroundRepeat = certificatePreview.style.backgroundRepeat;
+    contentToConvert.style.border = certificatePreview.style.border;
 
   }
- 
-  genratePdf3(convertIdDynamic: any, memberId: any, memberProgrmId: any) {
-    console.log('convertIdDynamic - ',convertIdDynamic,'memberId -',memberId,'memberProgrmId',memberProgrmId)
-    console.log('convertIdDynamic - ',convertIdDynamic,'memberId -',)
-    this.dafaultGenratepdf = true;
-    setTimeout(() => {
-      const dashboard = document.getElementById(convertIdDynamic);
-      if (dashboard != null) {
-        const dashboardHeight = dashboard.clientHeight;
-        const dashboardWidth = dashboard.clientWidth;
-        const options = {
-          background: 'white',
-          width: dashboardWidth,
-          height: dashboardHeight,
+}
+
+generateCertificatePDF(): void {
+  const data = document.querySelector('.certificate-preview') as HTMLElement;
+  html2canvas(data, {
+    scale: 2,
+    useCORS: true, 
+    backgroundColor: null, 
+  }).then((canvas) => {
+    const imgWidth = 210; 
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    const contentDataURL = canvas.toDataURL('image/png');
+
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const position = 0;
+    
+    pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+
+    
+    const pdfBlob = pdf.output('blob');
+
+    this.update(pdfBlob);
+  });
+}
+
+
+update(pdfBlob: Blob) {
+  Swal.fire({
+    title: 'Certificate Generating...',
+    text: 'Please wait...',
+    allowOutsideClick: false,
+    timer: 24000,
+    timerProgressBar: true,
+  });
+
+  this.dafaultGenratepdf = true;
+  this.copyPreviewToContentToConvert();
+
+  var convertIdDynamic = 'contentToConvert';
+  this.genratePdf3(convertIdDynamic, this.studentData?.studentId._id, this.studentData?.courseId._id, pdfBlob);
+
+  this.dialogRef.close();
+}
+
+genratePdf3(convertIdDynamic: any, memberId: any, memberProgrmId: any, pdfBlob: Blob) {
+  // console.log('convertIdDynamic - ', convertIdDynamic, 'memberId -', memberId, 'memberProgrmId', memberProgrmId);
+
+  setTimeout(() => {
+    const dashboard = document.getElementById(convertIdDynamic);
+    if (dashboard != null) {
+      // Upload the Blob
+      const randomString = this.generateRandomString(10);
+      const pdfData = new File([pdfBlob], randomString + 'courseCertificate.pdf', { type: 'application/pdf' });
+
+      this.classService.uploadFileApi(pdfData).subscribe((data: any) => {
+        let objpdf = {
+          pdfurl: data.inputUrl,
+          memberId: memberId,
+          CourseId: memberProgrmId,
         };
- 
-        DomToImage.toPng(dashboard, options).then((imgData) => {
-          const doc = new jsPDF(
-            dashboardWidth > dashboardHeight ? 'l' : 'p',
-            'mm',
-            [dashboardWidth, dashboardHeight]
-          );
-          const imgProps = doc.getImageProperties(imgData);
-          const pdfWidth = doc.internal.pageSize.getWidth();
-          const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
- 
-          doc.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-          const currentDateTime = moment();
-          const randomString = this.generateRandomString(10);
- 
- 
-          const pdfData = new File(
-            [doc.output('blob')],
-            randomString + 'courseCertificate.pdf',
-            {
-              type: 'application/pdf',
-            }
-          );
-          this.classService.uploadFileApi(pdfData).subscribe(
-            (data: any) => {
-              let objpdf = {
-                pdfurl: data.inputUrl,
-                memberId: memberId,
-                CourseId: memberProgrmId,
-              };
-              this.updateCertificte(objpdf);
-            },
-            (err) => {}
-          );
-        });
-        this.dafaultGenratepdf = false;
-      }
-    }, 1000);
-  }
-  // genratePdf3(convertIdDynamic: any, memberId: any, memberProgrmId: any) {
-  //   this.dafaultGenratepdf = true;
-  //   setTimeout(() => {
-  //     const dashboard = document.getElementById(convertIdDynamic);
-  //     if (dashboard != null) {
-  //       const dashboardHeight = dashboard.clientHeight;
-  //       const dashboardWidth = dashboard.clientWidth;
-
-  //       const options = {
-  //         background: 'white',
-  //         width: dashboardWidth,
-  //         height: dashboardHeight,
-  //       };
-
-  //       DomToImage.toPng(dashboard, options).then((imgData) => {
-  //         const doc = new jsPDF(
-  //           dashboardWidth > dashboardHeight ? 'l' : 'p',
-  //           'mm',
-  //           [dashboardWidth, dashboardHeight]
-  //         );
-  //         const imgProps = doc.getImageProperties(imgData);
-  //         const pdfWidth = doc.internal.pageSize.getWidth();
-  //         const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-  //         doc.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-  //         const currentDateTime = moment();
-  //         const randomString = this.generateRandomString(10);
-
-
-  //         const pdfData = new File(
-  //           [doc.output('blob')],
-  //           randomString + 'courseCertificate.pdf',
-  //           {
-  //             type: 'application/pdf',
-  //           }
-  //         );
-  //         this.classService.uploadFileApi(pdfData).subscribe(
-  //           (data: any) => {
-  //             let objpdf = {
-  //               pdfurl: data.inputUrl,
-  //               memberId: memberId,
-  //               CourseId: memberProgrmId,
-  //             };
-  //             this.updateCertificte(objpdf);
-  //           },
-  //           (err) => {}
-  //         );
-  //       });
-  //       this.dafaultGenratepdf = false;
-  //     }
-  //   }, 1000);
-  // }
-  generateRandomString(length: number) {
-    const characters =
-      'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let result = '';
-    for (let i = 0; i < length; i++) {
-      const randomIndex = Math.floor(Math.random() * characters.length);
-      result += characters.charAt(randomIndex);
-    }
-    return result;
-  }
-
-
-  updateCertificte(objpdf: any) {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'Do you want to create certificate!',
-      icon: 'warning',
-      confirmButtonText: 'Yes',
-      showCancelButton: true,
-      cancelButtonColor: '#d33',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.classService.updateCertificateUser(objpdf).subscribe(
-          (response) => {
-            if (response.data.certifiacteUrl) {
-              this.certifiacteUrl = true;
-            }
-                this.changeDetectorRef.detectChanges();
-
-
-            this.getCertificates();
-            Swal.fire({
-              title: 'Updated',
-              text: 'Certificate Created successfully',
-              icon: 'success',
-            });
-          },
-          (err) => {}
-        );
-      }
-    });
-  }
-
-  onFileUpload(event: any) {
-    const file = event.target.files[0];
-
-    if (file) {
-      this.thumbnail = file;
-      const formData = new FormData();
-      formData.append('files', this.thumbnail);
-
-      this.courseService.uploadCourseThumbnail(formData).subscribe((data: any) => {
-        let imageUrl = data.data.thumbnail;
-        this.image_link = data.data.thumbnail
-        imageUrl = imageUrl.replace(/\\/g, '/');
-        imageUrl = encodeURI(imageUrl);
-        this.setBackgroundImage(imageUrl);
-        this.uploaded=imageUrl?.split('/')
-      let image  = this.uploaded?.pop();
-      this.uploaded= image?.split('\\');
-      this.uploadedImage = this.uploaded?.pop();
-      }, (error) => {
-        console.error('Upload error:', error);
+        this.updateCertificte(objpdf);
       });
+
+      this.dafaultGenratepdf = false;
     }
+  }, 1000);
+}
+
+ 
+generateRandomString(length: number) {
+  const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    result += characters.charAt(randomIndex);
   }
+  return result;
+}
+
+
+updateCertificte(objpdf: any) {
+  Swal.fire({
+    title: 'Are you sure?',
+    text: 'Do you want to create certificate!',
+    icon: 'warning',
+    confirmButtonText: 'Yes',
+    showCancelButton: true,
+    cancelButtonColor: '#d33',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.classService.updateCertificateUser(objpdf).subscribe(
+        (response) => {
+          if (response.data.certifiacteUrl) {
+            this.certifiacteUrl = true;
+          }
+          this.changeDetectorRef.detectChanges();
+          this.getCertificates();
+          Swal.fire({
+            title: 'Updated',
+            text: 'Certificate Created successfully',
+            icon: 'success',
+          });
+        },
+        (err) => {}
+      );
+    }
+  });
+}
+
 }
