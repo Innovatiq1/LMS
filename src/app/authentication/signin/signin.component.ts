@@ -150,7 +150,7 @@ export class SigninComponent
             let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
             this.superadminservice.getAllCustomRoleById(userId).subscribe(
               (response: any) => {
-                this.commonService.setRoleDetails(response)
+                this.commonService.setRoleDetails(response[0])
                 this.updateRoleConstants();
 
               })
@@ -204,7 +204,7 @@ export class SigninComponent
                       let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
                       this.superadminservice.getAllCustomRoleById(userId).subscribe(
                         (response: any) => {
-                          this.commonService.setRoleDetails(response)
+                          this.commonService.setRoleDetails(response[0])
                           this.updateRoleConstants();
 
                         })
@@ -366,7 +366,8 @@ export class SigninComponent
           let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
           this.superadminservice.getAllCustomRoleById(userId).subscribe(
             (response: any) => {
-              this.commonService.setRoleDetails(response)
+              console.log('res',response)
+              this.commonService.setRoleDetails(response[0])
               this.updateRoleConstants();
 
             })

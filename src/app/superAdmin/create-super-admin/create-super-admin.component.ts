@@ -71,6 +71,7 @@ export class CreateSuperAdminComponent {
         Validators.required,
         Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/),
       ]),
+      domain: new FormControl('', []),
       password: new FormControl('', [Validators.required]),
       re_passwords: new FormControl('', []),
       type: new FormControl('admin', [Validators.required]),
@@ -232,13 +233,25 @@ export class CreateSuperAdminComponent {
   }
   private createUser(userData: Users): void {    
     this.userService.saveUsers(userData).subscribe(
-      () => {
-        Swal.fire({
-          title: 'Successful',
-          text: 'Users created successfully',
-          icon: 'success',
-        });
-        this.userForm.reset();
+      (response:any) => {
+            let payload = {
+              company:this.userForm.value.company,
+              companyId:response.companyId,
+              createdBy:localStorage.getItem('id'),
+              identifier:this.userForm.value.domain,
+              learner:this.userForm.value.learner,
+              trainer:this.userForm.value.trainer
+            }
+            this.userService.createCompany(payload).subscribe(() =>{
+              Swal.fire({
+                title: 'Successful',
+                text: 'Company created successfully',
+                icon: 'success',
+              });
+         
+
+          })
+            this.userForm.reset();
         this.router.navigateByUrl('/super-admin/admin-list');
       },
       (error) => {
