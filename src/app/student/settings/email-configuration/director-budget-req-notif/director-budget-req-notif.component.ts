@@ -130,6 +130,8 @@ export class DirectorBudgetReqNotifComponent {
     return new Promise<void>((resolve, reject) => {
           const obj = this.directorBudgetReqNotifForm.value;
           obj.insertaction = 'new_budget_request_template';
+          let companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    obj['companyId'] = companyId; 
           this.emailConfigurationService.updateForgetPasswordTemplate(obj, this.id).subscribe(
             (res) => {
               Swal.fire({
@@ -161,6 +163,7 @@ export class DirectorBudgetReqNotifComponent {
 
   toggle(_data: any){
     this.edit = !this.edit;
+    this.id = _data._id;
     this.directorBudgetReqNotifForm.patchValue({
       email_subject: _data.email_subject,
       email_content:_data.email_content,

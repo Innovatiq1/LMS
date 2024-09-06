@@ -161,6 +161,8 @@ updateTemplate() {
   return new Promise<void>((resolve, reject) => {
     const obj = this.emailTemplateForm.value;
     obj.insertaction = 'new_project_add_template';
+    let companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    obj['companyId'] = companyId; 
     this.emailConfigurationService
       .updateForgetPasswordTemplate(obj, this._id)
       .subscribe(

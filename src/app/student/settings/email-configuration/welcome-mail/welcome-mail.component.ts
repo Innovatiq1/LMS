@@ -73,6 +73,7 @@ export class WelcomeMailComponent {
 
   toggle(_data: any){
     this.edit =!this.edit;
+    this.id = _data._id;
     this.emailTemplateForm.patchValue({
       email_subject: _data.email_subject,
       email_top_welcome_text:_data.email_top_welcome_text,
@@ -156,6 +157,8 @@ update(){
   return new Promise<void>((resolve, reject) => {
         const obj = this.emailTemplateForm.value;
         obj.insertaction = 'welcome_mail_template';
+        let companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    obj['companyId'] = companyId; 
         this.emailConfigurationService.updateForgetPasswordTemplate(obj, this.id).subscribe(
           (res) => {
             

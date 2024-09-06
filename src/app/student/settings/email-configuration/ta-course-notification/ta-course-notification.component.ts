@@ -130,6 +130,8 @@ export class TaCourseNotificationComponent {
     return new Promise<void>((resolve, reject) => {
           const obj = this.taNotifForm.value;
           obj.insertaction = 'admin_payment_notification';
+          let companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    obj['companyId'] = companyId; 
           this.emailConfigurationService.updateForgetPasswordTemplate(obj, this.id).subscribe(
             (res) => {
               Swal.fire({

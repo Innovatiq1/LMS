@@ -130,6 +130,8 @@ export class DeptBudgetReqApprovalComponent {
     return new Promise<void>((resolve, reject) => {
           const obj = this.deptBudgetReqApprovalForm.value;
           obj.insertaction = 'dept_budget_approval_template';
+          let companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    obj['companyId'] = companyId; 
           this.emailConfigurationService.updateForgetPasswordTemplate(obj, this.id).subscribe(
             (res) => {
               Swal.fire({
@@ -161,6 +163,7 @@ export class DeptBudgetReqApprovalComponent {
 
   toggle(_data: any){
     this.edit = !this.edit;
+    this.id = _data._id;
     this.deptBudgetReqApprovalForm.patchValue({
       email_subject: _data.email_subject,
       email_content:_data.email_content,

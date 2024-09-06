@@ -136,6 +136,8 @@ export class ForgotPasswordComponent {
     return new Promise<void>((resolve, reject) => {
       const obj = this.updatePsw.value;
       obj.insertaction = 'forget_password_template';
+      let companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+       obj['companyId'] = companyId; 
       this.emailConfigurationService
         .updateForgetPasswordTemplate(obj, this._id)
         .subscribe(
