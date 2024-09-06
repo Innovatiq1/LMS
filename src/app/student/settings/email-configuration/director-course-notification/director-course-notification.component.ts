@@ -128,6 +128,8 @@ export class DirectorCourseNotificationComponent {
     return new Promise<void>((resolve, reject) => {
           const obj = this.updateStudentRef.value;
           obj.insertaction = 'admin_course_notification';
+          let companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    obj['companyId'] = companyId; 
           this.emailConfigurationService.updateForgetPasswordTemplate(obj, this.id).subscribe(
             (res) => {
               Swal.fire({

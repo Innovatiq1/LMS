@@ -130,6 +130,8 @@ export class DeptBudgetReqRejectedComponent {
     return new Promise<void>((resolve, reject) => {
           const obj = this.deptBudgetReqRejectedForm.value;
           obj.insertaction = 'dept_budget_rejected_template';
+          let companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    obj['companyId'] = companyId; 
           this.emailConfigurationService.updateForgetPasswordTemplate(obj, this.id).subscribe(
             (res) => {
               Swal.fire({
@@ -161,6 +163,7 @@ export class DeptBudgetReqRejectedComponent {
 
   toggle(_data: any){
     this.edit = !this.edit;
+    this.id = _data._id;
     this.deptBudgetReqRejectedForm.patchValue({
       email_subject: _data.email_subject,
       email_content:_data.email_content,

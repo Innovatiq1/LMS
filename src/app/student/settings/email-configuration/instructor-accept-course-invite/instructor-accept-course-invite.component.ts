@@ -159,6 +159,8 @@ updateTemplate(){
           const stringWithoutPTags = this.removeTagsAndSpaces(test)
           obj['email_content']=stringWithoutPTags
           obj['insertaction'] = 'payment_approved_template';
+          let companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+          obj['companyId'] = companyId; 
           this.emailConfigurationService.updateForgetPasswordTemplate(obj,this.id).subscribe(
             (res) => {
               Swal.fire({
