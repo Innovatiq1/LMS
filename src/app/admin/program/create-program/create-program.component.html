@@ -282,6 +282,28 @@
                       </div>
                     </div>
                   </div>
+
+                  <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                    <div class="label-container">
+                      <label>Certificate Template <span class="mandatory">&nbsp;*</span></label>
+                     
+                    </div>
+                    <mat-form-field class="example-full-width mb-3" appearance="outline">
+                      <mat-select formControlName="certificate_temp">
+                        <mat-option *ngFor="let item of certificates" [value]="item.title">
+                          {{ item.title }}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="
+                      programFormGroup
+                            .get('certificate_template')
+                            ?.hasError('maxLength') ||
+                            programFormGroup.get('certificate_template')?.touched
+                        ">
+                        Enter Certificate Template
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
               </div>
               <hr class="m-4" style="width: 94%" />
               <div class="d-flex m-3 justify-content-between m-4">

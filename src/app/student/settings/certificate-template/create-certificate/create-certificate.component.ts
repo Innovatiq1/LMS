@@ -144,11 +144,11 @@ startResizing(event: MouseEvent, index: number) {
   this.isResizing = true;
   this.resizingElementIndex = index;
 
-  // Prevent default behavior
+ 
   event.preventDefault();
 
   // Save initial dimensions and mouse position
-  this.resizingStartWidth = this.elements[index].width || 100; // Default to 100px if not defined
+  this.resizingStartWidth = this.elements[index].width || 100; 
   this.resizingStartHeight = this.elements[index].height || 100;
   this.resizingStartX = event.clientX;
   this.resizingStartY = event.clientY;
@@ -340,8 +340,8 @@ stopResizing() {
     if (isNaN(index)) return;
   
     const containerRect = (event.currentTarget as HTMLElement).getBoundingClientRect();
-    const x = event.clientX - containerRect.left;  // Exact position within the container
-    const y = event.clientY - containerRect.top;   // Exact position within the container
+    const x = event.clientX - containerRect.left;  
+    const y = event.clientY - containerRect.top;   
   
     this.elements[index] = {
       ...this.elements[index],
@@ -388,7 +388,6 @@ stopResizing() {
   startDrawing(event: MouseEvent) {
    
     if (this.context) {
-      console.log("hello start draw",this.context)
       this.isDrawing = true;
       const rect = (event.target as HTMLCanvasElement).getBoundingClientRect();
       const offsetX = event.clientX - rect.left;
@@ -400,7 +399,6 @@ stopResizing() {
   draw(event: MouseEvent) {
     // console.log("hello draw",this.context)
     if (this.isDrawing && this.context) {
-      console.log("hello draw",this.context)
       const rect = (event.target as HTMLCanvasElement).getBoundingClientRect();
       const offsetX = event.clientX - rect.left;
       const offsetY = event.clientY - rect.top;
