@@ -79,7 +79,7 @@ export class CreateProgramComponent {
   configuration: any;
   configurationSubscription!: Subscription;
   defaultCurrency: string = '';
-
+  certificates: any;
 
   constructor(private route: ActivatedRoute,
     private fb: FormBuilder,
@@ -118,7 +118,8 @@ export class CreateProgramComponent {
       programKit: ["", []],
       currency: ["USD", [Validators.required, ...this.utils.validators.currency]],
       corePrograms: this.fb.array([]),
-      electivePrograms: this.fb.array([])
+      electivePrograms: this.fb.array([]),
+      certificate_temp: [null, [Validators.required]],
 
     });
     if (this.editPermission === true) {
@@ -139,7 +140,8 @@ export class CreateProgramComponent {
 
   ngOnInit() {
     this.getProgramKits();
-    this.getCurrency()
+    this.getCurrency();
+    this.getAllCertificates();
 
     if (this.editPermission) {
       this.getData()
@@ -271,6 +273,10 @@ export class CreateProgramComponent {
   }
 
   save() {
+    let certicate_temp_id = this.certificates.filter(
+      (certificate: any) =>
+        certificate.title === this.programFormGroup.value.certificate_temp
+    );
     if (this.programFormGroup.valid) {
       let creator = JSON.parse(localStorage.getItem('user_data')!).user.name;
       let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
@@ -351,7 +357,9 @@ export class CreateProgramComponent {
           image_link: this.image_link,
           creator:creator,
           id: this.courseId,
-          companyId:userId
+          companyId:userId,
+          certificate_template: this.programFormGroup.value.certificate_temp,
+        certificate_template_id: certicate_temp_id[0].id,
         }
 
         Swal.fire({
@@ -431,6 +439,7 @@ export class CreateProgramComponent {
         attendees: this.course?.attendees,
         prerequisites: this.course?.prerequisites,
         electiveprogramCourse: this.course?.electiveprogramCourse,
+        certificate_temp: this.course?.certificate_template,
       });
 
       const itemControls = response.data.coreprogramCourse.map((item: {
@@ -459,5 +468,14 @@ export class CreateProgramComponent {
       this.cd.detectChanges();
     });
 
+  }
+
+  getAllCertificates() {
+    this.certificateService.getAllCertificate().subscribe(
+      (response: { data: { docs: any } }) => {
+        this.certificates = response.data.docs;
+      },
+      () => {}
+    );
   }
 }
