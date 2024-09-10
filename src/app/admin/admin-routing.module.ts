@@ -3,6 +3,11 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
   {
+    path: 'two-factor-auth',
+    loadChildren: () =>
+      import('./two-factor-auth/two-factor-auth.module').then((m) => m.TwoFactorAuthModule),
+  },
+  {
     path: 'dashboard',
     loadChildren: () =>
       import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
@@ -80,6 +85,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./reports/reports.module').then((m) => m.ReportsModule),
   },
+ 
 ];
 
 @NgModule({

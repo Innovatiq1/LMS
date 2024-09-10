@@ -2,6 +2,7 @@ import { Component, ViewChild, TemplateRef, ChangeDetectorRef } from '@angular/c
 import {
   AbstractControl,
   FormArray,
+  FormControl,
   FormGroup,
   UntypedFormBuilder,
   UntypedFormGroup,
@@ -212,6 +213,8 @@ export class SettingsComponent {
   filteredDashboards: any[] = [];
   updateId: any;
   typeNameChild!: string;
+  twoFAForm!: UntypedFormGroup;
+  twoFA: any;
 
   constructor(
     private studentService: StudentsService,
@@ -629,6 +632,12 @@ export class SettingsComponent {
       director: ['', Validators.required],
       TA: ['', Validators.required],
     });
+
+    this.twoFAForm = this.fb.group({
+      userId: ['',[ Validators.required]],
+      status: ['off',[ Validators.required]],
+    });
+  
   }
 
   ngOnInit() {
@@ -639,6 +648,7 @@ export class SettingsComponent {
     this.getAllUsers();
     this.getAllUserTypes();
     this.commonRoles = AppConstants;
+    this.getTwoFAById();
     let role = localStorage.getItem('user_type');
     if (role == AppConstants.ADMIN_USERTYPE || AppConstants.ADMIN_ROLE) {
       this.isAdmin = true;
@@ -804,6 +814,8 @@ export class SettingsComponent {
   }
   onToggleChange(event: any) {
     this.showBodyContent = event.checked;
+    const toggleStatus = event.checked ? 'on' : 'off';
+    this.twoFAForm.patchValue({ status: toggleStatus });
   }
 
   showMainContent(contentId: number) {
@@ -973,6 +985,54 @@ export class SettingsComponent {
       });
   }
 
+  updateTwoFA() {
+    const twoFAData = this.twoFAForm.value;
+    let userId = localStorage.getItem('id');
+    const payload = {
+      userId: userId,
+      status: twoFAData.status,
+    };
+  
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You want to update this Two Factor Authentication!',
+      icon: 'warning',
+      confirmButtonText: 'Yes',
+      showCancelButton: true,
+      cancelButtonColor: '#d33',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.settingsService.saveTwoFA(payload).subscribe((response: any) => {
+          Swal.fire({
+            title: 'Successful',
+            text: 'Two Factor Authentication updated successfully',
+            icon: 'success',
+          });
+        }, (error) => {
+          Swal.fire({
+            title: 'Error',
+            text: 'Failed to update Two Factor Authentication',
+            icon: 'error',
+          });
+        });
+      }
+    });
+  }
+  getTwoFAById() {
+    let userId = localStorage.getItem('id');
+    if (!userId) {
+      // this.handleError('User ID not found in local storage.');
+      return; 
+    }
+    this.settingsService.getTwoFAById(userId).subscribe((response: any) => {
+      this.twoFA = response.data;
+
+      this.twoFAForm.patchValue({
+        userId: this.twoFA?.userId,
+        status: this.twoFA?.status,
+      });
+    });
+  }
   onSubmit() {
     if (this.stdForm.valid) {
       const userData: Student = this.stdForm.value;
