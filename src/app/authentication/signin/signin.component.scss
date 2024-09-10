@@ -201,3 +201,20 @@
   .txt1{
     float: right;
   }
+
+  //adding style for select company button
+  .dialog-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+  }
+
+  .bold-title {
+    font-weight: bold;
+  }
+  
+  .full-width {
+    width: 100%;
+  }
+
+  

@@ -145,57 +145,57 @@
   </div>
 </div>
 
+
 <ng-template #profileDialog let-dialogRef="dialogRef" let-data>
   <h2 mat-dialog-title>Select Profile Details</h2>
   <div mat-dialog-content>
     <form [formGroup]="profileForm">
       <br>
       <div class="row">
-        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-2">
-          <mat-form-field appearance="outline">
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 mb-2">
+          <mat-form-field appearance="outline" class="full-width">
             <mat-label>Role</mat-label>
             <mat-select formControlName="role">
-              <mat-option  *ngFor="let userType of userTypes"
-              [value]="userType?.typeName">{{userType?.typeName}}
+              <mat-option *ngFor="let userType of userTypes" [value]="userType?.typeName">
+                {{userType?.typeName}}
               </mat-option>
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-2">
-          <mat-form-field appearance="outline">
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 mb-2">
+          <mat-form-field appearance="outline" class="full-width">
             <mat-label>Email</mat-label>
             <input matInput formControlName="email" />
           </mat-form-field>
         </div>
-        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-2">
-          <mat-form-field appearance="outline">
+      </div>
+      
+      <div class="row">
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 mb-2">
+          <mat-form-field appearance="outline" class="full-width">
             <mat-label>Name</mat-label>
             <input matInput formControlName="name" />
           </mat-form-field>
         </div>
-        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-2">
-          <mat-form-field appearance="outline">
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 mb-2">
+          <mat-form-field appearance="outline" class="full-width">
             <mat-label>Password</mat-label>
             <input matInput type="password" formControlName="password" />
           </mat-form-field>
         </div>
       </div>
     </form>
-  
-
   </div>
-  <div mat-dialog-actions>
-    <button mat-button (click)="dialogRef.close()">Cancel</button>
-    <button mat-raised-button (click)="create(dialogRef)">
+  <div mat-dialog-actions class="dialog-buttons">
+    <button mat-raised-button color="warn" (click)="dialogRef.close()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="create(dialogRef)">
       Create
     </button>
   </div>
 </ng-template>
 
-
-
 <ng-template #companiesDialog let-dialogRef="dialogRef" let-data>
-  <h2 mat-dialog-title>Select Company</h2>
+  <h2 mat-dialog-title  class="bold-title">Select Company</h2>
   <div mat-dialog-content>
     <form>
       <br>
@@ -212,16 +212,12 @@
         </div>
       </div>
     </form>
-    
-  
-
   </div>
-  <div mat-dialog-actions>
-    <button mat-button (click)="dialogRef.close()">Cancel</button>
-    <button mat-raised-button (click)="loginwithCommonURL(dialogRef)">
+  <div mat-dialog-actions class="dialog-buttons">
+    <!-- <button mat-button color="warn" (click)="dialogRef.close()">Cancel</button> -->
+    <button mat-raised-button color="warn" (click)="dialogRef.close()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="loginwithCommonURL(dialogRef)">
       Sign in
     </button>
   </div>
 </ng-template>
-
-
