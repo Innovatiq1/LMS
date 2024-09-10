@@ -183,10 +183,10 @@ export class SigninComponent
         (user: any) => {
 
           if (user) {
-            setTimeout(() => {
-              this.router.navigate(['/dashboard/dashboard']);
-              this.loading = false;
-            }, 100);
+            // setTimeout(() => {
+            //   this.router.navigate(['/dashboard/dashboard']);
+            //   this.loading = false;
+            // }, 100);
             this.authenticationService.saveUserInfo(user);
             let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
             this.superadminservice.getAllCustomRoleById(userId).subscribe(
@@ -204,6 +204,8 @@ export class SigninComponent
                   })
                 this.commonService.setRoleDetails(response[0])
                 this.updateRoleConstants();
+                this.setup2FA(this.accountDetails.email);
+
 
               })
             })
@@ -276,10 +278,10 @@ export class SigninComponent
                   (user: any) => {
 
                     if (user) {
-                      setTimeout(() => {
-                        this.router.navigate(['/dashboard/dashboard']);
-                        this.loading = false;
-                      }, 100);
+                      // setTimeout(() => {
+                      //   this.router.navigate(['/dashboard/dashboard']);
+                      //   this.loading = false;
+                      // }, 100);
                       this.authenticationService.saveUserInfo(user);
                       let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
                       this.superadminservice.getAllCustomRoleById(userId).subscribe(
@@ -297,6 +299,8 @@ export class SigninComponent
                             })
                           this.commonService.setRoleDetails(response[0])
                           this.updateRoleConstants();
+                          this.setup2FA(this.accountDetails.email);
+
 
                         })
                       })
@@ -523,12 +527,14 @@ export class SigninComponent
         .loginUser(formData.email.trim(), formData.password.trim(),companyId)
         .subscribe(
           (user) => {
-            setTimeout(() => {
-              const role = this.authenticationService.currentUserValue.user.role;
-              dialogRef.close()
-              this.router.navigate(['/dashboard/dashboard']);
-              this.loading = false;
-            }, 100);
+            // setTimeout(() => {
+            //   const role = this.authenticationService.currentUserValue.user.role;
+            //   dialogRef.close()
+            //   this.router.navigate(['/dashboard/dashboard']);
+            //   this.loading = false;
+            // }, 100);
+                          dialogRef.close()
+
             this.authenticationService.saveUserInfo(user);
             let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
             this.superadminservice.getAllCustomRoleById(userId).subscribe(
@@ -547,6 +553,8 @@ export class SigninComponent
                 this.authenticationService.saveRoleDetails(data);
   
               })
+              this.setup2FA(formData.email.trim());
+
   
   
           },
@@ -566,11 +574,13 @@ export class SigninComponent
           this.authenticationService.socialLogin({ email: this.accountDetails.email, social_type: 'GOOGLE', social_id: this.accountDetails.sub,companyId:companyId }).subscribe(
             (user: any) => {
               if (user) {
-                setTimeout(() => {
-                  dialogRef.close()
-                  this.router.navigate(['/dashboard/dashboard']);
-                  this.loading = false;
-                }, 100);
+                // setTimeout(() => {
+                //   dialogRef.close()
+                //   this.router.navigate(['/dashboard/dashboard']);
+                //   this.loading = false;
+                // }, 100);
+                                  dialogRef.close()
+
                 this.authenticationService.saveUserInfo(user);
                 let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
                 this.superadminservice.getAllCustomRoleById(userId).subscribe(
@@ -588,6 +598,8 @@ export class SigninComponent
                       })
                     this.commonService.setRoleDetails(response[0])
                     this.updateRoleConstants();
+                    this.setup2FA(this.accountDetails.email);
+
     
                   })
                 })
@@ -624,10 +636,11 @@ export class SigninComponent
           (user: any) => {
 
             if (user) {
-              setTimeout(() => {
-                this.router.navigate(['/dashboard/dashboard']);
-                this.loading = false;
-              }, 100);
+              // setTimeout(() => {
+              //   this.router.navigate(['/dashboard/dashboard']);
+              //   this.loading = false;
+              // }, 100);
+            dialogRef.close();
               this.authenticationService.saveUserInfo(user);
               let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
               this.superadminservice.getAllCustomRoleById(userId).subscribe(
@@ -645,6 +658,8 @@ export class SigninComponent
                     })
                   this.commonService.setRoleDetails(response[0])
                   this.updateRoleConstants();
+                  this.setup2FA(this.accountDetails.email);
+
 
                 })
               })
