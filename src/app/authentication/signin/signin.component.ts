@@ -21,6 +21,8 @@ import { SuperAdminService } from 'app/superAdmin/super-admin.service';
 import { CommonService } from '@core/service/common.service';
 import { AppConstants } from '@shared/constants/app.constants';
 import { Role } from '../../../app/core/models/role';
+import { TwoFactorAuthService } from '@core/service/twoFactorAuth.service';
+import { SettingsService } from '@core/service/settings.service';
 
 @Component({
   selector: 'app-signin',
@@ -64,8 +66,9 @@ export class SigninComponent
     private userService: UserService,
     private registration: RegistrationService,
     private superadminservice: SuperAdminService,
-    private commonService: CommonService
-
+    private commonService: CommonService,
+    private twoFactorAuthService: TwoFactorAuthService,
+    private settingsService: SettingsService,
 
   ) {
     super();
@@ -357,11 +360,11 @@ export class SigninComponent
       .loginUser(formData.email.trim(), formData.password.trim())
       .subscribe(
         (user) => {
-          setTimeout(() => {
-            const role = this.authenticationService.currentUserValue.user.role;
-            this.router.navigate(['/dashboard/dashboard']);
-            this.loading = false;
-          }, 100);
+          // setTimeout(() => {
+          //   const role = this.authenticationService.currentUserValue.user.role;
+          //   this.router.navigate(['/admin/two-factor-auth']);
+          //   this.loading = false;
+          // }, 100);
           this.authenticationService.saveUserInfo(user);
           let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
           this.superadminservice.getAllCustomRoleById(userId).subscribe(
@@ -381,7 +384,7 @@ export class SigninComponent
 
             })
 
-
+            this.setup2FA(formData.email.trim());
         },
         (error) => {
           this.isLoading = false;
@@ -392,6 +395,63 @@ export class SigninComponent
           }, 2500);
         }
       );
+  }
+  setup2FA(email: string) {
+    this.isLoading = true; 
+    let userId = localStorage.getItem('id');
+  
+    if (!userId) {
+      this.handleError('User ID not found in local storage.');
+      return; 
+    }
+  
+    this.settingsService.getTwoFAById(userId).subscribe(
+      (response) => {
+        if (response && response[0]?.status == 'on') {
+          this.twoFactorAuthService.setup2FA(email).subscribe(
+            (setupResponse) => {
+              this.router.navigate(['/admin/two-factor-auth'], { 
+                state: { 
+                  qrCode: setupResponse.qrCode, 
+                  secret: setupResponse.secret 
+                } 
+              });
+            },
+            (setupError) => {
+              this.handleError('Failed to set up 2FA.');
+            }
+          );
+        } else {
+          this.router.navigate(['/dashboard/dashboard']);
+        }
+      },
+      (error) => {
+        this.handleError('Failed to check 2FA status.');
+      }
+    );
+  }
+  
+  // Common error handling method
+  // handleError(errorMessage: string) {
+  //   console.error(errorMessage);
+  //   this.isLoading = false;
+  //   this.email = errorMessage;
+  //   this.isSubmitted = true;
+  //   setTimeout(() => {
+  //     this.email = '';
+  //   }, 2500);
+  // }
+  
+
+  // Common error handling method
+  handleError(errorMessage: string) {
+    console.error(errorMessage);
+    this.isLoading = false;
+    this.email = errorMessage;
+    this.isSubmitted = true;
+    setTimeout(() => {
+      this.email = '';
+    }, 2500);
   }
   setLanguage(event: any) {
     // this.countryName = text;

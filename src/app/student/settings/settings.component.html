@@ -282,42 +282,32 @@
         ></mat-slide-toggle>
       </div>
       <div class="body" *ngIf="showBodyContent">
-        <div class="row">
-          <div class="col-4">
-            <mat-radio-group required>
-              <mat-radio-button value="test">Email</mat-radio-button>
-              <mat-form-field class="example-full-width" appearance="outline">
-                <input matInput required />
-              </mat-form-field>
-            </mat-radio-group>
+        <form [formGroup]="twoFAForm">
+          <div class="row">
+            <div class="col-12">
+              <img
+                src="/assets/images/icons/2faa.png"
+                style="
+                  width: 103.4%;
+                  height: 400px;
+                  margin-top: -17px;
+                  margin-bottom: -15px;
+                  margin-left: -15px;
+                "
+              />
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-4">
-            <mat-radio-group required>
-              <mat-radio-button value="test">SMS</mat-radio-button>
-              <mat-form-field class="example-full-width" appearance="outline">
-                <input matInput required />
-              </mat-form-field>
-            </mat-radio-group>
-          </div>
-        </div>
-        <hr />
-        <div class="row">
-          <div class="col-12">
-            <img
-              src="/assets/images/icons/2faa.png"
-              style="
-                width: 103.4%;
-                height: 400px;
-                margin-top: -17px;
-                margin-bottom: -15px;
-                margin-left: -15px;
-              "
-            />
-          </div>
-        </div>
+        </form>
       </div>
+    
+      <button
+        mat-raised-button
+        id="submit"
+        (click)="updateTwoFA()"
+        style="float: right; margin-top: 30px"
+      >
+        Update
+      </button>
     </div>
     <div
       class="card mb-3"
