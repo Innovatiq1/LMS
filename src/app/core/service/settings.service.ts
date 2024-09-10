@@ -254,4 +254,17 @@ export class SettingsService {
       .delete<CourseModel>(apiUrl)
       .pipe(map((response) => response));
   }
+
+  saveTwoFA(twoFA: any) {
+    const apiUrl = `${this.prefix}admin/twoFA`;
+    return this._Http
+      .post<ApiResponse>(apiUrl, twoFA)
+      .pipe(map((response) => {}));
+  }
+
+
+  getTwoFAById(id: string) {
+    const apiUrl = `${this.prefix}admin/twoFA/${id}`;
+    return this._Http.get<any>(apiUrl).pipe(map((response) => response));
+  }
 }
