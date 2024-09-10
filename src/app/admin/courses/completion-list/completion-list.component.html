@@ -10,6 +10,7 @@
         <div class="card">
           <div class="materialTableHeader">
             <div class="right">
+              
               <ul class="tbl-export-btn">
                 <li>
                   <ul class="header-buttons-left ms-0">
@@ -23,6 +24,12 @@
                 <li class="tbl-header-btn"  *ngIf="isAnyRowSelected()">
                   <div class="m-l-10" matTooltip="ADD">
                     <button mat-raised-button id="submit" (click)="enableExam()">Enable Exam</button>
+                  </div>
+                </li>
+                <li class="tbl-header-btn"  *ngIf="isAnyRowSelected()">
+                 
+                  <div class="m-l-20" matTooltip="ADD">
+                    <button  mat-raised-button id="submit" (click)="enableMultipleCertificates()" [disabled]="isGeneratingCertificates"><span class="custom-button-padding">Generate Certificate</span></button>
                   </div>
                 </li>
                 <li>
@@ -40,6 +47,8 @@
           </div>
           <div class="body overflow-auto">
             <div class="responsive_table">
+              
+                
               <table mat-table matSort [dataSource]="dataSource" class="mat-cell advance-table">
                 <ng-container matColumnDef="select">
                   <mat-header-cell *matHeaderCellDef [ngClass]="'tbl-col-width-per-6'">
@@ -183,11 +192,14 @@
                 <mat-row *matRowDef="let row; columns: displayedColumns;" [style.cursor]="'pointer'" matRipple>
                 </mat-row>
               </table>
+              
               <!-- Loading spinner -->
               <div *ngIf="isLoading" class="tbl-spinner">
                 <mat-progress-spinner color="primary" [diameter]="40" mode="indeterminate">
                 </mat-progress-spinner>
+
               </div>
+              
               <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems"
                 (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr" aria-label="select pagination option">
               </mat-paginator>
@@ -197,8 +209,12 @@
       </div>
     </div>
   </div>
-
+  
 </section>
+
+<div *ngIf="isGeneratingCertificates" class="overlay">
+  <mat-spinner class="centered-spinner" diameter="50"></mat-spinner>
+</div>
 
 <ng-template #certificateDialog let-dialogRef="dialogRef" let-data>
       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12" style="max-height: 600px;width: 100%; overflow-y: auto;">
@@ -290,6 +306,8 @@
       </div>
    
 </ng-template>
+
+ 
 
 <div *ngIf="dafaultGenratepdf" id="contentToConvert">
 
