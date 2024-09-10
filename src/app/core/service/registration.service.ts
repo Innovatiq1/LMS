@@ -28,7 +28,7 @@ export class RegistrationService {
           );
       }
       socialLoginRegisterUser(course:any): Observable<ApiResponse> {
-        const apiUrl = `${this.prefix}auth/socialLoginUserCreate`;
+        const apiUrl = `${this.prefix}socialLoginUserCreate`;
         return this.http
           .post<ApiResponse>(apiUrl, course)
           .pipe(

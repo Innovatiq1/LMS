@@ -31,10 +31,11 @@ export class AuthenService {
     return this.currentUserSubject.value;
   }
 
-  loginUser(email: any, password: any): Observable<Users> {
+  loginUser(email: any, password: any,companyId:any): Observable<Users> {
     const body = {
       email,
-      password
+      password,
+      companyId
     };
 
     const loginUrl =this.defaultUrl + 'auth/login';
@@ -58,6 +59,7 @@ export class AuthenService {
     const loginUrl =this.defaultUrl + 'auth/social-login';
     return this.http.post<ApiResponse>(loginUrl, socialUser).pipe(
       map((response) => {
+        console.log('socialres',response)
         localStorage.setItem('currentUser', JSON.stringify(response.data));
         localStorage.setItem('userLogs', JSON.stringify(response.userLogs));
         localStorage.setItem('id', response.data.user.id);
@@ -153,7 +155,7 @@ updateUserProfile(updatedProfile: any) {
 private linkedInCredentials = {
   response_type: "code",
   clientId: "77r1poks3r9jfo",
-  redirect_uri: 'http://localhost:4200/authentication/auth/linkedin/redirect',
+  redirect_uri: 'http://localhost:4200/innovatiq-uat/authentication/auth/linkedin/redirect',
   clientSecret: 'ZgFGOi8fXTy9zjoS',
   state: 'randomstring',
   scope: "openid email profile",
@@ -176,6 +178,11 @@ loginWithLinkedIn(): void {
 getProfileData(accessToken: string): Observable<any> {
   const loginUrl =this.defaultUrl + 'auth/linkedinauthorize';
   return this.http.get(`${loginUrl}?accessToken=${accessToken}`);
+}
+
+getUsersByEmail(email: string): Observable<any> {
+  const loginUrl =this.defaultUrl + 'auth/usersByEmail';
+  return this.http.get(`${loginUrl}?email=${email}`);
 }
 
 AccessToken(code: string): Observable<any> {

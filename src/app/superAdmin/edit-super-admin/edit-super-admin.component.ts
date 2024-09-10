@@ -61,6 +61,8 @@ export class EditSuperAdminComponent {
       domain: new FormControl('', []),
       learner: new FormControl('', []),
       trainer: new FormControl('', []),
+      users: new FormControl('', []),
+      courses: new FormControl('', []),
       email: new FormControl('', [
         Validators.required,
         Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/),
@@ -241,7 +243,10 @@ export class EditSuperAdminComponent {
             identifier:this.userForm.value.domain,
             company:this.userForm.value.company,
             learner:this.userForm.value.learner,
-            trainer:this.userForm.value.trainer
+            trainer:this.userForm.value.trainer,
+            users:this.userForm.value.users,
+            courses:this.userForm.value.courses
+
           }
           this.userService.updateCompany(payload, this.companyDataId).subscribe(
 ()=>{
@@ -289,7 +294,10 @@ export class EditSuperAdminComponent {
             domain: res[0]?.identifier,
             company:this.data?.company,
             learner:res[0]?.learner,
-            trainer:res[0]?.trainer
+            trainer:res[0]?.trainer,
+            courses:res[0]?.courses,
+            users:res[0]?.users
+
           });
         }
       })

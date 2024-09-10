@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CommonService } from '@core/service/common.service';
 import { UtilsService } from '@core/service/utils.service';
 import { AppConstants } from '@shared/constants/app.constants';
 
@@ -15,6 +16,8 @@ export class SigninRoleComponent {
   constructor(
     private router: Router,
     public utils: UtilsService,
+    private route:ActivatedRoute,
+    private commonService:CommonService
   ) {
     this.commonRoles = AppConstants
 
@@ -32,14 +35,12 @@ export class SigninRoleComponent {
     this.selectedUser = userType;
   }
   openUrl() {
+    const pathSegments = this.router.url.split('/');
+    let extractedName = pathSegments[1];
     if (this.selectedUser === 'staff' || this.selectedUser === 'super admin') {
-    
-      this.router.navigate(['/authentication/TMS/signin']);
-      // window.location.href = 'http://localhost:4200/authentication/TMS/signin';
-    } else if (this.selectedUser === 'student') {
-    
-      this.router.navigate(['/authentication/LMS/signin']);
-      // window.location.href = 'http://localhost:4200/authentication/LMS/signin';
+      this.commonService.navigateWithCompanyName(extractedName,'authentication/TMS/signin')
+        } else if (this.selectedUser === 'student') {
+      this.commonService.navigateWithCompanyName(extractedName,'authentication/LMS/signin')
     } else {
       
       alert('Please select role first.');

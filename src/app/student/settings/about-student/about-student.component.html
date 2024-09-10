@@ -36,11 +36,11 @@
               </div>
               <div class="row">
                 <div class="col-6">
-                  <h5 class="col-green">{{ studentRegisteredPrograms }}</h5>
+                  <h5 class="col-green">{{ studentRegisteredPrograms || 0 }}</h5>
                   <b>Registered Programs</b>
                 </div>
                 <div class="col-6">
-                  <h5 class="col-green">{{ studentRegisteredClasses }}</h5>
+                  <h5 class="col-green">{{ studentRegisteredClasses || 0 }}</h5>
                   <b>Registered Courses</b>
                 </div>
               </div>
@@ -183,7 +183,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr *ngIf="studentApprovedPrograms.length === 0">
+                        <tr *ngIf="studentApprovedPrograms?.length == 0">
                           <td colspan="2" class="text-center">No records</td>
                         </tr>
                         <tr
@@ -219,7 +219,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr *ngIf="studentApprovedClasses.length === 0">
+                        <tr *ngIf="studentApprovedClasses?.length == 0">
                           <td colspan="2" class="text-center">No records</td>
                         </tr>
                         <tr
@@ -255,7 +255,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr *ngIf="studentCompletedPrograms.length === 0">
+                        <tr *ngIf="studentCompletedPrograms?.length == 0">
                           <td colspan="2" class="text-center">No records</td>
                         </tr>
                         <tr
@@ -295,7 +295,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr *ngIf="studentCompletedClasses.length === 0">
+                        <tr *ngIf="studentCompletedClasses?.length == 0">
                           <td colspan="2" class="text-center">No records</td>
                         </tr>
                         <tr

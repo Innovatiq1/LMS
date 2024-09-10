@@ -26,8 +26,8 @@
           <div *ngIf ="tmsUrl">          <br>
           </div>
           <p *ngIf ="lmsUrl"class="auth-signup-text text-muted">{{ 'Need an account?' | translate }}
-            <a  routerLink="/authentication/LMS/signup"
-            class="sign-up-link">{{ 'Sign up' | translate }}
+            <a (click)="signup()"
+            class="sign-up-link pointer">{{ 'Sign up' | translate }}
           </a>
 
 
@@ -79,8 +79,7 @@
                 </label>
               </div> -->
               <div class="mb-4">
-              <a class="txt1"  *ngIf="tmsUrl" routerLink="/authentication/TMS/forgot-password">{{"Forgot Password?" | translate}}</a>
-              <a class="txt1" *ngIf="lmsUrl" routerLink="/authentication/LMS/forgot-password">{{"Forgot Password?" | translate}}</a>
+              <a class="txt1 pointer" (click)="forgotpassword()">{{"Forgot Password?" | translate}}</a>
             </div>
             <div class="container-auth-form-btn">
               <div style="text-align:center;">
@@ -192,4 +191,37 @@
     </button>
   </div>
 </ng-template>
+
+
+
+<ng-template #companiesDialog let-dialogRef="dialogRef" let-data>
+  <h2 mat-dialog-title>Select Company</h2>
+  <div mat-dialog-content>
+    <form>
+      <br>
+      <div class="row">
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-2">
+          <mat-form-field appearance="outline">
+            <mat-label>Your Companies</mat-label>
+            <mat-select [(ngModel)]="selectedCompany" name="company" (selectionChange)="onCompanyChange($event)">
+              <mat-option *ngFor="let company of companies" [value]="company?.companyId">
+                {{ company?.company }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+    
+  
+
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close()">Cancel</button>
+    <button mat-raised-button (click)="loginwithCommonURL(dialogRef)">
+      Sign in
+    </button>
+  </div>
+</ng-template>
+
 

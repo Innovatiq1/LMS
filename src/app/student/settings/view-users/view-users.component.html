@@ -36,11 +36,11 @@
               </div>
               <div class="row">
                 <div class="col-6">
-                  <h5 class="col-green">{{ studentRegisteredPrograms }}</h5>
+                  <h5 class="col-green">{{ studentRegisteredPrograms || 0 }} </h5>
                   <b>Registered Programs</b>
                 </div>
                 <div class="col-6">
-                  <h5 class="col-green">{{ studentRegisteredClasses }}</h5>
+                  <h5 class="col-green">{{ studentRegisteredClasses || 0}} </h5>
                   <b>Registered Courses</b>
                 </div>
               </div>
@@ -183,7 +183,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr *ngIf="studentApprovedPrograms.length === 0">
+                        <tr *ngIf="studentApprovedPrograms?.length == 0">
                           <td colspan="2" class="text-center">No records</td>
                         </tr>
                         <tr
@@ -219,7 +219,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr *ngIf="studentApprovedClasses.length === 0">
+                        <tr *ngIf="studentApprovedClasses?.length == 0">
                           <td colspan="2" class="text-center">No records</td>
                         </tr>
                         <tr
@@ -256,7 +256,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr *ngIf="studentCompletedPrograms.length === 0">
+                        <tr *ngIf="studentCompletedPrograms?.length == 0">
                           <td colspan="2" class="text-center">No records</td>
                         </tr>
                         <tr
@@ -296,7 +296,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr *ngIf="studentCompletedClasses.length === 0">
+                        <tr *ngIf="studentCompletedClasses?.length == 0">
                           <td colspan="2" class="text-center">No records</td>
                         </tr>
                         <tr
@@ -506,7 +506,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr *ngIf="dataSource2.length === 0">
+                        <tr *ngIf="dataSource2?.length == 0">
                           <td colspan="2" class="text-center">No records</td>
                         </tr>
                         <tr
@@ -520,10 +520,10 @@
                           >
                             <div class="status-container">
                               <span
-                              [class]=" data.classDeliveryType === 'online' ? 'badge badge-solid-green' :  data.classDeliveryType === 'offline' ? 'badge badge-solid-red' : ''">
+                              [class]=" data.classDeliveryType == 'online' ? 'badge badge-solid-green' :  data.classDeliveryType == 'offline' ? 'badge badge-solid-red' : ''">
                               <span
-                                [class]=" data.classDeliveryType === 'online' ? 'status-dot' :  data.classDeliveryType === 'offline' ? 'status-red' : ''"></span>
-                              {{ data.classDeliveryType ==='online'? 'Online':'Offline' | titlecase}}</span>
+                                [class]=" data.classDeliveryType == 'online' ? 'status-dot' :  data.classDeliveryType == 'offline' ? 'status-red' : ''"></span>
+                              {{ data.classDeliveryType =='online'? 'Online':'Offline' | titlecase}}</span>
                             </div>
                           </td>
                         </tr>
@@ -548,7 +548,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr *ngIf="dataSource1.length === 0">
+                        <tr *ngIf="dataSource1.length == 0">
                           <td colspan="2" class="text-center">No records</td>
                         </tr>
                         <tr
@@ -562,10 +562,10 @@
                           >
                             <div class="status-container">
                               <span
-                              [class]=" data.classDeliveryType === 'online' ? 'badge badge-solid-green' :  data.classDeliveryType === 'offline' ? 'badge badge-solid-red' : ''">
+                              [class]=" data.classDeliveryType == 'online' ? 'badge badge-solid-green' :  data.classDeliveryType == 'offline' ? 'badge badge-solid-red' : ''">
                               <span
-                                [class]=" data.classDeliveryType === 'online' ? 'status-dot' :  data.classDeliveryType === 'offline' ? 'status-red' : ''"></span>
-                              {{ data.classDeliveryType ==='online'? 'Online':'Offline' | titlecase}}</span>
+                                [class]=" data.classDeliveryType == 'online' ? 'status-dot' :  data.classDeliveryType == 'offline' ? 'status-red' : ''"></span>
+                              {{ data.classDeliveryType =='online'? 'Online':'Offline' | titlecase}}</span>
                             </div>
                           </td>
                         </tr>
@@ -598,21 +598,21 @@
           <div class="m-b-20">
             <div class="contact-grid">
               <div class="profile-header bg-dark">
-                <div class="user-name">{{ aboutData1.name }}</div>
-                <div class="name-center">{{ aboutData1.type | titlecase }}</div>
+                <div class="user-name">{{ aboutData1?.name }}</div>
+                <div class="name-center">{{ aboutData1?.type | titlecase }}</div>
               </div>
               <img
-                src="{{ aboutData1.avatar || 'assets/profile.png' }}"
+                src="{{ aboutData1?.avatar || 'assets/profile.png' }}"
                 class="user-img"
                 alt=""
               />
               <p>
-                {{ aboutData1.country_name }}
+                {{ aboutData1?.country_name }}
               </p>
               <div>
                 <span class="phone">
                   <i class="material-icons">phone</i
-                  >{{ aboutData1.mobile }}</span
+                  >{{ aboutData1?.mobile }}</span
                 >
               </div>
             </div>
@@ -631,7 +631,7 @@
         <div class="col-lg-8 col-md-12">
           <div class="card">
             <div class="card-container">
-              <button class="icons" *ngIf="isEdit" alt="Edit" [routerLink]="['/student/settings/edit-all-users',aboutData1.id]" >
+              <button class="icons" *ngIf="isEdit" alt="Edit" [routerLink]="['/student/settings/edit-all-users',aboutData1?.id]" >
                   <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
               </button>
               <button class="icons" *ngIf="isDelete" alt="Delete" mat-menu-item (click)="deleteItem(aboutData1)">
@@ -650,17 +650,17 @@
                       <div class="col-md-4 col-6 b-r">
                         <strong>Full Name</strong>
                         <br />
-                        <p>{{ aboutData1.name }}</p>
+                        <p>{{ aboutData1?.name }}</p>
                       </div>
                       <div class="col-md-4 col-6 b-r">
                         <strong>Mobile</strong>
                         <br />
-                        <p>{{ aboutData1.mobile }}</p>
+                        <p>{{ aboutData1?.mobile }}</p>
                       </div>
                       <div class="col-md-4 col-6 b-r">
                         <strong>Email</strong>
                         <br />
-                        <p>{{ aboutData1.email }}</p>
+                        <p>{{ aboutData1?.email }}</p>
                       </div>
                     </div>
                   </div>
