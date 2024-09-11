@@ -162,11 +162,11 @@ private linkedInCredentials = {
 };
 
 
-loginWithLinkedIn(): void {
+loginWithLinkedIn(companyName:string): void {
   const params = new HttpParams()
     .set('response_type', this.linkedInCredentials.response_type)
     .set('client_id', this.linkedInCredentials.clientId)
-    .set('redirect_uri', this.linkedInCredentials.redirect_uri)
+    .set('redirect_uri',`http://localhost:4200/${companyName}/authentication/auth/linkedin/redirect` )
     .set('state', this.linkedInCredentials.state)
     .set('scope', this.linkedInCredentials.scope);
 
@@ -185,15 +185,15 @@ getUsersByEmail(email: string): Observable<any> {
   return this.http.get(`${loginUrl}?email=${email}`);
 }
 
-AccessToken(code: string): Observable<any> {
+AccessToken(data: any): Observable<any> {
   const body = new HttpParams()
     .set('grant_type', 'authorization_code')
-    .set('code', code)
+    .set('code', data.code)
     .set('redirect_uri', this.linkedInCredentials.redirect_uri)
     .set('client_id', this.linkedInCredentials.clientId)
     .set('client_secret', this.linkedInCredentials.clientSecret);
     const loginUrl =this.defaultUrl + 'auth/linkedinlogin';
-    return this.http.post<ApiResponse>(loginUrl, {code}).pipe(
+    return this.http.post<ApiResponse>(loginUrl, data).pipe(
       map((response) => {
         return response;
       }))

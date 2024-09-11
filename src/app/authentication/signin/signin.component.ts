@@ -242,7 +242,7 @@ export class SigninComponent
 
   }
   loginLinkedIn(): void {
-    this.authenticationService.loginWithLinkedIn();
+    this.authenticationService.loginWithLinkedIn(this.extractedName);
   }
 
   handleLinkedIn(): void {
@@ -259,7 +259,11 @@ export class SigninComponent
     this.route.queryParams.subscribe(params => {
       const code = params['code'];
       if (code) {
-        this.authenticationService.AccessToken(code).subscribe(
+        let body = {
+          code:code,
+          companyName:this.extractedName
+        }
+        this.authenticationService.AccessToken(body).subscribe(
           (response: any) => {
             const accessToken = response.access_token;
             this.authenticationService.getProfileData(accessToken).subscribe(
