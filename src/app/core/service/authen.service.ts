@@ -162,17 +162,22 @@ private linkedInCredentials = {
 };
 
 
-loginWithLinkedIn(companyName:string): void {
+loginWithLinkedIn(companyName?: string): void {
+  const redirectUri = companyName 
+    ? `http://localhost:4200/${companyName}/authentication/auth/linkedin/redirect` 
+    : 'http://localhost:4200/authentication/auth/linkedin/redirect';
+
   const params = new HttpParams()
     .set('response_type', this.linkedInCredentials.response_type)
     .set('client_id', this.linkedInCredentials.clientId)
-    .set('redirect_uri',`http://localhost:4200/${companyName}/authentication/auth/linkedin/redirect` )
+    .set('redirect_uri', redirectUri)
     .set('state', this.linkedInCredentials.state)
     .set('scope', this.linkedInCredentials.scope);
 
   const authUrl = `https://www.linkedin.com/oauth/v2/authorization?${params.toString()}`;
   window.location.href = authUrl;
 }
+
 
 
 getProfileData(accessToken: string): Observable<any> {

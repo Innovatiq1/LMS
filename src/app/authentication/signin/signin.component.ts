@@ -59,6 +59,7 @@ export class SigninComponent
   companies: any;
   selectedCompany!: string;
   loginType!: string;
+  body: any;
 
   constructor(
     private formBuilder: UntypedFormBuilder,
@@ -242,7 +243,12 @@ export class SigninComponent
 
   }
   loginLinkedIn(): void {
-    this.authenticationService.loginWithLinkedIn(this.extractedName);
+    if(this.extractedName == 'authentication'){
+      this.authenticationService.loginWithLinkedIn();
+    } else {
+      this.authenticationService.loginWithLinkedIn(this.extractedName);
+
+    }
   }
 
   handleLinkedIn(): void {
@@ -259,11 +265,18 @@ export class SigninComponent
     this.route.queryParams.subscribe(params => {
       const code = params['code'];
       if (code) {
-        let body = {
-          code:code,
-          companyName:this.extractedName
+        if(this.extractedName == 'authentication'){
+          this.body = {
+            code:code,
+          }
+        } else {
+          this.body = {
+            code:code,
+            companyName:this.extractedName
+          }
         }
-        this.authenticationService.AccessToken(body).subscribe(
+       
+        this.authenticationService.AccessToken(this.body).subscribe(
           (response: any) => {
             const accessToken = response.access_token;
             this.authenticationService.getProfileData(accessToken).subscribe(
