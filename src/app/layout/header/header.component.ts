@@ -7,7 +7,7 @@ import {
   OnInit,
   Renderer2,
 } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { UnsubscribeOnDestroyAdapter } from '@shared';
 import {
   LanguageService,
@@ -74,6 +74,7 @@ export class HeaderComponent
   role: string | null;
   commonRoles:any;
   settingsItems: any;
+  isTwoFactor: boolean = true;
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private renderer: Renderer2,
@@ -95,6 +96,8 @@ export class HeaderComponent
   ) {
     super();
     this.role = localStorage.getItem('user_type');
+    let urlPath = this.router.url.split('/');
+    this.isTwoFactor = urlPath.includes('two-factor-auth');
   }
   simpleDialog?: MatDialogRef<SimpleDialogComponent>;
   listLang = [
@@ -165,6 +168,11 @@ export class HeaderComponent
       this.flagvalue = val.map((element) => element.flag);
     }
     this.getAnnouncementForStudents();
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.isTwoFactor = this.router.url.includes('two-factor-auth');
+      }
+    });
   }
 
   navigateToUserSettings() {
