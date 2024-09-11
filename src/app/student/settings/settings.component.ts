@@ -45,6 +45,7 @@ interface OuterDashboard {
   styleUrls: ['./settings.component.scss'],
 })
 export class SettingsComponent {
+  isTwoFactorEnabled: boolean = false; // Initialize the toggle state
   stdForm: UntypedFormGroup;
   stdForm1: UntypedFormGroup;
   profileForm: FormGroup;
@@ -813,7 +814,7 @@ export class SettingsComponent {
     this.router.navigate(['/student/settings/dashboards']);
   }
   onToggleChange(event: any) {
-    this.showBodyContent = event.checked;
+    this.isTwoFactorEnabled = event.checked;
     const toggleStatus = event.checked ? 'on' : 'off';
     this.twoFAForm.patchValue({ status: toggleStatus });
   }
@@ -1025,12 +1026,11 @@ export class SettingsComponent {
       return; 
     }
     this.settingsService.getTwoFAById(userId).subscribe((response: any) => {
-      this.twoFA = response.data;
-
-      this.twoFAForm.patchValue({
-        userId: this.twoFA?.userId,
-        status: this.twoFA?.status,
-      });
+      if (response[0].status == 'on') {
+        this.isTwoFactorEnabled = true;
+      } else {
+        this.isTwoFactorEnabled = false;
+      }
     });
   }
   onSubmit() {

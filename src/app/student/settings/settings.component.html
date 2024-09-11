@@ -278,10 +278,11 @@
         <h2 class="mt-3">Two-Factor Authentication</h2>
         <mat-slide-toggle
           class="mt-3"
+          [(ngModel)]="isTwoFactorEnabled"
           (change)="onToggleChange($event)"
         ></mat-slide-toggle>
       </div>
-      <div class="body" *ngIf="showBodyContent">
+      <div class="body" *ngIf="isTwoFactorEnabled">
         <form [formGroup]="twoFAForm">
           <div class="row">
             <div class="col-12">

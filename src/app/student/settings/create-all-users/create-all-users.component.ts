@@ -106,6 +106,9 @@ export class CreateAllUsersComponent {
   addBlog(formObj: any) {
    
     let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    let subdomain =localStorage.getItem('subdomain') || '';
+    this.userService.getCompanyByIdentifierWithoutToken(subdomain).subscribe(
+      (res: any) => {
     if (!formObj.invalid) {
       formObj['Active'] = this.status;
       formObj['type'] = formObj.type;
@@ -115,14 +118,17 @@ export class CreateAllUsersComponent {
       formObj['adminEmail'] = user.user.email;
       formObj['adminName'] = user.user.name;
       formObj['companyId'] = user.user.companyId;
-      formObj['users'] = user.user.users;
-      formObj['courses'] = user.user.courses;
+      formObj['users'] = res[0]?.users;
+      formObj['courses'] = res[0]?.courses;
       formObj['attemptBlock'] = false;
+      formObj['company'] = user.user.company;
+      formObj['domain'] = user.user.domain;
 
       const userData: Users = formObj;
       userData.avatar = this.avatar;
       this.createUser(userData);
     }
+  })
   }
   private createUser(userData: Users): void {
     this.userService.saveUsers(userData).subscribe(

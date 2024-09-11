@@ -13,6 +13,7 @@ import { StudentsService } from 'app/admin/students/students.service';
 import { UtilsService } from '@core/service/utils.service';
 import { FormService } from '@core/service/customization.service';
 import { AppConstants } from '@shared/constants/app.constants';
+import { UserService } from '@core/service/user.service';
 @Component({
   selector: 'app-add-student',
   templateUrl: './add-student.component.html',
@@ -48,6 +49,7 @@ export class AddStudentComponent {
     private courseService: CourseService,
     public utils: UtilsService,
     private formService: FormService,
+    private userService: UserService
 
   ) {
     this.activatedRoute.queryParams.subscribe((params: any) => {
@@ -136,6 +138,10 @@ export class AddStudentComponent {
   }    
   onSubmit() {
     let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    let subdomain =localStorage.getItem('subdomain') || '';
+    this.userService.getCompanyByIdentifierWithoutToken(subdomain).subscribe(
+      (res: any) => {
+
     if (!this.stdForm.invalid) {
         const userData: any = this.stdForm.value;
         userData.avatar = this.avatar;
@@ -147,9 +153,12 @@ export class AddStudentComponent {
         userData.adminEmail = user.user.email;
         userData.adminName = user.user.name;
         userData.companyId = user.user.companyId;
-        userData.users = user.user.users;
-        userData.courses = user.user.courses;
+        userData.users = res[0]?.users;
+        userData.courses = res[0]?.courses;
         userData.attemptBlock = false;
+        userData.company = user.user.company;
+        userData.domain = user.user.domain;
+  
 
 
         Swal.fire({
@@ -164,16 +173,21 @@ export class AddStudentComponent {
             this.createInstructor(userData);
           }
         });
+        
        
     }else{
       this.stdForm.markAllAsTouched();
     }
+  })
 }
 
 
   private createInstructor(userData: Student): void {
     this.StudentService.CreateStudent(userData).subscribe(
-      () => {
+      (res:any) => {
+        console.log('res',res)
+        if(res.status === 'success' && !res.data.status ){
+
         Swal.fire({
           title: 'Successful',
           text: 'Trainee created successfully',
@@ -181,6 +195,13 @@ export class AddStudentComponent {
         });
         this.stdForm.reset();
         this.router.navigateByUrl('/student/settings/all-user/all-students');
+      } else {
+        Swal.fire({
+          title: 'Error',
+          text: "You have exceeded your limit, please contact Admin to upgrade",
+          icon: 'error',
+        });
+      }
       },
       (error) => {
         Swal.fire(

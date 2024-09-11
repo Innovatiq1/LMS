@@ -58,6 +58,8 @@ export interface Student {
     adminEmail: string;
     adminName: string;
     companyId:string;
+    company:string;
+    domain:string;
     users: number;
     courses: number;
     isLogin:boolean;

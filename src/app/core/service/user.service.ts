@@ -19,6 +19,8 @@ const Logging = new Logger('UserService');
 export class UserService {
   
   private defaultUrl: string = environment['apiUrl'];
+  private Url: string = environment['Url'];
+
     prefix: any;
     dataChange: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(
       []
@@ -242,6 +244,16 @@ export class UserService {
         return response.data;
       })
     );
+  }
+
+  getCompanyByIdentifier(id: string) {
+    const apiUrl = `${this.defaultUrl}admin/company/${id}`;
+    return this.http.get<ApiResponse>(apiUrl).pipe(map((response) => response));
+  }
+
+  getCompanyByIdentifierWithoutToken(id: string) {
+    const apiUrl = `${this.Url}getCompanyByIdentifier/${id}`;
+    return this.http.get<ApiResponse>(apiUrl).pipe(map((response) => response));
   }
   updateUserType(dataDetails: UserType) {
     const apiUrl = `${this.defaultUrl}userType/${dataDetails._id}`;

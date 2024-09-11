@@ -22,12 +22,9 @@
           <div class="flex-sb-m w-full text-center mb-3">
             <div>
               <span style="font-style: italic;">{{"Already Registered?" | translate}} 
-                <a *ngIf ="tmsUrl" routerLink="/authentication/TMS/signin"
-                class="sign-up-link">{{"Sign in" | translate}}
+                <a (click)="signin()"
+                class="sign-up-link pointer">{{"Sign in" | translate}}
               </a>
-              <a *ngIf="lmsUrl" routerLink="/authentication/LMS/signin"
-              class="sign-up-link"> {{"Sign in" | translate}}
-            </a>
               </span>
             </div>
           </div>

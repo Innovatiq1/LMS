@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 
 @Injectable({
@@ -6,7 +7,7 @@ import { Subject } from 'rxjs';
 })
 export class CommonService {
   private videoId!: string;
-
+constructor(private router: Router){}
   setVideoId(id: string) {
     this.videoId = id;
   }
@@ -86,6 +87,14 @@ export class CommonService {
   generate4DigitId(): string {
     // Generate a random number between 1000 and 9999
     return (Math.floor(Math.random() * 9000) + 1000).toString();
+  }
+
+
+  navigateWithCompanyName(name: string, path: string) {
+    if (name) {
+      this.router.navigate([`/${name}/${path}`]);
+    } else {
+    }
   }
 
 

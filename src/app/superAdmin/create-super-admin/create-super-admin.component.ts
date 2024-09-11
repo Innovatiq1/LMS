@@ -72,6 +72,8 @@ export class CreateSuperAdminComponent {
         Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/),
       ]),
       domain: new FormControl('', []),
+      users: new FormControl('', []),
+      courses: new FormControl('', []),
       password: new FormControl('', [Validators.required]),
       re_passwords: new FormControl('', []),
       type: new FormControl('admin', [Validators.required]),
