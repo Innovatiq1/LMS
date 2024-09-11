@@ -130,7 +130,7 @@ export class SigninComponent
     if (this.linkedinUrl) {
       //Linkedin
       this.handleLinkedIn();
-    } else {
+    }
       google.accounts.id.initialize({
         client_id: '254303785853-4av7vt4kjc2fus3rgf01e3ltnp2icad0.apps.googleusercontent.com',
         callback: (res: any) => {
@@ -152,7 +152,7 @@ export class SigninComponent
       // Apply your custom styling by adding a class
       googleBtnContainer.classList.add("login-btn");
   }
-    }
+    
 
 
 
