@@ -18,7 +18,7 @@ export class CourseService {
   private prefix: string = environment.apiUrl;
   private razorpayKeyId :string= "rzp_test_8qBZzDxmgGwhH4";
   // private razorpaySecretKey :string= environment.RAZORPAY_SECRET_KEY
-private tpUrl="http://localhost:3001/";
+private tpUrl=environment.Url;
   defaultUrl = environment['apiUrl'];
   dataChange: BehaviorSubject<CourseModel[]> = new BehaviorSubject<CourseModel[]>([]);
 
