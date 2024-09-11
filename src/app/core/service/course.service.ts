@@ -18,7 +18,7 @@ export class CourseService {
   private prefix: string = environment.apiUrl;
   private razorpayKeyId :string= "rzp_test_8qBZzDxmgGwhH4";
   // private razorpaySecretKey :string= environment.RAZORPAY_SECRET_KEY
-
+private tpUrl="http://localhost:3001/";
   defaultUrl = environment['apiUrl'];
   dataChange: BehaviorSubject<CourseModel[]> = new BehaviorSubject<CourseModel[]>([]);
 
@@ -701,6 +701,16 @@ uploadFile(file: File): Observable<any> {
   );
 }
 
+getRetreiveTPCourses(
+  filter?: Partial<any>
+): Observable<ApiResponse> {
+  let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId
+  const apiUrl = `${this.tpUrl}getRetreiveTPCourses?companyId=${userId}`;
+  return this._Http.get<ApiResponse>(apiUrl, {
+    params: this.buildParams(filter),
+  });
+
+}
     // uploadFile(file: File): Observable<any> {
     //   const formData = new FormData();
     //   formData.append('file', file);

@@ -32,7 +32,7 @@ export class AllCourseComponent {
   breadscrums = [
     {
       title: 'Course List',
-      items: ['Course'],
+      items: ['Course123'],
       active: 'Course List',
     },
   ];
@@ -170,9 +170,30 @@ export class AllCourseComponent {
     }).subscribe((response) => {
       this.courseList = response.courses.reverse();
     });
-    this.commonRoles = AppConstants
+    this.commonRoles = AppConstants;
+    
   }
 
+isLoading:boolean=false;
+getAllTpCourses() {
+  this.isLoading = true;  
+  this.courseService.getRetreiveTPCourses().subscribe(
+    (response: any) => {
+      console.log("MyResponse==response==> ", response);
+      this.isLoading = false;  
+      Swal.fire({
+        title: 'SSG Courses',
+        text: 'Saved Sucessfully',
+        icon: 'success',
+      });
+      this.getAllCourses();
+    },
+    (error) => {
+      console.error("Error: ", error);
+      this.isLoading = false;  
+    }
+  );
+}
   getAllVendorsAndUsers() {
     this._courseService.getVendor().subscribe((response: any) => {
       this.vendors = response.reverse();
