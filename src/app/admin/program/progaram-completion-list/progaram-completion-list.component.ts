@@ -18,8 +18,8 @@ import { AppConstants } from '@shared/constants/app.constants';
 import { AuthenService } from '@core/service/authen.service';
 import { Router } from '@angular/router';
 import html2canvas from 'html2canvas';
-
-
+import { SelectionModel } from '@angular/cdk/collections';
+import { CourseModel } from '@core/models/course.model';
 @Component({
   selector: 'app-progaram-completion-list',
   templateUrl: './progaram-completion-list.component.html',
@@ -27,7 +27,7 @@ import html2canvas from 'html2canvas';
 })
 export class ProgaramCompletionListComponent {
   displayedColumns = [
-    // 'select',
+    'select',
     'Student Name',
     'email',
     'Program Name',
@@ -59,7 +59,10 @@ export class ProgaramCompletionListComponent {
   pdfData: any = [];
   commonRoles: any;
   view = false;
-
+  certificateTemplateId:any;
+  isGeneratingCertificates:boolean=false;
+selection = new SelectionModel<any>(true, []);
+selectedRows: any[] = [];
   constructor(
     private classService: ClassService,
      private utils: UtilsService, 
@@ -415,6 +418,298 @@ openCertificateInNewTab(url: string) {
       window.open(url, '_blank');
     }
   }
+//generate bulk certificate 
+
+
+
+
+
+isAllSelected() {
+  const numSelected = this.selection.selected.length;
+  const numRows = this.dataSource.length;
+   return numSelected === numRows;
+}
+
+
+masterToggle() {
+  this.isAllSelected()
+    ? this.selection.clear()
+    : this.dataSource.forEach((row: CourseModel) =>
+        this.selection.select(row)
+      );
+}
+
+updateSelectedRows() {
+  this.selectedRows = this.selection.selected;
+}
+
+toggleRowSelection(row: any): void  {
+  this.selection.toggle(row);
+  this.updateSelectedRows();
+}
+
+
+isAnyRowSelected(): boolean {
+  return this.selection.hasValue();
+}
+enableMultipleCertificates() {
+  if (this.selectedRows.length === 0) {
+    console.log('No rows selected');
+    return;
+  }
+  this.isGeneratingCertificates = true;
+  let alreadyIssuedCount = 0;
+  let successfulCount = 0;
+
+  const promises = this.selectedRows.map((row: any) => {
+    if (!row.certificate) {
+      return this.generateCertificateForRow(row)
+        .then(() => {
+          successfulCount++;
+        })
+        .catch(() => {
+          console.log(`Failed to generate certificate for student ID: ${row.studentId._id}`);
+        });
+    } else {
+      alreadyIssuedCount++;
+      console.log(`Certificate already issued for student ID: ${row.studentId._id}`);
+      return Promise.resolve();
+    }
+  });
+
+  
+  Promise.all(promises).then(() => {
+    this.isGeneratingCertificates = false;
+    let message = `${successfulCount} certificates generated successfully!`;
+    if (alreadyIssuedCount > 0) {
+      message += ` ${alreadyIssuedCount} certificates were already issued and skipped.`;
+    }
+
+    Swal.fire({
+      title: 'Certificate Generation',
+      text: message,
+      icon: successfulCount > 0 ? 'success' : 'warning',
+    }).then(() => {
+      this.clearSelection();
+      // this.getCompletedList();
+    });
+
+  }).catch(() => {
+    this.isGeneratingCertificates = false; // Stop the spinner even if there's an error
+  });
+}
+
+getCertificateTemplatesResponse(id: any): Promise<any> {
+  return new Promise((resolve, reject) => {
+    this.courseService.getStudentProgramClassById(id).subscribe(
+      (response: any) => {
+        const certificateTemplateId = response.programId.certificate_template_id;
+        resolve(certificateTemplateId);
+      },
+      (error) => {
+        console.error('Error fetching certificate template ID:', error);
+        reject(error);
+      }
+    );
+  });
+}
+generateCertificateForRow(row: any): Promise<void> {
+  return new Promise((resolve, reject) => {
+    this.getCertificateTemplatesResponse(row._id).then(certificateTemplateId => {
+      this.certificateService.getCertificateById(certificateTemplateId).subscribe(
+        (response: any) => {
+          this.course = response;
+          this.updateCertificateElements(row);
+          const uniqueContainerId = `hidden-certificate-preview-${row.id}`;
+          this.renderHiddenCertificatePreview(uniqueContainerId);
+          this.generatePDFForRow(row, uniqueContainerId)
+            .then(resolve)
+            .catch(reject);
+        },
+        (error) => {
+          console.error('Error fetching certificate template:', error);
+          reject();
+        }
+      );
+    }).catch(error => {
+      console.error('Error getting certificate template ID:', error);
+      reject();
+    });
+  });
+}
+
+
+updateCertificateElements(row: any) {
+  let imageUrl = this.course.image;
+  imageUrl = imageUrl.replace(/\\/g, '/');
+  imageUrl = encodeURI(imageUrl);
+  this.imgUrl = imageUrl;
+  this.image_link = imageUrl;
+
+  this.course.elements.forEach((element: any) => {
+    if (element.type === 'UserName') {
+      element.content = row.studentId?.name || 'Default Name';
+    } else if (element.type === 'Course') {
+      element.content = row.programTitle || 'Default Course';
+    } else if (element.type === 'Date') {
+      element.content = row.updatedAt ? new Date(row.updatedAt).toLocaleDateString() : '--';
+    }
+    //  else if (element.type === 'Signature') {
+    //   element.imageUrl = row.signatureUrl || 'default-signature.png'; // Assuming `signatureUrl` is a field in the row
+    // }
+  });
+
+  this.elements = [...this.course.elements];
+}
+
+
+renderHiddenCertificatePreview(uniqueContainerId: string) {
+  const hiddenContainer = document.createElement('div');
+  hiddenContainer.id = uniqueContainerId;
+  hiddenContainer.style.position = 'absolute';
+  hiddenContainer.style.top = '-9999px';
+  hiddenContainer.style.left = '-9999px';
+  hiddenContainer.classList.add('hidden-certificate-preview');
+
+  document.body.appendChild(hiddenContainer);
+
+  hiddenContainer.innerHTML = `
+    <div
+      class="certificate-canvas"
+      style="background-image: url('${this.image_link}'); 
+             margin: 0 auto; 
+             background-repeat: no-repeat; 
+             background-position: center right; 
+             background-size: 100% 100%; 
+             border: 0.5px solid lightgray; 
+             height: 700px; 
+             width: 800px; 
+             position: relative;"
+    >
+      ${this.elements.map((element:any) => `
+        <div 
+          style="display: flex; 
+                 justify-content: ${element.alignment}; 
+                 position: absolute; 
+                 top: ${element.top}px; 
+                 left: ${element.left}px;"
+        >
+          <div style="font-size: ${element.fontSize}px; color: ${element.color};">
+            ${element.type === 'Logo' ? `<img src="${element.imageUrl}" style="width: ${element.width}px; height: ${element.height}px;">` : ''}
+           
+          </div>
+          <div style="font-size: ${element.fontSize}px; color: ${element.color};">
+             
+            ${element.type === 'Signature' ? `<img src="${element.imageUrl}" style="width: ${element.width}px; height: ${element.height}px;">` : element.content}
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+
+
+
+generatePDFForRow(row: any, containerId: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const data = document.getElementById(containerId) as HTMLElement;
+
+      if (!data) {
+        console.error('Certificate preview element not found');
+        reject();
+        return;
+      }
+
+      html2canvas(data, {
+        scale: 3,  
+        useCORS: true,
+        backgroundColor: null,
+      }).then((canvas) => {
+        const imgWidth = 210; 
+        const pageHeight = 297; 
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        const contentDataURL = canvas.toDataURL('image/png');
+
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const position = 0;
+
+        pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+
+        
+        if (imgHeight > pageHeight) {
+          let remainingHeight = imgHeight;
+          let yPosition = position;
+
+          while (remainingHeight > 0) {
+            remainingHeight -= pageHeight;
+            yPosition = Math.max(yPosition + pageHeight, pageHeight);
+            pdf.addPage();
+            pdf.addImage(contentDataURL, 'PNG', 0, yPosition, imgWidth, imgHeight);
+          }
+        }
+
+        const pdfBlob = pdf.output('blob');
+
+        this.uploadGeneratedPDF(row, pdfBlob)
+          .then(() => {
+            document.body.removeChild(data);
+            resolve();
+          })
+          .catch((error) => {
+            document.body.removeChild(data);
+            reject();
+          });
+      }).catch((error) => {
+        console.error('Error generating PDF:', error);
+        reject();
+      });
+    }, 1000); 
+  });
+}
+
+
+uploadGeneratedPDF(row: any, pdfBlob: Blob): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const randomString = this.generateRandomString(10);
+    const pdfData = new File([pdfBlob], randomString + 'courseCertificate.pdf', { type: 'application/pdf' });
+    
+    this.classService.uploadFileApi(pdfData).subscribe(
+      (data: any) => {
+        let objpdf = {
+          pdfurl: data.inputUrl,
+          memberId: row.studentId._id,
+          CourseId: row.programId._id,
+        };
+        
+        this.classService.updateProgramCertificateUser(objpdf).subscribe(
+          () => {
+            // this.getCompletedClasses();
+            this.getCompletedClasses();
+            resolve();
+          },
+          (err) => {
+            console.error('Error updating certificate:', err);
+            reject();
+          }
+        );
+
+      },
+      (err) => {
+        console.error('Error uploading PDF:', err);
+        reject();
+      }
+    );
+  });
 
 
 }
+clearSelection() {
+  this.selection.clear();
+  this.updateSelectedRows();
+}
+
+}
+
+
