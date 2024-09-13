@@ -29,3 +29,29 @@ svg {
 .center-icon {
   margin: auto; 
 }
+
+.centered-spinner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999; 
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  z-index: 9998; 
+}
+
+.custom-button-padding {
+  display: inline-block; 
+  padding-top: 8px; 
+  padding-bottom: 8px; 
+  font-size: 14px; 
+  line-height: 1.2; 
+}

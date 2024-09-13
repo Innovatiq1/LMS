@@ -20,6 +20,12 @@
                     </li>
                   </ul>
                 </li>
+                <li class="tbl-header-btn"  *ngIf="isAnyRowSelected()">
+                 
+                  <div class="m-l-20" matTooltip="ADD">
+                    <button  mat-raised-button id="submit" (click)="enableMultipleCertificates()" [disabled]="isGeneratingCertificates" ><span class="custom-button-padding">Generate Certificate</span></button>
+                  </div>
+                </li>
                 <li>
                   <div class="export-button m-l-10" matTooltip="XLSX">
                       <img src="assets/excel.svg" (click)="exportExcel()"alt="" />
@@ -36,6 +42,21 @@
           <div class="body overflow-auto">
             <div class="responsive_table">
               <table mat-table matSort [dataSource]="dataSource" class="mat-cell advance-table">
+                <ng-container matColumnDef="select">
+                  <mat-header-cell *matHeaderCellDef [ngClass]="'tbl-col-width-per-6'">
+                    <mat-checkbox (change)="$event ? masterToggle() : null"
+                      [checked]="selection.hasValue() && isAllSelected()"
+                      [indeterminate]="selection.hasValue() && !isAllSelected()" [ngClass]="'tbl-checkbox'">
+                    </mat-checkbox>
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let row" [ngClass]="'tbl-col-width-per-6'">
+                    <mat-checkbox (click)="$event.stopPropagation()" 
+                    (change)="$event ? toggleRowSelection(row) : null"
+                    [checked]="selection.isSelected(row)" 
+                    [ngClass]="'tbl-checkbox'">
+                    </mat-checkbox>
+                  </mat-cell>
+                </ng-container>
                 <ng-container matColumnDef="Student Name">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>{{commonRoles.STUDENT_ROLE}}
                   </mat-header-cell>
@@ -47,7 +68,7 @@
                   <mat-cell *matCellDef="let row" [routerLink]="view ? ['/admin/program/view-completion-list/',row.id] : null">
                     <span class="mobile-label">Email:</span>
                     <img src="assets/images/gmail.png" alt="Email Icon" class="email-icon">
-                    <span class="email-address">{{row?.id}}</span>
+                    <span class="email-address">{{row?.email}}</span>
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="Program Name">
@@ -131,7 +152,9 @@
   </div>
 </section>
 
-
+<div *ngIf="isGeneratingCertificates" class="overlay">
+  <mat-spinner class="centered-spinner" diameter="50"></mat-spinner>
+</div>
 <ng-template #certificateDialog let-dialogRef="dialogRef" let-data>
   <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12" style="max-height: 600px;width: 100%; overflow-y: auto;">
     <section class="content">
