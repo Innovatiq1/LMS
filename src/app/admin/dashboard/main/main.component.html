@@ -1,4 +1,9 @@
-<section class="content" *ngIf="!superAdmin" >
+
+
+
+
+
+<section class="content" *ngIf="!isCeoDB " >
   <div class="content-block">
     <div class="block-header" *ngFor="let breadscrum of breadscrums">
       <!-- breadcrumb -->
@@ -557,7 +562,6 @@
 </ng-container>
 </section>
 
-
 <section class="content" *ngIf="isAssessorDB">
   <div class="content-block">
     <div class="block-header" *ngFor="let breadscrum of breadscrums">
@@ -805,7 +809,17 @@
     </div>
 
   </div>
+
 </section>
 
 
+
 <app-super-admin *ngIf="superAdmin"></app-super-admin>
+
+<app-manager-dashboard *ngIf="isManager"></app-manager-dashboard>
+
+<div *ngIf="isCeoDB">
+  <ng-container *ngFor="let dashboard of dashboards">
+    <app-ceo-dashboard [sharedashboards] = "dashboard" ></app-ceo-dashboard>
+  </ng-container>
+</div>
