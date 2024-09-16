@@ -74,6 +74,8 @@ export class CreateSuperAdminComponent {
       domain: new FormControl('', []),
       users: new FormControl('', []),
       courses: new FormControl('', []),
+      learner: new FormControl('',[Validators.required]),
+      trainer: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
       re_passwords: new FormControl('', []),
       type: new FormControl('admin', [Validators.required]),
@@ -242,7 +244,9 @@ export class CreateSuperAdminComponent {
               createdBy:localStorage.getItem('id'),
               identifier:this.userForm.value.domain,
               learner:this.userForm.value.learner,
-              trainer:this.userForm.value.trainer
+              trainer:this.userForm.value.trainer,
+              users:this.userForm.value.users,
+              courses:this.userForm.value.courses,
             }
             this.userService.createCompany(payload).subscribe(() =>{
               Swal.fire({
@@ -254,7 +258,7 @@ export class CreateSuperAdminComponent {
 
           })
             this.userForm.reset();
-        this.router.navigateByUrl('/super-admin/admin-list');
+        window.history.back();
       },
       (error) => {
         Swal.fire(
@@ -266,6 +270,6 @@ export class CreateSuperAdminComponent {
     );
   }
   onNoClick() {
-    this.router.navigateByUrl('/super-admin/admin-list');
+    window.history.back();
   }
 }

@@ -224,7 +224,7 @@ export class EditSuperAdminComponent {
      
           this.updateUser(userData);
           
-        window.history.back();
+        // window.history.back();
         }
       }
   updateUser(obj: any) {
@@ -250,7 +250,7 @@ export class EditSuperAdminComponent {
           }
           this.userService.updateCompany(payload, this.companyDataId).subscribe(
 ()=>{
-  this.router.navigate(['/super-admin/view-admin']);
+  window.history.back();
 
 })
         },
@@ -308,6 +308,6 @@ export class EditSuperAdminComponent {
   }
 
   onNoClick(){
-    this.router.navigateByUrl('/super-admin/view-admin');
+   window.history.back();
   }
 }
