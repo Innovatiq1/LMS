@@ -1,13 +1,4 @@
 
-<!-- <section class="content">
-    <div class="content-block">
-      <div class="block-header" *ngFor="let breadscrum of breadscrums">
-        <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
-        </app-breadcrumb>
-      </div> -->
-  
-      <!-- <mat-tab-group> -->
-        <!-- <mat-tab> -->
           
           <div class="row mt-5" >
             <div class="col-lg-6 col-sm-6" *ngFor="let dept of dept;let i = index">
@@ -47,12 +38,9 @@
                 </div>
               </div>
             </div>
-           
-            </div>
-          
-          <div class="row">
-          
-            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" *ngFor="let dept of dept">
+           </div>
+           <div class="row mt-5" >
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" *ngFor="let dept of dept1">
               <div class="card" style="border-radius: 31px;" *ngIf="selectedComponents[dept.department]">
                 <div class="header mt-3">
                   <h2>Current Course Status</h2>
@@ -61,9 +49,7 @@
                   <h5>{{dept.department}} Department</h5>
                   
                 </div>
-                <div class="float-start ms-3 me-3">
-                  <h6>Total Staff</h6>
-                </div>
+              
           
                 <div class="body" *ngIf="isHrPie">
                   <apx-chart [series]="hrPieChartOptions.series2!" [chart]="hrPieChartOptions.chart!"
@@ -74,11 +60,254 @@
                 </div>
               </div>
             </div>
+
+</div>
+<div class="row mt-5" >
+  <ng-container>
+    <div class="col-lg-6 col-md-6 col-sm-12" *ngIf="selectedComponents['Total Staff']">
+      <div class="card card-statistic-2" >
+          <div class="clearfix">
+              <div class="card-icon-only shadow-primary float-start">
+                  <img src="assets/images/banner/New Students.jpg" alt="" style="margin-left: -21px;">
+
+              </div>
+              <div class="card-right">
+                  <div>
+                      <h5 class="float-end" style="padding-top: 100px;">Total Staff</h5>
+                  </div>
+                  <div class="col-green">
+                      <h3 class="font-weight-bold float-end mb-0"  >10</h3>
+                  </div>
+              </div>
+          </div>
+          <div class="card-content msl-4 mb-3">
+              <p class="m-b-0 d-flex"><i class="material-icons col-green psr-2">trending_up</i> 10%
+                  Higher Then Last
+                  Month
+              </p>
+          </div>
+      </div>
+  </div>
+  </ng-container>
+  <ng-container>
+    <div class="col-lg-6 col-md-6 col-sm-12"  *ngIf="selectedComponents['All Programs']">
+        <div class="card card-statistic-2" >
+            <div class="clearfix">
+                <div class="card-icon-only shadow-primary float-start">
+                    <img src="assets/images/banner/online-course.png" alt="">
+                </div>
+                <div class="card-right">
+                    <div>
+                        <h5 class="float-end" style="margin-top: 100px;">All Programs</h5>
+                    </div>
+                    <div class="col-green">
+                        <h3 class="font-weight-bold float-end mb-0" >213</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="card-content msl-4 mb-3">
+                <p class="m-b-0 d-flex"><i class="material-icons col-orange psr-2">trending_down</i> 07%
+                    Less Then Last
+                    Year
+                </p>
+            </div>
+        </div>
+    </div>
+  </ng-container>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" *ngIf="selectedComponents['Certificate']">
+        <div class="card" style="border-radius: 31px;" >
+          <div class="header mt-3">
+            <h2>Certificate</h2>
+
+          </div>
+          <div class="tableBody">
+            <div class="table-responsive">
+              <table class="table table-hover ">
+                <thead>
+                  <tr>
+                    <!-- <th>#</th> -->
+                    <th>Program Name</th>
+                    <th>User Name</th>
+                    <th>Status </th>
+                    <!-- <th>Actions </th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr  style="cursor: pointer;"
+                   >
+                   
+                    <td >Course Title</td>
+                    <td> Steve </td>
+                    <td>
+                      <div class="'badge col-green'">{{'Certificate issued'}}</div>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" *ngIf="selectedComponents['Staff List']" >
+      <div class="card" style="border-radius: 31px;" >
+          <div class="header mt-3">
+              <h2>Staff List</h2>
+
+          </div>
+          <div class="tableBody">
+            <ng-scrollbar style="height: 280px" visibility="hover">
+              <div class="table-responsive">
+                  <table class="table table-hover">
+                      <thead>
+                          <tr>
+                              <th>#</th>
+                              <th>Staff Name</th>
+                              <th>Status</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr  style="cursor: pointer;">
+                              <td class="table-img">
+                                  <img src="{{ 'assets/profile.png'}}" alt="">
+                              </td>
+                              <td>
+                                  <div class="media-title"> {{'Steve' | titlecase}}
+                                  </div>
+                              </td>
+                              <td >
+                                  <div
+                                      class=" 'badge badge-solid-green'">
+                                      {{"Active"}}</div>
+                              </td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>
+              </ng-scrollbar>
+          </div>
+      </div>
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" *ngIf="selectedComponents['Feedback Survey']" >
+    <div class="card" style="border-radius: 31px;" >
+        <div class="header mt-3">
+            <h2>Feedback Survey</h2>
+
+        </div>
+        <div class="tableBody">
+          <ng-scrollbar style="height: 280px" visibility="hover">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Trainee</th>
+                            <th>Course/Program </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr  style="cursor: pointer;">
+                           
+                            <td>
+                                <div class="media-title"> {{'Steve' | titlecase}}
+                                </div>
+                            </td>
+                            <td >
+                                <div
+                                    >
+                                    {{"ProgramClass1"}}</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            </ng-scrollbar>
+        </div>
+    </div>
+</div>
+<!-- 
+  <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+    <div class="card" style="border-radius: 31px;">
+        <div class="header mt-3">
+            <h2>
+                Staff Survey</h2>
+        </div>
+        <div class="body" *ngIf="isArea">
+            <apx-chart [series]="areaChartOptions.series!" [chart]="areaChartOptions.chart!"
+                [xaxis]="areaChartOptions.xaxis!" [yaxis]="areaChartOptions.yaxis!"
+                [colors]="areaChartOptions.colors!" [stroke]="areaChartOptions.stroke!"
+                [legend]="areaChartOptions.legend!" [grid]="areaChartOptions.grid!"
+                [tooltip]="areaChartOptions.tooltip!"
+                [dataLabels]="areaChartOptions.dataLabels!"></apx-chart>
+        </div>
+        <div class="body" *ngIf="isSurveyBar">
+            <apx-chart [series]="surveyBarChartOptions.series!"
+                [chart]="surveyBarChartOptions.chart!" [xaxis]="surveyBarChartOptions.xaxis!"
+                [yaxis]="surveyBarChartOptions.yaxis!" [colors]="surveyBarChartOptions.colors!"
+                [stroke]="surveyBarChartOptions.stroke!" [legend]="surveyBarChartOptions.legend!"
+                [grid]="surveyBarChartOptions.grid!" [tooltip]="surveyBarChartOptions.tooltip!"
+                [dataLabels]="surveyBarChartOptions.dataLabels!"></apx-chart>
+        </div>
+        <div class="body" *ngIf="isSurveyPie">
+            <apx-chart [series]="surveyPieChartOptions.series!"
+                [chart]="surveyPieChartOptions.chart!" [labels]="surveyPieChartOptions.labels!"
+                [legend]="surveyPieChartOptions.legend!" [colors]="surveyPieChartOptions.colors!"
+                [responsive]="surveyPieChartOptions.responsive!"></apx-chart>
+        </div>
+
+    </div>
+</div> -->
+
+
+</div>
+           
+          <div class="row">
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" *ngIf="selectedComponents['Classes List']">
+                  <div class="card" style="border-radius: 31px;" >
+                    <div class="header mt-3">
+                      <h2>Classes List</h2>
+          
+                    </div>
+                    <div class="tableBody">
+                      <div class="table-responsive">
+                        <table class="table table-hover ">
+                          <thead>
+                            <tr>
+                              <!-- <th>#</th> -->
+                              <th>Course Name</th>
+                              <th>Start Date</th>
+                              <th>End Date</th>
+                              <th>Status </th>
+                              <!-- <th>Actions </th> -->
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr  style="cursor: pointer;"
+                            >
+                              <!-- <td class="table-img">
+                          <img src="{{class?.courseId?.image_link}}" alt="course">
+                        </td> -->
+                              <td >{{"Test Course" | titlecase}}</td>
+                              <td> {{'23 Aprl 2024' | date}} </td>
+                              <td> {{'23 May 2024 '| date}}</td>
+                              <td>
+                                <div class="badge col-green">{{'Active'}}</div>
+                              </td>
+          
+                            </tr>
+          
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
           </div>
          
           <div class="row">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-              <div class="card" style="border-radius: 31px;">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12" *ngIf="selectedComponents['Overall Training Course']">
+              <div class="card" style="border-radius: 31px;" >
                 <div class="header mt-3">
                   <h2>
                     Overall Training Course</h2>

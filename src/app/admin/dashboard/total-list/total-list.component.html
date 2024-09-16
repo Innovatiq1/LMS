@@ -1,0 +1,137 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header" *ngFor="let breadscrum of breadscrums">
+      <!-- breadcrumb -->
+      <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
+      </app-breadcrumb>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+      
+            <ng-template mat-tab-label>
+              <i class="material-icons-two-tone psr-3">list_alt</i>
+              List View
+            </ng-template>
+            <div class="row mt-4">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                  <div class="materialTableHeader">
+                    <div class="right">
+                    </div>
+                  </div>
+                  <div class="body overflow-auto">
+                   
+                    <div class="responsive_table">
+                      <table mat-table [dataSource]="programData" matSort class="mat-cell advance-table">
+                        <!-- <ng-container matColumnDef="select">
+                          <mat-header-cell *matHeaderCellDef [ngClass]="'tbl-col-width-per-6'">
+                            <mat-checkbox (change)="$event ? masterToggle() : null"
+                              [checked]="selection.hasValue() && isAllSelected()"
+                              [indeterminate]="selection.hasValue() && !isAllSelected()" [ngClass]="'tbl-checkbox'">
+                            </mat-checkbox>
+                          </mat-header-cell>
+                          <mat-cell *matCellDef="let row" [ngClass]="'tbl-col-width-per-6'">
+                            <mat-checkbox (click)="$event.stopPropagation()"
+                              (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"
+                              [ngClass]="'tbl-checkbox'">
+                            </mat-checkbox>
+                          </mat-cell>
+                        </ng-container> -->
+                        <ng-container matColumnDef="program">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header >Program Name
+                          </mat-header-cell>
+                          <mat-cell *matCellDef="let row"
+                         ><span class="mobile-label">Program Name:</span>
+                            <span>{{row.title |titlecase}}</span>
+                          </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="status">
+                          <mat-header-cell *matHeaderCellDef class="pr-0">Status</mat-header-cell>
+                          <mat-cell *matCellDef="let row" class="pr-0">
+                            <span
+                              [class]="row?.status === 'active' ? 'badge badge-solid-green' : row?.status === 'inactive' ? 'badge badge-solid-red' : ''">
+                              <span
+                                [class]="row?.status === 'active' ? 'status-dot' : row?.status === 'inactive' ? 'status-red' : ''"></span>
+                              {{row.status ==='active'? 'Approved':' Pending' | titlecase}}</span>
+                          </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="code">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header>Program Code
+                          </mat-header-cell>
+                          <mat-cell *matCellDef="let row"><span
+                              class="mobile-label">Program Code:</span> {{row.courseCode}}
+                          </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="Creator">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header>Creator</mat-header-cell>
+                          <mat-cell *matCellDef="let row">
+                            <span class="mobile-label">Creator:</span> {{row.creator}}
+                          </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="Duration">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header>Duration
+                          </mat-header-cell>
+                          <mat-cell *matCellDef="let row" >
+                            <span class="mobile-label">Duration:</span>{{row.duration}} Hours</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Start Date">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header>Start Date
+                          </mat-header-cell>
+                          <mat-cell *matCellDef="let row" > <span
+                              class="mobile-label">Start Date:</span>{{row.sessionStartDate |date}}
+                          </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="End Date">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header>End Date
+                          </mat-header-cell>
+                          <mat-cell *matCellDef="let row"  > <span
+                              class="mobile-label">End Date:</span>{{row.sessionEndDate |date}}
+                          </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="Payment">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header>Payment
+                          </mat-header-cell>
+                          <mat-cell *matCellDef="let row" 
+                          > <span
+                              class="mobile-label">Payment:</span>$ {{row.courseFee}}.00
+                          </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="Compulsory Count">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">Compulsory
+                            Count
+                          </mat-header-cell>
+                          <mat-cell *matCellDef="let row"  > <span
+                              class="mobile-label">Compulsory Count:</span>{{row.coreCourseCount}}
+                          </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="Elective Count">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header>Elective Count
+                          </mat-header-cell>
+                          <mat-cell *matCellDef="let row"  > <span
+                              class="mobile-label">Elective Count:</span>{{row.electiveCourseCount}}
+                          </mat-cell>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="displayedColumns">
+                        </mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;" [style.cursor]="'pointer'" matRipple>
+                        </mat-row>
+                      </table>
+                      <mat-paginator
+                      #paginator
+                      [length]="totalItems"
+                      (page)="pageSizeChange($event)"
+                      [pageSizeOptions]="pageSizeArr"
+                      aria-label="select pagination option"
+                    >
+                    </mat-paginator>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+      </div>
+    </div>
+  </div>
+</section>

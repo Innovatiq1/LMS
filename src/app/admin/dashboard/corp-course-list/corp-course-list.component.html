@@ -1,0 +1,154 @@
+<section class="content">
+    <div class="content-block">
+      <div class="block-header" *ngFor="let breadscrum of breadscrums">
+        <!-- breadcrumb -->
+        <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
+        </app-breadcrumb>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+        
+              <div class="mt-4">
+                <div class="row">
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                      <div class="materialTableHeader">
+                        <div class="right">
+                        </div>
+                      </div>
+                      <div class="body overflow-auto">
+                        <div class="responsive_table">
+                          <table mat-table [dataSource]="courseData" matSort class="mat-cell advance-table">
+                            <ng-container matColumnDef="name">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header>Course
+                              </mat-header-cell>
+                              <mat-cell class="name"  *matCellDef="let row"
+                              ><span class="mobile-label">Course Name:</span>
+                                <span>{{ row.title ? (row.title | titlecase) : '--' }}</span>
+                              </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="code">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header>Course Code
+                              </mat-header-cell>
+                              <mat-cell *matCellDef="let row" ><span
+                                  class="mobile-label">Course Code:</span> {{row.courseCode ? (row.courseCode) : "--"}}
+                              </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="creator">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header>Creator</mat-header-cell>
+                              <mat-cell *matCellDef="let row" 
+                                >
+                                <span class="mobile-label">Creator:</span> {{row.creator ? (row.creator) : "--"}}
+                              </mat-cell>
+                            </ng-container>
+  
+                            <ng-container matColumnDef="Days">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header>Days
+                              </mat-header-cell>
+                              <mat-cell *matCellDef="let row"> <span
+                                  class="mobile-label">Days:</span>{{row.course_duration_in_days ||0}} {{
+                                (row.course_duration_in_days === 1) ? 'Day' : 'Days' }}
+                              </mat-cell>
+                            </ng-container>
+  
+                            <ng-container matColumnDef="Training Hours">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header>Hours
+                              </mat-header-cell>
+                              <mat-cell *matCellDef="let row" > <span
+                                  class="mobile-label">Traning Hours:</span>{{row.training_hours || 0}} Hours
+                              </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="Fee Type">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">Fee Type
+                              </mat-header-cell>
+                              <mat-cell *matCellDef="let row" > <span
+                                  class="mobile-label">Fee Type:</span>{{row.feeType ? (row.feeType | titlecase) : "--"}}
+                              </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="Vendor">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">Vendor
+                              </mat-header-cell>
+                              <mat-cell *matCellDef="let row" > <span
+                                  class="mobile-label">Vendor:</span>{{row.vendor ? (row.vendor) : "--"}}
+                              </mat-cell>
+                            </ng-container>
+                            <!-- <ng-container matColumnDef="Users">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header
+                                class="compulsory-count-header">{{commonRoles?.STUDENT_ROLE}}
+                              </mat-header-cell>
+                              <mat-cell *matCellDef="let row"
+                                [routerLink]="['/admin/courses/student-courses/',row.title,row.id]"> <span
+                                  class="mobile-label">Users:</span>
+                                <button mat-icon-button class="tbl-action-btn">
+                                  <app-feather-icons [icon]="'eye'" [class]="'tbl-fav-view'"></app-feather-icons>
+                                </button>
+                              </mat-cell>
+                            </ng-container> -->
+                            <ng-container matColumnDef="startDate">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">Start
+                                Date
+                              </mat-header-cell>
+                              <mat-cell *matCellDef="let row" > <span
+                                  class="mobile-label">Start Date:</span><span>{{row.sessionStartDate ?
+                                  (row.sessionStartDate | date) : "--"}}</span>
+                              </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="endDate">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">End Date
+                              </mat-header-cell>
+                              <mat-cell *matCellDef="let row" > <span
+                                  class="mobile-label">End date:</span><span>{{ row.sessionEndDate ?(row.sessionEndDate
+                                  | date) : "--"}}</span>
+                              </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="status">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header"
+                                style="width: 400px;">Status
+                              </mat-header-cell>
+                              <mat-cell *matCellDef="let row" class="pr-0">
+                                <span
+                                  [class]="row?.status === 'active' ? 'badge badge-solid-green' : row?.status === 'inactive' ? 'badge badge-solid-red' : ''">
+                                  <span
+                                    [class]="row?.status === 'active' ? 'status-dot' : row?.status === 'inactive' ? 'status-red' : ''"></span>
+                                  {{row.status ==='active'? 'Approved':' Pending' | titlecase}}</span>
+                              </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="Fees">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header class="amount">Payment
+                              </mat-header-cell>
+                              <mat-cell *matCellDef="let row" 
+                                class="payment-cell"> <span class="mobile-label">Payment:</span><span>$</span> {{row.fee
+                                ||0}} .00
+                              </mat-cell>
+                            </ng-container>
+                            <mat-header-row *matHeaderRowDef="displayedColumns">
+                            </mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns;" [style.cursor]="'pointer'"
+                              matRipple>
+                            </mat-row>
+                          </table>
+  
+                          <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems"
+                            (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr"
+                            aria-label="select pagination option">
+                          </mat-paginator>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+  
+              </div>
+            
+        </div>
+      </div>
+    </div>
+  
+    <!-- <div *ngIf="isLoading" class="spinner-container">
+      <mat-spinner></mat-spinner>
+  </div> -->
+  
+  <div *ngIf="isLoading" class="overlay">
+    <mat-spinner class="centered-spinner" diameter="50"></mat-spinner>
+  </div>
+  </section>

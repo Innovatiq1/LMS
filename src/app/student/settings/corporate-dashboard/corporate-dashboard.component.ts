@@ -91,6 +91,7 @@ isSalesPie: boolean = false;
 isCourseBar: boolean = false;
   dept: any;
   colorClasses = ['l-bg-orange', 'l-bg-green', 'l-bg-red', 'l-bg-purple'];
+  dept1: any;
 constructor(private studentService: StudentsService,){
 
 }
@@ -102,6 +103,7 @@ this.financePieChart();
 this.salesPieChart();
 this.courseBarChart();
 this.getDepartments();
+this.getDepartments1();
 this.isHrPie = true;
 this.isTechnicalPie = true;
 this.isFinancePie = true;
@@ -312,6 +314,11 @@ private courseBarChart() {
 getDepartments() {
   this.studentService.getAllDepartments().subscribe((response: any) => {
     this.dept = response.data.docs;
+  });
+}
+getDepartments1() {
+  this.studentService.getAllDepartments().subscribe((response: any) => {
+    this.dept1 = response.data.docs;
   });
 }
 getColorClass(index: number): string {
