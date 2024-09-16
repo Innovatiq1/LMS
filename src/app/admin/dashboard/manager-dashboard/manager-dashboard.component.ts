@@ -1,13 +1,11 @@
-
 import { UsersModel } from '@core/models/user.model';
 import { LecturesService } from 'app/teacher/lectures/lectures.service';
 import * as moment from 'moment';
 import { CoursePaginationModel, MainCategory, SubCategory } from '@core/models/course.model';
 
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Role } from '@core';
 import { AuthenService } from '@core/service/authen.service';
 import { CourseService } from '@core/service/course.service';
 import { InstructorService } from '@core/service/instructor.service';
@@ -54,21 +52,12 @@ export type chartOptions = {
   theme: ApexTheme;
   series2: ApexNonAxisChartSeries;
 };
-import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
 import { LeaveService } from '@core/service/leave.service';
 import { AnnouncementService } from '@core/service/announcement.service';
-// import { StudentNotificationComponent } from '@shared/components/student-notification/student-notification.component';
-import {
-  MatSnackBar,
-  MatSnackBarHorizontalPosition,
-  MatSnackBarVerticalPosition,
-} from '@angular/material/snack-bar';
 import { SettingsService } from '@core/service/settings.service';
-import { BarChart } from 'angular-feather/icons';
-import { AppConstants } from '@shared/constants/app.constants';
 import { StudentPaginationModel } from '@core/models/class.model';
 import { AssessmentQuestionsPaginationModel } from '@core/models/assessment-answer.model';
-import { AssessmentService } from '@core/service/assessment.service';
+import { SurveyService } from 'app/admin/survey/survey.service';
 export type barChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -161,16 +150,14 @@ export type lineChartOptions = {
   series2: ApexNonAxisChartSeries;
 };
 
-//end
 
 @Component({
-  selector: 'app-main',
-  templateUrl: './main.component.html',
-  styleUrls: ['./main.component.scss'],
+  selector: 'app-manager-dashboard',
+  templateUrl: './manager-dashboard.component.html',
+  styleUrls: ['./manager-dashboard.component.scss']
 })
-export class MainComponent implements OnInit {
+export class ManagerDashboardComponent {
   @ViewChild('chart') chart!: ChartComponent;
-  @Input() sharedashboards: any; 
   public areaChartOptions!: Partial<chartOptions>;
   public performanceBarChartOptions!: Partial<chartOptions>;
   public pieChart1Options!: Partial<pieChart1Options>;
@@ -195,7 +182,7 @@ export class MainComponent implements OnInit {
     {
       title: 'Dashboad',
       items: ['Dashboad'],
-      active: 'Analytics',
+      active: 'IT Manager Dashboard',
     },
   ];
   //Student
@@ -245,6 +232,8 @@ export class MainComponent implements OnInit {
   adminCount: any;
   studentCount: any;
   filterName='';
+  isCourseBar: boolean = false;
+  public courseBarChartOptions!: Partial<chartOptions>;
   // count: any;
   //instructor
   count: any;
@@ -278,11 +267,7 @@ export class MainComponent implements OnInit {
   isAdmin: boolean = false;
   isStudentDB: boolean = false;
   isInstructorDB: boolean = false;
-  isAssessorDB: boolean = false;
-  isCeoDB: boolean = false;
-  isManager: boolean = false;
   isTADB: boolean = false;
-  superAdmin: boolean = false;
   issupervisorDB: boolean = false;
   isHodDB: boolean = false;
   isTCDB: boolean = false;
@@ -311,16 +296,18 @@ export class MainComponent implements OnInit {
   totalDocs: any;
   docs: any;
   classList: any;
-  commonRoles: any;
-  completedClasses: any;
-  assessmentScores: any;
-  examScores: any;
+  officersCount: any;
+  managersCount: any;
+  officers: any;
+  managers: any;
+  feedbackCount: any;
+  feedbacks: any;
+  staff: any;
+  staffCount: any;
   studentPaginationModel: StudentPaginationModel;
   assessmentPaginationModel!: Partial<AssessmentQuestionsPaginationModel>;
-  allClasses: any;
-  allClassesCount: any;
-  dashboards: any;
-  roleType: any;
+  completedClasses: any;
+  totalItems: any;
 
   constructor(
     private courseService: CourseService,
@@ -332,15 +319,16 @@ export class MainComponent implements OnInit {
     private fb: UntypedFormBuilder,private announcementService:AnnouncementService,
     private authenticationService:AuthenService,private leaveService: LeaveService,
     public lecturesService: LecturesService,
-    private settingsService: SettingsService,
-    private assessmentService: AssessmentService
+    private settingsService: SettingsService, public surveyService: SurveyService,
   ) {
     //constructor
+    this.studentPaginationModel = {} as StudentPaginationModel;
+    this.assessmentPaginationModel = {};
     let urlPath = this.router.url.split('/')
     this.tmsUrl = urlPath.includes('TMS');
     this.lmsUrl = urlPath.includes('LMS');
     this.getCount();
-    this.getInstructorsList();
+    // this.getInstructorsList();
     this.getStudentsList();
     this.chart2();
     this.attendanceLineChart();
@@ -370,56 +358,14 @@ export class MainComponent implements OnInit {
     this.studentName = user?.user?.name;
     this.getRegisteredAndApprovedCourses();
     //Student End
-
-    this.studentPaginationModel = {} as StudentPaginationModel;
-    this.assessmentPaginationModel = {};
   }
 
   getCount() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-        this.courseService.getCount(userId).subscribe((response) => {
+    this.courseService.getCount(userId).subscribe((response) => {
       this.count = response?.data;
-      this.instructorCount = this.count?.instructors;
-      this.adminCount = this.count?.admins;
-      this.studentCount = this.count?.students;
-      this.setUsersChart();
     });
   }
-  getInstructorsList() {
-    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-        let payload = {
-      type: AppConstants.INSTRUCTOR_ROLE,
-      companyId:userId
-
-    };
-    this.instructorService.getInstructor(payload).subscribe(
-      (response: any) => {
-        this.instructors = response.slice(0, 5);
-      },
-      (error) => {}
-    );
-  }
-
-  getDashboardComponents() {
-    const typeName = localStorage.getItem('user_type');
-    const companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-    this.userService.getDashboardsByCompanyId(companyId, typeName).subscribe(
-      (data: any) => {
-        this.roleType = data.data.map((doc: any) => doc.typeName).toString();
-        this.dashboards = data.data.flatMap((doc: any) => doc.dashboards);
-        this.dashboards.forEach((dashboard: { checked: any; }, index: number) => {
-          if (dashboard.checked) {
-          } else {
-          }
-        });
-      },
-      (error: any) => {
-        console.error('Error fetching dashboard data:', error);
-      }
-    );
-  }
-
-  //Student Information
 
   getRegisteredAndApprovedCourses(){
     let studentId=localStorage.getItem('id')
@@ -460,9 +406,28 @@ export class MainComponent implements OnInit {
           this.studentPieChart();
           this?.studentBarChart();
           this?.studentLineChart();
-          // this.setSurveyChart();
+          this.setSurveyChart();
 
         })
+        // this.pieChartData= {
+        //   labels: this.pieChartLabels,
+        //   datasets: [
+        //     {
+        //       data: [this.registeredCourses, this.approvedCourses, this.registeredPrograms, this.approvedPrograms, this.completedCourses, this.completedPrograms],
+        //       backgroundColor: ['#5A5FAF', '#F7BF31', '#EA6E6C', '#28BDB8', '#73af5a', '#af5a79'],
+        //     },
+        //   ],
+        // };
+
+        // this.barChartData= {
+        //   labels: this.barChartLabels,
+        //   datasets: [
+        //     {
+        //       data: [this.registeredCourses, this.approvedCourses, this.registeredPrograms, this.approvedPrograms, this.completedCourses, this.completedPrograms],
+        //       backgroundColor: ['#5A5FAF', '#F7BF31', '#EA6E6C', '#28BDB8', '#73af5a', '#af5a79'],
+        //     },
+        //   ],
+        // };
       })
     })
     })
@@ -510,25 +475,20 @@ export class MainComponent implements OnInit {
     })
   }
   getAnnouncementForStudents(filter?: any) {
-    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     let payload ={
-      announcementFor:AppConstants.STUDENT_ROLE,
-      companyId: userId,
+      announcementFor:'Student'
     }
     this.announcementService.getAnnouncementsForStudents(payload).subscribe((res: { data: { data: any[]; }; totalRecords: number; }) => {
       this.announcements = res.data
     })
   }
   getStudentsList() {
-    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-        let payload = {
-      type: AppConstants.STUDENT_ROLE,
-      companyId:userId
-
+    let payload = {
+      type: 'Staff',
     };
     this.instructorService.getInstructor(payload).subscribe(
       (response: any) => {
-        this.students = response?.slice(0, 5);
+        this.students = response.slice(0, 5);
         const currentDate = new Date();
         const currentMonth = currentDate.getMonth();
         const currentYear = currentDate.getFullYear();
@@ -669,147 +629,36 @@ export class MainComponent implements OnInit {
       (error) => {}
     );
   }
-  editCall(student: any) {
-    this.router.navigate(['/admin/students/add-student'], {
-      queryParams: { id: student.id },
-    });
-  }
-  editClass(id: string) {
-    this.router.navigate(['/admin/courses/create-class'], {
-      queryParams: { id: id },
-    });
-  }
-  delete(id: string) {
-    this.classService
-      .getClassList({ courseId: id })
-      .subscribe((classList: any) => {
-        const matchingClasses = classList.docs.filter((classItem: any) => {
-          return classItem.courseId && classItem.courseId.id === id;
-        });
-        if (matchingClasses.length > 0) {
-          Swal.fire({
-            title: 'Error',
-            text: 'Class have been registered. Cannot delete.',
-            icon: 'error',
-          });
-          return;
-        }
 
-        Swal.fire({
-          title: 'Confirm Deletion',
-          text: 'Are you sure you want to delete?',
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#d33',
-          cancelButtonColor: '#3085d6',
-          confirmButtonText: 'Delete',
-          cancelButtonText: 'Cancel',
-        }).then((result) => {
-          if (result.isConfirmed) {
-            this.classService.deleteClass(id).subscribe(() => {
-              Swal.fire({
-                title: 'Success',
-                text: 'Class deleted successfully.',
-                icon: 'success',
-              });
-              this.getClassList();
-            });
-          }
-        });
-      });
-  }
 
-  deleteStudent(row: any) {
-    // this.id = row.id;
-    Swal.fire({
-      title: 'Confirm Deletion',
-      text: 'Are you sure you want to delete this Student?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Delete',
-      cancelButtonText: 'Cancel',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.studentService.deleteUser(row.id).subscribe(
-          () => {
-            Swal.fire({
-              title: 'Deleted',
-              text: 'Student deleted successfully',
-              icon: 'success',
-            });
-            //this.fetchCourseKits();
-            this.getStudentsList();
-          },
-          (error: { message: any; error: any }) => {
-            Swal.fire(
-              'Failed to delete Student',
-              error.message || error.error,
-              'error'
-            );
-          }
-        );
-      }
-    });
-  }
 
   ngOnInit() {
-    this.getDashboardComponents();
-    this.commonRoles = AppConstants
+
     this.getClassList();
     const role = this.authenticationService.currentUserValue.user.role;
-    console.log('isCeoDB',role)
-    if(role === 'Super Admin'){
-      this.superAdmin = true;
-      this.breadscrums = [
-        {
-          title: 'Dashboad',
-          items: ['Dashboad'],
-          active: 'Super Admin Dashboad',
-        },
-      ];
-    }
-    else if (role== AppConstants.ADMIN_ROLE|| role=="RO"  || role == "Director" || role == "Employee") {
+    if (role=='Admin'|| role=="RO"  || role == "Director" || role == "Employee" || role =='CEO') {
       this.isAdmin = true;
-    }else if (role === AppConstants.STUDENT_ROLE) {
+    }else if (role === 'Staff' || role === 'Student') {
       this.isStudentDB = true;
       this.breadscrums = [
         {
           title: 'Dashboad',
           items: ['Dashboad'],
-          active: `${AppConstants.STUDENT_ROLE} Dashboad`,
+          active: 'Staff Dashboad',
         },
       ];
-    }else if (role === AppConstants.INSTRUCTOR_ROLE || role === 'Trainer' ) {
-      this.isInstructorDB = true;
+    }else if (role === 'Instructor' || role === 'Trainer' ) {
+      // this.isInstructorDB = true;
       this.breadscrums = [
         {
           title: 'Dashboad',
           items: ['Dashboad'],
-          active: `${AppConstants.INSTRUCTOR_ROLE} Dashboad`,
-        },
-      ];
-    }else if (role === AppConstants.ASSESSOR_ROLE || role === 'Assessor' ) {
-      this.isAssessorDB = true;
-      this.breadscrums = [
-        {
-          title: 'Dashboad',
-          items: ['Dashboad'],
-          active: `${AppConstants.ASSESSOR_ROLE} Dashboad`,
+          active: 'Manager Dashboad',
         },
       ];
     }
     else if (role === 'Training administrator' || role === 'training administrator' ) {
       this.isTADB = true;
-    }
-    else if (role === 'It Manager' || role === 'IT Manager'  ) {
-      this.isManager = true;
-      console.log('isCeoDB',role)
-    }
-    else if (role === 'CEO' || role === 'ceo' || role === 'Ceo' ) {
-      this.isCeoDB = true;
-     console.log('isCeoDB',role)
     }
     else if (role === 'Supervisor' || role === 'supervisor' ) {
       this.issupervisorDB = true;
@@ -823,14 +672,19 @@ export class MainComponent implements OnInit {
       this.isCMDB = true;
     } else if ( role === 'programcoordinator'|| role === 'Program manager' ) {
       this.isPCDB = true;
+    } else {
+      this.isAdmin = true;
     }
-    if (role == AppConstants.ADMIN_ROLE || role ==AppConstants.ASSESSOR_ROLE) {
+    if (role == 'Admin' || role === 'IT Manager' || role === 'Finance Manager' || role === 'HR Manager' || role === 'Admin Manager') {
       this.getAdminDashboard();
-    } else if (role === AppConstants.STUDENT_ROLE) {
-      this.getStudentDashboard();
+    } else if (role === 'Student' || role === 'Staff') {
+      // this.getStudentDashboard();
     }
     
 //Student
+    this.getStaffList();
+    // this.getSurveyList();
+    this.getAllSurveys();
     this.performancePieChart();
     this.getApprovedCourse();
     this.getApprovedProgram();
@@ -838,64 +692,56 @@ export class MainComponent implements OnInit {
     this.getAnnouncementForStudents();
 
     //Instructor
-    this.getInsClassList();
-    this.getProgramClassList();
-    this.getClassList1();
     this.chart1Ins();
     // this.chart2Ins();
     this.instructorData();
     this.getProgramList();
     this.getAllCourse();
-    this.getCountIns();
-
+    // this.getCountIns();
     this.getCompletedClasses();
-    this.getAllAnswers();
-    this.getAllClasses();
+    this.courseBarChart();
   }
   
   getClassList() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-        this.classService.getClassListWithPagination({},userId).subscribe(
+    console.log(userId);
+    this.classService.getClassListByCompanyId(userId).subscribe(
       (response) => {
-        if (response.data) {
-          this.classesList = response.data.docs.slice(0, 5).sort();
+        console.log("docsyyy", response)
+        if (response.docs) {
+          this.classesList = response.docs.slice(0, 5).sort();
           this.docs = response.data.totalDocs;
+        
         }
       },
       (error) => {
+        console.log('error', error);
       }
     );
   }
   
-  getInsClassList() {
-    let instructorId = localStorage.getItem('id')
-    this.lecturesService.getClassListWithPagination(instructorId, this.filterName,{ ...this.coursePaginationModel }).subscribe(
-      (response) => {
-        if (response.data) {
-          this.classList = response.data.docs.slice(0, 5).sort();
-          this.docs = response.data.totalDocs;
+
+  getCompletedClasses() {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.classService.getSessionCompletedStudent( userId,this.studentPaginationModel.page,this.studentPaginationModel.limit )
+      .subscribe((response: { docs: any; page: any; limit: any; totalDocs: any }) => {
+          this.completedClasses = response.docs.slice(0,5);
+          console.log("completed", this.completedClasses)
         }
-      },
-      (error) => {
-      }
-    );
+      );
   }
 
-  getProgramClassList() {
-    let instructorId = localStorage.getItem('id')
-    this.lecturesService.getClassListWithPagination1(instructorId, this.filterName,{ ...this.coursePaginationModel }).subscribe(
-      (response) => {
-        if (response.data) {
-          this.programClassList = response.data.docs.slice(0, 5).sort();
-          this.totalDocs = response.data.totalDocs;
-        }
-      },
-      (error) => {
-      }
-    );
+  getAllSurveys() {
+    this.surveyService.getSurvey()
+      .subscribe(res => {
+        this.dataSource = res.data.docs;
+        console.log("data", this.dataSource)
+        // this.totalItems = res.data.totalDocs;
+        // this.coursePaginationModel.docs = res.docs;
+        // this.coursePaginationModel.page = res.page;
+        // this.coursePaginationModel.limit = res.limit;
+      })
   }
-
-
   private surveyLineChart() {
     this.areaChartOptions = {
       series: [
@@ -952,11 +798,86 @@ export class MainComponent implements OnInit {
       },
     };
   }
+
+  private courseBarChart() {
+    this.courseBarChartOptions = {
+      series: [
+        {
+          name: 'Upcoming Courses',
+          data: [2, 1, 3, 1],
+        },
+        {
+          name: 'Ongoing Courses',
+          data: [7, 5, 6, 4],
+        },
+        {
+          name: 'Completed Courses',
+          data: [3, 2, 1, 1],
+        },
+      ],
+      chart: {
+        height: 350,
+        type: 'bar',
+        toolbar: {
+          show: false,
+        },
+        foreColor: '#9aa0ac',
+      },
+      colors: ['#9F8DF1', '#E79A3B', '#2ecc71'],
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        show: true,
+        width: 2,
+        colors: ['transparent'],
+      },
+      grid: {
+        show: true,
+        borderColor: '#9aa0ac',
+        strokeDashArray: 1,
+      },
+      xaxis: {
+        type: 'category',
+        categories: [
+          'HR Department',
+          'Technical Department',
+          'Finance Department',
+          'Sales Department',
+        ],
+      },
+      legend: {
+        show: true,
+        position: 'top',
+        horizontalAlign: 'center',
+        offsetX: 0,
+        offsetY: 0,
+      },
+
+      tooltip: {
+        x: {
+          format: 'MMMM',
+        },
+      },
+      yaxis: {
+        title: {
+          text: 'Number of Courses',
+        },
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: '55%',
+          // endingShape: 'rounded'
+        },
+      },
+    };
+  }
   private surveyBarChart() {
       this.surveyBarChartOptions = {
         series: [
           {
-            name:`New ${AppConstants.STUDENT_ROLE}s`,
+            name: 'Staff',
             data: [
               this.twoMonthsAgoStudents.length,
               this.fourMonthsAgoStudents.length,
@@ -966,17 +887,17 @@ export class MainComponent implements OnInit {
               this.twelveMonthsAgoStudents.length,
             ],
           },
-          {
-            name: `Old ${AppConstants.STUDENT_ROLE}s`,
-            data: [
-              this.tillPreviousTwoMonthsStudents.length,
-              this.tillPreviousFourMonthsStudents.length,
-              this.tillPreviousSixMonthsStudents.length,
-              this.tillPreviousEightMonthsStudents.length,
-              this.tillPreviousTenMonthsStudents.length,
-              this.tillPreviousTwelveMonthsStudents.length,
-            ],
-          },
+          // {
+          //   name: 'old staff',
+          //   data: [
+          //     this.tillPreviousTwoMonthsStudents.length,
+          //     this.tillPreviousFourMonthsStudents.length,
+          //     this.tillPreviousSixMonthsStudents.length,
+          //     this.tillPreviousEightMonthsStudents.length,
+          //     this.tillPreviousTenMonthsStudents.length,
+          //     this.tillPreviousTwelveMonthsStudents.length,
+          //   ],
+          // },
         ],
         chart: {
           height: 350,
@@ -1026,7 +947,7 @@ export class MainComponent implements OnInit {
         },
         yaxis: {
           title: {
-            text: `Number of ${AppConstants.STUDENT_ROLE}s`,
+            text: 'Number of Staff',
           },
         },
         plotOptions: {
@@ -1049,25 +970,25 @@ export class MainComponent implements OnInit {
       this.twelveMonthsAgoStudents.length,
   ];
 
-  const oldStudentsData = [
-      this.tillPreviousTwoMonthsStudents.length,
-      this.tillPreviousFourMonthsStudents.length,
-      this.tillPreviousSixMonthsStudents.length,
-      this.tillPreviousEightMonthsStudents.length,
-      this.tillPreviousTenMonthsStudents.length,
-      this.tillPreviousTwelveMonthsStudents.length,
-  ];
+  // const oldStudentsData = [
+  //     this.tillPreviousTwoMonthsStudents.length,
+  //     this.tillPreviousFourMonthsStudents.length,
+  //     this.tillPreviousSixMonthsStudents.length,
+  //     this.tillPreviousEightMonthsStudents.length,
+  //     this.tillPreviousTenMonthsStudents.length,
+  //     this.tillPreviousTwelveMonthsStudents.length,
+  // ];
 
   const totalNewStudents = newStudentsData.reduce((a, b) => a + b, 0);
-  const totalOldStudents = oldStudentsData.reduce((a, b) => a + b, 0);
+  // const totalOldStudents = oldStudentsData.reduce((a, b) => a + b, 0);
 
   this.surveyPieChartOptions = {
-    series: [totalNewStudents, totalOldStudents],
+    series: [totalNewStudents],
     chart: {
       height: 350,
       type: 'pie',
     },
-    labels: [`New ${AppConstants.STUDENT_ROLE}s`, `Old ${AppConstants.STUDENT_ROLE}s`],
+    labels: ['Staff'],
     colors: ['#9F8DF1', '#E79A3B'],
     legend: {
       show: true,
@@ -1249,7 +1170,7 @@ export class MainComponent implements OnInit {
     this.areaChartOptions = {
       series: [
         {
-          name: `New ${AppConstants.STUDENT_ROLE}s`,
+          name: 'Staff',
           data: [
             this.twoMonthsAgoStudents.length,
             this.fourMonthsAgoStudents.length,
@@ -1259,17 +1180,17 @@ export class MainComponent implements OnInit {
             this.twelveMonthsAgoStudents.length,
           ],
         },
-        {
-          name: `Old ${AppConstants.STUDENT_ROLE}s`,
-          data: [
-            this.tillPreviousTwoMonthsStudents.length,
-            this.tillPreviousFourMonthsStudents.length,
-            this.tillPreviousSixMonthsStudents.length,
-            this.tillPreviousEightMonthsStudents.length,
-            this.tillPreviousTenMonthsStudents.length,
-            this.tillPreviousTwelveMonthsStudents.length,
-          ],
-        },
+        // {
+        //   name: 'old staff',
+        //   data: [
+        //     this.tillPreviousTwoMonthsStudents.length,
+        //     this.tillPreviousFourMonthsStudents.length,
+        //     this.tillPreviousSixMonthsStudents.length,
+        //     this.tillPreviousEightMonthsStudents.length,
+        //     this.tillPreviousTenMonthsStudents.length,
+        //     this.tillPreviousTwelveMonthsStudents.length,
+        //   ],
+        // },
       ],
       chart: {
         height: 350,
@@ -1433,7 +1354,7 @@ export class MainComponent implements OnInit {
     this.performanceRateChartOptions = {
       series: [
         {
-          name: `${AppConstants.STUDENT_ROLE}s`,
+          name: 'Staff',
           data: [113, 120, 130, 120, 125, 119],
         },
       ],
@@ -1476,7 +1397,7 @@ export class MainComponent implements OnInit {
       },
       yaxis: {
         title: {
-          text: `${AppConstants.STUDENT_ROLE}s`,
+          text: 'Staff',
         },
       },
       tooltip: {
@@ -1523,7 +1444,7 @@ private attendanceBarChart() {
   this.attendanceBarChartOptions = {
       series: [
           {
-              name: `${AppConstants.STUDENT_ROLE}s`,
+              name: 'Staff',
               data: [113, 120, 130, 120, 125, 119],
           },
       ],
@@ -1566,7 +1487,7 @@ private attendanceBarChart() {
       },
       yaxis: {
           title: {
-              text: `${AppConstants.STUDENT_ROLE}s`,
+              text: 'Staff',
           },
       },
       tooltip: {
@@ -1579,13 +1500,13 @@ private attendanceBarChart() {
           // },
       },
       title: {
-          text: `${AppConstants.STUDENT_ROLE}s by Day`,
+          text: 'Staff by Day',
       },
   };
 }
   private usersPieChart() {
     this.polarChartOptions = {
-      series2: [this.instructorCount, this.studentCount],
+      series2: [this.instructorCount, this.studentCount, this.adminCount],
       chart: {
         type: 'pie',
         height: 350,
@@ -1597,7 +1518,7 @@ private attendanceBarChart() {
       dataLabels: {
         enabled: false,
       },
-      labels: [`${AppConstants.INSTRUCTOR_ROLE}s`, `${AppConstants.STUDENT_ROLE}s`],
+      labels: ['Officers', 'Managers', 'Staff'],
       colors: ['#6777ef', '#ff9800', '#B71180'],
       responsive: [
         {
@@ -1619,7 +1540,7 @@ private attendanceBarChart() {
       series: [
         {
             name: 'Count',
-            data: [ this.instructorCount,this.studentCount],
+            data: [ this.instructorCount,this.studentCount,this.adminCount],
         },
     ],
     chart: {
@@ -1654,7 +1575,7 @@ private attendanceBarChart() {
         strokeDashArray: 1,
     },
     xaxis: {
-        categories: [`${AppConstants.INSTRUCTOR_ROLE}s`, `${AppConstants.STUDENT_ROLE}s`],
+        categories: ['Officers','Managers','Staff'],
         title: {
             text: 'Users',
         },
@@ -1686,7 +1607,7 @@ private attendanceBarChart() {
       series: [
         {
             name: 'Count',
-            data: [ this.instructorCount,this.studentCount],
+            data: [ this.instructorCount,this.studentCount,this.adminCount],
         },
     ],
       chart: {
@@ -1721,7 +1642,7 @@ private attendanceBarChart() {
         strokeDashArray: 1,
       },
       xaxis: {
-        categories: [`${AppConstants.INSTRUCTOR_ROLE}s`, `${AppConstants.STUDENT_ROLE}s`],
+        categories: ['Officers','Managers','Staff'],
         title: {
           text: 'Users',
         },
@@ -1746,15 +1667,14 @@ private attendanceBarChart() {
 
   private studentPieChart() {
     this.studentPieChartOptions = {
-      series: [this.registeredCourses, this.approvedCourses, this.completedCourses],
+      series: [this.registeredCourses, this.approvedCourses, this.registeredPrograms, this.approvedPrograms, this.completedCourses, this.completedPrograms],
      
       chart: {
         type: 'pie',
         height: 330,
       },
-      labels: ['Registered Courses', 'Approved Courses', 'Completed Courses'],
+      labels: ['Registered Courses', 'Approved Courses', 'Registered Programs', 'Approved Programs', 'Completed Courses', 'Completed Programs'],
       // colors: ['#25B9C1', '#4B4BCB', '#EA9022', '#9E9E9E'],
-     
       responsive: [
         {
           breakpoint: 480,
@@ -1772,12 +1692,10 @@ private attendanceBarChart() {
       series: [{
         name: 'Courses',
         data: [this.registeredCourses, this.approvedCourses, this.completedCourses]
-      },
-      // {
-      //   name: 'Programs',
-      //   data: [this.registeredPrograms, this.approvedPrograms, this.completedPrograms]
-      // }
-    ],
+      }, {
+        name: 'Programs',
+        data: [this.registeredPrograms, this.approvedPrograms, this.completedPrograms]
+      }],
       chart: {
         type: 'bar',
         height: 330,
@@ -1787,7 +1705,7 @@ private attendanceBarChart() {
       },
       yaxis: {
         title: {
-          text: 'Number of Courses'
+          text: 'Number of Courses/Programs'
         }
       },
       labels: ['Registered', 'Approved', 'Completed'],
@@ -1809,12 +1727,10 @@ private attendanceBarChart() {
       series: [{
         name: 'Courses',
         data: [this.registeredCourses, this.approvedCourses, this.completedCourses]
-      }, 
-      // {
-      //   name: 'Programs',
-      //   data: [this.registeredPrograms, this.approvedPrograms, this.completedPrograms]
-      // }
-    ],
+      }, {
+        name: 'Programs',
+        data: [this.registeredPrograms, this.approvedPrograms, this.completedPrograms]
+      }],
       chart: {
         type: 'line',
         height: 330,
@@ -1824,7 +1740,7 @@ private attendanceBarChart() {
       },
       yaxis: {
         title: {
-          text: 'Number of Courses'
+          text: 'Number of Courses/Programs'
         }
       },
       labels: ['Registered', 'Approved', 'Completed'],
@@ -1844,7 +1760,7 @@ private attendanceBarChart() {
   
 
   aboutStudent(id: any) {
-    this.router.navigate(['/student/settings/all-user/all-students/view-student/'], {
+    this.router.navigate(['/student/settings/view-student'], {
       queryParams: { data: id },
     });
   }
@@ -1870,26 +1786,7 @@ private attendanceBarChart() {
       (error) => { }
     );
   }
-  getClassList1() {
-    let instructorId = localStorage.getItem('id');
-    this.lecturesService
-      .getClassListWithPagination1(instructorId, '')
-      .subscribe(
-        (response) => {
-          this.programData = response.data.docs;
-          //this.dataSource1 = response.data.sessions;
-          // this.totalItems = response.data.totalDocs
-          // this.coursePaginationModel.docs = response.data.docs;
-          // this.coursePaginationModel.page = response.data.page;
-          // this.coursePaginationModel.limit = response.data.limit;
-          //this.mapClassList()
-          // this.dataSource = [];
-          this.getSession1();
-          this.chart3Ins();
-        },
-        (error) => { }
-      );
-  }
+
   getSession() {
     if (this.dataSource1) {
       this.dataSource1 &&
@@ -2047,7 +1944,7 @@ private attendanceBarChart() {
 
   instructorData() {
     let payload = {
-      type: AppConstants.INSTRUCTOR_ROLE,
+      type: 'Instructor',
     };
     this.instructorService.getInstructors(payload).subscribe(
       (response: { data: any }) => {
@@ -2205,8 +2102,7 @@ private attendanceBarChart() {
     );
   }
   getAllCourse(){
-    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-        this.courseService.getAllCourses(userId,{status:'active'}).subscribe(response =>{
+    this.courseService.getAllCourses({status:'active'}).subscribe(response =>{
      this.courseData = response.data.docs.slice(0,5);
      const currentDate = new Date();
         const currentMonth = currentDate.getMonth();
@@ -2221,8 +2117,7 @@ private attendanceBarChart() {
     })
   }
   getCoursesList() {
-    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-        this.courseService.getAllCourses(userId,{status:'active'})
+    this.courseService.getAllCourses({status:'active'})
       .subscribe(response => {
         this.dataSource = response.data.docs;
         this.mapCategories();
@@ -2241,9 +2136,8 @@ private attendanceBarChart() {
   
   }
   getClassListIns() {
-    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-        this.classService
-      .getClassListWithPagination({},userId)
+    this.classService
+      .getClassListWithPagination()
       .subscribe(
         (response) => {
           
@@ -2253,6 +2147,7 @@ private attendanceBarChart() {
        
         },
         (error) => {
+          console.log('error', error);
         }
       );
   }
@@ -2298,26 +2193,25 @@ private attendanceBarChart() {
      
     });
   }
-  getCountIns() {
-    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-        this.courseService.getCount(userId).subscribe(response => {
-      this.count = response?.data;
-      this.instructorCount=this.count?.instructors;
-      this.adminCount=this.count?.admins
-      this.studentCount=this.count?.students
-    })
+  // getCountIns() {
+    
+  //   this.courseService.getCount().subscribe(response => {
+  //     this.count = response?.data;
+  //     this.instructorCount=this.count?.instructors;
+  //     this.adminCount=this.count?.admins
+  //     this.studentCount=this.count?.students
+  //   })
        
-  }
+  // }
   getAdminDashboard(){
-    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-        this.settingsService.getStudentDashboard(userId).subscribe(response => {
+    this.settingsService.getStudentDashboard().subscribe(response => {
     
       this.dashboard = response?.data?.docs[1];
   
       this.setPerformanceChart();
       this.setSurveyChart();
       this.setAttendanceChart();
-      this.setUsersChart();
+      // this.setUsersChart();
     })
   }
   setSurveyChart() {
@@ -2359,72 +2253,24 @@ private attendanceBarChart() {
       this.attendanceLineChart();
     }
   }
-  setUsersChart() {
-    if (this.dashboard.content[3].viewType == 'Bar Chart') {
-      this.isUsersBar = true;
-      // this.getCount();
-      this.usersBarChart();
-    } else if (this.dashboard.content[3].viewType == 'Pie Chart') {
-      this.isUsersPie = true;
-      // this.getCount();
-      this.usersPieChart();
-    }
-    else if (this.dashboard.content[3].viewType == 'Line Chart') {
-      this.isUsersLine = true;
-      // this.getCount();
-      this.usersLineChart();
-    }
-  }
+  
 
-  getStudentDashboard(){
-    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-    this.settingsService.getStudentDashboard(userId).subscribe(response => {
-      this.studentDashboard = response.data.docs[0];
-      this.setStudentsChart();
-    })
-  }
 
-  setStudentsChart(){
-    if (this.studentDashboard.content[0].viewType == 'Pie Chart') {
-      this.isStudentPie = true;
-      this.studentPieChart();
-    } else if (this.studentDashboard.content[0].viewType == 'Bar Chart') {
-      this.isStudentBar = true;
-      this.studentBarChart();
-    } else if (this.studentDashboard.content[0].viewType == 'Line Chart') {
-      this.isStudentLine = true;
-      this.studentLineChart();
-    } 
-    
+
+  getStaffList(filters?:any) {
+    let headId = localStorage.getItem('id');
+    this.userService.getUsersById( {...this.coursePaginationModel, headId}).subscribe((response: any) => {
+      this.staff = response.data.docs.slice(0,5);
+      this.staffCount = response.data.totalDocs;
+  console.log(this.staffCount)
+    }, error => {
+    });
   }
-  getCompletedClasses() {
-    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-        this.classService.getSessionCompletedStudent( userId,this.studentPaginationModel.page,this.studentPaginationModel.limit )
-      .subscribe((response: { docs: any; page: any; limit: any; totalDocs: any }) => {
-          this.completedClasses = response.docs.slice(0,5);
-        }
-      );
-  }
-  getAllAnswers() {
-    this.assessmentService.getExamAnswersV2({ ...this.assessmentPaginationModel})
-      .subscribe(res => {
-        this.assessmentScores = res.data.docs.slice(0,5);
-        this.examScores = res.data.docs;
-      })
-  }
-  getAllClasses() {
-    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-        this.classService
-      .getClassListWithPagination({ ...this.coursePaginationModel },userId)
-      .subscribe(
-        (response) => {
-          if (response.data) {
-            this.allClasses = response.data.docs.slice(0,5);
-            this.allClassesCount = response.data.totalDocs;
-          }
-        },
-        (error) => {
-        }
-      );
-  }
+  // getSurveyList(filters?:any){
+  //   this.courseService.getSurvey().subscribe(response => {
+  //     this.feedbackCount = response.data.docs.length;
+  //     this.feedbacks = response.data.docs.slice(0,5);
+  //   })
+  // }
+
 }

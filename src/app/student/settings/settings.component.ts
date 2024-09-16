@@ -58,6 +58,7 @@ export class SettingsComponent {
     'Trainer Analytics',
     'Support',
     'TraineeDashboard',
+    'Corporate Dashboard',
   ];
   filteredDashboardsList: string[] = this.dashboardsList.slice();
   selectedDashboard: string | null = null;
@@ -90,6 +91,7 @@ export class SettingsComponent {
       'ANNOUNCEMENT BOARD',
       'RESCHEDULE LIST',
     ],
+    
   };
   editData: any;
   studentId: any;
@@ -843,6 +845,8 @@ export class SettingsComponent {
   getDepartments() {
     this.studentService.getAllDepartments().subscribe((response: any) => {
       this.dept = response.data.docs;
+      const department = this.dept.map((doc: any) => doc.department);
+      this.componentsMap['Corporate Dashboard'] = department;
     });
   }
   onSelectionChange(event: any, field: any) {

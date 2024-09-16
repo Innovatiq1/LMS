@@ -52,6 +52,7 @@ import { SupportDashboardComponent } from './student/settings/support-dashboard/
 import { EditUpdateDashboardComponent } from './student/settings/dashboard-customz/edit-update-dashboard/edit-update-dashboard.component';
 import { TraineesDashboardComponent } from './student/settings/trainees-dashboard/trainees-dashboard.component';
 import { SuperAdminService } from './superAdmin/super-admin.service';
+import { CorporateDashboardComponent } from './student/settings/corporate-dashboard/corporate-dashboard.component';
 
 
 // import { ChangeBgDirective } from './change-bg.directive';
@@ -79,8 +80,10 @@ export function createTranslateLoader(http: HttpClient) {
     TrainerAnalyticsDashboardComponent,
     SupportDashboardComponent,
     EditUpdateDashboardComponent,
-    
     TraineesDashboardComponent,
+    CorporateDashboardComponent,
+    
+
     // ChangeBgDirective
 
   ],
