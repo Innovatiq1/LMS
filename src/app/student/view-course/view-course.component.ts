@@ -479,6 +479,7 @@ export class ViewCourseComponent implements OnDestroy {
   }
   submitDiscount(dialogRef:any){
     var userdata = JSON.parse(localStorage.getItem('currentUser')!);
+    // let department= JSON.parse(localStorage.getItem('user_data')!).user.department;
     var studentId = localStorage.getItem('id');
     const today = new Date();
     const date = today.toISOString().split('T')[0];
@@ -488,6 +489,7 @@ export class ViewCourseComponent implements OnDestroy {
       adminEmail:userdata.user.adminEmail,
       adminName:userdata.user.adminName,
       companyId:userdata.user.companyId,
+      department:userdata.user.department,
       courseTitle: this.classDetails?.courseId?.title,
       courseFee: this.classDetails?.courseId?.fee,
       studentId: studentId,
@@ -521,6 +523,7 @@ export class ViewCourseComponent implements OnDestroy {
 
   submitForVerification(classId: string) {
     var userdata = JSON.parse(localStorage.getItem('currentUser')!);
+    let department= JSON.parse(localStorage.getItem('user_data')!).user.department;
     var studentId = localStorage.getItem('id');
     if (this.paid && this.feeType=="paid") {
       this.getDiscounts(userdata.user.companyId);
@@ -533,6 +536,7 @@ export class ViewCourseComponent implements OnDestroy {
         studentId: studentId,
         classId: this.classId,
         title: this.title,
+        department:userdata.user.department,
         coursekit: this.courseKit,
        
         courseStartDate:this.classDetails?.courseId?.sessionStartDate,
