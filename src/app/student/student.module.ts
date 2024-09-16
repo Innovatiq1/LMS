@@ -224,6 +224,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     UpdateTimeAlgorithmComponent,
     TutorialQuestionsComponent,
     DocumentViewComponent,
+  
    // SafeUrlPipe,
   ],
   imports: [

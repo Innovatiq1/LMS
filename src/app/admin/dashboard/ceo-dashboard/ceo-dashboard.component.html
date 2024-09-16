@@ -1,0 +1,104 @@
+
+<section class="content">
+    <div class="content-block">
+      <div class="block-header" *ngFor="let breadscrum of breadscrums">
+        <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
+        </app-breadcrumb>
+      </div>
+      <div class="row mt-5">
+        <div class="col-lg-6 col-sm-6" *ngFor="let dept of dept; let i = index">
+          <div class="info-box7" [ngClass]="getColorClass(i) + ' order-info-box7'">
+            <div class="info-box7-block">
+              <div class="row">
+                <div class="col-9">
+                  <h5 class="mt-3">{{ dept.department }}</h5>
+                </div>
+                <div class="col-3">
+                  <img src="assets/images/banner/hr.png" alt="">
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-4">
+                  <h6>No.of Courses</h6>
+                </div>
+                <div class="col-4">
+                  <h6>No.of Managers</h6>
+                </div>
+                <div class="col-4">
+                  <h6>No.of Staff</h6>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-4">
+                  <h6>{{ dept.recordCount || 0 }}</h6> <!-- Display record count -->
+                </div>
+                <div class="col-4">
+                  <h6>{{ dept.managerCount || 0 }}</h6> <!-- Display manager count -->
+                </div>
+                <div class="col-4">
+                  <h6>{{ dept.staffCount || 0 }}</h6> <!-- Display staff count -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6"  *ngFor="let dept of dept; let i = index">
+              <div class="card" style="border-radius: 31px;" *ngIf="dept.checked">
+                <div class="header mt-3">
+                  <h2>Current Course Status</h2>
+                </div>
+                <div class="float-start ms-3 me-3">
+                  <h5>{{dept.department}} Department</h5>
+                  
+                </div>
+                <div class="float-start ms-3 me-3">
+                  <h6>Total Staff</h6>
+                </div>
+          
+                <div class="body" *ngIf="isHrPie">
+                  <apx-chart *ngIf="departmentCharts[dept.department]"
+                  [series]="departmentCharts[dept.department]?.series"
+                  [chart]="departmentCharts[dept.department]?.chart"
+                  [labels]="departmentCharts[dept.department]?.labels"
+                  [title]="departmentCharts[dept.department]?.title"
+                  [theme]="departmentCharts[dept.department]?.theme"
+                  [fill]="departmentCharts[dept.department]?.fill"
+                  [yaxis]="departmentCharts[dept.department]?.yaxis"
+                  [stroke]="departmentCharts[dept.department]?.stroke"
+                  [legend]="departmentCharts[dept.department]?.legend"
+                  [plotOptions]="departmentCharts[dept.department]?.plotOptions"
+                  [colors]="departmentCharts[dept.department]?.colors">
+       </apx-chart>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+              <div class="card" style="border-radius: 31px;">
+                <div class="header mt-3">
+                  <h2>
+                    Overall Training Course</h2>
+                </div>
+              
+                <div class="body" *ngIf="isCourseBar">
+                  <apx-chart [series]="courseBarChartOptions.series!" [chart]="courseBarChartOptions.chart!"
+                    [xaxis]="courseBarChartOptions.xaxis!" [yaxis]="courseBarChartOptions.yaxis!"
+                    [colors]="courseBarChartOptions.colors!" [stroke]="courseBarChartOptions.stroke!"
+                    [legend]="courseBarChartOptions.legend!" [grid]="courseBarChartOptions.grid!"
+                    [tooltip]="courseBarChartOptions.tooltip!" [dataLabels]="courseBarChartOptions.dataLabels!"></apx-chart>
+                </div>
+              
+              </div>
+            </div>
+          </div>
+    </div>
+  </section>
+  
+  
+  
+
+  
+  

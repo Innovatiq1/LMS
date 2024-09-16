@@ -105,7 +105,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     {
       title: 'Create Course',
       items: ['Course'],
-      active: 'Create Course',
+      active: 'Create Course1',
     },
   ];
   config: AngularEditorConfig = {
@@ -137,6 +137,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   };
   vendors: any;
   certificates: any;
+  dept: any;
 
   constructor(
     private router: Router,
@@ -193,6 +194,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       training_hours: new FormControl('', [
         Validators.pattern(/^\d+(\.\d+)?$/),
       ]),
+      department:['',Validators.required],
       skill_connect_code: new FormControl('', [
         Validators.pattern(/^[a-zA-Z0-9]/),
       ]),
@@ -259,6 +261,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     this.getAllCertificates();
     this.getCurrency();
     this.getAllVendors();
+    this.getDepartments();
 
    
     this.mainCategoryControl = this.firstFormGroup.get(
@@ -307,7 +310,11 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       return;
     }
   }
-
+  getDepartments() {
+    this.studentsService.getAllDepartments().subscribe((response: any) => {
+      this.dept = response.data.docs;
+    });
+  }
   isAnyFieldFilled(): boolean {
     const courseData = this.firstFormGroup.value;
     const filled = Object.values(courseData).some(field => field !== null && field !== '');
@@ -350,6 +357,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       sub_category: courseData?.sub_category ? courseData.sub_category : null,
       course_duration_in_days: courseData?.course_duration_in_days,
       training_hours: courseData?.training_hours,
+      department: courseData?.department,
       fee: courseData?.fee,
       currency_code: courseData?.currency_code,
       skill_connect_code: courseData?.skill_connect_code,
@@ -651,6 +659,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         sub_category: courseData?.sub_category,
         course_duration_in_days: courseData?.course_duration_in_days,
         training_hours: courseData?.training_hours,
+        department: courseData?.department,
         fee: courseData?.fee,
         currency_code: courseData?.currency_code,
         skill_connect_code: courseData?.skill_connect_code,
@@ -792,6 +801,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   }
 
   submit() {
+    console.log(this.firstFormGroup.value)
     let certicate_temp_id = this.certificates.filter(
       (certificate: any) =>
         certificate.title === this.firstFormGroup.value.certificate_temp
@@ -809,6 +819,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         sub_category: courseData?.sub_category,
         course_duration_in_days: courseData?.course_duration_in_days,
         training_hours: courseData?.training_hours,
+        department: courseData?.department,
         fee: courseData?.fee,
         currency_code: courseData?.currency_code,
         skill_connect_code: courseData?.skill_connect_code,
@@ -927,6 +938,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
           ? this.course.currency_code
           : null,
         training_hours: this.course?.training_hours?.toString(),
+        department: this.course?.department,
         title: this.course?.title,
         feeType: this.course?.feeType,
         courseCode: this.course?.courseCode,

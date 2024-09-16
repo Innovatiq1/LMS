@@ -233,15 +233,35 @@
                                     </mat-error>
                                 </mat-form-field>
                             </div>
-                                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('Blood Group')">
-                                  <label>Blood Group</label>
-                                  <mat-form-field
-                                    class="example-full-width mb-3"
-                                    appearance="outline"
-                                  >
-                                    <input matInput formControlName="blood_group" />
-                                  </mat-form-field>
-                                </div>
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                              <label>User Type</label>
+                              <mat-radio-group formControlName="user_type" style="display: flex; align-items: center;">
+                                <mat-radio-button  value="Manager">
+                                  Manager
+                                </mat-radio-button>
+                                <mat-radio-button  value="Staff">
+                                  Staff
+                                </mat-radio-button>
+                                <mat-radio-button  value="Others">
+                                  Others
+                                </mat-radio-button>
+                              </mat-radio-group>
+                            </div>
+
+                            <!-- <div
+                            class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
+                            *ngIf="labelStatusCheck('Parents name')"
+                          >
+                            <label>User Type</label>
+                            <mat-radio-group formControlName="parentsName">
+                              <mat-radio-button class="margin" value="Manager">Manager</mat-radio-button>
+                              <mat-radio-button class="margin" value="Staff">Staff</mat-radio-button>
+                              <mat-radio-button class="margin" value="Others">Others</mat-radio-button>
+                            </mat-radio-group>
+                            <mat-error *ngIf="userForm.get('parentsName')?.hasError('required')">
+                              Select User Type
+                            </mat-error>
+                          </div> -->
                                
                                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('Parents name')">
                                   <label>Parents name</label>
