@@ -21,6 +21,11 @@ import { StudentsService } from 'app/admin/students/students.service';
 import { CreateRoleTypeComponent } from 'app/admin/users/create-role-type/create-role-type.component';
 import { LogoService } from 'app/student/settings/logo.service';
 import Swal from 'sweetalert2';
+import { MENU_LIST } from '@shared/userType-item';
+import { SIDEMENU_LIST } from '@shared/sidemenu-item';
+import { LOGOMENU_LIST } from '@shared/logo-item';
+import { DASHBOARDMENU_LIST } from '@shared/dashboard-item';
+
 
 @Component({
   selector: 'app-create-super-admin',
@@ -250,13 +255,56 @@ export class CreateSuperAdminComponent {
                 text: 'Company created successfully',
                 icon: 'success',
               });
+
+
+              
+            //   const payload =MENU_LIST[0]
+            //   MENU_LIST[0].companyId = response.companyId
+            //   console.log('pay',payload)
+
+            //   this.userService.createCompany(payload).subscribe(() =>{
+            //   })  ///////usertype -role api
+            //   const body =SIDEMENU_LIST[0]
+            //   SIDEMENU_LIST[0].companyId = response.companyId
+            //   console.log('BODY',body)
+
+
+            //   this.userService.createCompany(body).subscribe(() =>{
+            //   })  //////sidemenu api
+
+            //   const logobody =LOGOMENU_LIST[0]
+            //   LOGOMENU_LIST[0].companyId = response.companyId
+            //   LOGOMENU_LIST[0].title = response.company
+
+            //   console.log('BODY',logobody)
+
+
+            //   this.userService.createCompany(logobody).subscribe(() =>{
+            //   }) ////////logo api
+
+
+
+            //  for(let data of DASHBOARDMENU_LIST ){
+            //   data.companyId = response.companyId
+            //   this.userService.createCompany(logobody).subscribe(() =>{
+            //   }) ////////dashboard api
+              
+
+            //  }
+            
+
+
+          
+               
+             
+
          
 
           })
             this.userForm.reset();
         this.router.navigateByUrl('/super-admin/admin-list');
       },
-      (error) => {
+      (error) =>               {
         Swal.fire(
           'Failed to create user',
           error.message || error.error,
