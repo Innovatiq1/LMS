@@ -480,6 +480,49 @@ export class SigninComponent
   }
   loginUser() {
     let formData = this.authForm.getRawValue();
+    if (formData.email.trim() === 'superadmin1@tms.com') {
+      this.isLoading = true;
+      this.userService.getCompanyByIdentifierWithoutToken(this.extractedName).subscribe(
+        (res: any) => {
+          let companyId = res[0]?.companyId;
+          this.authenticationService
+            .loginUser(formData.email.trim(), formData.password.trim(), companyId)
+            .subscribe(
+              (user) => {
+                this.authenticationService.saveUserInfo(user);
+                let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+  
+                this.superadminservice.getAllCustomRoleById(userId).subscribe(
+                  (response: any) => {
+                    localStorage.setItem('subdomain', response[0]?.identifier);
+                    this.commonService.setRoleDetails(response[0]);
+                    this.updateRoleConstants();
+                  }
+                );
+  
+                this.adminService.getUserTypeList({ allRows: true }, userId).subscribe(
+                  (response: any) => {
+                    let userType = localStorage.getItem('user_type');
+                    let data = response.filter((item: any) => item.typeName === userType);
+                    this.authenticationService.saveRoleDetails(data);
+                  }
+                );
+  
+                this.setup2FA(formData.email.trim());
+              },
+              (error) => {
+                this.isLoading = false;
+                this.email = error;
+                this.isSubmitted = true;
+                setTimeout(() => {
+                  this.email = '';
+                }, 2500);
+              }
+            );
+        }
+      );
+      return;
+    }
     if(this.extractedName == 'authentication'){
       this.authenticationService.getUsersByEmail(formData.email.trim()).subscribe(
         (res: any) => {

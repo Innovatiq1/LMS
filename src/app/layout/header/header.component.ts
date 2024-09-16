@@ -300,27 +300,33 @@ export class HeaderComponent
         ) {
           this.router.navigate(['/authentication/TMS/signin']);
           let subdomain = localStorage.getItem('subdomain');
-          if (subdomain) {
+          if (subdomain && subdomain !== 'undefined') {
             this.commonService.navigateWithCompanyName(
               subdomain,
               'authentication/TMS/signin'
             );
+          } else {
+            this.router.navigate(['/authentication/TMS/signin']);
           }
         } else if (userType == AppConstants.STUDENT_ROLE) {
           let subdomain = localStorage.getItem('subdomain');
-          if (subdomain) {
+          if (subdomain && subdomain !== 'undefined') {
             this.commonService.navigateWithCompanyName(
               subdomain,
               'authentication/LMS/signin'
             );
+          } else {
+            this.router.navigate(['/authentication/LMS/signin']);
           }
         } else {
           let subdomain = localStorage.getItem('subdomain');
-          if (subdomain) {
+          if (subdomain && subdomain !== 'undefined') {
             this.commonService.navigateWithCompanyName(
               subdomain,
               'authentication/TMS/signin'
             );
+          } else {
+            this.router.navigate(['/authentication/TMS/signin']);
           }
         }
         localStorage.clear();
