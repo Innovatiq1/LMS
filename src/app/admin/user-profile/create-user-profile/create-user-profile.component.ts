@@ -398,6 +398,7 @@ export class CreateUserProfileComponent {
             head:this.data?.head,
             fileName: this.data?.avatar,
             last_name: this.data?.last_name,
+            user_type:this.data?.user_type,
             rollNo: this.data?.rollNo,
             gender: this.data?.gender,
             mobile: this.data?.mobile,

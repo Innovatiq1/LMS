@@ -1,75 +1,78 @@
 
     <div class="content-block">
      
-      <div class="row mt-5">
-        <div class="col-lg-6 col-sm-6" *ngFor="let dept of dept; let i = index">
-          <div class="info-box7" [ngClass]="getColorClass(i) + ' order-info-box7'">
-            <div class="info-box7-block">
-              <div class="row">
-                <div class="col-9">
-                  <h5 class="mt-3">{{ dept.department }}</h5>
+      <div class="row ">
+        <ng-container *ngFor="let dept of dept; let i = index">
+          <div class="col-lg-6 col-sm-6" >
+            <div class="info-box7" [ngClass]="getColorClass(i) + ' order-info-box7'">
+              <div class="info-box7-block">
+                <div class="row">
+                  <div class="col-9">
+                    <h5 class="mt-3">{{ dept.department }}</h5>
+                  </div>
+                  <div class="col-3">
+                    <img src="assets/images/banner/hr.png" alt="">
+                  </div>
                 </div>
-                <div class="col-3">
-                  <img src="assets/images/banner/hr.png" alt="">
+                <div class="row mt-3">
+                  <div class="col-4">
+                    <h6>No.of Courses</h6>
+                  </div>
+                  <div class="col-4">
+                    <h6>No.of Managers</h6>
+                  </div>
+                  <div class="col-4">
+                    <h6>No.of Staff</h6>
+                  </div>
                 </div>
-              </div>
-              <div class="row mt-3">
-                <div class="col-4">
-                  <h6>No.of Courses</h6>
-                </div>
-                <div class="col-4">
-                  <h6>No.of Managers</h6>
-                </div>
-                <div class="col-4">
-                  <h6>No.of Staff</h6>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-4">
-                  <h6 (click)="courseList(dept.department)" style="cursor: pointer;">{{ dept.recordCount || 0 }}</h6> 
-                </div>
-                <div class="col-4">
-                  <h6 (click)="managerList(dept.department)" style="cursor: pointer;">{{ dept.managerCount || 0 }}</h6> 
-                </div>
-                <div class="col-4">
-                  <h6 (click)="staffList(dept.department)" style="cursor: pointer;">{{ dept.staffCount || 0 }}</h6> 
+                <div class="row">
+                  <div class="col-4">
+                    <h6 (click)="courseList(dept.department)" style="cursor: pointer;">{{ dept.recordCount || 0 }}</h6> 
+                  </div>
+                  <div class="col-4">
+                    <h6 (click)="managerList(dept.department)" style="cursor: pointer;">{{ dept.managerCount || 0 }}</h6> 
+                  </div>
+                  <div class="col-4">
+                    <h6 (click)="staffList(dept.department)" style="cursor: pointer;">{{ dept.staffCount || 0 }}</h6> 
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </ng-container>
+        
+        <ng-container *ngFor="let dept of dept; let i = index">
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6"  *ngIf="dept.checked">
+            <div class="card" style="border-radius: 31px;" >
+              <div class="header mt-3">
+                <h2>Current Course Status</h2>
+              </div>
+              <div class="float-start ms-3 me-3">
+                <h5>{{dept.department}} Department</h5>
+                
+              </div>
+              <!-- <div class="float-start ms-3 me-3">
+                <h6>Total Staff</h6>
+              </div> -->
+        
+              <div class="body" *ngIf="isHrPie">
+                <apx-chart *ngIf="departmentCharts[dept.department]"
+                [series]="departmentCharts[dept.department]?.series"
+                [chart]="departmentCharts[dept.department]?.chart"
+                [labels]="departmentCharts[dept.department]?.labels"
+                [theme]="departmentCharts[dept.department]?.theme"
+                [fill]="departmentCharts[dept.department]?.fill"
+                [yaxis]="departmentCharts[dept.department]?.yaxis"
+                [stroke]="departmentCharts[dept.department]?.stroke"
+                [legend]="departmentCharts[dept.department]?.legend"
+                [plotOptions]="departmentCharts[dept.department]?.plotOptions"
+                [colors]="departmentCharts[dept.department]?.colors">
+     </apx-chart>
+              </div>
+            </div>
+          </div>
+        </ng-container>
       </div>
-          <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6"  *ngFor="let dept of dept; let i = index">
-              <div class="card" style="border-radius: 31px;" *ngIf="dept.checked">
-                <div class="header mt-3">
-                  <h2>Current Course Status</h2>
-                </div>
-                <div class="float-start ms-3 me-3">
-                  <h5>{{dept.department}} Department</h5>
-                  
-                </div>
-                <!-- <div class="float-start ms-3 me-3">
-                  <h6>Total Staff</h6>
-                </div> -->
-          
-                <div class="body" *ngIf="isHrPie">
-                  <apx-chart *ngIf="departmentCharts[dept.department]"
-                  [series]="departmentCharts[dept.department]?.series"
-                  [chart]="departmentCharts[dept.department]?.chart"
-                  [labels]="departmentCharts[dept.department]?.labels"
-                  [theme]="departmentCharts[dept.department]?.theme"
-                  [fill]="departmentCharts[dept.department]?.fill"
-                  [yaxis]="departmentCharts[dept.department]?.yaxis"
-                  [stroke]="departmentCharts[dept.department]?.stroke"
-                  [legend]="departmentCharts[dept.department]?.legend"
-                  [plotOptions]="departmentCharts[dept.department]?.plotOptions"
-                  [colors]="departmentCharts[dept.department]?.colors">
-       </apx-chart>
-                </div>
-              </div>
-            </div>
-          </div>
         
 
 <!-- Manager Dashboard -->
@@ -146,7 +149,7 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr *ngFor="let class of completedClasses " style="cursor: pointer;"
+                          <tr *ngFor="let class of classes " style="cursor: pointer;"
                            >
                             <!-- <td class="table-img">
                         <img src="{{class?.courseId?.image_link}}" alt="course">
@@ -255,15 +258,14 @@
                             <tbody>
                                 <tr *ngFor="let feedback of feedback" style="cursor: pointer;" >
                                    
-                                    <td>
+                                    <td (click)="editCall(feedback.id)">
                                         <div class="media-title"> {{feedback?.studentId?.name | titlecase}}
                                         </div>
                                     </td>
-                                    <td >
+                                    <td (click)="editCall(feedback.id)">
                                         <div
                                             >
-                                            {{feedback?.courseName
-                                            }}</div>
+                                            {{feedback?.courseName }}</div>
                                     </td>
                                 </tr>
                             </tbody>
@@ -274,41 +276,6 @@
             </div>
         </div>
         </ng-container>
-          
-
-<!-- 
-          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-            <div class="card" style="border-radius: 31px;">
-                <div class="header mt-3">
-                    <h2>
-                        Staff Survey</h2>
-                </div>
-                <div class="body" *ngIf="isArea">
-                    <apx-chart [series]="areaChartOptions.series!" [chart]="areaChartOptions.chart!"
-                        [xaxis]="areaChartOptions.xaxis!" [yaxis]="areaChartOptions.yaxis!"
-                        [colors]="areaChartOptions.colors!" [stroke]="areaChartOptions.stroke!"
-                        [legend]="areaChartOptions.legend!" [grid]="areaChartOptions.grid!"
-                        [tooltip]="areaChartOptions.tooltip!"
-                        [dataLabels]="areaChartOptions.dataLabels!"></apx-chart>
-                </div>
-                <div class="body" *ngIf="isSurveyBar">
-                    <apx-chart [series]="surveyBarChartOptions.series!"
-                        [chart]="surveyBarChartOptions.chart!" [xaxis]="surveyBarChartOptions.xaxis!"
-                        [yaxis]="surveyBarChartOptions.yaxis!" [colors]="surveyBarChartOptions.colors!"
-                        [stroke]="surveyBarChartOptions.stroke!" [legend]="surveyBarChartOptions.legend!"
-                        [grid]="surveyBarChartOptions.grid!" [tooltip]="surveyBarChartOptions.tooltip!"
-                        [dataLabels]="surveyBarChartOptions.dataLabels!"></apx-chart>
-                </div>
-                <div class="body" *ngIf="isSurveyPie">
-                    <apx-chart [series]="surveyPieChartOptions.series!"
-                        [chart]="surveyPieChartOptions.chart!" [labels]="surveyPieChartOptions.labels!"
-                        [legend]="surveyPieChartOptions.legend!" [colors]="surveyPieChartOptions.colors!"
-                        [responsive]="surveyPieChartOptions.responsive!"></apx-chart>
-                </div>
-
-            </div>
-        </div> -->
-
       </div>
    
         <div class="row">
@@ -353,7 +320,7 @@
                 </div>
               </div>
         </div>
-        <div class="row" *ngIf="isCourseBar">
+        <!-- <div class="row" *ngIf="isCourseBar">
           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12" *ngFor="let component of sharedashboards.components">
             <div class="card" style="border-radius: 31px;" *ngIf="component.id === 'overall-training-course'">
               <div class="header mt-3">
@@ -367,6 +334,45 @@
                   [colors]="courseBarChartOptions.colors!" [stroke]="courseBarChartOptions.stroke!"
                   [legend]="courseBarChartOptions.legend!" [grid]="courseBarChartOptions.grid!"
                   [tooltip]="courseBarChartOptions.tooltip!" [dataLabels]="courseBarChartOptions.dataLabels!"></apx-chart>
+              </div>
+            
+            </div>
+          </div>
+        </div> -->
+        <!-- <div class="row" *ngIf="isCourseBar">
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12" *ngFor="let component of sharedashboards.components">
+            <div class="card" style="border-radius: 31px;" *ngIf="component.id === 'overall-training-course'">
+              <div class="header mt-3">
+                <h2>
+                  Overall Training Course</h2>
+              </div>
+            
+              <div class="body" >
+                <apx-chart [series]="courseBarChartOptions.series!" [chart]="courseBarChartOptions.chart!"
+                  [xaxis]="courseBarChartOptions.xaxis!" [yaxis]="courseBarChartOptions.yaxis!"
+                  [colors]="courseBarChartOptions.colors!" [stroke]="courseBarChartOptions.stroke!"
+                  [legend]="courseBarChartOptions.legend!" [grid]="courseBarChartOptions.grid!"
+                  [tooltip]="courseBarChartOptions.tooltip!" [dataLabels]="courseBarChartOptions.dataLabels!"></apx-chart>
+              </div>
+            
+            </div>
+          </div>
+        </div> -->
+
+        <div class="row" >
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12" *ngFor="let component of sharedashboards.components">
+            <div class="card" style="border-radius: 31px;" *ngIf="component.id === 'overall-training-course'">
+              <div class="header mt-3">
+                <h2>
+                  Overall Training Course123</h2>
+              </div>
+            
+              <div class="body" >
+                <apx-chart [series]="ChartOptions.series!" [chart]="ChartOptions.chart!"
+                  [xaxis]="ChartOptions.xaxis!" [yaxis]="ChartOptions.yaxis!"
+                  [colors]="ChartOptions.colors!" [stroke]="ChartOptions.stroke!"
+                  [legend]="ChartOptions.legend!" [grid]="ChartOptions.grid!"
+                  [tooltip]="ChartOptions.tooltip!" [dataLabels]="ChartOptions.dataLabels!"></apx-chart>
               </div>
             
             </div>

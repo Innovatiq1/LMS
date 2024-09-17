@@ -105,7 +105,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     {
       title: 'Create Course',
       items: ['Course'],
-      active: 'Create Course1',
+      active: 'Create Course',
     },
   ];
   config: AngularEditorConfig = {
