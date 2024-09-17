@@ -150,6 +150,30 @@
         </div>
       </div>
 
+      <div class="row mt-5" >
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" *ngIf="selectedComponents['Current Course Status']">
+          <div class="card" style="border-radius: 31px;">
+            <div class="header mt-3">
+              <h2>Current Course Status</h2>
+            </div>
+            <div class="float-start ms-3 me-3">
+              <h5>{{dept.department}} Department</h5>
+              
+            </div>
+          
+      
+            <div class="body" *ngIf="isHrPie">
+              <apx-chart [series]="hrPieChartOptions.series2!" [chart]="hrPieChartOptions.chart!"
+                [labels]="hrPieChartOptions.labels!" [title]="hrPieChartOptions.title!" [theme]="hrPieChartOptions.theme!"
+                [fill]="hrPieChartOptions.fill!" [yaxis]="hrPieChartOptions.yaxis!" [stroke]="hrPieChartOptions.stroke!"
+                [legend]="hrPieChartOptions.legend!" [plotOptions]="hrPieChartOptions.plotOptions!"
+                [colors]="hrPieChartOptions.colors!"></apx-chart>
+            </div>
+          </div>
+        </div>
+
+</div>
+
 
   <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" *ngIf="selectedComponents['Staff List']" >
       <div class="card" style="border-radius: 31px;" >

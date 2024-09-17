@@ -28,7 +28,7 @@ import {
   ApexTheme,
   ApexNonAxisChartSeries,
 } from 'ng-apexcharts';
-import { forkJoin, map } from 'rxjs';
+import { concatMap, forkJoin, from, map } from 'rxjs';
 
 export type chartOptions = {
   series: ApexAxisChartSeries;
@@ -92,6 +92,7 @@ export class CeoDashboardComponent {
   public salesPieChartOptions!: Partial<pieChart1Options>;
   public courseBarChartOptions!: Partial<chartOptions>;
   departmentCharts: { [key: string]: any } = {};
+  courseCharts: { [key: string]: any } = {};
   isHrPie: boolean = false;
   isTechnicalPie: boolean = false;
   isFinancePie: boolean = false;
@@ -134,6 +135,7 @@ export class CeoDashboardComponent {
     this.isFinancePie = true;
     this.isSalesPie = true;
     this.courseBarChart();
+    this.hrPieChart()
    
   }
 
@@ -144,6 +146,38 @@ export class CeoDashboardComponent {
         this.feedback = res.data.docs.slice(0,5);
       })
   }
+
+  private hrPieChart() {
+    this.hrPieChartOptions = {
+      series2: [1, 2, 3],
+      chart: {
+        type: 'pie',
+        height: 350,
+      },
+      legend: {
+        show: true,
+        position: 'bottom',
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      labels: ['Enrolled', 'In-progress', 'Completed'],
+      colors: ['#6777ef', '#ff9800', '#B71180'],
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200,
+            },
+            legend: {
+              position: 'bottom',
+            },
+          },
+        },
+      ],
+    };
+    }
 
   private courseBarChart() {
     this.courseBarChartOptions = {
@@ -249,6 +283,94 @@ processCourseStatuses(courseStatuses: any[]): { enrolled: number, inProgress: nu
   }
 
 
+  // getDepartments() {
+  //   this.studentService.getAllDepartments().subscribe((response: any) => {
+  //     const departments = response.data.docs;
+  //     const components = this.sharedashboards.components;
+  //     const companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+  //     const departmentNames: string[] = [];
+  //     const upcomingCoursesData: number[] = [];
+  //     const ongoingCoursesData: number[] = []; 
+  //     const completedCoursesData: number[] = []; 
+  
+  //     const requests = departments.map((dept: { department: string; courseStatus: any; _id: any; checked: boolean; recordCount?: number; managerCount?: number; staffCount?: number; }) => {
+  //       const matchingComponent = components.find((comp: { component: any; checked: boolean; }) => comp.component === dept.department);
+      
+  //       if (matchingComponent && matchingComponent.checked) {
+  //         dept.checked = matchingComponent.checked;
+      
+  //         departmentNames.push(dept.department);
+      
+  //         const departmentDetails$ = this.studentService.getDepartmentById(companyId, dept.department).pipe(
+  //           map(depData => dept.recordCount = depData.length)
+  //         );
+      
+  //         const managerStaffCount$ = this.getManagerandStaffCount(companyId, dept.department).pipe(
+  //           map(countData => {
+  //             dept.managerCount = countData.managerCount;
+  //             dept.staffCount = countData.staffCount;
+  //           })
+  //         );
+      
+  //         const courseStatus$ = this.studentService.getCourseStatus(companyId, dept.department).pipe(
+  //           map(status => {
+  //             console.log("status",status);
+  //             const courseStatus = this.mapCourseStatus(status);
+  //             // ongoingCoursesData.push(courseStatus.inProgress || 0);  
+  //             completedCoursesData.push(courseStatus.completed || 0); 
+      
+  //             this.updateHrPieChart(courseStatus, dept.department);
+  //           })
+  //         );
+  //         const approvedCourses$ = this.classService.getStudentRegisteredClasses({ companyId, department: dept.department }).pipe(
+  //           map(response => {
+  //             const studentApprovedClasses = response.data.docs;
+  //             const currentDate = new Date();
+  //             const currentMonth = currentDate.getMonth();
+  //             const currentYear = currentDate.getFullYear();
+  //             const tomorrow = new Date(currentYear, currentMonth, currentDate.getDate() + 1);
+  //             // const tomorrow = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 1);
+          
+  //             const upcomingCourseClasses = studentApprovedClasses.filter((item: any) => {
+  //               const sessionStartDate = new Date(item.classId?.sessions[0]?.sessionStartDate);
+  //               return sessionStartDate >= tomorrow;
+  //             });
+  //             console.log("upco",upcomingCourseClasses)
+  //             upcomingCoursesData.push(upcomingCourseClasses.length || 0);
+          
+  //             const ongoingCourseClasses = studentApprovedClasses.filter((item: any) => {
+  //               const sessionStartDate = new Date(item.classId?.sessions[0]?.sessionStartDate);
+  //               const sessionEndDate = new Date(item.classId?.sessions[0]?.sessionEndDate);
+  //               return sessionStartDate <= currentDate && sessionEndDate >= currentDate;
+  //             });
+  //             console.log("onco",ongoingCourseClasses)
+  //             ongoingCoursesData.push(ongoingCourseClasses.length || 0);  
+  //           })
+  //         );
+          
+      
+  //         return forkJoin([departmentDetails$, managerStaffCount$, courseStatus$, approvedCourses$])?.toPromise();
+  //       } else {
+  //         dept.checked = false;
+  //         dept.recordCount = 0;
+  //         dept.managerCount = 0;
+  //         dept.staffCount = 0;
+      
+  //         return Promise.resolve();
+  //       }
+  //     });
+      
+      
+  //   Promise.all(requests).then(() => {
+  //     this.updatedDepartments = departments;
+  //     this.dept = this.updatedDepartments.filter((dept: { checked: boolean; }) => dept.checked);
+  //     this.updateBarChart(departmentNames, upcomingCoursesData, ongoingCoursesData, completedCoursesData);
+  //     this.isCourseBar = true;
+  //   });
+  // });
+      
+  // }
+  
   getDepartments() {
     this.studentService.getAllDepartments().subscribe((response: any) => {
       const departments = response.data.docs;
@@ -256,81 +378,85 @@ processCourseStatuses(courseStatuses: any[]): { enrolled: number, inProgress: nu
       const companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
       const departmentNames: string[] = [];
       const upcomingCoursesData: number[] = [];
-      const ongoingCoursesData: number[] = []; 
-      const completedCoursesData: number[] = []; 
+      const ongoingCoursesData: number[] = [];
+      const completedCoursesData: number[] = [];
+  
+      const currentDate = new Date();
+      const currentMonth = currentDate.getMonth();
+      const currentYear = currentDate.getFullYear();
+      const tomorrow = new Date(currentYear, currentMonth, currentDate.getDate() + 1);
   
       const requests = departments.map((dept: { department: string; courseStatus: any; _id: any; checked: boolean; recordCount?: number; managerCount?: number; staffCount?: number; }) => {
         const matchingComponent = components.find((comp: { component: any; checked: boolean; }) => comp.component === dept.department);
-      
+  
         if (matchingComponent && matchingComponent.checked) {
           dept.checked = matchingComponent.checked;
-      
           departmentNames.push(dept.department);
-      
+  
           const departmentDetails$ = this.studentService.getDepartmentById(companyId, dept.department).pipe(
             map(depData => dept.recordCount = depData.length)
           );
-      
+  
           const managerStaffCount$ = this.getManagerandStaffCount(companyId, dept.department).pipe(
             map(countData => {
+              console.log("ManagerCount",  countData)
               dept.managerCount = countData.managerCount;
               dept.staffCount = countData.staffCount;
             })
           );
-      
+  
           const courseStatus$ = this.studentService.getCourseStatus(companyId, dept.department).pipe(
             map(status => {
-              const courseStatus = this.mapCourseStatus(status);
-              ongoingCoursesData.push(courseStatus.inProgress || 0);  
-              completedCoursesData.push(courseStatus.completed || 0); 
-      
-              this.updateHrPieChart(courseStatus, dept.department);
+              console.log("status", status);
+              const studentApprovedClasses = status;
+              
+              const upcomingCourses = studentApprovedClasses.filter((course: any) => {
+                if (course.sessions && course.sessions.length > 0) {
+                  const sessionStartDate = new Date(course.sessions[0]?.sessionStartDate);
+                  return sessionStartDate >= tomorrow;
+                }
+                return false;
+              });
+              upcomingCoursesData.push(upcomingCourses.length || 0);
+  
+              const ongoingCourses = studentApprovedClasses.filter((course: any) => {
+                if (course.sessions && course.sessions.length > 0) {
+                  const sessionStartDate = new Date(course.sessions[0]?.sessionStartDate);
+                  const sessionEndDate = new Date(course.sessions[0]?.sessionEndDate);
+                  return sessionStartDate <= currentDate && sessionEndDate >= currentDate;
+                }
+                return false;
+              });
+              ongoingCoursesData.push(ongoingCourses.length || 0);
+              const completedCourses = this.mapCourseStatus(status).completed;
+              completedCoursesData.push(completedCourses || 0);
+  
+              this.updateHrPieChart(this.mapCourseStatus(status), dept.department);
             })
           );
-          const approvedCourses$ = this.classService.getStudentRegisteredClasses({ companyId, department: dept.department }).pipe(
-            map(response => {
-              const studentApprovedClasses = response.data.docs;
-              const currentDate = new Date();
-              const tomorrow = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 1);
-          
-              const upcomingCourseClasses = studentApprovedClasses.filter((item: any) => {
-                const sessionStartDate = new Date(item.classId?.sessions[0]?.sessionStartDate);
-                return sessionStartDate >= tomorrow;
-              });
-              upcomingCoursesData.push(upcomingCourseClasses.length || 0);
-          
-              const ongoingCourseClasses = studentApprovedClasses.filter((item: any) => {
-                const sessionStartDate = new Date(item.classId?.sessions[0]?.sessionStartDate);
-                const sessionEndDate = new Date(item.classId?.sessions[0]?.sessionEndDate);
-                return sessionStartDate <= currentDate && sessionEndDate >= currentDate;
-              });
-              // ongoingCoursesData.push(ongoingCourseClasses.length || 0);  
-            })
-          );
-          
-      
-          return forkJoin([departmentDetails$, managerStaffCount$, courseStatus$, approvedCourses$])?.toPromise();
+  
+          return forkJoin([departmentDetails$, managerStaffCount$, courseStatus$]).toPromise();
         } else {
           dept.checked = false;
           dept.recordCount = 0;
           dept.managerCount = 0;
           dept.staffCount = 0;
-      
+  
           return Promise.resolve();
         }
       });
-      
-      
-    Promise.all(requests).then(() => {
-      this.updatedDepartments = departments;
-      this.dept = this.updatedDepartments.filter((dept: { checked: boolean; }) => dept.checked);
-      this.updateBarChart(departmentNames, upcomingCoursesData, ongoingCoursesData, completedCoursesData);
-      this.isCourseBar = true;
+  
+      Promise.all(requests).then(() => {
+        this.updatedDepartments = departments;
+        this.dept = this.updatedDepartments.filter((dept: { checked: boolean; }) => dept.checked);
+        this.updateBarChart(departmentNames, upcomingCoursesData, ongoingCoursesData, completedCoursesData);
+        this.isCourseBar = true;
+      });
     });
-  });
-      
   }
   
+  
+
   updateBarChart(departmentNames: string[], upcomingData: number[], ongoingData: number[], completedData: number[]) {
   
   
@@ -456,34 +582,76 @@ processCourseStatuses(courseStatuses: any[]): { enrolled: number, inProgress: nu
     });
   }
 
-  getApprovedCourse(){
-    let studentId=localStorage.getItem('id')
-    const payload = { studentId: studentId, status: 'approved' ,isAll:true};
-    this.classService.getStudentRegisteredClasses(payload).subscribe(response =>{
-     this.studentApprovedClasses = response.data;
-     const currentDate = new Date();
-     const currentMonth = currentDate.getMonth();
-     const currentYear = currentDate.getFullYear();
-     const tomorrow = new Date(currentYear, currentMonth, currentDate.getDate() + 1);
-     this.upcomingCourseClasses = this.studentApprovedClasses.filter((item:any) => {
-      const sessionStartDate = new Date(item.classId?.sessions[0]?.sessionStartDate);
-      return (
-        sessionStartDate >= tomorrow
-      );
-    });
-    })
-  }
+ 
 
   // manager Dashboad
-  getStaffList(filters?:any) {
+
+
+  // getStaffList(filters?: any) {
+  //   let headId = localStorage.getItem('id');
+  //   this.userService.getUsersById({...this.coursePaginationModel, headId}).subscribe((response: any) => {
+  //     const users = response.data.docs;
+  //     console.log("all users", users);
+  //     this.staff = users.slice(0, 5); 
+      
+  //     const requests = users.map((user: any) =>  this.userService.getCoursesById(user.id));
+  //     forkJoin(requests).subscribe((studentClassResponses: any) => {
+  //       studentClassResponses.forEach((studentClassResponse: any, index: string | number) => {
+  //         console.log(`User ${users[index].id} class data:`, studentClassResponse);
+  //       })
+  //       this.staffCount = response.data.totalDocs;
+  //     }, error => {
+  //       console.error('Error fetching student class data:', error);
+  //     });
+  //   }, error => {
+  //     console.error('Error fetching users:', error);
+  //   });
+  // }
+  
+  getStaffList(filters?: any) {
     let headId = localStorage.getItem('id');
-    this.userService.getUsersById( {...this.coursePaginationModel, headId}).subscribe((response: any) => {
-      this.staff = response.data.docs.slice(0,5);
-      this.staffCount = response.data.totalDocs;
+    this.userService.getUsersById({...this.coursePaginationModel, headId}).subscribe((response: any) => {
+      const users = response.data.docs;
+      this.staff = users.slice(0, 5); // Limit to 5 staff members
+  
+      // Initialize counters for the chart
+      let enrolledCount = 0;
+      let inProgressCount = 0;
+      let completedCount = 0;
+  
+      // Create requests to get the class data for each user
+      const requests = users.map((user: any) => this.userService.getCoursesById(user.id));
+      
+      // Use forkJoin to execute all requests in parallel
+      forkJoin(requests).subscribe((studentClassResponses: any) => {
+        studentClassResponses.forEach((studentClassResponse: any, index: number) => {
+          const classes = studentClassResponse.data.docs; // Assuming the courses data is in response.data
+          console.log("classes: " , classes)
+          // Calculate counts based on statuses
+          enrolledCount += classes.filter((course: any) => course.status === 'registered').length;
+          inProgressCount += classes.filter((course: any) => course.status === 'approved').length;
+          completedCount += classes.filter((course: any) => course.status === 'completed').length;
+  
+          console.log(`User ${users[index].id} class data:`, studentClassResponse);
+        });
+  
+        // Update the chart with the new data
+        this.updateHrPieChart1([enrolledCount, inProgressCount, completedCount]);
+  
+        // Set the staff count
+        this.staffCount = response.data.totalDocs;
+      }, error => {
+        console.error('Error fetching student class data:', error);
+      });
     }, error => {
+      console.error('Error fetching users:', error);
     });
   }
 
+  updateHrPieChart1(data: number[]) {
+    this.hrPieChartOptions.series2 = data; // Update the series with new data
+  }
+  
   getCount() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     this.courseService.getAllPrograms({...this.coursePaginationModel},userId).subscribe((response) => {
