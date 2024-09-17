@@ -15,6 +15,10 @@ import { EtmsDashboardComponent } from './etms-dashboard/etms-dashboard.componen
 import { SuperAdminComponent } from 'app/superAdmin/super-admin/super-admin.component';
 import { CeoDashboardComponent } from './ceo-dashboard/ceo-dashboard.component';
 import { ManagerDashboardComponent } from './manager-dashboard/manager-dashboard.component';
+import { TotalListComponent } from './total-list/total-list.component';
+import { CorpCourseListComponent } from './corp-course-list/corp-course-list.component';
+import { CorpManagerListComponent } from './corp-manager-list/corp-manager-list.component';
+import { CorpStaffListComponent } from './corp-staff-list/corp-staff-list.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +28,11 @@ import { ManagerDashboardComponent } from './manager-dashboard/manager-dashboard
     EtmsDashboardComponent,
     SuperAdminComponent,
     CeoDashboardComponent,
-    ManagerDashboardComponent
+    ManagerDashboardComponent,
+    TotalListComponent,
+    CorpCourseListComponent,
+    CorpManagerListComponent,
+    CorpStaffListComponent
   ],
   imports: [
     CommonModule,

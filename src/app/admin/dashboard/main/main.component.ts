@@ -405,8 +405,10 @@ export class MainComponent implements OnInit {
     const companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     this.userService.getDashboardsByCompanyId(companyId, typeName).subscribe(
       (data: any) => {
+        console.log("dashboards1231", data.data)
         this.roleType = data.data.map((doc: any) => doc.typeName).toString();
         this.dashboards = data.data.flatMap((doc: any) => doc.dashboards);
+        console.log("dashboards", this.dashboards)
         this.dashboards.forEach((dashboard: { checked: any; }, index: number) => {
           if (dashboard.checked) {
           } else {
@@ -803,14 +805,7 @@ export class MainComponent implements OnInit {
     else if (role === 'Training administrator' || role === 'training administrator' ) {
       this.isTADB = true;
     }
-    else if (role === 'It Manager' || role === 'IT Manager'  ) {
-      this.isManager = true;
-      console.log('isCeoDB',role)
-    }
-    else if (role === 'CEO' || role === 'ceo' || role === 'Ceo' ) {
-      this.isCeoDB = true;
-     console.log('isCeoDB',role)
-    }
+   
     else if (role === 'Supervisor' || role === 'supervisor' ) {
       this.issupervisorDB = true;
     }
@@ -880,7 +875,9 @@ export class MainComponent implements OnInit {
       }
     );
   }
-
+  get shouldShowSection(): boolean {
+    return !this.isCeoDB || !this.isManager;
+  }
   getProgramClassList() {
     let instructorId = localStorage.getItem('id')
     this.lecturesService.getClassListWithPagination1(instructorId, this.filterName,{ ...this.coursePaginationModel }).subscribe(

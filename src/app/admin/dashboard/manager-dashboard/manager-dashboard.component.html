@@ -1,17 +1,9 @@
-<section class="content" *ngIf="isAdmin">
+<section >
     <div class="content-block">
-        <div class="block-header" *ngFor="let breadscrum of breadscrums">
-            <!-- breadcrumb -->
-            <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
-            </app-breadcrumb>
-        </div>
-
                 <ng-template mat-tab-label>
-                    <!-- <mat-icon class="example-tab-icon msr-2">face</mat-icon> -->
                     Users Analytics
                 </ng-template>
                 <div class="row mt-5">
-
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <div class="card card-statistic-2">
                             <div class="clearfix">
@@ -61,9 +53,10 @@
                     </div>
 
                 </div>
+
                 <div class="row">
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                      <div class="card" style="border-radius: 31px;">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12" *ngIf="sharedashboards.id === 'overall-training-course'">
+                      <div class="card" style="border-radius: 31px;" >
                         <div class="header mt-3">
                           <h2>
                             Overall Training Course</h2>
@@ -80,6 +73,8 @@
                       </div>
                     </div>
                   </div>
+
+
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <div class="card" style="border-radius: 31px;">
@@ -119,6 +114,8 @@
                         </div>
                       </div>
                 </div>
+
+
                 <div class="row">
                   <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                       <div class="card" style="border-radius: 31px;">

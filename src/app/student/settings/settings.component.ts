@@ -846,6 +846,7 @@ export class SettingsComponent {
     this.studentService.getAllDepartments().subscribe((response: any) => {
       this.dept = response.data.docs;
       const department = this.dept.map((doc: any) => doc.department);
+      department.push("Overall Training Course","Total Staff","All Programs","Certificate","Staff List","Classes List","Feedback Survey");
       this.componentsMap['Corporate Dashboard'] = department;
     });
   }
@@ -1457,7 +1458,7 @@ export class SettingsComponent {
       companyId: userId,
       dashboards: selectedDashboards,
     };
-
+console.log("config: " + config);
     if (!this.typeNameChild) {
       this.userService.saveCustomzDashboard(config).subscribe((data: any) => {
         Swal.fire({

@@ -3,7 +3,7 @@ import { LecturesService } from 'app/teacher/lectures/lectures.service';
 import * as moment from 'moment';
 import { CoursePaginationModel, MainCategory, SubCategory } from '@core/models/course.model';
 
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenService } from '@core/service/authen.service';
@@ -158,6 +158,7 @@ export type lineChartOptions = {
 })
 export class ManagerDashboardComponent {
   @ViewChild('chart') chart!: ChartComponent;
+  @Input() sharedashboards!: any;
   public areaChartOptions!: Partial<chartOptions>;
   public performanceBarChartOptions!: Partial<chartOptions>;
   public pieChart1Options!: Partial<pieChart1Options>;
@@ -178,13 +179,13 @@ export class ManagerDashboardComponent {
   public pieChartOptions!: Partial<pieChartOptions>;
   public pieChartOptions1!: Partial<pieChartOptions>;
   UsersModel!: Partial<UsersModel>;
-  breadscrums = [
-    {
-      title: 'Dashboad',
-      items: ['Dashboad'],
-      active: 'IT Manager Dashboard',
-    },
-  ];
+  // breadscrums = [
+  //   {
+  //     title: 'Dashboad',
+  //     items: ['Dashboad'],
+  //     active: 'IT Manager Dashboard',
+  //   },
+  // ];
   //Student
   studentName!: string;
   approvedCourses: any;
@@ -636,50 +637,7 @@ export class ManagerDashboardComponent {
 
     this.getClassList();
     const role = this.authenticationService.currentUserValue.user.role;
-    if (role=='Admin'|| role=="RO"  || role == "Director" || role == "Employee" || role =='CEO') {
-      this.isAdmin = true;
-    }else if (role === 'Staff' || role === 'Student') {
-      this.isStudentDB = true;
-      this.breadscrums = [
-        {
-          title: 'Dashboad',
-          items: ['Dashboad'],
-          active: 'Staff Dashboad',
-        },
-      ];
-    }else if (role === 'Instructor' || role === 'Trainer' ) {
-      // this.isInstructorDB = true;
-      this.breadscrums = [
-        {
-          title: 'Dashboad',
-          items: ['Dashboad'],
-          active: 'Manager Dashboad',
-        },
-      ];
-    }
-    else if (role === 'Training administrator' || role === 'training administrator' ) {
-      this.isTADB = true;
-    }
-    else if (role === 'Supervisor' || role === 'supervisor' ) {
-      this.issupervisorDB = true;
-    }
-    else if ( role === 'hod' || role === 'HOD' || role === 'Head of Department' ) {
-      this.isHodDB = true;
-    }else if (role === 'Training Coordinator' || role === 'training coordinator' ) {
-      this.isTCDB = true;
-    }
-    else if ( role === 'coursemanager'|| role === 'Course Manager' ) {
-      this.isCMDB = true;
-    } else if ( role === 'programcoordinator'|| role === 'Program manager' ) {
-      this.isPCDB = true;
-    } else {
-      this.isAdmin = true;
-    }
-    if (role == 'Admin' || role === 'IT Manager' || role === 'Finance Manager' || role === 'HR Manager' || role === 'Admin Manager') {
-      this.getAdminDashboard();
-    } else if (role === 'Student' || role === 'Staff') {
-      // this.getStudentDashboard();
-    }
+ 
     
 //Student
     this.getStaffList();
