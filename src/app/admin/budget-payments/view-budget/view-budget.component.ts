@@ -86,7 +86,7 @@ export class ViewBudgetComponent {
       if (result.isConfirmed) {
         this.etmsService.deleteTrainingBudget(id).subscribe((res) => {
           if (res) {
-            Swal.fire('Deleted!', 'Budget deleted successfully.', 'success');
+            Swal.fire('Deleted!', 'Budget request deleted successfully.', 'success');
           }
           this.getAllBudget();
           this.router.navigate(['/admin/budgets/budget']);

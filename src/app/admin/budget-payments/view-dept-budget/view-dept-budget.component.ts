@@ -76,7 +76,7 @@ export class ViewDeptBudgetComponent {
   delete(id: string){
     Swal.fire({
       title: 'Are you sure?',
-      text: "You won't be able to revert this!",
+      text: "You won't be able to recover this department budget!",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -85,13 +85,14 @@ export class ViewDeptBudgetComponent {
     }).then((result) => {
       if (result.isConfirmed) {
         this.etmsService.deleteBudget(id).subscribe((res) => {
-          this.getAllDeptBudget();
+         
           Swal.fire(
             'Deleted!',
             'Department Budget Deleted Successfully.',
           'success'
           )
         })
+        this.getAllDeptBudget();
         this.router.navigate(['/admin/budgets/allocation']);
       }
     })

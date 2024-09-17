@@ -75,7 +75,7 @@
                   <tr>
                     <th>Name</th>
                     <th>Year</th>
-                    <th>Overall Budget</th>
+                    <th class="payment">Overall Budget</th>
                     <th>Training Type</th>
                     <th>Approval Status</th>
                     <th *ngIf="pendingCourses">Actions</th>
@@ -85,7 +85,7 @@
                   <tr *ngFor="let request of dataSource">
                     <td>{{ request?.employeeName }}</td>
                     <td>{{ request?.year }}</td>
-                    <td style="text-align:right"><span>$</span> {{ request?.trainingBudget||0 }}.00</td>
+                    <td class="payment"><span>$</span> {{ request?.trainingBudget||0 }}.00</td>
                     <td>{{ request?.trainingType }}</td>
                     <td>
                         <span

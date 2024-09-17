@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Users } from '@core/models/user.model';
 import { EtmsService } from '@core/service/etms.service';
+import { UserService } from '@core/service/user.service';
 import { UtilsService } from '@core/service/utils.service';
 import Swal from 'sweetalert2';
 
@@ -10,7 +12,7 @@ import Swal from 'sweetalert2';
   templateUrl: './create-budget.component.html',
   styleUrls: ['./create-budget.component.scss']
 })
-export class CreateBudgetComponent {
+export class CreateBudgetComponent implements OnInit{
 
   requestForm!: FormGroup;
   breadscrums = [
@@ -28,15 +30,19 @@ export class CreateBudgetComponent {
     },
   ];
   directorName!: string;
+  headId!: string;
   directorId!: string;
   employeName!:string;
   dataSource: object | undefined;
   private _id: any;
   action: any;
+  users!: Users[];
+  
   constructor( private etmsService: EtmsService,
     public utils: UtilsService,
     private router: Router,
     public activeRoute: ActivatedRoute,
+    private userService: UserService,
     
     private fb: FormBuilder){
       this.activeRoute.queryParams.subscribe((params) => {
@@ -73,9 +79,24 @@ export class CreateBudgetComponent {
     
     if (this.action === 'edit') {
       this.editRequest();
-    }else{
-      this.getUserId();
     }
+    this.setup();
+}
+
+setup() {
+  const headId = JSON.parse(localStorage.getItem('user_data')!).user.head;
+
+  this.userService.getAllUsers().subscribe((response: any) => {
+    this.users = response?.results.reverse();
+    const user = this.users.find(user => user.id === headId);
+
+    if (user) {
+      this.requestForm.patchValue({
+        name: user.name,
+        email: user.email
+      });
+    }
+  });
 }
 getUserId() {
   let userId = localStorage.getItem('id');
@@ -120,12 +141,16 @@ editRequest(){
 }
 
 updateRequest(){
+  let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+  let employeeId = JSON.parse(localStorage.getItem('user_data')!).user.id
   let payload = {
     trainingBudget: this.requestForm.value.trainingBudget,
     year: this.requestForm.value.year,
     trainingType: this.requestForm.value.trainingType,
     name: this.requestForm.value.name,
     email: this.requestForm.value.email,
+    companyId: userId,
+    employeeId: employeeId,
   }
   
     Swal.fire({
@@ -157,16 +182,23 @@ cancel(){
 
 onSubmit(){
   const employeeEmail = JSON.parse(localStorage.getItem('user_data')!).user.email;
+  let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+  const headId = JSON.parse(localStorage.getItem('user_data')!).user.head;
+  const employeeId = JSON.parse(localStorage.getItem('user_data')!).user.id;
+  let userName = JSON.parse(localStorage.getItem('user_data')!).user.name;
   if (this.requestForm.valid) {
     const requestData = this.requestForm.value;
-    requestData['employeeName']=this.employeName;
+    // requestData['employeeName']=this.employeName;
+    requestData['employeeName']= userName;
     requestData['approval']='Pending';
-    requestData['director']=this.directorId
+    requestData['head']= headId;
     requestData['employeeEmail'] = employeeEmail;
+    requestData['companyId'] = userId;
+    requestData['employeeId'] = employeeId;
 
     Swal.fire({
       title: 'Are you sure?',
-      text: 'Do you want to create request!',
+      text: 'Do you want to create budget request!',
       icon: 'warning',
       confirmButtonText: 'Yes',
       showCancelButton: true,
@@ -178,7 +210,7 @@ onSubmit(){
               .subscribe((response: any) => {
                 Swal.fire({
                   title: 'Successful',
-                  text: 'Request created successfully',
+                  text: 'Budget Requested successfully',
                   icon: 'success',
                 });
                 this.router.navigate(['/admin/budgets/budget']);

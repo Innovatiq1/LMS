@@ -81,9 +81,9 @@ constructor(
 
 ngOnInit() {
   this.pendingCourses =true;
-  if (this.director) {
+  // if (this.director) {
     this.getAllRequestsByDirector();
-  }
+  // }
  
   this.getCount();
 }
@@ -92,32 +92,32 @@ onPendingClick(){
   this.pendingCourses = true;
   this.approvedCourses = false;
   this.rejectedCourses = false;
-  if (this.director) {
+  // if (this.director) {
       this.getAllRequestsByDirector();
-    }
+    // }
 }
 onApprovedClick(){
   this.pendingCourses = false;
   this.approvedCourses = true;
   this.rejectedCourses = false;
-  if (this.director) {
+  // if (this.director) {
       this.getAllApprovedRequestsByDirector();
-    }
+    // }
 }
 onRejectedClick(){
   this.pendingCourses = false;
   this.approvedCourses = false;
   this.rejectedCourses = true;
-  if (this.director) {
+  // if (this.director) {
       this.getAllRejectedRequestsByDirector();
-    }
+    // }
 
 }
 
 pageSizeChange($event: any) {
   this.coursePaginationModel.page = $event?.pageIndex + 1;
   this.coursePaginationModel.limit = $event?.pageSize;
-  if(this.director){
+  // if(this.director){
       if(this.pendingCourses){
         this.getAllRequestsByDirector();
       } else if(this.approvedCourses){
@@ -125,13 +125,13 @@ pageSizeChange($event: any) {
       } else if(this.rejectedCourses){
         this.getAllRejectedRequestsByDirector()
       }
-    }
+    // }
 }
 
 
 getAllRequestsByDirector() {
-  let directorId = localStorage.getItem('id');
-  this.etmsService.getDeptBudgetRequestsByDirector({...this.coursePaginationModel,directorId,directorApproval:"Pending"}).subscribe(
+  let headId = localStorage.getItem('id');
+  this.etmsService.getDeptBudgetRequestsByDirector({...this.coursePaginationModel,headId,headApproval:"Pending"}).subscribe(
     (response) => {
       this.dataSource = response.docs;
       this.totalItems = response.totalDocs;
@@ -144,8 +144,8 @@ getAllRequestsByDirector() {
 }
 
 getAllApprovedRequestsByDirector() {
-  let directorId = localStorage.getItem('id');
-  this.etmsService.getDeptBudgetRequestsByDirector({...this.coursePaginationModel,directorId,directorApproval:"Approved"}).subscribe(
+  let headId = localStorage.getItem('id');
+  this.etmsService.getDeptBudgetRequestsByDirector({...this.coursePaginationModel,headId,headApproval:"Approved"}).subscribe(
     (response) => {
       this.dataSource = response.docs;
       this.totalItems = response.totalDocs;
@@ -158,8 +158,8 @@ getAllApprovedRequestsByDirector() {
 }
 
 getAllRejectedRequestsByDirector() {
-  let directorId = localStorage.getItem('id');
-  this.etmsService.getDeptBudgetRequestsByDirector({...this.coursePaginationModel,directorId,directorApproval:"Rejected"}).subscribe(
+  let headId = localStorage.getItem('id');
+  this.etmsService.getDeptBudgetRequestsByDirector({...this.coursePaginationModel,headId,headApproval:"Rejected"}).subscribe(
     (response) => {
       this.dataSource = response.docs;
       this.totalItems = response.totalDocs;
@@ -172,7 +172,7 @@ getAllRejectedRequestsByDirector() {
 }
 
 approve(req: any) {
-  this.id = req.director.id;
+  this.id = req.head.id;
   let tempDirection: Direction;
   if (localStorage.getItem('isRtl') === 'true') {
     tempDirection = 'rtl';
@@ -207,7 +207,7 @@ approve(req: any) {
 
 
 reject(row: any) {
-  this.id = row.director.id;
+  this.id = row.head.id;
   let tempDirection: Direction;
   if (localStorage.getItem('isRtl') === 'true') {
     tempDirection = 'rtl';
@@ -232,9 +232,9 @@ reject(row: any) {
         this.exampleDatabase.dataChange.value[foundIndex] =
           this.etmsService.getDialogData();
       }
-      if (this.director) {
+      // if (this.director) {
         this.getAllRequestsByDirector();
-      }
+      // }
       this.getCount();
      
     }
@@ -246,14 +246,14 @@ getCount(){
   let userRole = localStorage.getItem('user_type');
 
 
-if(userRole == "Director"){
+// if(userRole == "Director"){
   this.etmsService.getDeptBudgetRequestDirectorCount(userId).subscribe(res =>{
     this.approved = res.data.docs.budgetRequestApproved;
     this.rejected = res.data.docs.budgetRequestRejected;
     this.pending = res.data.docs.budgetRequestPending;
   
   })
-  }
+  // }
 
  
 }

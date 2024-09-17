@@ -70,9 +70,9 @@ export class EditDeptBudgetRequestComponent {
   }
 
   ngOnInit(): void {
-    if (this.director) {
+    // if (this.director) {
       this.getAllRequestsByDirector();
-    }
+    // }
   }
   createContactForm(): UntypedFormGroup {
     return this.fb.group({
@@ -88,8 +88,8 @@ export class EditDeptBudgetRequestComponent {
   }
 
   getAllRequestsByDirector() {
-    let directorId = localStorage.getItem('id');
-    this.etmsService.getDeptBudgetRequestsByDirector({ directorId }).subscribe(
+    let headId = localStorage.getItem('id');
+    this.etmsService.getDeptBudgetRequestsByDirector({ headId }).subscribe(
       (response) => {
         this.dataSource = response.docs;
       },
@@ -98,7 +98,7 @@ export class EditDeptBudgetRequestComponent {
   }
 
   public confirmAdd(): void {
-    if (this.director) {
+    // if (this.director) {
       this.payload = {
         approval: 'Rejected',
         reason: this.empRequestForm.value.reason,
@@ -106,25 +106,25 @@ export class EditDeptBudgetRequestComponent {
         employeeName:this.data.empRequest.employeeName
 
       };
-    }
+    // }
 
     if (this.empRequestForm.valid) {
       this.etmsService
         .updateDeptBudgetStatus(this.payload, this._id)
         .subscribe((response: any) => {
-          if (this.director) {
+          // if (this.director) {
             Swal.fire({
               title: 'Success',
-              text: 'Rejected by Director',
+              text: 'Rejected',
               icon: 'success',
             });
             this.getAllRequestsByDirector();
-          }
+          // }
         });
     }
   }
   approveRequest() {
-    if (this.director) {
+    // if (this.director) {
       this.payload = {
         approval: 'Approved',
         reason: this.empRequestForm.value.reason,
@@ -132,20 +132,20 @@ export class EditDeptBudgetRequestComponent {
         employeeName:this.data.empRequest.employeeName
 
       };
-    }
+    // }
 
     if (this.empRequestForm.valid) {
       this.etmsService
       .updateDeptBudgetStatus(this.payload, this._id)
       .subscribe((response: any) => {
-        if (this.director) {
+        // if (this.director) {
           Swal.fire({
             title: 'Success',
             text: 'Approved Successfully',
             icon: 'success',
           });
           this.getAllRequestsByDirector();
-        }
+        // }
       });
     }
   }
