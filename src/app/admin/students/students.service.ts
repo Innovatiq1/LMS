@@ -271,7 +271,14 @@ export class StudentsService extends UnsubscribeOnDestroyAdapter {
       );
     }
 
-    
+    getStudentClassById(id: string): Observable<any> {
+      const apiUrl = `${this.defaultUrl}admin/studentClasses/${id}`;
+      return this.httpClient.get<any>(apiUrl).pipe(
+        map(response => {
+          return response;
+        })
+      );
+    }
 }
 
 

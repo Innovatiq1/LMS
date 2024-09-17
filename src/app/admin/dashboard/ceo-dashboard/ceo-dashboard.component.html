@@ -165,7 +165,32 @@
                 </div>
               </div>
         </div>
-
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"  *ngFor="let component of sharedashboards.components">
+            <div class="card" style="border-radius: 31px;" *ngIf="component.id === 'current-course-status'">
+              <div class="header mt-3">
+                <h2>Current Course Status</h2>
+              </div>
+              <!-- <div class="float-start ms-3 me-3">
+                <h5>{{dept.department}} Department</h5>
+                
+              </div> -->
+              <div class="float-start ms-3 me-3">
+                <h6>Total Staff</h6>
+              </div>
+        
+              <div class="body" *ngIf="isHrPie">
+                <apx-chart 
+  [series]="hrPieChartOptions.series2!" 
+  [chart]="hrPieChartOptions.chart!"
+  [labels]="hrPieChartOptions.labels!" 
+  [colors]="hrPieChartOptions.colors!" 
+  [legend]="hrPieChartOptions.legend!">
+</apx-chart>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <div class="row">
           <ng-container *ngFor="let component of sharedashboards.components" >
