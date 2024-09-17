@@ -208,6 +208,13 @@ EMAILCONFIGURATION_LIST =[
         "email_content": "Please login & start your training."
       }
     ],
+    "account_expiry_notification_template": [
+      {
+        "email_subject": "Account Expiry",
+        "email_top_header_text": "Your account will expire in 1 month.",
+        "email_content": "Please contact Innovatiq for renewal."
+      }
+    ],
     
   }
 
