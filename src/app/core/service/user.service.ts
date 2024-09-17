@@ -330,6 +330,18 @@ export class UserService {
       })
       .pipe(map((response) => response));
   }
+  createForm(data: any) {
+    const apiUrl = `${this.defaultUrl}admin/form-creation`;
+    return this.http
+      .post<ApiResponse>(apiUrl, data)
+      .pipe(map((response) => { }));
+  }
+  saveDashboard(data: any) {
+    const apiUrl = `${this.defaultUrl}admin/dashboard`;
+    return this.http
+      .post<ApiResponse>(apiUrl, data)
+      .pipe(map((response) => { }));
+  }
 
 
   saveCustomzDashboard(data: any) {

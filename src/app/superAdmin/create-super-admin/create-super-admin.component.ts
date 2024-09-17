@@ -20,11 +20,15 @@ import { DepartmentModalComponent } from 'app/admin/departments/department-modal
 import { StudentsService } from 'app/admin/students/students.service';
 import { CreateRoleTypeComponent } from 'app/admin/users/create-role-type/create-role-type.component';
 import { LogoService } from 'app/student/settings/logo.service';
+import { EmailConfigService } from '@core/service/email-config.service';
 import Swal from 'sweetalert2';
 import { MENU_LIST } from '@shared/userType-item';
 import { SIDEMENU_LIST } from '@shared/sidemenu-item';
+import { SETTING_SIDEMENU_LIST } from '@shared/settingSidemenu-item';
 import { LOGOMENU_LIST } from '@shared/logo-item';
+import { EMAILCONFIGURATION_LIST } from '@shared/emailConfigurations-items';
 import { DASHBOARDMENU_LIST } from '@shared/dashboard-item';
+import { FORMCREATION_LIST } from '@shared/formCreations-item';
 
 
 @Component({
@@ -55,7 +59,8 @@ export class CreateSuperAdminComponent {
     private logoService: LogoService,
     private adminService: AdminService,
     public utils: UtilsService,
-    private userService: UserService
+    private userService: UserService,
+    private emailConfigService:EmailConfigService
   ) {}
   ngOnInit() {
     this.userForm = this._fb.group({
@@ -262,39 +267,52 @@ export class CreateSuperAdminComponent {
 
 
               
-            //   const payload =MENU_LIST[0]
-            //   MENU_LIST[0].companyId = response.companyId
-            //   console.log('pay',payload)
-
-            //   this.userService.createCompany(payload).subscribe(() =>{
-            //   })  ///////usertype -role api
-            //   const body =SIDEMENU_LIST[0]
-            //   SIDEMENU_LIST[0].companyId = response.companyId
-            //   console.log('BODY',body)
-
-
-            //   this.userService.createCompany(body).subscribe(() =>{
-            //   })  //////sidemenu api
-
-            //   const logobody =LOGOMENU_LIST[0]
-            //   LOGOMENU_LIST[0].companyId = response.companyId
-            //   LOGOMENU_LIST[0].title = response.company
-
-            //   console.log('BODY',logobody)
-
-
-            //   this.userService.createCompany(logobody).subscribe(() =>{
-            //   }) ////////logo api
-
-
-
-            //  for(let data of DASHBOARDMENU_LIST ){
-            //   data.companyId = response.companyId
-            //   this.userService.createCompany(logobody).subscribe(() =>{
-            //   }) ////////dashboard api
               
+              MENU_LIST[0].companyId = response.companyId
+              const payload =MENU_LIST[0]
+              this.adminService.createUserType(payload).subscribe((response)=>{
+              })
 
-            //  }
+              
+              SIDEMENU_LIST[0].companyId = response.companyId
+              const sideMenuPayload =SIDEMENU_LIST[0]
+              this.logoService.createSidemenu(sideMenuPayload).subscribe((response)=>{
+                // console.log("respone of sideMenuPayload",response)
+              })
+
+            SETTING_SIDEMENU_LIST[0].companyId = response.companyId;
+            const settingSidemenuPayload=SETTING_SIDEMENU_LIST[0];
+            this.logoService.createSettingSidemenu(settingSidemenuPayload).subscribe((response)=>{
+              // console.log("settingSidemenuPayload response=",response)
+            })
+
+              
+              LOGOMENU_LIST[0].companyId = response.companyId
+              LOGOMENU_LIST[0].title = response.company
+              const logobody =LOGOMENU_LIST[0];
+              this.logoService.createLogo(logobody).subscribe((response)=>{
+                // console.log("logobody",response)
+              })
+
+              EMAILCONFIGURATION_LIST[0].companyId=response.companyId;
+              const emailConfigurationsPayload=EMAILCONFIGURATION_LIST[0];
+              this.emailConfigService.createEmailTemplate(emailConfigurationsPayload).subscribe((response)=>{
+                // console.log("response for email template=",response)
+              })
+
+             for(let data of DASHBOARDMENU_LIST ){
+              data.companyId = response.companyId
+              this.userService.saveDashboard(data).subscribe((respone) =>{
+                // console.log("response",respone);
+              }) 
+             }
+
+             for(let data of FORMCREATION_LIST ){
+              data.companyId = response.companyId
+              this.userService.createForm(data).subscribe((respone) =>{
+                // console.log("response",respone);
+              }) 
+             }
             
 
 

@@ -129,6 +129,18 @@ export class EmailConfigService {
     );
   };
 
+createEmailTemplate=(data:any): Observable<any> => {
+  let endpoint = environment.apiUrl+`admin/emailConfiguration/createEmail`;
+
+  // if (Id) {
+  //   endpoint += `?id=${Id}`;
+  // }
+  return this.http.post(endpoint, data).pipe(
+    catchError((err) => {
+      return throwError(err);
+    })
+  );
+};
 
 
 
