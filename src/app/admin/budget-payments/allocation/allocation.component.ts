@@ -22,10 +22,10 @@ import { EtmsService } from '@core/service/etms.service';
 export class AllocationComponent implements OnInit{
   displayedColumns: string[] = [
     'Department Name',
-    'Percentage Allocated',
+    // 'Percentage Allocated',
     'By Value',
-    'Budget-Allocated',
     'Approval',
+    'Budget-Allocated',
   ];
 
   breadscrums = [

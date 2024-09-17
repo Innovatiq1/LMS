@@ -10,6 +10,7 @@ import { AuthService } from '@core/service/auth.service';
 import { CourseService } from '@core/service/course.service';
 import { DeptService } from '@core/service/dept.service';
 import { EtmsService } from '@core/service/etms.service';
+import { UserService } from '@core/service/user.service';
 import { UtilsService } from '@core/service/utils.service';
 import Swal from 'sweetalert2';
 
@@ -35,6 +36,7 @@ export class CreateDeptBudgetRequestComponent {
   department: any;
   hodVal: any;
   directorId: any;
+  headId: any;
   employeName!: string;
   directorName: any;
   private _id: any;
@@ -47,7 +49,8 @@ export class CreateDeptBudgetRequestComponent {
     private deptService: DeptService,
     private authService: AuthService,
     public utils: UtilsService,
-    private etmsService: EtmsService
+    private etmsService: EtmsService,
+    private userService: UserService,
   ) {
     this.activatedRoute.queryParams.subscribe((params) => {
       this._id = params['id'];
@@ -75,7 +78,7 @@ export class CreateDeptBudgetRequestComponent {
           this.utils.noLeadingSpace,
         ],
       ],
-      hod: ['', [Validators.required]],
+      // hod: ['', [Validators.required]],
       year: [
         '',
         [],
@@ -114,12 +117,27 @@ export class CreateDeptBudgetRequestComponent {
   }
   ngOnInit(): void {
     // this.loadUsers();
-    this.editRequest();
+    // this.editRequest();
     this.getAllDepartment();
 
-    this.getUserId();
+    // this.getUserId();
+    this.setup();
   }
-
+  setup() {
+    const headId = JSON.parse(localStorage.getItem('user_data')!).user.head;
+  
+    this.userService.getAllUsers().subscribe((response: any) => {
+      this.users = response?.results.reverse();
+      const user = this.users.find(user => user.id === headId);
+  
+      if (user) {
+        this.departmentForm.patchValue({
+          name: user['name'],
+          approvedEmail: user.email
+        });
+      }
+    });
+  }
   getAllDepartment() {
     this.deptService
       .getAllDepartments({ status: 'active' })
@@ -174,25 +192,29 @@ export class CreateDeptBudgetRequestComponent {
     let userName = JSON.parse(localStorage.getItem('user_data')!).user.name;
     let email = JSON.parse(localStorage.getItem('user_data')!).user.email;
     let dirID = JSON.parse(localStorage.getItem('user_data')!).user.director;
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    const headId = JSON.parse(localStorage.getItem('user_data')!).user.head;
+    const employeeId = JSON.parse(localStorage.getItem('user_data')!).user.id
     let payload = {
       departmentName: this.departmentForm.value.department,
-      hod: this.departmentForm.value.hod,
+      // hod: this.departmentForm.value.hod,
       year: this.departmentForm.value.year,
       trainingBudget: this.departmentForm.value.trainingBudget,
       name: this.departmentForm.value.name,
       email: this.departmentForm.value.approvedEmail,
-      director: dirID,
+      head: headId,
       approval: "Pending",
       employeeName: userName,
-      employeeEmail:email
-
+      employeeEmail:email,
+      companyId: userId,
+      employeeId: employeeId,
 
     }
     
     
     Swal.fire({
       title: 'Are you sure?',
-      text: 'Do you want to create department!',
+      text: 'Do you want to create department budget!',
       icon: 'warning',
       confirmButtonText: 'Yes',
       showCancelButton: true,
@@ -203,10 +225,11 @@ export class CreateDeptBudgetRequestComponent {
           
           if (data) {
             Swal.fire({
+              title: 'Successful',
+              text: 'Department budget rquested Successfully',
               icon: 'success',
-              title: 'Department Created Successfully',
-              showConfirmButton: false,
-              timer: 1500,
+              // showConfirmButton: false,
+              // timer: 1500,
             });
             this.router.navigate(['/admin/budgets/allocation']);
     
@@ -225,7 +248,7 @@ cancel(){
   
       this.departmentForm.patchValue({
         department: res.departmentName,
-        hod: res.hod,
+        // hod: res.hod,
         trainingBudget: res.trainingBudget,
         year: res.year,
       });
@@ -233,20 +256,25 @@ cancel(){
   }
 
 updateRequest(){
+  
+  let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+  let employeeId = JSON.parse(localStorage.getItem('user_data')!).user.id
  const payload = {
   departmentName: this.departmentForm.value.department,
-  hod: this.departmentForm.value.hod,
+  // hod: this.departmentForm.value.hod,
   year: this.departmentForm.value.year,
   trainingBudget: this.departmentForm.value.trainingBudget,
   name: this.departmentForm.value.name,
   email: this.departmentForm.value.approvedEmail,
-  employeeName: this.employeName
+  employeeName: this.employeName,
+  companyId: userId,
+  employeeId: employeeId,
  }
 
  
     Swal.fire({
       title: 'Are you sure?',
-      text: 'Do you want to update this department!',
+      text: 'Do you want to update this department budget!',
       icon: 'warning',
       confirmButtonText: 'Yes',
       showCancelButton: true,
@@ -257,10 +285,11 @@ updateRequest(){
           
           if(data){
             Swal.fire({
-              icon:'success',
-              title: 'Department Budget Updated Successfully',
-              showConfirmButton: false,
-              timer: 1500,
+              title: 'Successful',
+              text: 'Department budget Updated Successfully',
+              icon: 'success',
+              // showConfirmButton: false,
+              // timer: 1500,
             });
             this.router.navigate(['/admin/budgets/allocation']);
           }

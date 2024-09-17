@@ -51,12 +51,12 @@
                         <span class="mobile-label">Department:</span>{{row.departmentName}}
                       </mat-cell>
                     </ng-container>
-                    <ng-container matColumnDef="Percentage Allocated">
+                    <!-- <ng-container matColumnDef="Percentage Allocated">
                       <mat-header-cell *matHeaderCellDef mat-sort-header>HOD</mat-header-cell>
                       <mat-cell *matCellDef="let row" [routerLink]="['/admin/budgets/view-department-budget', row.id]">
                         <span class="mobile-label">HOD:</span>{{row.hod}}
                       </mat-cell>
-                    </ng-container>
+                    </ng-container> -->
                     <ng-container matColumnDef="By Value">
                       <mat-header-cell *matHeaderCellDef mat-sort-header>Year</mat-header-cell>
                       <mat-cell *matCellDef="let row" [routerLink]="['/admin/budgets/view-department-budget', row.id]">
@@ -65,7 +65,7 @@
                     </ng-container>
                     <ng-container matColumnDef="Budget-Allocated">
                       <mat-header-cell *matHeaderCellDef mat-sort-header>Budget Allocated</mat-header-cell>
-                      <mat-cell *matCellDef="let row" [routerLink]="['/admin/budgets/view-department-budget', row.id]" class="payment-cell">
+                      <mat-cell *matCellDef="let row" [routerLink]="['/admin/budgets/view-department-budget', row.id]">
                         <span class="mobile-label">Budget Allocated:</span><span>$</span> {{row.trainingBudget||0}}.00
                       </mat-cell>
                     </ng-container>

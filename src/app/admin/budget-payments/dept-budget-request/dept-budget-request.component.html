@@ -76,9 +76,9 @@
                     <!-- <th>#</th> -->
                     <th>Name</th>
                     <th>Department Name</th>
-                    <th>Head of Department</th>
+                    <!-- <th>Head of Department</th> -->
                     <th>Year</th>
-                    <th>Budget Allocated</th>
+                    <th class="payment">Budget Allocated</th> 
                     <th>Approval Status</th>
                     <th *ngIf="pendingCourses">Actions</th>
                   </tr>
@@ -87,9 +87,9 @@
                   <tr *ngFor="let request of dataSource">
                     <td>{{ request?.employeeName }}</td>
                     <td>{{ request?.departmentName }}</td>
-                    <td>{{ request?.hod }}</td>
+                    <!-- <td>{{ request?.hod }}</td> -->
                     <td>{{ request?.year }}</td>
-                    <td style="text-align:right"><span>$</span>{{ request?.trainingBudget ||0}}.00</td>
+                    <td class="payment"><span>$</span>{{ request?.trainingBudget ||0}}.00</td>
                     <td>
                         <span
                         [class]="
