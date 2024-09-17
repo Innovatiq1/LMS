@@ -71,6 +71,7 @@ export class EditSuperAdminComponent {
       re_passwords: new FormControl('', []),
       type: new FormControl('admin', [Validators.required]),
       joiningDate: new FormControl('', [Validators.required]),
+      expiryDate:new FormControl('', [Validators.required])
      
     });
     this.getBlogsList();
@@ -291,6 +292,7 @@ export class EditSuperAdminComponent {
             website:this.data.website,
             mobile: this.data?.mobile,
             joiningDate: this.data?.joiningDate,
+            expiryDate:this.data?.expiryDate,
             domain: res[0]?.identifier,
             company:this.data?.company,
             learner:res[0]?.learner,
