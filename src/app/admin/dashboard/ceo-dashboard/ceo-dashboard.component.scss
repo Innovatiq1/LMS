@@ -1,3 +1,22 @@
 .card.card-statistic-2{
     width: 100%;
 }
+.green-icon {
+    color: green;
+    display: inline !important;
+  margin-top: 5px;
+  .feather {
+    height: 20px !important;
+    width: 20px !important;
+  }
+  }
+  
+  .grey-icon {
+    color: grey;
+  }
+  
+  .disabled {
+    pointer-events: none;
+    opacity: 0.5; 
+  }
+  
