@@ -16,6 +16,8 @@ import {
   CountryISO
 } from "ngx-intl-tel-input";
 import { ConfirmedValidator } from '@shared/password.validator';
+import { CommonService } from '@core/service/common.service';
+import { UserService } from '@core/service/user.service';
 
 @Component({
   selector: 'app-signup',
@@ -46,19 +48,21 @@ export class SignupComponent implements OnInit {
   passwordMatchValidator: any;
   tmsUrl: boolean;
   lmsUrl: boolean;
+  extractedName: string;
   
   constructor(
     private formBuilder: UntypedFormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private translate: LanguageService,
-    private registration: RegistrationService
+    private registration: RegistrationService,
+    private commonService: CommonService,
+    private userService: UserService
   ) { 
     let urlPath = this.router.url.split('/')
     this.tmsUrl = urlPath.includes('TMS');
     this.lmsUrl = urlPath.includes('LMS');
-
-
+    this.extractedName = urlPath[1];
     this.authForm = this.formBuilder.group({
       name: ['', Validators.required],
       email: ['',[Validators.required,Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)] ],
@@ -78,6 +82,16 @@ export class SignupComponent implements OnInit {
     { text: 'Chinese', flag: 'assets/images/flags/spain.svg', lang: 'ch' },
     { text: 'Tamil', flag: 'assets/images/flags/germany.svg', lang: 'ts' },
   ];
+
+  signin(){
+
+    if(this.tmsUrl){
+      this.commonService.navigateWithCompanyName(this.extractedName,'authentication/TMS/signin')
+    } else if(this.lmsUrl){
+      this.commonService.navigateWithCompanyName(this.extractedName,'authentication/LMS/signin')
+
+    }
+  }
   ngOnInit() {
     this.startSlideshow()
     this.authForm = this.formBuilder.group({
@@ -107,22 +121,40 @@ export class SignupComponent implements OnInit {
     
     if (this.authForm.valid) {
       const userData: Users = this.authForm.value;
-            userData.type = 'Student';
-      userData.role = 'Student';
+      this.userService.getCompanyByIdentifierWithoutToken(this.extractedName).subscribe(
+        (res: any) => {
+
+            userData.type = res[0]?.learner;
+            userData.users = res[0]?.users;
+            userData.companyId = res[0]?.companyId;
+            userData.company = res[0]?.company;
+            userData.domain = res[0]?.identifier;
+
+
+      userData.role = res[0]?.learner;
       this.registration.registerUser(userData).subscribe(
         (response: any) => {
+          if(response.status === 'success' && !response.data.status ){
           Swal.fire({
             title: 'Registration Successful',
             text: "We have sent an email to you, check your email,to  know the status of your acount",
             icon: 'success',
           });
-          this.router.navigate(['/authentication/LMS/signin']);
+          this.commonService.navigateWithCompanyName(this.extractedName,'authentication/LMS/signin')
+        } else {
+          Swal.fire({
+            title: 'Registration Failed',
+            text: "You have exceeded your limit, please contact Admin to upgrade",
+            icon: 'error',
+          });
+        }
         },
         (error: any) => {
           this.submitted = true;
           this.email=error
         }
       );
+    })
     }
     this.submitted = true;
     

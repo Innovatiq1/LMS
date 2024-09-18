@@ -45,6 +45,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
   orgMenuItem: MenuItem[] = [];
   isSettings: boolean = false;
   submenu :boolean = false;
+  isTwoFactor: boolean = true;
+  
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private renderer: Renderer2,
@@ -59,6 +61,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
     let urlPath = this.router.url.split('/');
     this.isSettings = urlPath.includes('settings');
+    this.isTwoFactor = urlPath.includes('two-factor-auth');
 
     this.routerObj = this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -74,6 +77,13 @@ export class SidebarComponent implements OnInit, OnDestroy {
             this.isSettings = false;
             this.menuitem = this.orgMenuItems;
           }
+        }
+        if (event.url.includes('two-factor-auth')) {
+          this.isTwoFactor = true;
+          this.renderer.addClass(this.document.body, 'hide-side-menu');
+        } else {
+          this.isTwoFactor = false;
+          this.renderer.removeClass(this.document.body, 'hide-side-menu');
         }
       }
     });

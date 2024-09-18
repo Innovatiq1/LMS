@@ -4,7 +4,7 @@ import { LecturesService } from 'app/teacher/lectures/lectures.service';
 import * as moment from 'moment';
 import { CoursePaginationModel, MainCategory, SubCategory } from '@core/models/course.model';
 
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Role } from '@core';
@@ -170,6 +170,7 @@ export type lineChartOptions = {
 })
 export class MainComponent implements OnInit {
   @ViewChild('chart') chart!: ChartComponent;
+  @Input() sharedashboards: any; 
   public areaChartOptions!: Partial<chartOptions>;
   public performanceBarChartOptions!: Partial<chartOptions>;
   public pieChart1Options!: Partial<pieChart1Options>;
@@ -278,6 +279,8 @@ export class MainComponent implements OnInit {
   isStudentDB: boolean = false;
   isInstructorDB: boolean = false;
   isAssessorDB: boolean = false;
+  isCeoDB: boolean = false;
+  isManager: boolean = false;
   isTADB: boolean = false;
   superAdmin: boolean = false;
   issupervisorDB: boolean = false;
@@ -402,8 +405,10 @@ export class MainComponent implements OnInit {
     const companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     this.userService.getDashboardsByCompanyId(companyId, typeName).subscribe(
       (data: any) => {
+        console.log("dashboards1231", data.data)
         this.roleType = data.data.map((doc: any) => doc.typeName).toString();
         this.dashboards = data.data.flatMap((doc: any) => doc.dashboards);
+        console.log("dashboards", this.dashboards)
         this.dashboards.forEach((dashboard: { checked: any; }, index: number) => {
           if (dashboard.checked) {
           } else {
@@ -756,6 +761,7 @@ export class MainComponent implements OnInit {
     this.commonRoles = AppConstants
     this.getClassList();
     const role = this.authenticationService.currentUserValue.user.role;
+    console.log('isCeoDB',role)
     if(role === 'Super Admin'){
       this.superAdmin = true;
       this.breadscrums = [
@@ -799,6 +805,7 @@ export class MainComponent implements OnInit {
     else if (role === 'Training administrator' || role === 'training administrator' ) {
       this.isTADB = true;
     }
+   
     else if (role === 'Supervisor' || role === 'supervisor' ) {
       this.issupervisorDB = true;
     }
@@ -868,7 +875,9 @@ export class MainComponent implements OnInit {
       }
     );
   }
-
+  get shouldShowSection(): boolean {
+    return !this.isCeoDB || !this.isManager;
+  }
   getProgramClassList() {
     let instructorId = localStorage.getItem('id')
     this.lecturesService.getClassListWithPagination1(instructorId, this.filterName,{ ...this.coursePaginationModel }).subscribe(
@@ -2348,16 +2357,16 @@ private attendanceBarChart() {
     }
   }
   setUsersChart() {
-    if (this.dashboard.content[3].viewType == 'Bar Chart') {
+    if (this.dashboard?.content[3].viewType == 'Bar Chart') {
       this.isUsersBar = true;
       // this.getCount();
       this.usersBarChart();
-    } else if (this.dashboard.content[3].viewType == 'Pie Chart') {
+    } else if (this.dashboard?.content[3].viewType == 'Pie Chart') {
       this.isUsersPie = true;
       // this.getCount();
       this.usersPieChart();
     }
-    else if (this.dashboard.content[3].viewType == 'Line Chart') {
+    else if (this.dashboard?.content[3].viewType == 'Line Chart') {
       this.isUsersLine = true;
       // this.getCount();
       this.usersLineChart();

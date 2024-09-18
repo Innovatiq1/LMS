@@ -20,7 +20,16 @@ import { DepartmentModalComponent } from 'app/admin/departments/department-modal
 import { StudentsService } from 'app/admin/students/students.service';
 import { CreateRoleTypeComponent } from 'app/admin/users/create-role-type/create-role-type.component';
 import { LogoService } from 'app/student/settings/logo.service';
+import { EmailConfigService } from '@core/service/email-config.service';
 import Swal from 'sweetalert2';
+import { MENU_LIST } from '@shared/userType-item';
+import { SIDEMENU_LIST } from '@shared/sidemenu-item';
+import { SETTING_SIDEMENU_LIST } from '@shared/settingSidemenu-item';
+import { LOGOMENU_LIST } from '@shared/logo-item';
+import { EMAILCONFIGURATION_LIST } from '@shared/emailConfigurations-items';
+import { DASHBOARDMENU_LIST } from '@shared/dashboard-item';
+import { FORMCREATION_LIST } from '@shared/formCreations-item';
+
 
 @Component({
   selector: 'app-create-super-admin',
@@ -50,7 +59,8 @@ export class CreateSuperAdminComponent {
     private logoService: LogoService,
     private adminService: AdminService,
     public utils: UtilsService,
-    private userService: UserService
+    private userService: UserService,
+    private emailConfigService:EmailConfigService
   ) {}
   ngOnInit() {
     this.userForm = this._fb.group({
@@ -71,10 +81,16 @@ export class CreateSuperAdminComponent {
         Validators.required,
         Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/),
       ]),
+      domain: new FormControl('', []),
+      users: new FormControl('', []),
+      courses: new FormControl('', []),
+      learner: new FormControl('',[Validators.required]),
+      trainer: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
       re_passwords: new FormControl('', []),
       type: new FormControl('admin', [Validators.required]),
       joiningDate: new FormControl('', [Validators.required]),
+      expiryDate: new FormControl('', [Validators.required]),
     });
     this.getDepartment();
     this.getUserTypeList();
@@ -232,16 +248,87 @@ export class CreateSuperAdminComponent {
   }
   private createUser(userData: Users): void {    
     this.userService.saveUsers(userData).subscribe(
-      () => {
-        Swal.fire({
-          title: 'Successful',
-          text: 'Users created successfully',
-          icon: 'success',
-        });
-        this.userForm.reset();
-        this.router.navigateByUrl('/super-admin/admin-list');
+      (response:any) => {
+            let payload = {
+              company:this.userForm.value.company,
+              companyId:response.companyId,
+              createdBy:localStorage.getItem('id'),
+              identifier:this.userForm.value.domain,
+              learner:this.userForm.value.learner,
+              trainer:this.userForm.value.trainer,
+              users:this.userForm.value.users,
+              courses:this.userForm.value.courses,
+              expiryDate:this.userForm.value.expiryDate
+            }
+            this.userService.createCompany(payload).subscribe(() =>{
+              Swal.fire({
+                title: 'Successful',
+                text: 'Company created successfully',
+                icon: 'success',
+              });
+
+
+              
+              
+              MENU_LIST[0].companyId = response.companyId
+              const payload =MENU_LIST[0]
+              this.adminService.createUserType(payload).subscribe((response)=>{
+              })
+
+              
+              SIDEMENU_LIST[0].companyId = response.companyId
+              const sideMenuPayload =SIDEMENU_LIST[0]
+              this.logoService.createSidemenu(sideMenuPayload).subscribe((response)=>{
+                // console.log("respone of sideMenuPayload",response)
+              })
+
+            SETTING_SIDEMENU_LIST[0].companyId = response.companyId;
+            const settingSidemenuPayload=SETTING_SIDEMENU_LIST[0];
+            this.logoService.createSettingSidemenu(settingSidemenuPayload).subscribe((response)=>{
+              // console.log("settingSidemenuPayload response=",response)
+            })
+
+              
+              LOGOMENU_LIST[0].companyId = response.companyId
+              LOGOMENU_LIST[0].title = response.company
+              const logobody =LOGOMENU_LIST[0];
+              this.logoService.createLogo(logobody).subscribe((response)=>{
+                // console.log("logobody",response)
+              })
+
+              EMAILCONFIGURATION_LIST[0].companyId=response.companyId;
+              const emailConfigurationsPayload=EMAILCONFIGURATION_LIST[0];
+              this.emailConfigService.createEmailTemplate(emailConfigurationsPayload).subscribe((response)=>{
+                // console.log("response for email template=",response)
+              })
+
+             for(let data of DASHBOARDMENU_LIST ){
+              data.companyId = response.companyId
+              this.userService.saveDashboard(data).subscribe((respone) =>{
+                // console.log("response",respone);
+              }) 
+             }
+
+             for(let data of FORMCREATION_LIST ){
+              data.companyId = response.companyId
+              this.userService.createForm(data).subscribe((respone) =>{
+                // console.log("response",respone);
+              }) 
+             }
+            
+
+
+          
+               
+             
+
+         
+
+          })
+            this.userForm.reset();
+        window.history.back();
       },
-      (error) => {
+      (error) =>               {
         Swal.fire(
           'Failed to create user',
           error.message || error.error,
@@ -251,6 +338,6 @@ export class CreateSuperAdminComponent {
     );
   }
   onNoClick() {
-    this.router.navigateByUrl('/super-admin/admin-list');
+    window.history.back();
   }
 }

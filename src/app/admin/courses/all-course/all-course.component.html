@@ -41,6 +41,13 @@
                               <button mat-raised-button id="submit">Create</button>
                             </div>
                           </li>
+                          <li class="tbl-header-btn">
+                            <div class="m-l-10" matTooltip="ADD" >
+                              
+                              <button mat-raised-button  id="submit" (click)="getAllTpCourses()"><span class="custom-button-padding">Get SSG Courses</span></button>
+                            </div>
+
+                          </li>
                           <li>
                             <div class="upload-btn m-l-10" matTooltip="Bulk Upload">
                               <input type="file" (change)="onBulkUpload($event)" />
@@ -318,4 +325,12 @@
       </div>
     </div>
   </div>
+
+  <!-- <div *ngIf="isLoading" class="spinner-container">
+    <mat-spinner></mat-spinner>
+</div> -->
+
+<div *ngIf="isLoading" class="overlay">
+  <mat-spinner class="centered-spinner" diameter="50"></mat-spinner>
+</div>
 </section>

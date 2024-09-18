@@ -140,7 +140,9 @@ export class EtmsService extends UnsubscribeOnDestroyAdapter {
   }
 
   getAllDepartmentBudgets(data: any): Observable<any> {
-    const apiUrl = `${this.prefix}admin/budget/department-budget/budget`;
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId
+    let employeeId = JSON.parse(localStorage.getItem('user_data')!).user.id
+    const apiUrl = `${this.prefix}admin/budget/department-budget/budget?companyId=${userId}&employeeId=${employeeId}`;
     return this._Http
       .get<any>(apiUrl, {
         params: this.buildParams(data),
@@ -155,21 +157,25 @@ export class EtmsService extends UnsubscribeOnDestroyAdapter {
   }
 
   getAllBudgets(data: any): Observable<any> {
-    const apiUrl = `${this.prefix}admin/budget`;
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId
+    let employeeId = JSON.parse(localStorage.getItem('user_data')!).user.id
+    const apiUrl = `${this.prefix}admin/budget?companyId=${userId}&employeeId=${employeeId}`;
     return this._Http.get<any>(apiUrl, {
       params: this.buildParams(data),
     })
     // .pipe(map((response) => response.data));
   }
 
-  getBudgetRequestsByDirector(director: any): Observable<ApiResponse> {
-    const apiUrl = `${this.prefix}admin/budget/budg/director?director=${director.directorId}&approval=${director.directorApproval}`;
+  getBudgetRequestsByDirector(head: any): Observable<ApiResponse> {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId
+    const apiUrl = `${this.prefix}admin/budget/budg/head?head=${head.headId}&approval=${head.headApproval}&companyId=${userId}`;
     return this._Http.get<ApiResponse>(apiUrl, {
-      params: this.buildParams(director),
+      params: this.buildParams(head),
     });
   }
   getBudgetRequestDirectorCount(id: any) {
-    const apiUrl = `${this.prefix}admin/budget/budg/count?director=${id}`;
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId
+    const apiUrl = `${this.prefix}admin/budget/budg/count?head=${id}&companyId=${userId}`;
     return this._Http.get<any>(apiUrl).pipe(map((response) => response));
   }
   updateBudgetStatus(data: any, id: any) {
@@ -177,14 +183,16 @@ export class EtmsService extends UnsubscribeOnDestroyAdapter {
     return this._Http.put<ApiResponse>(apiUrl, data).pipe(map(() => {}));
   }
 
-  getDeptBudgetRequestsByDirector(director: any): Observable<ApiResponse> {
-    const apiUrl = `${this.prefix}admin/budget/department-budget/budg/director?director=${director.directorId}&approval=${director.directorApproval}`;
+  getDeptBudgetRequestsByDirector(head: any): Observable<ApiResponse> {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId
+    const apiUrl = `${this.prefix}admin/budget/department-budget/budg/head?head=${head.headId}&approval=${head.headApproval}&companyId=${userId}`;
     return this._Http.get<ApiResponse>(apiUrl, {
-      params: this.buildParams(director),
+      params: this.buildParams(head),
     });
   }
   getDeptBudgetRequestDirectorCount(id: any) {
-    const apiUrl = `${this.prefix}admin/budget/department-budget/budg/count?director=${id}`;
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId
+    const apiUrl = `${this.prefix}admin/budget/department-budget/budg/count?head=${id}&companyId=${userId}`;
     return this._Http.get<any>(apiUrl).pipe(map((response) => response));
   }
   updateDeptBudgetStatus(data: any, id: any) {

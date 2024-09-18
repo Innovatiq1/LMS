@@ -37,11 +37,36 @@ export class LogoService {
         const apiUrl = `${this.defaultUrl}admin/logo/${id}`;
         return this.http.put<any>(apiUrl, data).pipe(map((response) => response));
       }
+      createLogo(formData: any): Observable<ApiResponse> {
+        const apiUrl = `${this.defaultUrl}admin/logo`;
+        return this.http.post<ApiResponse>(apiUrl, formData).pipe(
+          map((response) => {
+            return response.data;
+          })
+        );
+      }
       getSidemenu(id:any): Observable<any> {
         const apiUrl = `${this.defaultUrl}admin/sidemenu?companyId=${id}`;
         return this.http.get(apiUrl).pipe(
           map(response => {
             return response; 
+          })
+        );
+      }
+      createSidemenu(formData: any): Observable<ApiResponse> {
+        const apiUrl = `${this.defaultUrl}admin/sidemenu`;
+        return this.http.post<ApiResponse>(apiUrl, formData).pipe(
+          map((response) => {
+            return response.data;
+          })
+        );
+      }
+
+      createSettingSidemenu(formData: any): Observable<ApiResponse> {
+        const apiUrl = `${this.defaultUrl}admin/sidemenu/settings/sidemenu`;
+        return this.http.post<ApiResponse>(apiUrl, formData).pipe(
+          map((response) => {
+            return response.data;
           })
         );
       }

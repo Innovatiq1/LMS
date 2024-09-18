@@ -7,7 +7,7 @@ import {
   OnInit,
   Renderer2,
 } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { UnsubscribeOnDestroyAdapter } from '@shared';
 import {
   LanguageService,
@@ -29,6 +29,7 @@ import { StudentsService } from 'app/admin/students/students.service';
 import { AppConstants } from '@shared/constants/app.constants';
 import { AnyComponent } from '@fullcalendar/core/preact';
 import { AdminService } from '@core/service/admin.service';
+import { CommonService } from '@core/service/common.service';
 
 interface Notifications {
   message: string;
@@ -72,8 +73,9 @@ export class HeaderComponent
   totalItems: any;
   subscription!: Subscription;
   role: string | null;
-  commonRoles:any;
+  commonRoles: any;
   settingsItems: any;
+  isTwoFactor: boolean = true;
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private renderer: Renderer2,
@@ -87,6 +89,7 @@ export class HeaderComponent
     private translate: LanguageService,
     private logoService: LogoService,
     private adminService: AdminService,
+    private commonService: CommonService,
 
     private announcementService: AnnouncementService,
     private dialogModel: MatDialog,
@@ -95,6 +98,8 @@ export class HeaderComponent
   ) {
     super();
     this.role = localStorage.getItem('user_type');
+    let urlPath = this.router.url.split('/');
+    this.isTwoFactor = urlPath.includes('two-factor-auth');
   }
   simpleDialog?: MatDialogRef<SimpleDialogComponent>;
   listLang = [
@@ -104,7 +109,7 @@ export class HeaderComponent
   ];
   callLogo() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-        this.logoService.getLogo(userId).subscribe((data) => {
+    this.logoService.getLogo(userId).subscribe((data) => {
       this.logoTitle = data?.data.docs[0].title;
       this.logoImage = data?.data.docs[0].image;
     });
@@ -112,13 +117,14 @@ export class HeaderComponent
 
   ngOnInit() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-    this.adminService.getUserTypeList({ allRows: true },userId).subscribe(
-      (response: any) => {
+    this.adminService
+      .getUserTypeList({ allRows: true }, userId)
+      .subscribe((response: any) => {
         let userType = localStorage.getItem('user_type');
         let data = response.filter((item: any) => item.typeName === userType);
-         this.settingsItems = data[0].settingsMenuItems
-      })
-    this.commonRoles = AppConstants
+        this.settingsItems = data[0].settingsMenuItems;
+      });
+    this.commonRoles = AppConstants;
     /* getting logo details from logoservice **/
     this.subscription = this.logoService.currentData.subscribe((data) => {
       if (data) {
@@ -165,6 +171,11 @@ export class HeaderComponent
       this.flagvalue = val.map((element) => element.flag);
     }
     this.getAnnouncementForStudents();
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.isTwoFactor = this.router.url.includes('two-factor-auth');
+      }
+    });
   }
 
   navigateToUserSettings() {
@@ -180,7 +191,9 @@ export class HeaderComponent
     this.router.navigate(['/student/settings/customization']);
   }
   navigateToProfileSettings() {
-    this.router.navigate(['/student/settings/security/2-factor-authentication']);
+    this.router.navigate([
+      '/student/settings/security/2-factor-authentication',
+    ]);
   }
   navigateToLmsSettings() {
     this.router.navigate(['/student/settings/all-questions']);
@@ -280,12 +293,41 @@ export class HeaderComponent
     this.subs.sink = this.authService.logout().subscribe((res) => {
       if (!res.success) {
         let userType = JSON.parse(localStorage.getItem('user_data')!).user.type;
-        if (userType == AppConstants.ADMIN_USERTYPE || AppConstants.ADMIN_ROLE || userType == AppConstants.INSTRUCTOR_ROLE) {
+        if (
+          userType == AppConstants.ADMIN_USERTYPE ||
+          AppConstants.ADMIN_ROLE ||
+          userType == AppConstants.INSTRUCTOR_ROLE
+        ) {
           this.router.navigate(['/authentication/TMS/signin']);
+          let subdomain = localStorage.getItem('subdomain');
+          if (subdomain && subdomain !== 'undefined') {
+            this.commonService.navigateWithCompanyName(
+              subdomain,
+              'authentication/TMS/signin'
+            );
+          } else {
+            this.router.navigate(['/authentication/TMS/signin']);
+          }
         } else if (userType == AppConstants.STUDENT_ROLE) {
-          this.router.navigate(['/authentication/LMS/signin']);
+          let subdomain = localStorage.getItem('subdomain');
+          if (subdomain && subdomain !== 'undefined') {
+            this.commonService.navigateWithCompanyName(
+              subdomain,
+              'authentication/LMS/signin'
+            );
+          } else {
+            this.router.navigate(['/authentication/LMS/signin']);
+          }
         } else {
-          this.router.navigate(['/authentication/TMS/signin']);
+          let subdomain = localStorage.getItem('subdomain');
+          if (subdomain && subdomain !== 'undefined') {
+            this.commonService.navigateWithCompanyName(
+              subdomain,
+              'authentication/TMS/signin'
+            );
+          } else {
+            this.router.navigate(['/authentication/TMS/signin']);
+          }
         }
         localStorage.clear();
       }
@@ -293,7 +335,10 @@ export class HeaderComponent
   }
   updateLogoForStudent() {
     let userType = JSON.parse(localStorage.getItem('user_data')!).user.type;
-    if (userType === AppConstants.ADMIN_ROLE || userType === AppConstants.INSTRUCTOR_ROLE) {
+    if (
+      userType === AppConstants.ADMIN_ROLE ||
+      userType === AppConstants.INSTRUCTOR_ROLE
+    ) {
       this.isAdmin = true;
       const logoSpan = document.querySelector('.logo-name');
       if (logoSpan) {
@@ -303,10 +348,10 @@ export class HeaderComponent
       const logoSpan = document.querySelector('.logo-name');
     }
   }
-  checkViewSettings(role:any){
-    if(this.settingsItems.length > 0){
+  checkViewSettings(role: any) {
+    if (this.settingsItems.length > 0) {
       return true;
     }
-    return role ? AppConstants.ALLTHREEROLES.includes(role):false;
+    return role ? AppConstants.ALLTHREEROLES.includes(role) : false;
   }
 }

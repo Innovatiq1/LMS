@@ -184,4 +184,37 @@ input[type="file"]::file-selector-button {
   background: none;
   cursor: pointer;
 }
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.custom-button-padding {
+  display: inline-block; 
+  padding-top: 8px; 
+  padding-bottom: 8px; 
+  font-size: 14px; 
+  line-height: 1.2; 
+}
+
+.centered-spinner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999; 
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  z-index: 9998; 
+}
+
 

@@ -31,10 +31,11 @@ export class AuthenService {
     return this.currentUserSubject.value;
   }
 
-  loginUser(email: any, password: any): Observable<Users> {
+  loginUser(email: any, password: any,companyId:any): Observable<Users> {
     const body = {
       email,
-      password
+      password,
+      companyId
     };
 
     const loginUrl =this.defaultUrl + 'auth/login';
@@ -58,6 +59,7 @@ export class AuthenService {
     const loginUrl =this.defaultUrl + 'auth/social-login';
     return this.http.post<ApiResponse>(loginUrl, socialUser).pipe(
       map((response) => {
+        console.log('socialres',response)
         localStorage.setItem('currentUser', JSON.stringify(response.data));
         localStorage.setItem('userLogs', JSON.stringify(response.userLogs));
         localStorage.setItem('id', response.data.user.id);
@@ -153,18 +155,22 @@ updateUserProfile(updatedProfile: any) {
 private linkedInCredentials = {
   response_type: "code",
   clientId: "77r1poks3r9jfo",
-  redirect_uri: 'http://localhost:4200/authentication/auth/linkedin/redirect',
+  redirect_uri: 'http://localhost:4200/innovatiq-uat/authentication/auth/linkedin/redirect',
   clientSecret: 'ZgFGOi8fXTy9zjoS',
   state: 'randomstring',
   scope: "openid email profile",
 };
 
 
-loginWithLinkedIn(): void {
+loginWithLinkedIn(companyName?: string): void {
+  const redirectUri = companyName 
+    ? `http://localhost:4200/${companyName}/authentication/auth/linkedin/redirect` 
+    : 'http://localhost:4200/authentication/auth/linkedin/redirect';
+
   const params = new HttpParams()
     .set('response_type', this.linkedInCredentials.response_type)
     .set('client_id', this.linkedInCredentials.clientId)
-    .set('redirect_uri', this.linkedInCredentials.redirect_uri)
+    .set('redirect_uri', redirectUri)
     .set('state', this.linkedInCredentials.state)
     .set('scope', this.linkedInCredentials.scope);
 
@@ -173,20 +179,26 @@ loginWithLinkedIn(): void {
 }
 
 
+
 getProfileData(accessToken: string): Observable<any> {
   const loginUrl =this.defaultUrl + 'auth/linkedinauthorize';
   return this.http.get(`${loginUrl}?accessToken=${accessToken}`);
 }
 
-AccessToken(code: string): Observable<any> {
+getUsersByEmail(email: string): Observable<any> {
+  const loginUrl =this.defaultUrl + 'auth/usersByEmail';
+  return this.http.get(`${loginUrl}?email=${email}`);
+}
+
+AccessToken(data: any): Observable<any> {
   const body = new HttpParams()
     .set('grant_type', 'authorization_code')
-    .set('code', code)
+    .set('code', data.code)
     .set('redirect_uri', this.linkedInCredentials.redirect_uri)
     .set('client_id', this.linkedInCredentials.clientId)
     .set('client_secret', this.linkedInCredentials.clientSecret);
     const loginUrl =this.defaultUrl + 'auth/linkedinlogin';
-    return this.http.post<ApiResponse>(loginUrl, {code}).pipe(
+    return this.http.post<ApiResponse>(loginUrl, data).pipe(
       map((response) => {
         return response;
       }))

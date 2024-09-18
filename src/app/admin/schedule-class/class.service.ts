@@ -67,7 +67,7 @@ export class ClassService extends UnsubscribeOnDestroyAdapter {
     return params;
   }
   getStudentRegisteredProgramClasses(data:any) {
-    return this.http.get(`${this.prefix}admines/studentApproveList`,{ params: this.buildParams(data) }).pipe(
+    return this.http.get(`${this.prefix}admin/studentApproveList`,{ params: this.buildParams(data) }).pipe(
       map((response:any) => {
         return response;
       })
@@ -250,6 +250,10 @@ getClassListWithPagination(
   return this.http.get<ApiResponse>(apiUrl, { params: this.buildParams(filter) })
 }
 
+getClassListByCompanyId(id?:any): Observable<ApiResponse> {
+  const apiUrl = `${this.prefix}admin/class/classes/${id}`;
+  return this.http.get<ApiResponse>(apiUrl)
+}
 
 getProgramClassListWithPagination(id:any,
   filter?:Partial<CoursePaginationModel>): Observable<ApiResponse> {

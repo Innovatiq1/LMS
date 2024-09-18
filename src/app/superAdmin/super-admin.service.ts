@@ -33,11 +33,11 @@ export class SuperAdminService {
   // }
 
   getAllCustomRoleById(companyId: any) {
-    const apiUrl = `${this.defaultUrl}admin/customizRole/${companyId}`;
+    const apiUrl = `${this.defaultUrl}admin/company/${companyId}`;
     return this.http.get<any>(apiUrl).pipe(
       map((response: any) => {
-        if (response && response.data) {
-          return response.data;
+        if (response) {
+          return response;
         } else {
           console.error('Unexpected response structure:', response);
           return {};

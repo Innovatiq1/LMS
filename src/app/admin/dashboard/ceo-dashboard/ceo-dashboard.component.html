@@ -1,0 +1,494 @@
+<div class="content-block">
+  <div class="row">
+    <ng-container *ngFor="let dept of dept; let i = index">
+      <div class="col-lg-6 col-sm-6">
+        <div
+          class="info-box7"
+          [ngClass]="getColorClass(i) + ' order-info-box7'"
+        >
+          <div class="info-box7-block">
+            <div class="row">
+              <div class="col-9">
+                <h5 class="mt-3">{{ dept.department }}</h5>
+              </div>
+              <div class="col-3">
+                <img src="assets/images/banner/hr.png" alt="" />
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-4">
+                <h6>No.of Courses</h6>
+              </div>
+              <div class="col-4">
+                <h6>No.of Managers</h6>
+              </div>
+              <div class="col-4">
+                <h6>No.of Staff</h6>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-4">
+                <h6
+                  (click)="courseList(dept.department)"
+                  style="cursor: pointer"
+                >
+                  {{ dept.recordCount || 0 }}
+                </h6>
+              </div>
+              <div class="col-4">
+                <h6
+                  (click)="managerList(dept.department)"
+                  style="cursor: pointer"
+                >
+                  {{ dept.managerCount || 0 }}
+                </h6>
+              </div>
+              <div class="col-4">
+                <h6
+                  (click)="staffList(dept.department)"
+                  style="cursor: pointer"
+                >
+                  {{ dept.staffCount || 0 }}
+                </h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngFor="let dept of dept; let i = index">
+      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" *ngIf="dept.checked">
+        <div class="card" style="border-radius: 31px">
+          <div class="header mt-3">
+            <h2>Current Course Status</h2>
+          </div>
+          <div class="float-start ms-3 me-3">
+            <h5>{{ dept.department }} Department</h5>
+          </div>
+          <!-- <div class="float-start ms-3 me-3">
+                <h6>Total Staff</h6>
+              </div> -->
+
+          <div class="body" *ngIf="isHrPie">
+            <apx-chart
+              *ngIf="departmentCharts[dept.department]"
+              [series]="departmentCharts[dept.department]?.series"
+              [chart]="departmentCharts[dept.department]?.chart"
+              [labels]="departmentCharts[dept.department]?.labels"
+              [theme]="departmentCharts[dept.department]?.theme"
+              [fill]="departmentCharts[dept.department]?.fill"
+              [yaxis]="departmentCharts[dept.department]?.yaxis"
+              [stroke]="departmentCharts[dept.department]?.stroke"
+              [legend]="departmentCharts[dept.department]?.legend"
+              [plotOptions]="departmentCharts[dept.department]?.plotOptions"
+              [colors]="departmentCharts[dept.department]?.colors"
+            >
+            </apx-chart>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <!-- Manager Dashboard -->
+  <div class="row">
+    <ng-container *ngFor="let component of sharedashboards.components">
+      <div
+        class="col-lg-6 col-md-6 col-sm-12"
+        *ngIf="component.id === 'total-staff'"
+      >
+        <div class="card card-statistic-2">
+          <div class="clearfix">
+            <div class="card-icon-only shadow-primary float-start">
+              <img
+                src="assets/images/banner/New Students.jpg"
+                alt=""
+                style="margin-left: -21px"
+              />
+            </div>
+            <div class="card-right">
+              <div>
+                <h5
+                  class="float-end"
+                  style="padding-top: 100px; cursor: pointer"
+                >
+                  Total Staff
+                </h5>
+              </div>
+              <div class="col-green">
+                <h3
+                  class="font-weight-bold float-end mb-0"
+                  [routerLink]="['/admin/user-profile/all-staff']"
+                >
+                  {{ staffCount || 0 }}
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div class="card-content msl-4 mb-3">
+            <p class="m-b-0 d-flex">
+              <i class="material-icons col-green psr-2">trending_up</i> 10%
+              Higher Then Last Month
+            </p>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngFor="let component of sharedashboards.components">
+      <div
+        class="col-lg-6 col-md-6 col-sm-12"
+        *ngIf="component.id === 'all-programs'"
+      >
+        <div class="card card-statistic-2">
+          <div class="clearfix">
+            <div class="card-icon-only shadow-primary float-start">
+              <img src="assets/images/banner/online-course.png" alt="" />
+            </div>
+            <div class="card-right">
+              <div>
+                <h5
+                  class="float-end"
+                  style="margin-top: 100px; cursor: pointer"
+                >
+                  All Programs
+                </h5>
+              </div>
+              <div class="col-green">
+                <h3
+                  class="font-weight-bold float-end mb-0"
+                  [routerLink]="['/dashboard/program-list']"
+                >
+                  {{ count || 0 }}
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div class="card-content msl-4 mb-3">
+            <p class="m-b-0 d-flex">
+              <i class="material-icons col-orange psr-2">trending_down</i> 07%
+              Less Then Last Year
+            </p>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+  <div class="row">
+    <div
+      class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+      *ngFor="let component of sharedashboards.components"
+    >
+      <div
+        class="card"
+        style="border-radius: 31px"
+        *ngIf="component.id === 'certificate'"
+      >
+        <div class="header mt-3">
+          <h2>Certificate</h2>
+        </div>
+        <div class="tableBody">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <!-- <th>#</th> -->
+                  <th>Program Name</th>
+                  <th>User Name</th>
+                  <th>Status</th>
+                  <!-- <th>Actions </th> -->
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let class of classes" style="cursor: pointer">
+                  <!-- <td class="table-img">
+                        <img src="{{class?.courseId?.image_link}}" alt="course">
+                      </td> -->
+                  <td>{{ class?.title | titlecase }}</td>
+                  <td>{{ class?.studentId?.name }}</td>
+                  <td>
+                    <div
+                      [ngClass]="
+                        class?.certificate
+                          ? 'badge col-green'
+                          : 'badge col-orange'
+                      "
+                    >
+                      {{
+                        class?.certificate
+                          ? "Certificate issued"
+                          : "Awaiting for issue certificate"
+                      }}
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div
+      class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+      *ngFor="let component of sharedashboards.components"
+    >
+      <div
+        class="card"
+        style="border-radius: 31px"
+        *ngIf="component.id === 'current-course-status'"
+      >
+        <div class="header mt-3">
+          <h2>Current Course Status</h2>
+        </div>
+        <!-- <div class="float-start ms-3 me-3">
+                <h5>{{dept.department}} Department</h5>
+                
+              </div> -->
+        <div class="float-start ms-3 me-3">
+          <h6>Total Staff : {{ staffCount || 0 }}</h6>
+        </div>
+
+        <div class="body" *ngIf="isHrPie">
+          <apx-chart
+            [series]="hrPieChartOptions.series2!"
+            [chart]="hrPieChartOptions.chart!"
+            [labels]="hrPieChartOptions.labels!"
+            [colors]="hrPieChartOptions.colors!"
+            [legend]="hrPieChartOptions.legend!"
+          >
+          </apx-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <ng-container *ngFor="let component of sharedashboards.components">
+      <div
+        class="col-xs-12 col-sm-12 col-md-6 col-lg-6"
+        *ngIf="component.id === 'staff-list'"
+      >
+        <div class="card" style="border-radius: 31px">
+          <div class="header mt-3">
+            <h2>Staff List</h2>
+          </div>
+          <div class="tableBody">
+            <ng-scrollbar style="height: 280px" visibility="hover">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Staff Name</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let user of staff" style="cursor: pointer">
+                      <td class="table-img">
+                        <img
+                          src="{{ user.avatar || 'assets/profile.png' }}"
+                          alt=""
+                        />
+                      </td>
+                      <td
+                        [routerLink]="[
+                          '/admin/user-profile/view-student',
+                          user.id
+                        ]"
+                      >
+                        <div class="media-title">
+                          {{ user?.name | titlecase }}
+                        </div>
+                      </td>
+                      <td
+                        [routerLink]="[
+                          '/admin/user-profile/view-student',
+                          user.id
+                        ]"
+                      >
+                        <div
+                          [class]="
+                            user?.Active
+                              ? 'badge badge-solid-green'
+                              : 'badge badge-solid-red'
+                          "
+                        >
+                          {{ user?.Active == true ? "Active" : "Inactive" }}
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </ng-scrollbar>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngFor="let component of sharedashboards.components">
+      <div
+        class="col-xs-12 col-sm-12 col-md-6 col-lg-6"
+        *ngIf="component.id === 'feedback-survey'"
+      >
+        <div class="card" style="border-radius: 31px">
+          <div class="header mt-3">
+            <h2>Feedback Survey</h2>
+          </div>
+          <div class="tableBody">
+            <ng-scrollbar style="height: 280px" visibility="hover">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Trainee</th>
+                      <th>Course/Program</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="let feedback of feedback"
+                      style="cursor: pointer"
+                    >
+                      <td (click)="editCall(feedback.id)">
+                        <div class="media-title">
+                          {{ feedback?.studentId?.name | titlecase }}
+                        </div>
+                      </td>
+                      <td (click)="editCall(feedback.id)">
+                        <div>
+                          {{ feedback?.courseName }}
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </ng-scrollbar>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <div class="row">
+    <div
+      class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+      *ngFor="let component of sharedashboards.components"
+    >
+      <div
+        class="card"
+        style="border-radius: 31px"
+        *ngIf="component.id === 'classes-list'"
+      >
+        <div class="header mt-3">
+          <h2>Classes List</h2>
+        </div>
+        <div class="tableBody">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <!-- <th>#</th> -->
+                  <th>Course Name</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Status</th>
+                  <!-- <th>Actions </th> -->
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let class of classesList"
+                  style="cursor: pointer"
+                  [routerLink]="['/admin/courses/view-class/', class.id]"
+                >
+                  <!-- <td class="table-img">
+                        <img src="{{class?.courseId?.image_link}}" alt="course">
+                      </td> -->
+                  <td *ngFor="let name of class.sessions">
+                    {{ name?.courseName | titlecase }}
+                  </td>
+                  <td>{{ class?.sessions[0]?.sessionStartDate | date }}</td>
+                  <td>{{ class?.sessions[0]?.sessionEndDate | date }}</td>
+                  <td>
+                    <div class="badge col-green">
+                      {{ class?.status == "open" ? "Active" : "Inactive" }}
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="isCourseBar">
+    <div
+      class="col-xl-12 col-lg-12 col-md-12 col-sm-12"
+      *ngFor="let component of sharedashboards.components"
+    >
+      <div
+        class="card"
+        style="border-radius: 31px"
+        *ngIf="component.id === 'overall-training-course'"
+      >
+        <div class="header mt-3">
+          <h2>Overall Training Course</h2>
+        </div>
+
+        <div class="body">
+          <apx-chart
+            [series]="courseBarChartOptions.series!"
+            [chart]="courseBarChartOptions.chart!"
+            [xaxis]="courseBarChartOptions.xaxis!"
+            [yaxis]="courseBarChartOptions.yaxis!"
+            [colors]="courseBarChartOptions.colors!"
+            [stroke]="courseBarChartOptions.stroke!"
+            [legend]="courseBarChartOptions.legend!"
+            [grid]="courseBarChartOptions.grid!"
+            [tooltip]="courseBarChartOptions.tooltip!"
+            [dataLabels]="courseBarChartOptions.dataLabels!"
+          ></apx-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="isCourseBarChart">
+    <div
+      class="col-xl-12 col-lg-12 col-md-12 col-sm-12"
+      *ngFor="let component of sharedashboards.components"
+    >
+      <div
+        class="card"
+        style="border-radius: 31px"
+        *ngIf="component.id === 'overall-training-course'"
+      >
+        <div class="header mt-3">
+          <h2>Overall Training Course</h2>
+        </div>
+
+        <div class="body">
+          <apx-chart
+            [series]="ChartOptions.series!"
+            [chart]="ChartOptions.chart!"
+            [xaxis]="ChartOptions.xaxis!"
+            [yaxis]="ChartOptions.yaxis!"
+            [colors]="ChartOptions.colors!"
+            [stroke]="ChartOptions.stroke!"
+            [legend]="ChartOptions.legend!"
+            [grid]="ChartOptions.grid!"
+            [tooltip]="ChartOptions.tooltip!"
+            [dataLabels]="ChartOptions.dataLabels!"
+          ></apx-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- </section> -->

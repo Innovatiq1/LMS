@@ -19,6 +19,8 @@ const Logging = new Logger('UserService');
 export class UserService {
   
   private defaultUrl: string = environment['apiUrl'];
+  private Url: string = environment['Url'];
+
     prefix: any;
     dataChange: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(
       []
@@ -135,6 +137,11 @@ export class UserService {
     const apiUrl = `${this.defaultUrl}admin/adminUserListing/${id}`;
     return this.http.get<ApiResponse>(apiUrl).pipe(map((response) => response));
   }
+
+  getCompanyById(id: string) {
+    const apiUrl = `${this.defaultUrl}admin/company/${id}`;
+    return this.http.get<ApiResponse>(apiUrl).pipe(map((response) => response));
+  }
   getUserList1(): Observable<any> {
     const apiUrl = this.defaultUrl + 'auth/usersList';
     return this.http
@@ -209,6 +216,16 @@ export class UserService {
     );
   }
 
+  createCompany(formData:any): Observable<Mentor> {
+    const apiUrl = this.defaultUrl + 'admin/company';
+    return this.http.post<ApiResponse>(apiUrl, formData).pipe(
+      map((response) => {
+        Logging.debug(response.data);
+        return response.data;
+      })
+    );
+  }
+
   updateUsers(formData:any, id:any): Observable<Mentor> {
     const apiUrl = `${this.defaultUrl}admin/adminUserListing/${id}`;
     return this.http.put<ApiResponse>(apiUrl, formData).pipe(
@@ -217,6 +234,26 @@ export class UserService {
         return response.data;
       })
     );
+  }
+
+  updateCompany(formData:any, id:any): Observable<Mentor> {
+    const apiUrl = `${this.defaultUrl}admin/company/${id}`;
+    return this.http.put<ApiResponse>(apiUrl, formData).pipe(
+      map((response) => {
+        Logging.debug(response.data);
+        return response.data;
+      })
+    );
+  }
+
+  getCompanyByIdentifier(id: string) {
+    const apiUrl = `${this.defaultUrl}admin/company/${id}`;
+    return this.http.get<ApiResponse>(apiUrl).pipe(map((response) => response));
+  }
+
+  getCompanyByIdentifierWithoutToken(id: string) {
+    const apiUrl = `${this.Url}getCompanyByIdentifier/${id}`;
+    return this.http.get<ApiResponse>(apiUrl).pipe(map((response) => response));
   }
   updateUserType(dataDetails: UserType) {
     const apiUrl = `${this.defaultUrl}userType/${dataDetails._id}`;
@@ -292,6 +329,18 @@ export class UserService {
         params: this.buildParams(filter),
       })
       .pipe(map((response) => response));
+  }
+  createForm(data: any) {
+    const apiUrl = `${this.defaultUrl}admin/form-creation`;
+    return this.http
+      .post<ApiResponse>(apiUrl, data)
+      .pipe(map((response) => { }));
+  }
+  saveDashboard(data: any) {
+    const apiUrl = `${this.defaultUrl}admin/dashboard`;
+    return this.http
+      .post<ApiResponse>(apiUrl, data)
+      .pipe(map((response) => { }));
   }
 
 

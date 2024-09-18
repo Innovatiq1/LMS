@@ -164,7 +164,8 @@ return new Promise<void>((resolve, reject) => {
       let test =obj.email_content
         const stringWithoutPTags = this.removeTagsAndSpaces(test)
         obj['email_content']=stringWithoutPTags
-      
+        let companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        obj['companyId'] = companyId; 
       obj['insertaction'] = 'completed_project_template';
       this.emailConfigurationService.updateForgetPasswordTemplate(obj,this.id).subscribe(
         (res) => {

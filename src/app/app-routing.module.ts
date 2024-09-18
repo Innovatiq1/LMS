@@ -159,6 +159,14 @@ const routes: Routes = [
     ],
   },
   {
+    path: ':name/authentication',
+    component: AuthLayoutComponent,
+    loadChildren: () =>
+      import('./authentication/authentication.module').then(
+        (m) => m.AuthenticationModule
+      ),
+  },
+  {
     path: 'authentication',
     component: AuthLayoutComponent,
     loadChildren: () =>

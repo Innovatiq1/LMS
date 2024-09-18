@@ -109,7 +109,9 @@ export class CreateUserProfileComponent {
   addBlog(formObj: any) {
    
     let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    console.log('Form Value', formObj);
+    let subdomain =localStorage.getItem('subdomain') || '';
+    this.userService.getCompanyByIdentifierWithoutToken(subdomain).subscribe(
+      (res: any) => {
     if (!formObj.invalid) {
       console.log('======', formObj.type);
       formObj['Active'] = this.status;
@@ -120,14 +122,17 @@ export class CreateUserProfileComponent {
       formObj['adminEmail'] = user.user.email;
       formObj['adminName'] = user.user.name;
       formObj['companyId'] = user.user.companyId;
-      formObj['users'] = user.user.users;
-      formObj['courses'] = user.user.courses;
+      formObj['users'] = res[0]?.users;
+      formObj['courses'] = res[0]?.courses;
       formObj['attemptBlock'] = false;
+      formObj['company'] = user.user.company;
+      formObj['domain'] = user.user.domain;
 
       const userData: Users = formObj;
       userData.avatar = this.avatar;
       this.createUser(userData);
     }
+  })
   }
   private createUser(userData: Users): void {
     this.userService.saveUsers(userData).subscribe(
@@ -271,6 +276,7 @@ export class CreateUserProfileComponent {
       department: new FormControl('', []),
       address: new FormControl('', []),
       attemptBlock: new FormControl('', []),
+      user_type: new FormControl('', [Validators.required]),
       email: new FormControl('', [
         Validators.required,
         Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/),
@@ -392,6 +398,7 @@ export class CreateUserProfileComponent {
             head:this.data?.head,
             fileName: this.data?.avatar,
             last_name: this.data?.last_name,
+            user_type:this.data?.user_type,
             rollNo: this.data?.rollNo,
             gender: this.data?.gender,
             mobile: this.data?.mobile,

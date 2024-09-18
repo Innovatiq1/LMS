@@ -78,9 +78,9 @@ export class BudgetRequestComponent
 
   ngOnInit() {
     this.pendingCourses = true;
-    if (this.director) {
+    // if (this.director) {
       this.getAllRequestsByDirector();
-    }
+    // }
 
     this.getCount();
   }
@@ -89,31 +89,31 @@ export class BudgetRequestComponent
     this.pendingCourses = true;
     this.approvedCourses = false;
     this.rejectedCourses = false;
-    if (this.director) {
+    // if (this.director) {
       this.getAllRequestsByDirector();
-    }
+    // }
   }
   onApprovedClick() {
     this.pendingCourses = false;
     this.approvedCourses = true;
     this.rejectedCourses = false;
-    if (this.director) {
+    // if (this.director) {
       this.getAllApprovedRequestsByDirector();
-    }
+    // }
   }
   onRejectedClick() {
     this.pendingCourses = false;
     this.approvedCourses = false;
     this.rejectedCourses = true;
-    if (this.director) {
+    // if (this.director) {
       this.getAllRejectedRequestsByDirector();
-    }
+    // }
   }
 
   pageSizeChange($event: any) {
     this.coursePaginationModel.page = $event?.pageIndex + 1;
     this.coursePaginationModel.limit = $event?.pageSize;
-    if (this.director) {
+    // if (this.director) {
       if (this.pendingCourses) {
         this.getAllRequestsByDirector();
       } else if (this.approvedCourses) {
@@ -121,16 +121,16 @@ export class BudgetRequestComponent
       } else if (this.rejectedCourses) {
         this.getAllRejectedRequestsByDirector();
       }
-    }
+    // }
   }
 
   getAllRequestsByDirector() {
-    let directorId = localStorage.getItem('id');
+    let headId = localStorage.getItem('id');
     this.etmsService
       .getBudgetRequestsByDirector({
         ...this.coursePaginationModel,
-        directorId,
-        directorApproval: 'Pending',
+        headId,
+        headApproval: 'Pending',
       })
       .subscribe(
         (response) => {
@@ -145,12 +145,12 @@ export class BudgetRequestComponent
   }
 
   getAllApprovedRequestsByDirector() {
-    let directorId = localStorage.getItem('id');
+    let headId = localStorage.getItem('id');
     this.etmsService
       .getBudgetRequestsByDirector({
         ...this.coursePaginationModel,
-        directorId,
-        directorApproval: 'Approved',
+        headId,
+        headApproval: 'Approved',
       })
       .subscribe(
         (response) => {
@@ -165,12 +165,12 @@ export class BudgetRequestComponent
   }
 
   getAllRejectedRequestsByDirector() {
-    let directorId = localStorage.getItem('id');
+    let headId = localStorage.getItem('id');
     this.etmsService
       .getBudgetRequestsByDirector({
         ...this.coursePaginationModel,
-        directorId,
-        directorApproval: 'Rejected',
+        headId,
+        headApproval: 'Rejected',
       })
       .subscribe(
         (response) => {
@@ -185,7 +185,7 @@ export class BudgetRequestComponent
   }
 
   approve(req: any) {
-    this.id = req.director.id;
+    this.id = req.head.id;
     let tempDirection: Direction;
     if (localStorage.getItem('isRtl') === 'true') {
       tempDirection = 'rtl';
@@ -210,18 +210,17 @@ export class BudgetRequestComponent
           this.exampleDatabase.dataChange.value[foundIndex] =
             this.etmsService.getDialogData();
         }
-        if (this.director) {
+        // if (this.director) {
           this.getAllRequestsByDirector();
           this.getCount();
           
-        }
-      this.getCount();
+        // }
       }
     });
   }
 
   reject(row: any) {
-    this.id = row.director.id;
+    this.id = row.head.id;
     let tempDirection: Direction;
     if (localStorage.getItem('isRtl') === 'true') {
       tempDirection = 'rtl';
@@ -246,11 +245,10 @@ export class BudgetRequestComponent
           this.exampleDatabase.dataChange.value[foundIndex] =
             this.etmsService.getDialogData();
         }
-        if (this.director) {
+        // if (this.director) {
           this.getAllRequestsByDirector();
           this.getCount();
-        }
-        this.getCount();
+        // }
       }
     });
   }
@@ -258,7 +256,7 @@ export class BudgetRequestComponent
   getCount() {
     let userId = localStorage.getItem('id');
     let userRole = localStorage.getItem('user_type');
-    if (userRole == 'Director') {
+    // if (userRole == 'Director') {
       this.etmsService
         .getBudgetRequestDirectorCount(userId)
         .subscribe((res) => {
@@ -266,6 +264,6 @@ export class BudgetRequestComponent
           this.rejected = res.data.docs.budgetRequestRejected;
           this.pending = res.data.docs.budgetRequestPending;
         });
-    }
+    // }
   }
 }

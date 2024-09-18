@@ -13,6 +13,14 @@ import { NgxGaugeModule } from 'ngx-gauge';
 import { NgChartsModule } from 'ng2-charts';
 import { EtmsDashboardComponent } from './etms-dashboard/etms-dashboard.component';
 import { SuperAdminComponent } from 'app/superAdmin/super-admin/super-admin.component';
+import { CeoDashboardComponent } from './ceo-dashboard/ceo-dashboard.component';
+import { ManagerDashboardComponent } from './manager-dashboard/manager-dashboard.component';
+import { TotalListComponent } from './total-list/total-list.component';
+import { CorpCourseListComponent } from './corp-course-list/corp-course-list.component';
+import { CorpManagerListComponent } from './corp-manager-list/corp-manager-list.component';
+import { CorpStaffListComponent } from './corp-staff-list/corp-staff-list.component';
+import { ChartCourseViewComponent } from './chart-course-view/chart-course-view.component';
+import { ManagersPieChartComponent } from './managers-pie-chart/managers-pie-chart.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +28,15 @@ import { SuperAdminComponent } from 'app/superAdmin/super-admin/super-admin.comp
     Dashboard2Component,
     SupportComponent,
     EtmsDashboardComponent,
-    SuperAdminComponent
+    SuperAdminComponent,
+    CeoDashboardComponent,
+    ManagerDashboardComponent,
+    TotalListComponent,
+    CorpCourseListComponent,
+    CorpManagerListComponent,
+    CorpStaffListComponent,
+    ChartCourseViewComponent,
+    ManagersPieChartComponent
   ],
   imports: [
     CommonModule,

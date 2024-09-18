@@ -84,7 +84,7 @@
           </select>
 
         </li>
-        <li>
+        <li *ngIf="!isTwoFactor">
 
           <button mat-button  *ngIf="checkViewSettings(role)" [matMenuTriggerFor]="menu">
             <app-feather-icons [icon]="'settings'" [class]="'user-menu-icons'"></app-feather-icons>
@@ -118,10 +118,10 @@
             <div class="noti-list">
               <div class="menu ">
                 <div class="user_dw_menu">
-                  <button mat-menu-item class="user-item-list" [routerLink]="['/student/settings/account-settings']">
+                  <button mat-menu-item *ngIf="!isTwoFactor" class="user-item-list" [routerLink]="['/student/settings/account-settings']">
                     <app-feather-icons [icon]="'user'" [class]="'user-menu-icons'"></app-feather-icons>User Information
                   </button>
-                  <button mat-menu-item class="user-item-list" [routerLink]="['/student/settings/security-settings']">
+                  <button mat-menu-item *ngIf="!isTwoFactor" class="user-item-list" [routerLink]="['/student/settings/security-settings']">
                     <app-feather-icons [icon]="'lock'" [class]="'user-menu-icons'"></app-feather-icons>Change Password
                   </button>
                   <button mat-menu-item (click)="logout()" class="user-item-list">

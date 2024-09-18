@@ -2,6 +2,7 @@ import { Component, ViewChild, TemplateRef, ChangeDetectorRef } from '@angular/c
 import {
   AbstractControl,
   FormArray,
+  FormControl,
   FormGroup,
   UntypedFormBuilder,
   UntypedFormGroup,
@@ -44,6 +45,7 @@ interface OuterDashboard {
   styleUrls: ['./settings.component.scss'],
 })
 export class SettingsComponent {
+  isTwoFactorEnabled: boolean = false; // Initialize the toggle state
   stdForm: UntypedFormGroup;
   stdForm1: UntypedFormGroup;
   profileForm: FormGroup;
@@ -56,6 +58,7 @@ export class SettingsComponent {
     'Trainer Analytics',
     'Support',
     'TraineeDashboard',
+    'Corporate Dashboard',
   ];
   filteredDashboardsList: string[] = this.dashboardsList.slice();
   selectedDashboard: string | null = null;
@@ -88,6 +91,7 @@ export class SettingsComponent {
       'ANNOUNCEMENT BOARD',
       'RESCHEDULE LIST',
     ],
+    
   };
   editData: any;
   studentId: any;
@@ -212,6 +216,8 @@ export class SettingsComponent {
   filteredDashboards: any[] = [];
   updateId: any;
   typeNameChild!: string;
+  twoFAForm!: UntypedFormGroup;
+  twoFA: any;
 
   constructor(
     private studentService: StudentsService,
@@ -629,6 +635,12 @@ export class SettingsComponent {
       director: ['', Validators.required],
       TA: ['', Validators.required],
     });
+
+    this.twoFAForm = this.fb.group({
+      userId: ['',[ Validators.required]],
+      status: ['off',[ Validators.required]],
+    });
+  
   }
 
   ngOnInit() {
@@ -639,6 +651,7 @@ export class SettingsComponent {
     this.getAllUsers();
     this.getAllUserTypes();
     this.commonRoles = AppConstants;
+    this.getTwoFAById();
     let role = localStorage.getItem('user_type');
     if (role == AppConstants.ADMIN_USERTYPE || AppConstants.ADMIN_ROLE) {
       this.isAdmin = true;
@@ -803,7 +816,9 @@ export class SettingsComponent {
     this.router.navigate(['/student/settings/dashboards']);
   }
   onToggleChange(event: any) {
-    this.showBodyContent = event.checked;
+    this.isTwoFactorEnabled = event.checked;
+    const toggleStatus = event.checked ? 'on' : 'off';
+    this.twoFAForm.patchValue({ status: toggleStatus });
   }
 
   showMainContent(contentId: number) {
@@ -830,6 +845,9 @@ export class SettingsComponent {
   getDepartments() {
     this.studentService.getAllDepartments().subscribe((response: any) => {
       this.dept = response.data.docs;
+      const department = this.dept.map((doc: any) => doc.department);
+      department.push("Overall Training Course","Total Staff","All Programs","Certificate","Staff List","Classes List","Feedback Survey","Current Course Status");
+      this.componentsMap['Corporate Dashboard'] = department;
     });
   }
   onSelectionChange(event: any, field: any) {
@@ -973,6 +991,53 @@ export class SettingsComponent {
       });
   }
 
+  updateTwoFA() {
+    const twoFAData = this.twoFAForm.value;
+    let userId = localStorage.getItem('id');
+    const payload = {
+      userId: userId,
+      status: twoFAData.status,
+    };
+  
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You want to update this Two Factor Authentication!',
+      icon: 'warning',
+      confirmButtonText: 'Yes',
+      showCancelButton: true,
+      cancelButtonColor: '#d33',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.settingsService.saveTwoFA(payload).subscribe((response: any) => {
+          Swal.fire({
+            title: 'Successful',
+            text: 'Two Factor Authentication updated successfully',
+            icon: 'success',
+          });
+        }, (error) => {
+          Swal.fire({
+            title: 'Error',
+            text: 'Failed to update Two Factor Authentication',
+            icon: 'error',
+          });
+        });
+      }
+    });
+  }
+  getTwoFAById() {
+    let userId = localStorage.getItem('id');
+    if (!userId) {
+      // this.handleError('User ID not found in local storage.');
+      return; 
+    }
+    this.settingsService.getTwoFAById(userId).subscribe((response: any) => {
+      if (response[0].status == 'on') {
+        this.isTwoFactorEnabled = true;
+      } else {
+        this.isTwoFactorEnabled = false;
+      }
+    });
+  }
   onSubmit() {
     if (this.stdForm.valid) {
       const userData: Student = this.stdForm.value;
@@ -1393,7 +1458,7 @@ export class SettingsComponent {
       companyId: userId,
       dashboards: selectedDashboards,
     };
-
+console.log("config: " + config);
     if (!this.typeNameChild) {
       this.userService.saveCustomzDashboard(config).subscribe((data: any) => {
         Swal.fire({

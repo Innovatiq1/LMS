@@ -8,6 +8,7 @@ import {
 import { LanguageService } from '@core/service/language.service';
 import { AuthService } from '@core';
 import Swal from 'sweetalert2';
+import { CommonService } from '@core/service/common.service';
 @Component({
   selector: 'app-forgot-password',
   templateUrl: './forgot-password.component.html',
@@ -21,17 +22,21 @@ export class ForgotPasswordComponent implements OnInit {
   error: any;
   tmsUrl: boolean;
   lmsUrl: boolean;
+  extractedName: string;
  // resetLink: boolean;
   constructor(
     private formBuilder: UntypedFormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private translate: LanguageService,
-    private authService:AuthService
+    private authService:AuthService,
+    private commonService: CommonService
   ) {
+
     let urlPath = this.router.url.split('/')
     this.tmsUrl = urlPath.includes('TMS');
     this.lmsUrl = urlPath.includes('LMS');
+    this.extractedName = urlPath[1];
 
   }
   ngOnInit() {
@@ -56,6 +61,16 @@ export class ForgotPasswordComponent implements OnInit {
 
   get f() {
     return this.authForm.controls;
+  }
+
+  signin(){
+
+    if(this.tmsUrl){
+      this.commonService.navigateWithCompanyName(this.extractedName,'authentication/TMS/signin')
+    } else if(this.lmsUrl){
+      this.commonService.navigateWithCompanyName(this.extractedName,'authentication/LMS/signin')
+
+    }
   }
   onSubmit() {
     this.submitted = true;

@@ -18,7 +18,7 @@ export class CourseService {
   private prefix: string = environment.apiUrl;
   private razorpayKeyId :string= "rzp_test_8qBZzDxmgGwhH4";
   // private razorpaySecretKey :string= environment.RAZORPAY_SECRET_KEY
-
+private tpUrl=environment.Url;
   defaultUrl = environment['apiUrl'];
   dataChange: BehaviorSubject<CourseModel[]> = new BehaviorSubject<CourseModel[]>([]);
 
@@ -131,6 +131,23 @@ export class CourseService {
       params: this.buildParams(filter),
     });
   }
+  
+
+  getAllCoursesWithDepartment(id:any,department?: string,filter?: Partial<CoursePaginationModel>
+    ): Observable<ApiResponse> {
+      const apiUrl = `${this.prefix}admin/courses-new/${id}/${department}`;
+      return this._Http.get<ApiResponse>(apiUrl, {
+        params: this.buildParams(filter),
+      });
+    }
+
+    getAllCoursesWithoutPagination(id:any,filter?: Partial<CoursePaginationModel>
+      ): Observable<ApiResponse> {
+        const apiUrl = `${this.prefix}admin/courses-new/course/${id}`;
+        return this._Http.get<ApiResponse>(apiUrl, {
+          params: this.buildParams(filter),
+        });
+      }
 
   getFilteredCourseData(payload:any, filter:any
     ):Observable<any> {
@@ -701,6 +718,16 @@ uploadFile(file: File): Observable<any> {
   );
 }
 
+getRetreiveTPCourses(
+  filter?: Partial<any>
+): Observable<ApiResponse> {
+  let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId
+  const apiUrl = `${this.tpUrl}getRetreiveTPCourses?companyId=${userId}`;
+  return this._Http.get<ApiResponse>(apiUrl, {
+    params: this.buildParams(filter),
+  });
+
+}
     // uploadFile(file: File): Observable<any> {
     //   const formData = new FormData();
     //   formData.append('file', file);

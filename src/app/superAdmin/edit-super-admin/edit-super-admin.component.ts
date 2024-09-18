@@ -40,6 +40,7 @@ export class EditSuperAdminComponent {
   uploaded: any;
   fileName: any;
   currentId:any;
+  companyDataId: any;
   constructor(
     public _fb: FormBuilder,
     public dialog: MatDialog, private router: Router,public activeRoute: ActivatedRoute,
@@ -57,7 +58,11 @@ export class EditSuperAdminComponent {
       Active: new FormControl('true', [Validators.required]),
       company: new FormControl('', [Validators.required]),
       mobile: new FormControl('', [Validators.required,...this.utils.validators.mobile]),
-      address: new FormControl('', []),
+      domain: new FormControl('', []),
+      learner: new FormControl('', []),
+      trainer: new FormControl('', []),
+      users: new FormControl('', []),
+      courses: new FormControl('', []),
       email: new FormControl('', [
         Validators.required,
         Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/),
@@ -66,6 +71,7 @@ export class EditSuperAdminComponent {
       re_passwords: new FormControl('', []),
       type: new FormControl('admin', [Validators.required]),
       joiningDate: new FormControl('', [Validators.required]),
+      expiryDate:new FormControl('', [Validators.required])
      
     });
     this.getBlogsList();
@@ -219,7 +225,7 @@ export class EditSuperAdminComponent {
      
           this.updateUser(userData);
           
-        window.history.back();
+        // window.history.back();
         }
       }
   updateUser(obj: any) {
@@ -234,7 +240,20 @@ export class EditSuperAdminComponent {
           }).then(() => {
             resolve(response);
           });
-          this.router.navigate(['/super-admin/view-admin']);
+          let payload ={
+            identifier:this.userForm.value.domain,
+            company:this.userForm.value.company,
+            learner:this.userForm.value.learner,
+            trainer:this.userForm.value.trainer,
+            users:this.userForm.value.users,
+            courses:this.userForm.value.courses
+
+          }
+          this.userService.updateCompany(payload, this.companyDataId).subscribe(
+()=>{
+  window.history.back();
+
+})
         },
         (error) => {
           this.isLoading = false;
@@ -251,7 +270,6 @@ export class EditSuperAdminComponent {
 
 
   getBlogsList(filters?: any) {
-
     this.userService.getUserById(this.currentId).subscribe(
       (response: any) => {
         this.data = response.data.data;
@@ -260,7 +278,9 @@ export class EditSuperAdminComponent {
         let image = this.uploaded?.pop();
         this.uploaded = image?.split('\\');
         this.fileName = this.uploaded?.pop();
+        this.userService.getCompanyById(this.data.companyId).subscribe((res:any)=>{
         if (this.data) {
+          this.companyDataId =  res[0]?.id
           this.userForm.patchValue({
             name: this.data?.name,
             email: this.data?.email,
@@ -272,16 +292,24 @@ export class EditSuperAdminComponent {
             website:this.data.website,
             mobile: this.data?.mobile,
             joiningDate: this.data?.joiningDate,
-            address: this.data?.address,
-            company:this.data?.company
+            expiryDate:this.data?.expiryDate,
+            domain: res[0]?.identifier,
+            company:this.data?.company,
+            learner:res[0]?.learner,
+            trainer:res[0]?.trainer,
+            courses:res[0]?.courses,
+            users:res[0]?.users
+
           });
         }
+      })
+
       },
       (error) => {}
     );
   }
 
   onNoClick(){
-    this.router.navigateByUrl('/super-admin/view-admin');
+   window.history.back();
   }
 }

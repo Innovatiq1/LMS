@@ -239,6 +239,42 @@ export class StudentsService extends UnsubscribeOnDestroyAdapter {
       );
     }
 
+    getDepartmentById(companyId: string, department:string): Observable<any> {
+      const apiUrl = `${this.defaultUrl}admin/courses-new/course/${companyId}/${department}`;
+      return this.httpClient.get<any>(apiUrl).pipe(
+        map(response => {
+          const configuration = response.configuration;
+          this.updateConfigurationState(configuration);
+          return response;
+        })
+      );
+    }
+    getManagerandStaffCount(companyId: string, department:string, headId:string): Observable<any> {
+      const apiUrl = `${this.defaultUrl}admin/user/${companyId}/${department}/${headId}`;
+      return this.httpClient.get<any>(apiUrl).pipe(
+        map(response => {
+          return response;
+        })
+      );
+    }
+
+    getCourseStatus(companyId: string, department:string): Observable<any> {
+      const apiUrl = `${this.defaultUrl}admin/studentClasses/${companyId}/${department}`;
+      return this.httpClient.get<any>(apiUrl).pipe(
+        map(response => {
+          return response;
+        })
+      );
+    }
+
+    getStudentClassById(id: string): Observable<any> {
+      const apiUrl = `${this.defaultUrl}admin/studentClasses/${id}`;
+      return this.httpClient.get<any>(apiUrl).pipe(
+        map(response => {
+          return response;
+        })
+      );
+    }
 }
 
 

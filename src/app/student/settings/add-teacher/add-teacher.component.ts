@@ -16,6 +16,7 @@ import { StudentsService } from 'app/admin/students/students.service';
 import { UtilsService } from '@core/service/utils.service';
 import { FormService } from '@core/service/customization.service';
 import { AppConstants } from '@shared/constants/app.constants';
+import { UserService } from '@core/service/user.service';
 
 @Component({
   selector: 'app-add-teacher',
@@ -48,6 +49,7 @@ export class AddTeacherComponent {
     public utils: UtilsService,
     private router:Router,
     private formService: FormService,
+    private userService: UserService
 
    ) {
     this.proForm = this.fb.group({
@@ -101,6 +103,10 @@ export class AddTeacherComponent {
   }
   onSubmit() {
     let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    let subdomain =localStorage.getItem('subdomain') || '';
+    this.userService.getCompanyByIdentifierWithoutToken(subdomain).subscribe(
+      (res: any) => {
+
     if (!this.proForm.invalid) {
         const userData: any = this.proForm.value;
         userData.avatar = this.avatar;
@@ -112,9 +118,12 @@ export class AddTeacherComponent {
         userData.adminEmail = user.user.email;
         userData.adminName = user.user.name;
         userData.companyId = user.user.companyId;
-        userData.users = user.user.users;
-        userData.courses = user.user.courses;
+        userData.users = res[0]?.users;
+        userData.courses = res[0]?.courses;
         userData.attemptBlock =  false;
+        userData.company = user.user.company;
+        userData.domain = user.user.domain;
+
 
 
         this.createInstructor(userData);
@@ -122,6 +131,7 @@ export class AddTeacherComponent {
       this.proForm.markAllAsTouched(); 
       this.submitClicked = true;
     }
+  })
 }
 
   ngOnInit(){
@@ -165,7 +175,9 @@ export class AddTeacherComponent {
     }).then((result) => {
       if (result.isConfirmed){
         this.instructor.CreateUser(userData).subscribe(
-          () => {
+          (res:any) => {
+            if(res.status === 'success' && !res.data.status ){
+
             Swal.fire({
               title: "Successful",
               text: "Trainer created successfully",
@@ -173,6 +185,13 @@ export class AddTeacherComponent {
             });
           this.proForm.reset();
           this.router.navigateByUrl('/student/settings/all-user/all-instructors');
+            } else {
+              Swal.fire({
+                title: 'Error',
+                text: "You have exceeded your limit, please contact Admin to upgrade",
+                icon: 'error',
+              });
+            }
           },
           (error) => {
             Swal.fire(
