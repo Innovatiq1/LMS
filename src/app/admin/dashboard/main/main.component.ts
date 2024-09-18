@@ -2357,16 +2357,16 @@ private attendanceBarChart() {
     }
   }
   setUsersChart() {
-    if (this.dashboard.content[3].viewType == 'Bar Chart') {
+    if (this.dashboard?.content[3].viewType == 'Bar Chart') {
       this.isUsersBar = true;
       // this.getCount();
       this.usersBarChart();
-    } else if (this.dashboard.content[3].viewType == 'Pie Chart') {
+    } else if (this.dashboard?.content[3].viewType == 'Pie Chart') {
       this.isUsersPie = true;
       // this.getCount();
       this.usersPieChart();
     }
-    else if (this.dashboard.content[3].viewType == 'Line Chart') {
+    else if (this.dashboard?.content[3].viewType == 'Line Chart') {
       this.isUsersLine = true;
       // this.getCount();
       this.usersLineChart();

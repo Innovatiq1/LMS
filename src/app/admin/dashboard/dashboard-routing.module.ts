@@ -8,6 +8,7 @@ import { CorpCourseListComponent } from './corp-course-list/corp-course-list.com
 import { CorpManagerListComponent } from './corp-manager-list/corp-manager-list.component';
 import { CorpStaffListComponent } from './corp-staff-list/corp-staff-list.component';
 import { ChartCourseViewComponent } from './chart-course-view/chart-course-view.component';
+import { ManagersPieChartComponent } from './managers-pie-chart/managers-pie-chart.component';
 
 const routes: Routes = [
   {
@@ -46,6 +47,10 @@ const routes: Routes = [
   {
     path: 'chart-course-view/:department/:status',
     component: ChartCourseViewComponent,
+  },
+  {
+    path:'managers-pie-chart-view',
+    component: ManagersPieChartComponent,
   }
 
 ];
