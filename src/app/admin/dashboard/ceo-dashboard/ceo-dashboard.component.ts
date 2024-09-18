@@ -98,6 +98,7 @@ export class CeoDashboardComponent {
   isCourseBarChart: boolean = false;
   dept: any;
   colorClasses = ['l-bg-orange', 'l-bg-green', 'l-bg-red', 'l-bg-purple'];
+  colorsFor = ['']
   updatedDepartments: any;
   courseStatus: any;
   staff: any;
@@ -112,6 +113,8 @@ export class CeoDashboardComponent {
   feedback: any;
   classes: any;
   allCourse: any;
+  allcourseCount: any;
+  courseData: any;
   constructor(private studentService: StudentsService,private cd: ChangeDetectorRef,
     private userService: UserService,public surveyService: SurveyService,
     private courseService: CourseService,private classService: ClassService,public router: Router,
@@ -120,16 +123,15 @@ export class CeoDashboardComponent {
     }
 
   ngOnInit() {
+    this.PieChart();
+    this.hrPieChart();
     this.getDepartments();
     this.getStaffList();
     this.getClassList();
     this.getCount();
     this.getAllSurveys();
-    this.courseBarChart();
-    this.hrPieChart();
     this.getAllCourse();
-    this.PieChart()
-   
+    this.courseBarChart();
   }
 
 
@@ -233,18 +235,7 @@ export class CeoDashboardComponent {
   private courseBarChart() {
     this.courseBarChartOptions = {
       series: [
-        {
-          name: 'Upcoming Courses',
-          data: [2, 1, 3, 1], // Placeholder data
-        },
-        {
-          name: 'Ongoing Courses',
-          data: [7, 5, 6, 4], // Placeholder data
-        },
-        {
-          name: 'Completed Courses',
-          data: [3, 2, 1, 1], // Placeholder data
-        },
+       
       ],
       chart: {
         height: 350,
@@ -302,16 +293,19 @@ export class CeoDashboardComponent {
 
   getManagerandStaffCount(companyId: string, department: string) {
     let headId = localStorage.getItem('id') || '';
-    return this.studentService.getManagerandStaffCount(companyId, department,headId).pipe(
-      map((users: any[]) => {
-        const managerCount = users.filter(user => user.type.includes('Manager')).length;
-        const staffCount = users.filter(user => user.type.includes('Staff')).length;
-  
-        return {
-          managerCount,
-          staffCount
-        };
-      })
+
+    return this.studentService.getManagerandStaffCount(companyId, department, headId).pipe(
+        map((users: any[]) => {
+            const managerCount = users.filter(user => user.type.includes('Manager')).length;
+            const staffCount = users.filter(user => user.type.includes('Staff')).length;
+            const otherCount = users.filter(user => !['Manager', 'Staff'].includes(user.type)).length;
+
+            return {
+                managerCount,
+                staffCount,
+                otherCount
+            };
+        })
     );
   }
 
@@ -331,12 +325,16 @@ export class CeoDashboardComponent {
       const currentYear = currentDate.getFullYear();
       const today = new Date(currentYear, currentMonth, currentDate.getDate());
   
-      const requests = departments.map((dept: { department: string; courseStatus: any; _id: any; checked: boolean; recordCount?: number; managerCount?: number; staffCount?: number; }) => {
+      const requests = departments.map((dept: {
+        otherCount: number; department: string; courseStatus: any; _id: any; checked: boolean; recordCount?: number; managerCount?: number; staffCount?: number; 
+}) => {
         const matchingComponent = components.find((comp: { component: any; checked: boolean; }) => comp.component === dept.department);
   
         if (matchingComponent && matchingComponent.checked) {
           dept.checked = matchingComponent.checked;
           departmentNames.push(dept.department);
+          this.isCourseBarChart = false;
+            this.isCourseBar = true
   
           const departmentDetails$ = this.studentService.getDepartmentById(companyId, dept.department).pipe(
             map(depData => {
@@ -379,6 +377,7 @@ export class CeoDashboardComponent {
              
               dept.managerCount = countData.managerCount;
               dept.staffCount = countData.staffCount;
+              dept.otherCount = countData.otherCount;
             })
           );
   
@@ -395,7 +394,8 @@ export class CeoDashboardComponent {
           dept.recordCount = 0;
           dept.managerCount = 0;
           dept.staffCount = 0;
-  
+          this.isCourseBarChart = true;
+          this.isCourseBar = false
           return Promise.resolve();
         }
       });
@@ -405,7 +405,6 @@ export class CeoDashboardComponent {
         this.dept = this.updatedDepartments.filter((dept: { checked: boolean; }) => dept.checked);
         
         this.updateBarChart(departmentNames, upcomingCoursesData, ongoingCoursesData, completedCoursesData);
-        
       });
     });
   }
@@ -413,11 +412,11 @@ export class CeoDashboardComponent {
   
 
   updateBarChart(departmentNames: string[], upcomingData: number[], ongoingData: number[], completedData: number[]) {
+  
     if(departmentNames.length > 0) {
       this.isCourseBar = true;
       this.isCourseBarChart = false;
     }
-  console.log("departmentNames: " , departmentNames);
     this.courseBarChartOptions = {
       ...this.courseBarChartOptions,
       xaxis: {
@@ -572,6 +571,15 @@ export class CeoDashboardComponent {
     });
   }
 
+  officerList(department: string){
+    const companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    let headId = localStorage.getItem('id') || '';
+    this.studentService.getManagerandStaffCount(companyId, department,headId).subscribe((managers: any) => {
+      console.log("other", managers);
+      this.router.navigate(['/dashboard/officers-list'], { queryParams: { managers: JSON.stringify(managers) } });
+
+    });
+  }
  
 
   // manager Dashboard
@@ -590,7 +598,6 @@ export class CeoDashboardComponent {
       forkJoin(requests).subscribe((studentClassResponses: any) => {
         studentClassResponses.forEach((studentClassResponse: any, index: number) => {
           this.classes = studentClassResponse.data.docs; 
-          
           enrolledCount += this.classes.filter((course: any) => course.status === 'registered').length;
           inProgressCount += this.classes.filter((course: any) => course.status === 'approved').length;
           completedCount += this.classes.filter((course: any) => course.status === 'completed').length;
@@ -675,7 +682,6 @@ export class CeoDashboardComponent {
         if (response.docs) {
           this.classesList = response?.docs?.slice(0, 5).sort();
           this.docs = response?.data?.totalDocs;
-        
         }
       },
       (error) => {
@@ -691,6 +697,8 @@ export class CeoDashboardComponent {
       .getAllCoursesWithoutPagination(userId)
       .subscribe((response: any) => {
         this.allCourse = response || [];
+        this.allcourseCount = this.allCourse.filter((c: { status: string; }) => c.status === 'active').length;
+     
         
         const upcomingCoursesData: number[] = [];
         const ongoingCoursesData: number[] = [];
@@ -700,7 +708,7 @@ export class CeoDashboardComponent {
         const currentDate = new Date();
         
         const departments: string[] = [...new Set(this.allCourse.map((course: any) => course.department))] as string[];
-        const filteredDepartments: string[] = departments.filter(dept => dept !== undefined && dept !== null);
+        const filteredDepartments: string[] = departments.filter(dept => dept !== undefined && dept !== null && dept !== '');
         
         filteredDepartments.forEach(dept => {
           const departmentCourses = this.allCourse.filter((course: any) => course.department === dept);
@@ -735,17 +743,17 @@ export class CeoDashboardComponent {
         });
         
         this.updateChart(filteredDepartments, upcomingCoursesData, ongoingCoursesData, completedCoursesData);
-        // this.isCourseBarChart = true;
       }, (error) => {
         console.error('Error fetching courses', error);
       });
   }
   
   updateChart(departments: string[], upcomingData: number[], ongoingData: number[], completedData: number[]) {
-    if(departments.length > 0){
-      this.isCourseBarChart = true;
-      this.isCourseBar = false
-    }
+    console.log('Updating courses',departments)
+    // if(departments.length > 0){
+    //   this.isCourseBarChart = true;
+    //   this.isCourseBar = false
+    // }
     this.ChartOptions = {
       ...this.ChartOptions,
       series: [
@@ -785,36 +793,10 @@ export class CeoDashboardComponent {
       queryParams: { id: row },
     });
   }
+  openCertificateInNewTab(url: string) {
+    if (url) {
+      window.open(url, '_blank');
+    }
+  }
 
 }
-
-// const departmentCourses = depData; 
-              
-//                 const upcomingCourses = departmentCourses.filter((course: any) => {
-//                   if (course ) {
-//                     const sessionStartDate = new Date(course?.sessionStartDate);
-//                     return sessionStartDate >= today;
-//                   }
-//                   return false;
-//                 });
-//                 upcomingCoursesData.push(upcomingCourses.length || 0);
-    
-//                 const ongoingCourses = departmentCourses.filter((course: any) => {
-//                   if (course) {
-//                     const sessionStartDate = new Date(course?.sessionStartDate);
-//                     const sessionEndDate = new Date(course?.sessionEndDate);
-//                     return sessionStartDate <= currentDate && sessionEndDate >= currentDate;
-//                   }
-//                   return false;
-//                 });
-//                 ongoingCoursesData.push(ongoingCourses.length || 0);
-    
-//                 const completedCourses = departmentCourses.filter((course: any) => {
-//                   if (course) {
-//                     const sessionEndDate = new Date(course?.sessionEndDate);
-//                     return sessionEndDate < currentDate;
-//                   }
-//                   return false;
-//                 });
-//                 completedCoursesData.push(completedCourses.length || 0);
-    
