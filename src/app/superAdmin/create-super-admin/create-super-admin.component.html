@@ -190,6 +190,31 @@
                          
                       </mat-form-field>
                     </div>
+
+                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
+                      <label>Expiry Date <span class="mandatory">&nbsp;*</span></label>
+                      <mat-form-field
+                        class="example-full-width mb-3"
+                        appearance="outline"
+                      >
+                        <input
+                          matInput
+                          [matDatepicker]="rpicker2"
+                          formControlName="expiryDate"
+                          required
+                        />
+                        <mat-datepicker-toggle
+                          matSuffix
+                          [for]="rpicker2"
+                        ></mat-datepicker-toggle>
+                        <mat-datepicker #rpicker2></mat-datepicker>
+                        <mat-error
+                          *ngIf="userForm.get('expiryDate')?.hasError('required')"
+                        >
+                          Select date
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
                     </div>
                     <div class="row">
                       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">

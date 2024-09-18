@@ -90,6 +90,7 @@ export class CreateSuperAdminComponent {
       re_passwords: new FormControl('', []),
       type: new FormControl('admin', [Validators.required]),
       joiningDate: new FormControl('', [Validators.required]),
+      expiryDate: new FormControl('', [Validators.required]),
     });
     this.getDepartment();
     this.getUserTypeList();
@@ -257,6 +258,7 @@ export class CreateSuperAdminComponent {
               trainer:this.userForm.value.trainer,
               users:this.userForm.value.users,
               courses:this.userForm.value.courses,
+              expiryDate:this.userForm.value.expiryDate
             }
             this.userService.createCompany(payload).subscribe(() =>{
               Swal.fire({
