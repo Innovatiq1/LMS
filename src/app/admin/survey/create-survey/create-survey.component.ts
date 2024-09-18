@@ -183,5 +183,7 @@ export class CreateSurveyComponent {
       });
     }, (err:any) => {});
   }
-
+  back() {
+    window.history.back();
+  }
 }

@@ -131,6 +131,23 @@ private tpUrl=environment.Url;
       params: this.buildParams(filter),
     });
   }
+  
+
+  getAllCoursesWithDepartment(id:any,department?: string,filter?: Partial<CoursePaginationModel>
+    ): Observable<ApiResponse> {
+      const apiUrl = `${this.prefix}admin/courses-new/${id}/${department}`;
+      return this._Http.get<ApiResponse>(apiUrl, {
+        params: this.buildParams(filter),
+      });
+    }
+
+    getAllCoursesWithoutPagination(id:any,filter?: Partial<CoursePaginationModel>
+      ): Observable<ApiResponse> {
+        const apiUrl = `${this.prefix}admin/courses-new/course/${id}`;
+        return this._Http.get<ApiResponse>(apiUrl, {
+          params: this.buildParams(filter),
+        });
+      }
 
   getFilteredCourseData(payload:any, filter:any
     ):Observable<any> {

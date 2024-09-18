@@ -51,5 +51,9 @@ isLoading: boolean = false;
     this.coursePaginationModel.limit = $event?.pageSize;
     
   }
-
+  viewCourse(id: string) {
+    this.router.navigate(['/admin/courses/course-view/'], {
+      queryParams: { id: id, status: 'active' },
+    });
+  }
 }

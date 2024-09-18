@@ -22,15 +22,15 @@
                             <ng-container matColumnDef="name">
                               <mat-header-cell *matHeaderCellDef mat-sort-header>Course
                               </mat-header-cell>
-                              <mat-cell class="name"  *matCellDef="let row"
+                              <mat-cell class="name"  *matCellDef="let row" (click)="viewCourse(row.id)"
                               ><span class="mobile-label">Course Name:</span>
-                                <span>{{ row.title ? (row.title | titlecase) : '--' }}</span>
+                                <span >{{ row.title ? (row.title | titlecase) : '--' }}</span>
                               </mat-cell>
                             </ng-container>
                             <ng-container matColumnDef="code">
                               <mat-header-cell *matHeaderCellDef mat-sort-header>Course Code
                               </mat-header-cell>
-                              <mat-cell *matCellDef="let row" ><span
+                              <mat-cell *matCellDef="let row"   ><span
                                   class="mobile-label">Course Code:</span> {{row.courseCode ? (row.courseCode) : "--"}}
                               </mat-cell>
                             </ng-container>
@@ -128,10 +128,10 @@
                             </mat-row>
                           </table>
   
-                          <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems"
+                          <!-- <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems"
                             (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr"
                             aria-label="select pagination option">
-                          </mat-paginator>
+                          </mat-paginator> -->
                         </div>
                       </div>
                     </div>

@@ -49,8 +49,12 @@
                 </div>
                 <div class="row mt-4">
                   <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
-                    <button type="button" mat-raised-button id="back" class="float-end"
+                    <!-- <button type="button" mat-raised-button id="back" class="float-end"
                       [routerLink]="['/admin/survey/feedbacks-list']">
+                      Back
+                    </button> -->
+                    <button type="button" mat-raised-button id="back" class="float-end"
+                     (click)="back()">
                       Back
                     </button>
                   </div>

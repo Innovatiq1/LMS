@@ -7,6 +7,7 @@ import { TotalListComponent } from './total-list/total-list.component';
 import { CorpCourseListComponent } from './corp-course-list/corp-course-list.component';
 import { CorpManagerListComponent } from './corp-manager-list/corp-manager-list.component';
 import { CorpStaffListComponent } from './corp-staff-list/corp-staff-list.component';
+import { ChartCourseViewComponent } from './chart-course-view/chart-course-view.component';
 
 const routes: Routes = [
   {
@@ -41,6 +42,10 @@ const routes: Routes = [
   {
     path: 'corp-staff-list',
     component: CorpStaffListComponent,
+  },
+  {
+    path: 'chart-course-view/:department/:status',
+    component: ChartCourseViewComponent,
   }
 
 ];

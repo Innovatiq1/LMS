@@ -19,6 +19,7 @@ import { TotalListComponent } from './total-list/total-list.component';
 import { CorpCourseListComponent } from './corp-course-list/corp-course-list.component';
 import { CorpManagerListComponent } from './corp-manager-list/corp-manager-list.component';
 import { CorpStaffListComponent } from './corp-staff-list/corp-staff-list.component';
+import { ChartCourseViewComponent } from './chart-course-view/chart-course-view.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { CorpStaffListComponent } from './corp-staff-list/corp-staff-list.compon
     TotalListComponent,
     CorpCourseListComponent,
     CorpManagerListComponent,
-    CorpStaffListComponent
+    CorpStaffListComponent,
+    ChartCourseViewComponent
   ],
   imports: [
     CommonModule,
