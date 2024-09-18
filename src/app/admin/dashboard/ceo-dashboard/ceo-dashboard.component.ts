@@ -95,6 +95,7 @@ export class CeoDashboardComponent {
   isHrPie: boolean = false;
  
   isCourseBar: boolean = false;
+  isCourseBarChart: boolean = false;
   dept: any;
   colorClasses = ['l-bg-orange', 'l-bg-green', 'l-bg-red', 'l-bg-purple'];
   updatedDepartments: any;
@@ -124,7 +125,6 @@ export class CeoDashboardComponent {
     this.getClassList();
     this.getCount();
     this.getAllSurveys();
-    this.isHrPie = true;
     this.courseBarChart();
     this.hrPieChart();
     this.getAllCourse();
@@ -142,7 +142,7 @@ export class CeoDashboardComponent {
 
   private hrPieChart() {
     this.hrPieChartOptions = {
-      series2: [1, 2, 3],
+      series2: [],
       chart: {
         type: 'pie',
         height: 350,
@@ -176,18 +176,6 @@ export class CeoDashboardComponent {
     
         this.ChartOptions = {
           series: [
-            {
-              name: 'Upcoming Courses',
-              data: [2, 1, 3, 1], // Placeholder data
-            },
-            {
-              name: 'Ongoing Courses',
-              data: [7, 5, 6, 4], // Placeholder data
-            },
-            {
-              name: 'Completed Courses',
-              data: [3, 2, 1, 1], // Placeholder data
-            },
           ],
           chart: {
             height: 350,
@@ -397,6 +385,7 @@ export class CeoDashboardComponent {
           const courseStatus$ = this.studentService.getCourseStatus(companyId, dept.department).pipe(
             map(status => {
               this.updateHrPieChart(this.mapCourseStatus(status), dept.department, status);
+              
             })
           );
   
@@ -414,8 +403,9 @@ export class CeoDashboardComponent {
       Promise.all(requests).then(() => {
         this.updatedDepartments = departments;
         this.dept = this.updatedDepartments.filter((dept: { checked: boolean; }) => dept.checked);
+        
         this.updateBarChart(departmentNames, upcomingCoursesData, ongoingCoursesData, completedCoursesData);
-        this.isCourseBar = true;
+        
       });
     });
   }
@@ -423,8 +413,11 @@ export class CeoDashboardComponent {
   
 
   updateBarChart(departmentNames: string[], upcomingData: number[], ongoingData: number[], completedData: number[]) {
-  
-  
+    if(departmentNames.length > 0) {
+      this.isCourseBar = true;
+      this.isCourseBarChart = false;
+    }
+  console.log("departmentNames: " , departmentNames);
     this.courseBarChartOptions = {
       ...this.courseBarChartOptions,
       xaxis: {
@@ -597,14 +590,14 @@ export class CeoDashboardComponent {
       forkJoin(requests).subscribe((studentClassResponses: any) => {
         studentClassResponses.forEach((studentClassResponse: any, index: number) => {
           this.classes = studentClassResponse.data.docs; 
-          console.log("users", this.classes);
+          
           enrolledCount += this.classes.filter((course: any) => course.status === 'registered').length;
           inProgressCount += this.classes.filter((course: any) => course.status === 'approved').length;
           completedCount += this.classes.filter((course: any) => course.status === 'completed').length;
   
         });
   
-        this.updateHrPieChart1([enrolledCount, inProgressCount, completedCount]);
+        this.updateHrPieChart1([enrolledCount, inProgressCount, completedCount],this.classes);
   
         this.staffCount = response.data.totalDocs;
       }, error => {
@@ -615,8 +608,57 @@ export class CeoDashboardComponent {
     });
   }
 
-  updateHrPieChart1(data: number[]) {
-    this.hrPieChartOptions.series2 = data;
+  updateHrPieChart1(data: number[],classes:any[]) {
+    this.isHrPie = true;
+    this.hrPieChartOptions = {
+      series2: data,
+      chart: {
+        type: 'pie',
+        height: 350,
+        events: {
+          dataPointSelection: (event: any, chartContext: any, config: any) => {
+            const clickedIndex = config.dataPointIndex;
+              let status = '';
+              let filteredRecords: any[] = [];
+  
+              // Determine the status and filter records accordingly
+              switch (clickedIndex) {
+                case 0:
+                  status = 'Enrolled';
+                  filteredRecords = classes.filter(record => record.status === 'registered');
+                  break;
+                case 1:
+                  status = 'In-progress';
+                  filteredRecords = classes.filter(record => record.status === 'approved');
+                  break;
+                case 2:
+                  status = 'Completed';
+                  filteredRecords = classes.filter(record => record.status === 'completed');
+                  break;
+              }
+  
+              this.router.navigate(['/dashboard/managers-pie-chart-view'], {
+                queryParams: {
+                  data: JSON.stringify(filteredRecords)
+                }
+              });
+          }
+        }
+      },
+      labels: ['Enrolled', 'In Progress', 'Completed'],
+      colors: ['#6777ef', '#ff9800', '#B71180'],
+      responsive: [{
+        breakpoint: 480,
+        options: {
+          chart: {
+            width: 300
+          },
+          legend: {
+            position: 'bottom'
+          }
+        }
+      }]
+    };
   }
   
   getCount() {
@@ -642,15 +684,6 @@ export class CeoDashboardComponent {
     );
   }
 
-  // getAllCourse() {
-  //   let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-  //       this._courseService
-  //     .getAllCoursesWithoutPagination(userId)
-  //     .subscribe((response) => {
-  //       this.allCourse = response;
-  //       console.log("all courses: " , this.allCourse)
-  //     });
-  // }
 
   getAllCourse() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
@@ -702,12 +735,17 @@ export class CeoDashboardComponent {
         });
         
         this.updateChart(filteredDepartments, upcomingCoursesData, ongoingCoursesData, completedCoursesData);
+        // this.isCourseBarChart = true;
       }, (error) => {
         console.error('Error fetching courses', error);
       });
   }
   
   updateChart(departments: string[], upcomingData: number[], ongoingData: number[], completedData: number[]) {
+    if(departments.length > 0){
+      this.isCourseBarChart = true;
+      this.isCourseBar = false
+    }
     this.ChartOptions = {
       ...this.ChartOptions,
       series: [
@@ -730,6 +768,7 @@ export class CeoDashboardComponent {
       }
     };
   }
+  
   
 
   adjustDataLengthBar(data: number[], length: number): number[] {

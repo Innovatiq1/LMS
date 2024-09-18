@@ -1,0 +1,98 @@
+
+<section class="content">
+    <div class="content-block">
+      <div class="block-header" *ngFor="let breadscrum of breadscrums">
+        <!-- breadcrumb -->
+        <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
+        </app-breadcrumb>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+        
+              <div class="mt-4">
+                <div class="row">
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                      <div class="materialTableHeader">
+                        <div class="right">
+                        </div>
+                      </div>
+                      <div class="body overflow-auto">
+                        <div class="responsive_table">
+                          <table mat-table [dataSource]="Courses" matSort class="mat-cell advance-table">
+                            <ng-container matColumnDef="name">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header>Course
+                              </mat-header-cell>
+                              <mat-cell class="name"  *matCellDef="let row" 
+                              ><span class="mobile-label">Course Name:</span>
+                                <span >{{ row.title ? (row?.title | titlecase) : '--' }}</span>
+                              </mat-cell>
+                            </ng-container>
+                           
+                            <ng-container matColumnDef="department">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">Department
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" > <span
+                                    class="mobile-label">Department:</span>{{row.department ? (row.department) : "--"}}
+                                </mat-cell>
+                              </ng-container>
+                            
+                            <ng-container matColumnDef="registeredDate">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">Registered
+                                Date
+                              </mat-header-cell>
+                              <mat-cell *matCellDef="let row" > <span
+                                  class="mobile-label">Registered Date:</span><span>{{row?.registeredOn| date}}</span>
+                              </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="status">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header"
+                                style="width: 400px;">Status
+                              </mat-header-cell>
+                              <mat-cell *matCellDef="let row" class="pr-0">
+                                <span
+                                  [class]="row?.status === 'completed' ? 'badge badge-solid-green' : row?.status === 'approved' ? 'badge badge-solid-purple' : row?.status === 'registered'?'badge badge-solid-red':''">
+                                  <span
+                                    [class]="row?.status === 'completed' ? 'status-dot' : row?.status === 'approved' ? 'status-purple' : ''"></span>
+                                  {{row.status  | titlecase}}</span>
+                              </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="Fees">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header class="amount">Payment
+                              </mat-header-cell>
+                              <mat-cell *matCellDef="let row" 
+                                class="payment-cell"> <span class="mobile-label">Payment:</span><span>$</span> {{row.fee
+                                ||0}} .00
+                              </mat-cell>
+                            </ng-container>
+                            <mat-header-row *matHeaderRowDef="displayedColumns">
+                            </mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns;" [style.cursor]="'pointer'"
+                              matRipple>
+                            </mat-row>
+                          </table>
+  
+                          <!-- <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems"
+                            (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr"
+                            aria-label="select pagination option">
+                          </mat-paginator> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+  
+              </div>
+            
+        </div>
+      </div>
+    </div>
+  
+    <!-- <div *ngIf="isLoading" class="spinner-container">
+      <mat-spinner></mat-spinner>
+  </div> -->
+  
+  <div *ngIf="isLoading" class="overlay">
+    <mat-spinner class="centered-spinner" diameter="50"></mat-spinner>
+  </div>
+  </section>
