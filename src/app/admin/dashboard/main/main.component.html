@@ -556,7 +556,7 @@
 </ng-container>
 
 <ng-container *ngFor="let dashboard of dashboards">
-  <app-ceo-dashboard [sharedashboards] = "dashboard" ></app-ceo-dashboard>
+  <app-ceo-dashboard [sharedashboards] = "dashboard" [role]="roles" ></app-ceo-dashboard>
 </ng-container>
 </section>
 

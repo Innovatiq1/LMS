@@ -12,7 +12,7 @@ export class CorpCourseListComponent {
     {
       title: 'Course List',
       items: ['Dashboard'],
-      active: 'Course List111',
+      active: 'Course List',
     },
   ];
   courseData: any[] = [];
