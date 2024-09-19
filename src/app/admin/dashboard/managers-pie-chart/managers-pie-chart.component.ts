@@ -13,7 +13,7 @@ export class ManagersPieChartComponent {
     {
       title: 'Course List',
       items: ['Dashboard'],
-      active: 'Course List22',
+      active: 'Course List',
     },
   ];
   displayedColumns = [
