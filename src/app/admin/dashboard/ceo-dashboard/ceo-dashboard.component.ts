@@ -87,6 +87,7 @@ export class CeoDashboardComponent {
   // ];
   @ViewChild('chart') chart!: ChartComponent;
   @Input() sharedashboards!: any;
+  @Input() role: any;
   public hrPieChartOptions!: Partial<pieChart1Options>;
   public ChartOptions!: Partial<chartOptions>;
   public courseBarChartOptions!: Partial<chartOptions>;
@@ -598,6 +599,7 @@ export class CeoDashboardComponent {
       forkJoin(requests).subscribe((studentClassResponses: any) => {
         studentClassResponses.forEach((studentClassResponse: any, index: number) => {
           this.classes = studentClassResponse.data.docs; 
+          console.log("classes",this.classes)
           enrolledCount += this.classes.filter((course: any) => course.status === 'registered').length;
           inProgressCount += this.classes.filter((course: any) => course.status === 'approved').length;
           completedCount += this.classes.filter((course: any) => course.status === 'completed').length;
@@ -794,6 +796,7 @@ export class CeoDashboardComponent {
     });
   }
   openCertificateInNewTab(url: string) {
+    console.log('openCertificateInNewTab', url);
     if (url) {
       window.open(url, '_blank');
     }

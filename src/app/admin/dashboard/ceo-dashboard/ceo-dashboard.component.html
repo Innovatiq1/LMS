@@ -18,7 +18,7 @@
             
             <div class="row mt-4 text-center">
               <!-- Courses -->
-              <div class="col-3">
+              <div [ngClass]="role ==='CEO' || role === 'Ceo' || role === 'ceo' ? 'col-3':'col-4'">
                 <h6 class="text-white mb-1">Courses</h6>
                 <span class="badge1 badge-pill p-2" 
                      
@@ -29,7 +29,7 @@
               </div>
               
               <!-- Officers -->
-              <div class="col-3">
+              <div [ngClass]="role ==='CEO' || role === 'Ceo' || role === 'ceo' ? 'col-3':'col-4'" *ngIf="role ==='CEO' || role === 'Ceo' || role === 'ceo'">
                 <h6 class="text-white mb-1">Officers</h6>
                 <span class="badge1 badge-pill p-2" 
                      
@@ -40,7 +40,7 @@
               </div>
               
               <!-- Managers -->
-              <div class="col-3">
+              <div [ngClass]="role ==='CEO' || role === 'Ceo' || role === 'ceo' ? 'col-3':'col-4'">
                 <h6 class="text-white mb-1">Managers</h6>
                 <span class="badge1 badge-pill p-2" 
                      
@@ -51,7 +51,7 @@
               </div>
               
               <!-- Staff -->
-              <div class="col-3">
+              <div [ngClass]="role ==='CEO' || role === 'Ceo' || role === 'ceo' ? 'col-3':'col-4'">
                 <h6 class="text-white mb-1">Staff</h6>
                 <span class="badge1 badge-pill p-2" 
                      
@@ -274,7 +274,7 @@
                       }}
                     </div>
                   </td>
-                  <td [ngClass]="{'disabled': !class?.certificate}" (click)="openCertificateInNewTab(class?.certificateUrl)">
+                  <td [ngClass]="{'disabled': !class?.certificate}" (click)="openCertificateInNewTab(class?.certifiacteUrl)">
                     <div class="center-icon">
                       <app-feather-icons [icon]="'eye'" 
                                          [ngClass]="{'green-icon': class?.certificate, 'grey-icon': !class?.certificate}" 

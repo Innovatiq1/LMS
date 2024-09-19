@@ -321,6 +321,7 @@ export class MainComponent implements OnInit {
   allClassesCount: any;
   dashboards: any;
   roleType: any;
+  roles:any;
 
   constructor(
     private courseService: CourseService,
@@ -762,6 +763,7 @@ export class MainComponent implements OnInit {
     this.getClassList();
     const role = this.authenticationService.currentUserValue.user.role;
     console.log('isCeoDB',role)
+    this.roles = role
     if(role === 'Super Admin'){
       this.superAdmin = true;
       this.breadscrums = [
