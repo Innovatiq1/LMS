@@ -79,6 +79,7 @@ ngOnInit(): void {
 getCoursesById(id: string){
   this.alluserService.getCoursesById(id).subscribe((response: any) => {
     this.dataSource = response.data.docs;
+    console.log(response)
     this.isLoading = false;
     this.ref.detectChanges();
     this.totalItems = response.data.totalDocs
@@ -90,17 +91,20 @@ getCoursesById(id: string){
 
 /* Courese Views*/
 
-viewTutorial(studentId: string, courseId: string, courseName: string) {
+viewTutorial(studentId: any, courseId: string, courseName: string) {
+  studentId= studentId.id;
   this.dataService.setData('tutorialData', { studentId, courseId, courseName });
   this.router.navigate(['/admin/user-profile/tutorials']);
 }
 
-viewAssement(studentId: string, courseId: string,courseName:string){
+viewAssement(studentId: any, courseId: string,courseName:string){
+  studentId= studentId.id;
   this.dataService.setData('assesmentData', { studentId, courseId, courseName });
   this.router.navigate(['/admin/user-profile/assesment']);
 }
 
-viewExam(studentId: string, courseId: string,courseName:string){
+viewExam(studentId: any, courseId: string,courseName:string){
+  studentId= studentId.id;
   this.dataService.setData('examData', { studentId, courseId, courseName });
   this.router.navigate(['/admin/user-profile/exam']);
 }
