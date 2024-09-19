@@ -22,12 +22,19 @@
                             <ng-container matColumnDef="name">
                               <mat-header-cell *matHeaderCellDef mat-sort-header>Course
                               </mat-header-cell>
-                              <mat-cell class="name"  *matCellDef="let row" 
+                              <mat-cell   *matCellDef="let row" 
                               ><span class="mobile-label">Course Name:</span>
                                 <span >{{ row.title ? (row?.title | titlecase) : '--' }}</span>
                               </mat-cell>
                             </ng-container>
-                           
+                            <ng-container matColumnDef="user">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header>User Name
+                              </mat-header-cell>
+                              <mat-cell class="name"  *matCellDef="let row" 
+                              ><span class="mobile-label">Course Name:</span>
+                                <span >{{ row?.studentId?.name  | titlecase  }}</span>
+                              </mat-cell>
+                            </ng-container>
                             <ng-container matColumnDef="department">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">Department
                                 </mat-header-cell>
