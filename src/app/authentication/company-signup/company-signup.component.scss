@@ -1,0 +1,57 @@
+select {
+    position: absolute;
+    border: none;
+    font-size: 16px;
+    background: transparent;
+    color: black;
+    font-weight: 600;
+    border-radius: 15px;
+    margin-top: -50px;
+    height: 30px;
+    margin-left: 32%;
+  }
+  .slideshow {
+    height: 100%;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 15px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .pointer {
+    cursor: pointer;
+  }
+  .custom{
+
+    width: 500px;
+  }
+  .invalid-text {
+    color: red;
+    padding:5px;
+  }
+  ngx-intl-tel-input {
+    width: 500px; /* Set your desired width */
+  }
+  
+  .slideshow img {
+    width: 103%;
+    height: 100%;
+    position: absolute;
+    opacity: 0;
+    object-fit: cover;
+    transition: opacity 1s ease-in-out;
+  }
+  
+  .slideshow img.active {
+    opacity: 1;
+  }
+ .text-center{
+  margin-top: -30px;
+ }
+ 

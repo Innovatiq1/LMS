@@ -12,6 +12,7 @@ import { ApiResponse } from "@core/models/response";
 })
 export class EmailConfigService {
   private prefix: string = environment.apiUrl;
+  private Companyprefix: string = environment.companyUrl;
 
 
   constructor(private http: HttpClient) { }
@@ -142,6 +143,18 @@ createEmailTemplate=(data:any): Observable<any> => {
   );
 };
 
+createCompanyEmailTemplate=(data:any): Observable<any> => {
+  let endpoint = `${this.Companyprefix}x-api/v1/public/createEmail`;
+
+  // if (Id) {
+  //   endpoint += `?id=${Id}`;
+  // }
+  return this.http.post(endpoint, data).pipe(
+    catchError((err) => {
+      return throwError(err);
+    })
+  );
+};
 
 
   updateForgetPasswordTemplate = (data:any,Id?:any): Observable<any> => {
