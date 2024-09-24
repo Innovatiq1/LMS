@@ -12,7 +12,7 @@ import { ApiResponse } from "@core/models/response";
 })
 export class EmailConfigService {
   private prefix: string = environment.apiUrl;
-  private Companyprefix: string = environment.companyUrl;
+  private Companyprefix: string = environment.Url;
 
 
   constructor(private http: HttpClient) { }

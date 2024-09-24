@@ -14,7 +14,7 @@ export class LogoService {
   private dataSource = new BehaviorSubject<any>(null);
   currentData = this.dataSource.asObservable();
   private defaultUrl: string = environment['apiUrl'];
-  private companyUrl: string = environment['companyUrl'];
+  private companyUrl: string = environment['Url'];
   constructor(private http: HttpClient) { }
   updateData(data: any) {
     this.dataSource.next(data);
