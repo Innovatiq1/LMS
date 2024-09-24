@@ -8,6 +8,7 @@ import { Page404Component } from './page404/page404.component';
 import { Page500Component } from './page500/page500.component';
 import { SigninRoleComponent } from './signin-role/signin-role.component';
 import { SingpassLoginPageComponent } from './singpass-login-page/singpass-login-page.component';
+import { CompanySignupComponent } from './company-signup/company-signup.component';
 const routes: Routes = [
   {
     path: '',
@@ -72,6 +73,11 @@ const routes: Routes = [
     path: 'page500',
     component: Page500Component,
   },
+  {
+    path: 'TMS/company-signup',
+    component: CompanySignupComponent,
+  }
+ 
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],
