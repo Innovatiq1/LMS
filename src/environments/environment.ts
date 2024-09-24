@@ -14,6 +14,8 @@ export const environment = {
   apiUrl: 'http://localhost:3000/api/',
   Url: 'http://localhost:3000/',
   companyUrl: 'http://localhost:3000/',
+  publicApiUrl: 'http://localhost:3000/x-api/v1/public/',
+
 
     // apiUrl:'http://13.212.97.97:3001/api/',
 

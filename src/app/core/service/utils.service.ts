@@ -473,6 +473,15 @@ export class UtilsService {
     'webhook':[
       {type:'required', message: 'Enter Webhook Secret Key'}
     ],
+    'clientId':[
+      {type:'required', message: 'Enter Client ID'}
+    ],
+    'clientSecret':[
+      {type:'required', message: 'Enter Client Secret'}
+    ],
+    'redirectUri':[
+      {type:'required', message: 'Enter Redirect URI'}
+    ],
     'secret':[
       {type:'required', message: 'Enter Secret Key'}
     ],
