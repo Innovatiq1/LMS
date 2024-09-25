@@ -116,7 +116,8 @@ export class SocialLoginComponent {
     }
   }
   getData() {
-    this.settingsService.getKeysByCompanyId().subscribe((response: any) => {
+    const companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    this.settingsService.getKeysByCompanyId(companyId).subscribe((response: any) => {
       this.gmail = response.data.filter((item: any) => item.type == 'google');
       this.linkedin = response.data.filter((item: any) => item.type == 'linkedin');;
 
