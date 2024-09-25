@@ -1,3 +1,5 @@
+//EXAM-Component ts
+
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { SelectionModel } from '@angular/cdk/collections';
 import { AssessmentQuestionsPaginationModel } from '@core/models/assessment-answer.model';
@@ -9,6 +11,7 @@ import Swal from 'sweetalert2';
 import { CourseService } from '@core/service/course.service';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { AuthenService } from '@core/service/authen.service';
+import { SettingsService } from '@core/service/settings.service';
 
 @Component({
   selector: 'app-exam',
@@ -24,7 +27,10 @@ export class ExamComponent {
     'Exam Type',
     'Retakes left',
     'Exam',
+    'Request Retake',
   ];
+
+  retakeRequestsCache: { [key: string]: any } = {};
   assessmentPaginationModel!: Partial<AssessmentQuestionsPaginationModel>;
   totalItems: any;
   pageSizeArr = this.utils.pageSizeArr;
@@ -36,7 +42,8 @@ export class ExamComponent {
   isAssessment = false;
   isTutorial = false;
   tab: number = 0;
-
+retakeTemp=0;
+retakeRequestData:any;
   breadscrums = [
     {
       title: 'Assesment Answer List',
@@ -49,7 +56,8 @@ export class ExamComponent {
     public utils: UtilsService,
     private assessmentService: AssessmentService,
     private courseService: CourseService,
-    private authenService: AuthenService
+    private authenService: AuthenService,
+    private settingService:SettingsService
   ) {
     this.assessmentPaginationModel = {};
   }
@@ -95,7 +103,22 @@ export class ExamComponent {
           this.assessmentPaginationModel.docs = this.dataSource;
           this.assessmentPaginationModel.page = res.page;
           this.assessmentPaginationModel.limit = res.limit;
+          this.dataSource.forEach((row: any) => {
+             let maxRetakes = row.assessmentId.retake;
+             let usedRetakes = row.retakeCount;
+            //  let retakeValue=maxRetakes-usedRetakes;
+            //  if(usedRetakes>=maxRetakes)
+            //  {
+            //   row.retakeCount=1;
+            //  }
+            if (row.retakeCount>=row.assessmentId.retake && !row.is_exam_completed) {
+              this.getRetakeRequestsDatas(row);
+            }
+          });
         });
+       
+      
+
     } else if (this.tab === 1 && this.isTutorial) { 
       this.assessmentService
         .getTutorialQuestionJsonV2({ ...this.assessmentPaginationModel, studentId })
@@ -105,6 +128,9 @@ export class ExamComponent {
           this.assessmentPaginationModel.docs = this.dataSource;
           this.assessmentPaginationModel.page = res.page;
           this.assessmentPaginationModel.limit = res.limit;
+          // this.dataSource.forEach((row: any) => {
+          //   this.getRetakeRequest(row);
+          // });
         });
     }
   }
@@ -134,15 +160,76 @@ export class ExamComponent {
       return 'Assessment';
     }
   }
-  calculateRetakesLeft(row: any) {
+  calculateRetaks(row:any):any{
     if (row.is_tutorial) {
-      return 'Unlimited'; 
+      return 'Unlimited';
     } else {
       const maxRetakes = row.assessmentId.retake;
       const usedRetakes = row.retakeCount;
+      if(row.retakeLeft==1)
+      {
+        row.retakeCount==0;
+        return 1;
+
+      }
+        
       return maxRetakes - usedRetakes;
     }
   }
+
+  getRetakeRequestsDatas(row: any) {
+    const studentId = row.studentId.id;
+    const courseId = row.courseId._id;
+  
+    this.settingService.getRetakeRequestByStudentIdAndCourseId(studentId, courseId)
+      .subscribe((response) => {
+      
+        if (response?.data && response.data[0]?.retakes === 1) {
+          // this.retakeRequestData=response.data[0];
+          row.retakeLeft = 1;
+          row.retakeCount=1;
+          row.enableRetakeTest = true;
+        } else {
+          row.enableRetakeTest = false;
+        }
+      });
+  }
+  calculateRetakesLeft(row: any): any {
+    if (row.is_tutorial) {
+      return 'Unlimited';
+    } else {
+      const maxRetakes = row.assessmentId.retake;
+      const usedRetakes = row.retakeCount;
+      let retakeValue = maxRetakes - usedRetakes;
+      if (retakeValue === 0) {
+        const cacheKey = `${row.studentId._id}-${row.courseId._id}`;
+        if (this.retakeRequestsCache[cacheKey] !== undefined) {
+          return this.retakeRequestsCache[cacheKey]; 
+        } else {
+          this.getRetakeRequest(row).then(response => {
+            this.retakeRequestsCache[cacheKey] = response; 
+          });
+          return 'Loading...'; 
+        }
+      }
+
+      return retakeValue;
+    }
+  }
+
+  async getRetakeRequest(row: any): Promise<any> {
+    const courseId = row.courseId._id;
+    const studentId = row.studentId._id;
+
+    try {
+      const response: any = await this.settingService.getRetakeRequestByStudentIdAndCourseId(studentId, courseId).toPromise();
+      return response?.data[0]?.retakes || 0; 
+    } catch (error) {
+      console.error("Error fetching retake request:", error);
+      return 0; 
+    }
+  }
+  
 
   onDelete(id: string) {
     Swal.fire({
@@ -196,6 +283,113 @@ export class ExamComponent {
           ]);
         }
       });
+  }
+  // onRequestRetake(row: any) {
+  //   console.log("row",row)
+  //   console.log("assessmentId",row.assessmentId._id)
+  //   console.log("courseId",row.courseId._id)
+  //   console.log("courseName",row.courseId.title)
+  //   console.log("companyId",row.companyId)
+  //   console.log("studetnId",row.studentId._id)
+  //   console.log("studentName",row.studentId.name)
+  //   console.log("examType",'assessment')
+  //   let payload={
+  //     "assessmentId":row.assessmentId._id,
+  //     "courseId":row.courseId._id,
+  //     "courseName":row.courseId.title,
+  //     "companyId":row.companyId,
+  //     "studentId":row.studentId._id,
+  //     "studentName":row.studentId.name,
+  //     "examType":"assessment",
+  //     "requestStatus":"requested",
+  //     "retakes":0
+
+  //   }
+  //   this.settingService.saveRetakeRequest(payload).subscribe(
+  //   (response) => {
+  //   Swal.fire({
+  //     title: 'Request Retake',
+  //     text: 'Are you sure you want to request a retake for this assessment?',
+  //     icon: 'question',
+  //     showCancelButton: true,
+  //     confirmButtonText: 'Yes, request retake!',
+  //     cancelButtonText: 'Cancel',
+  //   })
+  // })
+  //   // .then((result) => {
+  //   //   if (result.isConfirmed) {
+  //   //     this.settingService.saveRetakeRequest(row.id).subscribe(
+  //   //       (response) => {
+  //   //         Swal.fire(
+  //   //           'Requested!',
+  //   //           'Your retake request has been submitted.',
+  //   //           'success'
+  //   //         );
+  //   //         this.getAllAnswers();
+  //   //       },
+  //   //       (error: any) => {
+  //   //         console.error('Error requesting retake:', error);
+  //   //         Swal.fire(
+  //   //           'Error!',
+  //   //           'An error occurred while requesting the retake.',
+  //   //           'error'
+  //   //         );
+  //   //       }
+  //   //     );
+  //   //   }
+  //   // });
+  // }
+
+  onRequestRetake(row: any) {
+    const payload = {
+      assessmentId: row.assessmentId?._id,
+      courseId: row.courseId._id,
+      courseName: row.courseId.title,
+      companyId: row.companyId,
+      studentId: row.studentId._id,
+      studentName: row.studentId.name,
+      examType: 'assessment',
+      requestStatus: 'requested',
+      retakes: 0,
+    };
+    Swal.fire({
+      title: 'Request Retake',
+      text: 'Are you sure you want to request a retake for this assessment?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, request retake!',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.settingService.saveRetakeRequest(payload).subscribe(
+          (response) => {
+            console.log("response 1111==",response)
+            if (response.message) {
+              Swal.fire({
+                icon: 'info',
+                title: 'Request Status',
+                text: response.message,
+              });
+            } else {
+              Swal.fire({
+                icon: 'success',
+                title: 'Retake Requested',
+                text: 'Your retake request has been submitted successfully.',
+              });
+            }
+          },
+          (error) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Request Failed',
+              text: 'There was an issue submitting your retake request.',
+            });
+          }
+        );
+      } else {
+        console.log('User canceled the request.');
+      }
+    });
   }
   
 }

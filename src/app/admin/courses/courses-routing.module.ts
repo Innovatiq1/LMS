@@ -20,6 +20,7 @@ import { StudentPendingCoursesComponent } from './student-pending-courses/studen
 import { VerificationListComponent } from './verification-list/verification-list.component';
 import { StudentCourseComponent } from './all-course/student-course/student-course.component';
 import { DraftedCoursesComponent } from './all-course/drafted-courses/drafted-courses.component';
+import { RetakeRequestsComponent } from './retake-requests/retake-requests.component';
 const routes: Routes = [
   {
     path: 'all-courses/course',
@@ -134,6 +135,10 @@ const routes: Routes = [
   {
     path:'student-courses/verification-list',
     component: VerificationListComponent,
+  },
+  {
+    path:'student-courses/retake-requests',
+    component: RetakeRequestsComponent,
   },
   {
     path: 'student-courses/:coursename/:id',

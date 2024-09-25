@@ -75,6 +75,7 @@ export class ViewCourseComponent implements OnDestroy {
   isPlaying = false;
   lastPausedAt: number = 0;
 
+
   courseKitModel!: Partial<CourseKitModel>;
   templates: any[] = [];
   currentDate!: Date;
@@ -164,7 +165,8 @@ export class ViewCourseComponent implements OnDestroy {
   isShowFeedback: boolean = false;
   isShowAssessmentQuestions: boolean = false;
   feeType:string='';
-  
+  RetakeRequestCount=0;
+  retakeResponseData:any;
 
   constructor(
     private classService: ClassService,
@@ -251,6 +253,7 @@ export class ViewCourseComponent implements OnDestroy {
       this.getCourseKitDetails(this.courseId);
       }
       this.getAssessmentAnswerCount(this.courseId);
+      this.getRetakeRequests(this.courseId);
       this.getExamAssessmentAnswerCount(this.courseId);
     });
   }
@@ -1067,17 +1070,47 @@ else if(this.feeType=="free"){
 
   getAssessmentAnswerCount(courseId: string) {
     const studentId = localStorage.getItem('id') || '';
+    // const retakeRequestCount
     this.assessmentService
       .getAssessmentAnswerCount(studentId, courseId)
       .subscribe((response: any) => {
+        // this.assessmentTaken = response['count']-this.RetakeRequestCount;
         this.assessmentTaken = response['count'];
+        // const retakeRequestCount=this.getRetakeRequests(studentId,courseId);
+        if(this.RetakeRequestCount==1)
+          {
+            this.updateRetakeRequest(courseId)
+          }
         this.updateShowAssessmentQuestions();
         this.assessmentAnswerLatest = response['latestRecord'];
         if (this.assessmentTaken >= 1) {
           this.updateCompletionStatus();
         }
+        
       });
+      
   }
+  updateRetakeRequest(courseId:any)
+  {
+    const studentId = localStorage.getItem('id') || '';
+    this.retakeResponseData.data[0].retakes=0;
+    const payload=this.retakeResponseData.data[0];
+    this.settingsService.putRetakeRequestByStudentIdCourseId(studentId,courseId,payload).subscribe((response)=>{
+      console.log("response updateRetakeRequest=",response)
+
+    })
+  }
+  getRetakeRequests(courseId:any){
+    const studentId = localStorage.getItem('id') || '';
+    this.settingsService.getRetakeRequestByStudentIdAndCourseId(studentId,courseId).subscribe((response)=>{
+      this.retakeResponseData=response;
+      this.RetakeRequestCount=response.data[0].retakes;
+      
+    })
+    // console.log("this.RetakeRequestCount",this.RetakeRequestCount);
+    //  this.updateRetakeRequest(courseId)
+  }
+  
 
   updateShowAssessmentQuestions(){
     if(this.assessmentTempInfo && !this.assessmentInfo.resultAfterFeedback && this.isFeedBackSubmitted){
@@ -1085,6 +1118,10 @@ else if(this.feeType=="free"){
       this.isAnswersSubmitted = false;
       this.answersResult = null;
       this.questionList = this.assessmentInfo?.questions || [];
+    }
+    if(this.RetakeRequestCount===1)
+    {
+      this.assessmentTaken=1;
     }
     if(this.assessmentTaken < this.assessmentInfo.retake){
       if(this.assessmentTempInfo == null || (this.isAnswersSubmitted && !this.isFeedBackSubmitted)){

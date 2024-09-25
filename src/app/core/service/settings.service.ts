@@ -38,6 +38,34 @@ export class SettingsService {
     return params;
   }
 
+  saveRetakeRequest(data: any) {
+    const apiUrl = `${this.prefix}admin/retakeRequest`;
+    return this._Http
+      .post<ApiResponse>(apiUrl, data)
+      .pipe(map((response) => response));
+  }
+
+
+  getRetakeRequest(filter?: Partial<CoursePaginationModel>): Observable<ApiResponse> {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    const apiUrl = `${this.defaultUrl}admin/retakeRequest?companyId=${userId}&page=${filter?.page}&limit=${filter?.limit}`;
+  
+    return this._Http.get<ApiResponse>(apiUrl);
+  }
+  
+  putRetakeRequestByStudentIdCourseId(studentId:any,courseId:any,data: any){
+    const apiUrl = `${this.prefix}admin/retakeRequest/update?studentId=${studentId}&courseId=${courseId}&`;
+    return this._Http
+      .put<ApiResponse>(apiUrl, data)
+      .pipe(map((response) => {}));
+
+  }
+
+  getRetakeRequestByStudentIdAndCourseId(studentId:any,courseId:any){
+    const apiUrl = `${this.prefix}admin/retakeRequest/search?studentId=${studentId}&courseId=${courseId}`;
+    return this._Http.get<ApiResponse>(apiUrl);
+  }
+
   saveSmtp(smtp: any) {
     const apiUrl = `${this.prefix}admin/smtp`;
     return this._Http
