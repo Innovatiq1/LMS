@@ -68,10 +68,22 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header>Exam</mat-header-cell>
                                 <mat-cell *matCellDef="let row">
                                   <button 
-                                    [disabled]="row.retakeLeft <= 0 || row.studentClassId.certificate"
+                                    [disabled]="(row.retakeLeft <= 0||row.studentClassId.certificate)"
                                     (click)="handleRetakeTest(row)"
                                     mat-flat-button color="primary">
                                     Retake Test
+                                  </button>
+                                </mat-cell>
+                              </ng-container>
+                              <ng-container matColumnDef="Request Retake">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>Request Retake</mat-header-cell>
+                                <mat-cell *matCellDef="let row">
+                                  <button
+                                  [disabled]="!(row.retakeLeft == 0 && !row.studentClassId.certificate)" 
+                                          mat-flat-button
+                                          color="accent"
+                                          (click)="onRequestRetake(row)">
+                                    Request Retake
                                   </button>
                                 </mat-cell>
                               </ng-container>
