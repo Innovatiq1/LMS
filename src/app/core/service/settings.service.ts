@@ -271,11 +271,9 @@ export class SettingsService {
   }
 
   
-  getKeysByCompanyId(filter?: Partial<CoursePaginationModel>): Observable<ApiResponse> {
-    const companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+  getKeysByCompanyId(companyId: string): Observable<ApiResponse> {
     const apiUrl = `${this.publicUrl}getKeys?companyId=${companyId}`;
     return this._Http.get<ApiResponse>(apiUrl, {
-      params: this.buildParams(filter),
     });
   }
 
