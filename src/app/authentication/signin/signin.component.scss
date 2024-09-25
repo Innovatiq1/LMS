@@ -127,10 +127,10 @@
   .policy a{
     text-decoration: none;
     color: black; 
-    font-size: 12px;
+    font-size: 10px;
   }
   .terms p{
-    margin-left: 15px;
+    // margin-left: 15px;
     display: inline;
   }
   @media only screen and (max-width: 540px) and (min-width: 280px) {
@@ -217,4 +217,10 @@
     width: 100%;
   }
 
-  
+  .terms a{
+    font-size: 11px;
+    color: #000;
+  }
+  .ft{
+   margin-bottom: 45x;
+  }

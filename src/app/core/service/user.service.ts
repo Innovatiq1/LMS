@@ -20,7 +20,7 @@ export class UserService {
   
   private defaultUrl: string = environment['apiUrl'];
   private Url: string = environment['Url'];
-  private companyUrl: string = environment['companyUrl'];
+  private companyUrl: string = environment['Url'];
 
     prefix: any;
     dataChange: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(
