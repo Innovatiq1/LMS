@@ -88,7 +88,7 @@ export class CompanySignupComponent implements OnInit {
     this.extractedName = urlPath[1];
     this.authForm = this.formBuilder.group({
       name: ['', Validators.required],
-      email: ['',[Validators.required,Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)] ],
+      email: ['',[Validators.required,Validators.email, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)] ],
       password: ['', Validators.required],
       cpassword: [''],
       gender: ['', Validators.required]
@@ -286,4 +286,5 @@ export class CompanySignupComponent implements OnInit {
   onNoClick() {
     window.history.back();
   }
+  
 }

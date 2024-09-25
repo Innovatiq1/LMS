@@ -35,10 +35,21 @@
                         </div>
                     </div>
                     <hr>
-                    <button type="button" mat-raised-button class="login-button mb-3">
-                        <a  href="https://www.singpass.gov.sg/home/ui/register/instructions" target="_blank" class="register"> Register For Singpass</a>
-                       
-                    </button>
+                    <div class="row">
+                        <div class="col-8">
+                            <button type="button" mat-raised-button class="login-button mb-3">
+                                <a  href="https://www.singpass.gov.sg/home/ui/register/instructions" target="_blank" class="register"> Register For Singpass</a>
+                               
+                            </button>
+                        </div>
+                        <div class="col-4">
+                            <button type="button" color="warn" mat-raised-button class="login-button mb-3" (click)="back()">
+                               Back
+                               
+                            </button>
+                        </div>
+                    </div>
+                   
                 </div>
             </div>
         </div>

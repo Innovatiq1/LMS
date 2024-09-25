@@ -44,11 +44,14 @@
             <div class="row mt-2">
               <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
                 <mat-form-field class="example-full-width" appearance="outline">
-                  <mat-label>{{"Email" | translate}}</mat-label>
+                  <mat-label>{{ "Email" | translate }}</mat-label>
                   <input matInput formControlName="email" required>
                   <mat-icon class="material-icons-two-tone color-icon p-3" matSuffix>mail</mat-icon>
-                  <mat-error *ngIf="authForm.get('email')?.hasError('required') || authForm.get('email')?.touched">
-                    {{"Please enter a valid email address" | translate}}
+                  <mat-error *ngIf="authForm.get('email')?.hasError('required') && authForm.get('email')?.touched">
+                    {{ "Enter email" | translate }}
+                  </mat-error>
+                  <mat-error *ngIf="authForm.get('email')?.hasError('email') && authForm.get('email')?.touched">
+                    {{ "Enter a valid email" | translate }}
                   </mat-error>
                 </mat-form-field>
               </div>
@@ -68,7 +71,7 @@
                 <mat-error
                   *ngIf="authForm.get('gender')?.hasError('required')"
                 >
-                  {{"Enter Gender" | translate}}
+                  {{"Select Gender" | translate}}
                 </mat-error>
               </mat-form-field>
             </div>
@@ -109,7 +112,7 @@
           
                 <!-- Custom error message for password mismatch -->
                 <mat-error *ngIf="authForm.get('cpassword')?.hasError('confirmedValidator')">
-                  Password and Confirm Password must match.
+                  Password and Re-Enter Password should match
                 </mat-error>
               </mat-form-field>
             </div>

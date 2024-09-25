@@ -23,9 +23,9 @@
               {{item.text}}
             </option>
           </select>
-          <div *ngIf ="tmsUrl">          <br>
-          </div>
-          <p *ngIf ="lmsUrl"class="auth-signup-text text-muted">{{ 'Need an account?' | translate }}
+          <!-- <div *ngIf ="tmsUrl">          <br>
+          </div> -->
+          <p  class="auth-signup-text text-muted">{{ 'Need an account?' | translate }}
             <a (click)="signup()"
             class="sign-up-link pointer">{{ 'Sign up' | translate }}
           </a>
@@ -39,7 +39,7 @@
                 <mat-form-field class="example-full-width" appearance="outline">
                   <mat-label>{{ 'Email' | translate }}</mat-label>
                   <input matInput formControlName="email" />
-                  <mat-icon class="material-icons-two-tone color-icon p-3" matSuffix>face</mat-icon>
+                  <mat-icon class="material-icons-two-tone color-icon p-3" matSuffix>mail</mat-icon>
                   <mat-error *ngIf="authForm.get('email')?.hasError('required')">
                     {{"Enter Email " | translate}}
                   </mat-error>
@@ -164,11 +164,11 @@
                       <p>&copy; 2024 UGLMS. All Rights Reserved </p>
                     </div>
                     <div class="terms">
-                      <a href="https://www.globalpsa.com/termsofuse/" target="_blank" >
+                      <a href="https://innovatiq.com.sg/terms-conditions/" target="_blank" >
                         <p style="font-size: 14px;">Terms of Use</p>
                     </a>
                     |
-                    <a href="https://www.globalpsa.com/privacy-notice/" target="_blank" >
+                    <a href="https://innovatiq.com.sg/privacy-policy/" target="_blank" >
                         <p style="font-size: 14px;">Privacy Notice</p>
                     </a>
                     </div>

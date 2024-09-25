@@ -18,15 +18,19 @@ export class ChatbotComponent {
   userSelectedItem = '';
   userMsg: string = '';
   mainval: any;
+  emailId: string = '';
+  email: boolean = false;
 
   constructor(public courseService: CourseService) {
-    this.initialLoad = ['Courses', 'Programs', 'Login', 'Signup', 'Others'];
+    
   }
 
   ngOnInit() {}
 
   onIconClick() {
     this.showBotSubject = !this.showBotSubject;
+    this.messages=[];
+    this.initialLoad = []
   }
 
   onBotSubjectSubmit() {
@@ -37,29 +41,38 @@ export class ChatbotComponent {
     this.userMsg = selectedItem;
   }
   onMessengerSubmit(event: any) {
+    const inputValue = this.msgInput.nativeElement.value.trim();
+    if (!this.emailId) {
+      this.emailId = inputValue.trim(); 
+
+    }
     this.userMsg = '';
-    let student = JSON.parse(localStorage.getItem('user_data')!).user.name;
-    let studentId = JSON.parse(localStorage.getItem('user_data')!).user.id;
+    // let student = JSON.parse(localStorage.getItem('user_data')!)?.user?.name;
+    // let studentId = JSON.parse(localStorage.getItem('user_data')!)?.user?.id;
     const val = this.msgInput.nativeElement.value.toLowerCase();
     this.mainval = this.msgInput.nativeElement.value;
-    let nowtime = new Date();
-    let nowhoue = nowtime.getHours();
-
+    
     const userMsg = {
       type: 'user',
-      role: student,
+      role: this.emailId, 
       text: this.mainval,
       status: 'open',
-      id: studentId,
     };
+
     const appendMsg = (msg: string) => {
       this.messages.push({ type: 'bot', text: msg });
       this.msgInput.nativeElement.value = '';
     };
+
     this.messages.push(userMsg);
-    if (val === 'courses') {
+    console.log(this.emailId); // Log the emailId
+
+    if (this.emailId) {
+      this.initialLoad = ['Courses', 'Programs','Login','Signup','Others'];
+    }
+      if (val === 'courses') {
       appendMsg(
-        '1.Payment 2.Course registration 3.Course Approval 4.Certificate issue'
+        '1.Payment 2.Course registration 3.Course Approval 4.Certificate issue '
       );
     } else if (
       val === 'payment' ||
@@ -67,6 +80,7 @@ export class ChatbotComponent {
       val === 'course approval' ||
       val === 'certificate issue'
     ) {
+      console.log(val);
       appendMsg('Could you give us some more details on ...?');
 
       this.msgSubmit.nativeElement.addEventListener('click', (event: any) => {
@@ -93,8 +107,9 @@ export class ChatbotComponent {
         }, 3000);
       });
     } else if (val === 'login') {
+      console.log(val)
       appendMsg(
-        ' 1.Wait for Admin approval 2.Looks like your login information is incorrect  3.Others Issues'
+        '1.Wait for Admin approval 2.Looks like your login information is incorrect  3.Others Issues'
       );
       this.sayBye();
     } else if (val.includes('wait for admin approval')) {
@@ -140,10 +155,12 @@ export class ChatbotComponent {
       text: 'We understood your issue .please wait for us to resolve.Thank you for your patience....! ',
     });
     this.messages.push({ type: 'bot', text: 'Have a nice day! :)' });
+    console.log(this.messages)
     let payload = {
       messages: this.messages,
     };
     this.courseService.saveChat(payload).subscribe((response) => {
     });
+    
   }
 }
