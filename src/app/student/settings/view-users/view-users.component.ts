@@ -226,6 +226,7 @@ deleteItem(row: any) {
 
  }
  confirmItem(row: any) {
+  console.log("ffrfr", row)
    Swal.fire({
      title: "Confirm Active",
      text: "Are you sure you want to active this Student?",
@@ -237,7 +238,7 @@ deleteItem(row: any) {
      cancelButtonText: "Cancel",
    }).then((result) => {
      if (result.isConfirmed) {
-       this.StudentService.confrim(row.id).subscribe(
+       this.StudentService.confrim(row.id,row.type).subscribe(
          () => {
            Swal.fire({
              title: "Active",
@@ -249,6 +250,41 @@ deleteItem(row: any) {
          (error: { message: any; error: any; }) => {
            Swal.fire(
              "Failed to Active Student",
+             error.message || error.error,
+             "error"
+           );
+         }
+       );
+     }
+   });
+
+ }
+
+ deactiveconfirmItem(row: any) {
+  console.log("ffrfr", row)
+   Swal.fire({
+     title: "Confirm InActive",
+     text: "Are you sure you want to in-active?",
+     icon: "warning",
+     showCancelButton: true,
+     confirmButtonColor: "#d33",
+     cancelButtonColor: "#3085d6",
+     confirmButtonText: "In-Active",
+     cancelButtonText: "Cancel",
+   }).then((result) => {
+     if (result.isConfirmed) {
+       this.StudentService.deActiveconfrim(row.id,row.type).subscribe(
+         () => {
+           Swal.fire({
+             title: "Active",
+             text: "In-Active successfully",
+             icon: "success",
+           });
+           this.loadData()
+         },
+         (error: { message: any; error: any; }) => {
+           Swal.fire(
+             "Failed to In-Active",
              error.message || error.error,
              "error"
            );

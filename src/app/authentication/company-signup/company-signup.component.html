@@ -1,0 +1,175 @@
+<div class="auth-container">
+    <div class="row auth-main">
+      <div class="col-sm-6 px-0 d-none d-sm-block">
+        <div class="slideshow">
+          <img *ngFor="let image of images; let i = index" [src]="'' + image" [alt]="'Psa-login' + (i + 1)"
+            [class.active]="i === currentIndex">
+        </div>
+      </div>
+      <div class="col-sm-6 auth-form-section">
+        <div class="form-section">
+          <div class="auth-wrapper">
+            <h2 class="welcome-msg mt-4"> {{"Register with Innovatiq" | translate}} 
+              <!-- <span *ngIf="tmsUrl">TMS</span>
+              <span *ngIf="lmsUrl">LMS</span> -->
+   </h2>
+            <select >
+              <option >
+                {{'Languages'}}
+              </option>
+            </select>
+            <p class="auth-signup-text text-muted">{{"Enter details to create your account" | translate}}</p>
+            <div class="flex-sb-m w-full text-center mb-3">
+              <div>
+                <span style="font-style: italic;">{{"Already Registered?" | translate}} 
+                  <a 
+                  class="sign-up-link pointer">{{"Sign in" | translate}}
+                </a>
+                </span>
+              </div>
+            </div>
+            <form class="validate-form" [formGroup]="userForm" >
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>{{"Company" | translate}}</mat-label>
+                    <input matInput formControlName="company" required>
+                    <mat-icon class="material-icons-two-tone color-icon p-3" matSuffix>business_center</mat-icon>
+                    <mat-error *ngIf="userForm.get('company')?.hasError('required') || userForm.get('company')?.touched">
+                      {{"Enter company " | translate}}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>{{"First Name" | translate}}</mat-label>
+                    <input matInput formControlName="name" required>
+                    <mat-icon class="material-icons-two-tone color-icon p-3" matSuffix>face</mat-icon>
+                    <mat-error *ngIf="userForm.get('name')?.hasError('required') || userForm.get('name')?.touched">
+                      {{"Enter name" | translate}}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>{{"Company Website" | translate}}</mat-label>
+                    <input matInput formControlName="website" required>
+                    <mat-icon class="material-icons-two-tone color-icon p-3" matSuffix>desktop_mac</mat-icon>
+                    <mat-error *ngIf="userForm.get('website')?.hasError('required') || userForm.get('website')?.touched">
+                      {{"Enter a valid website" | translate}}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+               
+              </div>
+              <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>{{"Email" | translate}}</mat-label>
+                    <input matInput formControlName="email" required>
+                    <mat-icon class="material-icons-two-tone color-icon p-3" matSuffix>mail</mat-icon>
+                    <mat-error *ngIf="userForm.get('email')?.hasError('required') || userForm.get('email')?.touched">
+                      {{"Enter a valid email address" | translate}}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>{{"Password" | translate}}</mat-label>
+                    <input matInput formControlName="password" [type]="hide ? 'password' : 'text'" required>
+                    <mat-icon matSuffix (click)="hide = !hide">
+                      {{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    <mat-error *ngIf="userForm.get('password')?.hasError('required')">
+                      {{"Enter Password" | translate}}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              
+              <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <mat-label>{{"Confirm Password" | translate}}</mat-label>
+                  <input matInput formControlName="re_passwords" [type]="chide ? 'password' : 'text'" required>
+                  <mat-icon matSuffix (click)="chide = !chide">
+                    {{chide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  <mat-error *ngIf="userForm.get('re_passwords')?.hasError('required')">
+                    {{"Confirm Enter Password" | translate}}
+                  </mat-error>
+                  <mat-error *ngIf="userForm.get('re_passwords')?.hasError('confirmedValidator')">
+                    Password and Re-Enter Password must be match
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>{{"Mobile" | translate}}</mat-label>
+                    <input matInput formControlName="mobile" required>
+                    <mat-icon class="material-icons-two-tone color-icon p-3" matSuffix>phone</mat-icon>
+                    <mat-error *ngIf="userForm.get('mobile')?.hasError('required') || userForm.get('mobile')?.touched">
+                      {{"Enter a valid mobile number" | translate}}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                  
+                  <mat-form-field
+                    class="example-full-width "
+                    appearance="outline"
+                  >
+                  <mat-label>{{"Registration Date" | translate}}</mat-label>
+                    <input
+                      matInput
+                      [matDatepicker]="rpicker"
+                      formControlName="joiningDate"
+                      required
+                    />
+                    <mat-datepicker-toggle
+                      matSuffix
+                      [for]="rpicker"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #rpicker></mat-datepicker>
+                    <mat-error
+                      *ngIf="userForm.get('joiningDate')?.hasError('required')"
+                    >
+                      Select date
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+             
+              <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>{{"Domain" | translate}}</mat-label>
+                    <input matInput formControlName="domain" required>
+                    <mat-icon class="material-icons-two-tone color-icon p-3" matSuffix>mail</mat-icon>
+                    <mat-error *ngIf="userForm.get('domain')?.hasError('required') || userForm.get('domain')?.touched">
+                      {{"Enter domain" | translate}}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+             
+              <!-- <div  class="invalid-text"*ngIf="submitted" >
+                {{email}}
+                  </div> -->
+              <div class="container-auth-form-btn">
+                <button mat-raised-button color="primary" class="auth-form-btn" [disabled]="!userForm.valid " (click)="SignUp()"
+                  type="submit">
+                  {{"Register" | translate}}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+  
+    </div>
+  </div>
+  

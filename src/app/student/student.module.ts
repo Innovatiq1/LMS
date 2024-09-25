@@ -122,6 +122,7 @@ import { TutorialQuestionsComponent } from './settings/tutorial-questions/tutori
 import { DocumentViewComponent } from './view-course/document-view/document-view.component';
 //import { SafeUrlPipe } from './view-course/document-view/safe-url.pipe';
 import { MatDialogModule } from '@angular/material/dialog';
+import { SocialLoginComponent } from './settings/social-login/social-login.component';
 
 
 @NgModule({
@@ -224,7 +225,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     UpdateTimeAlgorithmComponent,
     TutorialQuestionsComponent,
     DocumentViewComponent,
-  
+    SocialLoginComponent  
    // SafeUrlPipe,
   ],
   imports: [

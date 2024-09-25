@@ -90,6 +90,7 @@ import { ScoreComponent } from './settings/score/score.component';
 import { UpdateScoreAlgorithmComponent } from './settings/score/update-score-algorithm/update-score-algorithm.component';
 import { TimeComponent } from './settings/time/time.component';
 import { UpdateTimeAlgorithmComponent } from './settings/time/update-time-algorithm/update-time-algorithm.component';
+import { SocialLoginComponent } from './settings/social-login/social-login.component';
 const routes: Routes = [
   {
     path: 'enrollment/course',
@@ -561,6 +562,10 @@ const routes: Routes = [
   {
     path: 'settings/integration/payment-gateway',
     component: PaymentGatewayComponent,
+  },
+  {
+    path: 'settings/integration/social-login',
+    component: SocialLoginComponent,
   },
   {
     path: 'settings/automation/approval-workflow',

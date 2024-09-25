@@ -20,6 +20,7 @@ export class UserService {
   
   private defaultUrl: string = environment['apiUrl'];
   private Url: string = environment['Url'];
+  private companyUrl: string = environment['Url'];
 
     prefix: any;
     dataChange: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(
@@ -412,6 +413,38 @@ export class UserService {
         params: this.buildParams(filter),
       })
       .pipe(map((response) => response));
+  }
+
+
+  companySignUp(formData:any): Observable<Mentor> {
+    const apiUrl = this.companyUrl + 'x-api/v1/public/usercreate';
+    return this.http.post<ApiResponse>(apiUrl, formData).pipe(
+      map((response) => {
+        Logging.debug(response.data);
+        return response.data;
+      })
+    );
+  }
+  createNewCompany(formData:any): Observable<Mentor> {
+    const apiUrl = this.companyUrl + 'x-api/v1/public/company';
+    return this.http.post<ApiResponse>(apiUrl, formData).pipe(
+      map((response) => {
+        Logging.debug(response.data);
+        return response.data;
+      })
+    );
+  }
+  saveCompanyDashboard(data: any) {
+    const apiUrl = `${this.companyUrl}x-api/v1/public/dashboard`;
+    return this.http
+      .post<ApiResponse>(apiUrl, data)
+      .pipe(map((response) => { }));
+  }
+  createCompanyForm(data: any) {
+    const apiUrl = `${this.companyUrl}x-api/v1/public/form-creation`;
+    return this.http
+      .post<ApiResponse>(apiUrl, data)
+      .pipe(map((response) => { }));
   }
 }
 

@@ -181,10 +181,20 @@ export class StudentsService extends UnsubscribeOnDestroyAdapter {
       const apiUrl = `${this.defaultUrl}auth/instructorDelete/${userId}`;
       return this.httpClient.delete<ApiResponse>(apiUrl);
     }
-    confrim(userId: string): Observable<ApiResponse> {
+
+    confrim(userId: string,type?: string): Observable<ApiResponse> {
       let user={
         isLogin:true,
-        type:'Student'
+        type:type
+
+      }
+      const apiUrl = `${this.defaultUrl}auth/instructorConfirm/${userId}`;
+      return this.httpClient.put<ApiResponse>(apiUrl,user);
+    }
+    deActiveconfrim(userId: string,type?: string): Observable<ApiResponse> {
+      let user={
+        isLogin:false,
+        type:type
 
       }
       const apiUrl = `${this.defaultUrl}auth/instructorConfirm/${userId}`;

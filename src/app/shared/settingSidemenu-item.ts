@@ -554,6 +554,13 @@ SETTING_SIDEMENU_LIST =[
             "class": "ml-menu",
             "actions": [],
             "children": []
+          },
+          {
+            "title": "Social Logins",
+            "id": "social-login",
+            "class": "ml-menu",
+            "actions": [],
+            "children": []
           }
         ]
       },
