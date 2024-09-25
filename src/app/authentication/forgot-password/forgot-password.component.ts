@@ -144,11 +144,13 @@ export class ForgotPasswordComponent implements OnInit {
                 }
               });
             } else {
-              Swal.fire({
-                title: 'Action Not Allowed',
-                text: "Your account is not yet activated.",
-                icon: 'error',
-              });
+              // Swal.fire({
+              //   title: 'Action Not Allowed',
+              //   text: "Your account is not yet activated.",
+              //   icon: 'error',
+              // });
+              this.error = "Your account is not yet activated.";
+              this.submitted = false;
             }
           },
           (err) => {  

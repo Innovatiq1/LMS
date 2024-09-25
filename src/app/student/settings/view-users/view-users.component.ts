@@ -261,7 +261,6 @@ deleteItem(row: any) {
  }
 
  deactiveconfirmItem(row: any) {
-  console.log("ffrfr", row)
    Swal.fire({
      title: "Confirm InActive",
      text: "Are you sure you want to in-active?",
@@ -281,6 +280,7 @@ deleteItem(row: any) {
              icon: "success",
            });
            this.loadData()
+           this.loadData1();
          },
          (error: { message: any; error: any; }) => {
            Swal.fire(
