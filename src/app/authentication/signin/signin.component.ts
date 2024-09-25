@@ -126,9 +126,13 @@ export class SigninComponent
     }
   }
   ngOnInit() {
+    history.pushState(null, '', window.location.href);
+    window.onpopstate = () => {
+      history.pushState(null, '', window.location.href);
+    };
+  
     this.startSlideshow();
     if (this.linkedinUrl) {
-      //Linkedin
       this.handleLinkedIn();
     }
       google.accounts.id.initialize({
@@ -484,13 +488,11 @@ export class SigninComponent
       this.isLoading = true;
       this.userService.getCompanyByIdentifierWithoutToken(this.extractedName).subscribe(
         (res: any) => {
-          console.log("1st",res)
           let companyId = res[0]?.companyId;
           this.authenticationService
             .loginUser(formData.email.trim(), formData.password.trim(), companyId)
             .subscribe(
               (user) => {
-                console.log("2st",user)
                 this.authenticationService.saveUserInfo(user);
                 let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
   
@@ -504,7 +506,6 @@ export class SigninComponent
   
                 this.adminService.getUserTypeList({ allRows: true }, userId).subscribe(
                   (response: any) => {
-                    console.log("3st",response)
                     let userType = localStorage.getItem('user_type');
                     let data = response.filter((item: any) => item.typeName === userType);
                     this.authenticationService.saveRoleDetails(data);
@@ -529,7 +530,6 @@ export class SigninComponent
     if(this.extractedName == 'authentication'){
       this.authenticationService.getUsersByEmail(formData.email.trim()).subscribe(
         (res: any) => {
-          console.log("1stres",res)
           this.companies = res.data
           this.openCompanyDialog(this.companiesDialog,'signin')
         })
@@ -537,13 +537,11 @@ export class SigninComponent
     this.isLoading = true;
     this.userService.getCompanyByIdentifierWithoutToken(this.extractedName).subscribe(
       (res: any) => {
-        console.log("12tres",res)
    let companyId=res[0]?.companyId
     this.authenticationService
       .loginUser(formData.email.trim(), formData.password.trim(),companyId)
       .subscribe(
         (user) => {
-          console.log("3tres",user)
           // setTimeout(() => {
           //   const role = this.authenticationService.currentUserValue.user.role;
           //   this.router.navigate(['/admin/two-factor-auth']);
@@ -553,7 +551,6 @@ export class SigninComponent
           let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
           this.superadminservice.getAllCustomRoleById(userId).subscribe(
             (response: any) => {
-              console.log('res222',response)
               localStorage.setItem('subdomain',response[0]?.identifier)
               this.commonService.setRoleDetails(response[0])
               this.updateRoleConstants();
@@ -562,7 +559,6 @@ export class SigninComponent
 
           this.adminService.getUserTypeList({ allRows: true }, userId).subscribe(
             (response: any) => {
-              console.log('res1212',response)
               let userType = localStorage.getItem('user_type');
               let data = response.filter((item: any) => item.typeName === userType);
 
@@ -779,7 +775,7 @@ export class SigninComponent
             }
           );
         } else {
-          this.router.navigate(['/dashboard/dashboard']);
+          this.router.navigate(['/dashboard/dashboard'],{ replaceUrl: true });
         }
       },
       (error) => {

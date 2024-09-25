@@ -600,7 +600,7 @@ private tpUrl=environment.Url;
     }
   
     saveChat(payload: any) {
-      const apiUrl = `${this.prefix}admin/chatbot`;
+      const apiUrl = `http://localhost:3001/x-api/v1/public/createChart`;
       return this._Http.post<any>(apiUrl, payload).pipe(map((response) => response));
     }
  

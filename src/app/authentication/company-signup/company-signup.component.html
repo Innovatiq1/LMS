@@ -22,7 +22,7 @@
             <div class="flex-sb-m w-full text-center mb-3">
               <div>
                 <span style="font-style: italic;">{{"Already Registered?" | translate}} 
-                  <a 
+                  <a (click)="signin()"
                   class="sign-up-link pointer">{{"Sign in" | translate}}
                 </a>
                 </span>
@@ -65,18 +65,21 @@
                 </div>
                
               </div>
-              <div class="row">
-                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
-                  <mat-form-field class="example-full-width" appearance="outline">
-                    <mat-label>{{"Email" | translate}}</mat-label>
-                    <input matInput formControlName="email" required>
-                    <mat-icon class="material-icons-two-tone color-icon p-3" matSuffix>mail</mat-icon>
-                    <mat-error *ngIf="userForm.get('email')?.hasError('required') || userForm.get('email')?.touched">
-                      {{"Enter a valid email address" | translate}}
-                    </mat-error>
-                  </mat-form-field>
-                </div>
+               <div class="row mt-2">
+              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <mat-label>{{ "Email" | translate }}</mat-label>
+                  <input matInput formControlName="email" required>
+                  <mat-icon class="material-icons-two-tone color-icon p-3" matSuffix>mail</mat-icon>
+                  <mat-error *ngIf="authForm.get('email')?.hasError('required') && authForm.get('email')?.touched">
+                    {{ "Enter email" | translate }}
+                  </mat-error>
+                  <mat-error *ngIf="authForm.get('email')?.hasError('email') && authForm.get('email')?.touched">
+                    {{ "Enter a valid email" | translate }}
+                  </mat-error>
+                </mat-form-field>
               </div>
+            </div>
               <div class="row">
                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
                   <mat-form-field class="example-full-width" appearance="outline">
@@ -100,7 +103,7 @@
                     {{"Confirm Enter Password" | translate}}
                   </mat-error>
                   <mat-error *ngIf="userForm.get('re_passwords')?.hasError('confirmedValidator')">
-                    Password and Re-Enter Password must be match
+                    Password and Re-Enter Password should match
                   </mat-error>
                 </mat-form-field>
               </div>
