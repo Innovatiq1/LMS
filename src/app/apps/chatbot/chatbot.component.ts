@@ -81,7 +81,9 @@ export class ChatbotComponent {
       case 'course approval':
       case 'certificate issue':
         appendMsg('Could you give us some more details on ...?');
-        this.handleMsgSubmit();
+        this.msgSubmit.nativeElement.addEventListener('click', (event: any) => {
+          this.handleMsgSubmit();
+        });
         break;
   
       case 'programs':
@@ -91,7 +93,9 @@ export class ChatbotComponent {
       case 'program registration':
       case 'program approval':
         appendMsg('Could you give us some more details on ...?');
-        this.handleMsgSubmit();
+        this.msgSubmit.nativeElement.addEventListener('click', (event: any) => {
+          this.handleMsgSubmit();
+        });
         break;
   
       case 'login':
@@ -100,23 +104,31 @@ export class ChatbotComponent {
   
       case 'wait for admin approval':
         appendMsg('Please wait for administrator to approve it. Thank you for your patience...');
-        this.handleMsgSubmit();
+        // this.msgSubmit.nativeElement.addEventListener('click', (event: any) => {
+          this.handleMsgSubmit();
+        // });
         break;
   
       case 'looks like your login information is incorrect':
         appendMsg('Please enter correct details which you used while signing up. Thank you...');
-        this.handleMsgSubmit();
+        // this.msgSubmit.nativeElement.addEventListener('click', (event: any) => {
+          this.handleMsgSubmit();
+        // });
         break;
   
       case 'other issues':
         appendMsg('Could you give us some more details on ...?');
-        this.handleMsgSubmit();
+        this.msgSubmit.nativeElement.addEventListener('click', (event: any) => {
+          this.handleMsgSubmit();
+        });
         break;
   
       case 'signup':
       case 'others':
         appendMsg('Could you please clarify what you want us to do?');
+        this.msgSubmit.nativeElement.addEventListener('click', (event: any) => {
         this.handleMsgSubmit();
+      });
         break;
   
       // default:
@@ -126,11 +138,10 @@ export class ChatbotComponent {
   }
   private handleMsgSubmit() {
     console.log('handlecalled')
-    
       setTimeout(() => {
         this.sayBye();
       }, 3000);
-   
+  
   }
   
   sayBye() {
