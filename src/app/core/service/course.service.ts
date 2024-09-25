@@ -16,6 +16,7 @@ export class CourseService {
   
   private apiUrl = 'http://localhost:3000/api/';
   private prefix: string = environment.apiUrl;
+  private publicUrl: string = environment.publicApiUrl;
   private razorpayKeyId :string= "rzp_test_8qBZzDxmgGwhH4";
   // private razorpaySecretKey :string= environment.RAZORPAY_SECRET_KEY
 private tpUrl=environment.Url;
@@ -600,19 +601,20 @@ private tpUrl=environment.Url;
     }
   
     saveChat(payload: any) {
-      const apiUrl = `http://localhost:3001/x-api/v1/public/createChart`;
+      const apiUrl = `${this.publicUrl}/createChart`;
       return this._Http.post<any>(apiUrl, payload).pipe(map((response) => response));
     }
  
 
     uploadCourseThumbnail(file:any) {
-      const apiUrl = `${this.defaultUrl}admin/thumbnail/`;
+      const apiUrl = `${this.prefix}admin/thumbnail/`;
       return this._Http.post<any>(apiUrl, file).pipe(
         map((response) => {
           return response
         })
       );
     }
+    
   
     saveVideo(payload: any){
       const apiUrl = `${this.prefix}uploadVideo/`;

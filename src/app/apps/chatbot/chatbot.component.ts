@@ -30,7 +30,8 @@ export class ChatbotComponent {
   onIconClick() {
     this.showBotSubject = !this.showBotSubject;
     this.messages=[];
-    this.initialLoad = []
+    this.initialLoad = [];
+    this.emailId = ''
   }
 
   onBotSubjectSubmit() {
@@ -70,86 +71,81 @@ export class ChatbotComponent {
     if (this.emailId) {
       this.initialLoad = ['Courses', 'Programs','Login','Signup','Others'];
     }
-      if (val === 'courses') {
-      appendMsg(
-        '1.Payment 2.Course registration 3.Course Approval 4.Certificate issue '
-      );
-    } else if (
-      val === 'payment' ||
-      val === 'course registration' ||
-      val === 'course approval' ||
-      val === 'certificate issue'
-    ) {
-      console.log(val);
-      appendMsg('Could you give us some more details on ...?');
-
-      this.msgSubmit.nativeElement.addEventListener('click', (event: any) => {
-        setTimeout(() => {
-          this.sayBye();
-        }, 3000);
+    switch (val) {
+      case 'courses':
+        appendMsg('1.Payment 2.Course registration 3.Course Approval 4.Certificate issue');
+        break;
+  
+      case 'payment':
+      case 'course registration':
+      case 'course approval':
+      case 'certificate issue':
+        appendMsg('Could you give us some more details on ...?');
+        this.msgSubmit.nativeElement.addEventListener('click', (event: any) => {
+          this.handleMsgSubmit();
+        });
+        break;
+  
+      case 'programs':
+        appendMsg('1.Payment 2.Program registration 3.Program Approval 4.Certificate issue');
+        break;
+  
+      case 'program registration':
+      case 'program approval':
+        appendMsg('Could you give us some more details on ...?');
+        this.msgSubmit.nativeElement.addEventListener('click', (event: any) => {
+          this.handleMsgSubmit();
+        });
+        break;
+  
+      case 'login':
+        appendMsg('1.Wait for Admin approval 2.Looks like your login information is incorrect 3.Other Issues');
+        break;
+  
+      case 'wait for admin approval':
+        appendMsg('Please wait for administrator to approve it. Thank you for your patience...');
+        // this.msgSubmit.nativeElement.addEventListener('click', (event: any) => {
+          this.handleMsgSubmit();
+        // });
+        break;
+  
+      case 'looks like your login information is incorrect':
+        appendMsg('Please enter correct details which you used while signing up. Thank you...');
+        // this.msgSubmit.nativeElement.addEventListener('click', (event: any) => {
+          this.handleMsgSubmit();
+        // });
+        break;
+  
+      case 'other issues':
+        appendMsg('Could you give us some more details on ...?');
+        this.msgSubmit.nativeElement.addEventListener('click', (event: any) => {
+          this.handleMsgSubmit();
+        });
+        break;
+  
+      case 'signup':
+      case 'others':
+        appendMsg('Could you please clarify what you want us to do?');
+        this.msgSubmit.nativeElement.addEventListener('click', (event: any) => {
+        this.handleMsgSubmit();
       });
-    } else if (val === 'programs') {
-      appendMsg(
-        '1.Payment 2.Program registration 3.Program Approval 4.Certificate issue'
-      );
-      // this.sayBye();
-    } else if (
-      val === 'payment' ||
-      val === 'program registration' ||
-      val === 'program approval' ||
-      val === 'certificate issue'
-    ) {
-      appendMsg('Could you give us some more details on ...?');
-
-      this.msgSubmit.nativeElement.addEventListener('click', (event: any) => {
-        setTimeout(() => {
-          this.sayBye();
-        }, 3000);
-      });
-    } else if (val === 'login') {
-      console.log(val)
-      appendMsg(
-        '1.Wait for Admin approval 2.Looks like your login information is incorrect  3.Others Issues'
-      );
-      this.sayBye();
-    } else if (val.includes('wait for admin approval')) {
-      appendMsg(
-        'Please wait for administrator to approve it .Thank you for your patience...'
-      );
-      this.sayBye();
-    } else if (val.includes('looks like your login information is incorrect')) {
-      appendMsg(
-        'Please enter correct details which you used while signup.Thank you...'
-      );
-      this.sayBye();
-    } else if (val.includes('other issues')) {
-      appendMsg('Could you give us some more details on ...?');
-      // this.sayBye();
-      this.msgSubmit.nativeElement.addEventListener('click', (event: any) => {
-        setTimeout(() => {
-          this.sayBye();
-        }, 3000);
-      });
-    } else if (val === 'signup') {
-      appendMsg('Could you please clarify what you want us to do?');
-      // this.sayBye();
-      this.msgSubmit.nativeElement.addEventListener('click', (event: any) => {
-        setTimeout(() => {
-          this.sayBye();
-        }, 3000);
-      });
-    } else if (val === 'others') {
-      appendMsg('Could you please clarify what you want us to do?');
-      // this.sayBye();
-      this.msgSubmit.nativeElement.addEventListener('click', (event: any) => {
-        setTimeout(() => {
-          this.sayBye();
-        }, 3000);
-      });
+        break;
+  
+      // default:
+      //   appendMsg('Sorry, I didn’t understand your request.');
+      //   break;
     }
   }
-
+  private handleMsgSubmit() {
+    console.log('handlecalled')
+      setTimeout(() => {
+        this.sayBye();
+      }, 3000);
+  
+  }
+  
   sayBye() {
+    console.log('handlecalled')
     this.messages.push({
       type: 'bot',
       text: 'We understood your issue .please wait for us to resolve.Thank you for your patience....! ',
