@@ -1,3 +1,5 @@
+//EXAM-Component html
+
 <section class="content">
   <div class="content-block">
     <div class="block-header" *ngFor="let breadscrum of breadscrums">
@@ -56,8 +58,8 @@
                     </ng-container>
                     <ng-container matColumnDef="Retakes left">
                       <mat-header-cell *matHeaderCellDef mat-sort-header>Retakes left</mat-header-cell>
-                      <mat-cell *matCellDef="let row"><span class="mobile-label">Retakes left:</span> {{
-                        calculateRetakesLeft(row) }}
+                      <mat-cell *matCellDef="let row"><span class="mobile-label">Retakes left:</span> 
+                        {{calculateRetaks(row)<0?0:calculateRetaks(row) }}
                       </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="Exam">
@@ -67,17 +69,29 @@
                           mat-flat-button color="warn">
                           Delete
                         </button>
-                        <button *ngIf="row.is_tutorial && row.isLatestTutorial" [disabled]="row.is_exam_completed"
+                        <button *ngIf="row.is_tutorial && row.isLatestTutorial" [disabled]="row.is_exam_completed || calculateRetaks(row) <= 0"
                           (click)="openTest(row, false)" mat-flat-button color="primary">
                           Retake
                         </button>
                         <button *ngIf="!row.is_tutorial"
-                          [disabled]="row.is_exam_completed || row.retakeCount>=row.assessmentId.retake"
+                          [disabled]="row.is_exam_completed || calculateRetaks(row) <= 0"
                           (click)="openTest(row, true)" mat-flat-button color="primary">
                           Retake
                         </button>
                       </mat-cell>
                     </ng-container>
+                    <ng-container matColumnDef="Request Retake">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>Request Retake</mat-header-cell>
+                      <mat-cell *matCellDef="let row">
+                        <button [disabled] ="calculateRetaks(row) > 0 || row.is_exam_completed"
+                                mat-flat-button
+                                color="accent"
+                                (click)="onRequestRetake(row)">
+                          Request Retake
+                        </button>
+                      </mat-cell>
+                    </ng-container>
+                    
 
                     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                     <mat-row *matRowDef="let row; columns: displayedColumns;" [style.cursor]="'pointer'" matRipple>
@@ -121,7 +135,7 @@
                     <ng-container matColumnDef="Retakes left">
                       <mat-header-cell *matHeaderCellDef mat-sort-header>Retakes left</mat-header-cell>
                       <mat-cell *matCellDef="let row"><span class="mobile-label">Retakes left:</span> {{
-                        calculateRetakesLeft(row) }}
+                        calculateRetaks(row) }}
                       </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="Exam">
@@ -137,6 +151,18 @@
                         </button>
                       </mat-cell>
                     </ng-container>
+                    <ng-container matColumnDef="Request Retake">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>Request Retake</mat-header-cell>
+                      <mat-cell *matCellDef="let row">
+                        <button *ngIf="calculateRetaks(row) === 0 && !row.certificateIssued"
+                                mat-flat-button
+                                color="accent"
+                                (click)="onRequestRetake(row)">
+                          Request Retake
+                        </button>
+                      </mat-cell>
+                    </ng-container>
+                    
 
                     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                     <mat-row *matRowDef="let row; columns: displayedColumns;" [style.cursor]="'pointer'" matRipple>
