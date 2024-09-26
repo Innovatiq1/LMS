@@ -40,7 +40,7 @@ import { OfficersListComponent } from './ceo-dashboard/officers-list/officers-li
     ChartCourseViewComponent,
     ManagersPieChartComponent,
     CourseViewManagerComponent,
-    OfficersListComponent
+    OfficersListComponent,
   ],
   imports: [
     CommonModule,

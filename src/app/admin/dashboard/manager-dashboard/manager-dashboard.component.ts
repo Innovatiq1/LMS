@@ -383,7 +383,6 @@ export class ManagerDashboardComponent {
   }
   
   updateChart(departments: string[], upcomingData: number[], ongoingData: number[], completedData: number[]) {
-    console.log('Updating courses',departments)
     // if(departments.length > 0){
     //   this.isCourseBarChart = true;
     // }

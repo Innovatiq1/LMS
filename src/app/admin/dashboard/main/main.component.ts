@@ -406,10 +406,8 @@ export class MainComponent implements OnInit {
     const companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     this.userService.getDashboardsByCompanyId(companyId, typeName).subscribe(
       (data: any) => {
-        console.log("dashboards1231", data.data)
         this.roleType = data.data.map((doc: any) => doc.typeName).toString();
         this.dashboards = data.data.flatMap((doc: any) => doc.dashboards);
-        console.log("dashboards", this.dashboards)
         this.dashboards.forEach((dashboard: { checked: any; }, index: number) => {
           if (dashboard.checked) {
           } else {
@@ -762,7 +760,6 @@ export class MainComponent implements OnInit {
     this.commonRoles = AppConstants
     this.getClassList();
     const role = this.authenticationService.currentUserValue.user.role;
-    console.log('isCeoDB',role)
     this.roles = role
     if(role === 'Super Admin'){
       this.superAdmin = true;
@@ -1588,6 +1585,18 @@ private attendanceBarChart() {
       chart: {
         type: 'pie',
         height: 350,
+        events: {
+          dataPointSelection: (event: any, chartContext: any, config: any) => {
+            // Check which slice is clicked (index 0 for instructor, index 1 for student)
+            if (config.dataPointIndex === 0) {
+              // Redirect to instructors page
+              this.router.navigate(['/student/settings/all-user/all-instructors']);
+            } else if (config.dataPointIndex === 1) {
+              // Redirect to students page
+              this.router.navigate(['/student/settings/all-user/all-students']);
+            }
+          }
+        }
       },
       legend: {
         show: true,
@@ -1848,7 +1857,11 @@ private attendanceBarChart() {
     });
   }
 
-
+  aboutInstructor(id: any) {
+    this.router.navigate(['/student/settings/all-user/all-instructors/view-instructor'], {
+      queryParams: { data: id },
+    });
+  }
 
   //Instructor
   getClassList2() {

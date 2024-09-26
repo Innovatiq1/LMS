@@ -227,20 +227,20 @@ export class SidebarComponent implements OnInit, OnDestroy {
       this.renderer.removeClass(this.document.body, 'ls-closed');
     }
   }
-  mouseHover() {
-    const body = this.elementRef.nativeElement.closest('body');
-    if (body.classList.contains('submenu-closed')) {
-      this.renderer.addClass(this.document.body, 'side-closed-hover');
-      this.renderer.removeClass(this.document.body, 'submenu-closed');
-    }
-  }
-  mouseOut() {
-    const body = this.elementRef.nativeElement.closest('body');
-    if (body.classList.contains('side-closed-hover')) {
-      this.renderer.removeClass(this.document.body, 'side-closed-hover');
-      this.renderer.addClass(this.document.body, 'submenu-closed');
-    }
-  }
+  // mouseHover() {
+  //   const body = this.elementRef.nativeElement.closest('body');
+  //   if (body.classList.contains('submenu-closed')) {
+  //     this.renderer.addClass(this.document.body, 'side-closed-hover');
+  //     this.renderer.removeClass(this.document.body, 'submenu-closed');
+  //   }
+  // }
+  // mouseOut() {
+  //   const body = this.elementRef.nativeElement.closest('body');
+  //   if (body.classList.contains('side-closed-hover')) {
+  //     this.renderer.removeClass(this.document.body, 'side-closed-hover');
+  //     this.renderer.addClass(this.document.body, 'submenu-closed');
+  //   }
+  // }
   logout() {
     interface OuterObject {
       id: any;
