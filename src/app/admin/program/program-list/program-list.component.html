@@ -48,6 +48,9 @@
                           </div>
                         </li>
                         <li>
+                          <span style="font-weight: bold;">Export as</span>
+                        </li>
+                        <li>
                           <div class="export-button m-l-10" matTooltip="XLSX">
                             <img src="assets/excel.svg" alt="" (click)="exportExcel()" />
                           </div>
@@ -85,14 +88,14 @@
                               </mat-select>
                             </mat-form-field>
                           </div>
-                          <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
+                          <!-- <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
                           <mat-form-field class="example-full-width mb-3"   appearance="outline">
                             <mat-label>Vendor</mat-label>
                             <mat-select (selectionChange)="onSelectionChange($event,'vendor')" formControlName ="vendor"  multiple>
                               <mat-option *ngFor="let vendor of vendors" [value]="vendor.vendor"> {{vendor.vendor | titlecase}} </mat-option>
                             </mat-select>
                           </mat-form-field>
-                          </div>
+                          </div> -->
                           <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
                             <mat-form-field class="example-full-width mb-3" appearance="outline">
                               <mat-label>Status</mat-label>
@@ -128,9 +131,9 @@
                           </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="program">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header >Program Name
+                          <mat-header-cell *matHeaderCellDef  >Program
                           </mat-header-cell>
-                          <mat-cell [class.name]="isProgram" *matCellDef="let row"
+                          <mat-cell [class.name]="isProgram" *matCellDef="let row" [style.text-align]="'right'"
                           (click)="view ? viewActiveProgram(row.id, row.status) : null"><span class="mobile-label">Program Name:</span>
                             <span>{{row.title |titlecase}}</span>
                           </mat-cell>
@@ -146,27 +149,27 @@
                           </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="code">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header>Program Code
+                          <mat-header-cell *matHeaderCellDef >Program Code
                           </mat-header-cell>
                           <mat-cell *matCellDef="let row" (click)="view ? viewActiveProgram(row.id, row.status) : null"><span
                               class="mobile-label">Program Code:</span> {{row.courseCode}}
                           </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="Creator">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header>Creator</mat-header-cell>
+                          <mat-header-cell *matHeaderCellDef >Creator</mat-header-cell>
                           <mat-cell *matCellDef="let row" [class.name]="isCreator"  (click)="view ? viewActiveProgram(row.id, row.status) : null">
                             <span class="mobile-label">Creator:</span> {{row.creator}}
                           </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="Duration">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header>Duration
+                          <mat-header-cell *matHeaderCellDef >Duration
                           </mat-header-cell>
                           <mat-cell *matCellDef="let row"  (click)="view ? viewActiveProgram(row.id, row.status) : null">
                             <span class="mobile-label">Duration:</span>{{row.duration}} Hours</mat-cell>
                         </ng-container>
 
                         <ng-container matColumnDef="Start Date">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header>Start Date
+                          <mat-header-cell *matHeaderCellDef >Start Date
                           </mat-header-cell>
                           <mat-cell *matCellDef="let row"  (click)="view ? viewActiveProgram(row.id, row.status) : null"> <span
                               class="mobile-label">Start Date:</span>{{row.sessionStartDate |date}}
@@ -174,22 +177,22 @@
                         </ng-container>
 
                         <ng-container matColumnDef="End Date">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header>End Date
+                          <mat-header-cell *matHeaderCellDef >End Date
                           </mat-header-cell>
                           <mat-cell *matCellDef="let row"   (click)="view ? viewActiveProgram(row.id, row.status) : null"> <span
                               class="mobile-label">End Date:</span>{{row.sessionEndDate |date}}
                           </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="Payment">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header>Payment
+                          <mat-header-cell *matHeaderCellDef >Fee
                           </mat-header-cell>
-                          <mat-cell *matCellDef="let row" 
+                          <mat-cell *matCellDef="let row" class="payment-cell"
                           (click)="view ? viewActiveProgram(row.id, row.status) : null"> <span
                               class="mobile-label">Payment:</span>$ {{row.courseFee}}.00
                           </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="Compulsory Count">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">Compulsory
+                          <mat-header-cell *matHeaderCellDef  class="compulsory-count-header">Compulsory
                             Count
                           </mat-header-cell>
                           <mat-cell *matCellDef="let row"  (click)="view ? viewActiveProgram(row.id, row.status) : null"> <span
@@ -197,7 +200,7 @@
                           </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="Elective Count">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header>Elective Count
+                          <mat-header-cell *matHeaderCellDef >Elective Count
                           </mat-header-cell>
                           <mat-cell *matCellDef="let row"  (click)="view ? viewActiveProgram(row.id, row.status) : null"> <span
                               class="mobile-label">Elective Count:</span>{{row.electiveCourseCount}}
@@ -274,7 +277,7 @@
                                   <h6>Program Period</h6>
                                 </div>
                                 <div class="col-5">
-                                  <p style="width: 150%;">{{program?.sessionStartDate |date }} -
+                                  <p style="width: 160%;">{{program?.sessionStartDate |date }} -
                                     {{program?.sessionEndDate |date }} </p>
                                 </div>
                               </div>
@@ -283,7 +286,7 @@
                                   <h6>Duration</h6>
                                 </div>
                                 <div class="col-3">
-                                  <p>{{program?.duration}} Hours </p>
+                                  <p style="width: 160%;">{{program?.duration}} Hours </p>
                                 </div>
                               </div>
                               <div class="row">
@@ -324,14 +327,15 @@
                                 </div>
                                 <div *ngFor="let core of program?.coreprogramCourse">
                                   <div class="row">
-                                    <div class="col-3">
-                                      <p class="fw-semibold" style="color: #979595;">
-                                        Compulsory Course
+                                    <div class="d-flex justify-content-start align-items-center mt-3">
+                                      <p class="fw-semibold" style="color: #979595;margin-right: 20px; flex: 0 0 auto;">
+                                      Compulsory Course
                                       </p>
+                                      <span style="margin-top: -10px;"> {{core?.coreProgramName?.title}}</span>
                                     </div>
-                                    <div class="col">
-                                      <p style="margin-left: 20px;"> {{core?.coreProgramName?.title}}</p>
-                                    </div>
+                                    <!-- <div class="col" >
+                                      <p style="margin-left: 30px;"> {{core?.coreProgramName?.title}}</p>
+                                    </div> -->
                                   </div>
 
                                   <div class="row">

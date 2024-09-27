@@ -40,6 +40,9 @@
                     </button>
                   </div>
                 </li>
+                <li>
+                  <span style="font-weight: bold;">Export as</span>
+                </li>
                 <li (click)="exportExcel()">
                   <div class="export-button m-l-10" matTooltip="XLSX"  >
                     <img src="assets/excel.svg" alt="" />
@@ -63,7 +66,7 @@
                   <mat-cell *matCellDef="let row"></mat-cell>
                 </ng-container>
                  <ng-container matColumnDef="studentname">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header
+                  <mat-header-cell *matHeaderCellDef 
                     >{{commonRoles.STUDENT_ROLE}}</mat-header-cell
                   >
                   <mat-cell class="name" *matCellDef="let row" (click)="isView ? view(row.id) : null">
@@ -72,7 +75,7 @@
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="coursename">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header
+                  <mat-header-cell *matHeaderCellDef 
                     >Course</mat-header-cell
                   >
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
@@ -80,26 +83,26 @@
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="Fee Type">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">Fee Type
+                  <mat-header-cell *matHeaderCellDef  class="compulsory-count-header">Fee Type
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null" > <span
                       class="mobile-label">Fee Type:</span>{{row.courseId.feeType | titlecase}}
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="programFee">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header class="amount">Course Fee</mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef  class="amount">Course Fee</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null" class="payment-cell">
                       <span class="mobile-label">Program Fee:</span> <span>$</span> {{row?.classId?.courseId?.fee || 0}}.00</mat-cell>
               </ng-container>
               <ng-container matColumnDef="instructorFee">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header class="amount">{{commonRoles?.INSTRUCTOR_ROLE}} Fee</mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef  class="amount">{{commonRoles?.INSTRUCTOR_ROLE}} Fee</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null" class="payment-cell">
                       <span class="mobile-label">Instructor Fee:</span><span>$</span> {{row?.classId?.instructorCost || 0 }}.00</mat-cell>
               </ng-container>
                 <!-- Class start date -->
 
                 <ng-container matColumnDef="classstartDate">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header
+                  <mat-header-cell *matHeaderCellDef 
                     >Start Date
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
@@ -108,7 +111,7 @@
                 </ng-container>
                 <!--Class Enddate -->
                 <ng-container matColumnDef="classendDate">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header
+                  <mat-header-cell *matHeaderCellDef 
                     >End Date
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
@@ -117,7 +120,7 @@
                 </ng-container>
                 <!--Registered date -->
                 <ng-container matColumnDef="registeredDate">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header
+                  <mat-header-cell *matHeaderCellDef 
                     >Registered Date
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
