@@ -209,37 +209,6 @@ clearFilter() {
   this.coursePaginationModel.page = 1;
   this.getProgramList();
 }
-//Previous code 
-// applyFilter() {
-//   let body: any = {};
-//   if (this.selectedPrograms.length > 0) {
-//     body.title = this.selectedPrograms
-//   }
-//   if (this.selectedVendors.length > 0) {
-//     body.vendor = this.selectedVendors
-//   }
-//   if (this.selectedStatus.length > 0) {
-//     body.status = this.selectedStatus
-//   }
-//   if (this.selectedCreators.length > 0) {
-//     body.creator = this.selectedCreators
-//   }
-
-//   this.courseService.getFilteredProgramData(body, { ...this.coursePaginationModel }).subscribe(response => {
-//     this.programData = response.data.docs;
-//     this.totalItems = response.data.totalDocs
-//     this.isFiltered = true;
-//     this.coursePaginationModel.docs = response.data.docs;
-//     this.coursePaginationModel.page = response.data.page;
-//     this.coursePaginationModel.limit = response.data.limit;
-//     this.coursePaginationModel.totalDocs = response.data.totalDocs;
-
-//   })
-
-// }
-
-
-//fixing 2 pagination bug
 
 applyFilter() {
   let body: any = {};
@@ -306,31 +275,7 @@ getFilterData(filters?: any) {
     );
   }
 
-  // getProgramList(filters?: any) {
-  //   this.isLoading = true;
-  //   this.isNoMoreData = false;
-  //   let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-  //   let queryParams = { ...this.coursePaginationModel };
   
-  //   if (this.selectedStatus.length > 0) {
-  //     queryParams.status = this.selectedStatus; // Pass the status filter to the backend
-  //   }
-  
-  //   this.courseService.getAllPrograms(queryParams, userId).subscribe(
-  //     (response: any) => {
-  //       this.isLoading = false;
-  //       this.programData = response.docs;
-  //       this.totalItems = response.totalDocs;
-  //       this.coursePaginationModel.docs = response.docs;
-  //       this.coursePaginationModel.page = response.page;
-  //       this.coursePaginationModel.limit = response.limit;
-  //       this.coursePaginationModel.totalDocs = response.totalDocs;
-  //     },
-  //     (error) => {
-  //       this.isLoading = false;
-  //     }
-  //   );
-  // }
   
   delete(id: string) {
     this.classService.getProgramClassList({ courseId: id }).subscribe((classList: any) => {
@@ -370,15 +315,7 @@ getFilterData(filters?: any) {
       
     });
   }
-  // pageSizeChange($event: any) {
-  //   this.coursePaginationModel.page = $event?.pageIndex + 1;
-  //   this.coursePaginationModel.limit = $event?.pageSize;
-  //   if (this.isFiltered) {
-  //     this.applyFilter()
-  //   } else {
-  //     this.getProgramList();
-  //   }
-  // }
+  
   pageSizeChange($event: any) {
     this.coursePaginationModel.page = $event?.pageIndex + 1;
     this.coursePaginationModel.limit = $event?.pageSize;
@@ -421,17 +358,6 @@ getFilterData(filters?: any) {
 
   }
 
-  // getAllVendorsAndUsers() {
-  //   this.courseService.getVendor().subscribe((response: any) => {
-  //     this.vendors = response.reverse();
-  //   })
-  //   this.userService.getAllUsers().subscribe((response: any) => {
-  //     this.users = response?.results?.filter((user: any) => user.name.toLowerCase() !== 'trainee');
-  //     // this.users = response?.results;
-  //     console.log("users==",this.users)
-  //   });
-
-  // }
   getAllVendorsAndUsers() {
     this.courseService.getVendor().subscribe((response: any) => {
       this.vendors = response.reverse();

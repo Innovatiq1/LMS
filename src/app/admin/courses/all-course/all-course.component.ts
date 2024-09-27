@@ -259,76 +259,13 @@ getAllTpCourses() {
     this.selectedStatus = [];
     this.selectedCreators = [];
     
-    // Reset pagination to the first page and clear any filters
     this.coursePaginationModel.page = 1;
-    this.coursePaginationModel.limit = 10; // or any default value
-  
-    // Set filter flag to false since no filters are applied
+    this.coursePaginationModel.limit = 10; 
     this.filter = false;
-  
-    // Fetch all courses again (unfiltered)
     this.getAllCourses();
   }
   
-  // applyFilter() {
-  //   let body: any = {};
-  //   if (this.selectedCourses.length > 0) {
-  //     body.title = this.selectedCourses;
-  //   }
-  //   if (this.selectedVendors.length > 0) {
-  //     body.vendor = this.selectedVendors;
-  //   }
-  //   if (this.selectedStatus.length > 0) {
-  //     body.status = this.selectedStatus;
-  //   }
-  //   if (this.selectedCreators.length > 0) {
-  //     body.creator = this.selectedCreators;
-  //   }
-
-  //   this._courseService
-  //     .getFilteredCourseData(body, { ...this.coursePaginationModel })
-  //     .subscribe((response) => {
-  //       this.courseData = response.data.docs;
-  //       this.totalItems = response.data.totalDocs;
-  //       this.filter = true;
-  //       this.coursePaginationModel.docs = response.data.docs;
-  //       this.coursePaginationModel.page = response.data.page;
-  //       this.coursePaginationModel.limit = response.data.limit;
-  //       this.coursePaginationModel.totalDocs = response.data.totalDocs;
-  //     });
-  // }
-
-  //Solved the page bug 1
-//   applyFilter() {
-//     let body: any = {};
-    
-//     if (this.selectedCourses.length > 0) {
-//       body.title = this.selectedCourses;
-//     }
-//     if (this.selectedVendors.length > 0) {
-//       body.vendor = this.selectedVendors;
-//     }
-//     if (this.selectedStatus.length > 0) {
-//       body.status = this.selectedStatus;
-//     }
-//     if (this.selectedCreators.length > 0) {
-//       body.creator = this.selectedCreators;
-//     }
-
-//     // Reset pagination to the first page when applying filter
-//     this.coursePaginationModel.page = 1;
-
-//     this._courseService.getFilteredCourseData(body, { ...this.coursePaginationModel })
-//       .subscribe((response) => {
-//         this.courseData = response.data.docs;
-//         this.totalItems = response.data.totalDocs;  // Total filtered records
-//         this.coursePaginationModel.docs = response.data.docs;
-//         this.coursePaginationModel.page = response.data.page;
-//         this.coursePaginationModel.limit = response.data.limit;
-//         this.coursePaginationModel.totalDocs = response.data.totalDocs;
-//         this.filter = true;
-//       });
-// }
+ 
 
 applyFilter() {
   let body: any = {};
@@ -346,7 +283,7 @@ applyFilter() {
     body.creator = this.selectedCreators;
   }
 
-  // Reset pagination to the first page when applying filters
+  
   this.coursePaginationModel.page = 1;
 
   this._courseService.getFilteredCourseData(body, { ...this.coursePaginationModel })
@@ -357,7 +294,7 @@ applyFilter() {
       this.coursePaginationModel.page = response.data.page;
       this.coursePaginationModel.limit = response.data.limit;
       this.coursePaginationModel.totalDocs = response.data.totalDocs;
-      this.filter = true;  // Set filter flag to true
+      this.filter = true;  
     });
 }
 
@@ -476,33 +413,10 @@ applyFilter() {
           this.selection.select(row)
         );
   }
-  // pageSizeChange($event: any) {
-  //   this.coursePaginationModel.page = $event?.pageIndex + 1;
-  //   this.coursePaginationModel.limit = $event?.pageSize;
-  //   if (this.filter) {
-  //     this.applyFilter();
-  //   } else {
-  //     this.getAllCourses();
-  //   }
-  // }
-  //solved the pagination but 1
-//   pageSizeChange($event: any) {
-//     this.coursePaginationModel.page = $event?.pageIndex + 1;
-//     this.coursePaginationModel.limit = $event?.pageSize;
-    
-//     // Check if filter is applied, otherwise fetch all courses
-//     if (this.filter) {
-//       this.applyFilter();
-//     } else {
-//       this.getAllCourses();
-//     }
-// }
-//for new bug 2
+  
 pageSizeChange($event: any) {
   this.coursePaginationModel.page = $event?.pageIndex + 1;
   this.coursePaginationModel.limit = $event?.pageSize;
-
-  // Check if filter is applied, otherwise fetch all courses
   if (this.filter) {
     this.applyFilter();
   } else {
@@ -524,16 +438,7 @@ pageSizeChange($event: any) {
       )?.category_name;
     });
   }
-  // getAllCourses() {
-  //   this._courseService.getAllCoursesWithPagination({...this.coursePaginationModel}).subscribe((response) => {
-  //     this.courseData = response.data.docs;
-  //     this.totalItems = response.data.totalDocs;
-  //     this.coursePaginationModel.docs = response.data.docs;
-  //     this.coursePaginationModel.page = response.data.page;
-  //     this.coursePaginationModel.limit = response.data.limit;
-  //     this.coursePaginationModel.totalDocs = response.data.totalDocs;
-  //   });
-  // }
+  
   getAllCourses() {
     this._courseService.getAllCoursesWithPagination({...this.coursePaginationModel}).subscribe((response) => {
       this.courseData = response.data.docs;
