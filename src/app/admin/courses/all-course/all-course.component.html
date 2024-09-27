@@ -53,6 +53,9 @@
                               <input type="file" (change)="onBulkUpload($event)" />
                             </div>
                           </li>
+                          <li>
+                            <span style="font-weight: bold;">Export as</span>
+                          </li>
 
                           <li>
                             <div class="export-button m-l-10" matTooltip="XLSX">
@@ -133,7 +136,7 @@
                       <div class="responsive_table">
                         <table mat-table [dataSource]="courseData" matSort class="mat-cell advance-table">
                           <ng-container matColumnDef="name">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header>Course
+                            <mat-header-cell *matHeaderCellDef >Course
                             </mat-header-cell>
                             <mat-cell class="name" [class.name]="isCourse" *matCellDef="let row"
                               (click)="view ? viewCourse(row.id) : null"><span class="mobile-label">Course Name:</span>
@@ -141,14 +144,14 @@
                             </mat-cell>
                           </ng-container>
                           <ng-container matColumnDef="code">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header>Course Code
+                            <mat-header-cell *matHeaderCellDef >Course Code
                             </mat-header-cell>
                             <mat-cell *matCellDef="let row" (click)="view ? viewCourse(row.id) : null"><span
                                 class="mobile-label">Course Code:</span> {{row.courseCode ? (row.courseCode) : "--"}}
                             </mat-cell>
                           </ng-container>
                           <ng-container matColumnDef="creator">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header>Creator</mat-header-cell>
+                            <mat-header-cell *matHeaderCellDef >Creator</mat-header-cell>
                             <mat-cell *matCellDef="let row" [class.name]="isCreator"
                               (click)="view ? viewCourse(row.id) : null">
                               <span class="mobile-label">Creator:</span> {{row.creator ? (row.creator) : "--"}}
@@ -156,7 +159,7 @@
                           </ng-container>
 
                           <ng-container matColumnDef="Days">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header>Days
+                            <mat-header-cell *matHeaderCellDef >Days
                             </mat-header-cell>
                             <mat-cell *matCellDef="let row" (click)="view ? viewCourse(row.id) : null"> <span
                                 class="mobile-label">Days:</span>{{row.course_duration_in_days ||0}} {{
@@ -165,28 +168,28 @@
                           </ng-container>
 
                           <ng-container matColumnDef="Training Hours">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header>Hours
+                            <mat-header-cell *matHeaderCellDef >Hours
                             </mat-header-cell>
                             <mat-cell *matCellDef="let row" (click)="view ? viewCourse(row.id) : null"> <span
                                 class="mobile-label">Traning Hours:</span>{{row.training_hours || 0}} Hours
                             </mat-cell>
                           </ng-container>
                           <ng-container matColumnDef="Fee Type">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">Fee Type
+                            <mat-header-cell *matHeaderCellDef  class="compulsory-count-header">Fee Type
                             </mat-header-cell>
                             <mat-cell *matCellDef="let row" (click)="view ? viewCourse(row.id) : null"> <span
                                 class="mobile-label">Fee Type:</span>{{row.feeType ? (row.feeType | titlecase) : "--"}}
                             </mat-cell>
                           </ng-container>
                           <ng-container matColumnDef="Vendor">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">Vendor
+                            <mat-header-cell *matHeaderCellDef  class="compulsory-count-header">Vendor
                             </mat-header-cell>
                             <mat-cell *matCellDef="let row" (click)="view ? viewCourse(row.id) : null"> <span
                                 class="mobile-label">Vendor:</span>{{row.vendor ? (row.vendor) : "--"}}
                             </mat-cell>
                           </ng-container>
                           <ng-container matColumnDef="Users">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header
+                            <mat-header-cell *matHeaderCellDef 
                               class="compulsory-count-header">{{commonRoles?.STUDENT_ROLE}}
                             </mat-header-cell>
                             <mat-cell *matCellDef="let row"
@@ -198,7 +201,7 @@
                             </mat-cell>
                           </ng-container>
                           <ng-container matColumnDef="startDate">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">Start
+                            <mat-header-cell *matHeaderCellDef  class="compulsory-count-header">Start
                               Date
                             </mat-header-cell>
                             <mat-cell *matCellDef="let row" (click)="view ? viewCourse(row.id) : null"> <span
@@ -207,7 +210,7 @@
                             </mat-cell>
                           </ng-container>
                           <ng-container matColumnDef="endDate">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">End Date
+                            <mat-header-cell *matHeaderCellDef  class="compulsory-count-header">End Date
                             </mat-header-cell>
                             <mat-cell *matCellDef="let row" (click)="view ? viewCourse(row.id) : null"> <span
                                 class="mobile-label">End date:</span><span>{{ row.sessionEndDate ?(row.sessionEndDate
@@ -215,7 +218,7 @@
                             </mat-cell>
                           </ng-container>
                           <ng-container matColumnDef="status">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header"
+                            <mat-header-cell *matHeaderCellDef  class="compulsory-count-header"
                               style="width: 400px;">Status
                             </mat-header-cell>
                             <mat-cell *matCellDef="let row" class="pr-0">
@@ -227,10 +230,10 @@
                             </mat-cell>
                           </ng-container>
                           <ng-container matColumnDef="Fees">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="amount">Payment
+                            <mat-header-cell *matHeaderCellDef  >Fee
                             </mat-header-cell>
                             <mat-cell *matCellDef="let row" (click)="view ? viewCourse(row.id) : null"
-                              class="payment-cell"> <span class="mobile-label">Payment:</span><span>$</span> {{row.fee
+                              class="amount"> <span class="mobile-label">Payment:</span><span>$</span> {{row.fee
                               ||0}} .00
                             </mat-cell>
                           </ng-container>

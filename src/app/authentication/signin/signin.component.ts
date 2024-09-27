@@ -1,5 +1,12 @@
-declare var google: any
-import { Component, OnInit, Input, OnChanges, ViewChild, TemplateRef } from '@angular/core';
+declare var google: any;
+import {
+  Component,
+  OnInit,
+  Input,
+  OnChanges,
+  ViewChild,
+  TemplateRef,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   FormGroup,
@@ -31,10 +38,10 @@ import { SettingsService } from '@core/service/settings.service';
 })
 export class SigninComponent
   extends UnsubscribeOnDestroyAdapter
-  implements OnInit {
+  implements OnInit
+{
   @ViewChild('profileDialog') profileDialog!: TemplateRef<any>;
   @ViewChild('companiesDialog') companiesDialog!: TemplateRef<any>;
-
 
   // strength: string = '';
   authForm!: UntypedFormGroup;
@@ -60,6 +67,7 @@ export class SigninComponent
   selectedCompany!: string;
   loginType!: string;
   body: any;
+  linkedinKeys: any;
 
   constructor(
     private formBuilder: UntypedFormBuilder,
@@ -76,8 +84,7 @@ export class SigninComponent
     private superadminservice: SuperAdminService,
     private commonService: CommonService,
     private twoFactorAuthService: TwoFactorAuthService,
-    private settingsService: SettingsService,
-
+    private settingsService: SettingsService
   ) {
     super();
     let urlPath = this.router.url.split('/');
@@ -100,7 +107,6 @@ export class SigninComponent
 
     const pathSegments = this.router.url.split('/');
     this.extractedName = pathSegments[1];
-
   }
   listLang = [
     { text: 'English', flag: 'assets/images/flags/us.svg', lang: 'en' },
@@ -108,59 +114,91 @@ export class SigninComponent
     { text: 'Tamil', flag: 'assets/images/flags/germany.svg', lang: 'ts' },
   ];
 
-  signup(){
-    this.commonService.navigateWithCompanyName(this.extractedName,'authentication/LMS/signup')
+  signup() {
+    this.commonService.navigateWithCompanyName(
+      this.extractedName,
+      'authentication/LMS/signup'
+    );
   }
 
   onCompanyChange(event: any): void {
     console.log('Selected company:', this.selectedCompany);
   }
 
-  forgotpassword(){
-
-    if(this.tmsUrl){
-      this.commonService.navigateWithCompanyName(this.extractedName,'authentication/TMS/forgot-password')
-    } else if(this.lmsUrl){
-      this.commonService.navigateWithCompanyName(this.extractedName,'authentication/LMS/forgot-password')
-
+  forgotpassword() {
+    if (this.tmsUrl) {
+      this.commonService.navigateWithCompanyName(
+        this.extractedName,
+        'authentication/TMS/forgot-password'
+      );
+    } else if (this.lmsUrl) {
+      this.commonService.navigateWithCompanyName(
+        this.extractedName,
+        'authentication/LMS/forgot-password'
+      );
     }
   }
   ngOnInit() {
+    this.userService
+      .getCompanyByIdentifierWithoutToken(this.extractedName)
+      .subscribe((resp: any) => {
+        let companyId = resp[0]?.companyId;
+        this.settingsService
+          .getKeysByCompanyId(companyId)
+          .subscribe((res: any) => {
+            let gmail = res.data.filter((item: any) => item.type == 'google');
+            let linkedin = res.data.filter(
+              (item: any) => item.type == 'linkedin'
+            );
+            this.linkedinKeys = linkedin[0];
+
+            history.pushState(null, '', window.location.href);
+    window.onpopstate = () => {
+      history.pushState(null, '', window.location.href);
+    };
+  
     this.startSlideshow();
-    if (this.linkedinUrl) {
-      //Linkedin
-      this.handleLinkedIn();
-    }
-      google.accounts.id.initialize({
-        client_id: '254303785853-4av7vt4kjc2fus3rgf01e3ltnp2icad0.apps.googleusercontent.com',
-        callback: (res: any) => {
-          this.handleGmailLogin(res)
-        }
-      })
-      // google.accounts.id.renderButton(document.getElementById("google-btn"), {
-      //   theme: 'filled_blue',
-      //   size: 'large',
-      //   shape: 'rectangle',
-      //   width: 450
-      // })
-    const googleBtnContainer = document.getElementById("google-btn")?.querySelector("button");
-    if (googleBtnContainer) {
-      google.accounts.id.renderButton(googleBtnContainer, {
-          type: 'icon',
+            if (this.linkedinUrl) {
+              let body = {
+                redirectUri: linkedin[0]?.redirectUri,
+                clientId: linkedin[0]?.clientId,
+                clientSecret: linkedin[0]?.clientSecret,
+              };
+                      this.handleLinkedIn(body);
+            }
+            google.accounts.id.initialize({
+              client_id:
+                gmail.length > 0
+                  ? gmail[0].clientId
+                  : '254303785853-4av7vt4kjc2fus3rgf01e3ltnp2icad0.apps.googleusercontent.com',
+              callback: (res: any) => {
+                this.handleGmailLogin(res);
+              },
+            });
+            // google.accounts.id.renderButton(document.getElementById("google-btn"), {
+            //   theme: 'filled_blue',
+            //   size: 'large',
+            //   shape: 'rectangle',
+            //   width: 450
+            // })
+            const googleBtnContainer = document
+              .getElementById('google-btn')
+              ?.querySelector('button');
+            if (googleBtnContainer) {
+              google.accounts.id.renderButton(googleBtnContainer, {
+                type: 'icon',
+              });
+
+              // Apply your custom styling by adding a class
+              googleBtnContainer.classList.add('login-btn');
+            }
+          });
       });
-
-      // Apply your custom styling by adding a class
-      googleBtnContainer.classList.add("login-btn");
-  }
-    
-
-
-
   }
   handleGmailLogin(data: any) {
     if (data) {
-      const payload = this.decodeGmailToken(data.credential)
-      this.accountDetails = payload
+      const payload = this.decodeGmailToken(data.credential);
+      this.accountDetails = payload;
       let body = {
         name: payload.given_name,
         avatar: payload.picture,
@@ -168,192 +206,258 @@ export class SigninComponent
         email: payload.email,
         authToken: data.credential, // Include the raw token as authToken
         id: payload.sub,
-        gmail: true
-      }
-      if(this.extractedName == 'authentication'){
-        this.authenticationService.getUsersByEmail(payload.email).subscribe(
-          (res: any) => {
-            this.companies = res.data
-            this.openCompanyDialog(this.companiesDialog,'gmail')
-          })
-      }  else {
-      this.userService.getCompanyByIdentifierWithoutToken(this.extractedName).subscribe(
-        (res: any) => {
-     let companyId=res[0]?.companyId
-      this.authenticationService.socialLogin({ email: payload.email, social_type: 'GOOGLE', social_id: payload.sub,companyId:companyId }).subscribe(
-        (user: any) => {
-
-          if (user) {
-            // setTimeout(() => {
-            //   this.router.navigate(['/dashboard/dashboard']);
-            //   this.loading = false;
-            // }, 100);
-            this.authenticationService.saveUserInfo(user);
-            let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-            this.superadminservice.getAllCustomRoleById(userId).subscribe(
-              (res: any) => {
-                localStorage.setItem('subdomain',res[0]?.identifier)
-            this.superadminservice.getAllCustomRoleById(userId).subscribe(
-              (response: any) => {
-                this.adminService.getUserTypeList({ allRows: true }, userId).subscribe(
-                  (response: any) => {
-                    let userType = localStorage.getItem('user_type');
-                    let data = response.filter((item: any) => item.typeName === userType);
-      
-                    this.authenticationService.saveRoleDetails(data);
-      
-                  })
-                this.commonService.setRoleDetails(response[0])
-                this.updateRoleConstants();
-                this.setup2FA(this.accountDetails.email);
-
-
+        gmail: true,
+      };
+      if (this.extractedName == 'authentication') {
+        this.authenticationService
+          .getUsersByEmail(payload.email)
+          .subscribe((res: any) => {
+            this.companies = res.data;
+            this.openCompanyDialog(this.companiesDialog, 'gmail');
+          });
+      } else {
+        this.userService
+          .getCompanyByIdentifierWithoutToken(this.extractedName)
+          .subscribe((res: any) => {
+            let companyId = res[0]?.companyId;
+            this.authenticationService
+              .socialLogin({
+                email: payload.email,
+                social_type: 'GOOGLE',
+                social_id: payload.sub,
+                companyId: companyId,
               })
-            })
-          }
-        },
-        (err: any) => {
-          console.log('err',err)
-          if (err == "user not found!") {
-            this.userService.getCompanyByIdentifierWithoutToken(this.extractedName).subscribe(
-              (res: any) => {
+              .subscribe(
+                (user: any) => {
+                  if (user) {
+                    // setTimeout(() => {
+                    //   this.router.navigate(['/dashboard/dashboard']);
+                    //   this.loading = false;
+                    // }, 100);
+                    this.authenticationService.saveUserInfo(user);
+                    let userId = JSON.parse(localStorage.getItem('user_data')!)
+                      .user.companyId;
+                    this.superadminservice
+                      .getAllCustomRoleById(userId)
+                      .subscribe((res: any) => {
+                        localStorage.setItem('subdomain', res[0]?.identifier);
+                        this.superadminservice
+                          .getAllCustomRoleById(userId)
+                          .subscribe((response: any) => {
+                            this.adminService
+                              .getUserTypeList({ allRows: true }, userId)
+                              .subscribe((response: any) => {
+                                let userType =
+                                  localStorage.getItem('user_type');
+                                let data = response.filter(
+                                  (item: any) => item.typeName === userType
+                                );
 
-                  this.companyId = res[0]?.companyId;
-      
-      
-            this.getUserTypeList();
-            this.profileForm = this.formBuilder.group({
-              role: ['', Validators.required],
-              email: [this.accountDetails.email, [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)]],
-              name: [this.accountDetails.name, Validators.required],
-              password: [''],
-            })
+                                this.authenticationService.saveRoleDetails(
+                                  data
+                                );
+                              });
+                            this.commonService.setRoleDetails(response[0]);
+                            this.updateRoleConstants();
+                            this.setup2FA(this.accountDetails.email);
+                          });
+                      });
+                  }
+                },
+                (err: any) => {
+                  console.log('err', err);
+                  if (err == 'user not found!') {
+                    this.userService
+                      .getCompanyByIdentifierWithoutToken(this.extractedName)
+                      .subscribe((res: any) => {
+                        this.companyId = res[0]?.companyId;
 
-            this.openDialog(this.profileDialog)
+                        this.getUserTypeList();
+                        this.profileForm = this.formBuilder.group({
+                          role: ['', Validators.required],
+                          email: [
+                            this.accountDetails.email,
+                            [
+                              Validators.required,
+                              Validators.pattern(
+                                /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
+                              ),
+                            ],
+                          ],
+                          name: [this.accountDetails.name, Validators.required],
+                          password: [''],
+                        });
 
-          })} else {
-          }
-        }
-      )
-    })
-  }
-  
-
+                        this.openDialog(this.profileDialog);
+                      });
+                  } else {
+                  }
+                }
+              );
+          });
+      }
     }
-
   }
   loginLinkedIn(): void {
-    if(this.extractedName == 'authentication'){
+    if (this.extractedName == 'authentication') {
       this.authenticationService.loginWithLinkedIn();
     } else {
-      this.authenticationService.loginWithLinkedIn(this.extractedName);
-
+      this.authenticationService.loginWithLinkedIn(
+        this.extractedName,
+        this.linkedinKeys
+      );
     }
   }
 
-  handleLinkedIn(): void {
-    this.userService.getCompanyByIdentifierWithoutToken(this.extractedName).subscribe(
-      (res: any) => {
-        let userData ={
-          companyId:res[0]?.companyId
-        }
+  handleLinkedIn(data: any): void {
+    this.userService
+      .getCompanyByIdentifierWithoutToken(this.extractedName)
+      .subscribe((res: any) => {
+        let userData = {
+          companyId: res[0]?.companyId,
+        };
         // localStorage.setItem('user_data', JSON.stringify(user));
 
+        // userData.companyId = res[0]?.companyId;
+        this.route.queryParams.subscribe((params) => {
+          const code = params['code'];
+          if (code) {
+            if (this.extractedName == 'authentication') {
+              this.body = {
+                code: code,
+                redirectUri: data?.redirectUri,
+                clientId: data?.clientId,
+                clientSecret: data?.clientSecret,
+              };
+            } else {
+              this.body = {
+                code: code,
+                companyName: this.extractedName,
+                redirectUri: data?.redirectUri,
+                clientId: data?.clientId,
+                clientSecret: data?.clientSecret,
+              };
+            }
 
-         
-          // userData.companyId = res[0]?.companyId;
-    this.route.queryParams.subscribe(params => {
-      const code = params['code'];
-      if (code) {
-        if(this.extractedName == 'authentication'){
-          this.body = {
-            code:code,
-          }
-        } else {
-          this.body = {
-            code:code,
-            companyName:this.extractedName
-          }
-        }
-       
-        this.authenticationService.AccessToken(this.body).subscribe(
-          (response: any) => {
-            const accessToken = response.access_token;
-            this.authenticationService.getProfileData(accessToken).subscribe(
-              (profile: any) => {
-                this.accountDetails = profile;
-                const email = profile.email;
-                if(this.extractedName == 'authentication'){
-                  this.authenticationService.getUsersByEmail(email).subscribe(
-                    (res: any) => {
-                      this.companies = res.data
-                      this.openCompanyDialog(this.companiesDialog,'linkedin')
-                    })
-                } else {
-                
-                this.authenticationService.socialLogin({ email: email, social_type: 'LINKEDIN', social_id: profile.sub,companyId: userData.companyId}).subscribe(
-                  (user: any) => {
+            this.authenticationService.AccessToken(this.body).subscribe(
+              (response: any) => {
+                const accessToken = response.access_token;
+                this.authenticationService
+                  .getProfileData(accessToken)
+                  .subscribe(
+                    (profile: any) => {
+                      this.accountDetails = profile;
+                      const email = profile.email;
+                      if (this.extractedName == 'authentication') {
+                        this.authenticationService
+                          .getUsersByEmail(email)
+                          .subscribe((res: any) => {
+                            this.companies = res.data;
+                            this.openCompanyDialog(
+                              this.companiesDialog,
+                              'linkedin'
+                            );
+                          });
+                      } else {
+                        this.authenticationService
+                          .socialLogin({
+                            email: email,
+                            social_type: 'LINKEDIN',
+                            social_id: profile.sub,
+                            companyId: userData.companyId,
+                          })
+                          .subscribe(
+                            (user: any) => {
+                              if (user) {
+                                // setTimeout(() => {
+                                //   this.router.navigate(['/dashboard/dashboard']);
+                                //   this.loading = false;
+                                // }, 100);
+                                this.authenticationService.saveUserInfo(user);
+                                let userId = JSON.parse(
+                                  localStorage.getItem('user_data')!
+                                ).user.companyId;
+                                this.superadminservice
+                                  .getAllCustomRoleById(userId)
+                                  .subscribe((res: any) => {
+                                    localStorage.setItem(
+                                      'subdomain',
+                                      res[0]?.identifier
+                                    );
+                                    this.superadminservice
+                                      .getAllCustomRoleById(userId)
+                                      .subscribe((response: any) => {
+                                        this.adminService
+                                          .getUserTypeList(
+                                            { allRows: true },
+                                            userId
+                                          )
+                                          .subscribe((response: any) => {
+                                            let userType =
+                                              localStorage.getItem('user_type');
+                                            let data = response.filter(
+                                              (item: any) =>
+                                                item.typeName === userType
+                                            );
 
-                    if (user) {
-                      // setTimeout(() => {
-                      //   this.router.navigate(['/dashboard/dashboard']);
-                      //   this.loading = false;
-                      // }, 100);
-                      this.authenticationService.saveUserInfo(user);
-                      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-                      this.superadminservice.getAllCustomRoleById(userId).subscribe(
-                        (res: any) => {
-                          localStorage.setItem('subdomain',res[0]?.identifier)
-                      this.superadminservice.getAllCustomRoleById(userId).subscribe(
-                        (response: any) => {
-                          this.adminService.getUserTypeList({ allRows: true }, userId).subscribe(
-                            (response: any) => {
-                              let userType = localStorage.getItem('user_type');
-                              let data = response.filter((item: any) => item.typeName === userType);
-                
-                              this.authenticationService.saveRoleDetails(data);
-                
-                            })
-                          this.commonService.setRoleDetails(response[0])
-                          this.updateRoleConstants();
-                          this.setup2FA(this.accountDetails.email);
+                                            this.authenticationService.saveRoleDetails(
+                                              data
+                                            );
+                                          });
+                                        this.commonService.setRoleDetails(
+                                          response[0]
+                                        );
+                                        this.updateRoleConstants();
+                                        this.setup2FA(
+                                          this.accountDetails.email
+                                        );
+                                      });
+                                  });
+                              }
+                            },
+                            (err: any) => {
+                              if (err == 'user not found!') {
+                                this.getUserTypeList();
+                                this.profileForm = this.formBuilder.group({
+                                  role: ['', Validators.required],
+                                  email: [
+                                    this.accountDetails.email,
+                                    [
+                                      Validators.required,
+                                      Validators.pattern(
+                                        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
+                                      ),
+                                    ],
+                                  ],
+                                  name: [
+                                    this.accountDetails.name,
+                                    Validators.required,
+                                  ],
+                                  password: [''],
+                                });
 
-
-                        })
-                      })
-
+                                this.openDialog(this.profileDialog);
+                              } else {
+                              }
+                            }
+                          );
+                      }
+                    },
+                    (error) => {
+                      console.error(
+                        'Error fetching LinkedIn profile data:',
+                        error
+                      );
                     }
-                  },
-                  (err: any) => {
-                    if (err == "user not found!") {
-                      this.getUserTypeList();
-                      this.profileForm = this.formBuilder.group({
-                        role: ['', Validators.required],
-                        email: [this.accountDetails.email, [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)]],
-                        name: [this.accountDetails.name, Validators.required],
-                        password: [''],
-                      })
-
-                      this.openDialog(this.profileDialog)
-
-                    } else {
-                    }
-                  }
-                )
-              }
-            },
+                  );
+              },
               (error) => {
-                console.error('Error fetching LinkedIn profile data:', error);
+                console.error('Error fetching LinkedIn access token:', error);
               }
             );
-          },
-          (error) => {
-            console.error('Error fetching LinkedIn access token:', error);
           }
-        );
-      }
-    });
-  })
+        });
+      });
   }
 
   openDialog(templateRef: any): void {
@@ -363,25 +467,25 @@ export class SigninComponent
     });
   }
 
-  openCompanyDialog(templateRef: any,loginType:string): void {
-    this.loginType = loginType
+  openCompanyDialog(templateRef: any, loginType: string): void {
+    this.loginType = loginType;
     const dialogRef = this.dialog.open(templateRef, {
       width: '500px',
       data: this.companies,
     });
   }
   getUserTypeList() {
-    this.adminService.getUserTypeList({ allRows: true }, this.companyId).subscribe(
-      (response: any) => {
-        this.userTypes = response;
-      },
-      (error) => { }
-    );
+    this.adminService
+      .getUserTypeList({ allRows: true }, this.companyId)
+      .subscribe(
+        (response: any) => {
+          this.userTypes = response;
+        },
+        (error) => {}
+      );
   }
 
-
   create(dialogRef: any) {
-
     if (this.profileForm.valid) {
       Swal.fire({
         title: 'Are you sure?',
@@ -392,37 +496,35 @@ export class SigninComponent
         cancelButtonColor: '#d33',
       }).then((result) => {
         if (result.isConfirmed) {
-          this.userService.getCompanyByIdentifierWithoutToken(this.extractedName).subscribe(
-            (res: any) => {
-          this.profileForm.value.companyId=res[0]?.companyId,
-          this.profileForm.value.company=res[0]?.company,
-          this.profileForm.value.domain=res[0]?.identifier
-          this.profileForm.value.Active = true;
-          this.profileForm.value.type = this.profileForm.value.role;
-          this.profileForm.value.isLogin = true;
-          this.profileForm.value.avatar = this.accountDetails.picture
-          this.registration.socialLoginRegisterUser(this.profileForm.value).subscribe(
-            () => {
-              Swal.fire({
-                title: 'Successful',
-                text: 'User created successfully',
-                icon: 'success',
-              });
-              this.profileForm.reset();
-              dialogRef.close();
-
-            },
-            (error) => {
-              Swal.fire(
-                error,
-                error.message || error.error,
-                'error'
-              );
-            }
-          );
-        })}
+          this.userService
+            .getCompanyByIdentifierWithoutToken(this.extractedName)
+            .subscribe((res: any) => {
+              (this.profileForm.value.companyId = res[0]?.companyId),
+                (this.profileForm.value.company = res[0]?.company),
+                (this.profileForm.value.domain = res[0]?.identifier);
+              this.profileForm.value.Active = true;
+              this.profileForm.value.type = this.profileForm.value.role;
+              this.profileForm.value.isLogin = true;
+              this.profileForm.value.avatar = this.accountDetails.picture;
+              this.registration
+                .socialLoginRegisterUser(this.profileForm.value)
+                .subscribe(
+                  () => {
+                    Swal.fire({
+                      title: 'Successful',
+                      text: 'User created successfully',
+                      icon: 'success',
+                    });
+                    this.profileForm.reset();
+                    dialogRef.close();
+                  },
+                  (error) => {
+                    Swal.fire(error, error.message || error.error, 'error');
+                  }
+                );
+            });
+        }
       });
-
     } else {
       this.isSubmitted = true;
     }
@@ -437,23 +539,19 @@ export class SigninComponent
   //   scope: "r_liteprofile%20r_emailaddress%20w_member_social",
   // };
 
-
   // loginWithlinkedin()
-  // { 
+  // {
   //   window.location.href = `https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id=${
   //     this.linkedInCredentials.clientId
   //   }&redirect_uri=${this.linkedInCredentials.redirectUrl}&scope=${this.linkedInCredentials.scope}`;
-  // } 
-
+  // }
 
   private decodeGmailToken(token: string) {
-    return JSON.parse(atob(token.split(".")[1]));
+    return JSON.parse(atob(token.split('.')[1]));
   }
   get f() {
     return this.authForm.controls;
   }
-
-
 
   adminSet() {
     this.authForm.get('email')?.setValue('admin1@tms.com');
@@ -473,10 +571,13 @@ export class SigninComponent
     AppConstants.INSTRUCTOR_ROLE = roleDetails.trainer; // Update the role constant
     AppConstants.STUDENT_ROLE = roleDetails.learner; // Update the role constant
 
-    AppConstants.ALLTHREEROLES = [roleDetails.trainer, 'Admin', 'admin', 'Assessor']
+    AppConstants.ALLTHREEROLES = [
+      roleDetails.trainer,
+      'Admin',
+      'admin',
+      'Assessor',
+    ];
     localStorage.setItem('role_data', JSON.stringify(roleDetails));
-
-
   }
   loginUser() {
     let formData = this.authForm.getRawValue();
@@ -484,16 +585,24 @@ export class SigninComponent
       this.isLoading = true;
       this.userService.getCompanyByIdentifierWithoutToken(this.extractedName).subscribe(
         (res: any) => {
+          console.log("1st",res)
           let companyId = res[0]?.companyId;
           this.authenticationService
-            .loginUser(formData.email.trim(), formData.password.trim(), companyId)
+            .loginUser(
+              formData.email.trim(),
+              formData.password.trim(),
+              companyId
+            )
             .subscribe(
               (user) => {
+                console.log("2st",user)
                 this.authenticationService.saveUserInfo(user);
-                let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-  
-                this.superadminservice.getAllCustomRoleById(userId).subscribe(
-                  (response: any) => {
+                let userId = JSON.parse(localStorage.getItem('user_data')!).user
+                  .companyId;
+
+                this.superadminservice
+                  .getAllCustomRoleById(userId)
+                  .subscribe((response: any) => {
                     localStorage.setItem('subdomain', response[0]?.identifier);
                     this.commonService.setRoleDetails(response[0]);
                     this.updateRoleConstants();
@@ -502,12 +611,14 @@ export class SigninComponent
   
                 this.adminService.getUserTypeList({ allRows: true }, userId).subscribe(
                   (response: any) => {
+                    console.log("3st",response)
                     let userType = localStorage.getItem('user_type');
-                    let data = response.filter((item: any) => item.typeName === userType);
+                    let data = response.filter(
+                      (item: any) => item.typeName === userType
+                    );
                     this.authenticationService.saveRoleDetails(data);
-                  }
-                );
-  
+                  });
+
                 this.setup2FA(formData.email.trim());
               },
               (error) => {
@@ -519,13 +630,13 @@ export class SigninComponent
                 }, 2500);
               }
             );
-        }
-      );
+        });
       return;
     }
     if(this.extractedName == 'authentication'){
       this.authenticationService.getUsersByEmail(formData.email.trim()).subscribe(
         (res: any) => {
+          console.log("1stres",res)
           this.companies = res.data
           this.openCompanyDialog(this.companiesDialog,'signin')
         })
@@ -533,11 +644,13 @@ export class SigninComponent
     this.isLoading = true;
     this.userService.getCompanyByIdentifierWithoutToken(this.extractedName).subscribe(
       (res: any) => {
+        console.log("12tres",res)
    let companyId=res[0]?.companyId
     this.authenticationService
       .loginUser(formData.email.trim(), formData.password.trim(),companyId)
       .subscribe(
         (user) => {
+          console.log("3tres",user)
           // setTimeout(() => {
           //   const role = this.authenticationService.currentUserValue.user.role;
           //   this.router.navigate(['/admin/two-factor-auth']);
@@ -547,7 +660,7 @@ export class SigninComponent
           let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
           this.superadminservice.getAllCustomRoleById(userId).subscribe(
             (response: any) => {
-              console.log('res',response)
+              console.log('res222',response)
               localStorage.setItem('subdomain',response[0]?.identifier)
               this.commonService.setRoleDetails(response[0])
               this.updateRoleConstants();
@@ -556,35 +669,35 @@ export class SigninComponent
 
           this.adminService.getUserTypeList({ allRows: true }, userId).subscribe(
             (response: any) => {
+              console.log('res1212',response)
               let userType = localStorage.getItem('user_type');
               let data = response.filter((item: any) => item.typeName === userType);
 
-              this.authenticationService.saveRoleDetails(data);
+                    this.authenticationService.saveRoleDetails(data);
+                  });
 
-            })
-
-            this.setup2FA(formData.email.trim());
-        },
-        (error) => {
-          this.isLoading = false;
-          this.email = error;
-          this.isSubmitted = true;
-          setTimeout(() => {
-            this.email = '';
-          }, 2500);
-        }
-      );
-    })
+                this.setup2FA(formData.email.trim());
+              },
+              (error) => {
+                this.isLoading = false;
+                this.email = error;
+                this.isSubmitted = true;
+                setTimeout(() => {
+                  this.email = '';
+                }, 2500);
+              }
+            );
+        });
+    }
   }
-  }
 
-  loginwithCommonURL(dialogRef:any){
-    if(this.loginType == 'signin'){
-    let formData = this.authForm.getRawValue();
+  loginwithCommonURL(dialogRef: any) {
+    if (this.loginType == 'signin') {
+      let formData = this.authForm.getRawValue();
       this.isLoading = true;
-      let companyId = this.selectedCompany
+      let companyId = this.selectedCompany;
       this.authenticationService
-        .loginUser(formData.email.trim(), formData.password.trim(),companyId)
+        .loginUser(formData.email.trim(), formData.password.trim(), companyId)
         .subscribe(
           (user) => {
             // setTimeout(() => {
@@ -593,30 +706,30 @@ export class SigninComponent
             //   this.router.navigate(['/dashboard/dashboard']);
             //   this.loading = false;
             // }, 100);
-                          dialogRef.close()
+            dialogRef.close();
 
             this.authenticationService.saveUserInfo(user);
-            let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-            this.superadminservice.getAllCustomRoleById(userId).subscribe(
-              (response: any) => {
-                localStorage.setItem('subdomain',response[0]?.identifier)
-                this.commonService.setRoleDetails(response[0])
+            let userId = JSON.parse(localStorage.getItem('user_data')!).user
+              .companyId;
+            this.superadminservice
+              .getAllCustomRoleById(userId)
+              .subscribe((response: any) => {
+                localStorage.setItem('subdomain', response[0]?.identifier);
+                this.commonService.setRoleDetails(response[0]);
                 this.updateRoleConstants();
-  
-              })
-  
-            this.adminService.getUserTypeList({ allRows: true }, userId).subscribe(
-              (response: any) => {
-                let userType = localStorage.getItem('user_type');
-                let data = response.filter((item: any) => item.typeName === userType);
-  
-                this.authenticationService.saveRoleDetails(data);
-  
-              })
-              this.setup2FA(formData.email.trim());
+              });
 
-  
-  
+            this.adminService
+              .getUserTypeList({ allRows: true }, userId)
+              .subscribe((response: any) => {
+                let userType = localStorage.getItem('user_type');
+                let data = response.filter(
+                  (item: any) => item.typeName === userType
+                );
+
+                this.authenticationService.saveRoleDetails(data);
+              });
+            this.setup2FA(formData.email.trim());
           },
           (error) => {
             this.isLoading = false;
@@ -627,144 +740,169 @@ export class SigninComponent
             }, 2500);
           }
         );
-    
-      }
-       else if(this.loginType == 'gmail'){
-        let companyId = this.selectedCompany
-          this.authenticationService.socialLogin({ email: this.accountDetails.email, social_type: 'GOOGLE', social_id: this.accountDetails.sub,companyId:companyId }).subscribe(
-            (user: any) => {
-              if (user) {
-                // setTimeout(() => {
-                //   dialogRef.close()
-                //   this.router.navigate(['/dashboard/dashboard']);
-                //   this.loading = false;
-                // }, 100);
-                                  dialogRef.close()
-
-                this.authenticationService.saveUserInfo(user);
-                let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-                this.superadminservice.getAllCustomRoleById(userId).subscribe(
-                  (res: any) => {
-                    localStorage.setItem('subdomain',res[0]?.identifier)
-                this.superadminservice.getAllCustomRoleById(userId).subscribe(
-                  (response: any) => {
-                    this.adminService.getUserTypeList({ allRows: true }, userId).subscribe(
-                      (response: any) => {
-                        let userType = localStorage.getItem('user_type');
-                        let data = response.filter((item: any) => item.typeName === userType);
-          
-                        this.authenticationService.saveRoleDetails(data);
-          
-                      })
-                    this.commonService.setRoleDetails(response[0])
-                    this.updateRoleConstants();
-                    this.setup2FA(this.accountDetails.email);
-
-    
-                  })
-                })
-              }
-            },
-            (err: any) => {
-              console.log('err',err)
-              if (err == "user not found!") {
-                this.userService.getCompanyByIdentifierWithoutToken(this.extractedName).subscribe(
-                  (res: any) => {
-    
-                      this.companyId = res[0]?.companyId;
-          
-          
-                this.getUserTypeList();
-                this.profileForm = this.formBuilder.group({
-                  role: ['', Validators.required],
-                  email: [this.accountDetails.email, [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)]],
-                  name: [this.accountDetails.name, Validators.required],
-                  password: [''],
-                })
-    
-                this.openDialog(this.profileDialog)
-    
-              })} else {
-              }
-            }
-          )
-    
-      
-       }
-      else if(this.loginType == 'linkedin'){
-        this.authenticationService.socialLogin({ email: this.accountDetails.email, social_type: 'LINKEDIN', social_id: this.accountDetails.sub,companyId: this.selectedCompany}).subscribe(
+    } else if (this.loginType == 'gmail') {
+      let companyId = this.selectedCompany;
+      this.authenticationService
+        .socialLogin({
+          email: this.accountDetails.email,
+          social_type: 'GOOGLE',
+          social_id: this.accountDetails.sub,
+          companyId: companyId,
+        })
+        .subscribe(
           (user: any) => {
+            if (user) {
+              // setTimeout(() => {
+              //   dialogRef.close()
+              //   this.router.navigate(['/dashboard/dashboard']);
+              //   this.loading = false;
+              // }, 100);
+              dialogRef.close();
 
+              this.authenticationService.saveUserInfo(user);
+              let userId = JSON.parse(localStorage.getItem('user_data')!).user
+                .companyId;
+              this.superadminservice
+                .getAllCustomRoleById(userId)
+                .subscribe((res: any) => {
+                  localStorage.setItem('subdomain', res[0]?.identifier);
+                  this.superadminservice
+                    .getAllCustomRoleById(userId)
+                    .subscribe((response: any) => {
+                      this.adminService
+                        .getUserTypeList({ allRows: true }, userId)
+                        .subscribe((response: any) => {
+                          let userType = localStorage.getItem('user_type');
+                          let data = response.filter(
+                            (item: any) => item.typeName === userType
+                          );
+
+                          this.authenticationService.saveRoleDetails(data);
+                        });
+                      this.commonService.setRoleDetails(response[0]);
+                      this.updateRoleConstants();
+                      this.setup2FA(this.accountDetails.email);
+                    });
+                });
+            }
+          },
+          (err: any) => {
+            console.log('err', err);
+            if (err == 'user not found!') {
+              this.userService
+                .getCompanyByIdentifierWithoutToken(this.extractedName)
+                .subscribe((res: any) => {
+                  this.companyId = res[0]?.companyId;
+
+                  this.getUserTypeList();
+                  this.profileForm = this.formBuilder.group({
+                    role: ['', Validators.required],
+                    email: [
+                      this.accountDetails.email,
+                      [
+                        Validators.required,
+                        Validators.pattern(
+                          /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
+                        ),
+                      ],
+                    ],
+                    name: [this.accountDetails.name, Validators.required],
+                    password: [''],
+                  });
+
+                  this.openDialog(this.profileDialog);
+                });
+            } else {
+            }
+          }
+        );
+    } else if (this.loginType == 'linkedin') {
+      this.authenticationService
+        .socialLogin({
+          email: this.accountDetails.email,
+          social_type: 'LINKEDIN',
+          social_id: this.accountDetails.sub,
+          companyId: this.selectedCompany,
+        })
+        .subscribe(
+          (user: any) => {
             if (user) {
               // setTimeout(() => {
               //   this.router.navigate(['/dashboard/dashboard']);
               //   this.loading = false;
               // }, 100);
-            dialogRef.close();
+              dialogRef.close();
               this.authenticationService.saveUserInfo(user);
-              let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-              this.superadminservice.getAllCustomRoleById(userId).subscribe(
-                (res: any) => {
-                  localStorage.setItem('subdomain',res[0]?.identifier)
-              this.superadminservice.getAllCustomRoleById(userId).subscribe(
-                (response: any) => {
-                  this.adminService.getUserTypeList({ allRows: true }, userId).subscribe(
-                    (response: any) => {
-                      let userType = localStorage.getItem('user_type');
-                      let data = response.filter((item: any) => item.typeName === userType);
-        
-                      this.authenticationService.saveRoleDetails(data);
-        
-                    })
-                  this.commonService.setRoleDetails(response[0])
-                  this.updateRoleConstants();
-                  this.setup2FA(this.accountDetails.email);
+              let userId = JSON.parse(localStorage.getItem('user_data')!).user
+                .companyId;
+              this.superadminservice
+                .getAllCustomRoleById(userId)
+                .subscribe((res: any) => {
+                  localStorage.setItem('subdomain', res[0]?.identifier);
+                  this.superadminservice
+                    .getAllCustomRoleById(userId)
+                    .subscribe((response: any) => {
+                      this.adminService
+                        .getUserTypeList({ allRows: true }, userId)
+                        .subscribe((response: any) => {
+                          let userType = localStorage.getItem('user_type');
+                          let data = response.filter(
+                            (item: any) => item.typeName === userType
+                          );
 
-
-                })
-              })
-
+                          this.authenticationService.saveRoleDetails(data);
+                        });
+                      this.commonService.setRoleDetails(response[0]);
+                      this.updateRoleConstants();
+                      this.setup2FA(this.accountDetails.email);
+                    });
+                });
             }
           },
           (err: any) => {
-            if (err == "user not found!") {
+            if (err == 'user not found!') {
               this.getUserTypeList();
               this.profileForm = this.formBuilder.group({
                 role: ['', Validators.required],
-                email: [this.accountDetails.email, [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)]],
+                email: [
+                  this.accountDetails.email,
+                  [
+                    Validators.required,
+                    Validators.pattern(
+                      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
+                    ),
+                  ],
+                ],
                 name: [this.accountDetails.name, Validators.required],
                 password: [''],
-              })
+              });
 
-              this.openDialog(this.profileDialog)
-
+              this.openDialog(this.profileDialog);
             } else {
             }
           }
-        )
-      }
-      
-
+        );
+    }
   }
   setup2FA(email: string) {
-    this.isLoading = true; 
+    this.isLoading = true;
     let userId = localStorage.getItem('id');
-  
+
     if (!userId) {
       this.handleError('User ID not found in local storage.');
-      return; 
+      return;
     }
-  
+
     this.settingsService.getTwoFAById(userId).subscribe(
       (response) => {
         if (response && response[0]?.status == 'on') {
           this.twoFactorAuthService.setup2FA(email).subscribe(
             (setupResponse) => {
-              this.router.navigate(['/admin/two-factor-auth'], { 
-                state: { 
-                  qrCode: setupResponse.qrCode, 
-                  secret: setupResponse.secret 
-                } 
+              this.router.navigate(['/admin/two-factor-auth'], {
+                state: {
+                  qrCode: setupResponse.qrCode,
+                  secret: setupResponse.secret,
+                },
               });
             },
             (setupError) => {
@@ -772,7 +910,7 @@ export class SigninComponent
             }
           );
         } else {
-          this.router.navigate(['/dashboard/dashboard']);
+          this.router.navigate(['/dashboard/dashboard'],{ replaceUrl: true });
         }
       },
       (error) => {
@@ -780,7 +918,7 @@ export class SigninComponent
       }
     );
   }
-  
+
   // Common error handling method
   // handleError(errorMessage: string) {
   //   console.error(errorMessage);
@@ -791,7 +929,6 @@ export class SigninComponent
   //     this.email = '';
   //   }, 2500);
   // }
-  
 
   // Common error handling method
   handleError(errorMessage: string) {
@@ -823,6 +960,9 @@ export class SigninComponent
     }, 4000);
   }
   goBack() {
-    this.commonService.navigateWithCompanyName(this.extractedName,'authentication/signin-role')
+    this.commonService.navigateWithCompanyName(
+      this.extractedName,
+      'authentication/signin-role'
+    );
   }
 }

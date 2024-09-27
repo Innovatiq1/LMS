@@ -463,32 +463,78 @@ stopResizing() {
   getSafeHtml(html: string): SafeHtml {
     return this.sanitizer.bypassSecurityTrustHtml(html);
   }
+
   onFileUpload(event: any) {
     const file = event.target.files[0];
-  
+    const allowedFormats = ['image/png', 'image/jpeg'];
+    
     if (file) {
-      this.thumbnail = file;
+      if (!allowedFormats.includes(file.type)) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Invalid File Format',
+          text: 'Please upload a .png or .jpeg image file.',
+        });
+        return;
+      }
+
+      // Replace spaces in the file name with underscores or dashes
+      const updatedFileName = file.name.replace(/\s+/g, '-'); // Use underscores (_) if preferred
+
+      // Create a new file with the updated name
+      const updatedFile = new File([file], updatedFileName, { type: file.type });
+
       const formData = new FormData();
-      formData.append('files', this.thumbnail);
-  
-      this.courseService.uploadCourseThumbnail(formData).subscribe((data: any) => {
-        let imageUrl = data.data.thumbnail;
-        this.image_link = data.data.thumbnail; 
-        imageUrl = imageUrl.replace(/\\/g, '/');
-        imageUrl = encodeURI(imageUrl);
-        this.setBackgroundImage(imageUrl);
-        
-        this.uploaded = imageUrl?.split('/');
-        let image = this.uploaded?.pop();
-        this.uploaded = image?.split('\\');
-        this.uploadedImage = this.uploaded?.pop();
-      }, (error) => {
-        console.error('Upload error:', error);
-      });
+      formData.append('files', updatedFile);
+
+      this.courseService.uploadCourseThumbnail(formData).subscribe(
+        (data: any) => {
+          let imageUrl = data.data.thumbnail;
+          this.image_link = data.data.thumbnail;
+          imageUrl = imageUrl.replace(/\\/g, '/');
+          imageUrl = encodeURI(imageUrl);  // Ensure the image URL is properly encoded
+          this.setBackgroundImage(imageUrl);
+
+          this.uploaded = imageUrl?.split('/');
+          let image = this.uploaded?.pop();
+          this.uploaded = image?.split('\\');
+          this.uploadedImage = this.uploaded?.pop();
+        },
+        (error) => {
+          console.error('Upload error:', error);
+        }
+      );
     }
-  }
+}
+
+  // onFileUpload(event: any) {
+  //   const file = event.target.files[0];
+  
+  //   if (file) {
+  //     this.thumbnail = file;
+  //     const formData = new FormData();
+  //     formData.append('files', this.thumbnail);
+  
+  //     this.courseService.uploadCourseThumbnail(formData).subscribe((data: any) => {
+  //       let imageUrl = data.data.thumbnail;
+  //       this.image_link = data.data.thumbnail; 
+  //       imageUrl = imageUrl.replace(/\\/g, '/');
+  //       imageUrl = encodeURI(imageUrl);
+  //       this.setBackgroundImage(imageUrl);
+        
+  //       this.uploaded = imageUrl?.split('/');
+  //       let image = this.uploaded?.pop();
+  //       this.uploaded = image?.split('\\');
+  //       this.uploadedImage = this.uploaded?.pop();
+  //     }, (error) => {
+  //       console.error('Upload error:', error);
+  //     });
+  //   }
+  // }
   
   private setBackgroundImage(imageUrl: string) {
+    imageUrl=encodeURI(imageUrl);
+    console.log("Image Url=",imageUrl);
     this.image_link = imageUrl; 
     this.backgroundTable.nativeElement.style.backgroundImage = `url(${imageUrl})`;
     setTimeout(() => {

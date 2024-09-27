@@ -18,6 +18,7 @@ export class ManagersPieChartComponent {
   ];
   displayedColumns = [
     'name',
+    'course',
     'status',
     'department',
     'registeredDate',

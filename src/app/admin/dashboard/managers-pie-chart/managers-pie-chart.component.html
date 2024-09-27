@@ -21,14 +21,21 @@
                         <div class="responsive_table">
                           <table mat-table [dataSource]="Courses" matSort class="mat-cell advance-table">
                             <ng-container matColumnDef="name">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header>User Name
+                              </mat-header-cell>
+                              <mat-cell class="name"  *matCellDef="let row" 
+                              ><span class="mobile-label">User Name:</span>
+                                <span >{{row?.studentId?.name  | titlecase  }}</span>
+                              </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="course">
                               <mat-header-cell *matHeaderCellDef mat-sort-header>Course
                               </mat-header-cell>
                               <mat-cell class="name"  *matCellDef="let row" 
                               ><span class="mobile-label">Course Name:</span>
-                                <span >{{ row.title ? (row?.title | titlecase) : '--' }}</span>
+                                <span >{{ row.title ? (row?.title | titlecase) : '--'}}</span>
                               </mat-cell>
                             </ng-container>
-                           
                             <ng-container matColumnDef="department">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">Department
                                 </mat-header-cell>

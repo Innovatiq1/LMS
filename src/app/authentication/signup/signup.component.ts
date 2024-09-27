@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {
+  AbstractControl,
   FormGroup,
   UntypedFormBuilder,
   UntypedFormGroup,
@@ -93,6 +94,7 @@ export class SignupComponent implements OnInit {
     }
   }
   ngOnInit() {
+    
     this.startSlideshow()
     this.authForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -103,15 +105,16 @@ export class SignupComponent implements OnInit {
       gender:['', Validators.required],
       //phone: ['', [Validators.required]],
       //phone:[Validators.required, Validators.minLength(10)],
-      password: ['', Validators.required],
+      password: ['', [Validators.required, this.passwordValidator]],
       cpassword: ['']
     },{ 
-      validator: ConfirmedValidator('password', 'cpassword')
+      validator: this.confirmedValidator('password', 'cpassword') 
       // validators: this.passwordMatchValidator,
       
     });
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    
   }
   
   get f() {
@@ -159,7 +162,41 @@ export class SignupComponent implements OnInit {
     this.submitted = true;
     
   }
-  
+  passwordValidator(control: AbstractControl) {
+    const value = control.value;
+    if (!value) {
+      return null;  // Return null if no value (empty input)
+    }
+
+    const hasUpperCase = /[A-Z]/.test(value);
+    const hasLowerCase = /[a-z]/.test(value);
+    const hasNumber = /\d/.test(value);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(value);
+    const isValidLength = value.length >= 8;
+
+    const passwordValid = hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar && isValidLength;
+
+    return !passwordValid ? { passwordStrength: true } : null;  // Return error if not valid
+  }
+
+  // Validator for confirming passwords match
+  confirmedValidator(password: string, cpassword: string) {
+    return (formGroup: FormGroup) => {
+      const passwordControl = formGroup.controls[password];
+      const confirmPasswordControl = formGroup.controls[cpassword];
+
+      if (confirmPasswordControl.errors && !confirmPasswordControl.errors['confirmedValidator']) {
+        return;
+      }
+
+      if (passwordControl.value !== confirmPasswordControl.value) {
+        confirmPasswordControl.setErrors({ confirmedValidator: true });
+      } else {
+        confirmPasswordControl.setErrors(null);
+      }
+    };
+  }
+
 
   setLanguage(event: any) {
     // this.countryName = text;
@@ -173,5 +210,37 @@ export class SignupComponent implements OnInit {
     setInterval(() => {
       this.currentIndex = (this.currentIndex + 1) % this.images.length;
     }, 4000);
+  }
+
+  passwordStrengthValidator(control: AbstractControl) {
+    const value = control.value || '';
+    const hasUpperCase = /[A-Z]+/.test(value);
+    const hasLowerCase = /[a-z]+/.test(value);
+    const hasNumeric = /[0-9]+/.test(value);
+    const hasSpecialChar = /[@$!%*?&]+/.test(value);
+    const hasValidLength = value.length >= 8;
+
+    const passwordValid = hasUpperCase && hasLowerCase && hasNumeric && hasSpecialChar && hasValidLength;
+
+    if (!passwordValid) {
+      return { passwordStrength: true };
+    }
+    return null;
+  }
+
+  // Confirm password validator
+  confirmPasswordValidator(control: AbstractControl) {
+    if (!control || !control.parent) {
+      return null;
+    }
+
+    const password = control.parent.get('password');
+    const confirmPassword = control;
+
+    if (password && confirmPassword && password.value !== confirmPassword.value) {
+      return { confirmedValidator: true };
+    }
+
+    return null;
   }
 }

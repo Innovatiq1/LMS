@@ -2,7 +2,7 @@
 
 /* Chatbot */
 .botIcon {
-	bottom: 15px;
+	bottom: 35px;
 	right: 15px;
 	position: fixed;
 	z-index: 9999;
@@ -396,6 +396,7 @@ span.responsText {
   padding: 5px 12px;
   font-weight: 500;
   line-height: 1.2;
+  word-break: break-all;
 }
 span.avtr {
 	display: inline-block;

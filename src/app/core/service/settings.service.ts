@@ -12,6 +12,8 @@ export class SettingsService {
   private apiUrl = 'http://localhost:3000/api/';
   private prefix: string = environment.apiUrl;
   defaultUrl = environment['apiUrl'];
+  publicUrl = environment['publicApiUrl'];
+
   dataChange: BehaviorSubject<CourseModel[]> = new BehaviorSubject<
     CourseModel[]
   >([]);
@@ -34,6 +36,34 @@ export class SettingsService {
       }
     }
     return params;
+  }
+
+  saveRetakeRequest(data: any) {
+    const apiUrl = `${this.prefix}admin/retakeRequest`;
+    return this._Http
+      .post<ApiResponse>(apiUrl, data)
+      .pipe(map((response) => response));
+  }
+
+
+  getRetakeRequest(filter?: Partial<CoursePaginationModel>): Observable<ApiResponse> {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    const apiUrl = `${this.defaultUrl}admin/retakeRequest?companyId=${userId}&page=${filter?.page}&limit=${filter?.limit}`;
+  
+    return this._Http.get<ApiResponse>(apiUrl);
+  }
+  
+  putRetakeRequestByStudentIdCourseId(studentId:any,courseId:any,data: any){
+    const apiUrl = `${this.prefix}admin/retakeRequest/update?studentId=${studentId}&courseId=${courseId}&`;
+    return this._Http
+      .put<ApiResponse>(apiUrl, data)
+      .pipe(map((response) => {}));
+
+  }
+
+  getRetakeRequestByStudentIdAndCourseId(studentId:any,courseId:any){
+    const apiUrl = `${this.prefix}admin/retakeRequest/search?studentId=${studentId}&courseId=${courseId}`;
+    return this._Http.get<ApiResponse>(apiUrl);
   }
 
   saveSmtp(smtp: any) {
@@ -266,5 +296,20 @@ export class SettingsService {
   getTwoFAById(id: string) {
     const apiUrl = `${this.prefix}admin/twoFA/${id}`;
     return this._Http.get<any>(apiUrl).pipe(map((response) => response));
+  }
+
+  
+  getKeysByCompanyId(companyId: string): Observable<ApiResponse> {
+    const apiUrl = `${this.publicUrl}getKeys?companyId=${companyId}`;
+    return this._Http.get<ApiResponse>(apiUrl, {
+    });
+  }
+
+    
+  updateKey(data: any) {
+    const apiUrl = `${this.prefix}admin/social-keys`;
+    return this._Http
+      .put<ApiResponse>(apiUrl, data)
+      .pipe(map((response) => {response}));
   }
 }

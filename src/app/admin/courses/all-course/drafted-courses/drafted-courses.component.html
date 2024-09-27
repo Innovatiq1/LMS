@@ -34,6 +34,9 @@
                                                 </ul>
                                             </li>
                                             <li>
+                                                <span style="font-weight: bold;">Export as</span>
+                                              </li>
+                                            <li>
                                                 <div class="export-button m-l-10" matTooltip="XLSX">
                                                     <img src="assets/excel.svg" alt="" (click)="exportExcel()" />
                                                 </div>
@@ -235,7 +238,7 @@
                                             </ng-container>
                                             <ng-container matColumnDef="Fees">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                    class="amount">Payment
+                                                    class="amount">Fee
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let row"
                                                 [routerLink]=" edit ? ['/admin/courses/edit-course/', row.id] : null" class="payment-cell">

@@ -32,6 +32,7 @@ import { VerificationListComponent } from './verification-list/verification-list
 import { StudentCourseComponent } from './all-course/student-course/student-course.component';
 import { DraftedCoursesComponent } from './all-course/drafted-courses/drafted-courses.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { RetakeRequestsComponent } from './retake-requests/retake-requests.component';
 import { ScheduleMeetingComponent } from './schedule-meeting/schedule-meeting.component';
 
 
@@ -58,6 +59,7 @@ import { ScheduleMeetingComponent } from './schedule-meeting/schedule-meeting.co
     VerificationListComponent,
     StudentCourseComponent,
     DraftedCoursesComponent,
+    RetakeRequestsComponent,
     ScheduleMeetingComponent,
     
     

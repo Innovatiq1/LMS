@@ -6,7 +6,7 @@ EMAILCONFIGURATION_LIST =[
     "forget_password_template": [
       {
         "email_subject": "Reset: Your TMS Password",
-        "email_content": "We have received a Password Reset Request from your TMS account. If you have not made this request, you can safely ignore this message, and your account will not be affected. If you have made this request, please <b><font color=\"#f9e1e1\">login</font></b> with the password below and then reset your password....<br>",
+        "email_content": "We have received a Password Reset Request from your TMS account. If you have not made this request, you can safely ignore this message, and your account will not be affected. If you have made this request, please login with the password below and then reset your password....",
         "bottom_button_text": "Click"
       }
     ],

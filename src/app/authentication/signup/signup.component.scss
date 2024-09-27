@@ -54,4 +54,22 @@
  .text-center{
   margin-top: -30px;
  }
- 
+.password-error-shown {
+  margin-top: 110px; 
+}
+
+.error-list {
+  padding-left: 20px;
+  margin: 0;
+}
+
+.error-list li {
+  color: red;
+  // font-size: 14px;
+  line-height: 1.5;
+}
+
+mat-error {
+  display: block; 
+  margin-bottom: 16px; 
+}
