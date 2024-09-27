@@ -346,6 +346,7 @@ getFilterData(filters?: any) {
       this.vendors = response.reverse();
     })
     this.userService.getAllUsers().subscribe((response: any) => {
+      console.log("response", response);
       this.users = response?.results;
     });
 

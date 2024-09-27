@@ -846,7 +846,7 @@ export class SettingsComponent {
     this.studentService.getAllDepartments().subscribe((response: any) => {
       this.dept = response.data.docs;
       const department = this.dept.map((doc: any) => doc.department);
-      department.push("Overall Training Course","Total Staff","All Programs","All Course","Certificate","Staff List","Classes List","Feedback Survey","Current Course Status");
+      department.push("Overall Training Course","Total Staff","All Programs","All Course","Certificate","Staff List","Class List","Feedback Survey","Current Course Status");
       this.componentsMap['Corporate Dashboard'] = department;
     });
   }

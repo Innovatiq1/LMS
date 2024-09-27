@@ -100,7 +100,7 @@
                   <mat-icon matSuffix (click)="chide = !chide">
                     {{chide ? 'visibility_off' : 'visibility'}}</mat-icon>
                   <mat-error *ngIf="userForm.get('re_passwords')?.hasError('required')">
-                    {{"Confirm Enter Password" | translate}}
+                    {{"Enter Confirm Password" | translate}}
                   </mat-error>
                   <mat-error *ngIf="userForm.get('re_passwords')?.hasError('confirmedValidator')">
                     Password and Re-Enter Password should match

@@ -211,4 +211,36 @@ export class SignupComponent implements OnInit {
       this.currentIndex = (this.currentIndex + 1) % this.images.length;
     }, 4000);
   }
+
+  passwordStrengthValidator(control: AbstractControl) {
+    const value = control.value || '';
+    const hasUpperCase = /[A-Z]+/.test(value);
+    const hasLowerCase = /[a-z]+/.test(value);
+    const hasNumeric = /[0-9]+/.test(value);
+    const hasSpecialChar = /[@$!%*?&]+/.test(value);
+    const hasValidLength = value.length >= 8;
+
+    const passwordValid = hasUpperCase && hasLowerCase && hasNumeric && hasSpecialChar && hasValidLength;
+
+    if (!passwordValid) {
+      return { passwordStrength: true };
+    }
+    return null;
+  }
+
+  // Confirm password validator
+  confirmPasswordValidator(control: AbstractControl) {
+    if (!control || !control.parent) {
+      return null;
+    }
+
+    const password = control.parent.get('password');
+    const confirmPassword = control;
+
+    if (password && confirmPassword && password.value !== confirmPassword.value) {
+      return { confirmedValidator: true };
+    }
+
+    return null;
+  }
 }
