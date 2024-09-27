@@ -7,5 +7,6 @@ export const environment = {
   // apiUrl:'http://13.212.97.97:3001/api/',
 
   awsUrl: 'https://collegey.s3.ap-southeast-1.amazonaws.com/',
-  filesPath:'https://s3.ap-southeast-1.amazonaws.com/storage.collegey/'
+  filesPath:'https://s3.ap-southeast-1.amazonaws.com/storage.collegey/',
+  ZoomUrl:'https://zoom.us/oauth/authorize?client_id=zYuAa2UxT3Cmai3ywHPn0w&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A4200%2Fadmin%2Fcourses%2Fcreate-class'
 };

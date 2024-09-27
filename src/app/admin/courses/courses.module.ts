@@ -32,6 +32,7 @@ import { VerificationListComponent } from './verification-list/verification-list
 import { StudentCourseComponent } from './all-course/student-course/student-course.component';
 import { DraftedCoursesComponent } from './all-course/drafted-courses/drafted-courses.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ScheduleMeetingComponent } from './schedule-meeting/schedule-meeting.component';
 
 
 
@@ -56,7 +57,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     StudentPendingCoursesComponent,
     VerificationListComponent,
     StudentCourseComponent,
-    DraftedCoursesComponent
+    DraftedCoursesComponent,
+    ScheduleMeetingComponent,
+    
     
 
   ],

@@ -28,6 +28,7 @@ import { UserService } from '@core/service/user.service';
 import { MatOption } from '@angular/material/core';
 import { FormService } from '@core/service/customization.service';
 import { AppConstants } from '@shared/constants/app.constants';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'app-create-class',
@@ -95,8 +96,9 @@ export class CreateClassComponent {
   configurationSubscription!: Subscription;
   defaultCurrency: string = '';
   userGroups!: any[];
-
-
+  instructorCost:string='';
+  codeExists: boolean = false;
+  code: string | null = null;
   addNewRow() {
     if (this.isInstructorFailed != 1) {
       this.isInstructorFailed = 0;
@@ -132,8 +134,22 @@ export class CreateClassComponent {
     const currentYear = new Date().getFullYear();
     this.minDate = new Date(currentYear - 5, 0, 1);
     this.maxDate = new Date(currentYear + 1, 11, 31);
+
+    this.commonRoles = {
+      INSTRUCTOR_ROLE: 'Instructor',
+      STUDENT_ROLE: 'Student',
+      DURATION_LABEL:'Duration'
+    };
+    this.loadForm();
   }
   ngOnInit(): void {
+    this._activeRoute.queryParams.subscribe(params => {
+      this.code = params['code'] || null;
+      this.codeExists = !!params['code']; // Assuming 'code' is the parameter name
+  });
+
+    this.loadSavedFormData();
+
     this.commonRoles = AppConstants
     if (this.classId != undefined) {
       this.loadClassList(this.classId);
@@ -141,7 +157,7 @@ export class CreateClassComponent {
     if(this.classId == undefined){
       this.addNewRow();
     }
-    this.loadForm();
+    // this.loadForm();
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
         let payload = {
       type: AppConstants.INSTRUCTOR_ROLE,
@@ -175,6 +191,34 @@ export class CreateClassComponent {
    this.getForms();
    this.getDepartments();
    this.getUserGroups()
+  }
+  
+  
+
+
+  loadSavedFormData() {
+    const savedFormData = localStorage.getItem('classFormData');
+    if (savedFormData) {
+      const parsedFormData = JSON.parse(savedFormData);
+      this.classForm.patchValue({
+        courseId: parsedFormData.courseId,
+        classType: parsedFormData.classType, // Make sure this key exists in parsedFormData
+        classDeliveryType: parsedFormData.classDeliveryType, // Match with your form control
+        instructorCost: parsedFormData.instructorCost,
+        instructorCostCurrency: parsedFormData.instructorCostCurrency || 'USD', // Use default if not provided
+        department: parsedFormData.department, // Ensure this exists in parsedFormData
+        currency: parsedFormData.currency || '', // Default if not provided
+        isGuaranteedToRun: parsedFormData.isGuaranteedToRun || false, // Default to false if not provided
+        externalRoom: parsedFormData.externalRoom || false, // Default to false if not provided
+        minimumEnrollment: parsedFormData.minimumEnrollment,
+        maximumEnrollment: parsedFormData.maximumEnrollment,
+        meetingPlatform: parsedFormData.meetingPlatform || '', // Default if not provided
+        classStartDate: parsedFormData.classStartDate || '2023-05-20', // Default date
+        classEndDate: parsedFormData.classEndDate || '2023-06-10', // Default date
+        userGroupId: parsedFormData.userGroupId || null, // Default to null if not provided
+        duration: parsedFormData.duration || null // Default to null if not provided
+      });      
+    }
   }
 
   getUserGroups() {
@@ -211,12 +255,16 @@ export class CreateClassComponent {
       externalRoom: [false],
       minimumEnrollment: ['', Validators.required],
       maximumEnrollment: ['', Validators.required],
-      classStartDate: ['2023-05-20'],
-      classEndDate: ['2023-06-10'],
-      userGroupId: [null]
+      meetingPlatform:['', Validators.required],
+      classStartDate: [''],
+      classEndDate: [''],
+      userGroupId: [null],
+      duration:['', Validators.required],
+      code: ''
     });
     this.secondFormGroup = this._fb.group({
       sessions: ['', Validators.required],
+      
     })
   }
   getDepartments() {
@@ -242,8 +290,11 @@ export class CreateClassComponent {
         maximumEnrollment: item?.maximumEnrollment,
         department:item?.department,
         sessions: item?.sessions,
-        userGroupId: item?.userGroupId
+        userGroupId: item?.userGroupId,
+        duration: item?.duration,
+        meetingPlatform: item?.meetingPlatform,
       });
+      
       item.sessions.forEach((item: any) => {
 
         this.dataSourceArray.push({
@@ -383,6 +434,9 @@ export class CreateClassComponent {
         let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
                 this.classForm.value.companyId=userId;
 
+                if (this.code) {
+                  this.classForm.value.code = this.code; // Attach 'code' to the form data
+                }
         Swal.fire({
           title: 'Are you sure?',
           text: 'Do you want to schedule a class!',
@@ -402,7 +456,9 @@ export class CreateClassComponent {
                   icon: 'success',
                 });
               }
+              localStorage.removeItem('classFormData');
               this.router.navigateByUrl(`/timetable/class-list`);
+
             });
           }
         });
@@ -503,6 +559,7 @@ export class CreateClassComponent {
   cancel() {
 
     window.history.back();
+    localStorage.removeItem('classFormData');
   }
   labelStatusCheck(labelName: string): any {
     if (this.forms && this.forms.length > 0) {
@@ -514,5 +571,15 @@ export class CreateClassComponent {
       }
     }
     return false;
+  }
+  scheduleMeet(){
+    const formData = this.classForm.value;
+  localStorage.setItem('classFormData', JSON.stringify(formData));
+  if(this.classForm.get('meetingPlatform')?.value=='zoom'){
+    const zoomAuthUrl = environment.ZoomUrl;
+    window.location.href = zoomAuthUrl;
+
+  }
+     
   }
 }

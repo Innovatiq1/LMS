@@ -8,6 +8,7 @@ import { BehaviorSubject, Observable, map } from "rxjs";
 import { ClassListingModel, ClassModel, CourseTitleModel, InstructorList, LabListModel, StudentApproval } from "./class.model";
 import { UnsubscribeOnDestroyAdapter } from '@shared';
 import { ApiResponse } from "@core/models/response";
+import { searchData } from "@core/models/class.model";
 
 @Injectable({
   providedIn: 'root'
@@ -306,6 +307,27 @@ return this.http.put<ApiResponse>(apiUrl, data);
 updateProgramCertificateUser(data:any){
   const apiUrl = `${this.prefix}admin/studentClasses/program/certificate`;
   return this.http.put<ApiResponse>(apiUrl, data);
+}
+
+scheduleZoomMeeting (data:searchData){
+  const apiUrl = `${this.prefix}admin/zoom/scheduleMeeting`;
+  return this.http.post<ApiResponse>(apiUrl, data);
+}
+getZoomToken(token:any):Observable<any>{
+  const apiUrl = `${this.prefix}admin/zoom/token`;
+  return this.http.get<any>(apiUrl,token);
+}
+updateZoomMeetingForPurticularDays(date:any,id:any,duration:any):Observable<any>{
+  const apiUrl = `${this.prefix}admin/zoom/scheduleMeeting/update`;
+  return this.http.post<ApiResponse>(apiUrl, {date,id,duration});
+}
+deleteZoomMeetingForPurticularDay(date:any,id:any):Observable<any>{
+  const apiUrl = `${this.prefix}admin/zoom/scheduleMeeting/delete`;
+  return this.http.post<ApiResponse>(apiUrl, {date,id});
+}
+getClassRecordings(id:any):Observable<any>{
+  const apiUrl = `${this.prefix}admin/zoom/recording/list`;
+  return this.http.get<ApiResponse>(apiUrl, {params: {classId: id}});
 }
 
 }

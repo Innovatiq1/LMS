@@ -98,7 +98,7 @@
                     [routerLink]="isView ? ['/admin/courses/timetable/class-list/view-class/', row.id] : null"
                   >
                     <span class="mobile-label">Course:</span>
-                    {{ row.courseName }}</mat-cell
+                    {{ row.courseId?.title }}</mat-cell
                   >
                 </ng-container>
                 <ng-container matColumnDef="Code" *ngIf="isAdmin">

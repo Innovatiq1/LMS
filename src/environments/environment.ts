@@ -52,6 +52,10 @@ export const environment = {
   apiNewEndpoint: 'https://prodapi.collegey.com/api1/',
   /* */
 
+  /* zoom api url to generating token,for testing*/
+  ZoomUrl:'https://zoom.us/oauth/authorize?client_id=zYuAa2UxT3Cmai3ywHPn0w&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A4200%2Fadmin%2Fcourses%2Fcreate-class'
+
+
 };
 
 /*

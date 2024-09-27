@@ -15,7 +15,7 @@ import { CourseService } from '@core/service/course.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { AuthenService } from '@core/service/authen.service';
-import SignaturePad from 'signature_pad';
+// import SignaturePad from 'signature_pad';
 @Component({
   selector: 'app-create-certificate',
   templateUrl: './create-certificate.component.html',
