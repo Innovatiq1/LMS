@@ -55,6 +55,9 @@
                           </div>
                         </li>
                         <li>
+                          <span style="font-weight: bold;">Export as</span>
+                        </li>
+                        <li>
                           <div class="export-button m-l-10" matTooltip="XLSX">
                             <img
                               src="assets/excel.svg"
@@ -84,7 +87,7 @@
                         class="mat-cell advance-table"
                       >
                         <ng-container matColumnDef="name">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header
+                          <mat-header-cell *matHeaderCellDef 
                             >Course
                           </mat-header-cell>
                           <mat-cell
@@ -96,7 +99,7 @@
                           </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="code">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header
+                          <mat-header-cell *matHeaderCellDef 
                             >Code
                           </mat-header-cell>
                           <mat-cell
@@ -107,14 +110,14 @@
                           </mat-cell>
                         </ng-container>
                                   <ng-container matColumnDef="Fee Type">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">Fee Type
+                                    <mat-header-cell *matHeaderCellDef  class="compulsory-count-header">Fee Type
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let row" (click)= "view ? viewCourse(row.id) : null"> <span
                                         class="mobile-label">Fee Type:</span>{{row.feeType ? (row.feeType | titlecase) : "--"}}
                                     </mat-cell>
                                   </ng-container>
                         <ng-container matColumnDef="Main Category">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header
+                          <mat-header-cell *matHeaderCellDef 
                             >Main Category
                           </mat-header-cell>
                           <mat-cell
@@ -126,7 +129,7 @@
                           >
                         </ng-container>
                         <ng-container matColumnDef="Days">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header
+                          <mat-header-cell *matHeaderCellDef 
                             >Days
                           </mat-header-cell>
                           <mat-cell
@@ -139,7 +142,7 @@
                         </ng-container>
 
                         <ng-container matColumnDef="Training Hours">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header
+                          <mat-header-cell *matHeaderCellDef 
                             >Hours
                           </mat-header-cell>
                           <mat-cell
@@ -151,8 +154,8 @@
                           </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="Fees">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header
-                           class="amount" >Payment
+                          <mat-header-cell *matHeaderCellDef 
+                           class="amount" >Fee
                           </mat-header-cell>
                           <mat-cell
                             *matCellDef="let row"
@@ -163,7 +166,7 @@
                           </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="startDate">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header
+                          <mat-header-cell *matHeaderCellDef 
                             >Start Date
                           </mat-header-cell>
                           <mat-cell
@@ -175,7 +178,7 @@
                           </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="endDate">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header
+                          <mat-header-cell *matHeaderCellDef 
                             >End Date
                           </mat-header-cell>
                           <mat-cell
@@ -190,7 +193,7 @@
                         <ng-container matColumnDef="Vendor">
                           <mat-header-cell
                             *matHeaderCellDef
-                            mat-sort-header
+                            
                             class="compulsory-count-header"
                             >Vendor
                           </mat-header-cell>
@@ -205,7 +208,7 @@
                         <ng-container matColumnDef="status">
                           <mat-header-cell
                             *matHeaderCellDef
-                            mat-sort-header
+                            
                             class="compulsory-count-header"
                             style="width: 400px"
                           >

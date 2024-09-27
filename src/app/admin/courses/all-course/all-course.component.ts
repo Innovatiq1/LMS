@@ -199,9 +199,14 @@ getAllTpCourses() {
       this.vendors = response.reverse();
     });
     this.userService.getAllUsers().subscribe((response: any) => {
-      this.users = response?.results;
+      //  this.users = response?.results;
+      this.users = response?.results?.filter((user: any) => {
+        const role = user.role.toLowerCase(); 
+        return !(role === 'trainee' || role === 'student');
+      });
     });
   }
+
 
   openFilterCard() {
     this.isFilter = !this.isFilter;
@@ -243,37 +248,60 @@ getAllTpCourses() {
       this.selectedCreators = event.value;
     }
   }
+  // clearFilter() {
+  //   this.filterForm.reset();
+  //   this.getAllCourses();
+  // }
   clearFilter() {
-    this.filterForm.reset();
+    this.filterForm.reset();  // Reset the form values
+    this.selectedCourses = [];
+    this.selectedVendors = [];
+    this.selectedStatus = [];
+    this.selectedCreators = [];
+    
+    this.coursePaginationModel.page = 1;
+    this.coursePaginationModel.limit = 10; 
+    this.filter = false;
     this.getAllCourses();
   }
-  applyFilter() {
-    let body: any = {};
-    if (this.selectedCourses.length > 0) {
-      body.title = this.selectedCourses;
-    }
-    if (this.selectedVendors.length > 0) {
-      body.vendor = this.selectedVendors;
-    }
-    if (this.selectedStatus.length > 0) {
-      body.status = this.selectedStatus;
-    }
-    if (this.selectedCreators.length > 0) {
-      body.creator = this.selectedCreators;
-    }
+  
+ 
 
-    this._courseService
-      .getFilteredCourseData(body, { ...this.coursePaginationModel })
-      .subscribe((response) => {
-        this.courseData = response.data.docs;
-        this.totalItems = response.data.totalDocs;
-        this.filter = true;
-        this.coursePaginationModel.docs = response.data.docs;
-        this.coursePaginationModel.page = response.data.page;
-        this.coursePaginationModel.limit = response.data.limit;
-        this.coursePaginationModel.totalDocs = response.data.totalDocs;
-      });
+applyFilter() {
+  let body: any = {};
+
+  if (this.selectedCourses.length > 0) {
+    body.title = this.selectedCourses;
   }
+  if (this.selectedVendors.length > 0) {
+    body.vendor = this.selectedVendors;
+  }
+  if (this.selectedStatus.length > 0) {
+    body.status = this.selectedStatus;
+  }
+  if (this.selectedCreators.length > 0) {
+    body.creator = this.selectedCreators;
+  }
+
+  
+  this.coursePaginationModel.page = 1;
+
+  this._courseService.getFilteredCourseData(body, { ...this.coursePaginationModel })
+    .subscribe((response) => {
+      this.courseData = response.data.docs;
+      this.totalItems = response.data.totalDocs;
+      this.coursePaginationModel.docs = response.data.docs;
+      this.coursePaginationModel.page = response.data.page;
+      this.coursePaginationModel.limit = response.data.limit;
+      this.coursePaginationModel.totalDocs = response.data.totalDocs;
+      this.filter = true;  
+    });
+}
+
+
+  
+  
+
   generatePdf() {
     const doc = new jsPDF();
     const headers = [
@@ -385,15 +413,18 @@ getAllTpCourses() {
           this.selection.select(row)
         );
   }
-  pageSizeChange($event: any) {
-    this.coursePaginationModel.page = $event?.pageIndex + 1;
-    this.coursePaginationModel.limit = $event?.pageSize;
-    if (this.filter) {
-      this.applyFilter();
-    } else {
-      this.getAllCourses();
-    }
+  
+pageSizeChange($event: any) {
+  this.coursePaginationModel.page = $event?.pageIndex + 1;
+  this.coursePaginationModel.limit = $event?.pageSize;
+  if (this.filter) {
+    this.applyFilter();
+  } else {
+    this.getAllCourses();
   }
+}
+
+  
   private mapCategories(): void {
     this.coursePaginationModel.docs?.forEach((item) => {
       item.main_category_text = this.mainCategories.find(
@@ -407,6 +438,7 @@ getAllTpCourses() {
       )?.category_name;
     });
   }
+  
   getAllCourses() {
     this._courseService.getAllCoursesWithPagination({...this.coursePaginationModel}).subscribe((response) => {
       this.courseData = response.data.docs;
@@ -417,6 +449,7 @@ getAllTpCourses() {
       this.coursePaginationModel.totalDocs = response.data.totalDocs;
     });
   }
+  
   viewCourse(id: string) {
     this.route.navigate(['/admin/courses/course-view/'], {
       queryParams: { id: id, status: 'active' },

@@ -29,6 +29,9 @@
                                     </div>
                                 </li>
                                 <li>
+                                    <span style="font-weight: bold;">Export as</span>
+                                  </li>
+                                <li>
                                     <div class="export-button m-l-10" matTooltip="XLSX">
                                         <img src="assets/excel.svg" (click)="exportExcel()"alt="" />
                                     </div>
@@ -45,33 +48,33 @@
                         <div class="responsive_table">
                             <table mat-table matSort [dataSource]="dataSource" class="mat-cell advance-table">
                                 <ng-container matColumnDef="Student Name">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{commonRoles.STUDENT_ROLE}} 
+                                    <mat-header-cell *matHeaderCellDef >{{commonRoles.STUDENT_ROLE}} 
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let row" class="name" [routerLink]="view ? ['/admin/program/view-approved-program/',row.id] : null">
                                         <span class="mobile-label">Student Name:</span>{{row.student_name |
                                         capitalizeFirstLetter }} </mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="Program Name">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Program</mat-header-cell>
+                                    <mat-header-cell *matHeaderCellDef >Program</mat-header-cell>
                                     <mat-cell *matCellDef="let row" [routerLink]="view ? ['/admin/program/view-approved-program/',row.id] : null">
                                         <span class="mobile-label">Program Name:</span> {{row.programTitle |
                                         capitalizeFirstLetter}}</mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="Program-Fee">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Program Fee</mat-header-cell>
-                                    <mat-cell *matCellDef="let row" [routerLink]="view ? ['/admin/program/view-approved-program/',row.id] : null">
+                                    <mat-header-cell *matHeaderCellDef >Program Fee</mat-header-cell>
+                                    <mat-cell *matCellDef="let row" class="payment-cell" [routerLink]="view ? ['/admin/program/view-approved-program/',row.id] : null" >
                                         <span class="mobile-label">Program Fee:</span><span >$</span> {{row.classId.courseId.courseFee||0}}.00</mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="Instructor-Fee">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{commonRoles?.INSTRUCTOR_ROLE}} Fee</mat-header-cell>
-                                    <mat-cell *matCellDef="let row" [routerLink]="view ? ['/admin/program/view-approved-program/',row.id] : null">
+                                    <mat-header-cell *matHeaderCellDef >{{commonRoles?.INSTRUCTOR_ROLE}} Fee</mat-header-cell>
+                                    <mat-cell *matCellDef="let row" class="payment-cell" [routerLink]="view ? ['/admin/program/view-approved-program/',row.id] : null">
                                         <span class="mobile-label">Instructor Fee:</span><span >$</span> {{row.classId.instructorCost||0 }}.00</mat-cell>
                                 </ng-container>
                                 <!-- Student Name -->
                             .
                                 <!-- Class Start Date -->
                                 <ng-container matColumnDef="Class Start Date">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Start Date
+                                    <mat-header-cell *matHeaderCellDef >Start Date
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let row" [routerLink]="view ? ['/admin/program/view-approved-program/',row.id] : null">
                                         <span class="mobile-label">Class Start Date:</span>{{row?.classId?.sessions[0]?.sessionStartDate |
@@ -79,7 +82,7 @@
                                 </ng-container>
                                 <!-- Class End Date -->
                                 <ng-container matColumnDef="Class End Date">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header>End Date
+                                    <mat-header-cell *matHeaderCellDef >End Date
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let row" [routerLink]="view ? ['/admin/program/view-approved-program/',row.id] : null">
                                         <span class="mobile-label">Class End Date:</span>{{row?.classId?.sessions[0]?.sessionEndDate  |
@@ -87,7 +90,7 @@
                                 </ng-container>
                                 <!--Registered Date -->
                                 <ng-container matColumnDef="Registered Date">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Registered Date
+                                    <mat-header-cell *matHeaderCellDef >Registered Date
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let row" [routerLink]="view ? ['/admin/program/view-approved-program/',row.id] : null">
                                         <span class="mobile-label">Registered:</span>{{row.registeredOn | date}}</mat-cell>
