@@ -76,47 +76,63 @@
               </mat-form-field>
             </div>
            </div>
+           
            <div class="row mt-2">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
               <mat-form-field class="example-full-width" appearance="outline">
-                <mat-label>{{"Password" | translate}}</mat-label>
+                <mat-label>{{ "Password" | translate }}</mat-label>
                 <input matInput formControlName="password" [type]="hide ? 'password' : 'text'" required>
                 <mat-icon matSuffix (click)="hide = !hide">
-                  {{hide ? 'visibility_off' : 'visibility'}}
+                  {{ hide ? 'visibility_off' : 'visibility' }}
                 </mat-icon>
           
                 <mat-error *ngIf="authForm.get('password')?.hasError('required')">
-                  {{"Enter Password" | translate}}
+                  {{ "Enter Password" | translate }}
                 </mat-error>
           
                 <!-- Custom error message for password strength -->
                 <mat-error *ngIf="authForm.get('password')?.hasError('passwordStrength')">
-                  Password must be at least 8 characters long, include uppercase & lowercase letters, a number, and a special character.
+                  <div>Password does not meet the requirements:</div>
+                  <ul class="error-list">
+                    <li>Minimum 8 characters</li>
+                    <li>At least one uppercase letter (A-Z)</li>
+                    <li>At least one lowercase letter (a-z)</li>
+                    <li>At least one digit (0-9)</li>
+                    <li>At least one special character (&#64;$!%*?&)</li>
+                  </ul>
                 </mat-error>
               </mat-form-field>
             </div>
           </div>
           
+          <!-- Conditionally apply the margin-top adjustment to the Confirm Password field -->
           <div class="row mt-2">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
-              <mat-form-field class="example-full-width" appearance="outline">
-                <mat-label>{{"Confirm Password" | translate}}</mat-label>
+              <mat-form-field class="example-full-width" 
+                appearance="outline" 
+                [ngClass]="{'password-error-shown': authForm.get('password')?.hasError('passwordStrength')}">
+                <mat-label>{{ "Confirm Password" | translate }}</mat-label>
                 <input matInput formControlName="cpassword" [type]="chide ? 'password' : 'text'" required>
                 <mat-icon matSuffix (click)="chide = !chide">
-                  {{chide ? 'visibility_off' : 'visibility'}}
+                  {{ chide ? 'visibility_off' : 'visibility' }}
                 </mat-icon>
           
                 <mat-error *ngIf="authForm.get('cpassword')?.hasError('required')">
-                  {{"Confirm Enter Password" | translate}}
+                  {{ "Enter Confirm Password" | translate }}
                 </mat-error>
           
                 <!-- Custom error message for password mismatch -->
                 <mat-error *ngIf="authForm.get('cpassword')?.hasError('confirmedValidator')">
-                  Password and Re-Enter Password should match
+                  Password and Re-Enter Password should match.
                 </mat-error>
               </mat-form-field>
             </div>
           </div>
+          
+          
+          
+          
+          
           
             <div  class="invalid-text"*ngIf="submitted" >
               {{email}}

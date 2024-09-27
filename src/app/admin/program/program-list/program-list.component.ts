@@ -364,6 +364,7 @@ getFilterData(filters?: any) {
     });
   
     this.userService.getAllUsers().subscribe((response: any) => {
+      console.log("response", response);
       this.users = response?.results?.filter((user: any) => {
         const userName = user.name.toLowerCase();
         return !userName.startsWith('trainee');
