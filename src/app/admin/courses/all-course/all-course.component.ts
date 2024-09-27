@@ -201,8 +201,8 @@ getAllTpCourses() {
     this.userService.getAllUsers().subscribe((response: any) => {
       //  this.users = response?.results;
       this.users = response?.results?.filter((user: any) => {
-        const userName = user.name.toLowerCase();
-        return !userName.startsWith('trainee');
+        const role = user.role.toLowerCase(); 
+        return !(role === 'trainee' || role === 'student');
       });
     });
   }

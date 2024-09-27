@@ -358,16 +358,31 @@ getFilterData(filters?: any) {
 
   }
 
+  // getAllVendorsAndUsers() {
+  //   this.courseService.getVendor().subscribe((response: any) => {
+  //     this.vendors = response.reverse();
+  //   });
+  
+  //   this.userService.getAllUsers().subscribe((response: any) => {
+  //     console.log("response", response);
+  //     console.log("user Role response==",response)
+  //     this.users = response?.results?.filter((user: any) => {
+  //       const userName = user.name.toLowerCase();
+  //       return !userName.startsWith('trainee');
+  //     });
+  //   });
+  // }
   getAllVendorsAndUsers() {
     this.courseService.getVendor().subscribe((response: any) => {
       this.vendors = response.reverse();
     });
   
     this.userService.getAllUsers().subscribe((response: any) => {
-      console.log("response", response);
+      // this.users=response?.results;
+  
       this.users = response?.results?.filter((user: any) => {
-        const userName = user.name.toLowerCase();
-        return !userName.startsWith('trainee');
+        const role = user.role.toLowerCase(); 
+        return !(role === 'trainee' || role === 'student');
       });
     });
   }
