@@ -185,9 +185,13 @@ getProfileData(accessToken: string): Observable<any> {
   return this.http.get(`${loginUrl}?accessToken=${accessToken}`);
 }
 
-getUsersByEmail(email: string): Observable<any> {
+getUsersByEmail(email: string,companyId?:string): Observable<any> {
   const loginUrl =this.defaultUrl + 'auth/usersByEmail';
-  return this.http.get(`${loginUrl}?email=${email}`);
+  if(companyId){
+    return this.http.get(`${loginUrl}?email=${email}&companyId=${companyId}`);
+  } else {
+    return this.http.get(`${loginUrl}?email=${email}`);
+  }
 }
 
 AccessToken(data: any): Observable<any> {

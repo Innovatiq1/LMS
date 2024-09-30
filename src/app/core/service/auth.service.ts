@@ -28,11 +28,11 @@ export class AuthService {
 
   
 
-  forgotPassword(email: any): Observable<ApiResponse> {
+  forgotPassword(data: any): Observable<ApiResponse> {
     return this.http
       .post<ApiResponse>(
         `${environment.apiUrl}common/forgot-password`,
-        email
+        data
       )
       .pipe(
         map((res) => {

@@ -10,6 +10,7 @@ import { AuthService } from '@core';
 import Swal from 'sweetalert2';
 import { CommonService } from '@core/service/common.service';
 import { AuthenService } from '@core/service/authen.service';
+import { UserService } from '@core/service/user.service';
 @Component({
   selector: 'app-forgot-password',
   templateUrl: './forgot-password.component.html',
@@ -33,6 +34,7 @@ export class ForgotPasswordComponent implements OnInit {
     private authService:AuthService,
     private commonService: CommonService,
     private authenticationService: AuthenService,
+    private userService:UserService
   ) {
 
     let urlPath = this.router.url.split('/')
@@ -113,15 +115,23 @@ export class ForgotPasswordComponent implements OnInit {
       return;
     } else {
       let formData = this.authForm.getRawValue();
+      this.userService
+      .getCompanyByIdentifierWithoutToken(this.extractedName)
+      .subscribe((res: any) => {
+        let companyId = res[0]?.companyId;
       this.authenticationService
-        .getUsersByEmail(formData.email.trim())
+        .getUsersByEmail(formData.email.trim(),companyId)
         .subscribe(
           (user: any) => {
             console.log("User fetched:", user);
   
             if (user && user.data && user.data[0].isLogin) {
+              let body ={
+                email:this.authForm.value.email,
+                companyId:companyId
+              }
               
-              this.authService.forgotPassword(this.authForm.value).subscribe({
+              this.authService.forgotPassword(body).subscribe({
                 next: (res) => {
                   if (res) {
                     Swal.fire({
@@ -159,6 +169,7 @@ export class ForgotPasswordComponent implements OnInit {
             this.submitted = false;
           }
         );
+      })
     }
   }
   
