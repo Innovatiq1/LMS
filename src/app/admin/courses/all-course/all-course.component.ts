@@ -517,7 +517,7 @@ pageSizeChange($event: any) {
   
   showWarningPopup(message: string): void {
       Swal.fire({
-          icon: 'warning',
+          icon: 'error',
           title: 'Oops...',
           text: message,
           confirmButtonText: 'OK'

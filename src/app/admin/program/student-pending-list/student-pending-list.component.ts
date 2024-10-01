@@ -25,7 +25,7 @@ import Swal from 'sweetalert2';
 })
 export class StudentPendingListComponent {
   displayedColumns: string[] = [
-    // 'select',
+    'select',
     'Student Name',
     'status',
     'Program Name',
@@ -46,6 +46,7 @@ export class StudentPendingListComponent {
   ];
 
   dataSource: any;
+  // selection = new SelectionModel<any>(true, []); 
   pageSizeArr =[10, 20, 50, 100];
   totalPages: any;
   studentPaginationModel: StudentPaginationModel;
@@ -286,6 +287,8 @@ export class StudentPendingListComponent {
         );
   }
 
+
+
   showNotification(
     colorName: string,
     text: string,
@@ -330,5 +333,90 @@ export class StudentPendingListComponent {
       }
     });
   }
+
+  approveSelectedRows() {
+    const selectedRows = this.selection.selected;
+  
+    if (selectedRows.length > 0) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'Do you want to approve the selected Programs?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonColor: '#d33',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const approvalPromises = selectedRows.map((row:any) => {
+            let item: StudentApproval = {
+              approvedBy: this.getCurrentUserId(),
+              approvedOn: moment().format("YYYY-MM-DD"),
+              classId: row.classId._id,
+              status: "approved",
+              studentId: row.studentId.id,
+              session: this.getSessions(row)
+            };
+  
+            return this.classService.saveApprovedProgramClasses(row.id, item).toPromise();
+          });
+  
+          Promise.all(approvalPromises).then(() => {
+            Swal.fire({
+              title: 'Success',
+              text: 'All selected Program have been approved successfully.',
+              icon: 'success',
+            });
+            this.getRegisteredClasses();
+          }).catch((error) => {
+            Swal.fire({
+              title: 'Error',
+              text: 'Failed to approve some Programs. Please try again.',
+              icon: 'error',
+            });
+          });
+        }
+      });
+    }
+  }
+  
+
+  deleteSelectedRows() {
+    const selectedRows = this.selection.selected;
+    if (selectedRows.length > 0) {
+      selectedRows.forEach(row => {
+        this.deleteRow(row);
+      });
+    }
+  }
+  deleteRow(row: any) {
+    // Swal.fire({
+    //   title: 'Are you sure?',
+    //   text: 'Do you want to delete this course?',
+    //   icon: 'warning',
+    //   showCancelButton: true,
+    //   confirmButtonText: 'Yes',
+    //   cancelButtonColor: '#d33',
+    // }).then((result) => {
+    //   if (result.isConfirmed) {
+    //     this.classService.deleteProgramClass(row.id).subscribe((response: any) => {
+    //       Swal.fire({
+    //         title: 'Success',
+    //         text: 'Course deleted successfully.',
+    //         icon: 'success',
+    //       });
+    //       this.getRegisteredClasses(); // Refresh the table data after deletion
+    //     }, (error) => {
+    //       Swal.fire({
+    //         title: 'Error',
+    //         text: 'Failed to delete course. Please try again.',
+    //         icon: 'error',
+    //       });
+    //     });
+    //   }
+    // });
+
+    
+  }
+  
 
 }
