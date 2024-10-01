@@ -98,7 +98,7 @@
               </ng-container>
               <!-- Payment -->
               <ng-container matColumnDef="Payment">
-                <mat-header-cell *matHeaderCellDef >Fee</mat-header-cell>
+                <mat-header-cell *matHeaderCellDef style="padding-left: 50px;" >Fee</mat-header-cell>
                 <mat-cell *matCellDef="let row" class="payment-cell" (click)="view ? viewInActiveProgram(row.id): null"> <span
                     class="mobile-label">Payment:</span><span >$</span> {{row.courseFee||0}}.00
                 </mat-cell>

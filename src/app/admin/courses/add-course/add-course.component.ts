@@ -219,19 +219,22 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       id: new FormControl(''),
       feeType: new FormControl('', [Validators.required]),
       assessment: new FormControl(null, [
+        Validators.required,
         ...this.utils.validators.noLeadingSpace,
         ...this.utils.validators.assessment,
       ]),
       exam_assessment: new FormControl(null, [
+        Validators.required,
         ...this.utils.validators.noLeadingSpace,
         ...this.utils.validators.e_assessment,
       ]),
       tutorial: new FormControl(null, [
+        Validators.required,
         ...this.utils.validators.noLeadingSpace,
         ...this.utils.validators.tutorial,
       ]),
-      survey: new FormControl(null, []),
-      course_kit: new FormControl('', []),
+      survey: new FormControl(null, [Validators.required]),
+      course_kit: new FormControl('', [Validators.required]),
       vendor: new FormControl('',[Validators.required, Validators.maxLength(100)]),
       isFeedbackRequired: new FormControl(null, [Validators.required]),
       examType: new FormControl('', [ ]),
@@ -465,22 +468,32 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     );
   }
 
+  
   onFileUpload(event: any) {
     const file = event.target.files[0];
-
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/jfif'];
+    if (!allowedTypes.includes(file.type)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: "Selected format doesn't support. Only JPEG, PNG, JPG, and JFIF formats are allowed!",
+      });
+      event.target.value = '';
+      return;
+    }
+  
     this.thumbnail = file;
     const formData = new FormData();
     formData.append('files', this.thumbnail);
-    this.courseService
-      .uploadCourseThumbnail(formData)
-      .subscribe((data: any) => {
-        this.image_link = data.data.thumbnail;
-        this.uploaded = this.image_link?.split('/');
-        let image = this.uploaded?.pop();
-        this.uploaded = image?.split('\\');
-        this.uploadedImage = this.uploaded?.pop();
-      });
+    this.courseService.uploadCourseThumbnail(formData).subscribe((data: any) => {
+      this.image_link = data.data.thumbnail;
+      this.uploaded = this.image_link?.split('/');
+      let image = this.uploaded?.pop();
+      this.uploaded = image?.split('\\');
+      this.uploadedImage = this.uploaded?.pop();
+    });
   }
+  
 
   onFileChange(event: any) {
     const file = event.target.files[0];

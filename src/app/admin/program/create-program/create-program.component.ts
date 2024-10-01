@@ -277,6 +277,7 @@ export class CreateProgramComponent {
       (certificate: any) =>
         certificate.title === this.programFormGroup.value.certificate_temp
     );
+    console.log("programFormGroup",this.programFormGroup.value)
     if (this.programFormGroup.valid) {
       let creator = JSON.parse(localStorage.getItem('user_data')!).user.name;
       let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
@@ -299,6 +300,8 @@ export class CreateProgramComponent {
           prerequisites: this.programFormGroup.value.prerequisites,
           coreprogramCourse: this.corePrograms.value,
           electiveprogramCourse: this.electivePrograms.value,
+          certificate_template: this.programFormGroup.value.certificate_temp,
+          certificate_template_id: certicate_temp_id[0].id,
           image_link: this.image_link,
           id: this.courseId,
           companyId:userId

@@ -95,9 +95,9 @@
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="Instructorfee">
-                  <mat-header-cell *matHeaderCellDef  class="payment">{{commonRoles?.INSTRUCTOR_ROLE}}
+                  <mat-header-cell *matHeaderCellDef  >{{commonRoles?.INSTRUCTOR_ROLE}}
                     Fee</mat-header-cell>
-                  <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null" class="payment-cell">
+                  <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null" >
                     <span class="mobile-label">Instructor Fee:</span>
                     <span *ngIf="row.classId?.instructorCost !== null && row.classId?.instructorCost !== undefined">
                       <span>$</span> {{row.classId?.instructorCost || 0 }}.00
@@ -175,8 +175,8 @@
                       <span class="label l-bg-green shadow-style" mat-raised-button id="issued">Certificate
                         issued</span>
                     </div>
-                    <div *ngIf="!row.certificate">
-                      <span class="label shadow-style" mat-raised-button id="submit"
+                    <div *ngIf="!row.certificate" >
+                      <span class="label shadow-style  " mat-raised-button id="submit"
                         (click)="generateCertificate(row)">Issue Certificate</span>
                     </div>
                   </mat-cell>

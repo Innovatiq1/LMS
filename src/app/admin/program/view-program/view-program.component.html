@@ -105,29 +105,6 @@
                         <p>{{response?.sessionEndDate | date}}</p>
                       </div>
                     </div>
-                    <div class="row mt-3 mx-auto">
-                      <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
-                        <h6>Learning Outcomes</h6>
-                      </div>
-                      <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
-                        <p [innerHTML]="response?.learningOutcomes | bulletPoints"></p>
-                      </div>
-                      <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
-                        <h6>Who Should Attend</h6>
-                      </div>
-                      <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
-                        <p [innerHTML]="response?.attendees | bulletPoints"></p>
-                      </div>
-                    </div>
-                    <div class="row mt-3 mx-auto">
-                      <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
-                        <h6>Prerequisites</h6>
-                      </div>
-                      <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
-                        <p [innerHTML]="response?.prerequisites | bulletPoints"></p>
-                      </div>
-
-                    </div>
                   </div>
 
 
@@ -152,7 +129,7 @@
                                 <tr style="cursor: pointer;" *ngFor="let course of response?.coreprogramCourse">
                                   <td>{{ course?.coreProgramName?.title }}</td>
                                   <td [innerHTML]="course?.coreProgramDescription | bulletPoints | truncate:150"></td>
-                                  <td><span>$</span> {{ course?.coreProgramName?.fee }}.00</td>
+                                  <td><span>$</span> {{ course?.coreProgramName?.fee>0?course?.coreProgramName?.fee:0 }}.00</td>
                                 </tr>
                               </tbody>
                             </table>
@@ -173,7 +150,7 @@
                                   <th>Course Kit</th>
                                   <th>Description</th>
                                   <th>Document Link</th>
-                                  <th>Video Link</th>
+                                  <th>Media Link</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -213,7 +190,7 @@
                                   <td>{{ course?.electiveProgramName?.title }}</td>
                                   <td [innerHTML]="course?.electiveProgramDescription | bulletPoints | truncate:150">
                                   </td>
-                                  <td>${{ course?.electiveProgramName?.fee }}</td>
+                                  <td><span>$ </span>{{ course?.electiveProgramName?.fee>0?course?.electiveProgramName?.fee:0 }}.00</td>
                                 </tr>
                               </tbody>
                             </table>
@@ -234,7 +211,7 @@
                                   <th>Course Kit</th>
                                   <th>Description</th>
                                   <th>Document Link</th>
-                                  <th>Video Link</th>
+                                  <th>Media Link</th>
                                 </tr>
                               </thead>
                               <tbody>
