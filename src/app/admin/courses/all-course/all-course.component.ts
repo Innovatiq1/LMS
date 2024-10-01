@@ -118,7 +118,6 @@ export class AllCourseComponent {
         'code',
         'creator',
         'Fee Type',
-        // 'Fees',
         'Days',
         'Training Hours',
         'startDate',
