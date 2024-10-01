@@ -151,6 +151,7 @@ export class InActiveCoursesComponent {
       .getAllCourses(userId,{ ...this.coursePaginationModel, status: 'inactive' })
       .subscribe(
         (response) => {
+          console.log("this.dataSource",response.data.docs)
           this.isLoading = false;
           this.coursePaginationModel.docs = response.data.docs;
           this.coursePaginationModel.page = response.data.page;

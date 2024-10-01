@@ -75,7 +75,7 @@
                         </div>
                         <div class="row mt-3 mx-auto">
                           <div class="col-xl-6 col-sm-6 col-md-5 col-lg-5">
-                            <h6>Code</h6>
+                            <h6>Course Code</h6>
                           </div>
                           <div class="col-xl-6 col-sm-6 col-md-5 col-lg-5">
                             <p>
@@ -135,7 +135,8 @@
                       </div>
                       <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
                         <p>
-                          {{ sourceData?.course_duration_in_days || 0 }}
+                          <!-- {{ sourceData?.course_duration_in_days || 0 }} -->
+                          {{ sourceData?.course_duration_in_days || 0 }}{{sourceData?.course_duration_in_days>1?" Days":" Day"}}
                         </p>
                       </div>
                       <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
@@ -143,7 +144,8 @@
                       </div>
                       <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
                         <p>
-                          {{ sourceData?.training_hours || 0 }}
+                          <!-- {{ sourceData?.training_hours || 0 }} -->
+                          {{ sourceData?.training_hours || 0 }}{{sourceData?.training_hours>1?" Hours":" Hour"}}
                         </p>
                       </div>
                     </div>
@@ -205,7 +207,7 @@
                                   <th>Course Kit</th>
                                   <th>Description</th>
                                   <th>Document Link</th>
-                                  <th>Video Link</th>
+                                  <th>Media Link</th>
                                 </tr>
                               </thead>
                               <tbody>

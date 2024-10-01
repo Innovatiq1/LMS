@@ -49,10 +49,29 @@
 
                           </li>
                           <li>
-                            <div class="upload-btn m-l-10" matTooltip="Bulk Upload">
-                              <input type="file" (change)="onBulkUpload($event)" />
-                            </div>
+                            <span style="font-weight: bold;font-size:medium;">Import</span>
                           </li>
+                          <li>
+                          <label><span ><a href="assets/SampleCourseFile.xlsx" target="_blank"> <img src="assets/excel.svg" alt="" /></a> </span></label>
+                        </li>
+                        <!-- <li>
+                          <div class="upload-btn m-l-10" matTooltip="Bulk Upload">
+                            <input type="file" (change)="onBulkUpload($event)" accept=".xls,.xlsx" />
+                          </div>
+                        </li> -->
+                        <li>
+                          <div class="upload-btn m-l-10" matTooltip="Bulk Upload">
+                            <input 
+                              type="file" 
+                              (change)="onBulkUpload($event)" 
+                              (click)="onFileInputClick()" 
+                              accept=".xls,.xlsx" 
+                              class="file-input"
+                            />
+                            <span *ngIf="showNoFileChosen">No file chosen</span>
+                          </div>
+                        </li>
+                        
                           <li>
                             <span style="font-weight: bold;">Export as</span>
                           </li>
@@ -258,7 +277,8 @@
           </mat-tab>
           <mat-tab class="grid">
             <ng-template mat-tab-label>
-              <i class="material-icons-two-tone psr-3">list_alt</i>
+              <i class="material-icons-two-tone psr-3">grid_on</i>
+              <!-- <i class="material-icons-two-tone psr-3">list_alt</i> -->
               Grid View
             </ng-template>
             <div class="row mt-4">
@@ -281,6 +301,29 @@
                             <button mat-raised-button id="submit">Create</button>
                           </div>
                         </li>
+                        <li>
+                          <span style="font-weight: bold;font-size:medium;">Import</span>
+                        </li>
+                        <li>
+                        <span ><a href="assets/SampleCourseFile.xlsx" target="_blank"> <img src="assets/excel.svg" alt="" /></a> </span>
+                      </li>
+                      <li>
+                        <div class="upload-btn m-l-10" matTooltip="Bulk Upload">
+                          <input 
+                            type="file" 
+                            (change)="onBulkUpload($event)" 
+                            (click)="onFileInputClick()" 
+                            accept=".xls,.xlsx" 
+                            class="file-input"
+                          />
+                          <span *ngIf="showNoFileChosen">No file chosen</span>
+                        </div>
+                      </li>
+                      
+                      <li>
+                            <span style="font-weight: bold;">Export as</span>
+                          </li>
+                      
                         <li>
                           <div class="export-button m-l-10" matTooltip="XLSX" (click)="exportExcel()">
                             <img src="assets/excel.svg" alt="" />

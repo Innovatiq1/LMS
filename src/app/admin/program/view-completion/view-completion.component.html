@@ -238,50 +238,7 @@
 
                                                             </div>
                                                         </div>
-                                                        <div class="col-6">
-                                                            <div class="px-2">
-                                                                <div class="row">
-                                                                    <div class="col-6">
-                                                                        <h6>Learning Outcomes</h6>
-                                                                    </div>
-                                                                    <div class="col-6">
-                                                                        <p
-                                                                            [innerHTML]="response.programId?.learningOutcomes | bulletPoints">
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <div class="px-2">
-                                                                <div class="row">
-                                                                    <div class="col-6">
-                                                                        <h6>Who Should Attend</h6>
-                                                                    </div>
-                                                                    <div class="col-5">
-                                                                        <p
-                                                                            [innerHTML]="response.programId?.attendees | bulletPoints">
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
 
-
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <div class="px-2">
-                                                                <div class="row">
-                                                                    <div class="col-6">
-                                                                        <h6>Prerequisites</h6>
-                                                                    </div>
-                                                                    <div class="col-6">
-                                                                        <p
-                                                                            [innerHTML]="response.programId?.prerequisites | bulletPoints">
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -290,11 +247,11 @@
 
                                     </mat-tab>
 
-                                    <mat-tab *ngIf="!isApproved">
+                                    <!-- <mat-tab *ngIf="!isApproved">
                                         <ng-template mat-tab-label>
                                             Score Card
                                         </ng-template>
-                                    </mat-tab>
+                                    </mat-tab> -->
                                 </mat-tab-group>
                             </div>
 
