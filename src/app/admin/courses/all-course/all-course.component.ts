@@ -41,14 +41,16 @@ export class AllCourseComponent {
     'status',
     'code',
     'creator',
+    'Fees',
     'Days',
     'Training Hours',
     'Fee Type',
     'startDate',
     'endDate',
     'Vendor',
+    // 'Users',
+    // 'Fees',
     'Users',
-    'Fees',
   ];
   coursePaginationModel: Partial<CoursePaginationModel>;
   courseData: any;
@@ -116,13 +118,15 @@ export class AllCourseComponent {
         'code',
         'creator',
         'Fee Type',
+        // 'Fees',
         'Days',
         'Training Hours',
         'startDate',
         'endDate',
         'Vendor',
-        'Users',
+        // 'Users',
         'Fees',
+        'Users',
       ];
     }
     if (this.path == 'creator') {
