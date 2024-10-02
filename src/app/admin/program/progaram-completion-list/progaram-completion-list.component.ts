@@ -19,7 +19,7 @@ import { AuthenService } from '@core/service/authen.service';
 import { Router } from '@angular/router';
 import html2canvas from 'html2canvas';
 import { SelectionModel } from '@angular/cdk/collections';
-import { CourseModel } from '@core/models/course.model';
+import { CourseModel, CoursePaginationModel } from '@core/models/course.model';
 @Component({
   selector: 'app-progaram-completion-list',
   templateUrl: './progaram-completion-list.component.html',
@@ -51,6 +51,7 @@ export class ProgaramCompletionListComponent {
   pageSizeArr = this.utils.pageSizeArr;
   totalItems: any;
   studentPaginationModel: StudentPaginationModel;
+  coursePaginationModel!: Partial<CoursePaginationModel>;
   isLoading: any;
   searchTerm: string = '';
   dafaultGenratepdf: boolean = false;
@@ -63,6 +64,8 @@ export class ProgaramCompletionListComponent {
   isGeneratingCertificates:boolean=false;
 selection = new SelectionModel<any>(true, []);
 selectedRows: any[] = [];
+  filterName: string = '';
+  userGroupIds:string = '';
   constructor(
     private classService: ClassService,
      private utils: UtilsService, 
@@ -99,8 +102,8 @@ selectedRows: any[] = [];
   
 
   pageSizeChange($event: any) {
-    this.studentPaginationModel.page = $event?.pageIndex + 1;
-    this.studentPaginationModel.limit = $event?.pageSize;
+    this.coursePaginationModel.page = $event?.pageIndex + 1;
+    this.coursePaginationModel.limit = $event?.pageSize;
     this.getCompletedClasses();
   }
   upload() {
@@ -109,15 +112,21 @@ selectedRows: any[] = [];
 
   getCompletedClasses() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    let filterProgram = this.filterName;
+    const payload = { ...this.coursePaginationModel,title:filterProgram };
+  if(this.userGroupIds){
+    payload.userGroupId=this.userGroupIds
+  }
     this.classService
-      .getProgramCompletedStudent(this.studentPaginationModel.page, this.studentPaginationModel.limit,userId)
+      .getProgramsCompletedStudent(userId,payload)
       .subscribe((response: { docs: any; page: any; limit: any; totalDocs: any; }) => {
         this.isLoading = false;
-        this.studentPaginationModel.docs = response.docs;
-        this.studentPaginationModel.page = response.page;
-        this.studentPaginationModel.limit = response.limit;
-        this.totalItems = response.totalDocs;
         this.dataSource = response.docs;
+        this.coursePaginationModel.docs = response.docs;
+        this.coursePaginationModel.page = response.page;
+        this.coursePaginationModel.limit = response.limit;
+        this.totalItems = response.totalDocs;
+       
         
       })
   }
@@ -166,17 +175,17 @@ selectedRows: any[] = [];
 
   }
   performSearch() {
-    if (this.searchTerm) {
-      this.dataSource = this.dataSource?.filter((item: any) => {
-        const searchList = (item.program_name + item.studentId?.name).toLowerCase()
-        return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1
-      }
+    // if (this.searchTerm) {
+    //   this.dataSource = this.dataSource?.filter((item: any) => {
+    //     const searchList = (item.program_name + item.studentId?.name).toLowerCase()
+    //     return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1
+    //   }
 
-      );
-    } else {
+    //   );
+    // } else {
       this.getCompletedClasses();
 
-    }
+    // }
   }
   generatePdf() {
     const doc = new jsPDF();

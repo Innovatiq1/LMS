@@ -22,7 +22,7 @@
           [ngClass]="(router.url.startsWith('/'+sidebarItem.id)) ? (sidebarItem.children.length > 0 ? 'active':'active-top'): ''">
             <a *ngIf="sidebarItem.children.length !== 0"
               (click)="callToggleMenu($event, sidebarItem.children.length)"
-              class="menu-top menu-toggle">
+              class="menu-top menu-toggle" (click)="navigateTo(sidebarItem.id,sidebarItem.id)">
               <img src="{{sidebarItem.icon}}" class="rounded-circle" style="height: 23px; width:23px">
               <span class="hide-menu">{{sidebarItem.title | translate}}
               </span>

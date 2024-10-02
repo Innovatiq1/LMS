@@ -11,9 +11,9 @@
     </div>
     <div class="row clearfix">
       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+        <form [formGroup]="programFormGroup">
         <div class="card">
           <div class="header"></div>
-          <form [formGroup]="programFormGroup">
             <div class="body m-3 justify-content-between">
               <div class="row">
                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-2">
@@ -296,288 +296,291 @@
                       </mat-select>
                       <mat-error *ngIf="
                       programFormGroup
-                            .get('certificate_template')
+                            .get('certificate_temp')
                             ?.hasError('maxLength') ||
-                            programFormGroup.get('certificate_template')?.touched
+                            programFormGroup.get('certificate_temp')?.touched
                         ">
-                        Enter Certificate Template
+                        Select   Certificate Template
                       </mat-error>
                     </mat-form-field>
                   </div>
               </div>
-              <hr class="m-4" style="width: 94%" />
-              <div class="d-flex m-3 justify-content-between m-4">
-                <div class="d-flex gap-4">
-                  <label style="width: 70%;">Compulsory Count<span class="mandatory">&nbsp;*</span></label>
-
-                  <mat-form-field
-                  class="example-full-width mb-3"
-                  appearance="outline"
-                >
-                  <input
-                    matInput
-                    type="number"
-                    formControlName="coreCourseCount"
-                    class="form-control"
-                  />
-                  <mat-error
-                  *ngIf="
-                    programFormGroup.get('coreCourseCount')?.invalid &&
-                    programFormGroup.get('coreCourseCount')?.touched
-                  "
-                >
-                  {{
-                    utils.getErrorMessage1(
-                      programFormGroup.get("coreCourseCount"),
-                      "coreCourseCount"
-                    )
-                  }}
-                </mat-error>
-                </mat-form-field>
-                </div>
-                <div class="d-flex gap-4">
-                  <button (click)="addCoreCard()" class="btn rounded-2 px-4">
-                    <svg
-                      class=""
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      style="fill: #526d82"
-                    >
-                      <path d="M13 7h-2v4H7v2h4v4h2v-4h4v-2h-4z"></path>
-                      <path
-                        d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"
-                      ></path>
-                    </svg>
-                    Add
-                  </button>
-                </div>
-              </div>
-              <div formArrayName="corePrograms" class="m-3">
-                <div
-                  *ngFor="let core of corePrograms.controls; let i = index"
-                  [formGroupName]="i"
-                  class="card border-light mb-3 shadow rounded-5"
-                >
-                  <div class="card-header header p-4 rounded-top-5">
-                    <div class="row">
-                      <div class="col-10">
-                        <div class="d-flex gap-4">
-                          <label class="card_course">Certificate Program</label>
-                          <mat-form-field
-                            class="example-full-width"
-                            appearance="outline"
-                          >
-                            <mat-select
-                              name="coursename"
-                              formControlName="coreProgramName"
-                            >
-                              <mat-option>Choose...</mat-option>
-                              <mat-option
-                                *ngFor="let item of programList"
-                                [value]="item.id"
-                              >
-                                {{ item.title }}</mat-option
-                              >
-                            </mat-select>
-                          </mat-form-field>
-                        </div>
-                      </div>
-                      <div
-                      *ngIf="i !== 0"
-                        class="col-1"
-                        style="right: 40px; position: absolute"
-                      >
-                        <svg
-                          (click)="deleteCoreCard(i)"
-                          class="ms-2 rounded-4 border"
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="34"
-                          height="34"
-                          viewBox="0 0 24 24"
-                          style="
-                            fill: rgba(0, 0, 0, 1);
-                            padding: 5px;
-                            background: #fff;
-                          "
-                        >
-                          <path
-                            d="M15 2H9c-1.103 0-2 .897-2 2v2H3v2h2v12c0 1.103.897 2 2 2h10c1.103 0 2-.897 2-2V8h2V6h-4V4c0-1.103-.897-2-2-2zM9 4h6v2H9V4zm8 16H7V8h10v12z"
-                          ></path>
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                      <angular-editor
-                        placeholder="Enter text..."
-                        formControlName="coreProgramDescription"
-                        [config]="config"
-                      ></angular-editor>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <hr class="m-4" style="width: 94%" />
-              <div class="d-flex m-3 justify-content-between m-4">
-                <div class="d-flex gap-4">
-                  <label style="width: 70%;">Elective Count<span class="mandatory">&nbsp;*</span></label>
-                  <mat-form-field
-                  class="example-full-width mb-3"
-                  appearance="outline"
-                >
-                  <input
-                    matInput
-                    type="number"
-                    formControlName="electiveCourseCount"
-                    class="form-control"
-                  />
-                  <mat-error
-                  *ngIf="
-                    programFormGroup.get('electiveCourseCount')?.invalid &&
-                    programFormGroup.get('electiveCourseCount')?.touched
-                  "
-                >
-                  {{
-                    utils.getErrorMessage1(
-                      programFormGroup.get("electiveCourseCount"),
-                      "electiveCourseCount"
-                    )
-                  }}
-                </mat-error>
-                </mat-form-field>
-                  
-                </div>
-                <div class="d-flex gap-4">
-                  <button
-                    (click)="addElectiveCard()"
-                    class="btn rounded-2 px-4"
+            </div>
+          </div>
+              <div class="card">
+                <div class="d-flex m-3 justify-content-between m-4 flex-wrap">
+                  <div class="d-flex flex-wrap gap-2" >
+                    <label style="width: 70%;">Compulsory Count<span class="mandatory">&nbsp;*</span></label>
+                    <mat-form-field
+                    class="example-full-width mb-3"
+                    appearance="outline"
                   >
-                    <svg
-                      class=""
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      style="fill: #526d82"
-                    >
-                      <path d="M13 7h-2v4H7v2h4v4h2v-4h4v-2h-4z"></path>
-                      <path
-                        d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"
-                      ></path>
-                    </svg>
-                    Add
-                  </button>
+                    <input 
+                      matInput
+                      type="number"
+                      formControlName="coreCourseCount"
+                      class="form-control"
+                    />
+                    <mat-error
+                    *ngIf="
+                      programFormGroup.get('coreCourseCount')?.invalid &&
+                      programFormGroup.get('coreCourseCount')?.touched
+                    "
+                  >
+                    {{
+                      utils.getErrorMessage1(
+                        programFormGroup.get("coreCourseCount"),
+                        "coreCourseCount"
+                      )
+                    }}
+                  </mat-error>
+                  </mat-form-field>
+                  </div>
+                  <div class="d-flex flex-wrap">
+                    <button (click)="addCoreCard()" class="btn  px-4">
+                      <svg
+                        class=""
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        style="fill: #526d82"
+                      >
+                        <path d="M13 7h-2v4H7v2h4v4h2v-4h4v-2h-4z"></path>
+                        <path
+                          d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"
+                        ></path>
+                      </svg>
+                      Add
+                    </button>
+                  </div>
                 </div>
-              </div>
-
-              <div formArrayName="electivePrograms" class="m-3">
-                <div
-                  class="card border-light mb-3 shadow rounded-5"
-                  *ngFor="
-                    let elective of electivePrograms.controls;
-                    let i = index
-                  "
-                  [formGroupName]="i"
-                >
-                  <div class="card-header header p-4 rounded-top-5">
-                    <div class="row">
-                      <div class="col-10">
-                        <div class="d-flex gap-4">
-                          <label class="card_course">Elective course</label>
-                          <mat-form-field
-                            class="example-full-width"
-                            appearance="outline"
-                          >
-                            <mat-select
-                              name="coursename"
-                              formControlName="electiveProgramName"
+                <div formArrayName="corePrograms" class="m-3">
+                  <div
+                    *ngFor="let core of corePrograms.controls; let i = index"
+                    [formGroupName]="i"
+                    class="card border-light mb-3 shadow rounded-5"
+                  >
+                    <div class="card-header header p-4 rounded-top-5">
+                      <div class="row">
+                        <div class="col-10 ">
+                          <div class="d-flex gap-4 flex-wrap">
+                            <label class="card_course">Certificate Program</label>
+                            <mat-form-field
+                              class="example-full-width"
+                              appearance="outline"
                             >
-                              <mat-option>Choose...</mat-option>
-                              <mat-option
-                                *ngFor="let item of programList"
-                                [value]="item.id"
+                              <mat-select
+                                name="coursename"
+                                formControlName="coreProgramName"
                               >
-                                {{ item.title }}</mat-option
-                              >
-                            </mat-select>
-                          </mat-form-field>
+                                <mat-option>Choose...</mat-option>
+                                <mat-option
+                                  *ngFor="let item of programList"
+                                  [value]="item.id"
+                                >
+                                  {{ item.title }}</mat-option
+                                >
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div
+                          class="col-1 "
+                          style="right: 40px; position: absolute; cursor: pointer"
+                        >
+                          <svg
+                            (click)="deleteCoreCard(i)"
+                            class="ms-2 rounded-4 border"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="34"
+                            height="34"
+                            viewBox="0 0 24 24"
+                            style="
+                              fill: rgba(0, 0, 0, 1);
+                              padding: 5px;
+                              background: #fff;
+                            "
+                          >
+                            <path
+                              d="M15 2H9c-1.103 0-2 .897-2 2v2H3v2h2v12c0 1.103.897 2 2 2h10c1.103 0 2-.897 2-2V8h2V6h-4V4c0-1.103-.897-2-2-2zM9 4h6v2H9V4zm8 16H7V8h10v12z"
+                            ></path>
+                          </svg>
                         </div>
                       </div>
-                      <div
-                      *ngIf="i !== 0"
-                        class="col-1"
-                        style="right: 40px; position: absolute"
-                      >
-                        <svg
-                          (click)="deleteElectiveCard(i)"
-                          class="ms-2 rounded-4 border"
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="34"
-                          height="34"
-                          viewBox="0 0 24 24"
-                          style="
-                            fill: rgba(0, 0, 0, 1);
-                            padding: 5px;
-                            background: #fff;
-                          "
-                        >
-                          <path
-                            d="M15 2H9c-1.103 0-2 .897-2 2v2H3v2h2v12c0 1.103.897 2 2 2h10c1.103 0 2-.897 2-2V8h2V6h-4V4c0-1.103-.897-2-2-2zM9 4h6v2H9V4zm8 16H7V8h10v12z"
-                          ></path>
-                        </svg>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                        <angular-editor
+                          placeholder="Enter text..."
+                          formControlName="coreProgramDescription"
+                          [config]="config"
+                        ></angular-editor>
                       </div>
                     </div>
                   </div>
-                  <div class="row">
+                </div>
+              </div>
+              <div class="card">
+                <div class="d-flex m-3 justify-content-between m-4 flex-wrap">
+                  <div class="d-flex gap-4 flex-wrap">
+                    <label style="width: 70%;">Elective Count<span class="mandatory">&nbsp;*</span></label>
+                    <mat-form-field
+                    class="example-full-width mb-3"
+                    appearance="outline"
+                  >
+                    <input
+                      matInput
+                      type="number"
+                      formControlName="electiveCourseCount"
+                      class="form-control"
+                    />
+                    <mat-error
+                    *ngIf="
+                      programFormGroup.get('electiveCourseCount')?.invalid &&
+                      programFormGroup.get('electiveCourseCount')?.touched
+                    "
+                  >
+                    {{
+                      utils.getErrorMessage1(
+                        programFormGroup.get("electiveCourseCount"),
+                        "electiveCourseCount"
+                      )
+                    }}
+                  </mat-error>
+                  </mat-form-field>
+                    
+                  </div>
+                  <div class="d-flex gap-4 flex-wrap">
+                    <button
+                      (click)="addElectiveCard()"
+                      class="btn  px-4"
+                    >
+                      <svg
+                        class=""
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        style="fill: #526d82"
+                      >
+                        <path d="M13 7h-2v4H7v2h4v4h2v-4h4v-2h-4z"></path>
+                        <path
+                          d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"
+                        ></path>
+                      </svg>
+                      Add
+                    </button>
+                  </div>
+                </div>
+  
+                <div formArrayName="electivePrograms" class="m-3">
+                  <div
+                    class="card border-light mb-3 shadow rounded-5"
+                    *ngFor="
+                      let elective of electivePrograms.controls;
+                      let i = index
+                    "
+                    [formGroupName]="i"
+                  >
+                    <div class="card-header header p-4 rounded-top-5">
+                      <div class="row">
+                        <div class="col-xl-10 col-sm-12">
+                          <div class="d-flex gap-4 flex-wrap">
+                            <label class="card_course">Elective course</label>
+                            <mat-form-field
+                              class="example-full-width"
+                              appearance="outline"
+                            >
+                              <mat-select
+                                name="coursename"
+                                formControlName="electiveProgramName"
+                              >
+                                <mat-option>Choose...</mat-option>
+                                <mat-option
+                                  *ngFor="let item of programList"
+                                  [value]="item.id"
+                                >
+                                  {{ item.title }}</mat-option
+                                >
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div
+                          class="col-1"
+                          style="right: 40px; position: absolute;cursor: pointer;"
+                        >
+                          <svg
+                            (click)="deleteElectiveCard(i)"
+                            class="ms-2 rounded-4 border"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="34"
+                            height="34"
+                            viewBox="0 0 24 24"
+                            style="
+                              fill: rgba(0, 0, 0, 1);
+                              padding: 5px;
+                              background: #fff;
+                            "
+                          >
+                            <path
+                              d="M15 2H9c-1.103 0-2 .897-2 2v2H3v2h2v12c0 1.103.897 2 2 2h10c1.103 0 2-.897 2-2V8h2V6h-4V4c0-1.103-.897-2-2-2zM9 4h6v2H9V4zm8 16H7V8h10v12z"
+                            ></path>
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                        <angular-editor
+                          placeholder="Enter text..."
+                          formControlName="electiveProgramDescription"
+                          [config]="config"
+                        ></angular-editor>
+                      </div>
+                    </div>
+                    <div class="card-body"></div>
+                  </div>
+                </div>
+                <div class="">
+                  <!-- <hr class="m-4" /> -->
+                  <div class="mt-2" *ngIf="labelStatusCheck('Learning Outcomes')">
+                    <span class="fw-bold mx-3"> Learning Outcomes</span>
+                    <div class="row">
+                      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                        <angular-editor
+                          placeholder="Enter text..."
+                          formControlName="learningOutcomes"
+                          [config]="config"
+                        ></angular-editor>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-2" *ngIf="labelStatusCheck('Who Should Attend')">
+                    <span class="fw-bold mx-3">Who Should Attend</span>
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
                       <angular-editor
                         placeholder="Enter text..."
-                        formControlName="electiveProgramDescription"
+                        formControlName="attendees"
                         [config]="config"
                       ></angular-editor>
                     </div>
                   </div>
-                  <div class="card-body"></div>
-                </div>
-              </div>
-              <div class="">
-                <hr class="m-4" />
-                <div class="mt-2" *ngIf="labelStatusCheck('Learning Outcomes')">
-                  <span class="fw-bold mx-3"> Learning Outcomes</span>
-                  <div class="row">
+                  <div class="mt-2" *ngIf="labelStatusCheck('Prerequisites')">
+                    <span class="fw-bold mx-3">Prerequisites</span>
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
                       <angular-editor
                         placeholder="Enter text..."
-                        formControlName="learningOutcomes"
+                        formControlName="prerequisites"
                         [config]="config"
                       ></angular-editor>
                     </div>
                   </div>
                 </div>
-                <div class="mt-2" *ngIf="labelStatusCheck('Who Should Attend')">
-                  <span class="fw-bold mx-3">Who Should Attend</span>
-                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
-                    <angular-editor
-                      placeholder="Enter text..."
-                      formControlName="attendees"
-                      [config]="config"
-                    ></angular-editor>
-                  </div>
-                </div>
-                <div class="mt-2" *ngIf="labelStatusCheck('Prerequisites')">
-                  <span class="fw-bold mx-3">Prerequisites</span>
-                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
-                    <angular-editor
-                      placeholder="Enter text..."
-                      formControlName="prerequisites"
-                      [config]="config"
-                    ></angular-editor>
-                  </div>
-                </div>
               </div>
+              
               <div class="row mt-3">
                 <div class="col-md-10">
                   <button mat-button id="back" (click)="back()">Back</button>
@@ -603,9 +606,9 @@
                 </button>
                 </div>
               </div>
-            </div>
-          </form>
-        </div>
+           
+       
+      </form>
       </div>
     </div>
   </div>

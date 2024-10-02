@@ -7,22 +7,33 @@ import {
 import * as moment from 'moment';
 import { DataSource, SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
-import { TableElement, TableExportUtil, UnsubscribeOnDestroyAdapter } from '@shared';
+import {
+  TableElement,
+  TableExportUtil,
+  UnsubscribeOnDestroyAdapter,
+} from '@shared';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { MatSort } from '@angular/material/sort';
-import { ClassModel, Session, Student, StudentApproval, StudentPaginationModel } from 'app/admin/schedule-class/class.model';
+import {
+  ClassModel,
+  Session,
+  Student,
+  StudentApproval,
+  StudentPaginationModel,
+} from 'app/admin/schedule-class/class.model';
 import { ClassService } from 'app/admin/schedule-class/class.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { formatDate } from '@angular/common';
 import { AppConstants } from '@shared/constants/app.constants';
 import { AuthenService } from '@core/service/authen.service';
+import { CoursePaginationModel } from '@core/models/course.model';
 
 @Component({
   selector: 'app-verification-list',
   templateUrl: './verification-list.component.html',
-  styleUrls: ['./verification-list.component.scss']
+  styleUrls: ['./verification-list.component.scss'],
 })
 export class VerificationListComponent {
   displayedColumns = [
@@ -34,7 +45,6 @@ export class VerificationListComponent {
     'registeredDate',
     'programFee',
     'instructorFee',
-    
   ];
 
   breadscrums = [
@@ -46,9 +56,10 @@ export class VerificationListComponent {
   ];
   searchTerm: string = '';
   studentPaginationModel: StudentPaginationModel;
+  coursePaginationModel!: Partial<CoursePaginationModel> ;
   selection = new SelectionModel<ClassModel>(true, []);
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
-  @ViewChild(MatSort) matSort! : MatSort;
+  @ViewChild(MatSort) matSort!: MatSort;
   totalItems: any;
   approveData: any;
   pageSizeArr = [10, 20, 30, 50, 100];
@@ -56,6 +67,8 @@ export class VerificationListComponent {
   dataSource!: any;
   commonRoles: any;
   isView = false;
+  filterName: string = '';
+  userGroupIds: string = '';
   constructor(
     public _classService: ClassService,
     private snackBar: MatSnackBar,
@@ -66,21 +79,25 @@ export class VerificationListComponent {
   }
 
   ngOnInit(): void {
-    const roleDetails =this.authenService.getRoleDetails()[0].menuItems
+    const roleDetails = this.authenService.getRoleDetails()[0].menuItems;
     let urlPath = this.router.url.split('/');
     const parentId = `${urlPath[1]}/${urlPath[2]}`;
-    const childId =  urlPath[urlPath.length - 2];
-    const subChildId =  urlPath[urlPath.length - 1];
+    const childId = urlPath[urlPath.length - 2];
+    const subChildId = urlPath[urlPath.length - 1];
     let parentData = roleDetails.filter((item: any) => item.id == parentId);
-    let childData = parentData[0].children.filter((item: any) => item.id == childId);
-    let subChildData = childData[0].children.filter((item: any) => item.id == subChildId);
-    let actions = subChildData[0].actions
-    let viewAction = actions.filter((item:any) => item.title == 'View')
+    let childData = parentData[0].children.filter(
+      (item: any) => item.id == childId
+    );
+    let subChildData = childData[0].children.filter(
+      (item: any) => item.id == subChildId
+    );
+    let actions = subChildData[0].actions;
+    let viewAction = actions.filter((item: any) => item.title == 'View');
 
-    if(viewAction.length >0){
+    if (viewAction.length > 0) {
       this.isView = true;
     }
-    this.commonRoles = AppConstants
+    this.commonRoles = AppConstants;
     this.getPendingVerificationList();
   }
   showNotification(
@@ -104,25 +121,33 @@ export class VerificationListComponent {
 
   getPendingVerificationList() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-        this._classService
-      .getPendingVerificationList(userId,this.studentPaginationModel.page, this.studentPaginationModel.limit, this.studentPaginationModel.filterText)
-      .subscribe((response: { data: StudentPaginationModel; }) => {
-      this.isLoading = false;
+    let filterProgram = this.filterName;
+    const payload = { ...this.coursePaginationModel, title: filterProgram };
+    if (this.userGroupIds) {
+      payload.userGroupId = this.userGroupIds;
+    }
+    this._classService
+      .getPendingVerificationLists(
+        userId,payload
+      )
+      .subscribe((response: { data: StudentPaginationModel }) => {
+        this.isLoading = false;
         this.studentPaginationModel = response.data;
         this.dataSource = response.data.docs;
         this.dataSource.sort = this.matSort;
         this.totalItems = response.data.totalDocs;
         this.mapClassList();
-
-      })
+      });
   }
-  filterData($event:any){
+  filterData($event: any) {
     this.dataSource.filter = $event.target.value;
-
   }
 
-  view(id:string){
-    this.router.navigate(['/admin/courses/student-courses/verification-list/view-completion-list'],{queryParams: {id:id, status:'pending',verify:false}});
+  view(id: string) {
+    this.router.navigate(
+      ['/admin/courses/student-courses/verification-list/view-completion-list'],
+      { queryParams: { id: id, status: 'pending', verify: false } }
+    );
   }
 
   mapClassList() {
@@ -136,13 +161,16 @@ export class VerificationListComponent {
       const minStartDate = new Date(Math.min.apply(null, startDateArr));
       const maxEndDate = new Date(Math.max.apply(null, endDateArr));
 
-      item.classStartDate = !isNaN(minStartDate.valueOf()) ? moment(minStartDate).format("YYYY-DD-MM") : "";
-      item.classEndDate = !isNaN(maxEndDate.valueOf()) ? moment(maxEndDate).format("YYYY-DD-MM") : "";
+      item.classStartDate = !isNaN(minStartDate.valueOf())
+        ? moment(minStartDate).format('YYYY-DD-MM')
+        : '';
+      item.classEndDate = !isNaN(maxEndDate.valueOf())
+        ? moment(maxEndDate).format('YYYY-DD-MM')
+        : '';
       // item.registeredOn = item?.registeredOn ? moment(item.registeredOn).format("YYYY-DD-MM") : "";
       item.studentId.name = `${item?.studentId?.name}`;
     });
   }
-
 
   getCurrentUserId(): string {
     return JSON.parse(localStorage.getItem('user_data')!).user.id;
@@ -166,26 +194,26 @@ export class VerificationListComponent {
       showCancelButton: true,
       cancelButtonColor: '#d33',
     }).then((result) => {
-      if (result.isConfirmed){
-        this._classService
-        .saveApprovedClasses(element.id, item)
-        .subscribe((_response: any) => {
-          Swal.fire({
-            title: 'Success',
-            text: 'Course approved successfully.',
-            icon: 'success',
-          });
-          this.getPendingVerificationList();
-        }, (error) => {
-              Swal.fire({
-                title: 'Error',
-                text: 'Failed to approve course. Please try again.',
-                icon: 'error',
-              });
+      if (result.isConfirmed) {
+        this._classService.saveApprovedClasses(element.id, item).subscribe(
+          (_response: any) => {
+            Swal.fire({
+              title: 'Success',
+              text: 'Course approved successfully.',
+              icon: 'success',
             });
+            this.getPendingVerificationList();
+          },
+          (error) => {
+            Swal.fire({
+              title: 'Error',
+              text: 'Failed to approve course. Please try again.',
+              icon: 'error',
+            });
+          }
+        );
       }
     });
- 
   }
 
   Status(element: Student, status: string) {
@@ -205,38 +233,40 @@ export class VerificationListComponent {
       showCancelButton: true,
       cancelButtonColor: '#d33',
     }).then((result) => {
-      if (result.isConfirmed){
-        this._classService
-        .saveApprovedClasses(element.id, item)
-        .subscribe((response: any) => {
-          Swal.fire({
-            title: 'Success',
-            text: 'Course Withdraw successfully.',
-            icon: 'success',
-          });
-          this.getPendingVerificationList();
-        }, (error) => {
-          Swal.fire({
-            title: 'Error',
-            text: 'Failed to approve course. Please try again.',
-            icon: 'error',
-          });
-        });
+      if (result.isConfirmed) {
+        this._classService.saveApprovedClasses(element.id, item).subscribe(
+          (response: any) => {
+            Swal.fire({
+              title: 'Success',
+              text: 'Course Withdraw successfully.',
+              icon: 'success',
+            });
+            this.getPendingVerificationList();
+          },
+          (error) => {
+            Swal.fire({
+              title: 'Error',
+              text: 'Failed to approve course. Please try again.',
+              icon: 'error',
+            });
+          }
+        );
       }
     });
-  
   }
   performSearch() {
-    if(this.searchTerm){
-    this.dataSource = this.dataSource?.filter((item: any) =>{
-      const searchList = (item.classId?.courseId?.title + item.studentId?.name + item.studentId?.last_name).toLowerCase();
-      return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1
-    }
-    );
-    } else {
+    // if (this.searchTerm) {
+    //   this.dataSource = this.dataSource?.filter((item: any) => {
+    //     const searchList = (
+    //       item.classId?.courseId?.title +
+    //       item.studentId?.name +
+    //       item.studentId?.last_name
+    //     ).toLowerCase();
+    //     return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1;
+    //   });
+    // } else {
       this.getPendingVerificationList();
-
-    }
+    // }
   }
   private refreshTable() {
     this.paginator._changePageSize(this.paginator.pageSize);
@@ -246,12 +276,10 @@ export class VerificationListComponent {
     const numRows = this.dataSource.length;
     return numSelected === numRows;
   }
-   masterToggle() {
+  masterToggle() {
     this.isAllSelected()
       ? this.selection.clear()
-      : this.dataSource.forEach((row: any) =>
-          this.selection.select(row)
-        );
+      : this.dataSource.forEach((row: any) => this.selection.select(row));
   }
 
   getSessions(element: { classId: { sessions: any[] } }) {
@@ -264,18 +292,19 @@ export class VerificationListComponent {
   }
 
   exportExcel() {
-   const exportData: Partial<TableElement>[] =
-      this.dataSource.map((user:any) => ({
-        'Student': user.studentId?.name,
-        Status:  user.status === 'inactive' ? 'Pending' : '',
-        'Course': user.classId?.courseId?.title,
-        'Course Fee': '$'+user.classId?.courseId?.fee,
-        'Instructor Fee': '$'+user.classId?.instructorCost,
+    const exportData: Partial<TableElement>[] = this.dataSource.map(
+      (user: any) => ({
+        Student: user.studentId?.name,
+        Status: user.status === 'inactive' ? 'Pending' : '',
+        Course: user.classId?.courseId?.title,
+        'Course Fee': '$' + user.classId?.courseId?.fee,
+        'Instructor Fee': '$' + user.classId?.instructorCost,
         'Start Date': user.classStartDate,
         'End Date': user.classEndDate,
-        'Registered On':  formatDate(new Date(user.registeredOn), 'yyyy-MM-dd', 'en') || '',
-        
-      }));
+        'Registered On':
+          formatDate(new Date(user.registeredOn), 'yyyy-MM-dd', 'en') || '',
+      })
+    );
     TableExportUtil.exportToExcel(exportData, 'Student Pending-list');
   }
   generatePdf() {
@@ -296,8 +325,8 @@ export class VerificationListComponent {
       user.studentId?.name,
       user.status === 'inactive' ? 'Pending' : '',
       user.classId?.courseId?.title,
-      '$'+user.classId?.courseId?.fee,
-      '$'+user.classId?.instructorCost,
+      '$' + user.classId?.courseId?.fee,
+      '$' + user.classId?.instructorCost,
       user.classStartDate,
       user.classEndDate,
       formatDate(new Date(user.registeredOn), 'yyyy-MM-dd', 'en') || '',
@@ -311,10 +340,7 @@ export class VerificationListComponent {
         fontSize: 10,
         cellWidth: 'wrap',
       },
-
-
     });
     doc.save('Student Pending-list.pdf');
   }
-
 }

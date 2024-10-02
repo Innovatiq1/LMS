@@ -32,7 +32,7 @@ export class AllCourseComponent {
   breadscrums = [
     {
       title: 'Course List',
-      items: ['Course123'],
+      items: ['Course'],
       active: 'Course List',
     },
   ];
@@ -89,6 +89,8 @@ export class AllCourseComponent {
   create = false;
   view = false;
   private showAlert = false;
+  filterName: string = "";
+  userGroupIds: string = "";
 
   constructor(
     public _courseService: CourseService,
@@ -100,7 +102,12 @@ export class AllCourseComponent {
     private courseService: CourseService,
   ) {
     // constructor
-    this.coursePaginationModel = { limit: 10 };
+    this.coursePaginationModel = {
+      page: 1, 
+      limit: 10, 
+      totalDocs: 0,
+      docs: []
+    };
     let urlPath = this.route.url.split('/');
     this.path = urlPath[urlPath.length - 1];
     this.filterForm = this.fb.group({
@@ -261,13 +268,12 @@ getAllTpCourses() {
     this.selectedVendors = [];
     this.selectedStatus = [];
     this.selectedCreators = [];
-    
-    this.coursePaginationModel.page = 1;
-    this.coursePaginationModel.limit = 10; 
     this.filter = false;
+
+    this.paginator.pageIndex = 0;
+    this.coursePaginationModel.page = 1; 
     this.getAllCourses();
   }
-  
  
 
 applyFilter() {
@@ -287,6 +293,7 @@ applyFilter() {
   }
 
   
+  this.paginator.pageIndex = 0;
   this.coursePaginationModel.page = 1;
 
   this._courseService.getFilteredCourseData(body, { ...this.coursePaginationModel })
@@ -443,11 +450,17 @@ pageSizeChange($event: any) {
   }
   
   getAllCourses() {
-    this._courseService.getAllCoursesWithPagination({...this.coursePaginationModel}).subscribe((response) => {
+    let filterProgram = this.filterName;
+    const payload = { ...this.coursePaginationModel,title:filterProgram };
+  if(this.userGroupIds){
+    payload.userGroupId=this.userGroupIds
+  }
+    this._courseService.getAllCoursesWithPagination(payload).subscribe((response) => {
+      console.log("filtered ",response)
       this.courseData = response.data.docs;
       this.totalItems = response.data.totalDocs;
       this.coursePaginationModel.docs = response.data.docs;
-      this.coursePaginationModel.page = response.data.page;
+      this.coursePaginationModel.page = response.data.page; 
       this.coursePaginationModel.limit = response.data.limit;
       this.coursePaginationModel.totalDocs = response.data.totalDocs;
     });

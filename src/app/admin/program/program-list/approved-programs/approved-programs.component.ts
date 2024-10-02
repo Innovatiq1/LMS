@@ -61,12 +61,15 @@ export class ApprovedProgramsComponent {
   selection = new SelectionModel<CourseModel>(true, []);
   searchTerm :string ='';
   view = false;
+  filterName!: string;
+  userGroupIds: string = '';
 
   constructor(private router: Router,
   private courseService: CourseService,private cd: ChangeDetectorRef,private route :Router, private snackBar: MatSnackBar, private authenService: AuthenService){
     this.coursePaginationModel = {};
     this.coursePaginationModel.main_category = '0';
     this.coursePaginationModel.sub_category = '0';
+    this.userGroupIds = (JSON.parse(localStorage.getItem('user_data')!).user.userGroup.map((v:any)=>v.id) || []).join()
   }
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild('filter', { static: true }) filter!: ElementRef;
@@ -114,7 +117,12 @@ export class ApprovedProgramsComponent {
 
   getProgramList(filters?: any) {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-    this.courseService.getCourseProgram({...this.coursePaginationModel,status:'active'},userId).subscribe(
+    let filterProgram = this.filterName;
+    const payload = { ...this.coursePaginationModel,title:filterProgram, status: 'active' };
+  if(this.userGroupIds){
+    payload.userGroupId=this.userGroupIds
+  }
+    this.courseService.getCourseProgram(userId,payload).subscribe(
       (response: any) => {
         this.totalItems = response.totalDocs;
         this.dataSource = response.docs;
@@ -128,16 +136,17 @@ export class ApprovedProgramsComponent {
     );
   }
   performSearch() {
-    if(this.searchTerm){
-    this.dataSource = this.dataSource?.filter((item: any) =>{
-      const searchList = (item?.title).toLowerCase()
-      return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1
-    }
-    );
-    } else {
-      this.getProgramList();
+    this.getProgramList();
+    // if(this.searchTerm){
+    // this.dataSource = this.dataSource?.filter((item: any) =>{
+    //   const searchList = (item?.title).toLowerCase()
+    //   return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1
+    // }
+    // );
+    // } else {
+    //   this.getProgramList();
 
-    }
+    // }
   }
 
   addNew() {

@@ -28,19 +28,28 @@ export class ChatbotComponent {
   ngOnInit() {}
 
   onIconClick() {
-    this.showBotSubject = !this.showBotSubject;
     this.messages=[];
     this.initialLoad = [];
-    this.emailId = ''
+    this.emailId = '';
+    this.mainval = '';
+    this.userMsg = '';
+    this.email = false;
+    this.msgInput.nativeElement.value = '';
+    this.showBotSubject = !this.showBotSubject;
+    this.messages.push({ type: '', text: '' });
+  
+    
   }
 
   onBotSubjectSubmit() {
     this.showBotSubject = false;
     this.showMessenger = true;
   }
+
   chooseIssues(selectedItem: string) {
     this.userMsg = selectedItem;
   }
+
   onMessengerSubmit(event: any) {
     const inputValue = this.msgInput.nativeElement.value.trim();
     if (!this.emailId) {
@@ -57,84 +66,85 @@ export class ChatbotComponent {
       type: 'user',
       role: this.emailId, 
       text: this.mainval,
-      status: 'open',
     };
 
     const appendMsg = (msg: string) => {
       this.messages.push({ type: 'bot', text: msg });
       this.msgInput.nativeElement.value = '';
     };
-
     this.messages.push(userMsg);
-    console.log(this.emailId); // Log the emailId
+    console.log(this.emailId); 
 
     if (this.emailId) {
       this.initialLoad = ['Courses', 'Programs','Login','Signup','Others'];
     }
-    switch (val) {
-      case 'courses':
-        appendMsg('1.Payment 2.Course registration 3.Course Approval 4.Certificate issue');
-        break;
-  
-      case 'payment':
-      case 'course registration':
-      case 'course approval':
-      case 'certificate issue':
-        appendMsg('Could you give us some more details on ...?');
-        this.msgSubmit.nativeElement.addEventListener('click', (event: any) => {
+    if(this.initialLoad){
+      switch (val) {
+        case 'courses':
+          appendMsg('1.Payment 2.Course registration 3.Course Approval 4.Certificate issue');
+          break;
+    
+        case 'payment':
+        case 'course registration':
+        case 'course approval':
+        case 'certificate issue':
+          appendMsg('Could you give us some more details on ...?');
+          this.msgSubmit.nativeElement.addEventListener('click', (event: any) => {
+            this.handleMsgSubmit();
+          });
+          break;
+    
+        case 'programs':
+          appendMsg('1.Payment 2.Program registration 3.Program Approval 4.Certificate issue');
+          break;
+    
+        case 'program registration':
+        case 'program approval':
+          appendMsg('Could you give us some more details on ...?');
+          this.msgSubmit.nativeElement.addEventListener('click', (event: any) => {
+            this.handleMsgSubmit();
+          });
+          break;
+    
+        case 'login':
+          appendMsg('1.Wait for Admin approval 2.Looks like your login information is incorrect 3.Other Issues');
+          break;
+    
+        case 'wait for admin approval':
+          appendMsg('Please wait for administrator to approve it. Thank you for your patience...');
+          // this.msgSubmit.nativeElement.addEventListener('click', (event: any) => {
+            this.handleMsgSubmit();
+          // });
+          break;
+    
+        case 'looks like your login information is incorrect':
+          appendMsg('Please enter correct details which you used while signing up. Thank you...');
+          // this.msgSubmit.nativeElement.addEventListener('click', (event: any) => {
+            this.handleMsgSubmit();
+          // });
+          break;
+    
+        case 'other issues':
+          appendMsg('Could you give us some more details on ...?');
+          this.msgSubmit.nativeElement.addEventListener('click', (event: any) => {
+            this.handleMsgSubmit();
+          });
+          break;
+    
+        case 'signup':
+        case 'others':
+          appendMsg('Could you please clarify what you want us to do?');
+          this.msgSubmit.nativeElement.addEventListener('click', (event: any) => {
           this.handleMsgSubmit();
         });
-        break;
-  
-      case 'programs':
-        appendMsg('1.Payment 2.Program registration 3.Program Approval 4.Certificate issue');
-        break;
-  
-      case 'program registration':
-      case 'program approval':
-        appendMsg('Could you give us some more details on ...?');
-        this.msgSubmit.nativeElement.addEventListener('click', (event: any) => {
-          this.handleMsgSubmit();
-        });
-        break;
-  
-      case 'login':
-        appendMsg('1.Wait for Admin approval 2.Looks like your login information is incorrect 3.Other Issues');
-        break;
-  
-      case 'wait for admin approval':
-        appendMsg('Please wait for administrator to approve it. Thank you for your patience...');
-        // this.msgSubmit.nativeElement.addEventListener('click', (event: any) => {
-          this.handleMsgSubmit();
-        // });
-        break;
-  
-      case 'looks like your login information is incorrect':
-        appendMsg('Please enter correct details which you used while signing up. Thank you...');
-        // this.msgSubmit.nativeElement.addEventListener('click', (event: any) => {
-          this.handleMsgSubmit();
-        // });
-        break;
-  
-      case 'other issues':
-        appendMsg('Could you give us some more details on ...?');
-        this.msgSubmit.nativeElement.addEventListener('click', (event: any) => {
-          this.handleMsgSubmit();
-        });
-        break;
-  
-      case 'signup':
-      case 'others':
-        appendMsg('Could you please clarify what you want us to do?');
-        this.msgSubmit.nativeElement.addEventListener('click', (event: any) => {
-        this.handleMsgSubmit();
-      });
-        break;
-  
-      // default:
-      //   appendMsg('Sorry, I didn’t understand your request.');
-      //   break;
+          break;
+    
+        // default:
+        //   appendMsg('Sorry, I didn’t understand your request.');
+        //   break;
+      }
     }
+   
   }
   private handleMsgSubmit() {
     console.log('handlecalled')
@@ -154,6 +164,7 @@ export class ChatbotComponent {
     console.log(this.messages)
     let payload = {
       messages: this.messages,
+      status:'open'
     };
     this.courseService.saveChat(payload).subscribe((response) => {
     });

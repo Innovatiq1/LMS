@@ -35,7 +35,7 @@ import { jsPDF } from 'jspdf';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { AssessmentService } from '@core/service/assessment.service';
-import { CourseModel } from '@core/models/course.model';
+import { CourseModel, CoursePaginationModel } from '@core/models/course.model';
 @Component({
   selector: 'app-completion-list',
   templateUrl: './completion-list.component.html',
@@ -78,6 +78,7 @@ export class CompletionListComponent {
   pageSizeArr = [10, 20];
   totalItems: any;
   studentPaginationModel: StudentPaginationModel;
+  coursePaginationModel!: Partial<CoursePaginationModel>;
   isLoading: boolean = true;
   searchTerm: string = '';
   @ViewChild(MatSort) matSort!: MatSort;
@@ -128,6 +129,8 @@ export class CompletionListComponent {
   studentData: any;
   dialogRef: any;
   isView = false;
+  filterName: any;
+  userGroupIds: any;
   
 
   upload() {
@@ -205,6 +208,11 @@ export class CompletionListComponent {
   }
   getCompletedClasses() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    let filterProgram = this.filterName;
+    const payload = { ...this.coursePaginationModel,title:filterProgram };
+  if(this.userGroupIds){
+    payload.userGroupId=this.userGroupIds
+  }
         this.classService
       .getSessionCompletedStudent(
         userId,

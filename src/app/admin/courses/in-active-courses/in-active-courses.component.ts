@@ -66,6 +66,8 @@ export class InActiveCoursesComponent {
   selection = new SelectionModel<CourseModel>(true, []);
   searchTerm: string = '';
   view = false;
+  filterName: string = '';
+  userGroupIds: string = '';
 
   constructor(
     private router: Router,
@@ -147,11 +149,15 @@ export class InActiveCoursesComponent {
 
   getCoursesList() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    let filterProgram = this.filterName;
+    const payload = { ...this.coursePaginationModel,title:filterProgram,status: 'inactive' };
+  if(this.userGroupIds){
+    payload.userGroupId=this.userGroupIds
+  }
         this.courseService
-      .getAllCourses(userId,{ ...this.coursePaginationModel, status: 'inactive' })
+      .getAllCourses(userId,payload)
       .subscribe(
         (response) => {
-          console.log("this.dataSource",response.data.docs)
           this.isLoading = false;
           this.coursePaginationModel.docs = response.data.docs;
           this.coursePaginationModel.page = response.data.page;
@@ -258,18 +264,18 @@ export class InActiveCoursesComponent {
     });
   }
   performSearch() {
-    if (this.searchTerm) {
-      this.dataSource = this.dataSource?.filter((item: any) => {
-        const search = (
-          item.main_category_text +
-          item.sub_category_text +
-          item.title
-        ).toLowerCase();
-        return search.indexOf(this.searchTerm.toLowerCase()) !== -1;
-      });
-    } else {
+    // if (this.searchTerm) {
+    //   this.dataSource = this.dataSource?.filter((item: any) => {
+    //     const search = (
+    //       item.main_category_text +
+    //       item.sub_category_text +
+    //       item.title
+    //     ).toLowerCase();
+    //     return search.indexOf(this.searchTerm.toLowerCase()) !== -1;
+    //   });
+    // } else {
       this.getCoursesList();
-    }
+    // }
   }
   exportExcel() {
     const exportData: Partial<TableElement>[] = this.dataSource.map(

@@ -88,6 +88,8 @@ row: any;
   programsData: any;
   create = false;
   view = false;
+  filterName: string='';
+  userGroupIds: any;
 
   constructor(
   
@@ -211,6 +213,7 @@ clearFilter() {
 }
 
 applyFilter() {
+  
   let body: any = {};
 
   if (this.selectedPrograms.length > 0) {
@@ -259,7 +262,14 @@ getFilterData(filters?: any) {
     this.isLoading = true;
     this.isNoMoreData = false;
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-    this.courseService.getAllPrograms({...this.coursePaginationModel},userId).subscribe(
+
+    let filterProgram = this.filterName;
+    const payload = { ...this.coursePaginationModel,title:filterProgram };
+  if(this.userGroupIds){
+    payload.userGroupId=this.userGroupIds
+  }
+
+    this.courseService.getAllPrograms(payload,userId).subscribe(
       (response: any) => {
         this.isLoading = false;
         this.programData = response.docs;
@@ -389,16 +399,16 @@ getFilterData(filters?: any) {
   
 
 performSearch() {
-  if(this.searchTerm){
-  this.programData = this.programData?.filter((item: any) =>{
-    const searchList = (item.title).toLowerCase();
-    return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1
-  }
-  );
-  } else {
+  // if(this.searchTerm){
+  // this.programData = this.programData?.filter((item: any) =>{
+  //   const searchList = (item.title).toLowerCase();
+  //   return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1
+  // }
+  // );
+  // } else {
     this.getProgramList();
 
-  }
+  // }
 }
 
 viewActiveProgram(id:string, status: string):void {
