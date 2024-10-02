@@ -57,6 +57,8 @@ export class ActiveCoursesComponent {
   selection = new SelectionModel<MainCategory>(true, []);
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   view = false;
+  filterName: string = '';
+  userGroupIds: string = '';
 
   constructor(
     public _courseService: CourseService,
@@ -91,8 +93,13 @@ export class ActiveCoursesComponent {
   }
   getAllCourse() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    let filterProgram = this.filterName;
+    const payload = { ...this.coursePaginationModel,title:filterProgram,status: 'active' };
+  if(this.userGroupIds){
+    payload.userGroupId=this.userGroupIds
+  }
         this._courseService
-      .getAllCourses(userId,{ ...this.coursePaginationModel, status: 'active' })
+      .getAllCourses(userId,payload)
       .subscribe((response) => {
         this.courseData = response.data.docs;
         this.totalItems = response.data.totalDocs;
@@ -228,16 +235,16 @@ export class ActiveCoursesComponent {
     doc.save('Approved Courses-list.pdf');
   }
   performSearch() {
-    if (this.searchTerm) {
-      this.courseData = this.courseData?.filter(
-        (item: any) => {
-          const searchList = item.title.toLowerCase();
-          return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1;
-        }
-      );
-    } else {
+    // if (this.searchTerm) {
+    //   this.courseData = this.courseData?.filter(
+    //     (item: any) => {
+    //       const searchList = item.title.toLowerCase();
+    //       return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1;
+    //     }
+    //   );
+    // } else {
       this.getAllCourse();
-    }
+    // }
   }
   private refreshTable() {
     this.paginator._changePageSize(this.paginator.pageSize);

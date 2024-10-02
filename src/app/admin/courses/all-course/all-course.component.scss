@@ -203,7 +203,7 @@ input[type="file"]::file-selector-button {
 .file-input {
   /* This hides the default file input label */
   color: transparent;
-  width: 100%;
+  // width: 100%;
 }
 
 .file-input::file-selector-button {
@@ -243,3 +243,20 @@ input[type="file"]::file-selector-button {
 }
 
 
+@media only screen and (max-width: 767px) {
+  .hide-on-mobile {
+    display: none;
+  }
+}
+@media only screen and (max-width: 767px) {
+  .no-justify-mobile {
+    justify-content: flex-start !important; 
+  }
+  
+}
+
+@media only screen and (max-width: 767px) {
+  .overflow-y {
+    overflow-y: auto;
+  }
+}

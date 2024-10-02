@@ -9,9 +9,9 @@
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin: auto;">
         <div class="card">
           <div class="materialTableHeader">
-            <div class="right">
+            <div class="">
               
-              <ul class="tbl-export-btn">
+              <ul class="tbl-export-btn mt-5">
                 <li>
                   <ul class="header-buttons-left ms-0">
                     <li class="tbl-search-box">
@@ -21,32 +21,37 @@
                     </li>
                   </ul>
                 </li>
-                <li class="tbl-header-btn"  *ngIf="isAnyRowSelected()">
-                  <div class="m-l-10" matTooltip="ADD">
-                    <button mat-raised-button id="submit" (click)="enableExam()">Enable Exam</button>
-                  </div>
-                </li>
-                <li class="tbl-header-btn"  *ngIf="isAnyRowSelected()">
-                 
-                  <div class="m-l-20" matTooltip="ADD">
-                    <button  mat-raised-button id="submit" (click)="enableMultipleCertificates()" [disabled]="isGeneratingCertificates"><span class="custom-button-padding">Generate Certificate</span></button>
-                  </div>
-                </li>
-                <li>
-                  <span style="font-weight: bold;">Export as</span>
-                </li>
-                <li>
-                  <div class="export-button m-l-10" matTooltip="XLSX">
-                    <img src="assets/excel.svg" alt="" (click)=" exportExcel()">
-                  </div>
-                </li>
-                <li>
-                  <div class="export-button m-l-10" matTooltip="PDF">
-                    <img src="assets/pdf (1).svg" alt="" (click)="generatePdf()" />
-                  </div>
-                </li>
-              </ul>
-            </div>
+                </ul>
+                </div>
+                <div class="right">
+                  <ul  class="tbl-export-btn">
+                    <li class="tbl-header-btn"  *ngIf="isAnyRowSelected()">
+                      <div class="m-l-10" matTooltip="ADD">
+                        <button mat-raised-button id="submit" (click)="enableExam()">Enable Exam</button>
+                      </div>
+                    </li>
+                    <li class="tbl-header-btn"  *ngIf="isAnyRowSelected()">
+                     
+                      <div class="m-l-20" matTooltip="ADD">
+                        <button  mat-raised-button id="submit" (click)="enableMultipleCertificates()" [disabled]="isGeneratingCertificates"><span class="custom-button-padding">Generate Certificate</span></button>
+                      </div>
+                    </li>
+                    <li>
+                      <span style="font-weight: bold;">Export as</span>
+                    </li>
+                    <li>
+                      <div class="export-button m-l-10" matTooltip="XLSX">
+                        <img src="assets/excel.svg" alt="" (click)=" exportExcel()">
+                      </div>
+                    </li>
+                    <li>
+                      <div class="export-button m-l-10" matTooltip="PDF">
+                        <img src="assets/pdf (1).svg" alt="" (click)="generatePdf()" />
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              
           </div>
           <div class="body overflow-auto">
             <div class="responsive_table">

@@ -56,6 +56,8 @@ export class StudentPendingListComponent {
   searchTerm:string = '';
   commonRoles: any;
   view = false;
+  filterName: string = '';
+  userGroupIds: string = '';
 
   upload() {
     document.getElementById('input')?.click();
@@ -67,6 +69,7 @@ export class StudentPendingListComponent {
     private utils:UtilsService) {
     // this.displayedColumns = ["title", "studentName", "classStartDate", "classEndDate",  "action"];
     this.studentPaginationModel = {} as StudentPaginationModel;
+
   }
 
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
@@ -92,12 +95,17 @@ export class StudentPendingListComponent {
 
   getRegisteredClasses() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    let filterProgram = this.filterName;
+    const payload = { ...this.coursePaginationModel,title:filterProgram };
+  if(this.userGroupIds){
+    payload.userGroupId=this.userGroupIds
+  }
     this.classService
-      .getProgramRegisteredClasses(this.studentPaginationModel.page, this.studentPaginationModel.limit,this.studentPaginationModel.filterText,userId)
-      .subscribe((response: { data: StudentPaginationModel; }) => {
+      .getProgramRegisteredClasse(userId,payload)
+      .subscribe((response: { data: CoursePaginationModel; }) => {
         this.isLoading = false;
         // 
-        this.studentPaginationModel = response.data;
+        this.coursePaginationModel = response.data;
       this.dataSource = response.data.docs;
       this.totalPages = response.data.totalDocs;
       })
@@ -154,17 +162,17 @@ export class StudentPendingListComponent {
   }
 
   performSearch() {
-    if(this.searchTerm){
-    this.dataSource = this.dataSource?.filter((item: any) =>{
-      const searchList = (item.classId.courseId?.title + item.studentId?.name).toLowerCase()
-      return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1
-    }
+    // if(this.searchTerm){
+    // this.dataSource = this.dataSource?.filter((item: any) =>{
+    //   const searchList = (item.classId.courseId?.title + item.studentId?.name).toLowerCase()
+    //   return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1
+    // }
 
-    );
-    } else {
+    // );
+    // } else {
       this.getRegisteredClasses();
 
-    }
+    // }
   }
   Status(element: Student, status:string) {
     let item: StudentApproval = {

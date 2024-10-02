@@ -46,7 +46,7 @@ user!:string;
 this.getAllStudents();
 this.formatAMPM(new Date)
 this. getDetailedAboutTickets();
-this.listOfTicket();
+// this.listOfTicket();
   }
 
    formatAMPM(date: { getHours: () => any; getMinutes: () => any; }) {
@@ -73,6 +73,7 @@ this.listOfTicket();
   getDetailedAboutTickets(){
    this.supportService.getTicketById(this.chatId).subscribe(res =>{
  this.dataToUpdate = res;
+
   this.source = res.messages;
  this.user = res.messages[0].role;
  
@@ -82,19 +83,45 @@ this.listOfTicket();
   cancel(){
     window.history.back()
   }
+
  update(){
-  this.dataToUpdate.messages[0].status="closed";
-  let data=this.dataToUpdate.messages;
+  console.log("mdsmd",this.dataToUpdate)
+  let data = { ...this.dataToUpdate.messages, status: "closed" };
   this.id=this.dataToUpdate.id;
-  this.supportService.updateChat(this.id,data).subscribe(res =>{
-  })
-}
-listOfTicket() {
-  this.supportService.getAllTickets({ ...this.coursePaginationModel }).subscribe((res) => {
-    this.dataSource = res.data.docs;
-    this.totalTickets = this.dataSource.length;
+  console.log("chant",data);
+
+
+  Swal.fire({
+    title: 'Are you sure?',
+    text: 'Do you want to close this ticket!',
+    icon: 'warning',
+    confirmButtonText: 'Yes',
+    showCancelButton: true,
+    cancelButtonColor: '#d33',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.supportService.updateChat(this.id,data).subscribe(res =>{
+          Swal.fire({
+            title: 'Success',
+            text: 'Ticket closed successfully.',
+            icon: 'success',
+          });
+          this.router.navigate(['/dashboard/dashboard'])
+        },
+        (error) => {
+          Swal.fire({
+            title: 'Error',
+            text: 'Ticket not closed. Please try again.',
+            icon: 'error',
+          });
+        }
+      );
+    
+    }
   });
+
 }
+
 delete(){
 
   Swal.fire({
@@ -110,7 +137,7 @@ delete(){
     if (result.isConfirmed) {
   this.supportService.deleteTicket(this.chatId).subscribe(res =>{
     window.history.back();
-    this.listOfTicket();
+    // this.listOfTicket();
   })
 }
 });

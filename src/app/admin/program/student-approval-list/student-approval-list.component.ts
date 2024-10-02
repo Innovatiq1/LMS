@@ -52,6 +52,8 @@ export class StudentApprovalListComponent {
   searchTerm:string = '';
   commonRoles: any;
   view = false;
+  filterName:string = '';
+  userGroupIds: string = '';
 
   upload() {
     document.getElementById('input')?.click();
@@ -87,12 +89,17 @@ export class StudentApprovalListComponent {
 
   getRegisteredClasses() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    let filterProgram = this.filterName;
+    const payload = { ...this.coursePaginationModel,title:filterProgram };
+  if(this.userGroupIds){
+    payload.userGroupId=this.userGroupIds
+  }
     this.classService
-      .getApprovedProgramClasses(this.studentPaginationModel.page, this.studentPaginationModel.limit,userId)
-      .subscribe((response: { data: StudentPaginationModel; }) => {
+      .getApprovedProgramClasse(userId,payload)
+      .subscribe((response: { data: CoursePaginationModel; }) => {
         this.isLoading = false;
         // 
-        this.studentPaginationModel = response.data;
+        this.coursePaginationModel = response.data;
       this.dataSource = response.data.docs;
       this.totalPages = response.data.totalDocs;
       })
