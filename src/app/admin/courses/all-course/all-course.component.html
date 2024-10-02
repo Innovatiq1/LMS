@@ -60,7 +60,7 @@
                           </div>
                         </li> -->
                         <li>
-                          <div class="upload-btn m-l-10" matTooltip="Bulk Upload">
+                          <div class="upload-btn" matTooltip="Bulk Upload">
                             <input 
                               type="file" 
                               (change)="onBulkUpload($event)" 
@@ -249,7 +249,7 @@
                             </mat-cell>
                           </ng-container>
                           <ng-container matColumnDef="Fees">
-                            <mat-header-cell *matHeaderCellDef  >Fee
+                            <mat-header-cell *matHeaderCellDef class="payment-cell1">Fee
                             </mat-header-cell>
                             <mat-cell *matCellDef="let row" (click)="view ? viewCourse(row.id) : null"
                               class="amount"> <span class="mobile-label">Payment:</span><span>$</span> {{row.fee

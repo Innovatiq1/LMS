@@ -51,7 +51,7 @@
                 <ng-container matColumnDef="name">
                   <mat-header-cell *matHeaderCellDef >Program</mat-header-cell>
                   <mat-cell class="name" *matCellDef="let row" (click)="view ? viewInActiveProgram(row.id) : null"><span
-                      class="mobile-label">Program Name:</span> <span class=" col-cyan">{{row.title |titlecase}}</span>
+                      class="mobile-label">Program Name:</span> <span >{{row.title |titlecase}}</span>
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="status">

@@ -237,7 +237,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       course_kit: new FormControl('', [Validators.required]),
       vendor: new FormControl('',[Validators.required, Validators.maxLength(100)]),
       isFeedbackRequired: new FormControl(null, [Validators.required]),
-      examType: new FormControl('', [ ]),
+      examType: new FormControl('', [Validators.required]),
       issueCertificate: new FormControl('', [Validators.required]),
       certificate_temp: new FormControl(null, [Validators.required]),
     });
