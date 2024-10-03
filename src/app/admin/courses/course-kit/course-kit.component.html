@@ -71,7 +71,8 @@
                 <ng-container matColumnDef="Media Link" >
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Media Link
                   </mat-header-cell>
-                  <mat-cell *matCellDef="let row" >
+                  <mat-cell *matCellDef="let row">
+                    <ng-container *ngIf="row.videoLink && row.videoLink.length">
                     <span class="mobile-label">Media Link:</span>
                     <a class="vl-container" *ngFor="let video of row.videoLink; let i = index"
                     href="javaScript:void(0)"
@@ -80,6 +81,7 @@
                   </a>
                     <img   style="display: inline; float: right;margin-left: -30px;" src="/assets/video-icon.svg"
                     alt="">
+                    </ng-container>
                    </mat-cell>
                 </ng-container>
                 <!-- Document Link -->
