@@ -114,7 +114,7 @@ export class PendingProgramsComponent {
 
   getProgramList(filters?: any) {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-    this.courseService.getCourseProgram({...this.coursePaginationModel,status:'inactive'},userId).subscribe(
+    this.courseService.getCourseProgram(userId,{...this.coursePaginationModel,status:'inactive'}).subscribe(
       (response: any) => {
         this.totalItems = response.totalDocs;
         this.dataSource = response.docs;

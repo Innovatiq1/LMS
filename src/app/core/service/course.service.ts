@@ -157,7 +157,7 @@ private tpUrl=environment.Url;
     return this._Http.post<any>(apiUrl, payload).pipe(map((response) => response));
   }
 
-  getCourseProgram(filter?: Partial<Program>,id?:any): Observable<ApiResponse> {
+  getCourseProgram(id?:any,filter?: Partial<Program>,): Observable<ApiResponse> {
     const apiUrl = `${this.prefix}admin/courseprogram?companyId=${id}`;
     return this._Http
       .get<ApiResponse>(apiUrl, { params: this.buildParams(filter)})
