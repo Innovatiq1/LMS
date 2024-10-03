@@ -304,7 +304,7 @@ applyFilter() {
       this.coursePaginationModel.page = response.data.page;
       this.coursePaginationModel.limit = response.data.limit;
       this.coursePaginationModel.totalDocs = response.data.totalDocs;
-      this.filter = true;  
+      this.filter = false;  
     });
 }
 
