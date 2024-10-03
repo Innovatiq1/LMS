@@ -28,18 +28,22 @@ export class ChatbotComponent {
   ngOnInit() {}
 
   onIconClick() {
-    this.messages=[];
-    this.initialLoad = [];
-    this.emailId = '';
-    this.mainval = '';
-    this.userMsg = '';
-    this.email = false;
-    this.msgInput.nativeElement.value = '';
     this.showBotSubject = !this.showBotSubject;
-    this.messages.push({ type: '', text: '' });
   
-    
+    if (!this.showBotSubject) {
+      this.clearMessages(); // Clear messages when the bot is closed
+      this.clearInitialLoad(); // Clear initial load when the bot is closed
+    }
   }
+  
+  clearMessages() {
+    this.messages = [];
+  }
+  
+  clearInitialLoad() {
+    this.initialLoad = []; 
+  }
+  
 
   onBotSubjectSubmit() {
     this.showBotSubject = false;
@@ -75,8 +79,8 @@ export class ChatbotComponent {
     this.messages.push(userMsg);
     console.log(this.emailId); 
 
-    if (this.emailId) {
-      this.initialLoad = ['Courses', 'Programs','Login','Signup','Others'];
+    if (this.emailId && this.initialLoad.length === 0) {
+      this.initialLoad = ['Courses', 'Programs', 'Login', 'Signup', 'Others']; 
     }
     if(this.initialLoad){
       switch (val) {
