@@ -35,6 +35,7 @@ export class SupportComponent implements OnInit {
   ];
   resolved: any;
   pending: any;
+  openData: any;
   constructor(private ticketService: SupportService, public router: Router) {
     //constructor
     this.coursePaginationModel = {};
@@ -53,6 +54,7 @@ export class SupportComponent implements OnInit {
    getCount() {
     this.ticketService.getCount().subscribe(response => {
       this.count = response?.data;
+      console.log(this.count);
       this.resolved=this.count?.resolved;
       this.pending=this.count?.pending;
     })
@@ -68,6 +70,18 @@ export class SupportComponent implements OnInit {
       this.coursePaginationModel.limit = res.data.limit;
       this.coursePaginationModel.totalDocs = res.data.totalDocs;
     });
+  }
+
+  getfilterd(status:string) {
+    
+
+    if (status === 'open') {
+      this.openData = this.dataSource.filter((data: { status: string; }) => data.status === 'open')
+    }
+    if (status === 'closed') {
+      this.openData = this.dataSource.filter((data: { status: string; }) => data.status === 'closed')
+    }
+    this.router.navigate(['apps/list-of-tickets'],{queryParams:{data:JSON.stringify(this.openData)}})
   }
 
   view(id: any) {

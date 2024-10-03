@@ -530,7 +530,7 @@
               </button>
             </div>
             <div class="col-md-2 mb-3" *ngIf="!response.examAssessmentAnswer&& response.assessmentAnswer && !response.isExamAssigned">
-             <button mat-raised-button color="primary" (click)="assignExam()">
+             <button mat-raised-button id="submit" (click)="assignExam()">
               Enable Exam
              </button> 
             </div>

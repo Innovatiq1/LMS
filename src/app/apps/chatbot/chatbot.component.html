@@ -16,7 +16,12 @@
       <div class="Messenger_content">
         <div class="Messages">
 					<div class="Messages_list">
-            <div class="msg bot">
+            <div class="msg bot" *ngIf="!emailId">
+              <span class="avtr"><figure style="background-image: url(../../../assets/images/bot.png)"></figure></span>
+               <span class="responsText d-flex gap-1 flex-wrap" ><span class="text-black">Please provide a valid email to proceed.</span>
+              </span>
+            </div>
+            <div class="msg bot" *ngIf="emailId">
               <span class="avtr"><figure style="background-image: url(../../../assets/images/bot.png)"></figure></span>
                <span class="responsText d-flex gap-1 flex-wrap" ><span class="text-black">Which area do you want to know for sure?</span>
                   <button class="badge badge-solid-green" *ngFor="let item of initialLoad" (click)="chooseIssues(item)">{{item}}</button>
@@ -67,4 +72,3 @@
       </div>
     </div>
   </div>
-

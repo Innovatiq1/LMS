@@ -15,25 +15,25 @@
                   <div class="info-box7-block">
                     <h4 class="m-b-20">Total Tickets</h4>
                     <h2 class="text-end"><i class="fas fa-ticket-alt float-start"></i><span>{{totalTickets}}</span></h2>
-                    <p class="m-b-0">18% Higher Then Last Month</p>
+                    <!-- <p class="m-b-0">18% Higher Then Last Month</p> -->
                   </div>
                 </div>
               </div>
               <div class="col-lg-4 col-sm-6">
                 <div class="info-box7 bg-c-yellow order-info-box7">
-                  <div class="info-box7-block">
+                  <div class="info-box7-block" style="cursor: pointer;" (click)="getfilterd('closed')">
                     <h4 class="m-b-20">Resolve</h4>
                     <h2 class="text-end"><i class="fas fa-clipboard-check float-start"></i><span>{{resolved}}</span></h2>
-                    <p class="m-b-0">37% Higher Then Last Month</p>
+                    <!-- <p class="m-b-0">37% Higher Then Last Month</p> -->
                   </div>
                 </div>
               </div>
               <div class="col-lg-4 col-sm-6">
                 <div class="info-box7 bg-c-pink order-info-box7">
-                  <div class="info-box7-block">
+                  <div class="info-box7-block" (click)="getfilterd('open')"  style="cursor: pointer;" >
                     <h4 class="m-b-20">Pending</h4>
                     <h2 class="text-end"><i class="fas fa-clipboard-list float-start"></i><span>{{pending}}</span></h2>
-                    <p class="m-b-0">10% Higher Then Last Month</p>
+                    <!-- <p class="m-b-0">10% Higher Then Last Month</p> -->
                   </div>
                 </div>
               </div>
@@ -46,28 +46,28 @@
                 </ng-container>
                 <ng-container matColumnDef="ticket">
                   <th mat-header-cell *matHeaderCellDef width="8%"> Tickets </th>
-                  <td mat-cell *matCellDef="let element" (click)="view(element.id)"> {{element.messages[0].text}} </td>
+                  <td mat-cell *matCellDef="let element" (click)="view(element.id)"> {{element.messages[1].text}} </td>
                 </ng-container>
                 <ng-container matColumnDef="status">
                   <th mat-header-cell *matHeaderCellDef width="8%"> Status </th>
                   <td mat-cell *matCellDef="let element" (click)="view(element.id)">
-                    <div *ngIf="element.messages[0].status==='open'">
+                    <div *ngIf="element.status==='open'">
                       <span class="badge badge-solid-red">
                         <span
-                        [class]="element.messages[0].status==='open' ? 'status-red' : ''"></span>
-                        {{element.messages[0].status | titlecase}}</span>
+                        [class]="element.status==='open' ? 'status-red' : ''"></span>
+                        {{element.status | titlecase}}</span>
                     </div>
-                    <div *ngIf="element.messages[0].status==='closed'">
+                    <div *ngIf="element.status==='closed'">
                       <span class="badge badge-solid-green">
                         <span
-                        [class]="element.messages[0].status==='closed' ? 'status-dot' : ''"></span>
-                        {{element.messages[0].status | titlecase}}</span>
+                        [class]="element.status==='closed' ? 'status-dot' : ''"></span>
+                        {{element.status | titlecase}}</span>
                     </div>
-                    <div *ngIf="element.messages[0].status==='pending'">
+                    <div *ngIf="element.status==='pending'">
                       <span class="badge badge-solid-orange">
                         <span
-                        [class]="element.messages[0].status==='pending' ? 'status-orange' : ''"></span>
-                        {{element.messages[0].status | titlecase}}</span>
+                        [class]="element.status==='pending' ? 'status-orange' : ''"></span>
+                        {{element.status | titlecase}}</span>
                     </div>
                   </td>
                 </ng-container>

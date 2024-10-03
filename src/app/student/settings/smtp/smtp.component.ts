@@ -51,12 +51,14 @@ export class SmtpComponent implements OnInit {
   update() {
     if (this.smtpForm.valid) {
       const smtpData = this.smtpForm.value;
+      let companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
       let payload = {
         emailFrom: smtpData?.email,
         emailUsername: smtpData?.user,
         emailHost: smtpData?.host,
         emailPort: smtpData?.port,
         emailPassword: smtpData?.password,
+        companyId:companyId
       };
 
       Swal.fire({
@@ -85,7 +87,8 @@ export class SmtpComponent implements OnInit {
   }
 
   getData() {
-    this.settingsService.getSmtp().subscribe((response: any) => {
+    let companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    this.settingsService.getSmtp({companyId}).subscribe((response: any) => {
       this.smtp = response.data.docs[0];
       this.id = response.data.docs[0]._id;
       this.smtpForm.patchValue({

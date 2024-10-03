@@ -7,4 +7,7 @@ import { Component } from '@angular/core';
 })
 export class SingpassLoginPageComponent {
 
+  back(){
+   window.history.back();
+  }
 }

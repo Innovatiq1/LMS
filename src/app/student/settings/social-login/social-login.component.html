@@ -1,0 +1,252 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header" *ngFor="let breadscrum of breadscrums">
+      <!-- breadcrumb -->
+      <app-breadcrumb
+        [title]="breadscrum.title"
+        [items]="breadscrum.items"
+        [active_item]="breadscrum.active"
+      >
+      </app-breadcrumb>
+    </div>
+    <div class="row clearfix">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+        <div class="card m-auto">
+          <div class="header">
+            <h2>Social Login Keys</h2>
+          </div>
+          <div class="body">
+            <mat-tab-group>
+              <mat-tab>
+                <ng-template mat-tab-label> Gmail </ng-template>
+                <div class="card mt-3">
+                  <div class="body overflow-auto">
+                    <form [formGroup]="gmailForm">
+                      <div class="example-container mt-3">
+                        <div class="row clearfix mt-3">
+                          <div class="col-9">
+                            <label
+                              >Client ID<span class="mandatory"
+                                >&nbsp;*</span
+                              ></label
+                            >
+                            <mat-form-field
+                              class="example-full-width"
+                              appearance="outline"
+                            >
+                              <input
+                                matInput
+                                [type]="hide ? 'password' : 'text'"
+                                formControlName="clientId"
+                              />
+                              <a
+                                href="#"
+                                onClick="return false;"
+                                matSuffix
+                                (click)="hide = !hide"
+                                [attr.aria-label]="'Hide password'"
+                                [attr.aria-pressed]="hide"
+                              >
+                                <mat-icon
+                                  class="material-icons-two-tone color-icon m-3"
+                                  matSuffix
+                                >
+                                  {{
+                                    hide ? "visibility_off" : "visibility"
+                                  }}</mat-icon
+                                >
+                              </a>
+                              <mat-error
+                                *ngIf="
+                                  gmailForm.get('clientId')?.invalid &&
+                                  gmailForm.get('clientId')?.touched
+                                "
+                              >
+                                {{
+                                  utils.getErrorMessage1(
+                                    gmailForm.get("clientId"),
+                                    "clientId"
+                                  )
+                                }}
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row" style="float: right">
+                        <div
+                          class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2"
+                        >
+                         
+                          <button
+                            mat-raised-button
+                            id="submit"
+                            (click)="updateGmailKeys()"
+                          >
+                            Update
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </mat-tab>
+              <mat-tab>
+                <ng-template mat-tab-label> LinkedIn </ng-template>
+                <div class="card mt-3">
+                  <div class="body overflow-auto">
+                    <form [formGroup]="linkedinForm">
+                      <div class="example-container mt-3">
+                     
+                        <div class="row clearfix mt-3">
+                            <div class="col-6">
+                                <label
+                                  >Client ID<span class="mandatory"
+                                    >&nbsp;*</span
+                                  ></label
+                                >
+                                <mat-form-field
+                                  class="example-full-width"
+                                  appearance="outline"
+                                >
+                                  <input
+                                    matInput
+                                    type="text'"
+                                    formControlName="clientId"
+                                  />
+                               
+                                  <mat-error
+                                    *ngIf="
+                                      linkedinForm.get('clientId')?.invalid &&
+                                      linkedinForm.get('clientId')?.touched
+                                    "
+                                  >
+                                    {{
+                                      utils.getErrorMessage1(
+                                        linkedinForm.get("clientId"),
+                                        "clientId"
+                                      )
+                                    }}
+                                  </mat-error>
+                                </mat-form-field>
+                              </div>
+                              <div class="col-6">
+                                <label
+                                  >Client Secret<span class="mandatory"
+                                    >&nbsp;*</span
+                                  ></label
+                                >
+                                <mat-form-field
+                                  class="example-full-width"
+                                  appearance="outline"
+                                >
+                                  <input
+                                    matInput
+                                    [type]="shide ? 'password' : 'text'"
+                                    formControlName="clientSecret"
+                                  />
+                                  <a
+                                    href="#"
+                                    onClick="return false;"
+                                    matSuffix
+                                    (click)="shide = !shide"
+                                    [attr.aria-label]="'Hide password'"
+                                    [attr.aria-pressed]="shide"
+                                  >
+                                    <mat-icon
+                                      class="material-icons-two-tone color-icon m-3"
+                                      matSuffix
+                                    >
+                                      {{
+                                        shide ? "visibility_off" : "visibility"
+                                      }}</mat-icon
+                                    >
+                                  </a>
+                                  <mat-error
+                                    *ngIf="
+                                      linkedinForm.get('clientSecret')?.invalid &&
+                                      linkedinForm.get('clientSecret')?.touched
+                                    "
+                                  >
+                                    {{
+                                      utils.getErrorMessage1(
+                                        linkedinForm.get("clientSecret"),
+                                        "clientSecret"
+                                      )
+                                    }}
+                                  </mat-error>
+                                </mat-form-field>
+                              </div>
+                              <div class="col-8">
+                                <label
+                                  >Redirect URI<span class="mandatory"
+                                    >&nbsp;*</span
+                                  ></label
+                                >
+                                <mat-form-field
+                                  class="example-full-width"
+                                  appearance="outline"
+                                >
+                                  <input
+                                    matInput
+                                    [type]="rhide ? 'password' : 'text'"
+                                    formControlName="redirectUri"
+                                  />
+                                  <a
+                                    href="#"
+                                    onClick="return false;"
+                                    matSuffix
+                                    (click)="rhide = !rhide"
+                                    [attr.aria-label]="'Hide password'"
+                                    [attr.aria-pressed]="rhide"
+                                  >
+                                    <mat-icon
+                                      class="material-icons-two-tone color-icon m-3"
+                                      matSuffix
+                                    >
+                                      {{
+                                        rhide ? "visibility_off" : "visibility"
+                                      }}</mat-icon
+                                    >
+                                  </a>
+                                  <mat-error
+                                    *ngIf="
+                                      linkedinForm.get('redirectUri')?.invalid &&
+                                      linkedinForm.get('redirectUri')?.touched
+                                    "
+                                  >
+                                    {{
+                                      utils.getErrorMessage1(
+                                        linkedinForm.get("redirectUri"),
+                                        "redirectUri"
+                                      )
+                                    }}
+                                  </mat-error>
+                                </mat-form-field>
+                              </div>
+                        </div>
+                      </div>
+                      <div class="row" style="float: right">
+                        <div
+                          class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2"
+                        >
+                          <button
+                            mat-raised-button
+                            id="submit"
+                            (click)="updateLinkedinKeys()"
+                          >
+                            Update
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

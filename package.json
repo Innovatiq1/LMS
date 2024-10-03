@@ -7,7 +7,9 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "ng-high-memory": "node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng build"
+    "ng-high-memory,": "node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng build",
+    "dev": "node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng serve"
+
   },
   "private": true,
   "dependencies": {
@@ -77,6 +79,7 @@
     "pptxgenjs": "^3.12.0",
     "rxjs": "~7.8.1",
     "shortid": "^2.2.16",
+    "signature_pad": "^5.0.3",
     "subsink": "^1.0.2",
     "sweetalert2": "^11.7.20",
     "tslib": "^2.6.1",

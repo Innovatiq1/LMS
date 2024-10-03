@@ -8,6 +8,7 @@ import { BehaviorSubject, Observable, map } from "rxjs";
 import { ClassListingModel, ClassModel, CourseTitleModel, InstructorList, LabListModel, StudentApproval } from "./class.model";
 import { UnsubscribeOnDestroyAdapter } from '@shared';
 import { ApiResponse } from "@core/models/response";
+import { searchData } from "@core/models/class.model";
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +36,7 @@ export class ClassService extends UnsubscribeOnDestroyAdapter {
       if (filter.filterRegisteredCourse) params = params.set("title", filter.filterRegisteredCourse?.toString());
       if (filter.filterApprovedCourse) params = params.set("title", filter.filterApprovedCourse?.toString());
       if (filter.filterCompletedCourse) params = params.set("title", filter.filterCompletedCourse?.toString());
+      if (filter.title) params = params.set("title", filter.title?.toString());
       if (filter.studentId) params = params.set("studentId", filter.studentId);
       if (filter.status) params = params.set("status", filter.status);
       if (filter.department) params = params.set("department", filter.department);
@@ -86,11 +88,24 @@ export class ClassService extends UnsubscribeOnDestroyAdapter {
     const apiUrl = `${this.prefix}admin/studentClasses?status=registered&verify=false&companyId=${id}`;
     return this.http.get<any>(apiUrl, { params: this.buildRegisteredClassesParams(page, limit, filterText) });
   }
-
+  getPendingVerificationLists(id:any, filter?:Partial<CoursePaginationModel>): Observable<any> {
+    const apiUrl = `${this.prefix}admin/studentClasses?status=registered&verify=false&companyId=${id}`;
+    return this.http.get<any>(apiUrl, { params: this.buildParams(filter) });
+  }
   getApprovedClasses(id:any,page: number, limit: number, filterText? : string): Observable<any> {
     const apiUrl = `${this.prefix}admin/studentClasses?status=approved&companyId=${id}`;
     return this.http.get<any>(apiUrl, { params: this.buildRegisteredClassesParams(page, limit, filterText) });
   }
+
+  getApprovedClasse(id:any, filter?:Partial<CoursePaginationModel>): Observable<any> {
+    const apiUrl = `${this.prefix}admin/studentClasses?status=approved&companyId=${id}`;
+    return this.http.get<any>(apiUrl, { params: this.buildParams(filter) });
+  }
+  getRegisteredClasse(id:any, filter?:Partial<CoursePaginationModel>): Observable<any> {
+    const apiUrl = `${this.prefix}admin/studentClasses?companyId=${id}&status=registered&verify=true&paid=true`;
+    return this.http.get<any>(apiUrl, { params: this.buildParams(filter) });
+  }
+  
   getAttendedStudents(body:any): Observable<any> {
     const apiUrl = `${this.prefix}admin/studentClasses?status=approved&course=${body.course}`;
     return this.http.get<any>(apiUrl);
@@ -229,6 +244,8 @@ getProgramCompletedStudent(page: number, limit: number,id?:any): Observable<any>
   return this.http.get<any>(apiUrl, { params: this.buildRegisteredClassesParams(page, limit) });
 }
 
+
+
 getProgramRegisteredClasses(page: number, limit: number, filterText? : string,id?:any): Observable<any> {
   const apiUrl = `${this.prefix}admin/studentClasses/studentApproveList?status=registered&companyId=${id}`;
   return this.http.get<any>(apiUrl, { params: this.buildRegisteredClassesParams(page, limit, filterText) });
@@ -236,6 +253,19 @@ getProgramRegisteredClasses(page: number, limit: number, filterText? : string,id
 getApprovedProgramClasses(page: number, limit: number,id:any, filterText? : string): Observable<any> {
   const apiUrl = `${this.prefix}admin/studentClasses/studentApproveList?status=approved&companyId=${id}`;
   return this.http.get<any>(apiUrl, { params: this.buildRegisteredClassesParams(page, limit, filterText) });
+}
+getApprovedProgramClasse(id:any, filter?:Partial<CoursePaginationModel>): Observable<any> {
+  const apiUrl = `${this.prefix}admin/studentClasses/studentApproveList?status=approved&companyId=${id}`;
+  return this.http.get<any>(apiUrl, { params: this.buildParams(filter) });
+}
+getProgramsCompletedStudent(id:any, filter?:Partial<CoursePaginationModel>): Observable<any> {
+  const apiUrl = `${this.prefix}admin/studentClasses/students/Fellowship/completed?companyId=${id}`;
+  return this.http.get<any>(apiUrl, { params: this.buildParams(filter) });
+}
+
+getProgramRegisteredClasse(id:any, filter?:Partial<CoursePaginationModel>): Observable<any> {
+  const apiUrl = `${this.prefix}admin/studentClasses/studentApproveList?status=registered&companyId=${id}`;
+  return this.http.get<any>(apiUrl, { params: this.buildParams(filter) });
 }
 getStudentsApprovedClasses(): Observable<any> {
   const apiUrl = `${this.prefix}admin/studentClasses/studentApproveList`;
@@ -306,6 +336,27 @@ return this.http.put<ApiResponse>(apiUrl, data);
 updateProgramCertificateUser(data:any){
   const apiUrl = `${this.prefix}admin/studentClasses/program/certificate`;
   return this.http.put<ApiResponse>(apiUrl, data);
+}
+
+scheduleZoomMeeting (data:searchData){
+  const apiUrl = `${this.prefix}admin/zoom/scheduleMeeting`;
+  return this.http.post<ApiResponse>(apiUrl, data);
+}
+getZoomToken(token:any):Observable<any>{
+  const apiUrl = `${this.prefix}admin/zoom/token`;
+  return this.http.get<any>(apiUrl,token);
+}
+updateZoomMeetingForPurticularDays(date:any,id:any,duration:any):Observable<any>{
+  const apiUrl = `${this.prefix}admin/zoom/scheduleMeeting/update`;
+  return this.http.post<ApiResponse>(apiUrl, {date,id,duration});
+}
+deleteZoomMeetingForPurticularDay(date:any,id:any):Observable<any>{
+  const apiUrl = `${this.prefix}admin/zoom/scheduleMeeting/delete`;
+  return this.http.post<ApiResponse>(apiUrl, {date,id});
+}
+getClassRecordings(id:any):Observable<any>{
+  const apiUrl = `${this.prefix}admin/zoom/recording/list`;
+  return this.http.get<ApiResponse>(apiUrl, {params: {classId: id}});
 }
 
 }

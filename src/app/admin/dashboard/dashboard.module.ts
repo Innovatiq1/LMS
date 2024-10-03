@@ -21,6 +21,8 @@ import { CorpManagerListComponent } from './corp-manager-list/corp-manager-list.
 import { CorpStaffListComponent } from './corp-staff-list/corp-staff-list.component';
 import { ChartCourseViewComponent } from './chart-course-view/chart-course-view.component';
 import { ManagersPieChartComponent } from './managers-pie-chart/managers-pie-chart.component';
+import { CourseViewManagerComponent } from './course-view-manager/course-view-manager.component';
+import { OfficersListComponent } from './ceo-dashboard/officers-list/officers-list.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,9 @@ import { ManagersPieChartComponent } from './managers-pie-chart/managers-pie-cha
     CorpManagerListComponent,
     CorpStaffListComponent,
     ChartCourseViewComponent,
-    ManagersPieChartComponent
+    ManagersPieChartComponent,
+    CourseViewManagerComponent,
+    OfficersListComponent,
   ],
   imports: [
     CommonModule,

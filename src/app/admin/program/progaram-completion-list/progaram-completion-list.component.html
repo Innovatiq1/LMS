@@ -9,34 +9,41 @@
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
           <div class="materialTableHeader">
-            <div class="right">
-              <ul class="tbl-export-btn">
+            <div class="">
+              <ul class="tbl-export-btn mt-2">
                 <li>
                   <ul class="header-buttons-left ms-0">
                     <li class="tbl-search-box">
                       <label for="search-input"><i class="material-icons search-icon">search</i></label>
                       <input placeholder="Search" type="text" #filter class="browser-default search-field"
-                        aria-label="Search box" [(ngModel)]="searchTerm" class="browser-default search-field"  (keyup)="performSearch()">
+                        aria-label="Search box" [(ngModel)]="filterName" class="browser-default search-field"  (keyup)="performSearch()">
                     </li>
                   </ul>
                 </li>
-                <li class="tbl-header-btn"  *ngIf="isAnyRowSelected()">
+                </ul>
+                </div>
+                <div class="right">
+                  <ul class="tbl-export-btn">
+                    <li class="tbl-header-btn"  *ngIf="isAnyRowSelected()">
                  
-                  <div class="m-l-20" matTooltip="ADD">
-                    <button  mat-raised-button id="submit" (click)="enableMultipleCertificates()" [disabled]="isGeneratingCertificates" ><span class="custom-button-padding">Generate Certificate</span></button>
-                  </div>
-                </li>
-                <li>
-                  <div class="export-button m-l-10" matTooltip="XLSX">
-                      <img src="assets/excel.svg" (click)="exportExcel()"alt="" />
-                  </div>
-              </li>
-              <li>
-                  <div class="export-button m-l-10" matTooltip="PDF">
-                      <img src="assets/pdf (1).svg" alt=""(click)="generatePdf()"/>
-                  </div>
-              </li>
-              </ul>
+                      <div class="m-l-20" matTooltip="ADD">
+                        <button  mat-raised-button id="submit" (click)="enableMultipleCertificates()" [disabled]="isGeneratingCertificates" ><span class="custom-button-padding">Generate Certificate</span></button>
+                      </div>
+                    </li>
+                    <li>
+                      <span style="font-weight: bold;">Export as</span>
+                    </li>
+                    <li>
+                      <div class="export-button m-l-10" matTooltip="XLSX">
+                          <img src="assets/excel.svg" (click)="exportExcel()"alt="" />
+                      </div>
+                  </li>
+                  <li>
+                      <div class="export-button m-l-10" matTooltip="PDF">
+                          <img src="assets/pdf (1).svg" alt=""(click)="generatePdf()"/>
+                      </div>
+                  </li>
+                  </ul>
             </div>
           </div>
           <div class="body overflow-auto">
@@ -58,13 +65,13 @@
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="Student Name">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>{{commonRoles.STUDENT_ROLE}}
+                  <mat-header-cell *matHeaderCellDef >{{commonRoles.STUDENT_ROLE}}
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row" class="name" [routerLink]="view ? ['/admin/program/view-completion-list/',row.id] : null">
                     <span class="mobile-label">Student Name:</span> {{row.student_name | capitalizeFirstLetter}}</mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="email">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef >Email</mat-header-cell>
                   <mat-cell *matCellDef="let row" [routerLink]="view ? ['/admin/program/view-completion-list/',row.id] : null">
                     <span class="mobile-label">Email:</span>
                     <img src="assets/images/gmail.png" alt="Email Icon" class="email-icon">
@@ -72,7 +79,7 @@
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="Program Name">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>Program</mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef >Program</mat-header-cell>
                   <mat-cell *matCellDef="let row" [routerLink]="view ? ['/admin/program/view-completion-list/',row.id] : null">
                     <span class="mobile-label">Program Name:</span>{{row.programTitle | capitalizeFirstLetter}} </mat-cell>
                 </ng-container>
@@ -80,7 +87,7 @@
                 
                 <!-- Start date -->
                 <ng-container matColumnDef="Class Start Date">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>Start Date
+                  <mat-header-cell *matHeaderCellDef >Start Date
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row" [routerLink]="view ? ['/admin/program/view-completion-list/',row.id] : null">
                     <span class="mobile-label">Class Start Date:</span>{{row?.classId?.sessions[0]?.sessionStartDate |date}} </mat-cell>
@@ -88,14 +95,14 @@
 
                 <!-- Enddate -->
                 <ng-container matColumnDef="Class End Date">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>End Date
+                  <mat-header-cell *matHeaderCellDef >End Date
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row" [routerLink]="view ? ['/admin/program/view-completion-list/',row.id] : null">
                     <span class="mobile-label">Class End Date:</span>{{row?.classId?.sessions[0]?.sessionEndDate |date}} </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="Registered Date">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>Registered Date
+                  <mat-header-cell *matHeaderCellDef >Registered Date
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row" [routerLink]="view ? ['/admin/program/view-completion-list/',row.id] : null">
                     <span class="mobile-label">Registered Date:</span>{{row.registeredOn | date}} </mat-cell>
@@ -103,7 +110,7 @@
 
                 <!-- Enddate -->
                 <ng-container matColumnDef="Completed Date">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>Completed Date
+                  <mat-header-cell *matHeaderCellDef >Completed Date
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row" [routerLink]="view ? ['/admin/program/view-completion-list/',row.id] : null">
                     <span class="mobile-label">Completed Date:</span>{{row.updatedAt | date}} </mat-cell>
@@ -113,6 +120,7 @@
                 <ng-container matColumnDef="actions">
                   <mat-header-cell *matHeaderCellDef class="pr-0">Actions</mat-header-cell>
                   <mat-cell *matCellDef="let row; let i=index;" class="mat-column-actions pr-0">
+                    <span class="mobile-label">Actions</span>
                     <div *ngIf="row.certificate">
                       <span class="label l-bg-green shadow-style" mat-raised-button id="issued" >Certificate issued</span>
                     
@@ -123,7 +131,7 @@
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="view">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>View Certificate</mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef >View Certificate</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="openCertificateInNewTab(row.certificateUrl)">
                     <span class="mobile-label">View Certificate</span>
                     <div class="center-icon">

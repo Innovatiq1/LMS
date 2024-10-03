@@ -9,6 +9,8 @@ import { LanguageService } from '@core/service/language.service';
 import { AuthService } from '@core';
 import Swal from 'sweetalert2';
 import { CommonService } from '@core/service/common.service';
+import { AuthenService } from '@core/service/authen.service';
+import { UserService } from '@core/service/user.service';
 @Component({
   selector: 'app-forgot-password',
   templateUrl: './forgot-password.component.html',
@@ -30,7 +32,9 @@ export class ForgotPasswordComponent implements OnInit {
     private router: Router,
     private translate: LanguageService,
     private authService:AuthService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private authenticationService: AuthenService,
+    private userService:UserService
   ) {
 
     let urlPath = this.router.url.split('/')
@@ -72,37 +76,106 @@ export class ForgotPasswordComponent implements OnInit {
 
     }
   }
+  // onSubmit() {
+  //   this.submitted = true;
+  //   if (this.authForm.invalid) {
+
+  //     return;
+  //   } else {
+  //     this.authService.forgotPassword(this.authForm.value).subscribe({next: (res) => {
+  //       if (res) {
+  //         Swal.fire({
+  //           title: 'Email Send Successful',
+  //           text: "We have sent new password to your email successfully.",
+  //           icon: 'success',
+  //         });
+  //         if(this.tmsUrl){
+  //         this.router.navigate(['/authentication/TMS/signin']);
+  //         } else if(this.lmsUrl){
+  //           this.router.navigate(['/authentication/LMS/signin']);
+  //           }
+          
+          
+  //       } else {
+  //       }
+  //     },
+  //     error: (error) => {
+  //       this.error = error;
+  //       this.submitted = false;
+  //     },
+  //   });
+      
+  //   }
+  // }
+
   onSubmit() {
     this.submitted = true;
+  
     if (this.authForm.invalid) {
-
       return;
     } else {
-      this.authService.forgotPassword(this.authForm.value).subscribe({next: (res) => {
-        if (res) {
-          Swal.fire({
-            title: 'Email Send Successful',
-            text: "We have sent new password to your email successfully.",
-            icon: 'success',
-          });
-          if(this.tmsUrl){
-          this.router.navigate(['/authentication/TMS/signin']);
-          } else if(this.lmsUrl){
-            this.router.navigate(['/authentication/LMS/signin']);
+      let formData = this.authForm.getRawValue();
+      this.userService
+      .getCompanyByIdentifierWithoutToken(this.extractedName)
+      .subscribe((res: any) => {
+        let companyId = res[0]?.companyId;
+      this.authenticationService
+        .getUsersByEmail(formData.email.trim(),companyId)
+        .subscribe(
+          (user: any) => {
+            console.log("User fetched:", user);
+  
+            if (user && user.data && user.data[0].isLogin) {
+              let body ={
+                email:this.authForm.value.email,
+                companyId:companyId
+              }
+              
+              this.authService.forgotPassword(body).subscribe({
+                next: (res) => {
+                  if (res) {
+                    Swal.fire({
+                      title: 'Email Send Successful',
+                      text: "We have sent a new password to your email successfully.",
+                      icon: 'success',
+                    });
+                    
+                    if (this.tmsUrl) {
+                      this.router.navigate(['/authentication/TMS/signin']);
+                    } else if (this.lmsUrl) {
+                      this.router.navigate(['/authentication/LMS/signin']);
+                    }
+                  }
+                },
+                error: (err) => {  
+                  console.error('Error sending forgot password request:', err);
+                  this.error = err;  
+                  this.submitted = false;
+                }
+              });
+            } else {
+              // Swal.fire({
+              //   title: 'Action Not Allowed',
+              //   text: "Your account is not yet activated.",
+              //   icon: 'error',
+              // });
+              this.error = "Your account is not yet activated.";
+              this.submitted = false;
             }
-          
-          
-        } else {
-        }
-      },
-      error: (error) => {
-        this.error = error;
-        this.submitted = false;
-      },
-    });
-      
+          },
+          (err) => {  
+            console.error('Error fetching user:', err);
+            this.error = err;  
+            this.submitted = false;
+          }
+        );
+      })
     }
   }
+  
+
+  
+  
   images: string[] = ['/assets/images/login/Learning.jpeg', '/assets/images/login/learning2.jpg', '/assets/images/login/learning4.jpg'];
     currentIndex = 0;
 

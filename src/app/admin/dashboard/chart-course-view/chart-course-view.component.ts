@@ -20,6 +20,7 @@ export class ChartCourseViewComponent {
     },
   ];
   displayedColumns = [
+    'user',
     'name',
     'status',
     'department',
@@ -38,5 +39,6 @@ isLoading: boolean = false;
 
     // Retrieve the records from the service
     this.courseData = this.dataTransferService.getRecords();
+    console.log(this.courseData,"--0ository")
   }
 }

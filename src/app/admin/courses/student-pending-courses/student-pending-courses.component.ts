@@ -18,6 +18,7 @@ import { Router } from '@angular/router';
 import { formatDate } from '@angular/common';
 import { AppConstants } from '@shared/constants/app.constants';
 import { AuthenService } from '@core/service/authen.service';
+import { CoursePaginationModel } from '@core/models/course.model';
 
 @Component({
   selector: 'app-student-pending-courses',
@@ -56,7 +57,9 @@ export class StudentPendingCoursesComponent {
   dataSource!: any;
   commonRoles: any;
   isView = false;
-
+  filterName: any;
+  userGroupIds: any;
+  coursePaginationModel!: Partial<CoursePaginationModel> ;
   constructor(
     public _classService: ClassService,
     private snackBar: MatSnackBar,
@@ -105,8 +108,13 @@ export class StudentPendingCoursesComponent {
 
   getRegisteredClasses() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    let filterProgram = this.filterName;
+    const payload = { ...this.coursePaginationModel,title:filterProgram };
+  if(this.userGroupIds){
+    payload.userGroupId=this.userGroupIds
+  }
         this._classService
-      .getRegisteredClasses(userId,this.studentPaginationModel.page, this.studentPaginationModel.limit, this.studentPaginationModel.filterText)
+      .getRegisteredClasse(userId,payload)
       .subscribe((response: { data: StudentPaginationModel; }) => {
       this.isLoading = false;
         this.studentPaginationModel = response.data;
@@ -227,16 +235,16 @@ export class StudentPendingCoursesComponent {
   
   }
   performSearch() {
-    if(this.searchTerm){
-    this.dataSource = this.dataSource?.filter((item: any) =>{
-      const searchList = (item.classId?.courseId?.title + item.studentId?.name + item.studentId?.last_name).toLowerCase();
-      return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1
-    }
-    );
-    } else {
+    // if(this.searchTerm){
+    // this.dataSource = this.dataSource?.filter((item: any) =>{
+    //   const searchList = (item.classId?.courseId?.title + item.studentId?.name + item.studentId?.last_name).toLowerCase();
+    //   return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1
+    // }
+    // );
+    // } else {
       this.getRegisteredClasses();
 
-    }
+    // }
   }
   private refreshTable() {
     this.paginator._changePageSize(this.paginator.pageSize);

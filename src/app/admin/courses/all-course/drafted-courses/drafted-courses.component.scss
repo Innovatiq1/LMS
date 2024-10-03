@@ -158,12 +158,41 @@ svg{
 ::ng-deep .mat-mdc-tab-body-content{
   overflow-x: hidden !important;
 }
-mat-cell, mat-header-cell{ 
+// mat-header-cell{ 
+//   min-width: 120px !important;
+// }
+// mat-cell{ 
+//   min-width: 130px !important;
+//   padding-right: 30px;
+// }
+// .amount{
+//   padding-right: 50px !important;
+//   // text-align: right!important;
+// }
+// .payment-cell{
+//   padding-right: 50px !important;
+// }
+mat-header-cell{ 
   min-width: 120px !important;
 }
+mat-cell{ 
+  min-width: 130px !important;
+  padding-right: 20px;
+}
 .amount{
-  padding-right: 100px !important;
+  padding-right: 80px !important;
 }
 .payment-cell{
-  padding-right: 110px !important;
+  padding-right: 70px !important;
+}
+
+@media only screen and (max-width: 767px) {
+  .no-justify-mobile {
+    justify-content: flex-start !important; 
+  }
+}
+@media only screen and (max-width: 767px) {
+  .hide-on-mobile {
+    display: none;
+  }
 }

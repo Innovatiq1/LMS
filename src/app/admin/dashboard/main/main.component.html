@@ -14,8 +14,6 @@
       {{commonRoles.STUDENT_ROLE}} Analytics
     </ng-template>
     <div class="row mt-5">
-
-     
         <ng-container *ngFor="let component of dashboard.components">
           <div  *ngIf="component.id === 'total-trainees'" class="col-lg-4 col-md-4 col-sm-12" >
             <div class="card card-statistic-2">
@@ -27,14 +25,14 @@
                   <div>
                     <h5 class="float-end" style="margin-top: 100px;">Total {{commonRoles.STUDENT_ROLE}}s</h5>
                   </div>
-                  <div class="col-green">
+                  <div class="col-green" routerLink="/student/settings/all-user/all-students" style="cursor: pointer;">
                     <h3 class="font-weight-bold float-end mb-0">{{count?.students}}</h3>
                   </div>
                 </div>
               </div>
-              <div class="card-content msl-4 mb-3">
+              <!-- <div class="card-content msl-4 mb-3">
                 <p class="m-b-0 d-flex"><i class="material-icons col-green psr-2">trending_up</i> 10% Higher Than Last Month</p>
-              </div>
+              </div> -->
             </div>
           </div>
         </ng-container>
@@ -43,7 +41,7 @@
           class="col-lg-4 col-md-4 col-sm-12"
             *ngIf="component.id === 'all-courses'"
           >
-            <div class="card card-statistic-2">
+            <div class="card card-statistic-2" >
               <div class="clearfix">
                 <div class="card-icon-only shadow-primary float-start">
                   <img src="assets/images/banner/online-course.png" alt="">
@@ -52,40 +50,39 @@
                   <div>
                     <h5 class="float-end" style="margin-top: 100px;">All Courses</h5>
                   </div>
-                  <div class="col-green">
+                  <div class="col-green" style="cursor: pointer;" routerLink="/admin/courses/all-courses/course">
                     <h3 class="font-weight-bold float-end mb-0">{{count?.courses}}</h3>
                   </div>
                 </div>
               </div>
-              <div class="card-content msl-4 mb-3">
+              <!-- <div class="card-content msl-4 mb-3">
                 <p class="m-b-0 d-flex"><i class="material-icons col-orange psr-2">trending_down</i> 07% Less Than Last Year</p>
-              </div>
+              </div> -->
             </div>
           </div>
         </ng-container>
-      
         <ng-container *ngFor="let component of dashboard.components">
           <div
           class="col-lg-4 col-md-4 col-sm-12"
             *ngIf="component.id === 'total-trainers'"
           >
-            <div class="card card-statistic-2">
+            <div class="card card-statistic-2" >
               <div class="clearfix">
                 <div class="card-icon-only shadow-primary float-start">
                   <img src="assets/images/banner/img3.png" alt="">
                 </div>
                 <div class="card-right">
-                  <div>
+                  <div >
                     <h5 class="float-end" style="margin-top: 100px;">Total {{commonRoles.INSTRUCTOR_ROLE}}s</h5>
                   </div>
-                  <div class="col-green">
-                    <h3 class="font-weight-bold float-end mb-0">{{count?.instructors}}</h3>
+                  <div class="col-green" routerLink="/student/settings/all-user/all-instructors">
+                    <h3 class="font-weight-bold float-end mb-0" style="cursor: pointer;">{{count?.instructors}}</h3>
                   </div>
                 </div>
               </div>
-              <div class="card-content msl-4 mb-3">
+              <!-- <div class="card-content msl-4 mb-3">
                 <p class="m-b-0 d-flex"><i class="material-icons col-green psr-2">trending_up</i> 08% Higher Than Last Month</p>
-              </div>
+              </div> -->
             </div>
           </div>
         </ng-container>
@@ -119,7 +116,7 @@
                 <h2>
                   {{commonRoles.STUDENT_ROLE}}s Survey</h2>
               </div>
-              <div class="body" *ngIf="isArea">
+              <div class="body" *ngIf="isArea" style="cursor: pointer;">
                 <apx-chart [series]="areaChartOptions.series!" [chart]="areaChartOptions.chart!"
                   [xaxis]="areaChartOptions.xaxis!" [yaxis]="areaChartOptions.yaxis!" [colors]="areaChartOptions.colors!"
                   [stroke]="areaChartOptions.stroke!" [legend]="areaChartOptions.legend!" [grid]="areaChartOptions.grid!"
@@ -150,7 +147,7 @@
               <div class="float-start ms-3 me-3">
                 <h5>{{count?.users}} Users(All) <span class="text-muted font-12"></span></h5>
               </div>
-              <div class="body" *ngIf="isUsersPie">
+              <div class="body" *ngIf="isUsersPie" style="cursor: pointer;" >
                 <apx-chart [series]="polarChartOptions.series2!" [chart]="polarChartOptions.chart!"
                   [labels]="polarChartOptions.labels!" [title]="polarChartOptions.title!" [theme]="polarChartOptions.theme!"
                   [fill]="polarChartOptions.fill!" [yaxis]="polarChartOptions.yaxis!" [stroke]="polarChartOptions.stroke!"
@@ -180,43 +177,6 @@
           </div>
         </ng-container>
         <ng-container *ngFor="let component of dashboard.components">
-        <div *ngIf="component.checked && component.id === 'course-classes-list'" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-          <div class="card" style="border-radius: 31px;">
-            <div class="header mt-3">
-              <h2>Course Classes List</h2>
-    
-            </div>
-            <div class="tableBody">
-              <div class="table-responsive">
-                <table class="table table-hover ">
-                  <thead>
-                    <tr>
-                      <th>Course</th>
-                      <th>Start Date</th>
-                      <th>End Date</th>
-                      <th>Status </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let class of classList " style="cursor: pointer;"
-                      [routerLink]="['/admin/courses/timetable/class-list/view-class/',class.id]">
-                      <td>{{class?.courseName }}</td>
-                      <td> {{class?.sessions[0]?.sessionStartDate | date}} </td>
-                      <td> {{class?.sessions[0]?.sessionEndDate | date}}</td>
-                      <td>
-                        <div class="badge col-green">{{class?.status == 'open'?'Active':'Inactive'}}</div>
-                      </td>
-    
-                    </tr>
-    
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </ng-container>
-        <ng-container *ngFor="let component of dashboard.components">
           <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" *ngIf="component.checked && component.id === 'trainers-list'">
             <div class="card" style="border-radius: 31px;">
               <div class="header mt-3">
@@ -234,16 +194,16 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let instructor of instructors">
-                        <td class="table-img">
+                      <tr *ngFor="let instructor of instructors" (click)="aboutInstructor(instructor.id)">
+                        <td class="table-img" style="cursor: pointer;">
                           <img src="{{instructor.avatar|| 'assets/profile.png'}}" alt="">
                         </td>
-                        <td>
-                          <div class="media-title"><a> {{instructor?.name | titlecase}}
+                        <td style="cursor: pointer;">
+                          <div class="media-title" ><a> {{instructor?.name | titlecase}}
                             </a></div>
                           <div class="text-job font-11">({{instructor?.education}})</div>
                         </td>
-                        <td>
+                        <td style="cursor: pointer;" >
                           <div [class]="instructor?.Active ? 'badge badge-solid-green' : 'badge badge-solid-red'">
                             <span
                             [class]="instructor?.Active ? 'status-dot' : 'status-red'"></span>
@@ -301,10 +261,6 @@
         </ng-container>
       
       
-      
-   
-
-    
     
       <ng-container *ngFor="let component of dashboard.components">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" *ngIf="component.checked && component.id === 'new-trainees-list'">
@@ -326,11 +282,11 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let student of students" style="cursor: pointer;">
+                  <tr *ngFor="let student of students" style="cursor: pointer;"  (click)="aboutStudent(student.id)">
                     <td class="table-img">
                       <img src="{{student?.avatar || 'assets/profile.png'}}" alt="">
                     </td>
-                    <td>{{student?.name | titlecase}}</td>
+                    <td >{{student?.name | titlecase}}</td>
                     <td>{{student?.education}}</td>
                     <td>{{student?.createdAt | date}}</td>
                     <td>
@@ -556,7 +512,7 @@
 </ng-container>
 
 <ng-container *ngFor="let dashboard of dashboards">
-  <app-ceo-dashboard [sharedashboards] = "dashboard" ></app-ceo-dashboard>
+  <app-ceo-dashboard [sharedashboards] = "dashboard" [role]="roles" ></app-ceo-dashboard>
 </ng-container>
 </section>
 

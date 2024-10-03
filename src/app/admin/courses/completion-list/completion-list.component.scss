@@ -44,13 +44,21 @@
  .center-icon {
    margin: auto; 
  }
+ mat-header-cell{ 
+  min-width: 130px !important;
+}
+mat-cell{ 
+  min-width: 100px !important;
+  padding-right: 30px;
+}
 
- .payment-cell{
-   padding-right: 45px;
- }
- .payment{
-   padding-left: 30px;
- }
+
+//  .payment-cell{
+//    padding-right: -15px!important;;
+//  }
+//  .payment{
+//    padding-right: 100px!important;;
+//  }
  ::ng-deep .mat-column-Instructorfee {
    display: flex !important;
    justify-content: flex-end !important;

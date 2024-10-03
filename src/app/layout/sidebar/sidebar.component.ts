@@ -142,9 +142,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
   navigateTo(menu: any, url?: any, length?: any): void {
     this.menuItemClick.emit();
     let userType = localStorage.getItem('user_type');
+    console.log("navigate",url,menu);
       this.router.navigateByUrl(menu + '/' + url);
   }
   navigateToMian(url: string, menu: string) {
+    console.log("navigateToMian",url,menu);
     this.router.navigateByUrl(url + '/' + menu);
   }
   navigateToSubItem2(menu: any, url?: any, subUrl?: any) {
@@ -227,20 +229,20 @@ export class SidebarComponent implements OnInit, OnDestroy {
       this.renderer.removeClass(this.document.body, 'ls-closed');
     }
   }
-  mouseHover() {
-    const body = this.elementRef.nativeElement.closest('body');
-    if (body.classList.contains('submenu-closed')) {
-      this.renderer.addClass(this.document.body, 'side-closed-hover');
-      this.renderer.removeClass(this.document.body, 'submenu-closed');
-    }
-  }
-  mouseOut() {
-    const body = this.elementRef.nativeElement.closest('body');
-    if (body.classList.contains('side-closed-hover')) {
-      this.renderer.removeClass(this.document.body, 'side-closed-hover');
-      this.renderer.addClass(this.document.body, 'submenu-closed');
-    }
-  }
+  // mouseHover() {
+  //   const body = this.elementRef.nativeElement.closest('body');
+  //   if (body.classList.contains('submenu-closed')) {
+  //     this.renderer.addClass(this.document.body, 'side-closed-hover');
+  //     this.renderer.removeClass(this.document.body, 'submenu-closed');
+  //   }
+  // }
+  // mouseOut() {
+  //   const body = this.elementRef.nativeElement.closest('body');
+  //   if (body.classList.contains('side-closed-hover')) {
+  //     this.renderer.removeClass(this.document.body, 'side-closed-hover');
+  //     this.renderer.addClass(this.document.body, 'submenu-closed');
+  //   }
+  // }
   logout() {
     interface OuterObject {
       id: any;

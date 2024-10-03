@@ -14,6 +14,7 @@ export class LogoService {
   private dataSource = new BehaviorSubject<any>(null);
   currentData = this.dataSource.asObservable();
   private defaultUrl: string = environment['apiUrl'];
+  private companyUrl: string = environment['Url'];
   constructor(private http: HttpClient) { }
   updateData(data: any) {
     this.dataSource.next(data);
@@ -109,5 +110,31 @@ export class LogoService {
         return this.http
           .put<any>(apiUrl, sidemenu)
           .pipe(map((response) => {response }));
+      }
+
+      createCompanySidemenu(formData: any): Observable<ApiResponse> {
+        const apiUrl = `${this.companyUrl}x-api/v1/public/sidemenu`;
+        return this.http.post<ApiResponse>(apiUrl, formData).pipe(
+          map((response) => {
+            return response.data;
+          })
+        );
+      }
+
+      createCompanySettingSidemenu(formData: any): Observable<ApiResponse> {
+        const apiUrl = `${this.companyUrl}x-api/v1/public/settingsidemenu`;
+        return this.http.post<ApiResponse>(apiUrl, formData).pipe(
+          map((response) => {
+            return response.data;
+          })
+        );
+      }
+      createCompanyLogo(formData: any): Observable<ApiResponse> {
+        const apiUrl = `${this.companyUrl}x-api/v1/public/logo`;
+        return this.http.post<ApiResponse>(apiUrl, formData).pipe(
+          map((response) => {
+            return response.data;
+          })
+        );
       }
 }

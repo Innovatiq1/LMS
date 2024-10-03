@@ -35,6 +35,7 @@ export class PendingProgramsComponent {
   ];
 
   displayedColumns: string[] = [
+    'select',
     'name',
     'status',
     'code',
@@ -113,7 +114,7 @@ export class PendingProgramsComponent {
 
   getProgramList(filters?: any) {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-    this.courseService.getCourseProgram({...this.coursePaginationModel,status:'inactive'},userId).subscribe(
+    this.courseService.getCourseProgram(userId,{...this.coursePaginationModel,status:'inactive'}).subscribe(
       (response: any) => {
         this.totalItems = response.totalDocs;
         this.dataSource = response.docs;
@@ -284,35 +285,83 @@ export class PendingProgramsComponent {
   viewInActiveProgram(id:string){
     this.route.navigate(['/admin/program/submitted-program/pending-program/view-program'],{queryParams:{id:id, status:'pending'}});
   }
-  removeSelectedRows() {
-    const totalSelect = this.selection.selected.length;
+  // removeSelectedRows() {
+  //   const totalSelect = this.selection.selected.length;
 
-    Swal.fire({
-      title: "Confirm Deletion",
-      text: "Are you sure you want to delete this course kit?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-      confirmButtonText: "Delete",
-      cancelButtonText: "Cancel",
-    }).then((result) => {
-      if (result.isConfirmed){
-        this.selection.selected.forEach((item) => {
-          const index: number = this.dataSource.findIndex(
-            (d: CourseModel) => d === item
-          );
+  //   Swal.fire({
+  //     title: "Confirm Deletion",
+  //     text: "Are you sure you want to delete this course kit?",
+  //     icon: "warning",
+  //     showCancelButton: true,
+  //     confirmButtonColor: "#d33",
+  //     cancelButtonColor: "#3085d6",
+  //     confirmButtonText: "Delete",
+  //     cancelButtonText: "Cancel",
+  //   }).then((result) => {
+  //     if (result.isConfirmed){
+  //       this.selection.selected.forEach((item) => {
+  //         const index: number = this.dataSource.findIndex(
+  //           (d: CourseModel) => d === item
+  //         );
           
-          this.courseService?.dataChange.value.splice(index, 1);
-          this.refreshTable();
-          this.selection = new SelectionModel<CourseModel>(true, []);
-        });
-        Swal.fire({
-          title: 'Success',
-          text: 'Record Deleted Successfully...!!!',
-          icon: 'success',
+  //         this.courseService?.dataChange.value.splice(index, 1);
+  //         this.refreshTable();
+  //         this.selection = new SelectionModel<CourseModel>(true, []);
+  //       });
+  //       Swal.fire({
+  //         title: 'Success',
+  //         text: 'Record Deleted Successfully...!!!',
+  //         icon: 'success',
+  //       });
+  //     }
+  //   });
+  // }
+  approveSelectedRows() {
+    const selectedPrograms = this.selection.selected;
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to approve the selected programs?',
+      icon: 'warning',
+      confirmButtonText: 'Yes',
+      showCancelButton: true,
+      cancelButtonColor: '#d33',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        selectedPrograms.forEach((program) => {
+          program.status = 'active';
+          this.courseService.updateCourseProgram(program.id, program).subscribe(() => {
+            Swal.fire('Success', 'Programs approved successfully', 'success');
+            this.getProgramList();
+          });
         });
       }
     });
   }
+  
+  removeSelectedRows() {
+    const selectedPrograms = this.selection.selected;
+    Swal.fire({
+      title: 'Confirm Deletion',
+      text: 'Are you sure you want to delete the selected programs?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Delete',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        selectedPrograms.forEach((program) => {
+          const index = this.dataSource.indexOf(program);
+          this.dataSource.splice(index, 1);
+          this.courseService.deleteProgram(program.id).subscribe(() => {
+            Swal.fire('Success', 'Programs deleted successfully', 'success');
+            this.refreshTable();
+          });
+        });
+        this.selection.clear();
+      }
+    });
+  }
+  
 }

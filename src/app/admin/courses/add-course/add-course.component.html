@@ -124,7 +124,7 @@
                           ?.hasError('maxLength') ||
                         firstFormGroup.get('issueCertificate')?.touched
                       ">
-                      Choose Certificate Issue Type
+                      Select Issue Certificate Type
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -144,7 +144,7 @@
                           ?.hasError('maxLength') ||
                         firstFormGroup.get('examType')?.touched
                       ">
-                      Choose Exam Type
+                      Select Exam Type
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -166,12 +166,13 @@
                         firstFormGroup.get('exam_assessment')?.invalid &&
                         firstFormGroup.get('exam_assessment')?.touched
                       ">
-                      {{
+                      Select Exam 
+                      <!-- {{
                       utils.getErrorMessage1(
                       firstFormGroup.get("exam_assessment"),
                       "e_assessment"
                       )
-                      }}
+                      }} -->
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -193,12 +194,13 @@
                       firstFormGroup.get('assessment')?.invalid &&
                       firstFormGroup.get('assessment')?.touched
                     ">
-                      {{
+                    Select Assessment
+                      <!-- {{
                       utils.getErrorMessage1(
                       firstFormGroup.get("assessment"),
                       "assessment"
                       )
-                      }}
+                      }} -->
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -220,12 +222,13 @@
                       firstFormGroup.get('tutorial')?.invalid &&
                       firstFormGroup.get('tutorial')?.touched
                     ">
-                      {{
+                    Select Tutorial
+                      <!-- {{
                       utils.getErrorMessage1(
                       firstFormGroup.get("tutorial"),
                       "tutorial"
                       )
-                      }}
+                      }} -->
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -249,7 +252,7 @@
                         ?.hasError('required') ||
                       firstFormGroup.get('course_kit')?.touched
                     ">
-                      Select Course Kit
+                    Select Coursekit 
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -271,7 +274,7 @@
                         firstFormGroup.get('survey')?.hasError('required') ||
                         firstFormGroup.get('survey')?.touched
                       ">
-                      Select Feedback Questionnaire
+                      Select Feedback Questionnaire 
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -292,7 +295,7 @@
                           ?.hasError('maxLength') ||
                         firstFormGroup.get('isFeedbackRequired')?.touched
                       ">
-                      Choose Feedback Mandatory or not
+                      Select Feedback Mandatory or not 
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -311,11 +314,11 @@
                     </mat-select>
                     <mat-error *ngIf="
                         firstFormGroup
-                          .get('certificate_template')
+                          .get('certificate_temp')
                           ?.hasError('maxLength') ||
-                        firstFormGroup.get('certificate_template')?.touched
+                        firstFormGroup.get('certificate_temp')?.touched
                       ">
-                      Enter Certificate Template
+                      Select Certificate Template
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -339,7 +342,7 @@
                     firstFormGroup.get('vendor')?.hasError('maxLength') ||
                     firstFormGroup.get('vendor')?.touched
                   ">
-                      Enter Vendor
+                  Select Vendor
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -540,7 +543,9 @@
                       <button mat-raised-button color="primary" class="btn">
                         Choose file
                         <input formControlName="image_link" (change)="onFileUpload($event)"
-                          [readonly]="isInputReadonly()" class="file-input" type="file" />
+                          [readonly]="isInputReadonly()" 
+                          accept="image/*"
+                           class="file-input" type="file" />
                       </button>
                       <span class="file-msg">
                         <h6>
