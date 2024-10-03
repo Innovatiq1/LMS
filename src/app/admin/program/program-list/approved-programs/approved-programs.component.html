@@ -9,41 +9,45 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
           <div class="materialTableHeader">
-            <div class="right">
-              <ul class="tbl-export-btn">
+            <div class="">
+              <ul class="tbl-export-btn mt-2">
                 <li class="tbl-header-btn">
                   <ul class="header-buttons-left ms-0">
                     <li class="tbl-search-box">
                       <label for="search-input"><i class="material-icons search-icon">search</i></label>
                       <input placeholder="Search" type="text" #filter class="browser-default search-field"
-                        [(ngModel)]="searchTerm" (input)="performSearch()" aria-label="Search box">
+                        [(ngModel)]="filterName" (input)="performSearch()" aria-label="Search box">
                     </li>
                   </ul>
                 </li>
-                <li class="tbl-header-btn">
-                  <div class="m-l-10" [hidden]=!selection.hasValue() matTooltip="DELETE">
-                    <button mat-mini-fab color="warn" (click)="removeSelectedRows()">
-                      <mat-icon class="col-white">delete
-                      </mat-icon>
-                    </button>
-                  </div>
-                </li>
-                <li>
-                  <span style="font-weight: bold;">Export as</span>
-                </li>
-                <li>
-                  <div class="export-button m-l-10" matTooltip="XLSX" (click)="exportExcel()">
-                    <img src="assets/excel.svg" alt="" />
-                  </div>
-  
-                </li>
-                <li>
-                  <div class="export-button m-l-10" matTooltip="PDF">
-                    <img src="assets/pdf (1).svg" alt="" (click)="generatePdf()" />
-                  </div>
-                </li>
-              </ul>
-            </div>
+                </ul>
+                </div>
+                <div class="right">
+                  <ul class="tbl-export-btn">
+                    <li class="tbl-header-btn">
+                      <div class="m-l-10" [hidden]=!selection.hasValue() matTooltip="DELETE">
+                        <button mat-mini-fab color="warn" (click)="removeSelectedRows()">
+                          <mat-icon class="col-white">delete
+                          </mat-icon>
+                        </button>
+                      </div>
+                    </li>
+                    <li>
+                      <span style="font-weight: bold;">Export as</span>
+                    </li>
+                    <li>
+                      <div class="export-button m-l-10" matTooltip="XLSX" (click)="exportExcel()">
+                        <img src="assets/excel.svg" alt="" />
+                      </div>
+      
+                    </li>
+                    <li>
+                      <div class="export-button m-l-10" matTooltip="PDF">
+                        <img src="assets/pdf (1).svg" alt="" (click)="generatePdf()" />
+                      </div>
+                    </li>
+                  </ul>
+                </div>
           </div>
           <div class="body overflow-auto">
             <div class="responsive_table">
@@ -51,7 +55,7 @@
                 <ng-container matColumnDef="name">
                   <mat-header-cell *matHeaderCellDef >Program</mat-header-cell>
                   <mat-cell class="name" *matCellDef="let row" (click)="view ? viewInActiveProgram(row.id) : null"><span
-                      class="mobile-label">Program Name:</span> <span class=" col-cyan">{{row.title |titlecase}}</span>
+                      class="mobile-label">Program Name:</span> <span >{{row.title |titlecase}}</span>
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="status">

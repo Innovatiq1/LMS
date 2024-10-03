@@ -58,6 +58,7 @@ export class SupportService {
       .pipe(map((response) => response));
   }
   updateChat(id:string,dataDetails: Support) {
+    console.log("=====",dataDetails)
    // const apiUrl = `${this.defaultUrl}admin/chatbot/${dataDetails.id}`;
    const apiUrl = `${this.defaultUrl}admin/chatbot/${id}`;
     return this.http.put<ApiResponse>(apiUrl, dataDetails).pipe(

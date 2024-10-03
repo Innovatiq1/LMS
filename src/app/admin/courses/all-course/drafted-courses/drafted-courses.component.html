@@ -14,8 +14,8 @@
                             <div class="card">
                                 <div class="materialTableHeader">
 
-                                    <div class="right">
-                                        <ul class="tbl-export-btn">
+                                    <div >
+                                        <ul class="tbl-export-btn mt-2">
                                             <li class="tbl-header-btn">
                                                 <div class="m-l-10" (click)="openFilterCard();" matTooltip="Filters">
                                                     <i id="filterIcon" class="material-icons"
@@ -29,10 +29,14 @@
                                                                 class="material-icons search-icon">search</i></label>
                                                         <input placeholder="Search" type="text" #filter
                                                             class="browser-default search-field" aria-label="Search box"
-                                                            [(ngModel)]="searchTerm" (input)="performSearch()" />
+                                                            [(ngModel)]="filterName" (input)="performSearch()" />
                                                     </li>
                                                 </ul>
                                             </li>
+                                            </ul>
+                                            </div>
+                                            <div class="right">
+                                            <ul class="tbl-export-btn">
                                             <li>
                                                 <span style="font-weight: bold;">Export as</span>
                                               </li>
@@ -52,7 +56,7 @@
                                 <div class="body overflow-auto">
                                     <div class="card" *ngIf="isFilter">
                                         <div class="row m-3">
-                                            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3">
+                                            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 hide-on-mobile">
                                                 <img src="assets/images/icons/filter.png"
                                                     style="height: 80px; width: 80px;margin-top: 30px;">
                                             </div>
@@ -110,7 +114,7 @@
                                                                 </mat-select>
                                                             </mat-form-field>
                                                         </div>
-                                                        <div class="col-8 mt-2 d-flex justify-content-end">
+                                                        <div class="col-8 mt-2 d-flex justify-content-end no-justify-mobile ">
                                                             <button mat-raised-button id="submit"
                                                                 (click)="applyFilter()">Apply</button>
                                                             <button mat-raised-button id="back"
@@ -129,7 +133,7 @@
                                         <table mat-table [dataSource]="courseData" matSort
                                             class="mat-cell advance-table">
                                             <ng-container matColumnDef="name">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header>Course
+                                                <mat-header-cell *matHeaderCellDef >Course
                                                 </mat-header-cell>
                                                 <mat-cell class="name" *matCellDef="let row"
                                                 [routerLink]=" edit ? ['/admin/courses/edit-course/', row.id] : null"><span
@@ -137,7 +141,7 @@
                                                 </mat-cell>
                                             </ng-container>
                                             <ng-container matColumnDef="code">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header>Course Code
+                                                <mat-header-cell *matHeaderCellDef >Course Code
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let row"
                                                 [routerLink]=" edit ? ['/admin/courses/edit-course/', row.id] : null"><span
@@ -146,7 +150,7 @@
                                             </ng-container>
                                             <ng-container matColumnDef="creator">
                                                 <mat-header-cell *matHeaderCellDef
-                                                    mat-sort-header>Creator</mat-header-cell>
+                                                    >Creator</mat-header-cell>
                                                 <mat-cell *matCellDef="let row"
                                                 [routerLink]=" edit ? ['/admin/courses/edit-course/', row.id] : null">
                                                     <span class="mobile-label">Creator:</span> {{row.creator ? (row.creator) : "--"}}
@@ -154,7 +158,7 @@
                                             </ng-container>
 
                                             <ng-container matColumnDef="Days">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header>Days
+                                                <mat-header-cell *matHeaderCellDef >Days
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let row"
                                                 [routerLink]=" edit ? ['/admin/courses/edit-course/', row.id] : null"> <span
@@ -164,7 +168,7 @@
                                             </ng-container>
 
                                             <ng-container matColumnDef="Training Hours">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header>Hours
+                                                <mat-header-cell *matHeaderCellDef >Hours
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let row"
                                                 [routerLink]=" edit ? ['/admin/courses/edit-course/', row.id] : null"> <span
@@ -173,7 +177,7 @@
                                                 </mat-cell>
                                             </ng-container>
                                             <ng-container matColumnDef="Fee Type">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                <mat-header-cell *matHeaderCellDef 
                                                     class="compulsory-count-header">Fee Type
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let row"
@@ -182,7 +186,7 @@
                                                 </mat-cell>
                                             </ng-container>
                                             <ng-container matColumnDef="Vendor">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                <mat-header-cell *matHeaderCellDef 
                                                     class="compulsory-count-header">Vendor
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let row"
@@ -191,7 +195,7 @@
                                                 </mat-cell>
                                             </ng-container>
                                             <ng-container matColumnDef="Users">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                <mat-header-cell *matHeaderCellDef 
                                                     class="compulsory-count-header">{{commonRoles?.STUDENT_ROLE}}
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let row"
@@ -204,7 +208,7 @@
                                                 </mat-cell>
                                             </ng-container>
                                             <ng-container matColumnDef="startDate">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                <mat-header-cell *matHeaderCellDef 
                                                     class="compulsory-count-header">Start Date
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let row"
@@ -214,7 +218,7 @@
                                                 </mat-cell>
                                             </ng-container>
                                             <ng-container matColumnDef="endDate">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                <mat-header-cell *matHeaderCellDef 
                                                     class="compulsory-count-header">End Date
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let row"
@@ -224,7 +228,7 @@
                                                 </mat-cell>
                                             </ng-container>
                                             <ng-container matColumnDef="status">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                <mat-header-cell *matHeaderCellDef 
                                                     class="compulsory-count-header" style="width: 400px;">Status
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let row" class="pr-0">
@@ -237,8 +241,8 @@
                                                 </mat-cell>
                                             </ng-container>
                                             <ng-container matColumnDef="Fees">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                    class="amount">Fee
+                                                <mat-header-cell *matHeaderCellDef 
+                                                  class="amount" >Fee
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let row"
                                                 [routerLink]=" edit ? ['/admin/courses/edit-course/', row.id] : null" class="payment-cell">

@@ -299,6 +299,8 @@ export interface CoursePaginationModel extends Pagination {
 	datefilter:string;
 	rescheduledDate: string;
 	program:string;
+	title:string;
+	programTitle:string;
 	courseId:string;
 }
 

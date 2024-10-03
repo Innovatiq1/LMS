@@ -9,8 +9,8 @@
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
       <div class="card">
         <div class="materialTableHeader">
-          <div class="right">
-            <ul class="tbl-export-btn">
+          <div class="">
+            <ul class="tbl-export-btn mt-2">
               <li class="tbl-header-btn">
                 <ul class="header-buttons-left ms-0">
                   <li class="tbl-search-box">
@@ -20,38 +20,61 @@
                   </li>
                 </ul>
               </li>
-              <li class="tbl-header-btn">
-                <div class="m-l-10" [hidden]=!selection.hasValue() matTooltip="DELETE">
-                  <button mat-mini-fab color="warn" (click)="removeSelectedRows()">
-                    <mat-icon class="col-white">delete
-                    </mat-icon>
-                  </button>
-                </div>
-              </li>
-              <li>
-                <span style="font-weight: bold;">Export as</span>
-              </li>
-              <li>
-                <div class="export-button m-l-10" matTooltip="XLSX" (click)="exportExcel()">
-                  <img src="assets/excel.svg" alt="" />
-                </div>
-
-              </li>
-              <li>
-                <div class="export-button m-l-10" matTooltip="PDF">
-                  <img src="assets/pdf (1).svg" alt="" (click)="generatePdf()" />
-                </div>
-              </li>
-            </ul>
-          </div>
+              </ul>
+              </div>
+              <div class="right">
+                <ul class="tbl-export-btn">
+                  <li class="tbl-header-btn">
+                    <div class="m-l-10" [hidden]="!selection.hasValue()" matTooltip="APPROVE">
+                      <button mat-raised-button color="primary" (click)="approveSelectedRows()">
+                        Approve
+                      </button>
+                    </div>
+                  </li>
+                  <li class="tbl-header-btn">
+                    <div class="m-l-10" [hidden]="!selection.hasValue()" matTooltip="DELETE">
+                      <button mat-raised-button color="warn" (click)="removeSelectedRows()">
+                        Delete
+                      </button>
+                    </div>
+                  </li>
+                  <li>
+                    <span style="font-weight: bold;">Export as</span>
+                  </li>
+                  <li>
+                    <div class="export-button m-l-10" matTooltip="XLSX" (click)="exportExcel()">
+                      <img src="assets/excel.svg" alt="" />
+                    </div>
+    
+                  </li>
+                  <li>
+                    <div class="export-button m-l-10" matTooltip="PDF">
+                      <img src="assets/pdf (1).svg" alt="" (click)="generatePdf()" />
+                    </div>
+                  </li>
+                </ul>
+              </div>
         </div>
         <div class="body overflow-auto">
           <div class="responsive_table">
             <table mat-table matSort [dataSource]="dataSource" class="mat-cell advance-table">
+              <ng-container matColumnDef="select">
+                <mat-header-cell *matHeaderCellDef>
+                  <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()">
+                  </mat-checkbox>
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                  <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                    [checked]="selection.isSelected(row)">
+                  </mat-checkbox>
+                </mat-cell>
+              </ng-container>
+              
               <ng-container matColumnDef="name">
                 <mat-header-cell *matHeaderCellDef >Program</mat-header-cell>
                 <mat-cell class="name" *matCellDef="let row" (click)="view ? viewInActiveProgram(row.id): null"><span
-                    class="mobile-label">Program Name:</span> <span class=" col-cyan">{{row.title |titlecase}}</span>
+                    class="mobile-label">Program Name:</span> <span >{{row.title |titlecase}}</span>
                 </mat-cell>
               </ng-container>
               <ng-container matColumnDef="status">
@@ -98,7 +121,7 @@
               </ng-container>
               <!-- Payment -->
               <ng-container matColumnDef="Payment">
-                <mat-header-cell *matHeaderCellDef >Fee</mat-header-cell>
+                <mat-header-cell *matHeaderCellDef style="padding-left: 50px;" >Fee</mat-header-cell>
                 <mat-cell *matCellDef="let row" class="payment-cell" (click)="view ? viewInActiveProgram(row.id): null"> <span
                     class="mobile-label">Payment:</span><span >$</span> {{row.courseFee||0}}.00
                 </mat-cell>

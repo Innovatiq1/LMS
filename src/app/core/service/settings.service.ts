@@ -34,6 +34,10 @@ export class SettingsService {
       if (filter.page) {
         params = params.set('page', filter.page?.toString());
       }
+
+      if (filter.companyId) {
+        params = params.set('companyId', filter.companyId);
+      }
     }
     return params;
   }
@@ -74,6 +78,7 @@ export class SettingsService {
   }
 
   getSmtp(filter?: Partial<CoursePaginationModel>): Observable<ApiResponse> {
+    console.log('companyId',filter)
     const apiUrl = this.defaultUrl + 'admin/smtp';
     return this._Http.get<ApiResponse>(apiUrl, {
       params: this.buildParams(filter),
@@ -86,7 +91,7 @@ export class SettingsService {
   }
   
   updateSmtp(id: string, data: any) {
-    const apiUrl = `${this.prefix}admin/smtp/${id}`;
+    const apiUrl = `${this.prefix}admin/smtp`;
     return this._Http
       .put<ApiResponse>(apiUrl, data)
       .pipe(map((response) => {}));

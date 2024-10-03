@@ -208,7 +208,7 @@
                                                             <div class="px-2">
                                                                 <div class="row">
                                                                     <div class="col-6">
-                                                                       <h6>Instructor Fee</h6>
+                                                                       <h6>Trainer Fee</h6>
                                                                     </div>
                                                                     <div class="col-6">
                                                                         <p>$ {{response.classId?.instructorCost }}.00</p>
@@ -231,46 +231,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <div class="px-2">
-                                                                <div class="row">
-                                                                    <div class="col-6">
-                                                                        <h6>Learning Outcomes</h6>
-                                                                    </div>
-                                                                    <div class="col-6">
-                                                                        <p [innerHTML]="response.programId?.learningOutcomes | bulletPoints"></p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <div class="px-2">
-                                                                <div class="row">
-                                                                    <div class="col-6">
-                                                                       <h6>Who Should Attend</h6>
-                                                                    </div>
-                                                                    <div class="col-5">
-                                                                        <p [innerHTML]="response.programId?.attendees | bulletPoints"></p>
-                                                                    </div>
-                                                                </div>
-                            
-                            
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <div class="px-2">
-                                                                <div class="row">
-                                                                    <div class="col-6">
-                                                                        <h6>Prerequisites</h6>
-                                                                    </div>
-                                                                    <div class="col-6">
-                                                                        <p [innerHTML]="response.programId?.prerequisites | bulletPoints"></p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                   
                                                 </div>
                                             </div>
                                         </div>

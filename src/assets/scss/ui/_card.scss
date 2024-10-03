@@ -13,6 +13,13 @@
   border-radius: 20px;
   box-shadow: 0 0 10px 0 rgba(183, 192, 206, 0.2);
   -webkit-box-shadow: 0 0 10px 0 rgba(183, 192, 206, 0.2);
+  overflow-y: scroll; /* Enables vertical scrolling */
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none;
+
+  .card::-webkit-scrollbar { 
+    display: none; /* For Chrome, Safari, and Opera */
+  }
 
   .card-inside-title {
     margin-top: 25px;

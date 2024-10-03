@@ -9,9 +9,9 @@
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin: auto;">
         <div class="card">
           <div class="materialTableHeader">
-            <div class="right">
+            <div class="">
               
-              <ul class="tbl-export-btn">
+              <ul class="tbl-export-btn mt-5">
                 <li>
                   <ul class="header-buttons-left ms-0">
                     <li class="tbl-search-box">
@@ -21,32 +21,37 @@
                     </li>
                   </ul>
                 </li>
-                <li class="tbl-header-btn"  *ngIf="isAnyRowSelected()">
-                  <div class="m-l-10" matTooltip="ADD">
-                    <button mat-raised-button id="submit" (click)="enableExam()">Enable Exam</button>
-                  </div>
-                </li>
-                <li class="tbl-header-btn"  *ngIf="isAnyRowSelected()">
-                 
-                  <div class="m-l-20" matTooltip="ADD">
-                    <button  mat-raised-button id="submit" (click)="enableMultipleCertificates()" [disabled]="isGeneratingCertificates"><span class="custom-button-padding">Generate Certificate</span></button>
-                  </div>
-                </li>
-                <li>
-                  <span style="font-weight: bold;">Export as</span>
-                </li>
-                <li>
-                  <div class="export-button m-l-10" matTooltip="XLSX">
-                    <img src="assets/excel.svg" alt="" (click)=" exportExcel()">
-                  </div>
-                </li>
-                <li>
-                  <div class="export-button m-l-10" matTooltip="PDF">
-                    <img src="assets/pdf (1).svg" alt="" (click)="generatePdf()" />
-                  </div>
-                </li>
-              </ul>
-            </div>
+                </ul>
+                </div>
+                <div class="right">
+                  <ul  class="tbl-export-btn">
+                    <li class="tbl-header-btn"  *ngIf="isAnyRowSelected()">
+                      <div class="m-l-10" matTooltip="ADD">
+                        <button mat-raised-button id="submit" (click)="enableExam()">Enable Exam</button>
+                      </div>
+                    </li>
+                    <li class="tbl-header-btn"  *ngIf="isAnyRowSelected()">
+                     
+                      <div class="m-l-20" matTooltip="ADD">
+                        <button  mat-raised-button id="submit" (click)="enableMultipleCertificates()" [disabled]="isGeneratingCertificates"><span class="custom-button-padding">Generate Certificate</span></button>
+                      </div>
+                    </li>
+                    <li>
+                      <span style="font-weight: bold;">Export as</span>
+                    </li>
+                    <li>
+                      <div class="export-button m-l-10" matTooltip="XLSX">
+                        <img src="assets/excel.svg" alt="" (click)=" exportExcel()">
+                      </div>
+                    </li>
+                    <li>
+                      <div class="export-button m-l-10" matTooltip="PDF">
+                        <img src="assets/pdf (1).svg" alt="" (click)="generatePdf()" />
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              
           </div>
           <div class="body overflow-auto">
             <div class="responsive_table">
@@ -95,9 +100,9 @@
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="Instructorfee">
-                  <mat-header-cell *matHeaderCellDef  class="payment">{{commonRoles?.INSTRUCTOR_ROLE}}
+                  <mat-header-cell *matHeaderCellDef  >{{commonRoles?.INSTRUCTOR_ROLE}}
                     Fee</mat-header-cell>
-                  <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null" class="payment-cell">
+                  <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null" >
                     <span class="mobile-label">Instructor Fee:</span>
                     <span *ngIf="row.classId?.instructorCost !== null && row.classId?.instructorCost !== undefined">
                       <span>$</span> {{row.classId?.instructorCost || 0 }}.00
@@ -175,8 +180,8 @@
                       <span class="label l-bg-green shadow-style" mat-raised-button id="issued">Certificate
                         issued</span>
                     </div>
-                    <div *ngIf="!row.certificate">
-                      <span class="label shadow-style" mat-raised-button id="submit"
+                    <div *ngIf="!row.certificate" >
+                      <span class="label shadow-style  " mat-raised-button id="submit"
                         (click)="generateCertificate(row)">Issue Certificate</span>
                     </div>
                   </mat-cell>

@@ -166,3 +166,45 @@ svg{
 .payment-cell{
   padding-right: 60px !important;
 }
+.compulsory-count-header {
+  min-width: 160px;
+}
+@media only screen and (max-width: 767px) {
+  .hide-on-mobile {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .no-justify-mobile {
+    justify-content: flex-start !important; 
+  }
+}
+
+.button-group {
+  display: flex;
+  gap: 10px; 
+}
+
+
+@media only screen and (max-width: 767px) {
+  .button-group {
+    display: block;
+    margin-top: 10px; 
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .overflow-y {
+    overflow-y: auto;
+  }
+}
+
+.materialTableHeader .tbl-export-btn {
+  float: right;
+  /* margin: 0px 15px; */
+  list-style: none;
+  /* height: 100%; */
+  display: flex;
+  align-items: center;
+}

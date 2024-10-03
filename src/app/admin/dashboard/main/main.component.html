@@ -116,7 +116,7 @@
                 <h2>
                   {{commonRoles.STUDENT_ROLE}}s Survey</h2>
               </div>
-              <div class="body" *ngIf="isArea">
+              <div class="body" *ngIf="isArea" style="cursor: pointer;">
                 <apx-chart [series]="areaChartOptions.series!" [chart]="areaChartOptions.chart!"
                   [xaxis]="areaChartOptions.xaxis!" [yaxis]="areaChartOptions.yaxis!" [colors]="areaChartOptions.colors!"
                   [stroke]="areaChartOptions.stroke!" [legend]="areaChartOptions.legend!" [grid]="areaChartOptions.grid!"
@@ -147,7 +147,7 @@
               <div class="float-start ms-3 me-3">
                 <h5>{{count?.users}} Users(All) <span class="text-muted font-12"></span></h5>
               </div>
-              <div class="body" *ngIf="isUsersPie">
+              <div class="body" *ngIf="isUsersPie" style="cursor: pointer;" >
                 <apx-chart [series]="polarChartOptions.series2!" [chart]="polarChartOptions.chart!"
                   [labels]="polarChartOptions.labels!" [title]="polarChartOptions.title!" [theme]="polarChartOptions.theme!"
                   [fill]="polarChartOptions.fill!" [yaxis]="polarChartOptions.yaxis!" [stroke]="polarChartOptions.stroke!"
@@ -176,43 +176,6 @@
             </div>
           </div>
         </ng-container>
-        <!-- <ng-container *ngFor="let component of dashboard.components">
-        <div *ngIf="component.checked && component.id === 'course-classes-list'" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-          <div class="card" style="border-radius: 31px;">
-            <div class="header mt-3">
-              <h2>Course Classes List</h2>
-    
-            </div>
-            <div class="tableBody">
-              <div class="table-responsive">
-                <table class="table table-hover ">
-                  <thead>
-                    <tr>
-                      <th>Course</th>
-                      <th>Start Date</th>
-                      <th>End Date</th>
-                      <th>Status </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let class of classList " style="cursor: pointer;"
-                      [routerLink]="['/admin/courses/timetable/class-list/view-class/',class.id]">
-                      <td>{{class?.courseName }}</td>
-                      <td> {{class?.sessions[0]?.sessionStartDate | date}} </td>
-                      <td> {{class?.sessions[0]?.sessionEndDate | date}}</td>
-                      <td>
-                        <div class="badge col-green">{{class?.status == 'open'?'Active':'Inactive'}}</div>
-                      </td>
-    
-                    </tr>
-    
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </ng-container> -->
         <ng-container *ngFor="let component of dashboard.components">
           <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" *ngIf="component.checked && component.id === 'trainers-list'">
             <div class="card" style="border-radius: 31px;">
@@ -231,16 +194,16 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let instructor of instructors">
-                        <td class="table-img">
+                      <tr *ngFor="let instructor of instructors" (click)="aboutInstructor(instructor.id)">
+                        <td class="table-img" style="cursor: pointer;">
                           <img src="{{instructor.avatar|| 'assets/profile.png'}}" alt="">
                         </td>
-                        <td>
-                          <div class="media-title" (click)="aboutInstructor(instructor.id)"><a> {{instructor?.name | titlecase}}
+                        <td style="cursor: pointer;">
+                          <div class="media-title" ><a> {{instructor?.name | titlecase}}
                             </a></div>
                           <div class="text-job font-11">({{instructor?.education}})</div>
                         </td>
-                        <td>
+                        <td style="cursor: pointer;" >
                           <div [class]="instructor?.Active ? 'badge badge-solid-green' : 'badge badge-solid-red'">
                             <span
                             [class]="instructor?.Active ? 'status-dot' : 'status-red'"></span>
@@ -319,11 +282,11 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let student of students" style="cursor: pointer;">
+                  <tr *ngFor="let student of students" style="cursor: pointer;"  (click)="aboutStudent(student.id)">
                     <td class="table-img">
                       <img src="{{student?.avatar || 'assets/profile.png'}}" alt="">
                     </td>
-                    <td  (click)="aboutStudent(student.id)">{{student?.name | titlecase}}</td>
+                    <td >{{student?.name | titlecase}}</td>
                     <td>{{student?.education}}</td>
                     <td>{{student?.createdAt | date}}</td>
                     <td>
