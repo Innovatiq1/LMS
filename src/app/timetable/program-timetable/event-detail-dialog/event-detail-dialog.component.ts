@@ -30,7 +30,9 @@ export class EventDetailDialogComponent implements OnInit {
     if(data.programName){
       this.isProgram = true
     }
+    console.log(data);
   }
+  
   ngOnInit() {
     this.commonRoles = AppConstants
   }

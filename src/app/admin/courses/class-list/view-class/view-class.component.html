@@ -131,6 +131,14 @@
                                                         text-align: center; border: .5px solid #28a745; border-radius: 5px; font-size: 14px;">
                                                         <i class="fas fa-sync-alt"></i> <!-- Font Awesome Update Icon -->
                                                     </button>
+                                                    
+                                                    <!-- Delete Button -->
+                                                    <button type="button" (click)="toggleZoomMeetingFormDelete()"
+                                                    style="display: inline-block; background-color: white; color: #dc3545; padding: 5px 10px; 
+                                                    text-align: center; border: .5px solid #dc3545; border-radius: 5px; font-size: 14px;">
+                                                <i class="fas fa-trash"></i> 
+                                            </button>
+                                            
                                                 </p>
                                             </div>
                                         </div>
@@ -216,11 +224,11 @@
                                                         </div>
                                                     </div>
                                         
-                                                    <div class="col-6">
+                                                    <div class="col-6" *ngIf="!hideDurationField">
                                                         <div class="form-group">
                                                             <label for="duration">Duration</label>
                                                             <mat-form-field class="example-full-width" appearance="outline">
-                                                                <input matInput type="time" id="duration" name="duration" #durationInput min="1" />
+                                                                <input matInput type="time" id="duration" name="duration" [(ngModel)]="duration" min="1" #durationInput />
                                                                 <mat-error *ngIf="durationInput.oninvalid">Enter a valid duration</mat-error>
                                                             </mat-form-field>
                                                         </div>
@@ -229,9 +237,11 @@
                                         
                                                 <!-- Buttons for update and delete -->
                                                 <div class="d-flex justify-content-end mt-3">
-                                                    <button type="button" style="display: inline-block; background-color: white; color: #28a745; padding: 5px 10px; 
-                                                        text-align: center; border: .5px solid #28a745; border-radius: 5px; font-size: 14px;" (click)="updateDateTime(startDate.value, durationInput.value)">Update</button>
-                                                    <button type="button" style="display: inline-block; background-color: white; color: #28a745; padding: 5px 10px; 
+                                                    <button *ngIf="!hideDurationField" type="button" 
+                                                    style="display: inline-block; background-color: white; color: #28a745; padding: 5px 10px; 
+                                                           text-align: center; border: .5px solid #28a745; border-radius: 5px; font-size: 14px;" 
+                                                    (click)="updateDateTime(startDate.value, hideDurationField ? '' : duration)">Update</button>
+                                                    <button *ngIf="isUpdated" type="button" style="display: inline-block; background-color: white; color: #28a745; padding: 5px 10px; 
                                                         text-align: center; border: .5px solid #28a745; border-radius: 5px; font-size: 14px;" (click)="deleteDateTime(startDate.value)">Delete</button>
                                                 </div>
                                             </div>

@@ -761,6 +761,23 @@
                       Classes
                     </button>
                   </li>
+                  <li class="nav-item" role="presentation" *ngIf="
+                  isApproved 
+                ">
+                    <button
+                      class="nav-link"
+                      id="zoomLink-tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#zoomLink"
+                      type="button"
+                      role="tab"
+                      aria-controls="zoomLink"
+                      aria-selected="false"
+                      [class]="{ active: defaultTab === 'zoomLink' }"
+                    >
+                      Meeting Link
+                    </button>
+                  </li>
                   <li class="nav-item" role="presentation" *ngIf="isTest">
                     <button
                       class="nav-link"
@@ -936,7 +953,7 @@
 
                       <ng-container matColumnDef=" Class Start Date ">
                         <th mat-header-cell *matHeaderCellDef>
-                          Class Start Date
+                          Class Start Dat
                         </th>
                         <td mat-cell *matCellDef="let element">
                           {{ element?.sessionStartDate | date }}
@@ -1015,6 +1032,27 @@
                       ></tr>
                     </table>
                   </div>
+                  <div
+                  class="tab-pane fade"
+                  id="zoomLink"
+                  role="tabpanel"
+                  aria-labelledby="zoomLink-tab"
+                  [class]="{ 'show active': defaultTab === 'zoomLink' }"
+                >
+                  <!-- Zoom Link Content -->
+                  <div class="p-3">
+                    <h5>Meeting Link</h5>
+                    <p>
+                      Here is the Meeting link: 
+                      <a [href]="classDetails?.
+                      meetingUrl
+                      " target="_blank">
+                        Click here
+                      </a>
+                    </p>
+                  </div>
+                  
+                </div>
                   <div
                     class="tab-pane fade"
                     id="contact"

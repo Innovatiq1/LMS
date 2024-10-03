@@ -30,6 +30,7 @@ export class ViewClassComponent {
   edit = false;
   isDelete = false;
   isZoomMeetingFormVisible: boolean = false;
+  duration: string = '';
   constructor(public _classService: ClassService,private _router: Router, private activatedRoute: ActivatedRoute,private authenService: AuthenService) {
     this.coursePaginationModel = {};
     this.activatedRoute.params.subscribe((params: any) => {
@@ -163,7 +164,7 @@ export class ViewClassComponent {
   }
 
   updateDateTime(date: string, duration: string): void {
-  
+    
     // Validate that both date and duration are provided
     if (!date || !duration) {
       Swal.fire({
@@ -274,8 +275,11 @@ export class ViewClassComponent {
         }
     });
 }
+isUpdated: boolean = true;
 toggleZoomMeetingForm(): void {
   this.isZoomMeetingFormVisible = !this.isZoomMeetingFormVisible;
+  this.hideDurationField = false;
+  this.isUpdated = !this.isUpdated;
 }
 zoomRecordings:string=''
 getRecordedVideoLink(): void {
@@ -308,7 +312,12 @@ getRecordedVideoLink(): void {
         confirmButtonText: 'Close'
       });
     }
-  });
+  }); 
+}
+hideDurationField: boolean = false;
+toggleZoomMeetingFormDelete() {
+  this.isZoomMeetingFormVisible = !this.isZoomMeetingFormVisible;
+    this.hideDurationField = true;
 }
 
 
