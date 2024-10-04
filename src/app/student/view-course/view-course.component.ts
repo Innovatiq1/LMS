@@ -41,6 +41,8 @@ import * as moment from 'moment';
 import jsPDF from 'jspdf';
 import { AssessmentService } from '@core/service/assessment.service';
 import { AppConstants } from '@shared/constants/app.constants';
+import { environment } from 'environments/environment';
+declare var Scorm2004API: any;
 export interface PeriodicElement {
   name: string;
   position: number;
@@ -68,6 +70,7 @@ export class ViewCourseComponent implements OnDestroy {
     'action',
   ];
   displayedColumns1: string[] = ['video'];
+  displayedColumns2: string[] = ['scormKit'];
   dataSource: any;
   currentPlaybackProgress: number = 0;
   playbackProgress: number = 0;
@@ -165,6 +168,13 @@ export class ViewCourseComponent implements OnDestroy {
   isShowFeedback: boolean = false;
   isShowAssessmentQuestions: boolean = false;
   feeType:string='';
+  isScormCourseKit: boolean = false;
+  scormModules: any[] = [];
+  iframeUrl: string = '';
+  private prefix: string = environment.Url;
+  currentScormModule: any;
+  lastcommit:any;
+  scormKit:any;
   RetakeRequestCount=0;
   retakeResponseData:any;
 
@@ -533,40 +543,46 @@ export class ViewCourseComponent implements OnDestroy {
    
     } 
     else if (this.free || this.feeType=="free") {
-      let payload = {
-        
-  
-        studentId: studentId,
-        classId: this.classId,
-        title: this.title,
-        department:userdata.user.department,
-        coursekit: this.courseKit,
-       
-        courseStartDate:this.classDetails?.courseId?.sessionStartDate,
-        courseEndDate:this.classDetails?.courseId?.sessionEndDate,
-        email: userdata.user.email,
-        name: userdata.user.name,
-        courseTitle: this.courseDetails?.title,
-        courseFee: 0,
-        
-        courseId: this.courseDetails.id,
-        companyId:userdata.user.companyId,
-        verify:true,
-        paid:true
-      };
-      this.courseService.saveRegisterClass(payload).subscribe((response) => {
-        Swal.fire({
-          title: 'Thank you',
-          text: 'We will approve once verified',
-          icon: 'success',
-        });
-        this.isRegistered = true;
-        this.payment=true;
-        this.verify=true;
-        this.paidAmount=true;
-      });
-    }
+      this.registerFreeCourse();
   }
+}
+
+  registerFreeCourse(){
+    var studentId = localStorage.getItem('id');
+    var userdata = JSON.parse(localStorage.getItem('currentUser')!);
+
+    let payload = {
+      studentId: studentId,
+      classId: this.classId,
+      title: this.title,
+      department:userdata.user.department,
+      coursekit: this.courseKit,
+     
+      courseStartDate:this.classDetails?.courseId?.sessionStartDate,
+      courseEndDate:this.classDetails?.courseId?.sessionEndDate,
+      email: userdata.user.email,
+      name: userdata.user.name,
+      courseTitle: this.courseDetails?.title,
+      courseFee: 0,
+      
+      courseId: this.courseDetails.id,
+      companyId:userdata.user.companyId,
+      verify:true,
+      paid:true,
+    };
+    this.courseService.saveRegisterClass(payload).subscribe((response) => {
+      Swal.fire({
+        title: 'Thank you',
+        text: 'We will approve once verified',
+        icon: 'success',
+      });
+      this.isRegistered = true;
+      this.payment=true;
+      this.verify=true;
+      this.paidAmount=true;
+    });
+  }
+  
   registerClass(classId: string) {
     var userdata = JSON.parse(localStorage.getItem('currentUser')!);
     var studentId = localStorage.getItem('id');
@@ -928,7 +944,7 @@ else if(this.feeType=="free"){
         this.url = item?.videoLink[0]?.video_url;
       });
 
-      //console.log("get the courseKit Details==",this.courseKitDetails)
+      // console.log("get the courseKit Details==",this.courseKitDetails)
 
       this.courseKit = this.courseKitDetails.map((kit: any) => ({
         shortDescription: kit.shortDescription,
@@ -940,7 +956,29 @@ else if(this.feeType=="free"){
         inputUrl: kit?.videoLink[0]?.video_url,
         url: kit?.videoLink[0]?.url,
         playbackTime: 0,
+        kitType: kit.kitType,
+        scormKit: kit.scormKit,
       }));
+
+      this.isScormCourseKit = this.courseKit.some(v=>v.kitType === 'scorm');
+      console.log(this.courseKit);
+      
+      this.scormModules = this.courseKit.find(v=>v.kitType === 'scorm')?.scormKit?.modules || [];
+      this.scormKit = this.courseKit.find(v=>v.kitType === 'scorm')?.scormKit;
+
+      if(this.studentClassDetails.scormKit&&this.scormModules.length>0){
+        const lastModuleId = this.studentClassDetails.scormKit.currentScormModule;
+        const lastModule = this.scormModules.find(v=>v._id === lastModuleId);
+        const launchUrl = lastModule?.launch;
+        this.lastcommit = this.studentClassDetails.scormKit.lastCommit;
+        const scormKit = this.scormKit;
+        const url = scormKit?.path+'/'+launchUrl;
+        this.currentScormModule = lastModule;
+        this.initScorm2004(url);
+        console.log("launchUrl==",this.scormModules);
+        
+      }
+
       if(this.paidProgram){
         this.classService.getClassList({courseId:this.courseDetails.id,program:'yes'}).subscribe((response) => {
           this.classId = response.docs[0].id
@@ -999,6 +1037,17 @@ else if(this.feeType=="free"){
         this.longDescription = this?.coursekitDetails[0]?.longDescription;
         let totalPlaybackTime = 0;
         let documentCount = 0;
+        if(this.studentClassDetails.scormKit&&this.scormModules.length>0){
+          const lastModuleId = this.studentClassDetails.scormKit.currentScormModule;
+          const lastModule = this.scormModules.find(v=>v._id === lastModuleId);
+          const launchUrl = lastModule?.launch;
+          this.lastcommit = this.studentClassDetails.scormKit.lastCommit;
+          const scormKit = this.scormKit;
+          const url = scormKit?.path+'/'+launchUrl
+          // this.initScorm2004(url);
+          console.log("launchUrl==",this.scormModules);
+          
+        }
         this.coursekitDetails.forEach(
           (doc: { playbackTime: any }, index: number) => {
             const playbackTime = doc.playbackTime;
@@ -1179,6 +1228,7 @@ else if(this.feeType=="free"){
       .subscribe((response) => {
         this.studentClassDetails = response?.data?.docs[0];
         this.coursekitDetails = response?.data?.docs[0]?.coursekit;
+        
         this.longDescription = this?.coursekitDetails[0]?.longDescription;
         let totalPlaybackTime = 0;
         let documentCount = 0;
@@ -1423,7 +1473,6 @@ else if(this.feeType=="free"){
   }
 
   submitFeedback(event: any) {
-    
     this.isFeedBackSubmitted = false;
     const studentId = localStorage.getItem('id');
     const userData = JSON.parse(localStorage.getItem('user_data') || '');
@@ -1469,5 +1518,70 @@ else if(this.feeType=="free"){
     this.isFeedBackSubmitted = true;
     this.isShowFeedback= false;
     this.updateShowAssessmentQuestions();
+  }
+
+  initScorm(scormType: string) {
+    if (scormType == '2004') {
+      this.initScorm2004('');
+    }
+  }
+
+  initScorm2004(contentUrl: string) {
+    this.iframeUrl = contentUrl;
+    const settings = {
+      autocommit: true,
+      autocommitSeconds: 5,
+      dataCommitFormat: 'json',
+      commitRequestDataType: 'application/json;charset=UTF-8',
+      autoProgress: true,
+      logLevel: 0,
+      mastery_override: false,
+      lmsCommitUrl: `${this.prefix}scorm/commit/${this.studentClassDetails?.scormKit?._id}`,
+    };
+    (window as any).API_1484_11 = new Scorm2004API(settings);
+    (window as any).API_1484_11.on(
+      'SetValue.cmi.*',
+      this.receiveMessage.bind(this),
+      false
+    );
+    let studentId = localStorage.getItem('id');
+
+    (window as any).API_1484_11.cmi.suspend_data = this.currentScormModule._id;
+    (window as any).API_1484_11.cmi.learner_id = studentId;
+
+    if(this.lastcommit){
+      (window as any).API.loadFromJSON(this.lastcommit, "");
+    }
+  }
+
+  receiveMessage(CMIElement: any, value: any): void {
+    if(CMIElement == 'cmi.completion_status' && value ==='completed'){
+      const studentId = localStorage.getItem('id');
+      const percentagePerModule = 100/this.scormModules.length;
+      const playBackTime =this.playBackTime+percentagePerModule;
+      this.playBackTime = playBackTime;
+      let payload={
+        playbackTime:playBackTime>100?100:playBackTime,
+        status:playBackTime>=100?'completed':'approved'
+      }
+      this.classService.saveScormCompletion(this.registeredClassId,payload).subscribe((response)=>{
+        if(playBackTime>=100){
+          Swal.fire({
+            title: 'Course Completed Successfully',
+            text: 'Please Wait For the Certificate',
+            icon: 'success',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              location.reload();
+            }
+          });
+        }
+      });
+    }
+  }
+
+  openScormModule(module:any, scormKit:any){
+    this.currentScormModule = {...module, launchUrl: scormKit.path+'/'+module.launch};
+    this.initScorm2004(this.currentScormModule.launchUrl);
   }
 }

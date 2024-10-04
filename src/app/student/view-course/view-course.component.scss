@@ -379,3 +379,8 @@ footer p a:hover{
         margin-bottom: 5px;
     }
 }
+iframe {
+    overflow-y: clip;   
+    border: none; 
+    background: white;
+  }

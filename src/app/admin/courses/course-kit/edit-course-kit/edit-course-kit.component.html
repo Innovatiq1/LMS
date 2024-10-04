@@ -25,7 +25,34 @@
                                     </mat-form-field>
                                 </div>
                                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                                    <label>Document</label>
+                                    <label
+                                      >Course Kit Type
+                                      <span class="mandatory">&nbsp;*</span></label
+                                    >
+                                    <mat-form-field
+                                      class="example-full-width mb-3"
+                                      appearance="outline"
+                                    >
+                                      <mat-select formControlName="kitType" required>
+                                        <mat-option
+                                          *ngFor="let item of kitTypeOpt"
+                                          [value]="item.code"
+                                        >
+                                          {{ item.label }}
+                                        </mat-option>
+                                      </mat-select>
+                                      <mat-error
+                                        *ngIf="
+                                          courseKitForm.get('kitType')?.invalid &&
+                                          courseKitForm.get('kitType')?.touched
+                                        "
+                                      >
+                                        Select Kit Type
+                                      </mat-error>
+                                    </mat-form-field>
+                                  </div>
+                                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                                    <label>{{ isScormKit ? "Scorm Kit" : "Document" }}</label>
                                     <div class="file-drop-area1">
                                         <mat-progress-spinner 
                                         *ngIf="isUploading" 
@@ -76,7 +103,7 @@
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
-                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 mb-2">
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 mb-2" *ngIf="!isScormKit">
                                     <label>Upload Media</label>
                                     <div class="file-drop-area">
                                         <div class="file">
