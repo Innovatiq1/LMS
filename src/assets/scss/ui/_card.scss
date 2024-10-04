@@ -377,11 +377,17 @@
   color: black;
   // font-weight: 700;
 }
+
 #submit {
   background: #6777ef;
   border: none;
   color: #FFF;
   width:90px;
+}
+@media (max-width: 768px) {
+  #submit {
+    width:70px;
+  }
 }
 #submit1 {
   background: #6777ef;

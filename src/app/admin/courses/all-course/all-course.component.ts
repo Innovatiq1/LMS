@@ -42,8 +42,8 @@ export class AllCourseComponent {
     'code',
     'creator',
     'Fees',
-    'Days',
-    'Training Hours',
+    // 'Days',
+    // 'Training Hours',
     'Fee Type',
     'startDate',
     'endDate',
@@ -125,8 +125,8 @@ export class AllCourseComponent {
         'code',
         'creator',
         'Fee Type',
-        'Days',
-        'Training Hours',
+        // 'Days',
+        // 'Training Hours',
         'startDate',
         'endDate',
         'Vendor',
@@ -143,8 +143,8 @@ export class AllCourseComponent {
         'name',
         'code',
         'Fee Type',
-        'Days',
-        'Training Hours',
+        // 'Days',
+        // 'Training Hours',
         'startDate',
         'endDate',
         'Vendor',
@@ -304,7 +304,7 @@ applyFilter() {
       this.coursePaginationModel.page = response.data.page;
       this.coursePaginationModel.limit = response.data.limit;
       this.coursePaginationModel.totalDocs = response.data.totalDocs;
-      this.filter = true;  
+      this.filter = false;  
     });
 }
 

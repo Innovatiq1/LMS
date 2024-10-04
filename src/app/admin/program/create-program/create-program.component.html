@@ -385,11 +385,11 @@
                             </mat-form-field>
                           </div>
                         </div>
-                        <div
+                        <div  *ngIf="i > 0"
                           class="col-1 "
                           style="right: 40px; position: absolute; cursor: pointer"
                         >
-                          <svg
+                          <svg 
                             (click)="deleteCoreCard(i)"
                             class="ms-2 rounded-4 border"
                             xmlns="http://www.w3.org/2000/svg"
@@ -419,6 +419,7 @@
                         ></angular-editor>
                       </div>
                     </div>
+                    <div class="card-body"></div>
                   </div>
                 </div>
               </div>
@@ -509,6 +510,7 @@
                           </div>
                         </div>
                         <div
+                        *ngIf="i > 0"
                           class="col-1"
                           style="right: 40px; position: absolute;cursor: pointer;"
                         >

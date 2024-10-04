@@ -12,14 +12,32 @@
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
           <div class="materialTableHeader">
+            <div class="">
+              <ul class="tbl-export-btn mt-2">
+                <li>
+                  <ul class="header-buttons-left ms-0">
+                    
+                  </ul>
+                </li>
+                </ul>
+                </div>
+                <div class="right">
+                  <ul class="tbl-export-btn"
+                  > 
+                  <li class="tbl-header-btn">
+                    <div class="m-l-10" *ngIf="!selection.isEmpty()" matTooltip="APPROVE">
+                      <button mat-raised-button class="approveBtn" color="primary" id="submit" (click)="bulkApprove()" >
+                        Approve
+                      </button>
+                    </div>
+
+                  </li>
+
+                  </ul>
+                </div>
           </div>
           <div class="body overflow-auto">
             <div class="responsive_table">
-              <div class="materialTableHeader">
-                <button mat-raised-button color="primary" (click)="bulkApprove()" [disabled]="selection.isEmpty()">
-                  Approve
-                </button>
-              </div>
               
               <table mat-table [dataSource]="dataSource" matSort class="mat-cell advance-table">
                 <ng-container matColumnDef="select">
@@ -40,7 +58,7 @@
                 </ng-container>
 
                   <ng-container matColumnDef="studentname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <mat-header-cell *matHeaderCellDef >
                       {{commonRoles.STUDENT_ROLE}}
                     </mat-header-cell>
                     <mat-cell class="name" *matCellDef="let row" (click)="isView ? view(row.id) : null">
@@ -50,7 +68,7 @@
                   </ng-container>
                 
                   <ng-container matColumnDef="coursename">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <mat-header-cell *matHeaderCellDef >
                       Course
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
@@ -60,7 +78,7 @@
                   </ng-container>
                 
                   <ng-container matColumnDef="registeredDate">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <mat-header-cell *matHeaderCellDef >
                       Registered Date
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
@@ -69,7 +87,7 @@
                     </mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="examType">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <mat-header-cell *matHeaderCellDef >
                       Exam Type
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
@@ -82,12 +100,14 @@
                     <mat-cell *matCellDef="let row">
                       <!-- Conditionally display buttons or status text based on requestStatus -->
                       <ng-container *ngIf="row.requestStatus === 'requested'; else statusText">
-                        <button mat-raised-button color="primary" (click)="approve(row)">Approve</button>
-                        <button mat-raised-button color="warn" (click)="reject(row)">Reject</button>
+                        <button mat-raised-button class="btn1" color="primary" id="submit" (click)="approve(row)">Approve</button>
+                        <button mat-raised-button class="m-l-10" color="warn" (click)="reject(row)">Reject</button>
                       </ng-container>
                       <ng-template #statusText>
-                        <span *ngIf="row.requestStatus === 'approved'" class="text-success">Approved</span>
-                        <span *ngIf="row.requestStatus === 'rejected'" class="text-danger">Rejected</span>
+              
+                          
+                        <span *ngIf="row.requestStatus === 'approved'" class="badge badge-solid-green"><span class="status-dot"></span>Approved</span>
+                        <span *ngIf="row.requestStatus === 'rejected'" class="badge badge-solid-red"><span class="status-red"></span>Rejected</span>
                       </ng-template>
                     </mat-cell>
                   </ng-container>

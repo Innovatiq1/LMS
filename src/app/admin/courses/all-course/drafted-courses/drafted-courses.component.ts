@@ -38,8 +38,8 @@ export class DraftedCoursesComponent {
     'status',
     'code',
     'creator',
-    'Days',
-    'Training Hours',
+    // 'Days',
+    // 'Training Hours',
     'Fee Type',
     'startDate',
     'endDate',
@@ -210,13 +210,13 @@ export class DraftedCoursesComponent {
     }
     this.paginator.pageIndex = 0;
     this.coursePaginationModel.page = 1;
-
+console.log("course",body)
     this._courseService
       .getFilteredCourseData(body, { ...this.coursePaginationModel })
       .subscribe((response) => {
         this.courseData = response.data.docs;
         this.totalItems = response.data.totalDocs;
-        this.filter = true;
+        this.filter = false;
         this.coursePaginationModel.docs = response.data.docs;
         this.coursePaginationModel.page = response.data.page;
         this.coursePaginationModel.limit = response.data.limit;
@@ -331,11 +331,12 @@ export class DraftedCoursesComponent {
         );
   }
   pageSizeChange($event: any) {
-    this.coursePaginationModel.page = $event?.pageIndex + 1;
-    this.coursePaginationModel.limit = $event?.pageSize;
+   
     if (this.filter) {
       this.applyFilter();
     } else {
+      this.coursePaginationModel.page = $event?.pageIndex + 1;
+      this.coursePaginationModel.limit = $event?.pageSize;
       this.getAllCourses();
     }
   }
