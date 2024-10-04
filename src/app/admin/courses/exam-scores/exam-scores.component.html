@@ -63,7 +63,7 @@
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="Student Name">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header
+                  <mat-header-cell *matHeaderCellDef 
                     >{{commonRoles.STUDENT_ROLE}}</mat-header-cell
                   >
                   <mat-cell *matCellDef="let row" class="name">
@@ -74,7 +74,7 @@
                 </ng-container>
 
                 <ng-container matColumnDef="Email">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header
+                  <mat-header-cell *matHeaderCellDef 
                     >Email</mat-header-cell
                   >
                   <mat-cell *matCellDef="let row">
@@ -91,7 +91,7 @@
                 </ng-container>
                 <!-- Course Code -->
                 <ng-container matColumnDef="Course Title">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header
+                  <mat-header-cell *matHeaderCellDef 
                     >Course
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row">
@@ -101,7 +101,7 @@
                 </ng-container>
 
                 <ng-container matColumnDef="Exam Name">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>
+                  <mat-header-cell *matHeaderCellDef >
                     Exam
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row">
@@ -111,7 +111,7 @@
                 </ng-container>
 
                 <ng-container matColumnDef="Assessment Score">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header class="assessment-header">
+                  <mat-header-cell *matHeaderCellDef  class="assessment-header">
                     Assessment Score
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row" [routerLink]="row.assessmentAnswer?._id ? ['/student/test/preview', row.assessmentAnswer?._id, 'student', row.studentId._id] : null" [queryParams]="{ assessmentType: 'assessment' }">
@@ -124,7 +124,7 @@
                 </ng-container>
                 
                 <ng-container matColumnDef="Exam Assessment Score">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>
+                  <mat-header-cell *matHeaderCellDef >
                     Exam Score
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row" [routerLink]="row?.examAssessmentAnswer?._id ? ['/student/test/preview', row.examAssessmentAnswer?._id, 'student', row.studentId._id] : null" [queryParams]="{ assessmentType: 'exam' }">
@@ -137,7 +137,7 @@
                 </ng-container>
 
                 <ng-container matColumnDef="Action">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header
+                  <mat-header-cell *matHeaderCellDef 
                     >Action
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row">
