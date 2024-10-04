@@ -15,7 +15,7 @@
           <div class="materialTableHeader">
             <div class="right">
               <ul class="tbl-export-btn">
-                <li>
+                <li >
                   <ul class="header-buttons-left ms-0">
                     <li class="tbl-search-box">
                       <label for="search-input"
@@ -33,35 +33,37 @@
                     </li>
                   </ul>
                 </li>
-                <li class="tbl-header-btn">
-                  <div class="m-l-10" matTooltip="ADD">
-                    <button *ngIf="create"
-                      mat-raised-button
-                      [routerLink]="['/admin/program/create-class']"
-                      id="submit"
+                  <li class="tbl-header-btn">
+                    <div class="m-l-10" matTooltip="ADD">
+                      <button *ngIf="create"
+                        mat-raised-button
+                        [routerLink]="['/admin/program/create-class']"
+                        id="submit"
+                      >
+                        Create
+                      </button>
+                    </div>
+                  </li>
+                  <li>
+                    <div
+                      class="export-button m-l-10"
+                      matTooltip="XLSX"
+                      (click)="exportExcel()"
                     >
-                      Create
-                    </button>
-                  </div>
-                </li>
-                <li>
-                  <div
-                    class="export-button m-l-10"
-                    matTooltip="XLSX"
-                    (click)="exportExcel()"
-                  >
-                    <img src="assets/excel.svg" alt="" />
-                  </div>
-                </li>
-                <li>
-                  <div class="export-button m-l-10" matTooltip="PDF">
-                    <img
-                      src="assets/pdf (1).svg"
-                      alt=""
-                      (click)="generatePdf()"
-                    />
-                  </div>
-                </li>
+                      <img src="assets/excel.svg" alt="" />
+                    </div>
+                  </li>
+                  <li>
+                    <div class="export-button m-l-10" matTooltip="PDF">
+                      <img
+                        src="assets/pdf (1).svg"
+                        alt=""
+                        (click)="generatePdf()"
+                      />
+                    </div>
+                  </li>
+                  
+              
               </ul>
             </div>
           </div>

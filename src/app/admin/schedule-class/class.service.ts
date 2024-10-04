@@ -266,6 +266,10 @@ getProgramRegisteredClasse(id:any, filter?:Partial<CoursePaginationModel>): Obse
   const apiUrl = `${this.prefix}admin/studentClasses/studentApproveList?status=registered&companyId=${id}`;
   return this.http.get<any>(apiUrl, { params: this.buildParams(filter) });
 }
+getSessionsCompletedStudent(id:any,filter?:Partial<CoursePaginationModel>): Observable<any> {
+  const apiUrl = `${this.prefix}admin/studentClasses/students/completed?companyId=${id}`;
+  return this.http.get<any>(apiUrl, { params: this.buildParams(filter) });
+}
 getStudentsApprovedClasses(): Observable<any> {
   const apiUrl = `${this.prefix}admin/studentClasses/studentApproveList`;
   let params = new HttpParams();
