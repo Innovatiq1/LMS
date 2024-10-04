@@ -12,9 +12,9 @@
                     <div class="card">
                         <div class="p-4">
                             <div class="card-container">
-                                <div class="header">
+                                <!-- <div class="header">
                                     <h6>Program Class</h6>
-                                </div>
+                                </div> -->
                                 <button class="icons" alt="Edit" mat-menu-item *ngIf="isAdmin && !isInstructor && edit"
                                     [routerLink]="['/admin/program/edit-class',aboutData1.id]">
                                     <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
@@ -109,7 +109,7 @@
                                     <div class="p-2">
                                         <div class="row">
                                             <div class="col-6">
-                                                <h6>{{commonRoles?.INSTRUCTOR_ROLE}} Cost</h6>
+                                                <h6>{{commonRoles?.INSTRUCTOR_ROLE}} Fee</h6>
                                             </div>
                                             <div class="col-6">
                                                 <p>$ {{aboutData1?.instructorCost}}.00</p>
