@@ -73,7 +73,7 @@
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
                       <span class="mobile-label">Course Name:</span>
-                      <span>{{ row.courseName }}</span> 
+                      <span>{{ row.courseName |titlecase}}</span> 
                     </mat-cell>
                   </ng-container>
                 
@@ -92,7 +92,7 @@
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
                       <span class="mobile-label">Exam Type:</span>
-                      <span>{{ row.examType }}</span> 
+                      <span>{{ row.examType |titlecase }}</span> 
                     </mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="action">

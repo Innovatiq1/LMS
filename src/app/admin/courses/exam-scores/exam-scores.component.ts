@@ -19,7 +19,7 @@ export class ExamScoresComponent {
     'Student Name',
     'Email',
     'Course Title',
-    'Exam Name',
+    // 'Exam Name',
     'Assessment Score',
     'Exam Assessment Score',
     'Action'

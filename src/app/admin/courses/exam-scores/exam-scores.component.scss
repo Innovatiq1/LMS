@@ -47,8 +47,8 @@ svg {
     overflow-x: hidden !important;
   }
 
-  #student-view {
-    width: 140px;
+  .student-view {
+    min-width: 150px;
     padding: 5px;
     font-size: 12px !important;
   }
