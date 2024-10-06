@@ -255,11 +255,11 @@ export class CreateClassComponent {
       externalRoom: [false],
       minimumEnrollment: ['', Validators.required],
       maximumEnrollment: ['', Validators.required],
-      meetingPlatform:['', Validators.required],
+      meetingPlatform:[''],
       classStartDate: [''],
       classEndDate: [''],
       userGroupId: [null],
-      duration:['', Validators.required],
+      duration:[''],
       code: ''
     });
     this.secondFormGroup = this._fb.group({

@@ -150,12 +150,12 @@
                       <mat-option [value]="'googlemeet'">Google Meet</mat-option>
                       <mat-option [value]="'teams'">Microsoft Teams</mat-option>
                     </mat-select>
-                    <mat-error *ngIf="
+                    <!-- <mat-error *ngIf="
    classForm.get('meetingPlatform')?.hasError('required') || 
    classForm.get('meetingPlatform')?.touched
  ">
                       Select a Meeting Platform Type
-                    </mat-error>
+                    </mat-error> -->
                   </mat-form-field>
                 </div>
 
@@ -163,13 +163,13 @@
                 *ngIf="classForm.get('classDeliveryType')?.value === 'online'">
                   <label>Duration <span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
-                      <input matInput formControlName="duration" type="time" required />
-                      <mat-error *ngIf="
+                      <input matInput formControlName="duration" type="time"/>
+                      <!-- <mat-error *ngIf="
                               classForm.get('duration')?.hasError('required') ||
                               classForm.get('duration')?.touched
                             ">
                           Enter Meeting Duration.
-                      </mat-error>
+                      </mat-error> -->
                   </mat-form-field>
               </div>
                 <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mt-3" *ngIf="labelStatusCheck('Is Guaranteed To Run')">
