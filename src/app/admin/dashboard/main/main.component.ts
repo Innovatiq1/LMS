@@ -408,6 +408,7 @@ export class MainComponent implements OnInit {
       (data: any) => {
         this.roleType = data.data.map((doc: any) => doc.typeName).toString();
         this.dashboards = data.data.flatMap((doc: any) => doc.dashboards);
+        console.log('Dashboards:', this.dashboards);
         this.dashboards.forEach((dashboard: { checked: any; }, index: number) => {
           if (dashboard.checked) {
           } else {
@@ -468,11 +469,15 @@ export class MainComponent implements OnInit {
     })
     })
   }
+  ApprovedClassForTrainer:any[]=[];
   getApprovedCourse(){
     let studentId=localStorage.getItem('id')
     const payload = { studentId: studentId, status: 'approved' ,isAll:true};
     this.classService.getStudentRegisteredClasses(payload).subscribe(response =>{
+      console.log("response",response);
      this.studentApprovedClasses = response.data;
+     this.ApprovedClassForTrainer = response.data;
+     console.log("APProved",this.ApprovedClassForTrainer);
      const currentDate = new Date();
      const currentMonth = currentDate.getMonth();
      const currentYear = currentDate.getFullYear();
@@ -846,14 +851,17 @@ export class MainComponent implements OnInit {
     this.getAllAnswers();
     this.getAllClasses();
   }
-  
+  classListSample:any[]=[];
   getClassList() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
         this.classService.getClassListWithPagination({},userId).subscribe(
       (response) => {
         if (response.data) {
+          console.log("response Data",response.data);
           this.classesList = response.data.docs.slice(0, 5).sort();
+          this.classListSample= response.data.docs
           this.docs = response.data.totalDocs;
+
         }
       },
       (error) => {

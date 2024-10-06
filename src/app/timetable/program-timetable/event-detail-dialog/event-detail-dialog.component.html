@@ -48,11 +48,19 @@
       </p>
     </div>
     <div class="col-md-3">
-      <p class="info-text">{{data.meetingPlatform}} Cost</p>
+      <p class="info-text">Meeting Link</p>
+    </div>
+    <div class="col-md-2">
+      <a *ngIf="data?.meetingUrl" href="{{ data?.meetingUrl }}" target="_blank" class="highlight" style="display: inline-block;background-color: #007bff; color: white; text-decoration: none; border-radius: 4px;">
+        Open Meeting
+      </a>
+    </div>
+    <div class="col-md-3">
+      <p class="info-text">Duration</p>
     </div>
     <div class="col-md-4">
       <p class="info-text">
-        <span class="highlight">$ {{ data.instructorCost }}.00</span>
+        <span class="highlight">{{ data.duration }}</span>
       </p>
     </div>
   </div>
