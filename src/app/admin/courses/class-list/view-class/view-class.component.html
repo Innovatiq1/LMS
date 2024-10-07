@@ -97,6 +97,14 @@
                                         </div>
                                         <div class="row pt-2">
                                             <div class="col-6">
+                                                <h6>Start Time</h6>
+                                            </div>
+                                            <div class="col-6">
+                                                <p>{{response.sessions[0]?.sessionStartTime}}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row pt-2">
+                                            <div class="col-6">
                                                 <h6>Minimum{{commonRoles.STUDENT_ROLE}}s</h6>
                                             </div>
                                             <div class="col-6">
@@ -129,7 +137,7 @@
                                                     <button type="button" (click)="toggleZoomMeetingForm()"
                                                         style="display: inline-block; background-color: white; color: #28a745; padding: 5px 10px; 
                                                         text-align: center; border: .5px solid #28a745; border-radius: 5px; font-size: 14px;">
-                                                        <i class="fas fa-sync-alt"></i> <!-- Font Awesome Update Icon -->
+                                                        <i class="fas fa-edit"></i> <!-- Font Awesome Update Icon -->
                                                     </button>
                                                     
                                                     <!-- Delete Button -->
