@@ -1,6 +1,7 @@
 mat-cell {
     button {
       margin-right: 8px; // Add some spacing between buttons
+      
   
       &.mat-primary {
         background-color: #3f51b5; // Primary background color (can be customized)
@@ -16,4 +17,28 @@ mat-cell {
   .materialTableHeader {
     display: flex;
     justify-content: flex-end;
+  }
+  .approveBtn{
+    float: right;
+    margin-right: 100%;
+  }
+  .btn1{
+    min-width: 75px!important;
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #198754;
+    border-radius: 50%; // To make it a circle
+    display: inline-block;
+    margin-right: 5px; // Space between dot and text
+  }
+  .status-red {
+    width: 8px;
+    height: 8px;
+    background-color: #f11541;
+    border-radius: 50%; // To make it a circle
+    display: inline-block;
+    margin-right: 5px; // Space between dot and text
   }

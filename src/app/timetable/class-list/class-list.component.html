@@ -60,6 +60,9 @@
                   </div>
                 </li>
                 <li>
+                  <span style="font-weight: bold">Export as</span>
+                </li>
+                <li>
                   <div
                     class="export-button m-l-10"
                     matTooltip="XLSX"
@@ -89,7 +92,7 @@
                 class="mat-cell advance-table"
               >
                 <ng-container matColumnDef="Course">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header
+                  <mat-header-cell *matHeaderCellDef 
                     >Course
                   </mat-header-cell>
                   <mat-cell
@@ -103,7 +106,7 @@
                   >
                 </ng-container>
                 <ng-container matColumnDef="Code" *ngIf="isAdmin">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header
+                  <mat-header-cell *matHeaderCellDef 
                     >Course Code</mat-header-cell
                   >
                   <mat-cell
@@ -115,7 +118,7 @@
                   >
                 </ng-container>
                 <ng-container matColumnDef="Code" *ngIf="isInstructor">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header
+                  <mat-header-cell *matHeaderCellDef 
                     >Course Code</mat-header-cell
                   >
                   <mat-cell
@@ -127,8 +130,8 @@
                   >
                 </ng-container>
                 <ng-container matColumnDef="Price">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header
-                    class="amount">Amount</mat-header-cell
+                  <mat-header-cell *matHeaderCellDef 
+                    class="amount">Trainer Fee</mat-header-cell
                   >
                   <mat-cell
                     *matCellDef="let row"
@@ -139,7 +142,7 @@
                   >
                 </ng-container>
                 <ng-container matColumnDef="Department">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header
+                  <mat-header-cell *matHeaderCellDef 
                     >Department</mat-header-cell
                   >
                   <mat-cell
@@ -152,7 +155,7 @@
                 </ng-container>
                 <!-- Start date -->
                 <ng-container matColumnDef="Start Date">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header
+                  <mat-header-cell *matHeaderCellDef 
                     >Start Date
                   </mat-header-cell>
                   <mat-cell
@@ -165,7 +168,7 @@
                 </ng-container>
                 <!-- Enddate -->
                 <ng-container matColumnDef="End Date">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header
+                  <mat-header-cell *matHeaderCellDef 
                     >End Date
                   </mat-header-cell>
                   <mat-cell
@@ -177,7 +180,7 @@
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="Class">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header
+                  <mat-header-cell *matHeaderCellDef 
                     >Class</mat-header-cell
                   >
                   <mat-cell
@@ -196,7 +199,7 @@
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="Minimum Students">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header
+                  <mat-header-cell *matHeaderCellDef 
                     >Min {{commonRoles.STUDENT_ROLE}}s
                   </mat-header-cell>
                   <mat-cell
@@ -208,7 +211,7 @@
                   >
                 </ng-container>
                 <ng-container matColumnDef="Maximum Students">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header
+                  <mat-header-cell *matHeaderCellDef 
                     >Max {{commonRoles.STUDENT_ROLE}}s
                   </mat-header-cell>
                   <mat-cell

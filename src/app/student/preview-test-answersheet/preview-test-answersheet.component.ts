@@ -27,6 +27,8 @@ export class PreviewTestAnswersheetComponent {
   ];
   
   isShowCongrats: boolean = false;
+  getTypeOfExam:any;
+  getAssessmentName:any;
 
   constructor(
     private studentService: StudentsService,
@@ -38,6 +40,7 @@ export class PreviewTestAnswersheetComponent {
     const studentId = this.route.snapshot.paramMap.get('studentId') || '';
     const assessmentType =
       this.route.snapshot.queryParamMap.get('assessmentType');
+      this.getTypeOfExam=this.route.snapshot.queryParamMap.get('assessmentType');
     this.isShowCongrats = (this.route.snapshot.queryParamMap.get('showCongrats')||'')=='true';
     this.student(studentId);
     if (assessmentType === 'assessment') this.getAnswerById(answerId);
@@ -51,9 +54,12 @@ export class PreviewTestAnswersheetComponent {
   }
 
   getAnswerById(answerId: string) {
+    
     this.studentService.getAnswerById(answerId).subscribe((res: any) => {
       this.answerResult = res.assessmentAnswer;
+      
       const assessmentAnswer = res.assessmentAnswer;
+      this.getAssessmentName=assessmentAnswer.assessmentId.name;
       const assessmentId = assessmentAnswer.assessmentId;
       this.questionList = assessmentId.questions.map((question: any) => {
         const answer = assessmentAnswer.answers.find(
@@ -83,6 +89,8 @@ export class PreviewTestAnswersheetComponent {
 
   getExamAnswerById(answerId: string) {
     this.assessmentService.getAnswerById(answerId).subscribe((res: any) => {
+      console.log("this.res",res.assessmentAnswer.examAssessmentId.name)
+      this.getAssessmentName=res.assessmentAnswer.examAssessmentId.name;
       this.answerResult = res.assessmentAnswer;
       const assessmentAnswer = res.assessmentAnswer;
       const assessmentId = res.assessmentAnswer.examAssessmentId;

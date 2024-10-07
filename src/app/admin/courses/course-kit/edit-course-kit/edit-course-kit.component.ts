@@ -54,6 +54,14 @@ export class EditCourseKitComponent {
   videoLink: any;
   videoSrc: any;
   videoId: any;
+  kitType: any;
+  scormKit: any;
+  scormId: any;
+  kitTypeOpt: any[] = [
+    { code: 'course', label: 'Course' },
+    { code: 'scorm', label: 'Scorm' },
+  ];
+  isScormKit: boolean = false;
   constructor(
     private router: Router,
 
@@ -94,6 +102,8 @@ export class EditCourseKitComponent {
         ...this.utils.validators.noLeadingSpace,]),
       videoLink: new FormControl('', [ 
         ...this.utils.validators.noLeadingSpace,]),
+      kitType: new FormControl('', [...this.utils.validators.descripton,
+        ...this.utils.validators.noLeadingSpace]),
     });
 
     this.subscribeParams = this.activatedRoute.params.subscribe(
@@ -101,6 +111,18 @@ export class EditCourseKitComponent {
         this.courseId = params.id;
       }
     );
+
+    this.courseKitForm.get('kitType')?.valueChanges.subscribe((value) => {
+      if (value === 'scorm') {
+        this.isScormKit = true;
+      this.courseKitForm.patchValue({
+        videoLink: '',
+        documentLink: '',
+      });
+      } else {
+        this.isScormKit = false;
+      }
+    });
   }
   dateValidator(group: FormGroup) {
     const startDate = group.get('startDate')?.value;
@@ -169,6 +191,15 @@ export class EditCourseKitComponent {
         timer: 90000,
         timerProgressBar: true,
       });
+      if(this.isScormKit){
+        this.courseService.updateScormKit(this.scormId,formdata).subscribe((data) => {
+          const courseKitData: CourseKit = this.courseKitForm.value;
+          delete courseKitData.videoLink;
+          delete courseKitData.documentLink;
+          courseKitData.scormKit = data.data._id;
+          this.editCourseKit(courseKitData);
+        });
+      }else{
           this.courseService.updateVideo(this.videoId,formdata).subscribe((data) => {
             const courseKitData: CourseKit = this.courseKitForm.value;
             courseKitData.videoLink = data.data._id;
@@ -183,6 +214,7 @@ export class EditCourseKitComponent {
             });
             Swal.close();
           });
+        }
     } 
   cancel() {
     window.history.back();
@@ -192,22 +224,30 @@ export class EditCourseKitComponent {
       course: this.courseService.getCourseKitById(this.courseId),
     }).subscribe((response: any) => {
       if (response) {
+        console.log(response);
+        
         this.course = response.course;
-        this.fileName = response?.course?.videoLink
+        this.fileName = response?.course?.videoLink?.length > 0
           ? response?.course?.videoLink[0].filename
           : null;
         this.documentLink = response.course?.documentLink;
         this.docs = response.course?.documentLink;
         this.videoLink = response.course?.videoLink;
-
+        if(response.course?.videoLink?.length > 0){
         let courseKitDetails = response.course.videoLink[0];
         this.videoId = courseKitDetails._id
         this.videoSrc = courseKitDetails.video_filename;
         this.uploadedDocument = courseKitDetails.doc_filename;
+        }else {
+          this.scormId = response.course.scormKit._id;
+          this.scormKit = response.course.scormKit;
+        }
+        this.kitType = response.course.kitType;
         this.courseKitForm.patchValue({
           name: response?.course?.name,
           shortDescription: response?.course?.shortDescription,
           longDescription: response?.course?.longDescription,
+          kitType: response?.course?.kitType,
         });
       }
     });
@@ -235,59 +275,144 @@ export class EditCourseKitComponent {
       this.fileName = '';
     }
   }
+  // fileBrowseHandler(event: any) {
+  //   const file = event.target.files[0];
+  //   if(file.size <= 10000000){
+  //     this.videoLink = file;
+  //     this.videoSrc = this.videoLink.name;
+  //     } else {
+  //       Swal.fire({
+  //         title: 'Error',
+  //         text: 'Failed to upload media.Please upload less than 10mb.',
+  //         icon: 'error',
+  //       });
+  //     }
+  //   }
   fileBrowseHandler(event: any) {
     const file = event.target.files[0];
-    if(file.size <= 10000000){
+    const allowedFormats = ['video/mp4', 'video/x-matroska', 'video/x-msvideo']; 
+    if (!allowedFormats.includes(file.type)) {
+      Swal.fire({
+        title: 'Oops...',
+        text: 'Selected format doesn\'t support. Only video formats are allowed!',
+        icon: 'error',
+      });
+      return; 
+    }
+    if (file.size <= 10000000) {
       this.videoLink = file;
       this.videoSrc = this.videoLink.name;
+    } else {
+      Swal.fire({
+        title: 'Error',
+        text: 'Failed to upload media. Please upload less than 10MB.',
+        icon: 'error',
+      });
+    }
+  }
+  
+    isUploading = false;
+  // onFileUpload(event: any) {
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     if (
+  //       file.type === 'application/vnd.ms-powerpoint' ||
+  //       file.type === 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+  //     ) {
+  //       this.isUploading = true;
+
+  //       this.courseService.uploadFile(file).subscribe(
+  //         (response) => {
+  //           const byteCharacters = atob(response.fileContent);
+  //           const byteNumbers = new Array(byteCharacters.length);
+  //           for (let i = 0; i < byteCharacters.length; i++) {
+  //             byteNumbers[i] = byteCharacters.charCodeAt(i);
+  //           }
+  //           const byteArray = new Uint8Array(byteNumbers);
+  //           const blob = new Blob([byteArray], { type: 'application/pdf' });
+  //           const fileToUpload = new File([blob], response.filename, { type: 'application/pdf' });
+  //          this.uploadedDocument = file.name;
+  //           this.docs = fileToUpload;
+  //           const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+  //           if (fileInput) {
+  //             const dataTransfer = new DataTransfer();
+  //             dataTransfer.items.add(fileToUpload);
+  //             fileInput.files = dataTransfer.files; 
+  //           }
+  //           this.isUploading = false;
+  //         },
+  //         (error) => {
+  //           //console.error('File upload failed', error);
+  //           this.isUploading = false;
+  //           Swal.fire('Upload Failed', 'Unable to convert the file.', 'error');
+  //         }
+  //       );
+  //     } else {
+  //       this.uploadedDocument = file.name;
+  //       this.docs = file;
+  //     }
+  //   }
+  // }
+  onFileUpload(event: any) {
+    const file = event.target.files[0];
+    const allowedFileTypes = [
+      'application/pdf',
+      'application/vnd.ms-powerpoint', 
+      'application/vnd.openxmlformats-officedocument.presentationml.presentation', 
+      'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 
+      'application/vnd.ms-excel',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'text/plain' 
+    ];
+  
+    if (file) {
+      if (allowedFileTypes.includes(file.type)) {
+        if (
+          file.type === 'application/vnd.ms-powerpoint' ||
+          file.type === 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+        ) {
+          this.isUploading = true;
+  
+          this.courseService.uploadFile(file).subscribe(
+            (response) => {
+              const byteCharacters = atob(response.fileContent);
+              const byteNumbers = new Array(byteCharacters.length);
+              for (let i = 0; i < byteCharacters.length; i++) {
+                byteNumbers[i] = byteCharacters.charCodeAt(i);
+              }
+              const byteArray = new Uint8Array(byteNumbers);
+              const blob = new Blob([byteArray], { type: 'application/pdf' });
+              const fileToUpload = new File([blob], response.filename, { type: 'application/pdf' });
+  
+              this.uploadedDocument = file.name;
+              this.docs = fileToUpload;
+  
+              const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+              if (fileInput) {
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(fileToUpload);
+                fileInput.files = dataTransfer.files;
+              }
+              this.isUploading = false;
+            },
+            (error) => {
+              this.isUploading = false;
+              Swal.fire('Upload Failed', 'Unable to convert the file.', 'error');
+            }
+          );
+        } else {
+          this.uploadedDocument = file.name;
+          this.docs = file;
+        }
       } else {
         Swal.fire({
-          title: 'Error',
-          text: 'Failed to upload media.Please upload less than 10mb.',
+          title: 'Oops...',
+          text: 'Selected format doesn\'t support. Only document formats are allowed!',
           icon: 'error',
         });
       }
     }
-    isUploading = false;
-  onFileUpload(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      if (
-        file.type === 'application/vnd.ms-powerpoint' ||
-        file.type === 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
-      ) {
-        this.isUploading = true;
-
-        this.courseService.uploadFile(file).subscribe(
-          (response) => {
-            const byteCharacters = atob(response.fileContent);
-            const byteNumbers = new Array(byteCharacters.length);
-            for (let i = 0; i < byteCharacters.length; i++) {
-              byteNumbers[i] = byteCharacters.charCodeAt(i);
-            }
-            const byteArray = new Uint8Array(byteNumbers);
-            const blob = new Blob([byteArray], { type: 'application/pdf' });
-            const fileToUpload = new File([blob], response.filename, { type: 'application/pdf' });
-           this.uploadedDocument = file.name;
-            this.docs = fileToUpload;
-            const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
-            if (fileInput) {
-              const dataTransfer = new DataTransfer();
-              dataTransfer.items.add(fileToUpload);
-              fileInput.files = dataTransfer.files; 
-            }
-            this.isUploading = false;
-          },
-          (error) => {
-            //console.error('File upload failed', error);
-            this.isUploading = false;
-            Swal.fire('Upload Failed', 'Unable to convert the file.', 'error');
-          }
-        );
-      } else {
-        this.uploadedDocument = file.name;
-        this.docs = file;
-      }
-    }
   }
+  
 }

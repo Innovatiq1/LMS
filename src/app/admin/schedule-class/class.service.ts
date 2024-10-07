@@ -129,6 +129,11 @@ export class ClassService extends UnsubscribeOnDestroyAdapter {
     const apiUrl = `${this.prefix}admin/studentClasses/${id}`;
     return this.http.put<ApiResponse>(apiUrl, item);
   }
+
+  saveScormCompletion(id: any, item: any): Observable<ApiResponse> {
+    const apiUrl = `${this.prefix}admin/studentClasses/updateScorm/${id}`;
+    return this.http.put<ApiResponse>(apiUrl, item);
+  }
     saveApprovedProgramClasses(id: string, item: any): Observable<ApiResponse> {
     const apiUrl = `${this.prefix}admin/studentClasses/studentApproveList/${id}`;
     return this.http.put<ApiResponse>(apiUrl, item);
@@ -265,6 +270,10 @@ getProgramsCompletedStudent(id:any, filter?:Partial<CoursePaginationModel>): Obs
 
 getProgramRegisteredClasse(id:any, filter?:Partial<CoursePaginationModel>): Observable<any> {
   const apiUrl = `${this.prefix}admin/studentClasses/studentApproveList?status=registered&companyId=${id}`;
+  return this.http.get<any>(apiUrl, { params: this.buildParams(filter) });
+}
+getSessionsCompletedStudent(id:any,filter?:Partial<CoursePaginationModel>): Observable<any> {
+  const apiUrl = `${this.prefix}admin/studentClasses/students/completed?companyId=${id}`;
   return this.http.get<any>(apiUrl, { params: this.buildParams(filter) });
 }
 getStudentsApprovedClasses(): Observable<any> {

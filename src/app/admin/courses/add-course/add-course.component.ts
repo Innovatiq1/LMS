@@ -186,7 +186,8 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       main_category: ['', [Validators.required]],
       sub_category: ['', [Validators.required]],
       fee: new FormControl('', [Validators.pattern(/^\d+(\.\d+)?$/)]),
-      currency_code: new FormControl(''),
+      currency_code: ['', [Validators.required]],
+
       course_duration_in_days: new FormControl('', [
         Validators.min(1),
         Validators.pattern(/^\d+(\.\d+)?$/),
@@ -194,7 +195,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       training_hours: new FormControl('', [
         Validators.pattern(/^\d+(\.\d+)?$/),
       ]),
-      department:['',Validators.required],
+      department:['',[]],
       skill_connect_code: new FormControl('', [
         Validators.pattern(/^[a-zA-Z0-9]/),
       ]),
@@ -306,12 +307,9 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     }
 
     this.loadData();
-     if (this.isAnyFieldFilled()) {
+    setInterval(() => {
       this.startAutoSave();
-    }
-    if (!this.isAnyFieldFilled()) {
-      return;
-    }
+    }, 30000);
   }
   getDepartments() {
     this.studentsService.getAllDepartments().subscribe((response: any) => {
@@ -328,7 +326,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       return;
     }
     if (this.isAnyFieldFilled()) {
-    this.draftSubscription = timer(0, 10000).subscribe(() => {
+    this.draftSubscription = timer(0, 30000).subscribe(() => {
       this.saveDraft();
     });
     }
@@ -454,7 +452,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         if (config) {
           this.defaultCurrency = config.value;
           this.firstFormGroup.patchValue({
-            currency_code: this.defaultCurrency,
+            currency_code: this.firstFormGroup.value.feeType?this.defaultCurrency:'',
           });
         }
       });

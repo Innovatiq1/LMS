@@ -228,11 +228,15 @@ applyFilter() {
   if (this.selectedCreators.length > 0) {
     body.creator = this.selectedCreators;
   }
+   if (this.selectedCreators.length > 0) {
+    body.creator = this.selectedCreators;
+  }
   this.coursePaginationModel.page = 1;
+  this.paginator.pageIndex = 0;
   this.courseService.getFilteredProgramData(body, { ...this.coursePaginationModel }).subscribe((response) => {
     this.programData = response.data.docs;
     this.totalItems = response.data.totalDocs;
-    this.isFiltered = true;
+    this.isFiltered = false;
     this.coursePaginationModel.docs = response.data.docs;
     this.coursePaginationModel.page = response.data.page;
     this.coursePaginationModel.limit = response.data.limit;
