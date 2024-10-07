@@ -12,9 +12,9 @@
                     <div class="card">
                         <div class="p-4">
                             <div class="card-container">
-                                <div class="header">
+                                <!-- <div class="header">
                                     <h6>Course Class</h6>
-                                </div>
+                                </div> -->
                                 <button class="icons" alt="Edit" *ngIf="isAdmin && !isInstructor && edit" mat-menu-item
                                     (click)="editClass(response.id)">
                                     <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
@@ -159,7 +159,7 @@
                                     <div class="p-2">
                                         <div class="row">
                                             <div class="col-6">
-                                                <h6>{{commonRoles?.INSTRUCTOR_ROLE}} Cost</h6>
+                                                <h6>{{commonRoles?.INSTRUCTOR_ROLE}} Fee</h6>
                                             </div>
                                             <div class="col-6">
                                                 <p>$ {{response?.instructorCost}}.00</p>

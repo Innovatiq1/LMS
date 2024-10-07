@@ -15,16 +15,16 @@
             <div class="body">
               <div class="row">
 
-                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-2">
-                  <label>Course Name<span class="mandatory">&nbsp;*</span></label>
-                  <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <mat-select required formControlName="courseId" (selectionChange)="onSelectChange($event)">
-                      <mat-option> Choose Course Name... </mat-option>
-                      <mat-option *ngFor="let courseName of courseList" [value]="courseName.id">
-                        {{ courseName.title }}
-                      </mat-option>
-                    </mat-select>
-                    <mat-error *ngIf="
+                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-2">
+                      <label>Course<span class="mandatory">&nbsp;*</span></label>
+                      <mat-form-field class="example-full-width mb-3" appearance="outline">
+                        <mat-select required formControlName="courseId" (selectionChange)="onSelectChange($event)">
+                          <mat-option> Choose Course Name... </mat-option>
+                          <mat-option *ngFor="let courseName of courseList" [value]="courseName.id">
+                            {{ courseName.title }}
+                          </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="
                               classForm.get('courseId')?.hasError('required') ||
                               classForm.get('courseId')?.touched
                             ">
@@ -44,27 +44,28 @@
                             classForm.get('classDeliveryType')?.hasError('required') ||
                             classForm.get('classDeliveryType')?.touched
                           ">
-                      Select Class Delivery Type
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-2">
-                  <label>{{commonRoles.INSTRUCTOR_ROLE}} Cost<span class="mandatory">&nbsp;*</span></label>
-                  <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <input matInput formControlName="instructorCost" (keypress)="keyPressNumbers($event)" required />
-                    <mat-error *ngIf="
+                          Select Class Delivery Type
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-2">
+                      <label>{{commonRoles.INSTRUCTOR_ROLE}} Fee<span class="mandatory">&nbsp;*</span></label>
+                      <mat-form-field class="example-full-width mb-3" appearance="outline">
+                        <input matInput formControlName="instructorCost" (keypress)="keyPressNumbers($event)"
+                          required />
+                        <mat-error *ngIf="
                             classForm.get('instructorCost')?.hasError('required') ||
                             classForm.get('instructorCost')?.touched
                           ">
-                      Enter Instructor Cost .
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2">
-                  <label>Minimum {{commonRoles.STUDENT_ROLE}}s<span class="mandatory">&nbsp;*</span></label>
-                  <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <input matInput formControlName="minimumEnrollment" />
-                    <mat-error *ngIf="
+                          Enter Instructor Fee .
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2">
+                      <label>Minimum {{commonRoles.STUDENT_ROLE}}s<span class="mandatory">&nbsp;*</span></label>
+                      <mat-form-field class="example-full-width mb-3" appearance="outline">
+                        <input matInput formControlName="minimumEnrollment" />
+                        <mat-error *ngIf="
                             classForm.get('minimumEnrollment')?.hasError('required') ||
                             classForm.get('minimumEnrollment')?.touched
                           ">
@@ -81,19 +82,19 @@
                             classForm.get('maximumEnrollment')?.hasError('required') ||
                             classForm.get('maximumEnrollment')?.touched
                           ">
-                      Enter Maximum {{commonRoles.STUDENT_ROLE}}s .
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-2" *ngIf="labelStatusCheck('Class Type')">
-                  <label>Class Type</label>
-                  <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <mat-select formControlName="classType">
-                      <mat-option [value]="'2'"> Private </mat-option>
-                      <mat-option [value]="'1'"> Public </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </div>
+                          Enter Maximum {{commonRoles.STUDENT_ROLE}}s .
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                     <!-- <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-2" *ngIf="labelStatusCheck('Class Type')">
+                      <label>Class Type</label>
+                      <mat-form-field class="example-full-width mb-3" appearance="outline">
+                        <mat-select formControlName="classType">
+                          <mat-option [value]="'2'"> Private </mat-option>
+                          <mat-option [value]="'1'"> Public </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div> -->
 
                 <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2" *ngIf="labelStatusCheck('Select Currency Type')">
                   <label>Select Currency</label>
@@ -172,7 +173,7 @@
                       </mat-error> -->
                   </mat-form-field>
               </div>
-                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mt-3" *ngIf="labelStatusCheck('Is Guaranteed To Run')">
+                <!-- <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mt-3" *ngIf="labelStatusCheck('Is Guaranteed To Run')">
                   <section class="example-section">
                     <mat-checkbox class="example-margin" formControlName="isGuaranteedToRun"><span class="fs-6">Is
                         Guaranteed To Run</span></mat-checkbox>
@@ -190,11 +191,11 @@
                     <mat-checkbox class="example-margin" formControlName="externalRoom"><span class="fs-6">External
                         Room</span></mat-checkbox>
                   </section>
-                </div>
+                </div> -->
               </div>
             </div>
           </form>
-          <form>
+          <!-- <form>
             <div>
               <h5 class="mx-3">Assign {{commonRoles.INSTRUCTOR_ROLE}}</h5>
             </div>
@@ -246,11 +247,98 @@
                   Create
                 </button>
                 <button *ngIf="classId" mat-raised-button id="submit" (click)="submit()">
-                  Update
-                </button>
+                    Update
+                  </button>
+                </div>
               </div>
-            </div>
+                </form> -->
+                <form #form="ngForm">
+                  <div>
+                    <h5 class="mx-3">Assign {{commonRoles.INSTRUCTOR_ROLE}}</h5>
+                  </div>
+                  <div class="body">
+                    <div class="row" *ngFor="let element of dataSource; index as index">
+                      <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
+                        <label for="start-date">Start Date<span class="mandatory">&nbsp;*</span></label>
+                        <mat-form-field class="example-full-width mb-3" appearance="outline">
+                          <input
+                            matInput
+                            id="start-date"
+                            [owlDateTimeTrigger]="date"
+                            [owlDateTime]="date"
+                            [(ngModel)]="element.start"
+                            name="start"
+                            #startInput="ngModel"
+                            required
+                            (change)="startDateChange(element)"
+                          />
+                          <mat-icon matSuffix [owlDateTimeTrigger]="date" class="date-icon">today</mat-icon>
+                          <owl-date-time #date></owl-date-time>
+                          <mat-error *ngIf="startInput.invalid && startInput.touched">
+                            Choose a start date
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                      
+                      <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
+                        <label for="end-date">End Date<span class="mandatory">&nbsp;*</span></label>
+                        <mat-form-field class="example-full-width mb-3" appearance="outline">
+                          <input
+                            matInput
+                            id="end-date"
+                            [owlDateTimeTrigger]="date2"
+                            [owlDateTime]="date2"
+                            [(ngModel)]="element.end"
+                            name="end"
+                            #endInput="ngModel"
+                            required
+                          />
+                          <mat-icon matSuffix [owlDateTimeTrigger]="date2" class="date-icon">today</mat-icon>
+                          <owl-date-time #date2></owl-date-time>
+                          <mat-error *ngIf="endInput.invalid && endInput.touched">
+                            Choose a end date
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                      
+                      <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
+                        <label for="instructor">Select {{commonRoles.INSTRUCTOR_ROLE}}<span class="mandatory">&nbsp;*</span></label>
+                        <mat-form-field class="example-full-width mb-3" appearance="outline">
+                          <mat-select
+                            id="instructor"
+                            [(ngModel)]="element.instructor"
+                            name="instructor"
+                            #instructorInput="ngModel"
+                            required
+                            (selectionChange)="onSelectChange1($event, element)"
+                            (change)="onChangeInstructor(element, index)"
+                          >
+                            <mat-option *ngFor="let instructor of instructorList" [value]="instructor.id">
+                              {{ instructor?.name + ' ' + instructor?.last_name }}
+                            </mat-option>
+                          </mat-select>
+                          <mat-error *ngIf="instructorInput.invalid && instructorInput.touched">
+                            Please select an instructor
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="row mt-4 mx-2" style="float: right;">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
+                      <button class="btn-space" type="button" mat-raised-button color="warn" (click)="cancel()">Cancel</button>
+                      <button *ngIf="!classId" mat-raised-button id="submit" (click)="submit()" [disabled]="form.invalid">
+                        Create
+                      </button>
+                      <button *ngIf="classId" mat-raised-button id="submit" (click)="submit()" [disabled]="form.invalid">
+                      Update
+                    </button>
+                  </div>
+                </div>
           </form>
+                
+                
         </div>
       </div>
     </div>

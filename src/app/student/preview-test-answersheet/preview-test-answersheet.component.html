@@ -23,6 +23,7 @@
                     <!-- Left side div -->
                     <div class="text-left font-weight-bold mt-3 col-lg-5 col-md-12 col-sm-12 col-12">
                         <div class="text-primary mb-1">{{ studentInfo?.name }}</div>
+                        <div class="text-primary">{{getTypeOfExam}} : {{getAssessmentName}}</div>
                         <div class="text-primary">Total Questions: {{ questionList?.length }}</div>
                         <div class="text-primary">Total Correct Answered : {{ correctAnswers(true) }} </div>
                             <div class="text-primary">Total Wrong Answered : {{ correctAnswers(false) }} </div>

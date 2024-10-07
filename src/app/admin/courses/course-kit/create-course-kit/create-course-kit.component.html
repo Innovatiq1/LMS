@@ -95,7 +95,7 @@
                           formControlName="documentLink"
                           (change)="onFileUpload($event)"
                           class="file-input"
-                          type="file"
+                          type="file" accept=".pdf,.ppt,.pptx,.doc,.docx,.xls,.xlsx,.txt"
                         />
                       </button>
                       <span class="file-msg">
@@ -195,28 +195,20 @@
                   </mat-form-field>
                 </div>
 
-                <div
-                  class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-5"
-                  *ngIf="labelStatusCheck('Upload Media') && !isScormKit"
-                >
-                  <label>Upload Media </label>
-                  <div class="file-drop-area">
-                    <div class="file">
-                      <button mat-raised-button color="primary" class="btn">
-                        Choose file
-                        <input
-                          formControlName="videoLink"
-                          (fileDropped)="onFileDropped($event)"
-                          (change)="fileBrowseHandler($event)"
-                          class="file-input"
-                          type="file"
-                        />
-                      </button>
-                      <span class="file-msg">
-                        <h6>
-                          {{ videoSrc ? videoSrc : "Drag and Drop File Here" }}
-                        </h6>
-                      </span>
+                                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-5"
+                                    *ngIf="labelStatusCheck('Upload Media') && !isScormKit">
+                                    <label>Upload Media </label>
+                                    <div class="file-drop-area">
+                                        <div class="file">
+                                            <button mat-raised-button color="primary" class="btn">Choose file <input
+                                                    formControlName="videoLink" (fileDropped)="onFileDropped($event)"
+                                                    (change)="fileBrowseHandler($event)" class="file-input"
+                                                    type="file"
+                                                    accept="video/mp4,video/x-matroska,video/x-msvideo"
+                                                    ></button>
+                                            <span class="file-msg">
+                                                <h6>{{videoSrc ? videoSrc : 'Drag and Drop File Here' }}</h6>
+                                            </span>
 
                       <div class="files-list">
                         <div
