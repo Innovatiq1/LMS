@@ -25,13 +25,7 @@ export class ExamScoresComponent {
     'Action'
   ];
 
-  breadscrums = [
-    {
-      title: 'Exam Scores',
-      items: ['Course'],
-      active: 'Exam Scores',
-    },
-  ];
+  
 
   assessmentPaginationModel!: Partial<AssessmentQuestionsPaginationModel>;
   totalItems: any;
