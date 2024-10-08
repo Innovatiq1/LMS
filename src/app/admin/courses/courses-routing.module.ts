@@ -55,7 +55,7 @@ const routes: Routes = [
     component: CreateClassComponent,
   },
   {
-    path: 'student-courses/completed-courses',
+    path: 'student-courses/registered-completed-courses',
     component: CompletionListComponent,
   },
   {

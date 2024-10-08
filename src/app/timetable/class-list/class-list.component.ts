@@ -45,13 +45,13 @@ export class ClassListComponent extends UnsubscribeOnDestroyAdapter implements O
     'Price',
   ];
 
-  breadscrums = [
-    {
-      title: 'Course Class',
-      items: ['Timetable'],
-      active: 'Course Class',
-    },
-  ];
+  // breadscrums = [
+  //   {
+  //     title: 'Course Class',
+  //     items: ['Timetable'],
+  //     active: 'Course Class',
+  //   },
+  // ];
   coursePaginationModel!: Partial<CoursePaginationModel>;
   selection = new SelectionModel<ClassModel>(true, []);
   dataSource: any;
