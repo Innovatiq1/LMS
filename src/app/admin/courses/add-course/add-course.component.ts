@@ -818,7 +818,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         certificate.title === this.firstFormGroup.value.certificate_temp
     );
     console.log("form",this.firstFormGroup)
-    if (this.firstFormGroup.valid) {
+    // if (this.firstFormGroup.valid) {
       const courseData = this.firstFormGroup.value;
       let creator = JSON.parse(localStorage.getItem('user_data')!).user.name;
       let userId = JSON.parse(localStorage.getItem('user_data')!).user
@@ -898,10 +898,11 @@ export class AddCourseComponent implements OnInit, OnDestroy {
           );
         }
       });
-    } else {
-      this.firstFormGroup.markAllAsTouched();
-      this.isWbsSubmitted = true;
-    }
+    // }
+    //  else {
+    //   this.firstFormGroup.markAllAsTouched();
+    //   this.isWbsSubmitted = true;
+    // }
   }
   getData() {
     forkJoin({
