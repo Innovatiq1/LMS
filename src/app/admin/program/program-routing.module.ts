@@ -47,7 +47,7 @@ const routes: Routes = [
       component:ViewCompletionComponent
     },
     {
-      path:'student-program/pending-program/view-pending-program/:id',
+      path:'student-program/registered-pending-program/view-pending-program/:id',
       component:ViewStudentPendingListComponent
     },
   {

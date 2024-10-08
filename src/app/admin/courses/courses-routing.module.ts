@@ -76,7 +76,7 @@ const routes: Routes = [
     component: ViewCompletionComponent,
   },
   {
-    path: 'student-courses/approved-courses/view-completion-list',
+    path: 'student-courses/registered-approved-courses/view-completion-list',
     component: ViewCompletionComponent,
   },
   {
@@ -88,7 +88,7 @@ const routes: Routes = [
     component: ViewCompletionComponent,
   },
   {
-    path: 'student-courses/pending-courses/view-completion-list',
+    path: 'student-courses/registered-pending-courses/view-completion-list',
     component: ViewCompletionComponent,
   },
   {
