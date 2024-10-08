@@ -131,7 +131,7 @@ export class StudentPendingCoursesComponent {
   }
 
   view(id:string){
-    this.router.navigate(['/admin/courses/student-courses/pending-courses/view-completion-list'],{queryParams: {id:id, status:'pending'}});
+    this.router.navigate(['/admin/courses/student-courses/registered-pending-courses/view-completion-list'],{queryParams: {id:id, status:'pending'}});
   }
 
   mapClassList() {
