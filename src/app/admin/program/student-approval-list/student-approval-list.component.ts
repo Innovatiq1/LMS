@@ -35,13 +35,7 @@ export class StudentApprovalListComponent {
     'Registered Date',
     
   ];
-  breadscrums = [
-    {
-      items: ['Registered Program'],
-      active: 'Approved Programs',
-    },
-  ];
-
+ 
   dataSource: any;
   pageSizeArr =[10, 20, 50, 100];
   totalPages: any;

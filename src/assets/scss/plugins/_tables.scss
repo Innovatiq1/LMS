@@ -575,7 +575,7 @@ tr.group:hover {
   display: flex;
   flex-wrap: wrap;
   text-align: center;
-  border-radius: 10px;
+  // border-radius: 10px;
   // min-width: 800px;
 
   .left {
@@ -613,6 +613,7 @@ tr.group:hover {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    gap: 5px;
 
     li {
       display: inline-block;

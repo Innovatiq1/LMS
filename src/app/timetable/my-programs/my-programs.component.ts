@@ -16,13 +16,7 @@ export class MyProgramsComponent {
   programCalendarOptions!: CalendarOptions;
   filterName = '';
 
-  breadscrums = [
-    {
-      title: 'Program Timetable',
-      items: ['Timetable'],
-      active: 'My Programs',
-    },
-  ];
+ 
   studentApprovedPrograms: any;
   upcomingProgramClasses: any;
   upcomingProgramsLength: any;

@@ -210,7 +210,6 @@ export class DraftedCoursesComponent {
     }
     this.paginator.pageIndex = 0;
     this.coursePaginationModel.page = 1;
-console.log("course",body)
     this._courseService
       .getFilteredCourseData(body, { ...this.coursePaginationModel })
       .subscribe((response) => {

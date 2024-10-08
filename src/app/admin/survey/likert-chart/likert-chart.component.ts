@@ -34,13 +34,8 @@ import { AuthenService } from '@core/service/authen.service';
   encapsulation: ViewEncapsulation.Emulated,
 })
 export class LikertChartComponent {
-  breadscrums = [
-    {
-      title: 'Survey List',
-      items: ['Survey'],
-      active: 'Survey List',
-    },
-  ];
+
+
   selected = false;
   displayedColumns: string[] = [
     'Name',

@@ -38,12 +38,7 @@ export class StudentPendingListComponent {
     // 'Instructor Fee',
     
   ];
-  breadscrums = [
-    {
-      items: ['Registered Program'],
-      active: 'Pending Programs',
-    },
-  ];
+
 
   dataSource: any;
   // selection = new SelectionModel<any>(true, []); 
