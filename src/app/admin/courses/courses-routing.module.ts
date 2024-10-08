@@ -148,7 +148,10 @@ const routes: Routes = [
     path: 'all-courses/drafts',
     component: DraftedCoursesComponent,
   },
-
+  {
+    path: 'submitted-courses/submitted-pending-courses/course-view',
+    component: CourseViewComponent,
+  },
  
 ];
 
