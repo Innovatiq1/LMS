@@ -201,3 +201,19 @@
     margin-top: -33px;
     color: red;
   }
+  button, .mat-raised-button {
+    cursor: pointer;
+  
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+  ::ng-deep button.mat-raised-button {
+    cursor: pointer;
+  
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+  
+  
