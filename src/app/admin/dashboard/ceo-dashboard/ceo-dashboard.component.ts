@@ -576,7 +576,6 @@ export class CeoDashboardComponent {
     const companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     let headId = localStorage.getItem('id') || '';
     this.studentService.getManagerandStaffCount(companyId, department,headId).subscribe((managers: any) => {
-      console.log("other", managers);
       this.router.navigate(['/dashboard/officers-list'], { queryParams: { managers: JSON.stringify(managers) } });
 
     });
@@ -599,7 +598,6 @@ export class CeoDashboardComponent {
       forkJoin(requests).subscribe((studentClassResponses: any) => {
         studentClassResponses.forEach((studentClassResponse: any, index: number) => {
           this.classes = studentClassResponse.data.docs; 
-          console.log("classes",this.classes)
           enrolledCount += this.classes.filter((course: any) => course.status === 'registered').length;
           inProgressCount += this.classes.filter((course: any) => course.status === 'approved').length;
           completedCount += this.classes.filter((course: any) => course.status === 'completed').length;
@@ -751,7 +749,7 @@ export class CeoDashboardComponent {
   }
   
   updateChart(departments: string[], upcomingData: number[], ongoingData: number[], completedData: number[]) {
-    console.log('Updating courses',departments)
+   
     // if(departments.length > 0){
     //   this.isCourseBarChart = true;
     //   this.isCourseBar = false
@@ -796,7 +794,6 @@ export class CeoDashboardComponent {
     });
   }
   openCertificateInNewTab(url: string) {
-    console.log('openCertificateInNewTab', url);
     if (url) {
       window.open(url, '_blank');
     }

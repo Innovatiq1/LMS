@@ -23,7 +23,7 @@
               <div class="row">
                 <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-2">
                   <label
-                    >Program Name<span class="mandatory">&nbsp;*</span></label
+                    >Program<span class="mandatory">&nbsp;*</span></label
                   >
                   <mat-form-field
                     class="example-full-width mb-3"
@@ -79,7 +79,7 @@
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-2">
                   <label
-                    >{{commonRoles?.INSTRUCTOR_ROLE}} Cost<span class="mandatory"
+                    >{{commonRoles?.INSTRUCTOR_ROLE}} Fee<span class="mandatory"
                       >&nbsp;*</span
                     ></label
                   >
@@ -99,7 +99,7 @@
                         classForm.get('instructorCost')?.touched
                       "
                     >
-                      Enter {{commonRoles?.INSTRUCTOR_ROLE}} Cost .
+                      Enter {{commonRoles?.INSTRUCTOR_ROLE}} Fee .
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -150,7 +150,7 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <div
+                <!-- <div
                   class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-2"
                   *ngIf="labelStatusCheck('Class Type')"
                 >
@@ -164,7 +164,7 @@
                       <mat-option [value]="'1'"> Public </mat-option>
                     </mat-select>
                   </mat-form-field>
-                </div>
+                </div> -->
                 <div
                   class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2"
                   *ngIf="labelStatusCheck('Select Currency Type')"
@@ -238,7 +238,7 @@
                     </mat-select>
                   </mat-form-field>
                 </div>
-                <div
+                <!-- <div
                   class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mt-3"
                   *ngIf="labelStatusCheck('Is Guaranteed To Run')"
                 >
@@ -251,8 +251,8 @@
                       ></mat-checkbox
                     >
                   </section>
-                </div>
-                <div
+                </div> -->
+                <!-- <div
                   class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mt-3"
                   *ngIf="labelStatusCheck('External Room')"
                 >
@@ -263,11 +263,12 @@
                       ><span class="fs-6">External Room</span></mat-checkbox
                     >
                   </section>
-                </div>
+                </div> -->
               </div>
             </div>
           </form>
-          <form (ngSubmit)="saveProgramClass()">
+          
+          <!-- <form (ngSubmit)="saveProgramClass()">
             <div class="mx-3">
               <h5>Assign {{commonRoles?.INSTRUCTOR_ROLE}}</h5>
             </div>
@@ -389,7 +390,96 @@
                 </button>
               </div>
             </div>
+          </form> -->
+
+          <!-- above is the previous code -->
+
+
+          <form (ngSubmit)="saveProgramClass()" #form="ngForm">
+            <div class="mx-3">
+              <h5>Assign {{commonRoles?.INSTRUCTOR_ROLE}}</h5>
+            </div>
+            <div class="body">
+              <div class="row" *ngFor="let element of dataSource; index as index">
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
+                  <label for="start-date">Start Date<span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <input
+                      matInput
+                      id="start-date"
+                      [owlDateTimeTrigger]="date"
+                      [owlDateTime]="date"
+                      [(ngModel)]="element.start"
+                      (change)="startDateChange(element)"
+                      name="start"
+                      required
+                      #startDate="ngModel"
+                    />
+                    <mat-icon matSuffix [owlDateTimeTrigger]="date" class="date-icon">today</mat-icon>
+                    <owl-date-time #date></owl-date-time>
+                    <mat-error *ngIf="startDate.invalid && startDate.touched">
+                      Choose a Start Date
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+          
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
+                  <label for="end-date">End Date<span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <input
+                      matInput
+                      id="end-date"
+                      [owlDateTimeTrigger]="date2"
+                      [owlDateTime]="date2"
+                      [(ngModel)]="element.end"
+                      name="end"
+                      required
+                      #endDate="ngModel"
+                    />
+                    <mat-icon matSuffix [owlDateTimeTrigger]="date2" class="date-icon">today</mat-icon>
+                    <owl-date-time #date2></owl-date-time>
+                    <mat-error *ngIf="endDate.invalid && endDate.touched">
+                      Choose a End Date 
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+          
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
+                  <label for="instructor">Select {{commonRoles?.INSTRUCTOR_ROLE}}<span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-select
+                      id="instructor"
+                      [(ngModel)]="element.instructor"
+                      name="instructor"
+                      required
+                      #instructor="ngModel"
+                      (selectionChange)="onSelectChange1($event, element)"
+                      (change)="onChangeInstructor(element, index)"
+                    >
+                      <mat-option *ngFor="let instructor of instructorList" [value]="instructor.id">
+                        {{ instructor?.name + " " + instructor?.last_name }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="instructor.invalid && instructor.touched">
+                      Please select an {{commonRoles?.INSTRUCTOR_ROLE}}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          
+            <div class="row mt-4 mx-2" style="float: right">
+              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
+                <button class="btn-space" type="button" mat-raised-button color="warn" (click)="cancel()">Cancel</button>
+                <button *ngIf="!editUrl" mat-raised-button id="submit" [disabled]="form.invalid" (click)="saveProgramClass()">Submit</button>
+                <button *ngIf="editUrl" mat-raised-button id="submit" [disabled]="form.invalid" (click)="saveProgramClass()">Update</button>
+              </div>
+            </div>
           </form>
+          
+          
+
+
         </div>
       </div>
     </div>

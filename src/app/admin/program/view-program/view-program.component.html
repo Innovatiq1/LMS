@@ -105,29 +105,6 @@
                         <p>{{response?.sessionEndDate | date}}</p>
                       </div>
                     </div>
-                    <div class="row mt-3 mx-auto">
-                      <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
-                        <h6>Learning Outcomes</h6>
-                      </div>
-                      <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
-                        <p [innerHTML]="response?.learningOutcomes | bulletPoints"></p>
-                      </div>
-                      <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
-                        <h6>Who Should Attend</h6>
-                      </div>
-                      <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
-                        <p [innerHTML]="response?.attendees | bulletPoints"></p>
-                      </div>
-                    </div>
-                    <div class="row mt-3 mx-auto">
-                      <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
-                        <h6>Prerequisites</h6>
-                      </div>
-                      <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
-                        <p [innerHTML]="response?.prerequisites | bulletPoints"></p>
-                      </div>
-
-                    </div>
                   </div>
 
 
@@ -138,26 +115,49 @@
                         <div class="header mt-3">
                           <h2>Compulsory Count</h2>
                         </div>
-                        <div class="tableBody">
+                        <!-- <div class="tableBody">
                           <div class="table-responsive">
                             <table class="table table-hover ">
                               <thead>
                                 <tr>
                                   <th>Course Name</th>
                                   <th>Course Description</th>
-                                  <th>Course Fees</th>
+                                  <th class="allineFee1">Course Fees</th>
                                 </tr>
                               </thead>
                               <tbody>
                                 <tr style="cursor: pointer;" *ngFor="let course of response?.coreprogramCourse">
                                   <td>{{ course?.coreProgramName?.title }}</td>
                                   <td [innerHTML]="course?.coreProgramDescription | bulletPoints | truncate:150"></td>
-                                  <td><span>$</span> {{ course?.coreProgramName?.fee }}.00</td>
+                                  <td class="allineFee"><span>$</span> {{ course?.coreProgramName?.fee>0?course?.coreProgramName?.fee:0 }}.00</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div> -->
+                        <div class="tableBody">
+                          <div class="table-responsive">
+                            <table class="table table-hover">
+                              <thead>
+                                <tr>
+                                  <th style="width: 33%;">Course Name</th>
+                                  <th style="width: 33%;">Course Description</th>
+                                  <th style="width: 33%;">Course Fees</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr style="cursor: pointer;" *ngFor="let course of response?.coreprogramCourse">
+                                  <td>{{ course?.coreProgramName?.title }}</td>
+                                  <td [innerHTML]="course?.coreProgramDescription | bulletPoints | truncate:150"></td>
+                                  <td  style="text-align: right; padding-right: 200px;">
+                                    <span>$</span> {{ course?.coreProgramName?.fee > 0 ? course?.coreProgramName?.fee : 0 }}.00
+                                  </td>
                                 </tr>
                               </tbody>
                             </table>
                           </div>
                         </div>
+                        
 
                       </div>
 
@@ -173,7 +173,7 @@
                                   <th>Course Kit</th>
                                   <th>Description</th>
                                   <th>Document Link</th>
-                                  <th>Video Link</th>
+                                  <th>Media Link</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -203,9 +203,9 @@
                             <table class="table table-hover ">
                               <thead>
                                 <tr>
-                                  <th>Course Name</th>
-                                  <th>Course Description</th>
-                                  <th>Course Fees</th>
+                                  <th style="width: 33%;">Course Name</th>
+                                  <th style="width: 33%;">Course Description</th>
+                                  <th style="width: 33%;">Course Fees</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -213,7 +213,7 @@
                                   <td>{{ course?.electiveProgramName?.title }}</td>
                                   <td [innerHTML]="course?.electiveProgramDescription | bulletPoints | truncate:150">
                                   </td>
-                                  <td>${{ course?.electiveProgramName?.fee }}</td>
+                                  <td style="text-align: right; padding-right: 200px;"><span>$ </span>{{ course?.electiveProgramName?.fee>0?course?.electiveProgramName?.fee:0 }}.00</td>
                                 </tr>
                               </tbody>
                             </table>
@@ -234,7 +234,7 @@
                                   <th>Course Kit</th>
                                   <th>Description</th>
                                   <th>Document Link</th>
-                                  <th>Video Link</th>
+                                  <th>Media Link</th>
                                 </tr>
                               </thead>
                               <tbody>

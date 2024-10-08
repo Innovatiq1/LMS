@@ -35,7 +35,7 @@ import { jsPDF } from 'jspdf';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { AssessmentService } from '@core/service/assessment.service';
-import { CourseModel } from '@core/models/course.model';
+import { CourseModel, CoursePaginationModel } from '@core/models/course.model';
 @Component({
   selector: 'app-completion-list',
   templateUrl: './completion-list.component.html',
@@ -78,6 +78,7 @@ export class CompletionListComponent {
   pageSizeArr = [10, 20];
   totalItems: any;
   studentPaginationModel: StudentPaginationModel;
+  coursePaginationModel!: Partial<CoursePaginationModel>;
   isLoading: boolean = true;
   searchTerm: string = '';
   @ViewChild(MatSort) matSort!: MatSort;
@@ -128,6 +129,8 @@ export class CompletionListComponent {
   studentData: any;
   dialogRef: any;
   isView = false;
+  filterName: any;
+  userGroupIds: any;
   
 
   upload() {
@@ -205,6 +208,11 @@ export class CompletionListComponent {
   }
   getCompletedClasses() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    let filterProgram = this.filterName;
+    const payload = { ...this.coursePaginationModel,title:filterProgram };
+  if(this.userGroupIds){
+    payload.userGroupId=this.userGroupIds
+  }
         this.classService
       .getSessionCompletedStudent(
         userId,
@@ -654,11 +662,20 @@ enableMultipleCertificates() {
   
   Promise.all(promises).then(() => {
     this.isGeneratingCertificates = false;
-    let message = `${successfulCount} certificates generated successfully!`;
-    if (alreadyIssuedCount > 0) {
-      message += ` ${alreadyIssuedCount} certificates were already issued and skipped.`;
+    const certificate=successfulCount>1?"certificates":"certificate"
+    let message='';
+    if(successfulCount>0)
+    {
+      message = `${successfulCount} ${certificate} generated successfully!`;
     }
-
+    
+    if (alreadyIssuedCount > 0) {
+       const alreadyCount=alreadyIssuedCount>1?"certificates are ":"certificate is";
+       const text=successfulCount>0?"For other":'';
+      // message += ` ${alreadyIssuedCount} selected ${alreadyCount} already issued.`;
+      message += ` ${text} selected course ${alreadyCount} already Issued`;
+    }
+    
     Swal.fire({
       title: 'Certificate Generation',
       text: message,
@@ -918,7 +935,13 @@ enableExam() {
         }
       );
     } else {
-      console.log(`Exam not enabled for row with student ID: ${row.studentId._id} - Conditions not met.`);
+      // console.log(`Exam not enabled for row with student ID: ${row.studentId._id} - Conditions not met.`);
+      Swal.fire({
+        title: 'Warning',
+        text: 'The exam is already enabled for selected courses.',
+        icon: 'warning'
+      });
+      return;
     }
   });
   

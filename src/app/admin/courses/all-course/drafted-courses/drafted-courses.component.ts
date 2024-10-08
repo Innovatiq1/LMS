@@ -23,7 +23,7 @@ import { AuthenService } from '@core/service/authen.service';
 @Component({
   selector: 'app-drafted-courses',
   templateUrl: './drafted-courses.component.html',
-  styleUrls: ['./drafted-courses.component.scss']
+  styleUrls: ['./drafted-courses.component.scss'],
 })
 export class DraftedCoursesComponent {
   breadscrums = [
@@ -38,8 +38,8 @@ export class DraftedCoursesComponent {
     'status',
     'code',
     'creator',
-    'Days',
-    'Training Hours',
+    // 'Days',
+    // 'Training Hours',
     'Fee Type',
     'startDate',
     'endDate',
@@ -83,6 +83,8 @@ export class DraftedCoursesComponent {
   commonRoles: any;
   edit = false;
   view = false;
+  filterName: any;
+  userGroupIds: any;
 
   constructor(
     public _courseService: CourseService,
@@ -102,27 +104,29 @@ export class DraftedCoursesComponent {
       status: ['', []],
       vendor: ['', []],
     });
-
-   
   }
 
   ngOnInit() {
-    const roleDetails =this.authenService.getRoleDetails()[0].menuItems
+    const roleDetails = this.authenService.getRoleDetails()[0].menuItems;
     let urlPath = this.route.url.split('/');
     const parentId = `${urlPath[1]}/${urlPath[2]}`;
-    const childId =  urlPath[urlPath.length - 2];
-    const subChildId =  urlPath[urlPath.length - 1];
+    const childId = urlPath[urlPath.length - 2];
+    const subChildId = urlPath[urlPath.length - 1];
     let parentData = roleDetails.filter((item: any) => item.id == parentId);
-    let childData = parentData[0].children.filter((item: any) => item.id == childId);
-    let subChildData = childData[0].children.filter((item: any) => item.id == subChildId);
-    let actions = subChildData[0].actions
-    let editAction = actions.filter((item:any) => item.title == 'Edit')
-    let viewAction = actions.filter((item:any) => item.title == 'View')
+    let childData = parentData[0].children.filter(
+      (item: any) => item.id == childId
+    );
+    let subChildData = childData[0].children.filter(
+      (item: any) => item.id == subChildId
+    );
+    let actions = subChildData[0].actions;
+    let editAction = actions.filter((item: any) => item.title == 'Edit');
+    let viewAction = actions.filter((item: any) => item.title == 'View');
 
-    if(editAction.length > 0){
-      this.edit = true
+    if (editAction.length > 0) {
+      this.edit = true;
     }
-    if(viewAction.length >0){
+    if (viewAction.length > 0) {
       this.view = true;
     }
     this.getAllCourses();
@@ -132,7 +136,7 @@ export class DraftedCoursesComponent {
     }).subscribe((response) => {
       this.courseList = response.courses.reverse();
     });
-    this.commonRoles = AppConstants
+    this.commonRoles = AppConstants;
   }
 
   getAllVendorsAndUsers() {
@@ -150,13 +154,13 @@ export class DraftedCoursesComponent {
   exportExcel() {
     const exportData: Partial<TableElement>[] = this.courseData.map(
       (x: any) => ({
-        'Course': x.title,
-        Status: x.status=== 'active' ? 'Approved' : 'Pending',
+        Course: x.title,
+        Status: x.status === 'active' ? 'Approved' : 'Pending',
         'Course Code': x.courseCode,
         Creator: x.creator,
         Days: x.course_duration_in_days || 0,
         Hours: x.training_hours || 0,
-        Payment:x.fee === null ? 0 : '$'+x.fee,
+        Payment: x.fee === null ? 0 : '$' + x.fee,
         'Start Date':
           formatDate(new Date(x.sessionStartDate), 'yyyy-MM-dd', 'en') || '',
         'End Date':
@@ -186,6 +190,8 @@ export class DraftedCoursesComponent {
   }
   clearFilter() {
     this.filterForm.reset();
+    this.paginator.pageIndex = 0;
+    this.coursePaginationModel.page = 1;
     this.getAllCourses();
   }
   applyFilter() {
@@ -202,13 +208,15 @@ export class DraftedCoursesComponent {
     if (this.selectedCreators.length > 0) {
       body.creator = this.selectedCreators;
     }
-
+    this.paginator.pageIndex = 0;
+    this.coursePaginationModel.page = 1;
+console.log("course",body)
     this._courseService
       .getFilteredCourseData(body, { ...this.coursePaginationModel })
       .subscribe((response) => {
         this.courseData = response.data.docs;
         this.totalItems = response.data.totalDocs;
-        this.filter = true;
+        this.filter = false;
         this.coursePaginationModel.docs = response.data.docs;
         this.coursePaginationModel.page = response.data.page;
         this.coursePaginationModel.limit = response.data.limit;
@@ -229,7 +237,6 @@ export class DraftedCoursesComponent {
         'Start Date ',
         'End Date   ',
         'Vendor  ',
-        
       ],
     ];
     const data = this.courseData.map((x: any) => [
@@ -237,13 +244,12 @@ export class DraftedCoursesComponent {
       x.status === 'active' ? 'Approved' : 'Pending',
       x.courseCode,
       x.creator,
-      x.course_duration_in_days ||0,
-      x.training_hours ||0,
-      x.fee === null ? '0' : '$'+x.fee,
+      x.course_duration_in_days || 0,
+      x.training_hours || 0,
+      x.fee === null ? '0' : '$' + x.fee,
       formatDate(new Date(x.sessionStartDate), 'yyyy-MM-dd', 'en') || '',
       formatDate(new Date(x.sessionEndDate), 'yyyy-MM-dd', 'en') || '',
       x.vendor,
-      
     ]);
     const columnWidths = [50, 20, 30, 20, 20, 20, 30, 30, 30, 20];
     (doc as any).autoTable({
@@ -259,16 +265,14 @@ export class DraftedCoursesComponent {
     doc.save('AllCourses-list.pdf');
   }
   performSearch() {
-    if (this.searchTerm) {
-      this.courseData = this.courseData?.filter(
-        (item: any) => {
-          const searchList = item.title.toLowerCase();
-          return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1;
-        }
-      );
-    } else {
+    // if (this.searchTerm) {
+    //   this.courseData = this.courseData?.filter((item: any) => {
+    //     const searchList = item.title.toLowerCase();
+    //     return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1;
+    //   });
+    // } else {
       this.getAllCourses();
-    }
+    // }
   }
   viewActiveProgram(id: string, status: string): void {
     this.route.navigate(['/admin/courses/view-course/', 'data.id']);
@@ -327,11 +331,12 @@ export class DraftedCoursesComponent {
         );
   }
   pageSizeChange($event: any) {
-    this.coursePaginationModel.page = $event?.pageIndex + 1;
-    this.coursePaginationModel.limit = $event?.pageSize;
+   
     if (this.filter) {
       this.applyFilter();
     } else {
+      this.coursePaginationModel.page = $event?.pageIndex + 1;
+      this.coursePaginationModel.limit = $event?.pageSize;
       this.getAllCourses();
     }
   }
@@ -349,14 +354,21 @@ export class DraftedCoursesComponent {
     });
   }
   getAllCourses() {
-    this._courseService.getAllDraftedCoursesWithPagination({...this.coursePaginationModel}).subscribe((response) => {
-      this.courseData = response.data.docs;
-      this.totalItems = response.data.totalDocs;
-      this.coursePaginationModel.docs = response.data.docs;
-      this.coursePaginationModel.page = response.data.page;
-      this.coursePaginationModel.limit = response.data.limit;
-      this.coursePaginationModel.totalDocs = response.data.totalDocs;
-    });
+
+    let filterProgram = this.filterName;
+    const payload = { ...this.coursePaginationModel, title: filterProgram };
+    if (this.userGroupIds) {
+      payload.userGroupId = this.userGroupIds;
+    }
+    this._courseService
+      .getAllDraftedCoursesWithPagination(payload)
+      .subscribe((response) => {
+        this.courseData = response.data.docs;
+        this.totalItems = response.data.totalDocs;
+        this.coursePaginationModel.docs = response.data.docs;
+        this.coursePaginationModel.page = response.data.page;
+        this.coursePaginationModel.limit = response.data.limit;
+        this.coursePaginationModel.totalDocs = response.data.totalDocs;
+      });
   }
- 
 }

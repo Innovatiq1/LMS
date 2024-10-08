@@ -302,7 +302,7 @@ export class CreateClassComponent {
   loadForm() {
     this.classForm = this._fb.group({
       courseId: ['', [Validators.required]],
-      classType: ['', [Validators.required]],
+      classType: ['', []],
       classDeliveryType: ['', [Validators.required]],
       instructorCost: ['', [Validators.required]],
       instructorCostCurrency: ['USD'],

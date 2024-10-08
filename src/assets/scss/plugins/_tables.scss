@@ -600,13 +600,18 @@ tr.group:hover {
     vertical-align: middle;
     text-align: center;
   }
-
+  @media (max-width: 768px) {
+    .right {
+      height: 100px;
+    }
+  }
   .tbl-export-btn {
     float: right;
-    margin: 0px 15px;
+    margin: 0px 1px;
     list-style: none;
     height: 100%;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
 
     li {
@@ -897,7 +902,7 @@ mat-cell > span.truncate-text {
   .advance-table .mdc-data-table__row {
     flex-direction: column;
     align-items: start;
-    padding: 8px 24px;
+    // padding: 8px 24px;
     display: grid;
   }
   mat-cell:first-of-type,

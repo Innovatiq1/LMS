@@ -156,14 +156,22 @@ svg{
 ::ng-deep .mat-mdc-tab-body-content{
   overflow-x: hidden !important;
 }
-mat-cell, mat-header-cell{ 
-  min-width: 120px !important;
+mat-header-cell{ 
+  min-width: 130px !important;
+}
+mat-cell{ 
+  min-width: 150px !important;
+  // padding-right: 30px;
 }
 .amount{
-  padding-right: 100px !important;
+  padding-right: 60px !important;
 }
-.payment-cell{
-  padding-right: 110px !important;
+.payment-cell1{
+    padding-left: 0px;
+    display: flex;
+    justify-content: end;
+    padding-right: 60px;
+  // padding-right: 10px !important;
 }
 input[type="file"]::file-selector-button {
   border: 2px solid #00a9ce;
@@ -177,12 +185,29 @@ input[type="file"]::file-selector-button {
   }
   }
 
+// .upload-btn {
+//   margin-right: -100px;
+//   width: 90%;
+//   border: none; 
+//   background: none;
+//   cursor: pointer;
+// }
 .upload-btn {
-  margin-right: -100px;
-  width: 90%;
-  border: none; 
+  margin-right: -200px;
+  width: 100%;
+  border: none;
   background: none;
   cursor: pointer;
+}
+
+.file-input {
+  /* This hides the default file input label */
+  color: transparent;
+  // width: 100%;
+}
+
+.file-input::file-selector-button {
+  color: initial; /* Keeps the "Choose File" button text */
 }
 .spinner-container {
   display: flex;
@@ -218,3 +243,20 @@ input[type="file"]::file-selector-button {
 }
 
 
+@media only screen and (max-width: 767px) {
+  .hide-on-mobile {
+    display: none;
+  }
+}
+@media only screen and (max-width: 767px) {
+  .no-justify-mobile {
+    justify-content: flex-start !important; 
+  }
+  
+}
+
+@media only screen and (max-width: 767px) {
+  .overflow-y {
+    overflow-y: auto;
+  }
+}

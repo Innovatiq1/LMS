@@ -21,6 +21,9 @@
                   </ul>
                 </li>
                 <li>
+                  <span style="font-weight: bold">Export as</span>
+                </li>
+                <li>
                   <div class="export-button m-l-10" matTooltip="XLSX" (click)="exportExcel()" >
                     <img src="assets/excel.svg" alt="" />
                   </div>
@@ -61,7 +64,7 @@
                 </ng-container>
                 <!-- Amount -->
                 <ng-container matColumnDef="Amount">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header class="amount">Amount</mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef mat-sort-header class="amount">Fee</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row._id) : null" class="payment-cell">
                     <span class="mobile-label">Amount:</span><span>$</span> {{row.price||0}}.00</mat-cell>
                 </ng-container>

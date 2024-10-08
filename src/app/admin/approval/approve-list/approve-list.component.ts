@@ -35,6 +35,7 @@ import { id } from '@swimlane/ngx-charts';
 import { Router } from '@angular/router';
 import { AppConstants } from '@shared/constants/app.constants';
 import { AuthenService } from '@core/service/authen.service';
+import { CoursePaginationModel } from '@core/models/course.model';
 
 @Component({
   selector: 'app-approve-list',
@@ -63,6 +64,7 @@ export class ApproveListComponent {
   ];
   searchTerm: string = '';
   studentPaginationModel: StudentPaginationModel;
+  coursePaginationModel!: Partial<CoursePaginationModel> ;
   selection = new SelectionModel<ClassModel>(true, []);
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild(MatSort) matSort!: MatSort;
@@ -73,6 +75,8 @@ export class ApproveListComponent {
   dataSource!: any;
   commonRoles: any;
   isView = false;
+  filterName: any;
+  userGroupIds: any;
   constructor(
     public _classService: ClassService,
     private snackBar: MatSnackBar,
@@ -122,11 +126,14 @@ export class ApproveListComponent {
 
   getRegisteredClasses() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    let filterProgram = this.filterName;
+    const payload = { ...this.coursePaginationModel,title:filterProgram };
+  if(this.userGroupIds){
+    payload.userGroupId=this.userGroupIds
+  }
         this._classService
-      .getApprovedClasses(userId,
-        this.studentPaginationModel.page,
-        this.studentPaginationModel.limit,
-        this.studentPaginationModel.filterText
+      .getApprovedClasse(userId,
+        payload
       )
       .subscribe((response: { data: StudentPaginationModel }) => {
         this.isLoading = false;
@@ -250,20 +257,20 @@ export class ApproveListComponent {
     });
   }
   performSearch() {
-    if (this.searchTerm) {
-      this.dataSource = this.dataSource?.filter(
-        (item: any) => {
-          const searchList = (
-            item.classId?.courseId?.title +
-            item.studentId?.name +
-            item.studentId?.last_name
-          ).toLowerCase();
-          return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1;
-        }
-      );
-    } else {
+    // if (this.searchTerm) {
+    //   this.dataSource = this.dataSource?.filter(
+    //     (item: any) => {
+    //       const searchList = (
+    //         item.classId?.courseId?.title +
+    //         item.studentId?.name +
+    //         item.studentId?.last_name
+    //       ).toLowerCase();
+    //       return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1;
+    //     }
+    //   );
+    // } else {
       this.getRegisteredClasses();
-    }
+    // }
   }
   private refreshTable() {
     this.paginator._changePageSize(this.paginator.pageSize);

@@ -32,7 +32,7 @@ export class AllCourseComponent {
   breadscrums = [
     {
       title: 'Course List',
-      items: ['Course123'],
+      items: ['Course'],
       active: 'Course List',
     },
   ];
@@ -41,14 +41,16 @@ export class AllCourseComponent {
     'status',
     'code',
     'creator',
-    'Days',
-    'Training Hours',
+    'Fees',
+    // 'Days',
+    // 'Training Hours',
     'Fee Type',
     'startDate',
     'endDate',
     'Vendor',
+    // 'Users',
+    // 'Fees',
     'Users',
-    'Fees',
   ];
   coursePaginationModel: Partial<CoursePaginationModel>;
   courseData: any;
@@ -87,6 +89,8 @@ export class AllCourseComponent {
   create = false;
   view = false;
   private showAlert = false;
+  filterName: string = "";
+  userGroupIds: string = "";
 
   constructor(
     public _courseService: CourseService,
@@ -98,7 +102,12 @@ export class AllCourseComponent {
     private courseService: CourseService,
   ) {
     // constructor
-    this.coursePaginationModel = { limit: 10 };
+    this.coursePaginationModel = {
+      page: 1, 
+      limit: 10, 
+      totalDocs: 0,
+      docs: []
+    };
     let urlPath = this.route.url.split('/');
     this.path = urlPath[urlPath.length - 1];
     this.filterForm = this.fb.group({
@@ -116,13 +125,14 @@ export class AllCourseComponent {
         'code',
         'creator',
         'Fee Type',
-        'Days',
-        'Training Hours',
+        // 'Days',
+        // 'Training Hours',
         'startDate',
         'endDate',
         'Vendor',
-        'Users',
+        // 'Users',
         'Fees',
+        'Users',
       ];
     }
     if (this.path == 'creator') {
@@ -133,8 +143,8 @@ export class AllCourseComponent {
         'name',
         'code',
         'Fee Type',
-        'Days',
-        'Training Hours',
+        // 'Days',
+        // 'Training Hours',
         'startDate',
         'endDate',
         'Vendor',
@@ -199,9 +209,14 @@ getAllTpCourses() {
       this.vendors = response.reverse();
     });
     this.userService.getAllUsers().subscribe((response: any) => {
-      this.users = response?.results;
+      //  this.users = response?.results;
+      this.users = response?.results?.filter((user: any) => {
+        const role = user.role.toLowerCase(); 
+        return !(role === 'trainee' || role === 'student');
+      });
     });
   }
+
 
   openFilterCard() {
     this.isFilter = !this.isFilter;
@@ -243,37 +258,60 @@ getAllTpCourses() {
       this.selectedCreators = event.value;
     }
   }
+  // clearFilter() {
+  //   this.filterForm.reset();
+  //   this.getAllCourses();
+  // }
   clearFilter() {
-    this.filterForm.reset();
+    this.filterForm.reset();  // Reset the form values
+    this.selectedCourses = [];
+    this.selectedVendors = [];
+    this.selectedStatus = [];
+    this.selectedCreators = [];
+    this.filter = false;
+
+    this.paginator.pageIndex = 0;
+    this.coursePaginationModel.page = 1; 
     this.getAllCourses();
   }
-  applyFilter() {
-    let body: any = {};
-    if (this.selectedCourses.length > 0) {
-      body.title = this.selectedCourses;
-    }
-    if (this.selectedVendors.length > 0) {
-      body.vendor = this.selectedVendors;
-    }
-    if (this.selectedStatus.length > 0) {
-      body.status = this.selectedStatus;
-    }
-    if (this.selectedCreators.length > 0) {
-      body.creator = this.selectedCreators;
-    }
+ 
 
-    this._courseService
-      .getFilteredCourseData(body, { ...this.coursePaginationModel })
-      .subscribe((response) => {
-        this.courseData = response.data.docs;
-        this.totalItems = response.data.totalDocs;
-        this.filter = true;
-        this.coursePaginationModel.docs = response.data.docs;
-        this.coursePaginationModel.page = response.data.page;
-        this.coursePaginationModel.limit = response.data.limit;
-        this.coursePaginationModel.totalDocs = response.data.totalDocs;
-      });
+applyFilter() {
+  let body: any = {};
+
+  if (this.selectedCourses.length > 0) {
+    body.title = this.selectedCourses;
   }
+  if (this.selectedVendors.length > 0) {
+    body.vendor = this.selectedVendors;
+  }
+  if (this.selectedStatus.length > 0) {
+    body.status = this.selectedStatus;
+  }
+  if (this.selectedCreators.length > 0) {
+    body.creator = this.selectedCreators;
+  }
+
+  
+  this.paginator.pageIndex = 0;
+  this.coursePaginationModel.page = 1;
+
+  this._courseService.getFilteredCourseData(body, { ...this.coursePaginationModel })
+    .subscribe((response) => {
+      this.courseData = response.data.docs;
+      this.totalItems = response.data.totalDocs;
+      this.coursePaginationModel.docs = response.data.docs;
+      this.coursePaginationModel.page = response.data.page;
+      this.coursePaginationModel.limit = response.data.limit;
+      this.coursePaginationModel.totalDocs = response.data.totalDocs;
+      this.filter = false;  
+    });
+}
+
+
+  
+  
+
   generatePdf() {
     const doc = new jsPDF();
     const headers = [
@@ -385,15 +423,18 @@ getAllTpCourses() {
           this.selection.select(row)
         );
   }
-  pageSizeChange($event: any) {
-    this.coursePaginationModel.page = $event?.pageIndex + 1;
-    this.coursePaginationModel.limit = $event?.pageSize;
-    if (this.filter) {
-      this.applyFilter();
-    } else {
-      this.getAllCourses();
-    }
+  
+pageSizeChange($event: any) {
+  this.coursePaginationModel.page = $event?.pageIndex + 1;
+  this.coursePaginationModel.limit = $event?.pageSize;
+  if (this.filter) {
+    this.applyFilter();
+  } else {
+    this.getAllCourses();
   }
+}
+
+  
   private mapCategories(): void {
     this.coursePaginationModel.docs?.forEach((item) => {
       item.main_category_text = this.mainCategories.find(
@@ -407,45 +448,100 @@ getAllTpCourses() {
       )?.category_name;
     });
   }
+  
   getAllCourses() {
-    this._courseService.getAllCoursesWithPagination({...this.coursePaginationModel}).subscribe((response) => {
+    let filterProgram = this.filterName;
+    const payload = { ...this.coursePaginationModel,title:filterProgram };
+  if(this.userGroupIds){
+    payload.userGroupId=this.userGroupIds
+  }
+    this._courseService.getAllCoursesWithPagination(payload).subscribe((response) => {
+      console.log("filtered ",response)
       this.courseData = response.data.docs;
       this.totalItems = response.data.totalDocs;
       this.coursePaginationModel.docs = response.data.docs;
-      this.coursePaginationModel.page = response.data.page;
+      this.coursePaginationModel.page = response.data.page; 
       this.coursePaginationModel.limit = response.data.limit;
       this.coursePaginationModel.totalDocs = response.data.totalDocs;
     });
   }
+  
   viewCourse(id: string) {
     this.route.navigate(['/admin/courses/course-view/'], {
       queryParams: { id: id, status: 'active' },
     });
   }
-  async onBulkUpload(event: any): Promise<void> {
-    const selectedFile: File = event.target.files[0];
-    const fileType = selectedFile.type;
-    if (selectedFile) {
-      const formData = new FormData();
+  // async onBulkUpload(event: any): Promise<void> {
+  //   const selectedFile: File = event.target.files[0];
+  //   const fileType = selectedFile.type;
+  //   if (selectedFile) {
+  //     const formData = new FormData();
   
-      if (fileType === 'application/pdf') {
-        await this.parsePDF(selectedFile);
-      } else if (fileType === 'application/vnd.ms-excel' || fileType === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
-        this.parseExcel(selectedFile, formData);
-      }else if (
-        fileType ===
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-      ) {
-        this.parseWord(selectedFile);
-      } 
-      this.logFormData(formData);
-      this.courseService.uploadFiles(formData);
-      this.showAlert = true;
+  //     if (fileType === 'application/pdf') {
+  //       await this.parsePDF(selectedFile);
+  //     } else if (fileType === 'application/vnd.ms-excel' || fileType === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+  //       this.parseExcel(selectedFile, formData);
+  //     }else if (
+  //       fileType ===
+  //       'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+  //     ) {
+  //       this.parseWord(selectedFile);
+  //     } 
+  //     this.logFormData(formData);
+  //     this.courseService.uploadFiles(formData);
+  //     this.showAlert = true;
       
-      event.target.value = null;
-    }
+  //     event.target.value = null;
+  //   }
+  // }
+  showNoFileChosen: boolean = false;
+
+  onFileInputClick(): void {
+    // Reset the "No file chosen" message when the file input is clicked
+    this.showNoFileChosen = false;
   }
   
+  async onBulkUpload(event: any): Promise<void> {
+      const selectedFile: File = event.target.files[0];
+      const fileType = selectedFile?.type || ''; 
+      const fileName = selectedFile?.name || ''; 
+      const validFileTypes = [
+          'application/vnd.ms-excel',
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      ];
+      const isExcelFile = fileName.endsWith('.xls') || fileName.endsWith('.xlsx');
+  
+      if (selectedFile) {
+          const formData = new FormData();
+  
+          if (validFileTypes.includes(fileType) || isExcelFile) {
+              this.parseExcel(selectedFile, formData);
+              this.logFormData(formData);
+              this.courseService.uploadFiles(formData);
+              this.showAlert = true;
+          } else {
+              this.showWarningPopup("Selected format doesn't support. Only Xlsx formats are allowed!");
+          }
+  
+          this.showNoFileChosen = false; // A file was selected, no need to show "No file chosen"
+          event.target.value = null;
+      } else {
+          // If no file was selected (dialog was closed without choosing)
+          this.showNoFileChosen = true;
+      }
+  }
+  
+  showWarningPopup(message: string): void {
+      Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: message,
+          confirmButtonText: 'OK'
+      });
+  }
+  
+
+
   public logFormData(formData: FormData) {
     formData.forEach((value, key) => {
       let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;

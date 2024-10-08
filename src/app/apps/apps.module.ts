@@ -12,10 +12,12 @@ import {
 } from '@danielmoncada/angular-datetime-picker';
 import { ComponentsModule } from '../shared/components/components.module';
 import { SharedModule } from '../shared/shared.module';
+import { ListofticketComponent } from './chatbot/listofticket/listofticket.component';
 
 @NgModule({
   declarations: [
     ChatComponent,
+    ListofticketComponent,
   ],
   imports: [
     CommonModule,

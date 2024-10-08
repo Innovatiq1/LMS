@@ -162,14 +162,14 @@ private linkedInCredentials = {
 };
 
 
-loginWithLinkedIn(companyName?: string): void {
+loginWithLinkedIn(companyName?: string,keys?:any): void {
   const redirectUri = companyName 
-    ? `http://localhost:4200/${companyName}/authentication/auth/linkedin/redirect` 
+    ? keys.redirectUri
     : 'http://localhost:4200/authentication/auth/linkedin/redirect';
 
   const params = new HttpParams()
     .set('response_type', this.linkedInCredentials.response_type)
-    .set('client_id', this.linkedInCredentials.clientId)
+    .set('client_id', keys? keys.clientId:this.linkedInCredentials.clientId)
     .set('redirect_uri', redirectUri)
     .set('state', this.linkedInCredentials.state)
     .set('scope', this.linkedInCredentials.scope);
@@ -185,18 +185,23 @@ getProfileData(accessToken: string): Observable<any> {
   return this.http.get(`${loginUrl}?accessToken=${accessToken}`);
 }
 
-getUsersByEmail(email: string): Observable<any> {
+getUsersByEmail(email: string,companyId?:string): Observable<any> {
   const loginUrl =this.defaultUrl + 'auth/usersByEmail';
-  return this.http.get(`${loginUrl}?email=${email}`);
+  if(companyId){
+    return this.http.get(`${loginUrl}?email=${email}&companyId=${companyId}`);
+  } else {
+    return this.http.get(`${loginUrl}?email=${email}`);
+  }
 }
 
 AccessToken(data: any): Observable<any> {
+  console.log('data',data)
   const body = new HttpParams()
     .set('grant_type', 'authorization_code')
     .set('code', data.code)
-    .set('redirect_uri', this.linkedInCredentials.redirect_uri)
-    .set('client_id', this.linkedInCredentials.clientId)
-    .set('client_secret', this.linkedInCredentials.clientSecret);
+    .set('redirect_uri', data.redirectUri?data.redirectUri: this.linkedInCredentials.redirect_uri)
+    .set('client_id', data.clientId?data.clientId: this.linkedInCredentials.clientId)
+    .set('client_secret', data.clientSecret?data.clientSecret: this.linkedInCredentials.clientSecret);
     const loginUrl =this.defaultUrl + 'auth/linkedinlogin';
     return this.http.post<ApiResponse>(loginUrl, data).pipe(
       map((response) => {

@@ -88,6 +88,8 @@ row: any;
   programsData: any;
   create = false;
   view = false;
+  filterName: string='';
+  userGroupIds: any;
 
   constructor(
   
@@ -194,37 +196,54 @@ onSelectionChange(event: any, field: any) {
 
 
 }
+// clearFilter() {
+//   this.filterForm.reset()
+//   this.getProgramList()
+// }
+
 clearFilter() {
-  this.filterForm.reset()
-  this.getProgramList()
+  this.filterForm.reset(); 
+  this.selectedPrograms = [];
+  this.selectedVendors = [];
+  this.selectedStatus = [];
+  this.selectedCreators = [];
+  this.isFiltered = false;
+  this.coursePaginationModel.page = 1;
+  this.getProgramList();
 }
+
 applyFilter() {
+  
   let body: any = {};
+
   if (this.selectedPrograms.length > 0) {
-    body.title = this.selectedPrograms
+    body.title = this.selectedPrograms;
   }
   if (this.selectedVendors.length > 0) {
-    body.vendor = this.selectedVendors
+    body.vendor = this.selectedVendors;
   }
   if (this.selectedStatus.length > 0) {
-    body.status = this.selectedStatus
+    body.status = this.selectedStatus;
   }
   if (this.selectedCreators.length > 0) {
-    body.creator = this.selectedCreators
+    body.creator = this.selectedCreators;
   }
-
-  this.courseService.getFilteredProgramData(body, { ...this.coursePaginationModel }).subscribe(response => {
+   if (this.selectedCreators.length > 0) {
+    body.creator = this.selectedCreators;
+  }
+  this.coursePaginationModel.page = 1;
+  this.paginator.pageIndex = 0;
+  this.courseService.getFilteredProgramData(body, { ...this.coursePaginationModel }).subscribe((response) => {
     this.programData = response.data.docs;
-    this.totalItems = response.data.totalDocs
-    this.isFiltered = true;
+    this.totalItems = response.data.totalDocs;
+    this.isFiltered = false;
     this.coursePaginationModel.docs = response.data.docs;
     this.coursePaginationModel.page = response.data.page;
     this.coursePaginationModel.limit = response.data.limit;
     this.coursePaginationModel.totalDocs = response.data.totalDocs;
-
-  })
-
+  });
 }
+
 
 getFilterData(filters?: any) {
   this.courseService.getAllPrograms().subscribe(
@@ -247,7 +266,14 @@ getFilterData(filters?: any) {
     this.isLoading = true;
     this.isNoMoreData = false;
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-    this.courseService.getAllPrograms({...this.coursePaginationModel},userId).subscribe(
+
+    let filterProgram = this.filterName;
+    const payload = { ...this.coursePaginationModel,title:filterProgram };
+  if(this.userGroupIds){
+    payload.userGroupId=this.userGroupIds
+  }
+
+    this.courseService.getAllPrograms(payload,userId).subscribe(
       (response: any) => {
         this.isLoading = false;
         this.programData = response.docs;
@@ -262,6 +288,9 @@ getFilterData(filters?: any) {
       }
     );
   }
+
+  
+  
   delete(id: string) {
     this.classService.getProgramClassList({ courseId: id }).subscribe((classList: any) => {
       const matchingClasses = classList.docs.filter((classItem: any) => {
@@ -300,16 +329,18 @@ getFilterData(filters?: any) {
       
     });
   }
+  
   pageSizeChange($event: any) {
     this.coursePaginationModel.page = $event?.pageIndex + 1;
     this.coursePaginationModel.limit = $event?.pageSize;
+  
     if (this.isFiltered) {
-      this.applyFilter()
+      this.applyFilter();
     } else {
       this.getProgramList();
     }
   }
-
+  
   ngOnInit(): void {
     const roleDetails =this.authenService.getRoleDetails()[0].menuItems
     let urlPath = this.route.url.split('/');
@@ -341,28 +372,47 @@ getFilterData(filters?: any) {
 
   }
 
+  // getAllVendorsAndUsers() {
+  //   this.courseService.getVendor().subscribe((response: any) => {
+  //     this.vendors = response.reverse();
+  //   });
+  
+  //   this.userService.getAllUsers().subscribe((response: any) => {
+  //     console.log("response", response);
+  //     console.log("user Role response==",response)
+  //     this.users = response?.results?.filter((user: any) => {
+  //       const userName = user.name.toLowerCase();
+  //       return !userName.startsWith('trainee');
+  //     });
+  //   });
+  // }
   getAllVendorsAndUsers() {
     this.courseService.getVendor().subscribe((response: any) => {
       this.vendors = response.reverse();
-    })
-    this.userService.getAllUsers().subscribe((response: any) => {
-      this.users = response?.results;
     });
-
+  
+    this.userService.getAllUsers().subscribe((response: any) => {
+      // this.users=response?.results;
+  
+      this.users = response?.results?.filter((user: any) => {
+        const role = user.role.toLowerCase(); 
+        return !(role === 'trainee' || role === 'student');
+      });
+    });
   }
-
+  
 
 performSearch() {
-  if(this.searchTerm){
-  this.programData = this.programData?.filter((item: any) =>{
-    const searchList = (item.title).toLowerCase();
-    return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1
-  }
-  );
-  } else {
+  // if(this.searchTerm){
+  // this.programData = this.programData?.filter((item: any) =>{
+  //   const searchList = (item.title).toLowerCase();
+  //   return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1
+  // }
+  // );
+  // } else {
     this.getProgramList();
 
-  }
+  // }
 }
 
 viewActiveProgram(id:string, status: string):void {

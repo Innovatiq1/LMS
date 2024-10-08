@@ -16,6 +16,7 @@ export class CourseService {
   
   private apiUrl = 'http://localhost:3000/api/';
   private prefix: string = environment.apiUrl;
+  private publicUrl: string = environment.publicApiUrl;
   private razorpayKeyId :string= "rzp_test_8qBZzDxmgGwhH4";
   // private razorpaySecretKey :string= environment.RAZORPAY_SECRET_KEY
 private tpUrl=environment.Url;
@@ -47,8 +48,8 @@ private tpUrl=environment.Url;
       if (filter.sub_category && +filter.sub_category !== 0) {
         params = params.set("sub_category", filter.sub_category);
       }
-      if (filter.filterText) {
-        params = params.set("title", filter.filterText?.toString());
+      if (filter.title) {
+        params = params.set("title", filter.title?.toString());
       }
       if (filter.feeType) {
         params = params.set("feeType", filter.feeType);
@@ -151,11 +152,12 @@ private tpUrl=environment.Url;
 
   getFilteredCourseData(payload:any, filter:any
     ):Observable<any> {
-    const apiUrl = `${this.prefix}admin/courses-new/filter?limit=${filter.limit}&page=${filter.page}`;
+      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId
+    const apiUrl = `${this.prefix}admin/courses-new/filter?companyId=${userId}&limit=${filter.limit}&page=${filter.page}`;
     return this._Http.post<any>(apiUrl, payload).pipe(map((response) => response));
   }
 
-  getCourseProgram(filter?: Partial<Program>,id?:any): Observable<ApiResponse> {
+  getCourseProgram(id?:any,filter?: Partial<Program>): Observable<ApiResponse> {
     const apiUrl = `${this.prefix}admin/courseprogram?companyId=${id}`;
     return this._Http
       .get<ApiResponse>(apiUrl, { params: this.buildParams(filter)})
@@ -166,9 +168,11 @@ private tpUrl=environment.Url;
       );
   }
 
+
   getFilteredProgramData(payload:any, filter:any
     ):Observable<any> {
-    const apiUrl = `${this.prefix}admin/courseprogram/filter?limit=${filter.limit}&page=${filter.page}`;
+      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId
+    const apiUrl = `${this.prefix}admin/courseprogram/filter?companyId=${userId}&limit=${filter.limit}&page=${filter.page}`;
     return this._Http.post<any>(apiUrl, payload).pipe(map((response) => response));
   }
 
@@ -196,13 +200,14 @@ private tpUrl=environment.Url;
   getAllPrograms(filter?: Partial<Program>,id?:any): Observable<ApiResponse> {
     const apiUrl = `${this.prefix}admin/courseprogram?companyId=${id}&status=active&status=inactive`;
     return this._Http
-      .get<ApiResponse>(apiUrl, { params: this.buildParams(filter)})
+      .get<any>(apiUrl,{params: this.buildParams(filter)})
       .pipe(
         map((response) => {
           return response.data
         })
       );
   }
+
 
   getPrograms(filter?: Partial<Program>,id?:any): Observable<ApiResponse> {
     const apiUrl = `${this.prefix}admin/courseprogram?companyId=${id}`;
@@ -600,19 +605,20 @@ private tpUrl=environment.Url;
     }
   
     saveChat(payload: any) {
-      const apiUrl = `${this.prefix}admin/chatbot`;
+      const apiUrl = `${this.publicUrl}/createChart`;
       return this._Http.post<any>(apiUrl, payload).pipe(map((response) => response));
     }
  
 
     uploadCourseThumbnail(file:any) {
-      const apiUrl = `${this.defaultUrl}admin/thumbnail/`;
+      const apiUrl = `${this.prefix}admin/thumbnail/`;
       return this._Http.post<any>(apiUrl, file).pipe(
         map((response) => {
           return response
         })
       );
     }
+    
   
     saveVideo(payload: any){
       const apiUrl = `${this.prefix}uploadVideo/`;

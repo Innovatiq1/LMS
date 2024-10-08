@@ -92,6 +92,7 @@ export interface StudentRegisteredClass {
 export interface StudentPaginationModel extends Pagination {
   docs: Student[];
   filterText: string;
+  userGroupId:string;
 }
 
 export interface Student extends Pagination {

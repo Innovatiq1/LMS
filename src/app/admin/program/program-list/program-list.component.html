@@ -24,46 +24,48 @@
                             <i id="filterIcon" class="material-icons" style="color: red; cursor: pointer;">filter_list</i>
                           </div>
                         </li>
-
                         <li>
                           <ul class="header-buttons-left ms-0">
                             <li class="tbl-search-box">
                               <label for="search-input"><i class="material-icons search-icon">search</i></label>
                               <input placeholder="Search" type="text" #filter class="browser-default search-field"
-                                aria-label="Search box" [(ngModel)]="searchTerm" (input)="performSearch()">
+                                aria-label="Search box" [(ngModel)]="filterName" (input)="performSearch()">
                             </li>
                           </ul>
                         </li>
-                        <li class="tbl-header-btn">
-                          <div class="m-l-10" matTooltip="ADD">
-                            <button mat-raised-button id="submit" *ngIf="create" (click)="addNew()">Create</button>
-                          </div>
-                        </li>
-                        <li class="tbl-header-btn">
-                          <div class="m-l-10" [hidden]=!selection.hasValue() matTooltip="DELETE">
-                            <button mat-mini-fab color="warn" (click)="removeSelectedRows()">
-                              <mat-icon class="col-white">delete
-                              </mat-icon>
-                            </button>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="export-button m-l-10" matTooltip="XLSX">
-                            <img src="assets/excel.svg" alt="" (click)="exportExcel()" />
-                          </div>
-                        </li>
-                        <li>
-                          <div class="export-button m-l-10" matTooltip="PDF">
-                            <img src="assets/pdf (1).svg" alt="" (click)="generatePdf()" />
-                          </div>
-                        </li>
-                      </ul>
+                          <li class="tbl-header-btn">
+                            <div class="" matTooltip="ADD">
+                              <button mat-raised-button id="submit" *ngIf="create" (click)="addNew()">Create</button>
+                            </div>
+                          </li>
+                          <li class="tbl-header-btn">
+                            <div class="" [hidden]=!selection.hasValue() matTooltip="DELETE">
+                              <button mat-mini-fab color="warn" (click)="removeSelectedRows()">
+                                <mat-icon class="col-white">delete
+                                </mat-icon>
+                              </button>
+                            </div>
+                          </li>
+                          <li>
+                            <span style="font-weight: bold;">Export as</span>
+                          </li>
+                          <li>
+                            <div class="export-button m-l-10" matTooltip="XLSX">
+                              <img src="assets/excel.svg" alt="" (click)="exportExcel()" />
+                            </div>
+                          </li>
+                          <li>
+                            <div class="export-button m-l-10" matTooltip="PDF">
+                              <img src="assets/pdf (1).svg" alt="" (click)="generatePdf()" />
+                            </div>
+                          </li>
+                        </ul>
                     </div>
                   </div>
                   <div class="body overflow-auto">
                     <div class="card" *ngIf="isFilter">
                       <div class="row m-3">
-                        <div class="col-3">
+                        <div class="col-3 hide-on-mobile" >
                           <img src="assets/images/icons/filter.png" style="height: 80px; width: 80px;margin-top: 30px;">
                         </div>
                         <div class="col-9">
@@ -85,14 +87,14 @@
                               </mat-select>
                             </mat-form-field>
                           </div>
-                          <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
+                          <!-- <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
                           <mat-form-field class="example-full-width mb-3"   appearance="outline">
                             <mat-label>Vendor</mat-label>
                             <mat-select (selectionChange)="onSelectionChange($event,'vendor')" formControlName ="vendor"  multiple>
                               <mat-option *ngFor="let vendor of vendors" [value]="vendor.vendor"> {{vendor.vendor | titlecase}} </mat-option>
                             </mat-select>
                           </mat-form-field>
-                          </div>
+                          </div> -->
                           <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
                             <mat-form-field class="example-full-width mb-3" appearance="outline">
                               <mat-label>Status</mat-label>
@@ -102,7 +104,7 @@
                               </mat-select>
                             </mat-form-field>
                             </div>
-                          <div class="col-8 mt-2 d-flex justify-content-end" >
+                          <div class="col-8 mt-2 d-flex justify-content-end no-justify-mobile" >
                               <button mat-raised-button id="submit"(click)="applyFilter()">Apply</button>
                               <button mat-raised-button id="back"(click)="clearFilter()">Clear</button>
                           </div>
@@ -128,13 +130,19 @@
                           </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="program">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header >Program Name
+                          <mat-header-cell *matHeaderCellDef  >Program
                           </mat-header-cell>
-                          <mat-cell [class.name]="isProgram" *matCellDef="let row"
+                          <mat-cell [class.name]="isProgram" *matCellDef="let row" 
                           (click)="view ? viewActiveProgram(row.id, row.status) : null"><span class="mobile-label">Program Name:</span>
                             <span>{{row.title |titlecase}}</span>
                           </mat-cell>
                         </ng-container>
+                        <!-- <ng-container matColumnDef="program">
+                          <mat-header-cell *matHeaderCellDef >Program</mat-header-cell>
+                          <mat-cell class="isProgram" *matCellDef="let row" (click)="view ? viewInActiveProgram(row.id): null"><span
+                              class="mobile-label">Program Name:</span> <span class=" col-cyan">{{row.title |titlecase}}</span>
+                          </mat-cell>
+                        </ng-container> -->
                         <ng-container matColumnDef="status">
                           <mat-header-cell *matHeaderCellDef class="pr-0">Status</mat-header-cell>
                           <mat-cell *matCellDef="let row" class="pr-0">
@@ -146,27 +154,27 @@
                           </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="code">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header>Program Code
+                          <mat-header-cell *matHeaderCellDef >Program Code
                           </mat-header-cell>
                           <mat-cell *matCellDef="let row" (click)="view ? viewActiveProgram(row.id, row.status) : null"><span
                               class="mobile-label">Program Code:</span> {{row.courseCode}}
                           </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="Creator">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header>Creator</mat-header-cell>
+                          <mat-header-cell *matHeaderCellDef >Creator</mat-header-cell>
                           <mat-cell *matCellDef="let row" [class.name]="isCreator"  (click)="view ? viewActiveProgram(row.id, row.status) : null">
                             <span class="mobile-label">Creator:</span> {{row.creator}}
                           </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="Duration">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header>Duration
+                          <mat-header-cell *matHeaderCellDef >Duration
                           </mat-header-cell>
                           <mat-cell *matCellDef="let row"  (click)="view ? viewActiveProgram(row.id, row.status) : null">
                             <span class="mobile-label">Duration:</span>{{row.duration}} Hours</mat-cell>
                         </ng-container>
 
                         <ng-container matColumnDef="Start Date">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header>Start Date
+                          <mat-header-cell *matHeaderCellDef >Start Date
                           </mat-header-cell>
                           <mat-cell *matCellDef="let row"  (click)="view ? viewActiveProgram(row.id, row.status) : null"> <span
                               class="mobile-label">Start Date:</span>{{row.sessionStartDate |date}}
@@ -174,30 +182,29 @@
                         </ng-container>
 
                         <ng-container matColumnDef="End Date">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header>End Date
+                          <mat-header-cell *matHeaderCellDef >End Date
                           </mat-header-cell>
                           <mat-cell *matCellDef="let row"   (click)="view ? viewActiveProgram(row.id, row.status) : null"> <span
                               class="mobile-label">End Date:</span>{{row.sessionEndDate |date}}
                           </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="Payment">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header>Payment
+                          <mat-header-cell *matHeaderCellDef style="padding-left: 50px;">Fee
                           </mat-header-cell>
-                          <mat-cell *matCellDef="let row" 
+                          <mat-cell *matCellDef="let row" class="payment-cell"
                           (click)="view ? viewActiveProgram(row.id, row.status) : null"> <span
                               class="mobile-label">Payment:</span>$ {{row.courseFee}}.00
                           </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="Compulsory Count">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header class="compulsory-count-header">Compulsory
-                            Count
+                          <mat-header-cell *matHeaderCellDef  class="compulsory-count-header"><span class="header-text">Compulsory Count</span>
                           </mat-header-cell>
                           <mat-cell *matCellDef="let row"  (click)="view ? viewActiveProgram(row.id, row.status) : null"> <span
                               class="mobile-label">Compulsory Count:</span>{{row.coreCourseCount}}
                           </mat-cell>
-                        </ng-container>
+                        </ng-container> 
                         <ng-container matColumnDef="Elective Count">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header>Elective Count
+                          <mat-header-cell *matHeaderCellDef >Elective Count
                           </mat-header-cell>
                           <mat-cell *matCellDef="let row"  (click)="view ? viewActiveProgram(row.id, row.status) : null"> <span
                               class="mobile-label">Elective Count:</span>{{row.electiveCourseCount}}
@@ -218,7 +225,7 @@
               </div>
             </div>
           </mat-tab>
-          <mat-tab class="grid">
+          <mat-tab class="grid overflow-y">
             <ng-template mat-tab-label>
               <i class="material-icons-two-tone psr-3">grid_on</i>
               Grid View
@@ -227,34 +234,39 @@
               <div class="col-md-12">
                 <div class="card">
                   <div class="materialTableHeader">
-                    <div class="right">
-                      <ul class="tbl-export-btn">
+                      <ul class="tbl-export-btn mt-2">
                         <li>
                           <ul class="header-buttons-left ms-0">
                             <li class="tbl-search-box">
                               <label for="search-input"><i class="material-icons search-icon">search</i></label>
                               <input placeholder="Search" type="text" #filter class="browser-default search-field"
-                                aria-label="Search box" [(ngModel)]="searchTerm" (input)="performSearch()">
+                                aria-label="Search box" [(ngModel)]="filterName" (input)="performSearch()">
                             </li>
+                          </ul>
+                        </li>
+                        </ul>
+                        <div class="right">
+                          <ul class="tbl-export-btn">
                             <li class="tbl-header-btn">
                               <div class="m-l-10" matTooltip="ADD">
                                 <button mat-raised-button id="submit" (click)="addNew()">Create</button>
                               </div>
                             </li>
+                            <li>
+                              <span style="font-weight: bold;">Export as</span>
+                            </li>
+                            <li>
+                              <div class="export-button m-l-10" matTooltip="XLSX" (click)="exportExcel()">
+                                <img src="assets/excel.svg" alt="" />
+                              </div>
+                            </li>
+                            <li>
+                              <div class="export-button m-l-10" matTooltip="PDF" (click)="generatePdf()">
+                                <img src="assets/pdf (1).svg" alt="" />
+                              </div>
+                            </li>
                           </ul>
-                        </li>
-                        <li>
-                          <div class="export-button m-l-10" matTooltip="XLSX" (click)="exportExcel()">
-                            <img src="assets/excel.svg" alt="" />
-                          </div>
-                        </li>
-                        <li>
-                          <div class="export-button m-l-10" matTooltip="PDF" (click)="generatePdf()">
-                            <img src="assets/pdf (1).svg" alt="" />
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
+                        </div>
                   </div>
                   <div class="body">
                     <div class="row">
@@ -274,7 +286,7 @@
                                   <h6>Program Period</h6>
                                 </div>
                                 <div class="col-5">
-                                  <p style="width: 150%;">{{program?.sessionStartDate |date }} -
+                                  <p style="width: 160%;">{{program?.sessionStartDate |date }} -
                                     {{program?.sessionEndDate |date }} </p>
                                 </div>
                               </div>
@@ -283,7 +295,7 @@
                                   <h6>Duration</h6>
                                 </div>
                                 <div class="col-3">
-                                  <p>{{program?.duration}} Hours </p>
+                                  <p style="width: 160%;">{{program?.duration}} Hours </p>
                                 </div>
                               </div>
                               <div class="row">
@@ -324,22 +336,23 @@
                                 </div>
                                 <div *ngFor="let core of program?.coreprogramCourse">
                                   <div class="row">
-                                    <div class="col-3">
-                                      <p class="fw-semibold" style="color: #979595;">
-                                        Compulsory Course
+                                    <div class="d-flex justify-content-start align-items-center mt-3">
+                                      <p class="fw-semibold" style="color: #979595;margin-right: 20px; flex: 0 0 auto;">
+                                      Compulsory Course
                                       </p>
+                                      <span style="margin-top: -10px;"> {{core?.coreProgramName?.title}}</span>
                                     </div>
-                                    <div class="col">
-                                      <p style="margin-left: 20px;"> {{core?.coreProgramName?.title}}</p>
-                                    </div>
+                                    <!-- <div class="col" >
+                                      <p style="margin-left: 30px;"> {{core?.coreProgramName?.title}}</p>
+                                    </div> -->
                                   </div>
 
                                   <div class="row">
                                     <div class="col-3">
                                       <p class="fw-semibold fs-6" style="color: #979595">Description</p>
                                     </div>
-                                    <div class="col" style="margin-left: 20px;">
-                                      <p [innerHTML]="core?.coreProgramDescription | bulletPoints | truncate:150">
+                                    <div class="col" style="margin-left: 45px;">
+                                      <p [innerHTML]="core?.coreProgramDescription">
                                       </p>
                                     </div>
                                   </div>
@@ -357,20 +370,22 @@
                                 </div>
                                 <div *ngFor="let elective of program?.electiveprogramCourse">
                                   <div class="row">
-                                    <div class="col-3">
-                                      <p class="fw-semibold" style="color: #979595">Elective Course</p>
+                                    <!-- <div class="col-3"> -->
+                                      <div class="d-flex justify-content-start align-items-center mt-3">
+                                      <p class="fw-semibold" style="color: #979595; margin-right: 20px; flex: 0 0 auto;">Elective Course</p>
+                                      <p style="margin-top: -3px;">{{elective?.electiveProgramName?.title}}</p>
                                     </div>
-                                    <div class="col">
+                                    <!-- <div class="col">
                                       <p style="margin-left: 0px;">{{elective?.electiveProgramName?.title}}</p>
-                                    </div>
+                                    </div> -->
                                   </div>
                                   <div class="row">
                                     <div class="col-3">
                                       <p class="fw-semibold fs-6" style="color: #979595">Description</p>
                                     </div>
-                                    <div class="col">
+                                    <div class="col" style="margin-left: 15px;">
                                       <p
-                                        [innerHTML]="elective?.electiveProgramDescription | bulletPoints | truncate:150">
+                                        [innerHTML]="elective?.electiveProgramDescription">
                                     </div>
                                   </div>
                                 </div>

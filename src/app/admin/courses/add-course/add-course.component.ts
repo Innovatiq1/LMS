@@ -186,7 +186,8 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       main_category: ['', [Validators.required]],
       sub_category: ['', [Validators.required]],
       fee: new FormControl('', [Validators.pattern(/^\d+(\.\d+)?$/)]),
-      currency_code: new FormControl(''),
+      currency_code: ['', [Validators.required]],
+
       course_duration_in_days: new FormControl('', [
         Validators.min(1),
         Validators.pattern(/^\d+(\.\d+)?$/),
@@ -194,7 +195,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       training_hours: new FormControl('', [
         Validators.pattern(/^\d+(\.\d+)?$/),
       ]),
-      department:['',Validators.required],
+      department:['',[]],
       skill_connect_code: new FormControl('', [
         Validators.pattern(/^[a-zA-Z0-9]/),
       ]),
@@ -219,22 +220,25 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       id: new FormControl(''),
       feeType: new FormControl('', [Validators.required]),
       assessment: new FormControl(null, [
+        Validators.required,
         ...this.utils.validators.noLeadingSpace,
         ...this.utils.validators.assessment,
       ]),
       exam_assessment: new FormControl(null, [
+        Validators.required,
         ...this.utils.validators.noLeadingSpace,
         ...this.utils.validators.e_assessment,
       ]),
       tutorial: new FormControl(null, [
+        Validators.required,
         ...this.utils.validators.noLeadingSpace,
         ...this.utils.validators.tutorial,
       ]),
-      survey: new FormControl(null, []),
-      course_kit: new FormControl('', []),
+      survey: new FormControl(null, [Validators.required]),
+      course_kit: new FormControl('', [Validators.required]),
       vendor: new FormControl('',[Validators.required, Validators.maxLength(100)]),
       isFeedbackRequired: new FormControl(null, [Validators.required]),
-      examType: new FormControl('', [ ]),
+      examType: new FormControl('', [Validators.required]),
       issueCertificate: new FormControl('', [Validators.required]),
       certificate_temp: new FormControl(null, [Validators.required]),
     });
@@ -303,12 +307,9 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     }
 
     this.loadData();
-     if (this.isAnyFieldFilled()) {
+    setInterval(() => {
       this.startAutoSave();
-    }
-    if (!this.isAnyFieldFilled()) {
-      return;
-    }
+    }, 30000);
   }
   getDepartments() {
     this.studentsService.getAllDepartments().subscribe((response: any) => {
@@ -325,7 +326,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       return;
     }
     if (this.isAnyFieldFilled()) {
-    this.draftSubscription = timer(0, 10000).subscribe(() => {
+    this.draftSubscription = timer(0, 30000).subscribe(() => {
       this.saveDraft();
     });
     }
@@ -451,7 +452,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         if (config) {
           this.defaultCurrency = config.value;
           this.firstFormGroup.patchValue({
-            currency_code: this.defaultCurrency,
+            currency_code: this.firstFormGroup.value.feeType?this.defaultCurrency:'',
           });
         }
       });
@@ -465,22 +466,32 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     );
   }
 
+  
   onFileUpload(event: any) {
     const file = event.target.files[0];
-
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/jfif'];
+    if (!allowedTypes.includes(file.type)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: "Selected format doesn't support. Only JPEG, PNG, JPG, and JFIF formats are allowed!",
+      });
+      event.target.value = '';
+      return;
+    }
+  
     this.thumbnail = file;
     const formData = new FormData();
     formData.append('files', this.thumbnail);
-    this.courseService
-      .uploadCourseThumbnail(formData)
-      .subscribe((data: any) => {
-        this.image_link = data.data.thumbnail;
-        this.uploaded = this.image_link?.split('/');
-        let image = this.uploaded?.pop();
-        this.uploaded = image?.split('\\');
-        this.uploadedImage = this.uploaded?.pop();
-      });
+    this.courseService.uploadCourseThumbnail(formData).subscribe((data: any) => {
+      this.image_link = data.data.thumbnail;
+      this.uploaded = this.image_link?.split('/');
+      let image = this.uploaded?.pop();
+      this.uploaded = image?.split('\\');
+      this.uploadedImage = this.uploaded?.pop();
+    });
   }
+  
 
   onFileChange(event: any) {
     const file = event.target.files[0];
