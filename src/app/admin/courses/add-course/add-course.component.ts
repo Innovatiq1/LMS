@@ -186,7 +186,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       main_category: ['', [Validators.required]],
       sub_category: ['', [Validators.required]],
       fee: new FormControl('', [Validators.pattern(/^\d+(\.\d+)?$/)]),
-      currency_code: ['', [Validators.required]],
+      currency_code: [''],
 
       course_duration_in_days: new FormControl('', [
         Validators.min(1),
@@ -817,6 +817,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       (certificate: any) =>
         certificate.title === this.firstFormGroup.value.certificate_temp
     );
+    console.log("form",this.firstFormGroup)
     if (this.firstFormGroup.valid) {
       const courseData = this.firstFormGroup.value;
       let creator = JSON.parse(localStorage.getItem('user_data')!).user.name;
