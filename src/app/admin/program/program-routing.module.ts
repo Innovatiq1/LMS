@@ -19,23 +19,23 @@ const routes: Routes = [
     component:ProgramListComponent
   },
   {
-    path:'program-list/creator', 
+    path:'program-list/pcreator', 
     component:ProgramListComponent
   },
   {
-    path:'submitted-program/approved-program', 
+    path:'submitted-program/submitted-approved-program', 
     component:ApprovedProgramsComponent
   },
   {
-    path:'submitted-program/pending-program', 
+    path:'submitted-program/submitted-pending-program', 
     component:PendingProgramsComponent
   },
   {
-    path:'student-program/approved-program', 
+    path:'student-program/registered-approved-program', 
     component:StudentApprovalListComponent
   },
   {
-      path:'student-program/pending-program', 
+      path:'student-program/registered-pending-program', 
       component: StudentPendingListComponent
     },
     {

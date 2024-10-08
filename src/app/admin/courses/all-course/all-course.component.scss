@@ -166,6 +166,7 @@ mat-cell{
 .amount{
   padding-right: 60px !important;
 }
+
 .payment-cell1{
     padding-left: 0px;
     display: flex;
@@ -259,4 +260,11 @@ input[type="file"]::file-selector-button {
   .overflow-y {
     overflow-y: auto;
   }
+}
+
+@media (max-width: 768px) {
+  .materialTableHeader .right {
+      height: 159px;
+  }
+ 
 }

@@ -91,7 +91,7 @@ export class AllCourseComponent {
   private showAlert = false;
   filterName: string = "";
   userGroupIds: string = "";
-
+  filterBody: any = {};
   constructor(
     public _courseService: CourseService,
     private route: Router,
@@ -276,39 +276,39 @@ getAllTpCourses() {
   }
  
 
-applyFilter() {
-  let body: any = {};
-
-  if (this.selectedCourses.length > 0) {
-    body.title = this.selectedCourses;
-  }
-  if (this.selectedVendors.length > 0) {
-    body.vendor = this.selectedVendors;
-  }
-  if (this.selectedStatus.length > 0) {
-    body.status = this.selectedStatus;
-  }
-  if (this.selectedCreators.length > 0) {
-    body.creator = this.selectedCreators;
-  }
-
+  applyFilter() {
+    // Prepare filter criteria and store in filterBody
+    this.filterBody = {};
+    
+    if (this.selectedCourses.length > 0) {
+      this.filterBody.title = this.selectedCourses;
+    }
+    if (this.selectedVendors.length > 0) {
+      this.filterBody.vendor = this.selectedVendors;
+    }
+    if (this.selectedStatus.length > 0) {
+      this.filterBody.status = this.selectedStatus;
+    }
+    if (this.selectedCreators.length > 0) {
+      this.filterBody.creator = this.selectedCreators;
+    }
   
-  this.paginator.pageIndex = 0;
-  this.coursePaginationModel.page = 1;
-
-  this._courseService.getFilteredCourseData(body, { ...this.coursePaginationModel })
-    .subscribe((response) => {
-      this.courseData = response.data.docs;
-      this.totalItems = response.data.totalDocs;
-      this.coursePaginationModel.docs = response.data.docs;
-      this.coursePaginationModel.page = response.data.page;
-      this.coursePaginationModel.limit = response.data.limit;
-      this.coursePaginationModel.totalDocs = response.data.totalDocs;
-      this.filter = false;  
-    });
-}
-
-
+    // Reset pagination when applying a new filter
+    this.paginator.pageIndex = 0;
+    this.coursePaginationModel.page = 1;
+    
+    // Fetch filtered data with pagination
+    this._courseService.getFilteredCourseData(this.filterBody, { ...this.coursePaginationModel })
+      .subscribe((response) => {
+        this.courseData = response.data.docs;
+        this.totalItems = response.data.totalDocs;
+        this.coursePaginationModel.docs = response.data.docs;
+        this.coursePaginationModel.page = response.data.page;
+        this.coursePaginationModel.limit = response.data.limit;
+        this.coursePaginationModel.totalDocs = response.data.totalDocs;
+        this.filter = true;  // Set filter state to true
+      });
+  }
   
   
 
@@ -424,15 +424,28 @@ applyFilter() {
         );
   }
   
-pageSizeChange($event: any) {
-  this.coursePaginationModel.page = $event?.pageIndex + 1;
-  this.coursePaginationModel.limit = $event?.pageSize;
-  if (this.filter) {
-    this.applyFilter();
-  } else {
-    this.getAllCourses();
+  pageSizeChange($event: any) {
+    // Update pagination model based on the event
+    console.log("Page index: ", $event?.pageIndex, "Page size: ", $event?.pageSize);
+    this.coursePaginationModel.page = $event?.pageIndex + 1;
+    this.coursePaginationModel.limit = $event?.pageSize;
+    
+    if (this.filter) {
+      // Use the preserved filterBody when moving to the next page
+      this._courseService.getFilteredCourseData(this.filterBody, { ...this.coursePaginationModel })
+        .subscribe((response) => {
+          this.courseData = response.data.docs;
+          this.totalItems = response.data.totalDocs;
+          this.coursePaginationModel.docs = response.data.docs;
+          this.coursePaginationModel.page = response.data.page;
+          this.coursePaginationModel.limit = response.data.limit;
+          this.coursePaginationModel.totalDocs = response.data.totalDocs;
+        });
+    } else {
+      // If no filter, fetch all courses with updated pagination
+      this.getAllCourses();
+    }
   }
-}
 
   
   private mapCategories(): void {

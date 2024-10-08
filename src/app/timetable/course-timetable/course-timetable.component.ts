@@ -18,13 +18,13 @@ export class CourseTimetableComponent implements OnInit {
   programCalendarOptions!: CalendarOptions;
   filterName = '';
 
-  breadscrums = [
-    {
-      title: 'Course Timetable',
-      items: ['Timetable'],
-      active: 'All Courses',
-    },
-  ];
+  // breadscrums = [
+  //   {
+  //     title: 'Course Timetable',
+  //     items: ['Timetable'],
+  //     active: 'All Courses',
+  //   },
+  // ];
   studentApprovedClasses: any;
   upcomingCourseClasses: any;
   studentApprovedPrograms: any;
