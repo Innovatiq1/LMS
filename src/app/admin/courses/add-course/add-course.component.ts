@@ -660,7 +660,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       (certificate: any) =>
         certificate.title === this.firstFormGroup.value.certificate_temp
     );
-    if (this.firstFormGroup.valid) {
+    // if (this.firstFormGroup.valid) {
       const courseData = this.firstFormGroup.value;
       let creator = JSON.parse(localStorage.getItem('user_data')!).user.name;
       let payload = {
@@ -735,10 +735,11 @@ export class AddCourseComponent implements OnInit, OnDestroy {
             });
         }
       });
-    } else {
-      this.firstFormGroup.markAsUntouched();
-      this.isWbsSubmitted = true;
-    }
+    // } 
+    // else {
+    //   this.firstFormGroup.markAsUntouched();
+    //   this.isWbsSubmitted = true;
+    // }
   }
   onSelect(event: any) {
     if (event.value == 'paid') {
