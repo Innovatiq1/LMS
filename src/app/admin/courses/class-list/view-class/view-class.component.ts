@@ -231,11 +231,12 @@ export class ViewClassComponent {
         });
         return; // Exit the function early if validation fails
     }
+    const newDateTime = new Date(date);
+    const formattedDate = newDateTime.toISOString().substring(0, 10);
 
-    // Show confirmation prompt before deleting the meeting
     Swal.fire({
         title: 'Are you sure?',
-        text: `Do you really want to delete the meeting for the selected date: ${date}? This action cannot be undone.`,
+        text: `Do you really want to delete the meeting for the selected date: ${formattedDate}? This action cannot be undone.`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Yes, delete it!',
