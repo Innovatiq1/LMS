@@ -84,7 +84,7 @@
                       <mat-header-cell *matHeaderCellDef>Request Retake</mat-header-cell>
                       <mat-cell *matCellDef="let row">
                         <button [disabled] ="calculateRetaks(row) > 0 || row.is_exam_completed"
-                                mat-flat-button
+                                mat-raised-button class="request"
                                 color="accent"
                                 (click)="onRequestRetake(row)">
                           Request Retake

@@ -58,13 +58,13 @@
               </ng-container>
 
               <ng-container matColumnDef="Exam">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>Exam</mat-header-cell>
+                <mat-header-cell *matHeaderCellDef>Exam</mat-header-cell>
                 <mat-cell *matCellDef="let row" class="name">
                   <button
                     *ngIf="row.isAssigned && !row.isCompleted"
                     (click)="takeExam(row)"
-                    mat-flat-button
-                    color="primary"
+                    mat-raised-button
+                    id="submit1"
                   >
                     Take Exam
                   </button>
@@ -72,8 +72,8 @@
                   <button
                     *ngIf="!row.isAssigned && !row.isCompleted && getLabel(row) != 'Approval Pending'"
                     (click)="navToExam(row)"
-                    mat-flat-button
-                    color="primary"
+                    mat-raised-button
+                    id="submit1"
                   >
                     {{ getLabel(row) }}
                   </button>
