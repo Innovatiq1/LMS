@@ -26,7 +26,7 @@ export class GenereateReportComponent {
   breadscrums = [
     {
       title: 'Reports',
-      items: ['Reports'],
+      items: ['Summary Report'],
       active: 'Filter Report',
     },
   ];

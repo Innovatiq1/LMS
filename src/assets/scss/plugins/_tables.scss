@@ -954,6 +954,16 @@ mat-cell > span.truncate-text {
   justify-content: flex-end;
   padding-right: 50px !important;
 }
+
+@media (max-width: 768px) {
+  .payment-cell {
+    display: block;
+    justify-content: center;
+    margin-top: 10px;
+    padding-right: 0 !important;
+  }
+}
+
 ::ng-deep .mat-mdc-tab-body-content{
   overflow-x: hidden !important;
 }

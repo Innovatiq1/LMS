@@ -14,7 +14,7 @@ export class SidemenuComponent {
   breadscrums = [
     {
       title: 'Blank',
-      items: ['Customization'],
+      items: ['Customize'],
       active: 'Sidemenu',
     },
   ];
