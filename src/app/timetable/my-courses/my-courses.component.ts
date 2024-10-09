@@ -73,6 +73,8 @@ export class MyCoursesComponent {
         const sessionEndTime = this.formatTime(
           courseClass?.sessions[0]?.sessionEndTime
         );
+        const department = courseClass?.department;
+
         const title = courseClass?.sessions[0]?.courseName;
        
         const datesArray = [];
@@ -84,6 +86,7 @@ export class MyCoursesComponent {
             extendedProps: {
               sessionStartTime: sessionStartTime,
               sessionEndTime: sessionEndTime,
+              department:department
             
             }
           });
@@ -144,6 +147,7 @@ export class MyCoursesComponent {
         status: event.extendedProps['status'],
         sessionStartDate: event.extendedProps['sessionStartDate'],
         sessionEndDate: event.extendedProps['sessionEndDate'],
+        department: event.extendedProps['department'],
         deliveryType: event.extendedProps['deliveryType'],
         instructorCost: event.extendedProps['instructorCost'],
         reschedule:reschedule
@@ -179,6 +183,7 @@ export class MyCoursesComponent {
         const courseCode = courseClass?.courseId?.courseCode;
         const deliveryType = courseClass?.classId?.classDeliveryType;
         const instructorCost = courseClass?.classId?.instructorCost;
+        const department = courseClass?.classId?.department;
         const datesArray = [];
         let currentDate = startDate;
             while (currentDate <= endDate) {
@@ -190,7 +195,8 @@ export class MyCoursesComponent {
               sessionEndTime: sessionEndTime,
               courseCode: courseCode,
               instructorCost:instructorCost,
-              deliveryType:deliveryType
+              deliveryType:deliveryType,
+              department:department
             }
           });
           currentDate.setDate(currentDate.getDate() + 1); 

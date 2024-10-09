@@ -890,7 +890,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
 
               this.courseAdded = true;
               this.router.navigate([
-                '/admin/courses/submitted-courses/pending-courses',
+                '/admin/courses/submitted-courses/submitted-pending-courses',
               ]);
             },
             (error) => {
