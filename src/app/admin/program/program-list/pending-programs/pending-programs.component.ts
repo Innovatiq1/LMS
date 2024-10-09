@@ -26,13 +26,7 @@ import { AuthenService } from '@core/service/authen.service';
   styleUrls: ['./pending-programs.component.scss']
 })
 export class PendingProgramsComponent {
-  breadscrums = [
-    {
-      title: 'Pending Programs',
-      items: ['Submitted Programs'],
-      active: 'Pending Programs',
-    },
-  ];
+ 
 
   displayedColumns: string[] = [
     'select',

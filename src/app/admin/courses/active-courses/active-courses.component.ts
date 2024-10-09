@@ -24,13 +24,13 @@ import { AuthenService } from '@core/service/authen.service';
   styleUrls: ['./active-courses.component.scss'],
 })
 export class ActiveCoursesComponent {
-  breadscrums = [
-    {
-      title: 'Blank',
-      items: ['Submitted Courses'],
-      active: 'Approved Courses',
-    },
-  ];
+  // breadscrums = [
+  //   {
+  //     title: 'Blank',
+  //     items: ['Submitted Courses'],
+  //     active: 'Approved Courses',
+  //   },
+  // ];
   displayedColumns = [
     'name',
     'status',

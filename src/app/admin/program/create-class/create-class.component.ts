@@ -142,16 +142,16 @@ export class CreateClassComponent {
       this.breadscrums = [
         {
           title: 'Edit Class',
-          items: ['Schedule Class'],
-          active: 'Edit Class',
+          items: ['Program Class'],
+          active: 'Edit Program Class',
         },
       ];
     } else {
       this.breadscrums = [
         {
           title: 'Create Class',
-          items: ['Schedule Class'],
-          active: 'Create Class',
+          items: ['Program Class'],
+          active: 'Create Program Class',
         },
       ];
     }

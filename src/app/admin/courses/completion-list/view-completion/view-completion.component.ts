@@ -76,6 +76,10 @@ export class ViewCompletionComponent {
     });
   }
 
+  back(){
+    window.history.back()
+  }
+
     ngOnInit(): void {
       const roleDetails =this.authenService.getRoleDetails()[0].menuItems
       let urlPath = this._router.url.split('/');

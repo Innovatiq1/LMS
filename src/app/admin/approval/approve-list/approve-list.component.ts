@@ -149,7 +149,7 @@ export class ApproveListComponent {
   }
 
   view(id: string) {
-    this.router.navigate(['/admin/courses/student-courses/approved-courses/view-completion-list'], {
+    this.router.navigate(['/admin/courses/student-courses/registered-approved-courses/view-completion-list'], {
       queryParams: { id: id, status: 'approved' },
     });
   }

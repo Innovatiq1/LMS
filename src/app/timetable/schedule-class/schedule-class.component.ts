@@ -66,13 +66,7 @@ export class ScheduleClassComponent {
     'Price',
   ];
 
-  breadscrums = [
-    {
-      title: 'Program Class',
-      items: ['Timetable'],
-      active: 'Program Class',
-    },
-  ];
+
   dataSource: any;
   totalItems: any;
   filterName='';

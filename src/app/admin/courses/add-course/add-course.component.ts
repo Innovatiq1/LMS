@@ -104,7 +104,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   breadscrums = [
     {
       title: 'Create Course',
-      items: ['Course'],
+      items: ['Course Name'],
       active: 'Create Course',
     },
   ];
@@ -163,7 +163,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       this.breadscrums = [
         {
           title: 'Edit Course',
-          items: ['Course'],
+          items: ['Pending Courses'],
           active: 'Edit Course',
         },
       ];
@@ -171,7 +171,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       this.breadscrums = [
         {
           title: 'View Course',
-          items: ['Course'],
+          items: ['Course Name'],
           active: 'View Course',
         },
       ];

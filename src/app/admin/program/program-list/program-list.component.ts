@@ -139,7 +139,7 @@ row: any;
       },
     ];
   }
-  if (this.path == 'creator'){
+  if (this.path == 'pcreator'){
     this.isCreator = true;
     this.displayedColumns = [
       'Creator',

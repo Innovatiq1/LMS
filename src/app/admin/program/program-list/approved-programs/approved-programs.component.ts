@@ -26,13 +26,7 @@ import { AuthenService } from '@core/service/authen.service';
   styleUrls: ['./approved-programs.component.scss']
 })
 export class ApprovedProgramsComponent {
-  breadscrums = [
-    {
-      title: 'Approved Programs',
-      items: ['Submitted Programs'],
-      active: 'Approved Programs',
-    },
-  ];
+
 
   displayedColumns: string[] = [
     'name',

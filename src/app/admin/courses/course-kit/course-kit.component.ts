@@ -30,13 +30,13 @@ export class CourseKitComponent implements OnInit{
     'Document Link'
   ];
 
-  breadscrums = [
-    {
-      title: 'Course Kit',
-      items: ['Course'],
-      active: 'Course Kit',
-    },
-  ];
+  // breadscrums = [
+  //   {
+  //     title: 'Course Kit',
+  //     items: ['Course'],
+  //     active: 'Course Kit',
+  //   },
+  // ];
 
   coursePaginationModel!: Partial<CoursePaginationModel>;
   totalItems: any;
