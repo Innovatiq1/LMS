@@ -277,7 +277,7 @@ export class PendingProgramsComponent {
     });
   }
   viewInActiveProgram(id:string){
-    this.route.navigate(['/admin/program/submitted-program/pending-program/view-program'],{queryParams:{id:id, status:'pending'}});
+    this.route.navigate(['/admin/program/submitted-program/submitted-pending-program/view-program'],{queryParams:{id:id, status:'pending'}});
   }
   // removeSelectedRows() {
   //   const totalSelect = this.selection.selected.length;

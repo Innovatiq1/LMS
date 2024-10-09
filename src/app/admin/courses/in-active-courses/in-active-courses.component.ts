@@ -337,7 +337,7 @@ export class InActiveCoursesComponent {
     doc.save('Pending Course List.pdf');
   }
   viewCourse(id: string) {
-    this.router.navigate(['/admin/courses/submitted-courses/pending-courses/course-view/'], {
+    this.router.navigate(['/admin/courses/submitted-courses/submitted-pending-courses/course-view/'], {
       queryParams: { id: id, status: 'in-active' },
     });
   }

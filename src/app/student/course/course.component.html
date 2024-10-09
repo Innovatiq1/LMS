@@ -102,18 +102,14 @@
                           </h6>
                           <p class="text-muted">
                             <time
-                              >{{ data?.courseId?.training_hours }} hours</time
+                              >{{ data?.department }} Department</time
                             >
                           </p>
                         </div>
-                        <p
-                          class="course-card-description"
-                          [innerHTML]="
-                            data?.courseId?.course_detailed_description
-                              | bulletPoints
-                              | truncate : 40
-                          "
-                        ></p>
+                        <p class="text-default">
+                          {{ data?.courseId?.course_detailed_description | truncate: 40 }}
+                        </p>
+                        <!-- <p class="text-default" [innerHTML]="(data?.courseId?.course_detailed_description | truncate: 40)"></p> -->
                         <div class="text-center mb-3">
                         </div>
                       </div>

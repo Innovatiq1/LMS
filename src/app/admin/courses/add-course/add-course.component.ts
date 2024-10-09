@@ -186,7 +186,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       main_category: ['', [Validators.required]],
       sub_category: ['', [Validators.required]],
       fee: new FormControl('', [Validators.pattern(/^\d+(\.\d+)?$/)]),
-      currency_code: ['', [Validators.required]],
+      currency_code: [''],
 
       course_duration_in_days: new FormControl('', [
         Validators.min(1),
@@ -660,7 +660,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       (certificate: any) =>
         certificate.title === this.firstFormGroup.value.certificate_temp
     );
-    if (this.firstFormGroup.valid) {
+    // if (this.firstFormGroup.valid) {
       const courseData = this.firstFormGroup.value;
       let creator = JSON.parse(localStorage.getItem('user_data')!).user.name;
       let payload = {
@@ -735,10 +735,11 @@ export class AddCourseComponent implements OnInit, OnDestroy {
             });
         }
       });
-    } else {
-      this.firstFormGroup.markAsUntouched();
-      this.isWbsSubmitted = true;
-    }
+    // } 
+    // else {
+    //   this.firstFormGroup.markAsUntouched();
+    //   this.isWbsSubmitted = true;
+    // }
   }
   onSelect(event: any) {
     if (event.value == 'paid') {
@@ -817,7 +818,8 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       (certificate: any) =>
         certificate.title === this.firstFormGroup.value.certificate_temp
     );
-    if (this.firstFormGroup.valid) {
+    console.log("form",this.firstFormGroup)
+    // if (this.firstFormGroup.valid) {
       const courseData = this.firstFormGroup.value;
       let creator = JSON.parse(localStorage.getItem('user_data')!).user.name;
       let userId = JSON.parse(localStorage.getItem('user_data')!).user
@@ -888,7 +890,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
 
               this.courseAdded = true;
               this.router.navigate([
-                '/admin/courses/submitted-courses/pending-courses',
+                '/admin/courses/submitted-courses/submitted-pending-courses',
               ]);
             },
             (error) => {
@@ -897,10 +899,11 @@ export class AddCourseComponent implements OnInit, OnDestroy {
           );
         }
       });
-    } else {
-      this.firstFormGroup.markAllAsTouched();
-      this.isWbsSubmitted = true;
-    }
+    // }
+    //  else {
+    //   this.firstFormGroup.markAllAsTouched();
+    //   this.isWbsSubmitted = true;
+    // }
   }
   getData() {
     forkJoin({
