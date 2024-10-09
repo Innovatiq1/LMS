@@ -235,16 +235,9 @@ export class ActiveCoursesComponent {
     doc.save('Approved Courses-list.pdf');
   }
   performSearch() {
-    // if (this.searchTerm) {
-    //   this.courseData = this.courseData?.filter(
-    //     (item: any) => {
-    //       const searchList = item.title.toLowerCase();
-    //       return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1;
-    //     }
-    //   );
-    // } else {
+    this.paginator.pageIndex = 0;
+    this.coursePaginationModel.page = 1;
       this.getAllCourse();
-    // }
   }
   private refreshTable() {
     this.paginator._changePageSize(this.paginator.pageSize);

@@ -269,6 +269,8 @@ export class ApproveListComponent {
     //     }
     //   );
     // } else {
+      this.paginator.pageIndex = 0;
+    this.coursePaginationModel.page = 1;
       this.getRegisteredClasses();
     // }
   }

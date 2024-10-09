@@ -276,7 +276,6 @@ getAllTpCourses() {
  
 
   applyFilter() {
-    // Prepare filter criteria and store in filterBody
     this.filterBody = {};
     
     if (this.selectedCourses.length > 0) {
@@ -292,11 +291,8 @@ getAllTpCourses() {
       this.filterBody.creator = this.selectedCreators;
     }
   
-    // Reset pagination when applying a new filter
     this.paginator.pageIndex = 0;
     this.coursePaginationModel.page = 1;
-    
-    // Fetch filtered data with pagination
     this._courseService.getFilteredCourseData(this.filterBody, { ...this.coursePaginationModel })
       .subscribe((response) => {
         this.courseData = response.data.docs;
@@ -305,7 +301,7 @@ getAllTpCourses() {
         this.coursePaginationModel.page = response.data.page;
         this.coursePaginationModel.limit = response.data.limit;
         this.coursePaginationModel.totalDocs = response.data.totalDocs;
-        this.filter = true;  // Set filter state to true
+        this.filter = true;  
       });
   }
   
@@ -355,16 +351,9 @@ getAllTpCourses() {
     doc.save('AllCourses-list.pdf');
   }
   performSearch() {
-    // if (this.searchTerm) {
-    //   this.courseData = this.courseData?.filter(
-    //     (item: any) => {
-    //       const searchList = item.title.toLowerCase();
-    //       return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1;
-    //     }
-    //   );
-    // } else {
+    this.coursePaginationModel.page = 1;
+    this.paginator.pageIndex = 0;
       this.getAllCourses();
-    // }
   }
   viewActiveProgram(id: string, status: string): void {
     this.route.navigate(['/admin/courses/view-course/', 'data.id']);
@@ -424,13 +413,10 @@ getAllTpCourses() {
   }
   
   pageSizeChange($event: any) {
-    // Update pagination model based on the event
-    console.log("Page index: ", $event?.pageIndex, "Page size: ", $event?.pageSize);
     this.coursePaginationModel.page = $event?.pageIndex + 1;
     this.coursePaginationModel.limit = $event?.pageSize;
     
     if (this.filter) {
-      // Use the preserved filterBody when moving to the next page
       this._courseService.getFilteredCourseData(this.filterBody, { ...this.coursePaginationModel })
         .subscribe((response) => {
           this.courseData = response.data.docs;
@@ -441,7 +427,6 @@ getAllTpCourses() {
           this.coursePaginationModel.totalDocs = response.data.totalDocs;
         });
     } else {
-      // If no filter, fetch all courses with updated pagination
       this.getAllCourses();
     }
   }
