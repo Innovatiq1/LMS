@@ -57,15 +57,13 @@
                   <div class="col-8">
                     <div class="card-container">
                       <button
+                      class="align-items-center"
                         *ngIf="this.data?.status == 'active'"
                         mat-menu-item
                         (click)="changeInActive(this.data)"
                       >
-                        <app-feather-icons
-                          [icon]="'trash-2'"
-                          [class]="'tbl-fav-delete'"
-                        ></app-feather-icons>
-                        <span class="menu-text px-3">Inactive</span>
+                        <img class="img-w" src="/assets/deactivate.png" alt="deactivate"/>
+                        <span class="menu-text">Inactive</span>
                       </button>
                       <button
                         class="align-items-center"
@@ -86,10 +84,12 @@
                           [icon]="'trash-2'"
                           [class]="'tbl-fav-delete'"
                         ></app-feather-icons>
-                        <span class="menu-text px-3">Delete</span>
+                        <span class="menu-text px-1">Delete</span>
                       </button>
                     </div>
                   </div>
+                 
+                  
                 </div>
               </div>
             </div>

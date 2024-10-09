@@ -46,7 +46,7 @@
                   </ng-container>
                   <ng-container matColumnDef="studentName">
                     <mat-header-cell *matHeaderCellDef >Users </mat-header-cell>
-                    <mat-cell *matCellDef="let row">
+                    <mat-cell *matCellDef="let row" class="name">
                       <span class="mobile-label">Student :</span> {{getStudentName(row) }}</mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="courseName">

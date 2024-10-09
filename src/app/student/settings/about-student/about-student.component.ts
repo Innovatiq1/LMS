@@ -153,7 +153,7 @@ editCall(row: Students) {
 deleteItem(row: any) {
    Swal.fire({
      title: "Confirm Deletion",
-     text: "Are you sure you want to delete this Student?",
+     text: `Are you sure you want to delete this ${row.role}?`,
      icon: "warning",
      showCancelButton: true,
      confirmButtonColor: "#d33",
@@ -166,7 +166,7 @@ deleteItem(row: any) {
          () => {
            Swal.fire({
              title: "Deleted",
-             text: "Student deleted successfully",
+             text: `${row.role} deleted successfully`,
              icon: "success",
            });
            this.loadData()
@@ -174,7 +174,7 @@ deleteItem(row: any) {
          },
          (error: { message: any; error: any; }) => {
            Swal.fire(
-             "Failed to delete Student",
+             `Failed to delete ${row.role}`,
              error.message || error.error,
              "error"
            );
@@ -185,9 +185,10 @@ deleteItem(row: any) {
 
  }
  confirmItem(row: any) {
+  
    Swal.fire({
      title: "Confirm Active",
-     text: "Are you sure you want to active this Student?",
+     text: `Are you sure you want to activate this ${row.role}?`,
      icon: "warning",
      showCancelButton: true,
      confirmButtonColor: "#d33",
@@ -200,7 +201,7 @@ deleteItem(row: any) {
          () => {
            Swal.fire({
              title: "Active",
-             text: "Student Active successfully",
+             text: `${row.role} Activated successfully`,
              icon: "success",
            });
            this.loadData();
@@ -208,7 +209,7 @@ deleteItem(row: any) {
          },
          (error: { message: any; error: any; }) => {
            Swal.fire(
-             "Failed to Active Student",
+             `Failed to Activate ${row.role}`,
              error.message || error.error,
              "error"
            );
