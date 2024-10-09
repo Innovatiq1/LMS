@@ -138,7 +138,7 @@
                     >Action
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row">
-                    <div *ngIf="!row?.examAssessmentAnswer?.studentView">
+                    <div *ngIf="!row?.examAssessmentAnswer?.studentView && row?.examAssessmentAnswer?.score != null">
                       <button class="student-view" mat-flat-button color="primary" id="submit" (click)="enableStudentView(row)">
                         <span>Enable Student View</span>
                       </button>
