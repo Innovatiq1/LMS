@@ -176,7 +176,7 @@ export class CourseTimetableComponent implements OnInit {
         instructorCost: event.extendedProps['instructorCost'],
         id: event.extendedProps['id'],
         courseName: event.extendedProps['courseName'],
-        department:event.extendedProps['department']
+        department:event.extendedProps['department'],
         meetingUrl: event.extendedProps['meetingUrl'],
         duration: event.extendedProps['duration']
       },
