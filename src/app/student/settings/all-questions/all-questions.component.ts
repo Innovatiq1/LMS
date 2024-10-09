@@ -36,13 +36,13 @@ export class AllQuestionsComponent {
   isCreate = false;
   isEdit = false;
   isView = false;
-  breadscrums = [
-    {
-      title: 'Questions',
-      items: ['Configuration'],
-      active: 'Assessment Configuration',
-    },
-  ];
+  // breadscrums = [
+  //   {
+  //     title: 'Questions',
+  //     items: ['Configuration'],
+  //     active: 'Assessment Configuration',
+  //   },
+  // ];
   private keyupSubject: Subject<Event> = new Subject<Event>();
   editUrl: boolean = false;
   viewUrl: boolean = false;

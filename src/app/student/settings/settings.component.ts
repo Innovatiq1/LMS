@@ -336,7 +336,7 @@ export class SettingsComponent {
       this.breadscrums = [
         {
           title: 'Settings',
-          items: ['Admin'],
+          items: ['Profile'],
           active: 'Settings',
         },
       ];
@@ -346,8 +346,8 @@ export class SettingsComponent {
       this.breadscrums = [
         {
           title: 'Settings',
-          items: ['Admin'],
-          active: 'Settings',
+          items: ['Profile'],
+          active: 'User Information',
         },
       ];
       this.isAdmin = true;
@@ -356,8 +356,8 @@ export class SettingsComponent {
       this.breadscrums = [
         {
           title: 'Settings',
-          items: ['Security'],
-          active: 'Password',
+          items: ['Profile'],
+          active: 'Change Password',
         },
       ];
       this.isAdmin = true;

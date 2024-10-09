@@ -18,7 +18,7 @@ export class ViewProgramComponent {
   breadscrums = [
     {
       title: 'Blank',
-      items: ['Program'],
+      items: ['Program Name'],
       active: 'View Program',
     },
   ];

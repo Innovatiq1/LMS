@@ -15,8 +15,8 @@ export class CreateFeedbackComponent  {
   breadscrums = [
     {
       title: 'Feedback',
-      items: ['Survey list'],
-      active: 'Create Feedback Form',
+      items: ['Customize'],
+      active: 'Survey',
     },
   ];
   questionTypes: any = [
