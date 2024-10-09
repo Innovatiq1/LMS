@@ -6,6 +6,11 @@ export const environment = {
   companyUrl: 'http://192.168.1.190:3004/',
   publicApiUrl: 'http://192.168.1.190:3004/x-api/v1/public/',
 
+  // apiUrl: 'http://localhost:3001/api/',
+  // Url: 'http://localhost:3001/',
+  // companyUrl: 'http://localhost:3001/',
+  // publicApiUrl: 'http://localhost:3001/x-api/v1/public/',
+
 
   // apiUrl:'http://13.212.97.97:3001/api/',
 
