@@ -782,9 +782,6 @@ renderHiddenCertificatePreview(uniqueContainerId: string) {
   `;
 }
 
-
-
-
 generatePDFForRow(row: any, containerId: string): Promise<void> {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -877,35 +874,85 @@ uploadGeneratedPDF(row: any, pdfBlob: Blob): Promise<void> {
 }
 
 
+// enableExam() {
+//   if (this.selectedRows.length === 0) {
+//     console.log('No rows selected');
+//     return;
+//   }
 
+//   let examAlreadyAssigned = false;
 
+//   this.selectedRows.forEach((row: any) => {
+//     if (row.isExamAssigned || row.examassessmentanswers?.answers?.length === 0) {
+//       examAlreadyAssigned = true;
+//     }
+//   });
+//   if (examAlreadyAssigned) {
+//     Swal.fire({
+//       title: 'Warning',
+//       text: 'Exam already enabled for one or more selected records.',
+//       icon: 'warning'
+//     });
+//     return;
+//   }
 
+//   this.selectedRows.forEach((row: any) => {
+//     const isExamAssessmentEmpty = Object.keys(row.examassessmentanswers).length === 0;
 
+//     if (isExamAssessmentEmpty && row.assessmentanswers && !row.isExamAssigned) {
+//       const studentClassId = row._id;
+//       const studentId = row.studentId._id;
+//       const examAssessmentId = row.courseId.exam_assessment;
+//       const assessmentAnswerId = row.assessmentanswers.id;
+//       const courseId = row.courseId._id;
+//       let companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
 
+//       const requestBody = {
+//         studentId,
+//         examAssessmentId,
+//         assessmentAnswerId,
+//         studentClassId,
+//         companyId,
+//         courseId
+//       };
+
+//       this.assessmentService.assignExamAssessment(requestBody).subscribe(
+//         (response: any) => {
+//           Swal.fire({
+//             title: 'Assigned!',
+//             text: 'Exam Assigned Successfully!',
+//             icon: 'success'
+//           });
+//           this.clearSelection();
+//         }
+//       );
+//     } else {
+//       // console.log(`Exam not enabled for row with student ID: ${row.studentId._id} - Conditions not met.`);
+//       Swal.fire({
+//         title: 'Warning',
+//         text: 'The exam is already enabled for selected courses.',
+//         icon: 'warning'
+//       });
+//       return;
+//     }
+//   });
+  
+// }
 enableExam() {
   if (this.selectedRows.length === 0) {
     console.log('No rows selected');
     return;
   }
 
-  let examAlreadyAssigned = false;
+  let examsEnabledCount = 0;
+  let alreadyAssignedCount = 0;
 
-  this.selectedRows.forEach((row: any) => {
+  const promises = this.selectedRows.map((row: any) => {
+    const isExamAssessmentEmpty = Object.keys(row.examassessmentanswers || {}).length === 0;
     if (row.isExamAssigned || row.examassessmentanswers?.answers?.length === 0) {
-      examAlreadyAssigned = true;
-    }
-  });
-  if (examAlreadyAssigned) {
-    Swal.fire({
-      title: 'Warning',
-      text: 'Exam already enabled for one or more selected records.',
-      icon: 'warning'
-    });
-    return;
-  }
-
-  this.selectedRows.forEach((row: any) => {
-    const isExamAssessmentEmpty = Object.keys(row.examassessmentanswers).length === 0;
+      alreadyAssignedCount++;
+      return Promise.resolve(); 
+    } 
 
     if (isExamAssessmentEmpty && row.assessmentanswers && !row.isExamAssigned) {
       const studentClassId = row._id;
@@ -924,28 +971,47 @@ enableExam() {
         courseId
       };
 
-      this.assessmentService.assignExamAssessment(requestBody).subscribe(
-        (response: any) => {
-          Swal.fire({
-            title: 'Assigned!',
-            text: 'Exam Assigned Successfully!',
-            icon: 'success'
-          });
-          this.clearSelection();
-        }
-      );
-    } else {
-      // console.log(`Exam not enabled for row with student ID: ${row.studentId._id} - Conditions not met.`);
-      Swal.fire({
-        title: 'Warning',
-        text: 'The exam is already enabled for selected courses.',
-        icon: 'warning'
+      return this.assessmentService.assignExamAssessment(requestBody).toPromise().then(() => {
+        examsEnabledCount++;
+      }).catch((error) => {
+        console.log('Failed to assign exam for row:', row, error);
       });
-      return;
+    } else {
+      alreadyAssignedCount++;
+      return Promise.resolve();
     }
   });
-  
+
+  Promise.all(promises).then(() => {
+    let message = '';
+    if (examsEnabledCount > 0) {
+      const enabledText = examsEnabledCount > 1 ? 'exams' : 'exam';
+      message += `${examsEnabledCount} ${enabledText} enabled successfully! `;
+    }
+    
+    if (alreadyAssignedCount > 0) {
+      const alreadyText = alreadyAssignedCount > 1 ? 'exams are' : 'exam is';
+      message += `${examsEnabledCount > 0 ? 'For other' : ''} selected ${alreadyText} already enabled.`;
+    }
+
+    Swal.fire({
+      title: 'Enable Exams',
+      text: message,
+      icon: examsEnabledCount > 0 ? 'success' : 'warning',
+    }).then(() => {
+      this.clearSelection(); 
+      this.getCompletedList(); 
+    });
+  }).catch((error) => {
+    console.log('Error enabling exams:', error);
+    Swal.fire({
+      title: 'Error',
+      text: 'There was an error enabling exams.',
+      icon: 'error',
+    });
+  });
 }
+
 clearSelection() {
   this.selection.clear();
   this.updateSelectedRows();

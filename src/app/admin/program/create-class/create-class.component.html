@@ -419,7 +419,7 @@
                     <mat-icon matSuffix [owlDateTimeTrigger]="date" class="date-icon">today</mat-icon>
                     <owl-date-time #date></owl-date-time>
                     <mat-error *ngIf="startDate.invalid && startDate.touched">
-                      Choose a Start Date
+                      Select a Date
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -440,7 +440,7 @@
                     <mat-icon matSuffix [owlDateTimeTrigger]="date2" class="date-icon">today</mat-icon>
                     <owl-date-time #date2></owl-date-time>
                     <mat-error *ngIf="endDate.invalid && endDate.touched">
-                      Choose a End Date 
+                      Select a Date 
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -472,8 +472,8 @@
             <div class="row mt-4 mx-2" style="float: right">
               <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
                 <button class="btn-space" type="button" mat-raised-button color="warn" (click)="cancel()">Cancel</button>
-                <button *ngIf="!editUrl" mat-raised-button id="submit" [disabled]="form.invalid" (click)="saveProgramClass()">Submit</button>
-                <button *ngIf="editUrl" mat-raised-button id="submit" [disabled]="form.invalid" (click)="saveProgramClass()">Update</button>
+                <button *ngIf="!editUrl" mat-raised-button id="submit"  (click)="saveProgramClass()">Submit</button>
+                <button *ngIf="editUrl" mat-raised-button id="submit"  (click)="saveProgramClass()">Update</button>
               </div>
             </div>
           </form>
