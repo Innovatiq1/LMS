@@ -20,7 +20,8 @@
                     <input matInput type="text" formControlName="typeName" class="form-control"
                       placeholder="Enter New Group">
                       <mat-error *ngIf="userTypeFormGroup.get('typeName')?.invalid ||userTypeFormGroup.get('typeName')?.touched">
-                        {{ utils.getErrorMessage1(userTypeFormGroup.get('typeName'), 'userGroup') }}
+                        <!-- {{ utils.getErrorMessage1(userTypeFormGroup.get('typeName'), 'userGroup') }} -->
+                      Enter Group Name
                       </mat-error>
                   </mat-form-field>
                   

@@ -40,12 +40,27 @@
   }
 
 
-  .img-w{
-    height: 20px;
-    margin-right: 25px;
-    margin-top: 20px;
-    }
+//   .img-w{
+//     height: 20px;
+//     margin-right: 25px;
+//     margin-top: 20px;
+//     }
     ::ng-deep .mat-mdc-tab-body-content{
         overflow-x: auto !important;
       }
       
+.btn {
+    display: flex;
+    align-items: center;
+  }
+  
+  .img-w {
+    width: 16px; 
+    height: auto;
+    margin-right: 8px; 
+  }
+  
+  .menu-text {
+    vertical-align: middle;
+  }
+  

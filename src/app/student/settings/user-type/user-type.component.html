@@ -40,6 +40,9 @@
                         </div>
                       </li>
                       <li>
+                        <span style="font-weight: bold">Export as</span>
+                      </li>
+                      <li>
                         <div class="export-button m-l-10" matTooltip="XLSX"(click)="exportExcel()">
                           <img src="assets/excel.svg" alt="" />
                         </div>
@@ -57,14 +60,14 @@
                     <table mat-table [dataSource]="typesList" matSort class="mat-cell advance-table">
 
                       <ng-container matColumnDef="User Role">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header
+                        <mat-header-cell *matHeaderCellDef 
                           style="margin-right: -15%;">Role</mat-header-cell>
                         <mat-cell *matCellDef="let row" [routerLink]="['/student/settings/role-user/',row.typeName]"
                           class="name" style="margin-right: -15%;">
                           <span class="mobile-label">Role:</span>{{row?.typeName | capitalizeFirstLetter}} </mat-cell>
                       </ng-container>
                       <ng-container matColumnDef="Accessbility Module">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header>Module</mat-header-cell>
+                        <mat-header-cell *matHeaderCellDef >Module</mat-header-cell>
                         <mat-cell *matCellDef="let row" (click)="isEdit ? edit(row.id) : null">
                           <span class="mobile-label">Module:</span>
                           <ng-container *ngIf="row.menuItems && row.menuItems.length; else noModule">
@@ -77,20 +80,38 @@
                       </ng-container>
                       
                       <ng-container matColumnDef="Sub Module">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header>Sub Module</mat-header-cell>
+                        <mat-header-cell *matHeaderCellDef >Sub Module</mat-header-cell>
                         <mat-cell *matCellDef="let row" (click)="isEdit ? edit(row.id) : null">
                           <span class="mobile-label">Sub Module:</span>
                           <ng-container *ngIf="row.menuItems && row.menuItems.length; else noSubModule">
-                            <ng-container *ngFor="let menu of row.menuItems; let last = last">
-                              {{ menu?.children[0]?.title | capitalizeFirstLetter }}{{ !last ? ', ' : '' }}
+                            <ng-container *ngFor="let menu of row.menuItems; let last = last;">
+                              <ng-container *ngIf="menu?.children[0]?.title">
+                              {{ menu?.children[0]?.title | capitalizeFirstLetter }}<ng-container *ngIf="!last">, </ng-container>
+                           </ng-container>
                             </ng-container>
                           </ng-container>
                           <ng-template #noSubModule>--</ng-template>
                         </mat-cell>
                       </ng-container>
+                      <!-- <ng-container matColumnDef="Sub Module">
+                        <mat-header-cell *matHeaderCellDef>Sub Module</mat-header-cell>
+                        <mat-cell *matCellDef="let row" (click)="isEdit ? edit(row.id) : null">
+                          <span class="mobile-label">Sub Module:</span>
+                          <ng-container *ngIf="row.menuItems && row.menuItems.length; else noSubModule">
+                            <ng-container *ngFor="let menu of row.menuItems; let last = last;">
+                              <ng-container *ngIf="menu?.children[0]?.title">
+                                {{ menu?.children[0]?.title | capitalizeFirstLetter }}
+                                <ng-container *ngIf="!last">, </ng-container>
+                              </ng-container>
+                            </ng-container>
+                          </ng-container>
+                          <ng-template #noSubModule>--</ng-template>
+                        </mat-cell>
+                      </ng-container> -->
+                      
                       
                       <ng-container matColumnDef="Status">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header style="
+                        <mat-header-cell *matHeaderCellDef  style="
                     margin-right: -15%;">Status</mat-header-cell>
                         <mat-cell *matCellDef="let row" (click)="isEdit ? edit(row.id) : null" style="
                     margin-right: -15%;"> <span class="mobile-label">Status:</span><span
