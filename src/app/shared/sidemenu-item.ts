@@ -47,7 +47,7 @@ SIDEMENU_LIST =[
               },
               {
                 "title": "Creator",
-                "id": "creator",
+                "id": "pcreator",
                 "class": "ml-menu2",
                 "actions": [
                   {
@@ -72,7 +72,7 @@ SIDEMENU_LIST =[
             "children": [
               {
                 "title": "Approved Programs",
-                "id": "approved-program",
+                "id": "submitted-approved-program",
                 "class": "ml-menu2",
                 "actions": [
                   {
@@ -89,7 +89,7 @@ SIDEMENU_LIST =[
               },
               {
                 "title": "Pending Programs",
-                "id": "pending-program",
+                "id": "submitted-pending-program",
                 "class": "ml-menu2",
                 "actions": [
                   {
@@ -119,7 +119,7 @@ SIDEMENU_LIST =[
             "children": [
               {
                 "title": "Approved Programs",
-                "id": "approved-program",
+                "id": "registered-approved-program",
                 "class": "ml-menu2",
                 "actions": [
                   {
@@ -136,7 +136,7 @@ SIDEMENU_LIST =[
               },
               {
                 "title": "Pending Programs",
-                "id": "pending-program",
+                "id": "registered-pending-program",
                 "class": "ml-menu2",
                 "actions": [
                   {
@@ -215,7 +215,7 @@ SIDEMENU_LIST =[
               {
                 
                 "title": "Creator",
-                "id": "creator",
+                "id": "ccreator",
                 "class": "ml-menu2",
                 "actions": [
                   {
@@ -260,7 +260,7 @@ SIDEMENU_LIST =[
             "children": [
               {
                 "title": "Approved Course",
-                "id": "approved-courses",
+                "id": "submitted-approved-courses",
                 "class": "ml-menu2",
                 "actions": [
                   {
@@ -277,7 +277,7 @@ SIDEMENU_LIST =[
               },
               {
                 "title": "Pending Courses",
-                "id": "pending-courses",
+                "id": "submitted-pending-courses",
                 "class": "ml-menu2",
                 "actions": [
                   {
@@ -311,7 +311,7 @@ SIDEMENU_LIST =[
               {
                 
                 "title": "Approved Courses",
-                "id": "approved-courses",
+                "id": "registered-approved-courses",
                 "class": "ml-menu2",
                 "actions": [
                   {
@@ -330,7 +330,7 @@ SIDEMENU_LIST =[
               {
                
                 "title": "Pending Courses",
-                "id": "pending-courses",
+                "id": "registered-pending-courses",
                 "class": "ml-menu2",
                 "actions": [
                   {
@@ -352,7 +352,7 @@ SIDEMENU_LIST =[
               },
               {
                 "title": "Completed Courses",
-                "id": "completed-courses",
+                "id": "registered-completed-courses",
                 "class": "ml-menu2",
                 "actions": [
                   {

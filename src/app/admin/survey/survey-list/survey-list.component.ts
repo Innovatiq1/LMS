@@ -47,13 +47,13 @@ export class SurveyListComponent
   selection = new SelectionModel<SurveyBuilderModel>(true, []);
   id?: number;
   isLoading = true;
-  breadscrums = [
-    {
-      title: 'Feedbacks List',
-      items: ['Survey'],
-      active: 'Feedbacks List',
-    },
-  ];
+  // breadscrums = [
+  //   {
+  //     title: 'Feedbacks List',
+  //     items: ['Survey'],
+  //     active: 'Feedbacks List',
+  //   },
+  // ];
   commonRoles: any;
   isView = false;
   constructor(

@@ -518,7 +518,7 @@
                 </div>
               </div>
 
-              <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
+              <!-- <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="header mt-3">
                   <h2>Program Lectures</h2>
                 </div>
@@ -558,9 +558,67 @@
                     </table>
                   </div>
                 </div>
-              </div>
+              </div> -->
 
+              <!-- above is old code  -->
               <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="header mt-3">
+                  <h2>Program Lectures</h2>
+                </div>
+                <div class="table-wrapper">
+                  <div class="table-responsive">
+                    <table class="table table-hover table-equal-width">
+                      <thead>
+                        <tr>
+                          <th>Program Name</th>
+                          <th>{{ commonRoles?.INSTRUCTOR_ROLE }} Fee</th>
+                          <th>Class</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngIf="dataSource2?.length == 0">
+                          <td colspan="3" class="text-center">No records</td>
+                        </tr>
+                        <tr style="cursor: pointer" *ngFor="let data of dataSource2">
+                          <td>{{ data?.programName }}</td>
+                          <td class="amount-align">$ {{ data?.instructorCost || 0 }}.00</td>
+                          <td  [ngClass]="getStatusClass(data.classDeliveryType)">
+                            <div class="status-container">
+                              <span
+                                [class]="
+                                  data.classDeliveryType === 'online'
+                                    ? 'badge badge-solid-green'
+                                    : data.classDeliveryType === 'offline'
+                                    ? 'badge badge-solid-red'
+                                    : ''
+                                "
+                              >
+                                <span
+                                  [class]="
+                                    data.classDeliveryType == 'online'
+                                      ? 'status-dot'
+                                      : data.classDeliveryType == 'offline'
+                                      ? 'status-red'
+                                      : ''
+                                  "
+                                ></span>
+                                {{
+                                  data.classDeliveryType == 'online'
+                                    ? 'Online'
+                                    : 'Offline' | titlecase
+                                }}
+                              </span>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              
+
+              <!-- <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="header mt-3">
                   <h2>Course Lectures</h2>
                 </div>
@@ -583,7 +641,7 @@
                           *ngFor="let data of dataSource1"
                         >
                           <td>{{ data?.courseName }}</td>
-                          <td>$ {{ data?.instructorCost || 0}}.00</td>
+                          <td class="amount_align">$ {{ data?.instructorCost || 0}}.00</td>
                           <td
                             [ngClass]="getStatusClass(data.classDeliveryType)"
                           >
@@ -600,7 +658,66 @@
                     </table>
                   </div>
                 </div>
+              </div> -->
+              <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="header mt-3">
+                  <h2>Course Lectures</h2>
+                </div>
+                <div class="table-wrapper">
+                  <div class="table-responsive">
+                    <table class="table table-hover table-equal-width">
+                      <thead>
+                        <tr>
+                          <th>Course Name</th>
+                          <th>{{ commonRoles?.INSTRUCTOR_ROLE }} Fee</th>
+                          <th>Class</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngIf="dataSource1.length == 0">
+                          <td colspan="3" class="text-center">No records</td>
+                        </tr>
+                        <tr style="cursor: pointer" *ngFor="let data of dataSource1">
+                          <td>{{ data?.courseName }}</td>
+                          <td class="amount-align">${{ data?.instructorCost || 0 }}.00</td>
+                          <td [ngClass]="getStatusClass(data.classDeliveryType)">
+                            <div class="status-container">
+                              <span
+                                [class]="
+                                  data.classDeliveryType == 'online'
+                                    ? 'badge badge-solid-green'
+                                    : data.classDeliveryType == 'offline'
+                                    ? 'badge badge-solid-red'
+                                    : ''
+                                "
+                              >
+                                <span
+                                  [class]="
+                                    data.classDeliveryType == 'online'
+                                      ? 'status-dot'
+                                      : data.classDeliveryType == 'offline'
+                                      ? 'status-red'
+                                      : ''
+                                  "
+                                ></span>
+                                {{
+                                  data.classDeliveryType == 'online'
+                                    ? 'Online'
+                                    : 'Offline' | titlecase
+                                }}
+                              </span>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
+              
+
+            
+            
             </mat-tab>
           </mat-tab-group>
         </div>

@@ -1,10 +1,7 @@
 <section class="content">
   <div class="content-block">
-    <div class="block-header" *ngFor="let breadscrum of breadscrums">
+    <div class="block-header" >
       <app-breadcrumb
-        [title]="breadscrum.title"
-        [items]="breadscrum.items"
-        [active_item]="breadscrum.active"
       >
       </app-breadcrumb>
     </div>
@@ -67,7 +64,7 @@
                     >{{commonRoles.STUDENT_ROLE}}</mat-header-cell
                   >
                   <mat-cell *matCellDef="let row" class="name">
-                    <span class="mobile-label">Name:</span
+                    <span class="mobile-label">{{commonRoles.STUDENT_ROLE}}:</span
                     >{{ row?.studentId.name | capitalizeFirstLetter }}
                     {{ row?.studentId?.last_name | capitalizeFirstLetter }}
                   </mat-cell>
@@ -141,7 +138,7 @@
                     >Action
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row">
-                    <div *ngIf="!row?.examAssessmentAnswer?.studentView">
+                    <div *ngIf="!row?.examAssessmentAnswer?.studentView && row?.examAssessmentAnswer?.score != null">
                       <button class="student-view" mat-flat-button color="primary" id="submit" (click)="enableStudentView(row)">
                         <span>Enable Student View</span>
                       </button>

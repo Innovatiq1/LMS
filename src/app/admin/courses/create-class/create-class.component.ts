@@ -40,6 +40,7 @@ export class CreateClassComponent {
   dept: any;
   @ViewChild('allSelected') private allSelected!: MatOption;
   commonRoles: any;
+  breadscrums: any;
   @HostListener('document:keypress', ['$event'])
   keyPressNumbers(event: KeyboardEvent) {
     const charCode = event.which ? event.which : event.keyCode;
@@ -64,13 +65,7 @@ export class CreateClassComponent {
   forms!: any[];
   title: boolean = false;
 
-  breadscrums = [
-    {
-      title: 'Create Class',
-      items: ['Schedule Class'],
-      active: 'Create Class',
-    },
-  ];
+
   startDate = new Date(1990, 0, 1);
   date = new UntypedFormControl(new Date());
   serializedDate = new UntypedFormControl(new Date().toISOString());
@@ -141,6 +136,7 @@ export class CreateClassComponent {
       DURATION_LABEL:'Duration'
     };
     this.loadForm();
+    
   }
   ngOnInit(): void {
     this._activeRoute.queryParams.subscribe(params => {
@@ -164,6 +160,25 @@ export class CreateClassComponent {
       companyId:userId
 
     };
+
+    if(this.classId){
+      this.breadscrums = [
+        {
+          title: 'Edit Class',
+          items: ['Course Class'],
+          active: 'Edit Course Class',
+        },
+      ];
+    }else{
+      this.breadscrums = [
+        {
+          title: 'Create Class',
+          items: ['Course Class'],
+          active: 'Create Course Class',
+        },
+      ];
+    }
+
 
     this.instructorService.getInstructorLists(payload).subscribe((res) => {
       console.log("userrs",res)

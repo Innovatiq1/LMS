@@ -25,13 +25,7 @@ export class ExamScoresComponent {
     'Action'
   ];
 
-  breadscrums = [
-    {
-      title: 'Exam Scores',
-      items: ['Course'],
-      active: 'Exam Scores',
-    },
-  ];
+  
 
   assessmentPaginationModel!: Partial<AssessmentQuestionsPaginationModel>;
   totalItems: any;
@@ -65,6 +59,7 @@ export class ExamScoresComponent {
     this.assessmentService.getExamAnswersV2({ ...this.assessmentPaginationModel,company})
       .subscribe(res => {
         this.dataSource = res.data.docs;
+        console.log("dataSourse==",this.dataSource)
         this.examScores = res.data.docs;
         this.totalItems = res.data.totalDocs;
         this.assessmentPaginationModel.docs = res.docs;

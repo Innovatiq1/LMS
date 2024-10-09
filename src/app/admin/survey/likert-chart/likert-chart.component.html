@@ -1,8 +1,8 @@
 <section class="content">
   <div class="content-block">
-    <div class="block-header" *ngFor="let breadscrum of breadscrums">
+    <div class="block-header" >
       <!-- breadcrumb -->
-      <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
+      <app-breadcrumb >
       </app-breadcrumb>
     </div>
     <div class="row">
@@ -25,6 +25,9 @@
                       </div>
                     </li>
                     <li>
+                      <span style="font-weight: bold">Export as</span>
+                    </li>
+                    <li>
                       <div class="export-button m-l-10" matTooltip="XLSX">
                         <img src="assets/excel.svg" alt="" (click)="exportExcel()" />
                       </div>
@@ -44,16 +47,16 @@
               <table mat-table [dataSource]="dataSource" matSort class="mat-cell advance-table">
 
                 <ng-container matColumnDef="Name">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>Name
+                  <mat-header-cell *matHeaderCellDef >Name
                   </mat-header-cell>
-                  <mat-cell *matCellDef="let row" [routerLink]="isView ? ['/admin/survey/survey-list/view-feedback',row.id] : null"><span class="mobile-label">Name:</span> {{row.name}}</mat-cell>
+                  <mat-cell *matCellDef="let row" class="name"  [routerLink]="isView ? ['/admin/survey/survey-list/view-feedback',row.id] : null"><span class="mobile-label">Name:</span> {{row.name}}</mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="Count">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>No.of Questions</mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef >No.of Questions</mat-header-cell>
                   <mat-cell *matCellDef="let row" [routerLink]="isView ? ['/admin/survey/survey-list/view-feedback',row.id] : null"> <span class="mobile-label">Count:</span>{{row.questions.length}}</mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="Created At">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>Created At</mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef >Created At</mat-header-cell>
                   <mat-cell *matCellDef="let row" [routerLink]="isView ? ['/admin/survey/survey-list/view-feedback',row.id] : null"> <span class="mobile-label">Created At:</span>{{row.createdAt | date: 'MM/dd/yyyy' }}
                   </mat-cell>
                 </ng-container>

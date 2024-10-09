@@ -112,7 +112,7 @@ export class UpdateDeptComponent {
   deleteDept(id: string) {
     Swal.fire({
       title: 'Confirm Deletion',
-      text: 'Are you sure you want to delete this course kit?',
+      text: 'Are you sure you want to delete this Department?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#d33',

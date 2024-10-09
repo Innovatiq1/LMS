@@ -26,7 +26,7 @@ export class CreateCourseKitComponent implements OnInit {
   breadscrums = [
     {
       title: 'Create Course Kit',
-      items: ['Settings'],
+      items: ['Course kit'],
       active: 'Create Course Kit',
     },
   ];

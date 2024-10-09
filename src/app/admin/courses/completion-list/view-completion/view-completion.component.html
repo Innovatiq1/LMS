@@ -3,9 +3,7 @@
     <div class="block-header" *ngFor="let breadscrum of breadscrums">
       <!-- breadcrumb -->
       <app-breadcrumb
-        [title]="breadscrum.title"
-        [items]="breadscrum.items"
-        [active_item]="breadscrum.active"
+       
       >
       </app-breadcrumb>
     </div>
@@ -501,9 +499,7 @@
               <button
                 mat-raised-button
                 id="back"
-                [routerLink]="[
-                  '/admin/courses/student-courses/pending-courses'
-                ]"
+                (click)="back()"
               >
                 Back
               </button>
@@ -512,9 +508,8 @@
               <button
                 mat-raised-button
                 id="back"
-                [routerLink]="[
-                  '/admin/courses/student-courses/approved-courses'
-                ]"
+                (click)="back()"
+
               >
                 Back
               </button>
@@ -523,9 +518,8 @@
               <button
                 mat-raised-button
                 id="back"
-                [routerLink]="[
-                  '/admin/courses/student-courses/completed-courses'
-                ]"
+                (click)="back()"
+
               >
                 Back
               </button>

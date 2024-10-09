@@ -22,7 +22,8 @@
                             class="form-control" placeholder="Enter New Department"
                             >        
                              <mat-error *ngIf="departmentForm.get('department')?.invalid ||departmentForm.get('department')?.touched">
-                              {{ utils.getErrorMessage1(departmentForm.get('department'), 'dname') }}
+                              <!-- {{ utils.getErrorMessage1(departmentForm.get('department'), 'dname') }} -->
+                                Enter Department
                             </mat-error>                               
                         </mat-form-field>
                   </div>
@@ -59,9 +60,9 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr style="cursor: pointer;" *ngFor="let row of dataSource" (click)="isEdit ? update(row.id) : null">
-                                <td>{{row.department | capitalizeFirstLetter}}</td>
-                                <td>
+                              <tr style="cursor: pointer;" *ngFor="let row of dataSource" >
+                                <td [routerLink]="isView ? ['/student/settings/view-department',row.department] : null" >{{row.department | capitalizeFirstLetter}}</td>
+                                <td (click)="isEdit ? update(row.id) : null">
                                     {{row?.description | capitalizeFirstLetter}}
                                 </td>
                               </tr>
