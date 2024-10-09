@@ -381,7 +381,7 @@ export class CreateProgramComponent {
                   text: 'Program created succesfully',
                   icon: 'success',
                 });
-                this.router.navigate(['/admin/program/submitted-program/pending-program'])
+                this.router.navigate(['/admin/program/submitted-program/submitted-pending-program'])
               },
               (err: any) => {
                 Swal.fire(

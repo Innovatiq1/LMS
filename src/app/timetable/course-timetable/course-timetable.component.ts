@@ -106,6 +106,7 @@ export class CourseTimetableComponent implements OnInit {
                   courseCode: courseClass?.courseCode,
                   deliveryType: courseClass?.classDeliveryType,
                   instructorCost: courseClass?.instructorCost,
+                  department:courseClass?.department,
                   sessionStartDate: startDate,
                   sessionEndDate: endDate,
                   id: courseClass?.id,
@@ -130,6 +131,7 @@ export class CourseTimetableComponent implements OnInit {
           plugins: [dayGridPlugin],
           events: filteredEvents,
           eventContent: function (arg, createElement) {
+            console.log('event',arg)
             const title = arg.event.title;
             const sessionStartTime =
               arg.event.extendedProps['sessionStartTime'];
@@ -171,6 +173,7 @@ export class CourseTimetableComponent implements OnInit {
         instructorCost: event.extendedProps['instructorCost'],
         id: event.extendedProps['id'],
         courseName: event.extendedProps['courseName'],
+        department:event.extendedProps['department']
       },
     });
   }
@@ -205,6 +208,7 @@ export class CourseTimetableComponent implements OnInit {
           const status = courseClass?.sessions[0]?.status;
           const deliveryType = courseClass?.classDeliveryType;
           const instructorCost = courseClass?.instructorCost;
+          const department = courseClass?.department;
           const id = courseClass?.id;
           const courseName = courseClass?.courseName;
           const datesArray = [];
@@ -221,6 +225,7 @@ export class CourseTimetableComponent implements OnInit {
                 sessionStartDate: startDate,
                 sessionEndDate: endDate,
                 instructorCost: instructorCost,
+                department:department,
                 deliveryType: deliveryType,
                 id: id,
                 courseName: courseName,
@@ -301,6 +306,7 @@ export class CourseTimetableComponent implements OnInit {
             const courseCode = courseClass.courseId.courseCode;
             const deliveryType = courseClass.classId?.classDeliveryType;
             const instructorCost = courseClass.classId?.instructorCost;
+            const department = courseClass.classId?.department;
             const datesArray = [];
             let currentDate = startDate;
             while (currentDate <= endDate) {
@@ -313,6 +319,7 @@ export class CourseTimetableComponent implements OnInit {
                   courseCode: courseCode,
                   instructorCost: instructorCost,
                   deliveryType: deliveryType,
+                  department:department
                 },
               });
               currentDate.setDate(currentDate.getDate() + 1);

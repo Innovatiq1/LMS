@@ -80,7 +80,7 @@ const routes: Routes = [
     component:ViewProgramComponent
   },
   {
-    path:'submitted-program/pending-program/view-program', 
+    path:'submitted-program/submitted-pending-program/view-program', 
     component:ViewProgramComponent
   }
   
