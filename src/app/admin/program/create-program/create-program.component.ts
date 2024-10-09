@@ -23,7 +23,7 @@ export class CreateProgramComponent {
   breadscrums = [
     {
       title: 'Create Program',
-      items: ['Program'],
+      items: ['Program Name'],
       active: 'Create Program',
     },
   ];
@@ -126,7 +126,7 @@ export class CreateProgramComponent {
       this.breadscrums = [
         {
           title: 'Edit Program',
-          items: ['Program'],
+          items: ['Pending Programs'],
           active: 'Edit Program',
         },
       ];

@@ -272,6 +272,7 @@ getFilterData(filters?: any) {
   if(this.userGroupIds){
     payload.userGroupId=this.userGroupIds
   }
+  console.log("Payload", payload);
 
     this.courseService.getAllPrograms(payload,userId).subscribe(
       (response: any) => {

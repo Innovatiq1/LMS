@@ -189,7 +189,6 @@ getAllTpCourses() {
   this.isLoading = true;  
   this.courseService.getRetreiveTPCourses().subscribe(
     (response: any) => {
-      console.log("MyResponse==response==> ", response);
       this.isLoading = false;  
       Swal.fire({
         title: 'SSG Courses',
@@ -356,16 +355,16 @@ getAllTpCourses() {
     doc.save('AllCourses-list.pdf');
   }
   performSearch() {
-    if (this.searchTerm) {
-      this.courseData = this.courseData?.filter(
-        (item: any) => {
-          const searchList = item.title.toLowerCase();
-          return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1;
-        }
-      );
-    } else {
+    // if (this.searchTerm) {
+    //   this.courseData = this.courseData?.filter(
+    //     (item: any) => {
+    //       const searchList = item.title.toLowerCase();
+    //       return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1;
+    //     }
+    //   );
+    // } else {
       this.getAllCourses();
-    }
+    // }
   }
   viewActiveProgram(id: string, status: string): void {
     this.route.navigate(['/admin/courses/view-course/', 'data.id']);

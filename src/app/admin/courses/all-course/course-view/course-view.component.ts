@@ -19,7 +19,7 @@ export class CourseViewComponent {
   breadscrums = [
     {
       title: 'Blank',
-      items: ['Course'],
+      items: ['Course Name'],
       active: 'View Course',
     },
   ];
