@@ -7,7 +7,6 @@ import { LecturesService } from 'app/teacher/lectures/lectures.service';
 import { EventDetailDialogComponent } from '../program-timetable/event-detail-dialog/event-detail-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AppConstants } from '@shared/constants/app.constants';
-import { duration } from 'moment';
 
 @Component({
   selector: 'app-course-timetable',
@@ -113,7 +112,7 @@ export class CourseTimetableComponent implements OnInit {
                   courseName: courseClass?.courseName,
                   status: courseClass?.status,
                   meetingUrl: courseClass?.meetingUrl,
-                  duration: 10
+                  duration: courseClass?.duration,
                 },
               });
               currentDate.setDate(currentDate.getDate() + 1);

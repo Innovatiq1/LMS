@@ -46,4 +46,11 @@ ol {
   //font-weight: bold;
   color: #000000;
 }
+.draggable-div {
+  cursor: move; /* Show move cursor when hovering over the div */
+}
+
+.header {
+  cursor: grab; /* Cursor change when hovering over the header */
+}
 
