@@ -117,28 +117,45 @@ export class RetakeRequestsComponent implements OnInit {
       }
     });
   }
-
   getAllRetakeRequests() {
-    const filter = {
-      page: this.coursePaginationModel.page,
-      limit: this.coursePaginationModel.limit,
-    };
-  
-    this.settingService.getRetakeRequest(filter).subscribe((response) => {
-      // console.log("datasocurse==",response.data.docs)
-      this.dataSource.data = response.data.docs; 
-      this.totalItems = response.data.totalDocs; 
-      this.dataSource.paginator = this.paginator;
-      this.paginator.pageIndex = this.coursePaginationModel.page - 1;
-      this.paginator.length = this.totalItems;
-  
-      this.dataSource.sort = this.matSort;
-      this.isLoading = false;
-    }, error => {
-      this.isLoading = false;
-      console.error('Error fetching retake requests:', error);
-    });
+    this.settingService.getRetakeRequest({ ...this.coursePaginationModel })
+      .subscribe(response => {
+        this.isLoading = false;
+        this.totalItems = response.data.totalDocs
+
+        this.dataSource = response.data.docs;
+        this.coursePaginationModel.docs = response.data.docs;
+        this.coursePaginationModel.page = response.data.page;
+        this.coursePaginationModel.limit = response.data.limit;
+
+      }, (error) => {
+        this.isLoading = false;
+        console.error('Error fetching retake requests:', error);
+      });
   }
+  // getAllRetakeRequests() {
+  //   const filter = {
+  //     page: this.coursePaginationModel.page,
+  //     limit: this.coursePaginationModel.limit,
+  //   };
+  
+  //   this.settingService.getRetakeRequest(filter).subscribe((response) => {
+  //     // console.log("datasocurse==",response.data.docs)
+  //     this.dataSource.data = response.data.docs; 
+  //     this.totalItems = response.data.totalDocs; 
+  //     this.courseKitModel.page = response.page;
+  //     this.courseKitModel.limit = response.limit;
+  //     // this.dataSource.paginator = this.paginator;
+  //     // this.paginator.pageIndex = this.coursePaginationModel.page - 1;
+  //     // this.paginator.length = this.totalItems;
+  
+  //     // this.dataSource.sort = this.matSort;
+  //     this.isLoading = false;
+  //   }, error => {
+  //     this.isLoading = false;
+  //     console.error('Error fetching retake requests:', error);
+  //   });
+  // }
   
   
   

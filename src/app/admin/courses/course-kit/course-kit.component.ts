@@ -200,9 +200,10 @@ export class CourseKitComponent implements OnInit{
   }
 
   pageSizeChange($event: any) {
-    this.coursePaginationModel.page = $event?.pageIndex + 1;
-    this.coursePaginationModel.limit = $event?.pageSize;
-
+    this.courseKitModel.page = $event?.pageIndex + 1;
+    this.courseKitModel.limit = $event?.pageSize;
+    this.fetchCourseKits();
+    // this.getJobTemplates();
   }
 
 

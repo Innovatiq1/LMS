@@ -35,53 +35,53 @@
                 <div class="responsive_table">
                   <table mat-table [dataSource]="dataSource" matSort class="mat-cell advance-table">
                     <ng-container matColumnDef="Course Name">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header>Course Name</mat-header-cell>
+                      <mat-header-cell *matHeaderCellDef>Course Name</mat-header-cell>
                       <mat-cell *matCellDef="let row"><span class="mobile-label">Course
                           Name:</span>{{row.courseId?.title}}</mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="Submitted Date">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header>Submitted Date</mat-header-cell>
+                      <mat-header-cell *matHeaderCellDef>Submitted Date</mat-header-cell>
                       <mat-cell *matCellDef="let row"><span class="mobile-label">Submitted
                           Date:</span>{{row?.submittedAt | date: 'MM/dd/yyyy'}}
                       </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="Score">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header>Score</mat-header-cell>
+                      <mat-header-cell *matHeaderCellDef>Score</mat-header-cell>
                       <mat-cell *matCellDef="let row"><span class="mobile-label">Score:</span>{{row.score}} /
                         {{row.totalScore}}
                       </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="Exam Type">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header>Exam Type</mat-header-cell>
+                      <mat-header-cell *matHeaderCellDef>Exam Type</mat-header-cell>
                       <mat-cell *matCellDef="let row"><span class="mobile-label">Exam Type:</span> {{ examType(row) }}
                       </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="Retakes left">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header>Retakes left</mat-header-cell>
+                      <mat-header-cell *matHeaderCellDef>Retakes left</mat-header-cell>
                       <mat-cell *matCellDef="let row"><span class="mobile-label">Retakes left:</span> 
                         {{calculateRetaks(row)<0?0:calculateRetaks(row) }}
                       </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="Exam">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header>Exam</mat-header-cell>
+                      <mat-header-cell *matHeaderCellDef>Exam</mat-header-cell>
                       <mat-cell *matCellDef="let row">
                         <button *ngIf="row.is_tutorial && !row.isLatestTutorial" (click)="onDelete(row.id)"
                           mat-flat-button color="warn">
                           Delete
                         </button>
                         <button *ngIf="row.is_tutorial && row.isLatestTutorial" [disabled]="row.is_exam_completed || calculateRetaks(row) <= 0"
-                          (click)="openTest(row, false)" mat-flat-button color="primary">
+                          (click)="openTest(row, false)" mat-raised-button  id="submit">
                           Retake
                         </button>
                         <button *ngIf="!row.is_tutorial"
                           [disabled]="row.is_exam_completed || calculateRetaks(row) <= 0"
-                          (click)="openTest(row, true)" mat-flat-button color="primary">
+                          (click)="openTest(row, true)" mat-raised-button  id="submit">
                           Retake
                         </button>
                       </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="Request Retake">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header>Request Retake</mat-header-cell>
+                      <mat-header-cell *matHeaderCellDef>Request Retake</mat-header-cell>
                       <mat-cell *matCellDef="let row">
                         <button [disabled] ="calculateRetaks(row) > 0 || row.is_exam_completed"
                                 mat-flat-button
@@ -111,48 +111,48 @@
                 <div class="responsive_table">
                   <table mat-table [dataSource]="dataSource" matSort class="mat-cell advance-table">
                     <ng-container matColumnDef="Course Name">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header>Course Name</mat-header-cell>
+                      <mat-header-cell *matHeaderCellDef>Course Name</mat-header-cell>
                       <mat-cell *matCellDef="let row"><span class="mobile-label">Course
                           Name:</span>{{row.courseId?.title}}</mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="Submitted Date">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header>Submitted Date</mat-header-cell>
+                      <mat-header-cell *matHeaderCellDef>Submitted Date</mat-header-cell>
                       <mat-cell *matCellDef="let row"><span class="mobile-label">Submitted
                           Date:</span>{{row?.submittedAt | date: 'MM/dd/yyyy'}}
                       </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="Score">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header>Score</mat-header-cell>
+                      <mat-header-cell *matHeaderCellDef>Score</mat-header-cell>
                       <mat-cell *matCellDef="let row"><span class="mobile-label">Score:</span>{{row.score}} /
                         {{row.totalScore}}
                       </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="Exam Type">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header>Exam Type</mat-header-cell>
+                      <mat-header-cell *matHeaderCellDef>Exam Type</mat-header-cell>
                       <mat-cell *matCellDef="let row"><span class="mobile-label">Exam Type:</span> {{ examType(row) }}
                       </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="Retakes left">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header>Retakes left</mat-header-cell>
+                      <mat-header-cell *matHeaderCellDef>Retakes left</mat-header-cell>
                       <mat-cell *matCellDef="let row"><span class="mobile-label">Retakes left:</span> {{
                         calculateRetaks(row) }}
                       </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="Exam">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header>Exam</mat-header-cell>
+                      <mat-header-cell *matHeaderCellDef>Exam</mat-header-cell>
                       <mat-cell *matCellDef="let row">
                         <button *ngIf="row.is_tutorial && !row.isLatestTutorial" (click)="onDelete(row.id)"
                           mat-flat-button color="warn">
                           Delete
                         </button>
                         <button *ngIf="row.is_tutorial && row.isLatestTutorial" [disabled]="row.is_exam_completed"
-                          (click)="openTest(row, false)" mat-flat-button color="primary">
+                          (click)="openTest(row, false)" mat-raised-button  id="submit">
                           Retake
                         </button>
                       </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="Request Retake">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header>Request Retake</mat-header-cell>
+                      <mat-header-cell *matHeaderCellDef>Request Retake</mat-header-cell>
                       <mat-cell *matCellDef="let row">
                         <button *ngIf="calculateRetaks(row) === 0 && !row.certificateIssued"
                                 mat-flat-button

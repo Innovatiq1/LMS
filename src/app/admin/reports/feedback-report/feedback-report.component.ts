@@ -24,6 +24,7 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { AppConstants } from '@shared/constants/app.constants';
 
 @Component({
   selector: 'app-feedback-report',
@@ -48,6 +49,7 @@ implements OnInit{
       active: 'Feedback Reports',
     },
   ];
+  commonRoles: any;
   constructor(
     public httpClient: HttpClient,
     public dialog: MatDialog,
@@ -65,6 +67,7 @@ implements OnInit{
   contextMenuPosition = { x: '0px', y: '0px' };
 
   ngOnInit() {
+    this.commonRoles = AppConstants
     this.loadData();
   }
   refresh() {

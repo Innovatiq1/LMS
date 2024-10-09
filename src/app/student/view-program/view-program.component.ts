@@ -58,8 +58,8 @@ export class ViewProgramComponent {
   title!: string;
   programDetails: any;
   isCompleted = false;
-  courseCompletedDetails: { title: string, playbackTime: number }[] = [];
-  electivecourseCompletedDetails: { electivetitle: string, electiveplaybackTime: number }[] = [];
+  courseCompletedDetails: {id: string, title: string, playbackTime: number }[] = [];
+  electivecourseCompletedDetails: { id: string, electivetitle: string, electiveplaybackTime: number }[] = [];
   completedProgramPercentage!: number;
   coreCompleted = false;
   electiveCompleted = false;
@@ -112,9 +112,10 @@ export class ViewProgramComponent {
         const courseIds = this.programDetails.coreprogramCourse.map((course: { coreProgramName: { id: any; }; }) => course.coreProgramName.id);
         courseIds.forEach((courseId: any) => {
           this.courseService.getStudentRegisteredByCourseId(studentId, courseId).subscribe((courseResponse) => {
+            const id = courseResponse?.courseId?.id;
             const title = courseResponse?.courseId?.title;
             const playbackTime = courseResponse?.playbackTime;
-            this.courseCompletedDetails.push({ title, playbackTime });
+            this.courseCompletedDetails.push({ id, title, playbackTime });
             const totalPlaybackTime = this.courseCompletedDetails.reduce((total, course) => total + (course.playbackTime || 0), 0);
             const averagePlaybackTime = this.courseCompletedDetails.length > 0 ? totalPlaybackTime / this.courseCompletedDetails.length : 0;
             this.completedProgramPercentage = averagePlaybackTime
@@ -128,9 +129,10 @@ export class ViewProgramComponent {
           const electivecourseIds = this.programDetails.electiveprogramCourse.map((course: { electiveProgramName: { id: any; }; }) => course.electiveProgramName.id);
           electivecourseIds.forEach((courseId: any) => {
             this.courseService.getStudentRegisteredByCourseId(studentId, courseId).subscribe((res) => {
+              const id = res?.courseId?.id;
               const electivetitle = res?.courseId?.title;
               const electiveplaybackTime = res?.playbackTime;
-              this.electivecourseCompletedDetails.push({ electivetitle, electiveplaybackTime });
+              this.electivecourseCompletedDetails.push({ id, electivetitle, electiveplaybackTime });
               if (electiveplaybackTime === 100) {
                 this.electiveCompleted = true;
                           }

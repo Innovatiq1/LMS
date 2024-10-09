@@ -99,10 +99,10 @@ retakeRequestData:any;
         .getExamQuestionJsonV2({ ...this.assessmentPaginationModel, studentId })
         .subscribe((res) => {
           this.dataSource = res.data.docs;
-          this.totalItems = this.dataSource.length;
-          this.assessmentPaginationModel.docs = this.dataSource;
-          this.assessmentPaginationModel.page = res.page;
-          this.assessmentPaginationModel.limit = res.limit;
+          this.totalItems = res.data.totalDocs;
+          this.assessmentPaginationModel.docs = res.data.docs;
+          this.assessmentPaginationModel.page = res.data.page;
+          this.assessmentPaginationModel.limit = res.data.limit;
           this.dataSource.forEach((row: any) => {
              let maxRetakes = row.assessmentId.retake;
              let usedRetakes = row.retakeCount;
@@ -124,10 +124,10 @@ retakeRequestData:any;
         .getTutorialQuestionJsonV2({ ...this.assessmentPaginationModel, studentId })
         .subscribe((res) => {
           this.dataSource = res.data.docs;
-          this.totalItems = this.dataSource.length;
-          this.assessmentPaginationModel.docs = this.dataSource;
-          this.assessmentPaginationModel.page = res.page;
-          this.assessmentPaginationModel.limit = res.limit;
+          this.totalItems = res.data.totalDocs;
+          this.assessmentPaginationModel.docs = res.data.docs;
+          this.assessmentPaginationModel.page = res.data.page;
+          this.assessmentPaginationModel.limit = res.data.limit;
           // this.dataSource.forEach((row: any) => {
           //   this.getRetakeRequest(row);
           // });
