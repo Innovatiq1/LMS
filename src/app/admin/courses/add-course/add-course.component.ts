@@ -773,12 +773,15 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       mainCategory: this.courseService.getMainCategories(),
       subCategory: this.courseService.getSubCategories(),
       fundingGrant: this.courseService.getFundingGrant(),
-      courseKit: this.courseService.getCourseKit(),
+      courseKit: this.courseService.getCourseKit({isAll: true}),
       assessment: this.questionService.getQuestionJson({
         status: 'approved',
+        isAll: true,
         companyId: userId,
       }),
       exam_assessment: this.questionService.getExamQuestionJson({
+        status: 'approved',
+        isAll: true,
         companyId: userId,
       }),
       tutorial: this.questionService.getTutorialQuestionJson({
@@ -795,15 +798,15 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         mainCategory: any;
         subCategory: any;
         fundingGrant: any;
-        courseKit: { docs: any };
+        courseKit: any;
       }) => {
         this.mainCategories = response.mainCategory;
         this.allSubCategories = response.subCategory;
         this.fundingGrants = response.fundingGrant.reverse();
-        this.courseKits = response.courseKit?.docs;
-        this.assessments = response.assessment.data.docs;
-        this.exam_assessments = response.exam_assessment.data.docs;
-        this.tutorials = response.tutorial.data.docs;
+        this.courseKits = response.courseKit?.reverse();
+        this.assessments = response.assessment.data.reverse();
+        this.exam_assessments = response.exam_assessment.data.reverse();
+        this.tutorials = response.tutorial.data.reverse();
         this.feedbacks = response.survey.data.docs;
       }
     );
@@ -919,10 +922,10 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     }).subscribe((response: any) => {
       this.mainCategories = response.mainCategory;
       this.fundingGrants = response.fundingGrant;
-      this.courseKits = response.courseKit?.docs;
-      this.assessments = response.assessment?.data.docs;
-      this.exam_assessments = response.exam_assessment.data.docs;
-      this.tutorials = response.tutorial?.data.docs;
+      this.courseKits = response.courseKit?.reverse();
+      this.assessments = response.assessment?.data.reverse();
+      this.exam_assessments = response.exam_assessment.data.reverse();
+      this.tutorials = response.tutorial?.data.reverse();
       this.feedbacks = response.survey?.data.docs;
       this.allSubCategories = response.subCategory;
       this.course = response.course;

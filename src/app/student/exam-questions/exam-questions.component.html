@@ -70,7 +70,7 @@
                     </div>
                 </div>
                 <div class="border-dotted-bottom mt-3 mb-3 text-center" *ngIf="currentPage === getTotalPages() - 1 && !isanswersSubmitted">
-                    <button mat-flat-button color="primary" (click)="confirmSubmit()" class="me-2">Submit</button>
+                    <button mat-raised-button  id="submit" (click)="confirmSubmit()" class="me-2">Submit</button>
                 </div>
                 <div class="border-dotted-bottom mt-3 mb-3 text-center" *ngIf="isanswersSubmitted">
                     <button mat-flat-button color="accent" class="mls-2" (click)="navigate()">Continue</button>
@@ -87,9 +87,9 @@
                         <p>Your Score : {{ answerResult.score }} Points </p>
                     </div>
                     <div class="border-dotted-bottom mt-3 mb-3 text-center">
-                        <button mat-flat-button color="primary" *ngIf="courseDetails.isFeedbackRequired" (click)="submitFeedback(answerAssessmentId)" class="mr-2">Feedback</button>
+                        <button mat-raised-button  id="submit" *ngIf="courseDetails.isFeedbackRequired" (click)="submitFeedback(answerAssessmentId)" class="mr-2">Feedback</button>
 
-                        <button mat-flat-button color="primary" *ngIf="!courseDetails.isFeedbackRequired" (click)="routingButton()" class="mr-2">{{ titleRoute() }}</button>
+                        <button mat-raised-button  id="submit" *ngIf="!courseDetails.isFeedbackRequired" (click)="routingButton()" class="mr-2">{{ titleRoute() }}</button>
                     </div>
                 </div>
             </ng-container>

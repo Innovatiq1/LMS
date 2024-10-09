@@ -63,6 +63,12 @@ private tpUrl=environment.Url;
       } else if (filter.status && filter.status === "inactive") {
         params = params.set("status", "inactive");
       }
+      if(filter.companyId) {
+        params = params.set('companyId', filter.companyId)
+      }
+      if(filter.isAll) {
+        params = params.set('isAll', filter.isAll)
+      }
     }
     return params;
   }
