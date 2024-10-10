@@ -783,11 +783,11 @@
               {{ commonRoles?.INSTRUCTOR_ROLE }}
             </button>
           </div>
-          <div class="col-md-5">
+          <!-- <div class="col-md-5">
             <button id="saved" [routerLink]="['/student/settings/add-staff']">
               Staff
             </button>
-          </div>
+          </div> -->
         </div>
 
         <div class="col-md-12 py-3">
@@ -988,13 +988,22 @@
               {{ commonRoles?.INSTRUCTOR_ROLE }} Creation
             </button>
           </div>
-          <div class="col-md-5">
+          <!-- <div class="col-md-5">
             <button
               id="saved"
               [routerLink]="['/student/settings/form-customization']"
               [queryParams]="{ name: 'Staff Creation Form' }"
             >
               Staff Creation
+            </button>
+          </div> -->
+          <div class="col-md-5">
+            <button
+              id="saved"
+              [routerLink]="['/student/settings/form-customization']"
+              [queryParams]="{ name: 'Course kit Creation Form' }"
+            >
+              Course kit Creation
             </button>
           </div>
         </div>
@@ -1008,7 +1017,7 @@
               Announcement
             </button>
           </div>
-          <div class="col-md-5">
+          <!-- <div class="col-md-5">
             <button
               id="saved"
               [routerLink]="['/student/settings/form-customization']"
@@ -1016,7 +1025,7 @@
             >
               Course kit Creation
             </button>
-          </div>
+          </div> -->
 
         </div>
       </div>

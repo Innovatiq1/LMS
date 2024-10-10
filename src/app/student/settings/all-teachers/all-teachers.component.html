@@ -43,6 +43,9 @@
                           </div>
                         </li>
                         <li>
+                          <span style="font-weight: bold">Export as</span>
+                        </li>      
+                        <li>
                           <div class="export-button m-l-10" matTooltip="XLSX">
                             <img src="assets/excel.svg" alt="" (click)="exportExcel()" />
                           </div>
@@ -59,7 +62,7 @@
                     <div class="responsive_table">
                       <table mat-table [dataSource]="dataSource" matSort class="mat-cell advance-table">
                         <ng-container matColumnDef="id">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header>Id
+                          <mat-header-cell *matHeaderCellDef >Id
                           </mat-header-cell>
                           <mat-cell *matCellDef="let row">{{row.id}}</mat-cell>
                         </ng-container>
@@ -71,20 +74,20 @@
                           </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="name">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header>Name
+                          <mat-header-cell *matHeaderCellDef >Name
                           </mat-header-cell>
                           <mat-cell *matCellDef="let row" class="name"(click)="isView ? aboutInstructor(row.id) : null" (contextmenu)="onContextMenu($event, row)"><span
                               class="mobile-label">Name:</span> {{row.name}}
                           </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="department">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header>Department
+                          <mat-header-cell *matHeaderCellDef >Department
                           </mat-header-cell>
                           <mat-cell *matCellDef="let row" (click)="isView ? aboutInstructor(row.id) : null" (contextmenu)="onContextMenu($event, row)">
                             <span class="mobile-label">Department:</span>{{row.department}}</mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="gender">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header> Gender
+                          <mat-header-cell *matHeaderCellDef > Gender
                           </mat-header-cell>
                           <mat-cell mat-cell *matCellDef="let row" (click)="isView ? aboutInstructor(row.id) : null">
                             <span class="mobile-label">Gender:</span>
@@ -103,21 +106,21 @@
                           </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="degree">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header>Education
+                          <mat-header-cell *matHeaderCellDef >Education
                           </mat-header-cell>
                           <mat-cell *matCellDef="let row" (click)="isView ? aboutInstructor(row.id) : null" (contextmenu)="onContextMenu($event, row)"> <span
                               class="mobile-label">Education:</span>{{row.education}}
                           </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="mobile">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header>Mobile
+                          <mat-header-cell *matHeaderCellDef >Mobile
                           </mat-header-cell>
                           <mat-cell *matCellDef="let row" (click)="isView ? aboutInstructor(row.id) : null" (contextmenu)="onContextMenu($event, row)"> <span
                               class="mobile-label">Mobile:</span>{{row.mobile}}
                           </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="email">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
+                          <mat-header-cell *matHeaderCellDef >Email</mat-header-cell>
                           <mat-cell *matCellDef="let row"  (click)="isView ? aboutInstructor(row.id) : null" (contextmenu)="onContextMenu($event, row)">
                             <span class="mobile-label">Email:</span>
                             <img src="assets/images/gmail.png" alt="Email Icon" class="email-icon">
@@ -125,7 +128,7 @@
                           </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="Status">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header>Status
+                          <mat-header-cell *matHeaderCellDef >Status
                           </mat-header-cell>
                           <mat-cell *matCellDef="let row" (click)="isView ? aboutInstructor(row.id) : null"> <span
                               class="mobile-label">Status:</span><span [class]="row?.Active ? 'badge badge-solid-green' : 'badge badge-solid-red'">

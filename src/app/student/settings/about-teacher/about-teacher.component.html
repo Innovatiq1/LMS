@@ -160,7 +160,7 @@
                 </div>
               </div>
 
-              <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
+              <!-- <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="header mt-3">
                   <h2>Program Lectures</h2>
                 </div>
@@ -200,7 +200,43 @@
                     </table>
                   </div>
                 </div>
-              </div>
+              </div> -->
+              <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="header mt-3">
+                    <h2>Program Lectures</h2>
+                </div>
+                <div class="table-wrapper">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="text-start">Program Name</th>
+                                    <th class="text-center ">{{commonRoles?.INSTRUCTOR_ROLE}} Fee</th>
+                                    <th class="text-center">Class</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngIf="dataSource2.length === 0">
+                                    <td colspan="3" class="text-center">No records</td>
+                                </tr>
+                                <tr style="cursor: pointer" *ngFor="let data of dataSource2">
+                                    <td class="text-start">{{ data?.programName }}</td>
+                                    <td class="text-end payment-align">$ {{ data?.instructorCost || 0}}.00</td>
+                                    <td class="text-center">
+                                        <div class="status-container">
+                                            <span [class]="data.classDeliveryType === 'online' ? 'badge badge-solid-green' : data.classDeliveryType === 'offline' ? 'badge badge-solid-red' : ''">
+                                                <span [class]="data.classDeliveryType === 'online' ? 'status-dot' : data.classDeliveryType === 'offline' ? 'status-red' : ''"></span>
+                                                {{ data.classDeliveryType ==='online' ? 'Online':'Offline' | titlecase }}
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
 
               <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="header mt-3">
@@ -211,9 +247,9 @@
                     <table class="table table-hover">
                       <thead>
                         <tr>
-                          <th>Course Name</th>
-                          <th>{{commonRoles?.INSTRUCTOR_ROLE}} Fee</th>
-                          <th>Class</th>
+                          <th class="text-start">Course Name</th>
+                          <th class="text-start">{{commonRoles?.INSTRUCTOR_ROLE}} Fee</th>
+                          <th class="text-center">Class</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -224,10 +260,10 @@
                           style="cursor: pointer"
                           *ngFor="let data of dataSource1"
                         >
-                          <td>{{ data?.courseName }}</td>
-                          <td>$ {{ data?.instructorCost || 0}}.00</td>
+                          <td class="text-start">{{ data?.courseName }}</td>
+                          <td class="text-end payment-align">$ {{ data?.instructorCost || 0}}.00</td>
                           <td
-                           
+                          class="text-center"
                           >
                             <div class="status-container">
                               <span

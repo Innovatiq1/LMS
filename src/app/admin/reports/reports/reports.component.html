@@ -44,9 +44,9 @@
                                             <ng-container matColumnDef="name">
                                                 <mat-header-cell *matHeaderCellDef >Course
                                                 </mat-header-cell>
-                                                <mat-cell class="name" [class.name]="isCourse" *matCellDef="let row"
+                                                <mat-cell  [class.name]="isCourse" *matCellDef="let row"
                                                     ><span class="mobile-label">Course
-                                                        Name:</span> <span>{{row.title |titlecase}}</span>
+                                                        Name:</span> <span class="name">{{row.title |titlecase}}</span>
                                                 </mat-cell>
                                             </ng-container>
                                             <ng-container matColumnDef="code">
