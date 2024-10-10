@@ -16,9 +16,12 @@
             <div *ngIf="!viewUrl" class="form-row">
             <form [formGroup]="certificateForm">
               <div class="form-group">
-                <label for="certificate-title">Certificate Title</label>
+                <label for="certificate-title">Certificate Title<span class="mandatory">&nbsp;*</span></label>
                 <mat-form-field appearance="outline" style="width: 100%;">
                   <input matInput id="certificate-title" placeholder="Enter Certificate Title" formControlName="title" />
+                  <mat-error *ngIf="certificateForm.get('title')?.hasError('required') && certificateForm.get('title')?.touched">
+                    Enter Certificate title
+                  </mat-error>
                 </mat-form-field>
               </div>
             </form>
@@ -87,6 +90,7 @@
                   />
                   <button
                     mat-raised-button
+                    id="submit"
                     color="primary"
                     class="insert-button"
                     (click)="insertElement()"

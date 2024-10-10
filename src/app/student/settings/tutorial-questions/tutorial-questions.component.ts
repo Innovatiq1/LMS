@@ -288,6 +288,13 @@ saveDraft(data?: string) {
         } else {
           this.questions.removeAt(questionIndex);
         }
+        Swal.fire({
+          title: 'Deleted!',
+          text: 'Deleted successfully.',
+          icon: 'success',
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'OK',
+        });
       }
     });
   }

@@ -50,3 +50,8 @@ svg {
     display: inline-block;
     margin-right: 5px; // Space between dot and text
   }
+  .amount{
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 65px !important;
+}
