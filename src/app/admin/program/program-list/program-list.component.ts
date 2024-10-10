@@ -83,7 +83,7 @@ export class ProgramListComponent {
   users: any;
   selectedCreators: any = [];
   filterForm!: FormGroup
-
+  filterBody: any = {};
 row: any;
   programsData: any;
   create = false;
@@ -213,27 +213,27 @@ clearFilter() {
 }
 
 applyFilter() {
-  
-  let body: any = {};
+
+  this.filterBody = {};
 
   if (this.selectedPrograms.length > 0) {
-    body.title = this.selectedPrograms;
+    this.filterBody.title = this.selectedPrograms;
   }
   if (this.selectedVendors.length > 0) {
-    body.vendor = this.selectedVendors;
+    this.filterBody.vendor = this.selectedVendors;
   }
   if (this.selectedStatus.length > 0) {
-    body.status = this.selectedStatus;
+    this.filterBody.status = this.selectedStatus;
   }
   if (this.selectedCreators.length > 0) {
-    body.creator = this.selectedCreators;
+    this.filterBody.creator = this.selectedCreators;
   }
    if (this.selectedCreators.length > 0) {
-    body.creator = this.selectedCreators;
+    this.filterBody.creator = this.selectedCreators;
   }
   this.coursePaginationModel.page = 1;
   this.paginator.pageIndex = 0;
-  this.courseService.getFilteredProgramData(body, { ...this.coursePaginationModel }).subscribe((response) => {
+  this.courseService.getFilteredProgramData(this.filterBody, { ...this.coursePaginationModel }).subscribe((response) => {
     this.programData = response.data.docs;
     this.totalItems = response.data.totalDocs;
     this.isFiltered = false;
@@ -272,7 +272,6 @@ getFilterData(filters?: any) {
   if(this.userGroupIds){
     payload.userGroupId=this.userGroupIds
   }
-  console.log("Payload", payload);
 
     this.courseService.getAllPrograms(payload,userId).subscribe(
       (response: any) => {
@@ -336,7 +335,22 @@ getFilterData(filters?: any) {
     this.coursePaginationModel.limit = $event?.pageSize;
   
     if (this.isFiltered) {
-      this.applyFilter();
+      if (this.filter) {
+        this.courseService.getAllPrograms(this.filterBody, { ...this.coursePaginationModel }).subscribe(
+          (response: any) => {
+            this.isLoading = false;
+            this.programData = response.docs;
+            this.totalItems = response.totalDocs;
+            this.coursePaginationModel.docs = response.docs;
+            this.coursePaginationModel.page = response.page;
+            this.coursePaginationModel.limit = response.limit;
+            this.coursePaginationModel.totalDocs = response.totalDocs;
+          },
+          (error) => {
+            this.isLoading = false;
+          }
+        );
+      }
     } else {
       this.getProgramList();
     }
@@ -404,16 +418,10 @@ getFilterData(filters?: any) {
   
 
 performSearch() {
-  // if(this.searchTerm){
-  // this.programData = this.programData?.filter((item: any) =>{
-  //   const searchList = (item.title).toLowerCase();
-  //   return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1
-  // }
-  // );
-  // } else {
+  this.coursePaginationModel.page = 1;
+    this.paginator.pageIndex = 0;
     this.getProgramList();
 
-  // }
 }
 
 viewActiveProgram(id:string, status: string):void {

@@ -245,7 +245,9 @@
                             <mat-header-cell *matHeaderCellDef  class="compulsory-count-header"
                               style="width: 400px;">Status
                             </mat-header-cell>
-                            <mat-cell *matCellDef="let row" class="pr-0">
+                            <mat-cell *matCellDef="let row" class="pr-0"><span
+                              class="mobile-label">Status:</span>
+
                               <span
                                 [class]="row?.status === 'active' ? 'badge badge-solid-green' : row?.status === 'inactive' ? 'badge badge-solid-red' : ''">
                                 <span

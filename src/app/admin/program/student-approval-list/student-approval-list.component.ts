@@ -148,16 +148,11 @@ export class StudentApprovalListComponent {
   }
 
   performSearch() {
-    if(this.searchTerm){
-    this.dataSource = this.dataSource?.filter((item: any) =>{
-      const searchList = (item.classId.courseId?.title + item.studentId?.name).toLowerCase()
-      return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1
-    }
-    );
-    } else {
+   
+      this.coursePaginationModel.page = 1;
+      this.paginator.pageIndex = 0;
       this.getRegisteredClasses();
 
-    }
   }
   Status(element: Student, status:string) {
     let item: StudentApproval = {
