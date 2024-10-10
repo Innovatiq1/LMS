@@ -20,6 +20,7 @@ import { Router } from '@angular/router';
 import html2canvas from 'html2canvas';
 import { SelectionModel } from '@angular/cdk/collections';
 import { CourseModel, CoursePaginationModel } from '@core/models/course.model';
+import { MatPaginator } from '@angular/material/paginator';
 @Component({
   selector: 'app-progaram-completion-list',
   templateUrl: './progaram-completion-list.component.html',
@@ -50,7 +51,7 @@ export class ProgaramCompletionListComponent {
   completionList: any;
   pageSizeArr = this.utils.pageSizeArr;
   totalItems: any;
-  studentPaginationModel: StudentPaginationModel;
+  // studentPaginationModel: StudentPaginationModel;
   coursePaginationModel!: Partial<CoursePaginationModel>;
   isLoading: any;
   searchTerm: string = '';
@@ -62,10 +63,12 @@ export class ProgaramCompletionListComponent {
   view = false;
   certificateTemplateId:any;
   isGeneratingCertificates:boolean=false;
+  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
 selection = new SelectionModel<any>(true, []);
 selectedRows: any[] = [];
   filterName: string = '';
   userGroupIds:string = '';
+  totalPages: number = 0;
   constructor(
     private classService: ClassService,
      private utils: UtilsService, 
@@ -76,8 +79,8 @@ selectedRows: any[] = [];
       private certificateService: CertificateService,
     ) {
 
-
-    this.studentPaginationModel = {} as StudentPaginationModel;
+      this.coursePaginationModel = {};
+    // this.studentPaginationModel = {} as StudentPaginationModel;
   }
 
   ngOnInit(): void {
@@ -119,13 +122,14 @@ selectedRows: any[] = [];
   }
     this.classService
       .getProgramsCompletedStudent(userId,payload)
-      .subscribe((response: { docs: any; page: any; limit: any; totalDocs: any; }) => {
+      .subscribe((response: any) => {
         this.isLoading = false;
         this.dataSource = response.docs;
+        this.totalPages = response.totalDocs;
         this.coursePaginationModel.docs = response.docs;
         this.coursePaginationModel.page = response.page;
         this.coursePaginationModel.limit = response.limit;
-        this.totalItems = response.totalDocs;
+       
        
         
       })
@@ -175,17 +179,11 @@ selectedRows: any[] = [];
 
   }
   performSearch() {
-    // if (this.searchTerm) {
-    //   this.dataSource = this.dataSource?.filter((item: any) => {
-    //     const searchList = (item.program_name + item.studentId?.name).toLowerCase()
-    //     return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1
-    //   }
-
-    //   );
-    // } else {
+  
+      this.coursePaginationModel.page = 1;
+      this.paginator.pageIndex = 0;
       this.getCompletedClasses();
 
-    // }
   }
   generatePdf() {
     const doc = new jsPDF();

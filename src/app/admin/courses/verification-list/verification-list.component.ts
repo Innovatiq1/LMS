@@ -255,18 +255,9 @@ export class VerificationListComponent {
     });
   }
   performSearch() {
-    // if (this.searchTerm) {
-    //   this.dataSource = this.dataSource?.filter((item: any) => {
-    //     const searchList = (
-    //       item.classId?.courseId?.title +
-    //       item.studentId?.name +
-    //       item.studentId?.last_name
-    //     ).toLowerCase();
-    //     return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1;
-    //   });
-    // } else {
+    this.paginator.pageIndex = 0;
+    this.coursePaginationModel.page = 1;
       this.getPendingVerificationList();
-    // }
   }
   private refreshTable() {
     this.paginator._changePageSize(this.paginator.pageSize);

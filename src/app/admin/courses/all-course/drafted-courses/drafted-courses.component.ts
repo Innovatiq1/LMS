@@ -264,14 +264,10 @@ export class DraftedCoursesComponent {
     doc.save('AllCourses-list.pdf');
   }
   performSearch() {
-    // if (this.searchTerm) {
-    //   this.courseData = this.courseData?.filter((item: any) => {
-    //     const searchList = item.title.toLowerCase();
-    //     return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1;
-    //   });
-    // } else {
+    this.paginator.pageIndex = 0;
+    this.coursePaginationModel.page = 1;
       this.getAllCourses();
-    // }
+    
   }
   viewActiveProgram(id: string, status: string): void {
     this.route.navigate(['/admin/courses/view-course/', 'data.id']);
