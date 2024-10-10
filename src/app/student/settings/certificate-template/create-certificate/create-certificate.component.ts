@@ -367,7 +367,7 @@ stopResizing() {
       this.isEdit = true;
     }
     this.certificateForm = this.fb.group({
-      title: ['title value'],
+      title: ['',[Validators.required]],
       // title: ['', Validators.required],
     });
     

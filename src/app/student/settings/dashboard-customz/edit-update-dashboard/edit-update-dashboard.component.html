@@ -24,6 +24,9 @@
                 </div>
               </li>
               <li>
+                <span style="font-weight: bold">Export as</span>
+              </li>
+              <li>
                 <div class="export-button m-l-10" matTooltip="XLSX"(click)="exportExcel()">
                   <img src="assets/excel.svg" alt="" />
                 </div>
@@ -42,14 +45,14 @@
           <div class="responsive_table">
             <table mat-table [dataSource]="filteredDashboards" matSort class="mat-cell advance-table">
               <ng-container matColumnDef="type">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>Type</mat-header-cell>
+                <mat-header-cell *matHeaderCellDef >Type</mat-header-cell>
                 <mat-cell *matCellDef="let row" class="name" (click)="edit(row)">
                   <span class="mobile-label">Type:</span>{{ row.typeName }}
                 </mat-cell>
               </ng-container>
         
               <ng-container matColumnDef="Dashboards">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>Dashboards</mat-header-cell>
+                <mat-header-cell *matHeaderCellDef >Dashboards</mat-header-cell>
                 <mat-cell *matCellDef="let row" (click)="edit(row)">
                   <span class="mobile-label">Dashboards:</span>
                   <div class="dashboard-container">

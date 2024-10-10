@@ -72,8 +72,9 @@ export class UpdatePassingCriteriaComponent {
     }).then((result) => {
       if (result.isConfirmed){
         this.SettingsService.updatePassingCriteria(this.id,payload).subscribe((data:any) => {
+          console.log("update Passing cretariya",data)
 
-          if(data){
+          // if(data){
             Swal.fire({
               title: 'Success',
               text: 'Passing Criteriya updated successfully.',
@@ -87,7 +88,7 @@ export class UpdatePassingCriteriaComponent {
                 icon: 'error',
               });
             };
-          }
+          // }
         })
         window.history.back();
       }
