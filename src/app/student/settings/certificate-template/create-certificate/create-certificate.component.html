@@ -141,7 +141,7 @@
                   'background-size': '100% 100%',
                   'border': '0.5px solid lightgray',
                   'height': '700px',
-                  'width': '800px',
+                  'width': '700px',
                   'position': 'relative'
                 }"
                 (drop)="onDrop($event)"
@@ -196,7 +196,17 @@
                         </div>
                       </ng-container>
                       <ng-container *ngIf="element.type === 'Signature';">
+                        <div
+                          class="resizable-logo"
+                          [ngStyle]="{
+                            width: element.width + 'px',
+                            height: element.height + 'px'
+                          }"
+                          (mousedown)="startResizing($event, i)"
+                        >
                         <img [src]="element.imageUrl" alt="Signature" style="max-width: 100%; height: auto;">
+                        <div class="resizer"></div>
+                        </div>
                       </ng-container>
                       
 

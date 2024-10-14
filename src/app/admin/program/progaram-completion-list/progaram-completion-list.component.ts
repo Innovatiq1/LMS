@@ -304,6 +304,28 @@ copyPreviewToContentToConvert() {
 
   }
 }
+// generateCertificatePDF(): void {
+//   const data = document.querySelector('.certificate-preview') as HTMLElement;
+//   html2canvas(data, {
+//     scale: 2,
+//     useCORS: true, 
+//     backgroundColor: null, 
+//   }).then((canvas) => {
+//     const imgWidth = 210; 
+//     const imgHeight = (canvas.height * imgWidth) / canvas.width;
+//     const contentDataURL = canvas.toDataURL('image/png');
+
+//     const pdf = new jsPDF('p', 'mm', 'a4');
+//     const position = 0;
+    
+//     pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+
+//     pdf.save('certificate.pdf');
+//     // const pdfBlob = pdf.output('blob');
+
+//     //  this.update(pdfBlob);
+//   });
+// }
 generateCertificatePDF(): void {
   const data = document.querySelector('.certificate-preview') as HTMLElement;
   html2canvas(data, {
@@ -311,19 +333,19 @@ generateCertificatePDF(): void {
     useCORS: true, 
     backgroundColor: null, 
   }).then((canvas) => {
-    const imgWidth = 210; 
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    const imgWidth = 216; 
+    const imgHeight = (canvas.height * imgWidth) / canvas.width; 
     const contentDataURL = canvas.toDataURL('image/png');
 
-    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pdf = new jsPDF('p', 'mm', [216, imgHeight]); 
     const position = 0;
     
     pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
 
     pdf.save('certificate.pdf');
-    const pdfBlob = pdf.output('blob');
+      const pdfBlob = pdf.output('blob');
 
-     this.update(pdfBlob);
+      this.update(pdfBlob);
   });
 }
 
@@ -590,7 +612,7 @@ renderHiddenCertificatePreview(uniqueContainerId: string) {
              background-size: 100% 100%; 
              border: 0.5px solid lightgray; 
              height: 700px; 
-             width: 800px; 
+             width: 700px; 
              position: relative;"
     >
       ${this.elements.map((element:any) => `
@@ -607,7 +629,7 @@ renderHiddenCertificatePreview(uniqueContainerId: string) {
           </div>
           <div style="font-size: ${element.fontSize}px; color: ${element.color};">
              
-            ${element.type === 'Signature' ? `<img src="${element.imageUrl}" style="width: ${element.width}px; height: ${element.height}px;">` : element.content}
+            ${element.type === 'Signature' ? `<img src="${element.imageUrl}" style="max-width: 100%; height: auto;">` : element.content}
           </div>
         </div>
       `).join('')}
@@ -618,6 +640,64 @@ renderHiddenCertificatePreview(uniqueContainerId: string) {
 
 
 
+// generatePDFForRow(row: any, containerId: string): Promise<void> {
+//   return new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       const data = document.getElementById(containerId) as HTMLElement;
+
+//       if (!data) {
+//         console.error('Certificate preview element not found');
+//         reject();
+//         return;
+//       }
+
+//       html2canvas(data, {
+//         scale: 3,  
+//         useCORS: true,
+//         backgroundColor: null,
+//       }).then((canvas) => {
+//         const imgWidth = 210; 
+//         const pageHeight = 297; 
+//         const imgHeight = (canvas.height * imgWidth) / canvas.width;
+//         const contentDataURL = canvas.toDataURL('image/png');
+
+//         const pdf = new jsPDF('p', 'mm', 'a4');
+//         const position = 0;
+
+//         pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+
+        
+//         if (imgHeight > pageHeight) {
+//           let remainingHeight = imgHeight;
+//           let yPosition = position;
+
+//           while (remainingHeight > 0) {
+//             remainingHeight -= pageHeight;
+//             yPosition = Math.max(yPosition + pageHeight, pageHeight);
+//             pdf.addPage();
+//             pdf.addImage(contentDataURL, 'PNG', 0, yPosition, imgWidth, imgHeight);
+//           }
+//         }
+//         pdf.save('certificate.pdf');
+
+//         // const pdfBlob = pdf.output('blob');
+
+//         // this.uploadGeneratedPDF(row, pdfBlob)
+//         //   .then(() => {
+//         //     document.body.removeChild(data);
+//         //     resolve();
+//         //   })
+//         //   .catch((error) => {
+//         //     document.body.removeChild(data);
+//         //     reject();
+//         //   });
+//       }).catch((error) => {
+//         console.error('Error generating PDF:', error);
+//         reject();
+//       });
+//     }, 1000); 
+//   });
+// }
 generatePDFForRow(row: any, containerId: string): Promise<void> {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -635,27 +715,16 @@ generatePDFForRow(row: any, containerId: string): Promise<void> {
         backgroundColor: null,
       }).then((canvas) => {
         const imgWidth = 210; 
-        const pageHeight = 297; 
-        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width; 
         const contentDataURL = canvas.toDataURL('image/png');
 
-        const pdf = new jsPDF('p', 'mm', 'a4');
+        
+        const pdf = new jsPDF('p', 'mm', [imgWidth, imgHeight]); 
         const position = 0;
 
         pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
 
-        
-        if (imgHeight > pageHeight) {
-          let remainingHeight = imgHeight;
-          let yPosition = position;
-
-          while (remainingHeight > 0) {
-            remainingHeight -= pageHeight;
-            yPosition = Math.max(yPosition + pageHeight, pageHeight);
-            pdf.addPage();
-            pdf.addImage(contentDataURL, 'PNG', 0, yPosition, imgWidth, imgHeight);
-          }
-        }
+        // pdf.save('certificate.pdf');
 
         const pdfBlob = pdf.output('blob');
 
@@ -675,6 +744,8 @@ generatePDFForRow(row: any, containerId: string): Promise<void> {
     }, 1000); 
   });
 }
+
+
 
 
 uploadGeneratedPDF(row: any, pdfBlob: Blob): Promise<void> {
