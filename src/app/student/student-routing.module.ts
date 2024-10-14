@@ -91,6 +91,7 @@ import { UpdateScoreAlgorithmComponent } from './settings/score/update-score-alg
 import { TimeComponent } from './settings/time/time.component';
 import { UpdateTimeAlgorithmComponent } from './settings/time/update-time-algorithm/update-time-algorithm.component';
 import { SocialLoginComponent } from './settings/social-login/social-login.component';
+import { ZoomKeysComponent } from './settings/zoom-keys/zoom-keys.component';
 const routes: Routes = [
   {
     path: 'enrollment/course',
@@ -566,6 +567,10 @@ const routes: Routes = [
   {
     path: 'settings/integration/social-login',
     component: SocialLoginComponent,
+  },
+  {
+    path: 'settings/integration/zoom-credentials',
+    component: ZoomKeysComponent,
   },
   {
     path: 'settings/automation/approval-workflow',

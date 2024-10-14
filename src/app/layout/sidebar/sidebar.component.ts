@@ -123,6 +123,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
         const settingsItems = data[0].settingsMenuItems?.filter(
           (item: any) => item.title !== 'Support'
         );
+        console.log("Settings Menu Items:", settingsItems);
         this.orgMenuItems = items;
         this.orgMenuItem = settingsItems;
         if (!this.isSettings) {

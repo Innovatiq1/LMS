@@ -1,0 +1,179 @@
+<section class="content">
+    <div class="content-block">
+      <div class="block-header" *ngFor="let breadscrum of breadscrums">
+        <!-- breadcrumb -->
+        <app-breadcrumb
+          [title]="breadscrum.title"
+          [items]="breadscrum.items"
+          [active_item]="breadscrum.active"
+        >
+        </app-breadcrumb>
+      </div>
+      <div class="row clearfix">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+          <div class="card m-auto">
+            <div class="header">
+              <h2>zoom credentials</h2>
+            </div>
+            <div class="body">
+              <mat-tab-group>
+                <mat-tab>
+                  <ng-template mat-tab-label>Zoom </ng-template>
+                  <div class="card mt-3">
+                    <div class="body overflow-auto">
+                      <form [formGroup]="zoomForm">
+                        <div class="example-container mt-3">
+                       
+                          <div class="row clearfix mt-3">
+                              <div class="col-6">
+                                  <label
+                                    >Client ID<span class="mandatory"
+                                      >&nbsp;*</span
+                                    ></label
+                                  >
+                                  <mat-form-field
+                                    class="example-full-width"
+                                    appearance="outline"
+                                  >
+                                    <input
+                                      matInput
+                                      type="text'"
+                                      formControlName="clientId"
+                                    />
+                                 
+                                    <mat-error
+                                      *ngIf="
+                                        zoomForm.get('clientId')?.invalid &&
+                                        zoomForm.get('clientId')?.touched
+                                      "
+                                    >
+                                      {{
+                                        utils.getErrorMessage1(
+                                          zoomForm.get("clientId"),
+                                          "clientId"
+                                        )
+                                      }}
+                                    </mat-error>
+                                  </mat-form-field>
+                                </div>
+                                <div class="col-6">
+                                  <label
+                                    >Client Secret<span class="mandatory"
+                                      >&nbsp;*</span
+                                    ></label
+                                  >
+                                  <mat-form-field
+                                    class="example-full-width"
+                                    appearance="outline"
+                                  >
+                                    <input
+                                      matInput
+                                      [type]="shide ? 'password' : 'text'"
+                                      formControlName="clientSecret"
+                                    />
+                                    <a
+                                      href="#"
+                                      onClick="return false;"
+                                      matSuffix
+                                      (click)="shide = !shide"
+                                      [attr.aria-label]="'Hide password'"
+                                      [attr.aria-pressed]="shide"
+                                    >
+                                      <mat-icon
+                                        class="material-icons-two-tone color-icon m-3"
+                                        matSuffix
+                                      >
+                                        {{
+                                          shide ? "visibility_off" : "visibility"
+                                        }}</mat-icon
+                                      >
+                                    </a>
+                                    <mat-error
+                                      *ngIf="
+                                        zoomForm.get('clientSecret')?.invalid &&
+                                        zoomForm.get('clientSecret')?.touched
+                                      "
+                                    >
+                                      {{
+                                        utils.getErrorMessage1(
+                                          zoomForm.get("clientSecret"),
+                                          "clientSecret"
+                                        )
+                                      }}
+                                    </mat-error>
+                                  </mat-form-field>
+                                </div>
+                                <div class="col-8">
+                                  <label
+                                    >Redirect URI<span class="mandatory"
+                                      >&nbsp;*</span
+                                    ></label
+                                  >
+                                  <mat-form-field
+                                    class="example-full-width"
+                                    appearance="outline"
+                                  >
+                                    <input
+                                      matInput
+                                      [type]="rhide ? 'password' : 'text'"
+                                      formControlName="redirectUri"
+                                    />
+                                    <a
+                                      href="#"
+                                      onClick="return false;"
+                                      matSuffix
+                                      (click)="rhide = !rhide"
+                                      [attr.aria-label]="'Hide password'"
+                                      [attr.aria-pressed]="rhide"
+                                    >
+                                      <mat-icon
+                                        class="material-icons-two-tone color-icon m-3"
+                                        matSuffix
+                                      >
+                                        {{
+                                          rhide ? "visibility_off" : "visibility"
+                                        }}</mat-icon
+                                      >
+                                    </a>
+                                    <mat-error
+                                      *ngIf="
+                                        zoomForm.get('redirectUri')?.invalid &&
+                                        zoomForm.get('redirectUri')?.touched
+                                      "
+                                    >
+                                      {{
+                                        utils.getErrorMessage1(
+                                          zoomForm.get("redirectUri"),
+                                          "redirectUri"
+                                        )
+                                      }}
+                                    </mat-error>
+                                  </mat-form-field>
+                                </div>
+                          </div>
+                        </div>
+                        <div class="row" style="float: right">
+                          <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2"
+                          >
+                            <button
+                              mat-raised-button
+                              id="submit"
+                              (click)="updatezoomKeys()"
+                            >
+                              Update
+                            </button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </mat-tab>
+              </mat-tab-group>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
