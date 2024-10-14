@@ -16,13 +16,7 @@ import { AuthenService } from '@core/service/authen.service';
 })
 export class CourseViewComponent {
 
-  breadscrums = [
-    {
-      title: 'Blank',
-      items: ['Course'],
-      active: 'View Course',
-    },
-  ];
+  breadcrumbs: any[] = [];
   displayedColumns1: string[] = ['video'];
   coursePaginationModel: Partial<CoursePaginationModel>;
   courseData: any;
@@ -35,6 +29,7 @@ export class CourseViewComponent {
   coursekitData: any;
   edit = false;
   isDelete = false;
+  storedItems: string | null;
 
   constructor(
     public _courseService: CourseService,
@@ -46,6 +41,17 @@ export class CourseViewComponent {
     private authenService: AuthenService
   ) {
     // constructor
+     this.storedItems = localStorage.getItem('activeBreadcrumb');
+     if (this.storedItems) {
+      this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+      this.breadcrumbs = [
+        {
+          title: '', 
+          items: [this.storedItems],  
+          active: 'View Course',  
+        },
+      ];
+    }
     this.coursePaginationModel = {};
     this.activatedRoute.queryParams.subscribe((params: any) => {
       this.courseId = params.id;
@@ -54,7 +60,7 @@ export class CourseViewComponent {
     });
     if(this.status === 'in-active'){
       this.button = true;
-      this.breadscrums = [
+      this.breadcrumbs = [
         {
           title: 'Blank',
           items: ['Pending Course'],
@@ -62,7 +68,7 @@ export class CourseViewComponent {
         },
       ];
     }else   if(this.status === 'approved'){
-      this.breadscrums = [
+      this.breadcrumbs = [
         {
           title: 'Blank',
           items: ['Approved Course'],

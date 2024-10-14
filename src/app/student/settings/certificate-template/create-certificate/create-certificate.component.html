@@ -16,9 +16,12 @@
             <div *ngIf="!viewUrl" class="form-row">
             <form [formGroup]="certificateForm">
               <div class="form-group">
-                <label for="certificate-title">Certificate Title</label>
+                <label for="certificate-title">Certificate Title<span class="mandatory">&nbsp;*</span></label>
                 <mat-form-field appearance="outline" style="width: 100%;">
                   <input matInput id="certificate-title" placeholder="Enter Certificate Title" formControlName="title" />
+                  <mat-error *ngIf="certificateForm.get('title')?.hasError('required') && certificateForm.get('title')?.touched">
+                    Enter Certificate title
+                  </mat-error>
                 </mat-form-field>
               </div>
             </form>
@@ -87,6 +90,7 @@
                   />
                   <button
                     mat-raised-button
+                    id="submit"
                     color="primary"
                     class="insert-button"
                     (click)="insertElement()"
@@ -137,7 +141,7 @@
                   'background-size': '100% 100%',
                   'border': '0.5px solid lightgray',
                   'height': '700px',
-                  'width': '800px',
+                  'width': '700px',
                   'position': 'relative'
                 }"
                 (drop)="onDrop($event)"
@@ -192,7 +196,17 @@
                         </div>
                       </ng-container>
                       <ng-container *ngIf="element.type === 'Signature';">
+                        <div
+                          class="resizable-logo"
+                          [ngStyle]="{
+                            width: element.width + 'px',
+                            height: element.height + 'px'
+                          }"
+                          (mousedown)="startResizing($event, i)"
+                        >
                         <img [src]="element.imageUrl" alt="Signature" style="max-width: 100%; height: auto;">
+                        <div class="resizer"></div>
+                        </div>
                       </ng-container>
                       
 

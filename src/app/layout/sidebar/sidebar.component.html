@@ -22,14 +22,14 @@
           [ngClass]="(router.url.startsWith('/'+sidebarItem.id)) ? (sidebarItem.children.length > 0 ? 'active':'active-top'): ''">
             <a *ngIf="sidebarItem.children.length !== 0"
               (click)="callToggleMenu($event, sidebarItem.children.length)"
-              class="menu-top menu-toggle" (click)="navigateTo(sidebarItem.id,sidebarItem.id)">
+              class="menu-top menu-toggle" (click)="navigateTo(sidebarItem,sidebarItem)">
               <img src="{{sidebarItem.icon}}" class="rounded-circle" style="height: 23px; width:23px">
               <span class="hide-menu">{{sidebarItem.title | translate}}
               </span>
             </a>
             <a *ngIf="sidebarItem.children.length === 0"
               (click)="callToggleMenu($event, sidebarItem.children.length)"
-              class="menu-top"  (click)="navigateToMian(sidebarItem.id,sidebarItem.id)">
+              class="menu-top"  (click)="navigateToMian(sidebarItem,sidebarItem)">
               <img src="{{sidebarItem.icon}}" class="rounded-circle" style="height: 23px; width:23px">
               <span class="hide-menu">{{sidebarItem.title | translate}}
               </span>
@@ -38,7 +38,7 @@
               <li *ngFor="let sidebarSubItem of sidebarItem.children"
                 [routerLinkActive]="sidebarSubItem.children.length > 0 ? '' : 'active'">
 
-                <a   (click)="callToggleMenu($event, sidebarItem.children.length)"  (click)="navigateTo(sidebarItem.id,sidebarSubItem.id)"
+                <a   (click)="callToggleMenu($event, sidebarItem.children.length)"  (click)="navigateTo(sidebarItem,sidebarSubItem)"
                 [routerLink]="sidebarSubItem.children.length > 0 ? null :[sidebarItem.id +'/'+sidebarSubItem.id]"
                   [ngClass]="sidebarSubItem.class">
                   {{sidebarSubItem.title}}
@@ -48,7 +48,7 @@
                     [routerLinkActive]="sidebarSubItem2.children.length > 0 ? '' : 'active'">
                     <a
                       (click)="callToggleMenu($event,sidebarSubItem.children.length)"
-                       (click)="navigateToSubItem2(sidebarItem.id,sidebarSubItem.id,sidebarSubItem2.id)"
+                       (click)="navigateToSubItem2(sidebarItem,sidebarSubItem,sidebarSubItem2)"
                        [routerLink]="sidebarSubItem2.children.length > 0 ? null :[sidebarItem.id +'/'+sidebarSubItem.id+'/'+sidebarSubItem2.id]"
                       [ngClass]="sidebarSubItem2.class">
                       {{sidebarSubItem2.title | translate}}

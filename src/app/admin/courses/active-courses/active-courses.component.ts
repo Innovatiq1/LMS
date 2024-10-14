@@ -24,13 +24,13 @@ import { AuthenService } from '@core/service/authen.service';
   styleUrls: ['./active-courses.component.scss'],
 })
 export class ActiveCoursesComponent {
-  breadscrums = [
-    {
-      title: 'Blank',
-      items: ['Submitted Courses'],
-      active: 'Approved Courses',
-    },
-  ];
+  // breadscrums = [
+  //   {
+  //     title: 'Blank',
+  //     items: ['Submitted Courses'],
+  //     active: 'Approved Courses',
+  //   },
+  // ];
   displayedColumns = [
     'name',
     'status',
@@ -235,16 +235,9 @@ export class ActiveCoursesComponent {
     doc.save('Approved Courses-list.pdf');
   }
   performSearch() {
-    // if (this.searchTerm) {
-    //   this.courseData = this.courseData?.filter(
-    //     (item: any) => {
-    //       const searchList = item.title.toLowerCase();
-    //       return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1;
-    //     }
-    //   );
-    // } else {
+    this.paginator.pageIndex = 0;
+    this.coursePaginationModel.page = 1;
       this.getAllCourse();
-    // }
   }
   private refreshTable() {
     this.paginator._changePageSize(this.paginator.pageSize);

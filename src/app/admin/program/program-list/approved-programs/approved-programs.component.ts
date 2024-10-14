@@ -26,13 +26,7 @@ import { AuthenService } from '@core/service/authen.service';
   styleUrls: ['./approved-programs.component.scss']
 })
 export class ApprovedProgramsComponent {
-  breadscrums = [
-    {
-      title: 'Approved Programs',
-      items: ['Submitted Programs'],
-      active: 'Approved Programs',
-    },
-  ];
+
 
   displayedColumns: string[] = [
     'name',
@@ -136,6 +130,8 @@ export class ApprovedProgramsComponent {
     );
   }
   performSearch() {
+    this.coursePaginationModel.page = 1;
+    this.paginator.pageIndex = 0;
     this.getProgramList();
     // if(this.searchTerm){
     // this.dataSource = this.dataSource?.filter((item: any) =>{

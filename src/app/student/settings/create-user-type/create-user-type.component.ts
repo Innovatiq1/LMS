@@ -272,6 +272,8 @@ export class CreateUserTypeComponent {
                     title: 'Successful',
                     text: 'Module updated succesfully',
                     icon: 'success',
+                  }).then(() => {
+                    window.location.reload();
                   });
                 }
                 resolve(response);

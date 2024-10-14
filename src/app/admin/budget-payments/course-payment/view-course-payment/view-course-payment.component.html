@@ -14,7 +14,7 @@
                                 <div class="p-4">
                                     <ul class="list-group list-group-unbordered">
                                         <li class="list-group-item">
-                                            <b>Name</b>
+                                            <b>Trainee</b>
                                             <div class="profile-desc-item float-end">{{name | titlecase}}</div>
                                         </li>
                                         <li class="list-group-item">
@@ -22,7 +22,7 @@
                                             <div class="profile-desc-item float-end">{{email}}</div>
                                         </li>
                                         <li class="list-group-item">
-                                            <b>Course Name</b>
+                                            <b>Course</b>
                                             <div class="profile-desc-item float-end">{{course | titlecase}}</div>
                                         </li>
                                     </ul>
@@ -51,12 +51,13 @@
                                             <div class="profile-desc-item float-end">{{createdAt |date}}</div>
                                         </li>
                                         <li class="list-group-item">
-                                            <b>Amount</b>
+                                            <b>Fee</b>
                                             <div class="profile-desc-item float-end">${{price}}.00</div>
                                         </li>
                                         <li class="list-group-item">
                                             <b>Payment Status</b>
-                                            <div class="profile-desc-item float-end">{{status | titlecase}}</div>
+                                            <div class="profile-desc-item float-end"><span class="badge badge-solid-green">
+                                                <span class="status-dot"></span>{{status | titlecase}}</span></div>
                                         </li>
                                         <li class="list-group-item" *ngIf="payment_intent !== null">
                                             <b>Payment Intent</b>

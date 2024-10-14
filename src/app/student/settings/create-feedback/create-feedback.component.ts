@@ -16,7 +16,7 @@ export class CreateFeedbackComponent  {
     {
       title: 'Feedback',
       items: ['Customize'],
-      active: 'Create Feedback Form',
+      active: 'Survey',
     },
   ];
   questionTypes: any = [

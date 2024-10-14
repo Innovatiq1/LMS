@@ -20,13 +20,7 @@ import { StudentsService } from 'app/admin/students/students.service';
   styleUrls: ['./create-program.component.scss']
 })
 export class CreateProgramComponent {
-  breadscrums = [
-    {
-      title: 'Create Program',
-      items: ['Program'],
-      active: 'Create Program',
-    },
-  ];
+  breadcrumbs: any[] =[]
   config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -80,6 +74,7 @@ export class CreateProgramComponent {
   configurationSubscription!: Subscription;
   defaultCurrency: string = '';
   certificates: any;
+  storedItems: string | null;
 
   constructor(private route: ActivatedRoute,
     private fb: FormBuilder,
@@ -93,6 +88,18 @@ export class CreateProgramComponent {
     private cd: ChangeDetectorRef,
     private formService: FormService
   ) {
+
+    this.storedItems = localStorage.getItem('activeBreadcrumb');
+    if (this.storedItems) {
+     this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+     this.breadcrumbs = [
+       {
+         title: '', 
+         items: [this.storedItems],  
+         active: 'Create Program',  
+       },
+     ];
+   }
     let urlPath = this.router.url.split('/')
     this.editPermission = urlPath.includes('edit-program');
     this.subscribeParams = this.activatedRoute.params.subscribe((params: any) => {
@@ -123,10 +130,10 @@ export class CreateProgramComponent {
 
     });
     if (this.editPermission === true) {
-      this.breadscrums = [
+      this.breadcrumbs = [
         {
           title: 'Edit Program',
-          items: ['Program'],
+          items: [this.storedItems],
           active: 'Edit Program',
         },
       ];
@@ -381,7 +388,7 @@ export class CreateProgramComponent {
                   text: 'Program created succesfully',
                   icon: 'success',
                 });
-                this.router.navigate(['/admin/program/submitted-program/pending-program'])
+                this.router.navigate(['/admin/program/submitted-program/submitted-pending-program'])
               },
               (err: any) => {
                 Swal.fire(

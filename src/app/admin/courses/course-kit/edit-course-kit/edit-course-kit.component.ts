@@ -24,7 +24,7 @@ export class EditCourseKitComponent {
   breadscrums = [
     {
       title: 'Edit Course Kit',
-      items: ['Settings'],
+      items: ['Course kit'],
       active: 'Edit Course Kit',
     },
   ];

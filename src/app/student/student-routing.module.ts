@@ -635,7 +635,7 @@ const routes: Routes = [
 
   
 
-  { path: '**', component: Page404Component },
+  // { path: '**', component: Page404Component },
 ];
 
 @NgModule({

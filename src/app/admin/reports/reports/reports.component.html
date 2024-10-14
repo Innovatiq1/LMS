@@ -21,7 +21,9 @@
                                                     <button mat-raised-button id="submit">Filter Report</button>
                                                 </div>
                                             </li>
-                                           
+                                            <li>
+                                                <span style="font-weight: bold">Export as</span>
+                                              </li>
                                             <li>
                                                 <div class="export-button m-l-10" matTooltip="XLSX">
                                                     <img src="assets/excel.svg" alt="" (click)="exportExcel()" />
@@ -40,22 +42,22 @@
                                         <table mat-table [dataSource]="courseData" matSort
                                             class="mat-cell advance-table">
                                             <ng-container matColumnDef="name">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header>Course
+                                                <mat-header-cell *matHeaderCellDef >Course
                                                 </mat-header-cell>
-                                                <mat-cell class="name" [class.name]="isCourse" *matCellDef="let row"
+                                                <mat-cell  [class.name]="isCourse" *matCellDef="let row"
                                                     ><span class="mobile-label">Course
-                                                        Name:</span> <span>{{row.title |titlecase}}</span>
+                                                        Name:</span> <span class="name">{{row.title |titlecase}}</span>
                                                 </mat-cell>
                                             </ng-container>
                                             <ng-container matColumnDef="code">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header>Course Code
+                                                <mat-header-cell *matHeaderCellDef >Course Code
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let row" ><span
                                                         class="mobile-label">Course Code:</span> {{row.courseCode}}
                                                 </mat-cell>
                                             </ng-container>
                                             <ng-container matColumnDef="Users">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                <mat-header-cell *matHeaderCellDef 
                                                     class="compulsory-count-header">Users
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let row"
@@ -68,7 +70,7 @@
                                                 </mat-cell>
                                             </ng-container>
                                             <ng-container matColumnDef="startDate">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                <mat-header-cell *matHeaderCellDef 
                                                     class="compulsory-count-header">Start Date
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let row" > <span
@@ -77,7 +79,7 @@
                                                 </mat-cell>
                                             </ng-container>
                                             <ng-container matColumnDef="endDate">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                <mat-header-cell *matHeaderCellDef 
                                                     class="compulsory-count-header">End Date
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let row" > <span
@@ -94,11 +96,16 @@
                                                 [style.cursor]="'pointer'" matRipple>
                                             </mat-row>
                                         </table>
+                                        <mat-paginator [length]="totalItems" 
+               [pageSize]="coursePaginationModel.limit" 
+               [pageSizeOptions]="pageSizeArr" 
+               (page)="pageSizeChange($event)">
+</mat-paginator>
 
-                                        <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems"
+                                        <!-- <mat-paginator  #paginator [length]="totalItems"
                                             (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr"
                                             aria-label="select pagination option">
-                                        </mat-paginator>
+                                        </mat-paginator> -->
                                     </div>
                                 </div>
                             </div>

@@ -18,8 +18,8 @@ export class ViewCompletionComponent {
   breadscrums = [
     {
       title: 'Blank',
-      items: ['Completed Courses'],
-      active: 'View Completion Course',
+      items: ['Discount Verification'],
+      active: 'View Discount Verification',
     },
   ];
 
@@ -52,28 +52,32 @@ export class ViewCompletionComponent {
     if(params['verify'] === 'false') {
       this.verify = true;
     }
-    this.breadscrums = [
-      {
-        title: 'Blank',
-        items: ['Pending Courses'],
-        active: 'View Pending Courses',
-      },
-    ];
+    // this.breadscrums = [
+    //   {
+    //     title: 'Blank',
+    //     items: ['Pending Courses'],
+    //     active: 'View Pending Courses',
+    //   },
+    // ];
   } else if(params['status'] === 'approved') {
     this.status = false;
     this.showTab = false;
-    this.breadscrums = [
-      {
-        title: 'Blank',
-        items: ['Approved Courses'],
-        active: 'View Approved Courses',
-      },
-    ];
+    // this.breadscrums = [
+    //   {
+    //     title: 'Blank',
+    //     items: ['Approved Courses'],
+    //     active: 'View Approved Courses',
+    //   },
+    // ];
   } else if(params['status'] === 'completed'){
     this.showTab = true;
   }
   this.paramStatus =  params['status'];
     });
+  }
+
+  back(){
+    window.history.back()
   }
 
     ngOnInit(): void {

@@ -29,19 +29,19 @@
               ></p>
 
               <div class="row">
-                <div class="col-3">
+                <!-- <div class="col-3">
                   <span class="day_font">{{
                     courseDetails?.course_duration_in_days
                   }}</span>
                   <span class="dis_font">Days</span>
-                </div>
-                <div class="col-4">
+                </div> -->
+                <!-- <div class="col-4">
                   <span class="day_font">{{
                     courseDetails?.training_hours
                   }}</span>
                   <span class="dis_font">Hours</span>
-                </div>
-                <div class="col-5">
+                </div> -->
+                <div style="padding-left: 20px;">
                   <span class="day_font">${{ courseDetails?.fee || 0 }} </span>
                   <span class="dis_font">Fee</span>
                 </div>
@@ -220,7 +220,7 @@
                         <div
                           class="d-flex justify-content-between shadow-lg rounded-3 p-2"
                         >
-                          <div>
+                          <!-- <div>
                             <span class="day_font">{{
                               courseDetails?.course_duration_in_days
                             }}</span>
@@ -231,7 +231,7 @@
                               courseDetails?.training_hours
                             }}</span>
                             <span class="dis_font">Hours</span>
-                          </div>
+                          </div> -->
                           <div>
                             <span class="day_font"
                               >${{ courseDetails?.fee || 0 }}</span
@@ -648,7 +648,7 @@
               ></p>
 
               <div class="row">
-                <div class="col-3">
+                <!-- <div class="col-3">
                   <span class="day_font">{{
                     classDetails?.courseId?.course_duration_in_days
                   }}</span>
@@ -659,11 +659,13 @@
                     classDetails?.courseId?.training_hours
                   }}</span>
                   <span class="dis_font">Hours</span>
-                </div>
-                <div class="col-5">
-                  <span class="day_font"
+                </div> -->
+                <div  style="padding-left: 20px;">
+                  <!-- <span class="day_font"
                     >{{ classDetails?.courseId?.fee }}$</span
                   >
+                  <span class="dis_font">Fee</span> -->
+                  <span class="day_font">${{ classDetails?.courseId?.fee || 0 }} </span>
                   <span class="dis_font">Fee</span>
                 </div>
               </div>
@@ -683,7 +685,7 @@
                   class="text-default"
                   [innerHTML]="
                     classDetails?.courseId?.course_detailed_description
-                      | bulletPoints
+                      | bulletPoints 
                   "
                 ></p>
 
@@ -887,7 +889,7 @@
                         <div
                           class="d-flex justify-content-between shadow-lg rounded-3 p-2"
                         >
-                          <div>
+                          <!-- <div>
                             <span class="day_font">{{
                               classDetails?.courseId?.course_duration_in_days
                             }}</span>
@@ -898,7 +900,7 @@
                               classDetails?.courseId?.training_hours
                             }}</span>
                             <span class="dis_font">Hours</span>
-                          </div>
+                          </div> -->
                           <div>
                             <span class="day_font"
                               >{{ classDetails?.courseId?.fee }}$</span

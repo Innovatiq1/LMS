@@ -88,7 +88,7 @@ svg {
             white-space: nowrap;
             &.name{
                 font-weight: 700;
-                font-size: 14px;
+                font-size: 15px;
             }
   
             &.and-separator {
@@ -134,9 +134,12 @@ svg {
   
   .updated-time {
     margin-top: 5px;
-    font-size: 14px;
+    font-size: 15px;
     color: #918f8f;
     font-weight: 400;
+  }
+  .text_bold{
+    font-weight: bold;
   }
   
   

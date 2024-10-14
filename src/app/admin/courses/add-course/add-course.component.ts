@@ -101,13 +101,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   isExamTypeCertificate: boolean = false;
   isAfterExamType: boolean = false;
   draftId!: string;
-  breadscrums = [
-    {
-      title: 'Create Course',
-      items: ['Course'],
-      active: 'Create Course',
-    },
-  ];
+  breadcrumbs:any[] = []
   config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -138,6 +132,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   vendors: any;
   certificates: any;
   dept: any;
+  storedItems: string | null;
 
   constructor(
     private router: Router,
@@ -155,23 +150,35 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     public utils: UtilsService,
     private commonService: CommonService
   ) {
+
+    this.storedItems = localStorage.getItem('activeBreadcrumb');
+    if (this.storedItems) {
+     this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+     this.breadcrumbs = [
+       {
+         title: '', 
+         items: [this.storedItems],  
+         active: 'Create Program',  
+       },
+     ];
+   }
     let urlPath = this.router.url.split('/');
     this.editUrl = urlPath.includes('edit-course');
     this.viewUrl = urlPath.includes('view-course');
 
     if (this.editUrl === true) {
-      this.breadscrums = [
+      this.breadcrumbs = [
         {
           title: 'Edit Course',
-          items: ['Course'],
+          items: ['Pending Courses'],
           active: 'Edit Course',
         },
       ];
     } else if (this.viewUrl === true) {
-      this.breadscrums = [
+      this.breadcrumbs = [
         {
           title: 'View Course',
-          items: ['Course'],
+          items: ['Course Name'],
           active: 'View Course',
         },
       ];
@@ -186,7 +193,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       main_category: ['', [Validators.required]],
       sub_category: ['', [Validators.required]],
       fee: new FormControl('', [Validators.pattern(/^\d+(\.\d+)?$/)]),
-      currency_code: ['', [Validators.required]],
+      currency_code: [''],
 
       course_duration_in_days: new FormControl('', [
         Validators.min(1),
@@ -660,7 +667,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       (certificate: any) =>
         certificate.title === this.firstFormGroup.value.certificate_temp
     );
-    if (this.firstFormGroup.valid) {
+    // if (this.firstFormGroup.valid) {
       const courseData = this.firstFormGroup.value;
       let creator = JSON.parse(localStorage.getItem('user_data')!).user.name;
       let payload = {
@@ -735,10 +742,11 @@ export class AddCourseComponent implements OnInit, OnDestroy {
             });
         }
       });
-    } else {
-      this.firstFormGroup.markAsUntouched();
-      this.isWbsSubmitted = true;
-    }
+    // } 
+    // else {
+    //   this.firstFormGroup.markAsUntouched();
+    //   this.isWbsSubmitted = true;
+    // }
   }
   onSelect(event: any) {
     if (event.value == 'paid') {
@@ -772,12 +780,15 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       mainCategory: this.courseService.getMainCategories(),
       subCategory: this.courseService.getSubCategories(),
       fundingGrant: this.courseService.getFundingGrant(),
-      courseKit: this.courseService.getCourseKit(),
+      courseKit: this.courseService.getCourseKit({isAll: true}),
       assessment: this.questionService.getQuestionJson({
         status: 'approved',
+        isAll: true,
         companyId: userId,
       }),
       exam_assessment: this.questionService.getExamQuestionJson({
+        status: 'approved',
+        isAll: true,
         companyId: userId,
       }),
       tutorial: this.questionService.getTutorialQuestionJson({
@@ -794,15 +805,15 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         mainCategory: any;
         subCategory: any;
         fundingGrant: any;
-        courseKit: { docs: any };
+        courseKit: any;
       }) => {
         this.mainCategories = response.mainCategory;
         this.allSubCategories = response.subCategory;
         this.fundingGrants = response.fundingGrant.reverse();
-        this.courseKits = response.courseKit?.docs;
-        this.assessments = response.assessment.data.docs;
-        this.exam_assessments = response.exam_assessment.data.docs;
-        this.tutorials = response.tutorial.data.docs;
+        this.courseKits = response.courseKit?.reverse();
+        this.assessments = response.assessment.data.reverse();
+        this.exam_assessments = response.exam_assessment.data.reverse();
+        this.tutorials = response.tutorial.data.reverse();
         this.feedbacks = response.survey.data.docs;
       }
     );
@@ -817,7 +828,8 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       (certificate: any) =>
         certificate.title === this.firstFormGroup.value.certificate_temp
     );
-    if (this.firstFormGroup.valid) {
+    console.log("form",this.firstFormGroup)
+    // if (this.firstFormGroup.valid) {
       const courseData = this.firstFormGroup.value;
       let creator = JSON.parse(localStorage.getItem('user_data')!).user.name;
       let userId = JSON.parse(localStorage.getItem('user_data')!).user
@@ -888,7 +900,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
 
               this.courseAdded = true;
               this.router.navigate([
-                '/admin/courses/submitted-courses/pending-courses',
+                '/admin/courses/submitted-courses/submitted-pending-courses',
               ]);
             },
             (error) => {
@@ -897,10 +909,11 @@ export class AddCourseComponent implements OnInit, OnDestroy {
           );
         }
       });
-    } else {
-      this.firstFormGroup.markAllAsTouched();
-      this.isWbsSubmitted = true;
-    }
+    // }
+    //  else {
+    //   this.firstFormGroup.markAllAsTouched();
+    //   this.isWbsSubmitted = true;
+    // }
   }
   getData() {
     forkJoin({
@@ -916,10 +929,10 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     }).subscribe((response: any) => {
       this.mainCategories = response.mainCategory;
       this.fundingGrants = response.fundingGrant;
-      this.courseKits = response.courseKit?.docs;
-      this.assessments = response.assessment?.data.docs;
-      this.exam_assessments = response.exam_assessment.data.docs;
-      this.tutorials = response.tutorial?.data.docs;
+      this.courseKits = response.courseKit?.reverse();
+      this.assessments = response.assessment?.data.reverse();
+      this.exam_assessments = response.exam_assessment.data.reverse();
+      this.tutorials = response.tutorial?.data.reverse();
       this.feedbacks = response.survey?.data.docs;
       this.allSubCategories = response.subCategory;
       this.course = response.course;

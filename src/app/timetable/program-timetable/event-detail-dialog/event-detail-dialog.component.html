@@ -17,7 +17,7 @@
     </div>
     <div class="col-md-2" *ngIf="!code">
       <p class="info-text">
-        <span class="highlight">{{ data.courseCode }}</span>
+        <span class="highlight">{{ data.courseCode|| '--'}} </span>
       </p>
     </div>
 
@@ -40,11 +40,11 @@
       </p>
     </div>
     <div class="col-md-3">
-      <p class="info-text">{{commonRoles?.INSTRUCTOR_ROLE}} Cost</p>
+      <p class="info-text">Department</p>
     </div>
     <div class="col-md-4">
       <p class="info-text">
-        <span class="highlight">$ {{ data.instructorCost }}.00</span>
+        <span class="highlight"> {{ data.department }}</span>
       </p>
     </div>
     <div class="col-md-3">

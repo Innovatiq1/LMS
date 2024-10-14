@@ -38,12 +38,7 @@ export class StudentPendingListComponent {
     // 'Instructor Fee',
     
   ];
-  breadscrums = [
-    {
-      items: ['Registered Program'],
-      active: 'Pending Programs',
-    },
-  ];
+
 
   dataSource: any;
   // selection = new SelectionModel<any>(true, []); 
@@ -170,6 +165,8 @@ export class StudentPendingListComponent {
 
     // );
     // } else {
+      this.coursePaginationModel.page = 1;
+      this.paginator.pageIndex = 0;
       this.getRegisteredClasses();
 
     // }

@@ -210,7 +210,6 @@ export class DraftedCoursesComponent {
     }
     this.paginator.pageIndex = 0;
     this.coursePaginationModel.page = 1;
-console.log("course",body)
     this._courseService
       .getFilteredCourseData(body, { ...this.coursePaginationModel })
       .subscribe((response) => {
@@ -265,14 +264,10 @@ console.log("course",body)
     doc.save('AllCourses-list.pdf');
   }
   performSearch() {
-    // if (this.searchTerm) {
-    //   this.courseData = this.courseData?.filter((item: any) => {
-    //     const searchList = item.title.toLowerCase();
-    //     return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1;
-    //   });
-    // } else {
+    this.paginator.pageIndex = 0;
+    this.coursePaginationModel.page = 1;
       this.getAllCourses();
-    // }
+    
   }
   viewActiveProgram(id: string, status: string): void {
     this.route.navigate(['/admin/courses/view-course/', 'data.id']);

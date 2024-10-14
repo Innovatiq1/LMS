@@ -498,29 +498,85 @@ copyPreviewToContentToConvert() {
   }
 }
 
+// generateCertificatePDF(): void {
+//   const data = document.querySelector('.certificate-preview') as HTMLElement;
+//   html2canvas(data, {
+//     scale: 3,
+//     useCORS: true, 
+//     backgroundColor: null, 
+//   }).then((canvas) => {
+//     const imgWidth = 210; 
+//     const pageHeight=297;
+//     const imgHeight = (canvas.height * imgWidth) / canvas.width;
+//     const contentDataURL = canvas.toDataURL('image/png');
+
+//     const pdf = new jsPDF('p', 'mm', 'a4');
+//     const position = 0;
+    
+//     pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+    
+//     if (imgHeight > pageHeight) {
+//       let remainingHeight = imgHeight;
+//       let yPosition = position;
+
+//       while (remainingHeight > 0) {
+//         remainingHeight -= pageHeight;
+//         yPosition = Math.max(yPosition + pageHeight, pageHeight);
+//         pdf.addPage();
+//         pdf.addImage(contentDataURL, 'PNG', 0, yPosition, imgWidth, imgHeight);
+//       }
+//     }
+
+//     pdf.save('certificate.pdf')
+//     // const pdfBlob = pdf.output('blob');
+
+//     // this.update(pdfBlob);
+//     this.dialogRef.close();
+//   });
+// }
 generateCertificatePDF(): void {
   const data = document.querySelector('.certificate-preview') as HTMLElement;
+  
   html2canvas(data, {
-    scale: 2,
+    scale: 3,
     useCORS: true, 
     backgroundColor: null, 
   }).then((canvas) => {
-    const imgWidth = 210; 
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    const imgWidth = 216; 
+    const pageHeight = 279; 
+    const imgHeight = (canvas.height * imgWidth) / canvas.width; 
     const contentDataURL = canvas.toDataURL('image/png');
 
-    const pdf = new jsPDF('p', 'mm', 'a4');
+    
+    const pdf = new jsPDF('p', 'mm', [216, imgHeight]);
     const position = 0;
     
     pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
-
     
-    const pdfBlob = pdf.output('blob');
+    
+    if (imgHeight > pageHeight) {
+      let remainingHeight = imgHeight;
+      let yPosition = position;
 
-    this.update(pdfBlob);
+      while (remainingHeight > 0) {
+        remainingHeight -= pageHeight;
+        yPosition = Math.max(yPosition + pageHeight, pageHeight);
+        pdf.addPage();
+        pdf.addImage(contentDataURL, 'PNG', 0, yPosition, imgWidth, imgHeight);
+      }
+    }
+
+    // pdf.save('certificate.pdf');
+     const pdfBlob = pdf.output('blob');
+
+     this.update(pdfBlob);
     this.dialogRef.close();
   });
 }
+
+
+
+
 
 
 update(pdfBlob: Blob) {
@@ -757,7 +813,7 @@ renderHiddenCertificatePreview(uniqueContainerId: string) {
              background-size: 100% 100%; 
              border: 0.5px solid lightgray; 
              height: 700px; 
-             width: 800px; 
+             width: 700px; 
              position: relative;"
     >
       ${this.elements.map(element => `
@@ -774,7 +830,7 @@ renderHiddenCertificatePreview(uniqueContainerId: string) {
           </div>
           <div style="font-size: ${element.fontSize}px; color: ${element.color};">
              
-            ${element.type === 'Signature' ? `<img src="${element.imageUrl}" style="width: ${element.width}px; height: ${element.height}px;">` : element.content}
+            ${element.type === 'Signature' ? `<img src="${element.imageUrl}" style="max-width: 100%; height: auto;">` : element.content}
           </div>
         </div>
       `).join('')}
@@ -782,9 +838,64 @@ renderHiddenCertificatePreview(uniqueContainerId: string) {
   `;
 }
 
+// generatePDFForRow(row: any, containerId: string): Promise<void> {
+//   return new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       const data = document.getElementById(containerId) as HTMLElement;
 
+//       if (!data) {
+//         console.error('Certificate preview element not found');
+//         reject();
+//         return;
+//       }
 
+//       html2canvas(data, {
+//         scale: 3,  
+//         useCORS: true,
+//         backgroundColor: null,
+//       }).then((canvas) => {
+//         const imgWidth = 210; 
+//         const pageHeight = 297; 
+//         const imgHeight = (canvas.height * imgWidth) / canvas.width;
+//         const contentDataURL = canvas.toDataURL('image/png');
 
+//         const pdf = new jsPDF('p', 'mm', 'a4');
+//         const position = 0;
+
+//         pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+
+        
+//         if (imgHeight > pageHeight) {
+//           let remainingHeight = imgHeight;
+//           let yPosition = position;
+
+//           while (remainingHeight > 0) {
+//             remainingHeight -= pageHeight;
+//             yPosition = Math.max(yPosition + pageHeight, pageHeight);
+//             pdf.addPage();
+//             pdf.addImage(contentDataURL, 'PNG', 0, yPosition, imgWidth, imgHeight);
+//           }
+//         }
+//         //  pdf.save('certificate.pdf');
+
+//         const pdfBlob = pdf.output('blob');
+
+//         this.uploadGeneratedPDF(row, pdfBlob)
+//           .then(() => {
+//             document.body.removeChild(data);
+//             resolve();
+//           })
+//           .catch((error) => {
+//             document.body.removeChild(data);
+//             reject();
+//           });
+//       }).catch((error) => {
+//         console.error('Error generating PDF:', error);
+//         reject();
+//       });
+//     }, 1000); 
+//   });
+// }
 generatePDFForRow(row: any, containerId: string): Promise<void> {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -801,17 +912,17 @@ generatePDFForRow(row: any, containerId: string): Promise<void> {
         useCORS: true,
         backgroundColor: null,
       }).then((canvas) => {
-        const imgWidth = 210; 
-        const pageHeight = 297; 
-        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        const imgWidth = 216; 
+        const pageHeight = 279; 
+        const imgHeight = (canvas.height * imgWidth) / canvas.width; 
         const contentDataURL = canvas.toDataURL('image/png');
 
-        const pdf = new jsPDF('p', 'mm', 'a4');
+        
+        const pdf = new jsPDF('p', 'mm', [216, imgHeight]);
         const position = 0;
 
         pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
 
-        
         if (imgHeight > pageHeight) {
           let remainingHeight = imgHeight;
           let yPosition = position;
@@ -823,6 +934,8 @@ generatePDFForRow(row: any, containerId: string): Promise<void> {
             pdf.addImage(contentDataURL, 'PNG', 0, yPosition, imgWidth, imgHeight);
           }
         }
+        // If you want to save the file locally for testing, uncomment this line
+        //  pdf.save('certificate.pdf');
 
         const pdfBlob = pdf.output('blob');
 
@@ -877,35 +990,85 @@ uploadGeneratedPDF(row: any, pdfBlob: Blob): Promise<void> {
 }
 
 
+// enableExam() {
+//   if (this.selectedRows.length === 0) {
+//     console.log('No rows selected');
+//     return;
+//   }
 
+//   let examAlreadyAssigned = false;
 
+//   this.selectedRows.forEach((row: any) => {
+//     if (row.isExamAssigned || row.examassessmentanswers?.answers?.length === 0) {
+//       examAlreadyAssigned = true;
+//     }
+//   });
+//   if (examAlreadyAssigned) {
+//     Swal.fire({
+//       title: 'Warning',
+//       text: 'Exam already enabled for one or more selected records.',
+//       icon: 'warning'
+//     });
+//     return;
+//   }
 
+//   this.selectedRows.forEach((row: any) => {
+//     const isExamAssessmentEmpty = Object.keys(row.examassessmentanswers).length === 0;
 
+//     if (isExamAssessmentEmpty && row.assessmentanswers && !row.isExamAssigned) {
+//       const studentClassId = row._id;
+//       const studentId = row.studentId._id;
+//       const examAssessmentId = row.courseId.exam_assessment;
+//       const assessmentAnswerId = row.assessmentanswers.id;
+//       const courseId = row.courseId._id;
+//       let companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
 
+//       const requestBody = {
+//         studentId,
+//         examAssessmentId,
+//         assessmentAnswerId,
+//         studentClassId,
+//         companyId,
+//         courseId
+//       };
+
+//       this.assessmentService.assignExamAssessment(requestBody).subscribe(
+//         (response: any) => {
+//           Swal.fire({
+//             title: 'Assigned!',
+//             text: 'Exam Assigned Successfully!',
+//             icon: 'success'
+//           });
+//           this.clearSelection();
+//         }
+//       );
+//     } else {
+//       // console.log(`Exam not enabled for row with student ID: ${row.studentId._id} - Conditions not met.`);
+//       Swal.fire({
+//         title: 'Warning',
+//         text: 'The exam is already enabled for selected courses.',
+//         icon: 'warning'
+//       });
+//       return;
+//     }
+//   });
+  
+// }
 enableExam() {
   if (this.selectedRows.length === 0) {
     console.log('No rows selected');
     return;
   }
 
-  let examAlreadyAssigned = false;
+  let examsEnabledCount = 0;
+  let alreadyAssignedCount = 0;
 
-  this.selectedRows.forEach((row: any) => {
+  const promises = this.selectedRows.map((row: any) => {
+    const isExamAssessmentEmpty = Object.keys(row.examassessmentanswers || {}).length === 0;
     if (row.isExamAssigned || row.examassessmentanswers?.answers?.length === 0) {
-      examAlreadyAssigned = true;
-    }
-  });
-  if (examAlreadyAssigned) {
-    Swal.fire({
-      title: 'Warning',
-      text: 'Exam already enabled for one or more selected records.',
-      icon: 'warning'
-    });
-    return;
-  }
-
-  this.selectedRows.forEach((row: any) => {
-    const isExamAssessmentEmpty = Object.keys(row.examassessmentanswers).length === 0;
+      alreadyAssignedCount++;
+      return Promise.resolve(); 
+    } 
 
     if (isExamAssessmentEmpty && row.assessmentanswers && !row.isExamAssigned) {
       const studentClassId = row._id;
@@ -924,28 +1087,47 @@ enableExam() {
         courseId
       };
 
-      this.assessmentService.assignExamAssessment(requestBody).subscribe(
-        (response: any) => {
-          Swal.fire({
-            title: 'Assigned!',
-            text: 'Exam Assigned Successfully!',
-            icon: 'success'
-          });
-          this.clearSelection();
-        }
-      );
-    } else {
-      // console.log(`Exam not enabled for row with student ID: ${row.studentId._id} - Conditions not met.`);
-      Swal.fire({
-        title: 'Warning',
-        text: 'The exam is already enabled for selected courses.',
-        icon: 'warning'
+      return this.assessmentService.assignExamAssessment(requestBody).toPromise().then(() => {
+        examsEnabledCount++;
+      }).catch((error) => {
+        console.log('Failed to assign exam for row:', row, error);
       });
-      return;
+    } else {
+      alreadyAssignedCount++;
+      return Promise.resolve();
     }
   });
-  
+
+  Promise.all(promises).then(() => {
+    let message = '';
+    if (examsEnabledCount > 0) {
+      const enabledText = examsEnabledCount > 1 ? 'exams' : 'exam';
+      message += `${examsEnabledCount} ${enabledText} enabled successfully! `;
+    }
+    
+    if (alreadyAssignedCount > 0) {
+      const alreadyText = alreadyAssignedCount > 1 ? 'exams are' : 'exam is';
+      message += `${examsEnabledCount > 0 ? 'For other' : ''} selected ${alreadyText} already enabled.`;
+    }
+
+    Swal.fire({
+      title: 'Enable Exams',
+      text: message,
+      icon: examsEnabledCount > 0 ? 'success' : 'warning',
+    }).then(() => {
+      this.clearSelection(); 
+      this.getCompletedList(); 
+    });
+  }).catch((error) => {
+    console.log('Error enabling exams:', error);
+    Swal.fire({
+      title: 'Error',
+      text: 'There was an error enabling exams.',
+      icon: 'error',
+    });
+  });
 }
+
 clearSelection() {
   this.selection.clear();
   this.updateSelectedRows();

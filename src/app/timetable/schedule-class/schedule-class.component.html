@@ -1,11 +1,8 @@
 <section class="content">
   <div class="content-block">
-    <div class="block-header" *ngFor="let breadscrum of breadscrums">
+    <div class="block-header" >
       <!-- breadcrumb -->
       <app-breadcrumb
-        [title]="breadscrum.title"
-        [items]="breadscrum.items"
-        [active_item]="breadscrum.active"
       >
       </app-breadcrumb>
     </div>
@@ -137,7 +134,7 @@
                     *matCellDef="let row"
                     [routerLink]="isView ? ['/timetable/schedule-class/view-schedule-class', row.id] : null" class="payment-cell"
                   >
-                    <span class="mobile-label">Amount:</span><span>$</span> {{ row.instructorCost||0 }}.00</mat-cell
+                    <span class="mobile-label">Trainer Fee:</span><span>$</span> {{ row.instructorCost||0 }}.00</mat-cell
                   >
                 </ng-container>
                 <ng-container matColumnDef="Department">
@@ -160,7 +157,7 @@
                     *matCellDef="let row"
                     [routerLink]="isView ? ['/timetable/schedule-class/view-schedule-class', row.id] : null"
                   >
-                    <span class="mobile-label">Start:</span
+                    <span class="mobile-label">Start Date:</span
                     >{{ row.sessions[0]?.sessionStartDate | date }}
                   </mat-cell>
                 </ng-container>
@@ -173,7 +170,7 @@
                     *matCellDef="let row"
                     [routerLink]="isView ? ['/timetable/schedule-class/view-schedule-class', row.id] : null"
                   >
-                    <span class="mobile-label">End:</span
+                    <span class="mobile-label">End Date:</span
                     >{{ row.sessions[0]?.sessionEndDate | date }}
                   </mat-cell>
                 </ng-container>
@@ -205,7 +202,7 @@
                     *matCellDef="let row"
                     [routerLink]="isView ? ['/timetable/schedule-class/view-schedule-class', row.id] : null"
                   >
-                    <span class="mobile-label">Minimum:</span>
+                    <span class="mobile-label">Min {{commonRoles.STUDENT_ROLE}}s:</span>
                     {{ row.minimumEnrollment }}</mat-cell
                   >
                 </ng-container>
@@ -217,7 +214,7 @@
                     *matCellDef="let row"
                     [routerLink]="isView ? ['/timetable/schedule-class/view-schedule-class', row.id] : null"
                   >
-                    <span class="mobile-label">Maximum:</span>
+                    <span class="mobile-label">Max {{commonRoles.STUDENT_ROLE}}s:</span>
                     {{ row.maximumEnrollment }}</mat-cell
                   >
                 </ng-container>

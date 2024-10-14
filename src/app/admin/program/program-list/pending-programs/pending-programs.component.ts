@@ -26,13 +26,7 @@ import { AuthenService } from '@core/service/authen.service';
   styleUrls: ['./pending-programs.component.scss']
 })
 export class PendingProgramsComponent {
-  breadscrums = [
-    {
-      title: 'Pending Programs',
-      items: ['Submitted Programs'],
-      active: 'Pending Programs',
-    },
-  ];
+ 
 
   displayedColumns: string[] = [
     'select',
@@ -283,7 +277,7 @@ export class PendingProgramsComponent {
     });
   }
   viewInActiveProgram(id:string){
-    this.route.navigate(['/admin/program/submitted-program/pending-program/view-program'],{queryParams:{id:id, status:'pending'}});
+    this.route.navigate(['/admin/program/submitted-program/submitted-pending-program/view-program'],{queryParams:{id:id, status:'pending'}});
   }
   // removeSelectedRows() {
   //   const totalSelect = this.selection.selected.length;

@@ -69,7 +69,7 @@ export class ClassService extends UnsubscribeOnDestroyAdapter {
     return params;
   }
   getStudentRegisteredProgramClasses(data:any) {
-    return this.http.get(`${this.prefix}admin/studentApproveList`,{ params: this.buildParams(data) }).pipe(
+    return this.http.get(`${this.prefix}admin/studentClasses/studentApproveList`,{ params: this.buildParams(data) }).pipe(
       map((response:any) => {
         return response;
       })
@@ -178,7 +178,8 @@ getAllCoursesTitle(status: string): Observable<CourseTitleModel[]> {
   return this.http.get<ApiResponse>(apiUrl).pipe(map((response) => response.data));
 }
 getAllCourses(): Observable<CourseTitleModel[]> {
-  const apiUrl = `${this.prefix}admin/courses-new/title`;
+  let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+  const apiUrl = `${this.prefix}admin/courses-new/title?companyId=${userId}`;
   return this.http.get<ApiResponse>(apiUrl).pipe(map((response) => response.data));
 }
 

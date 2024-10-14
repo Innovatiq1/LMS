@@ -24,8 +24,8 @@ export class AddQuestionsComponent implements OnInit {
   breadscrums = [
     {
       title: 'Questions',
-      items: ['Course'],
-      active: 'Add Questions',
+      items: ['Assessment configuration'],
+      active: 'Create assessments',
     },
   ];
 

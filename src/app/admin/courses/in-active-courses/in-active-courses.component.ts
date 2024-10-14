@@ -264,18 +264,9 @@ export class InActiveCoursesComponent {
     });
   }
   performSearch() {
-    // if (this.searchTerm) {
-    //   this.dataSource = this.dataSource?.filter((item: any) => {
-    //     const search = (
-    //       item.main_category_text +
-    //       item.sub_category_text +
-    //       item.title
-    //     ).toLowerCase();
-    //     return search.indexOf(this.searchTerm.toLowerCase()) !== -1;
-    //   });
-    // } else {
+      this.paginator.pageIndex = 0;
+    this.coursePaginationModel.page = 1;
       this.getCoursesList();
-    // }
   }
   exportExcel() {
     const exportData: Partial<TableElement>[] = this.dataSource.map(
@@ -337,7 +328,7 @@ export class InActiveCoursesComponent {
     doc.save('Pending Course List.pdf');
   }
   viewCourse(id: string) {
-    this.router.navigate(['/admin/courses/submitted-courses/pending-courses/course-view/'], {
+    this.router.navigate(['/admin/courses/submitted-courses/submitted-pending-courses/course-view/'], {
       queryParams: { id: id, status: 'in-active' },
     });
   }

@@ -21,7 +21,7 @@
                   </ul>
                 </li>
                 <li>
-                  <span style="font-weight: bold">Export as</span>
+                  <span style="font-weight: bold;">Export as</span>
                 </li>
                 <li>
                   <div class="export-button m-l-10" matTooltip="XLSX" (click)="exportExcel()" >
@@ -41,13 +41,13 @@
               <table mat-table matSort [dataSource]="dataSource" >
                 <!-- Name Column -->
                 <ng-container matColumnDef="Student Name">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>{{commonRoles.STUDENT_ROLE}}</mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef >{{commonRoles.STUDENT_ROLE}}</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row._id) : null" class="name">
                     <span class="mobile-label">Student:</span>{{row.name}}</mat-cell>
                 </ng-container>
                 <!-- email -->
                 <ng-container matColumnDef="email">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef >Email</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row._id) : null">
                     <span class="mobile-label">Email:</span>
                     <img src="assets/images/gmail.png" alt="Email Icon" class="email-icon">
@@ -58,31 +58,38 @@
 
                 <!-- Program Name -->
                 <ng-container matColumnDef="Program Name">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>Program</mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef >Program</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row._id) : null">
                     <span class="mobile-label">Name:</span>{{row.program}}</mat-cell>
                 </ng-container>
                 <!-- Amount -->
                 <ng-container matColumnDef="Amount">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header class="amount">Fee</mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef  class="amount">Fee</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row._id) : null" class="payment-cell">
                     <span class="mobile-label">Amount:</span><span>$</span> {{row.price||0}}.00</mat-cell>
                 </ng-container>
                 <!-- Payment Date -->
                 <ng-container matColumnDef="Payment Date">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>Payment Date</mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef >Payment Date</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row._id) : null">
                     <span class="mobile-label">Payment Date:</span>{{row.createdAt | date}}</mat-cell>
                 </ng-container>
 
                 <!-- Payment status -->
                 <ng-container matColumnDef="Payment Status">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header> Status</mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef > Status</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row._id) : null" [ngClass]="getStatusClass(row.status)">
-                    <div class="status-container">
+                    <!-- <div class="status-container">
+                      <span class="badge badge-solid-green">
                       <span class="status-dot"></span>
-                      <span class="status-text">{{row.status | titlecase}}</span>
-                    </div>
+                      {{row.status | titlecase}}</span>
+                    </div> -->
+                    <span class="mobile-label">Status:</span>
+                        <span
+                        [class]=" row.status === 'success' ? 'badge badge-solid-green' : 'badge badge-solid-red'">
+                        <span
+                          [class]=" row.status === 'success' ? 'status-dot' : 'status-red'"></span>
+                        {{ row.status ==='success'? 'Success':'Failed' | titlecase}}</span>
                   </mat-cell>
                 </ng-container>
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

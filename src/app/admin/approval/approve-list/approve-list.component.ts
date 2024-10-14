@@ -149,7 +149,7 @@ export class ApproveListComponent {
   }
 
   view(id: string) {
-    this.router.navigate(['/admin/courses/student-courses/approved-courses/view-completion-list'], {
+    this.router.navigate(['/admin/courses/student-courses/registered-approved-courses/view-completion-list'], {
       queryParams: { id: id, status: 'approved' },
     });
   }
@@ -269,6 +269,8 @@ export class ApproveListComponent {
     //     }
     //   );
     // } else {
+      this.paginator.pageIndex = 0;
+    this.coursePaginationModel.page = 1;
       this.getRegisteredClasses();
     // }
   }

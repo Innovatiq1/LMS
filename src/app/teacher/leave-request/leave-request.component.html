@@ -29,6 +29,9 @@
                   </div>
                 </li>
                 <li>
+                  <span style="font-weight: bold">Export as</span>
+                </li>
+                <li>
                   <div class="export-button m-l-10" matTooltip="XLSX">
                     <img src="assets/excel.svg" alt="" (click)="exportExcel()" />
                   </div>
@@ -45,7 +48,7 @@
             <div class="responsive_table">
               <table mat-table [dataSource]="dataSource" matSort class="mat-cell advance-table">
                 <ng-container matColumnDef="id">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef >Id</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="row.status === 'applied' && edit ? editCall(row) : null">{{row.id}}</mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="img">
@@ -58,29 +61,29 @@
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="className">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>Class</mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef >Class</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="row.status === 'applied' && edit ? editCall(row) : null"> <span class="mobile-label">Class Name:</span>{{row.className}}
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="name">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>{{commonRoles.STUDENT_ROLE}}</mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef >{{commonRoles.STUDENT_ROLE}}</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="row.status === 'applied' && edit ? editCall(row) : null"> <span class="mobile-label">Student Name:</span>{{row.learnerId?.name}}
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="applyDate">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>Apply Date</mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef >Apply Date</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="row.status === 'applied' && edit ? editCall(row) : null"><span class="mobile-label">Apply Date:</span>
                     {{row.applyDate | date }}
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="toDate">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>Reschedule Date</mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef >Reschedule Date</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="row.status === 'applied' && edit ? editCall(row) : null"><span class="mobile-label">To Date:</span>
                     {{row.toDate | date }}
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="status">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header> Status
+                  <mat-header-cell *matHeaderCellDef > Status
                   </mat-header-cell>
                   <mat-cell mat-cell *matCellDef="let row" (click)="row.status === 'applied' && edit ? editCall(row) : null">
                     <span class="mobile-label">Status:</span>
@@ -111,7 +114,7 @@
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="reason">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>Reason
+                  <mat-header-cell *matHeaderCellDef >Reason
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="row.status === 'applied' && edit ? editCall(row) : null">
                     <span class="truncate-text"><span class="mobile-label">Reason:</span>{{row.reason}}</span>

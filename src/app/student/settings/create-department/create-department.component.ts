@@ -29,6 +29,7 @@ export class CreateDepartmentComponent {
   isCreate = false;
   isEdit = false;
   isDelete = false;
+  isView=false;
   
   constructor(private fb: UntypedFormBuilder,private deptService: DeptService,private router:Router,private userService: UserService,
    public utils: UtilsService,
@@ -54,7 +55,12 @@ export class CreateDepartmentComponent {
     let actions = childData[0].actions
     let createAction = actions.filter((item:any) => item.title == 'Create')
     let editAction = actions.filter((item:any) => item.title == 'Edit')
-
+    let viewAction = actions.filter((item:any) => item.title == 'View')
+    
+  
+    if(viewAction.length >0){
+      this.isView = true;
+    }
 
     if(createAction.length >0){
       this.isCreate = true;

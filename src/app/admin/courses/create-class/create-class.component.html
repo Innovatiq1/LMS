@@ -2,8 +2,8 @@
   <div class="content-block">
     <div class="block-header" *ngFor="let breadscrum of breadscrums">
       <!-- breadcrumb -->
-      <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
-      </app-breadcrumb>
+      <app-static-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
+      </app-static-breadcrumb>
     </div>
     <div class="row clearfix">
       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
@@ -328,15 +328,15 @@
                   <div class="row mt-4 mx-2" style="float: right;">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
                       <button class="btn-space" type="button" mat-raised-button color="warn" (click)="cancel()">Cancel</button>
-                      <button *ngIf="!classId" mat-raised-button id="submit" (click)="submit()" [disabled]="form.invalid">
+                      <button *ngIf="!classId" mat-raised-button id="submit" (click)="submit()">
                         Create
                       </button>
-                      <button *ngIf="classId" mat-raised-button id="submit" (click)="submit()" [disabled]="form.invalid">
-                      Update
-                    </button>
+                      <button *ngIf="classId" mat-raised-button id="submit" (click)="submit()" >
+                        Update
+                      </button>
+                    </div>
                   </div>
-                </div>
-          </form>
+                </form>
                 
                 
         </div>

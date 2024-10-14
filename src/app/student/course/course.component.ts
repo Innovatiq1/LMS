@@ -138,10 +138,10 @@ getRegisteredCourse(){
   this.classService.getStudentRegisteredClasses(payload).subscribe(response =>{
    this.studentRegisteredClasses = response.data.docs;
    this.totalRegisteredItems = response.data.totalDocs
-   this.studentRegisteredModel.docs = response.data.docs;
-   this.studentRegisteredModel.page = response.data.page;
-   this.studentRegisteredModel.limit = response.data.limit;
-   this.studentRegisteredModel.totalDocs = response.data.totalDocs;
+   this.coursePaginationModel.docs = response.data.docs;
+   this.coursePaginationModel.page = response.data.page;
+   this.coursePaginationModel.limit = response.data.limit;
+   this.coursePaginationModel.totalDocs = response.data.totalDocs;
   })
 }
 getApprovedCourse(){
@@ -151,10 +151,10 @@ getApprovedCourse(){
   this.classService.getStudentRegisteredClasses(payload).subscribe(response =>{
    this.studentApprovedClasses = response.data.docs;
    this.totalApprovedItems = response.data.totalDocs
-   this.studentApprovedModel.docs = response.data.docs;
-   this.studentApprovedModel.page = response.data.page;
-   this.studentApprovedModel.limit = response.data.limit;
-   this.studentApprovedModel.totalDocs = response.data.totalDocs;
+   this.coursePaginationModel.docs = response.data.docs;
+   this.coursePaginationModel.page = response.data.page;
+   this.coursePaginationModel.limit = response.data.limit;
+   this.coursePaginationModel.totalDocs = response.data.totalDocs;
   })
 }
 
@@ -165,10 +165,10 @@ getCompletedCourse(){
   this.classService.getStudentRegisteredClasses(payload).subscribe(response =>{
    this.studentCompletedClasses = response.data.docs;
    this.totalCompletedItems = response.data.totalDocs
-   this.studentCompletedModel.docs = response.data.docs;
-   this.studentCompletedModel.page = response.data.page;
-   this.studentCompletedModel.limit = response.data.limit;
-   this.studentCompletedModel.totalDocs = response.data.totalDocs;
+   this.coursePaginationModel.docs = response.data.docs;
+   this.coursePaginationModel.page = response.data.page;
+   this.coursePaginationModel.limit = response.data.limit;
+   this.coursePaginationModel.totalDocs = response.data.totalDocs;
   })
 }
 
@@ -180,19 +180,19 @@ pageSizeChange($event: any) {
   this.getAllCourse();
 }
 pageStudentRegisteredSizeChange($event: any) {
-  this.studentRegisteredModel.page = $event?.pageIndex + 1;
-  this.studentRegisteredModel.limit = $event?.pageSize;
+  this.coursePaginationModel.page = $event?.pageIndex + 1;
+  this.coursePaginationModel.limit = $event?.pageSize;
   this.getRegisteredCourse();
 }
 pageStudentApprovedSizeChange($event: any) {
-  this.studentApprovedModel.page = $event?.pageIndex + 1;
-  this.studentApprovedModel.limit = $event?.pageSize;
+  this.coursePaginationModel.page = $event?.pageIndex + 1;
+  this.coursePaginationModel.limit = $event?.pageSize;
   this.getApprovedCourse();
 }
 
 pageStudentCompletedSizeChange($event: any) {
-  this.studentCompletedModel.page = $event?.pageIndex + 1;
-  this.studentCompletedModel.limit = $event?.pageSize;
+  this.coursePaginationModel.page = $event?.pageIndex + 1;
+  this.coursePaginationModel.limit = $event?.pageSize;
   this.getCompletedCourse();
 }
 pagefreeCourseSizeChange($event: any) {

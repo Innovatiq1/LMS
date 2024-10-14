@@ -17,7 +17,8 @@ import { forkJoin } from 'rxjs';
 import { UserService } from '@core/service/user.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { formatDate } from '@angular/common';
-
+import { UtilsService } from '@core/service/utils.service';
+import { MatTableDataSource } from '@angular/material/table';
 @Component({
   selector: 'app-reports',
   templateUrl: './reports.component.html',
@@ -42,7 +43,8 @@ export class ReportsComponent implements OnInit{
   courseData: any;
   pagination: any;
   totalItems: any;
-  pageSizeArr = [10, 25, 50, 100];
+  // pageSizeArr = [10, 25, 50, 100];
+  pageSizeArr = this.utils.pageSizeArr;
   mainCategories!: MainCategory[];
   subCategories!: SubCategory[];
   allSubCategories!: SubCategory[];
@@ -74,6 +76,7 @@ export class ReportsComponent implements OnInit{
   filterForm: FormGroup;
 
   constructor(
+    public utils: UtilsService,
     public _courseService: CourseService,
     private route: Router,
     private classService: ClassService,
@@ -150,33 +153,62 @@ export class ReportsComponent implements OnInit{
     this.filterForm.reset();
     this.getAllCourses();
   }
+  // applyFilter() {
+  //   let body: any = {};
+  //   if (this.selectedCourses.length > 0) {
+  //     body.title = this.selectedCourses;
+  //   }
+  //   if (this.selectedVendors.length > 0) {
+  //     body.vendor = this.selectedVendors;
+  //   }
+  //   if (this.selectedStatus.length > 0) {
+  //     body.status = this.selectedStatus;
+  //   }
+  //   if (this.selectedCreators.length > 0) {
+  //     body.creator = this.selectedCreators;
+  //   }
+
+  //   this._courseService
+  //     .getFilteredCourseData(body, { ...this.coursePaginationModel })
+  //     .subscribe((response) => {
+  //       this.courseData = response.data.docs;
+  //       this.totalItems = response.data.totalDocs;
+  //       this.filter = true;
+  //       this.coursePaginationModel.docs = response.data.docs;
+  //       this.coursePaginationModel.page = response.data.page;
+  //       this.coursePaginationModel.limit = response.data.limit;
+  //       this.coursePaginationModel.totalDocs = response.data.totalDocs;
+  //     });
+  // }
   applyFilter() {
     let body: any = {};
     if (this.selectedCourses.length > 0) {
-      body.title = this.selectedCourses;
+       body.title = this.selectedCourses;
     }
     if (this.selectedVendors.length > 0) {
-      body.vendor = this.selectedVendors;
+       body.vendor = this.selectedVendors;
     }
     if (this.selectedStatus.length > 0) {
-      body.status = this.selectedStatus;
+       body.status = this.selectedStatus;
     }
     if (this.selectedCreators.length > 0) {
-      body.creator = this.selectedCreators;
+       body.creator = this.selectedCreators;
     }
-
+ 
     this._courseService
-      .getFilteredCourseData(body, { ...this.coursePaginationModel })
-      .subscribe((response) => {
-        this.courseData = response.data.docs;
-        this.totalItems = response.data.totalDocs;
-        this.filter = true;
-        this.coursePaginationModel.docs = response.data.docs;
-        this.coursePaginationModel.page = response.data.page;
-        this.coursePaginationModel.limit = response.data.limit;
-        this.coursePaginationModel.totalDocs = response.data.totalDocs;
-      });
-  }
+       .getFilteredCourseData(body, { ...this.coursePaginationModel })
+       .subscribe((response) => {
+          this.courseData = response.data.docs;
+          this.dataSource = new MatTableDataSource(this.courseData); // Update table data source
+          this.totalItems = response.data.totalDocs;
+          this.filter = true;
+          this.coursePaginationModel.docs = response.data.docs;
+          this.coursePaginationModel.page = response.data.page;
+          this.coursePaginationModel.limit = response.data.limit;
+          this.coursePaginationModel.totalDocs = response.data.totalDocs;
+       });
+ }
+ 
   generatePdf() {
     const doc = new jsPDF();
     const headers = [
@@ -278,15 +310,27 @@ export class ReportsComponent implements OnInit{
           this.selection.select(row)
         );
   }
+  // pageSizeChange($event: any) {
+  //   this.coursePaginationModel.page = $event?.pageIndex + 1;
+  //   this.coursePaginationModel.limit = $event?.pageSize;
+  //   if (this.filter) {
+  //     this.applyFilter();
+  //   } else {
+  //     this.getAllCourses();
+  //   }
+  // }
   pageSizeChange($event: any) {
     this.coursePaginationModel.page = $event?.pageIndex + 1;
     this.coursePaginationModel.limit = $event?.pageSize;
+ 
+    // Fetch data based on whether a filter is applied or not
     if (this.filter) {
-      this.applyFilter();
+       this.applyFilter();
     } else {
-      this.getAllCourses();
+       this.getAllCourses();
     }
-  }
+ }
+ 
   private mapCategories(): void {
     this.coursePaginationModel.docs?.forEach((item) => {
       item.main_category_text = this.mainCategories.find(
@@ -300,14 +344,26 @@ export class ReportsComponent implements OnInit{
       )?.category_name;
     });
   }
+  // getAllCourses() {
+  //   this._courseService.getAllCoursesWithPagination().subscribe((response) => {
+  //     this.courseData = response.data.docs;
+  //     this.totalItems = response.data.totalDocs;
+  //     this.coursePaginationModel.docs = response.data.docs;
+  //     this.coursePaginationModel.page = response.data.page;
+  //     this.coursePaginationModel.limit = response.data.limit;
+  //     this.coursePaginationModel.totalDocs = response.data.totalDocs;
+  //   });
+  // }
   getAllCourses() {
     this._courseService.getAllCoursesWithPagination().subscribe((response) => {
-      this.courseData = response.data.docs;
-      this.totalItems = response.data.totalDocs;
-      this.coursePaginationModel.docs = response.data.docs;
-      this.coursePaginationModel.page = response.data.page;
-      this.coursePaginationModel.limit = response.data.limit;
-      this.coursePaginationModel.totalDocs = response.data.totalDocs;
+       this.courseData = response.data.docs; // Update courseData with the new page data
+       this.dataSource = new MatTableDataSource(this.courseData); // Update dataSource for the table
+       this.totalItems = response.data.totalDocs; // Set the total number of items for the paginator
+       this.coursePaginationModel.docs = response.data.docs;
+       this.coursePaginationModel.page = response.data.page;
+       this.coursePaginationModel.limit = response.data.limit;
+       this.coursePaginationModel.totalDocs = response.data.totalDocs;
     });
-  }
+ }
+ 
 }

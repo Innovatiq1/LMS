@@ -2,8 +2,8 @@
   <div class="content-block">
     <div class="block-header" *ngFor="let breadscrum of breadscrums">
       <!-- breadcrumb -->
-      <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
-      </app-breadcrumb>
+      <app-static-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
+      </app-static-breadcrumb>
     </div>
     <div class="row clearfix">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -14,12 +14,12 @@
                 <div class="p-4">
                   <ul class="list-group list-group-unbordered">
                     <li class="list-group-item p-1">
-                      <b>{{commonRoles.STUDENT_ROLE}} Name: </b>
+                      <b>{{commonRoles.STUDENT_ROLE}}: </b>
                       <span class="profile-desc-item gap-4">{{studentLastName? studentFirstName + " " +
                         studentLastName:studentFirstName}}</span>
                     </li>
                     <li class="list-group-item p-1">
-                      <b>Course/Program Name: </b>
+                      <b>Title: </b>
                       <span class="profile-desc-item">{{courseName}}</span>
                       <!-- <div class="profile-desc-item float-end">{{courseName}}</div> -->
                     </li>

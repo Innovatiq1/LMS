@@ -27,6 +27,7 @@
                         <button mat-raised-button id="submit" (click)="enableExam()">Enable Exam</button>
                       </div>
                     </li>
+                  
                     <li class="tbl-header-btn"  *ngIf="isAnyRowSelected()">
                      
                       <div class="m-l-20" matTooltip="ADD">
@@ -229,7 +230,7 @@
         
           <section class="content">
                       
-                      <!-- Certificate Preview -->
+                      
                       <div class="certificate-preview">
                         <div
                           class="certificate-canvas"
@@ -241,7 +242,7 @@
                             'background-size': '100% 100%',
                             'border': '0.5px solid lightgray',
                             'height': '700px',
-                            'width': '800px',
+                            'width': '700px',
                             'position': 'relative'
                           }"
                          
@@ -261,7 +262,7 @@
                             <div class="certificate-element">
                               
           
-                              <!-- Contenteditable div -->
+                              
                               <div
                                 [attr.contenteditable]="element.editable"
                                 [ngStyle]="{

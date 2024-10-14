@@ -131,7 +131,7 @@ export class StudentPendingCoursesComponent {
   }
 
   view(id:string){
-    this.router.navigate(['/admin/courses/student-courses/pending-courses/view-completion-list'],{queryParams: {id:id, status:'pending'}});
+    this.router.navigate(['/admin/courses/student-courses/registered-pending-courses/view-completion-list'],{queryParams: {id:id, status:'pending'}});
   }
 
   mapClassList() {
@@ -235,16 +235,9 @@ export class StudentPendingCoursesComponent {
   
   }
   performSearch() {
-    // if(this.searchTerm){
-    // this.dataSource = this.dataSource?.filter((item: any) =>{
-    //   const searchList = (item.classId?.courseId?.title + item.studentId?.name + item.studentId?.last_name).toLowerCase();
-    //   return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1
-    // }
-    // );
-    // } else {
+    this.paginator.pageIndex = 0;
+    this.coursePaginationModel.page = 1;
       this.getRegisteredClasses();
-
-    // }
   }
   private refreshTable() {
     this.paginator._changePageSize(this.paginator.pageSize);

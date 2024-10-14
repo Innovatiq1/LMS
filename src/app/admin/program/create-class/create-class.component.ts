@@ -142,16 +142,16 @@ export class CreateClassComponent {
       this.breadscrums = [
         {
           title: 'Edit Class',
-          items: ['Schedule Class'],
-          active: 'Edit Class',
+          items: ['Program Class'],
+          active: 'Edit Program Class',
         },
       ];
     } else {
       this.breadscrums = [
         {
           title: 'Create Class',
-          items: ['Schedule Class'],
-          active: 'Create Class',
+          items: ['Program Class'],
+          active: 'Create Program Class',
         },
       ];
     }
@@ -206,7 +206,9 @@ export class CreateClassComponent {
         this.programList = response.courses.docs;
         this.instructorList = response.instructors;
         let item = response.class;
+        console.log("patchvalue=",item.courseId?.id)
         this.classForm.patchValue({
+          
           courseId: item.courseId?.id,
           classType: item?.classType,
           classDeliveryType: item?.classDeliveryType,

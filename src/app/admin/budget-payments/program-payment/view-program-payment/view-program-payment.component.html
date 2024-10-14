@@ -14,12 +14,16 @@
                                 <div class="p-4">
                                     <ul class="list-group list-group-unbordered">
                                         <li class="list-group-item">
-                                            <b>Name</b>
+                                            <b>Trainee</b>
                                             <div class="profile-desc-item float-end">{{name | titlecase}}</div>
                                         </li>
                                         <li class="list-group-item">
                                             <b>Email</b>
                                             <div class="profile-desc-item float-end">{{email}}</div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>Program</b>
+                                            <div class="profile-desc-item float-end">{{program | titlecase}}</div>
                                         </li>
                                     </ul>
                                 </div>
@@ -30,7 +34,7 @@
             </div>
             <div class="col-lg-8 col-md-12">
                 <form [formGroup]="feedbackForm">
-                    <div class="card ">
+                    <div class="card about">
                         <mat-tab-group>
                             <mat-tab>
                                 <ng-template mat-tab-label>
@@ -38,21 +42,27 @@
                                 </ng-template>
                                 <div class="p-4">
                                     <ul class="list-group list-group-unbordered">
-                                        <li class="list-group-item">
-                                            <b>Program Name</b>
-                                            <div class="profile-desc-item float-end">{{program | titlecase}}</div>
-                                        </li>
+                
                                         <li class="list-group-item">
                                             <b>Payment Date</b>
                                             <div class="profile-desc-item float-end">{{createdAt |date}}</div>
                                         </li>
                                         <li class="list-group-item">
-                                            <b>Amount</b>
+                                            <b>Fee</b>
                                             <div class="profile-desc-item float-end">${{price}}.00</div>
                                         </li>
                                         <li class="list-group-item">
                                             <b>Payment Status</b>
-                                            <div class="profile-desc-item float-end">{{status | titlecase}}</div>
+                                            <div class="profile-desc-item float-end"><span class="badge badge-solid-green">
+                                                <span class="status-dot"></span>{{status | titlecase}}</span></div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>Payment Intent</b>
+                                            <div class="profile-desc-item float-end">{{payment_intent | titlecase}}</div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>Transaction ID</b>
+                                            <div class="profile-desc-item float-end">{{transactionId | titlecase}}</div>
                                         </li>
                                     </ul>
                                 </div>
@@ -65,3 +75,5 @@
         </div>
     </div>
 </section>
+
+

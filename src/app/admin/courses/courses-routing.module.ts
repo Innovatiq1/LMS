@@ -28,15 +28,15 @@ const routes: Routes = [
     component: AllCourseComponent,
   },
   {
-    path: 'all-courses/creator',
+    path: 'all-courses/ccreator',
     component: AllCourseComponent,
   },
   {
-    path: 'submitted-courses/approved-courses',
+    path: 'submitted-courses/submitted-approved-courses',
     component: ActiveCoursesComponent,
   },
   {
-    path: 'submitted-courses/pending-courses',
+    path: 'submitted-courses/submitted-pending-courses',
     component: InActiveCoursesComponent,
   },
   {
@@ -77,7 +77,7 @@ const routes: Routes = [
     component: ViewCompletionComponent,
   },
   {
-    path: 'student-courses/approved-courses/view-completion-list',
+    path: 'student-courses/registered-approved-courses/view-completion-list',
     component: ViewCompletionComponent,
   },
   {
@@ -89,7 +89,7 @@ const routes: Routes = [
     component: ViewCompletionComponent,
   },
   {
-    path: 'student-courses/pending-courses/view-completion-list',
+    path: 'student-courses/registered-pending-courses/view-completion-list',
     component: ViewCompletionComponent,
   },
   {
@@ -97,7 +97,7 @@ const routes: Routes = [
     component: CourseViewComponent,
   },
   {
-    path: 'submitted-courses/pending-courses/course-view',
+    path: 'submitted-courses/submitted-pending-courses/course-view',
     component: CourseViewComponent,
   },
   {
@@ -121,7 +121,7 @@ const routes: Routes = [
     component: ViewCourseKitComponent,
   },
   {
-    path: 'student-courses/approved-courses',
+    path: 'student-courses/registered-approved-courses',
     component: ApproveListComponent,
   },
   
@@ -130,7 +130,7 @@ const routes: Routes = [
     component: ExamScoresComponent,
   },
   {
-    path:'student-courses/pending-courses',
+    path:'student-courses/registered-pending-courses',
     component: StudentPendingCoursesComponent,
   },
   {
@@ -150,10 +150,9 @@ const routes: Routes = [
     component: DraftedCoursesComponent,
   },
   {
-    path:'create-class/schedule-meeting',
-    component: ScheduleMeetingComponent
-  }
-
+    path: 'submitted-courses/submitted-pending-courses/course-view',
+    component: CourseViewComponent,
+  },
  
 ];
 

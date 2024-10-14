@@ -18,6 +18,7 @@ import { AuthenService } from '@core/service/authen.service';
 import { AdminService } from '@core/service/admin.service';
 import { StudentsService } from 'app/admin/students/students.service';
 import { AppConstants } from '@shared/constants/app.constants';
+import { BreadcrumbServiceService } from '@shared/components/breadcrumb-service.service';
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
@@ -44,9 +45,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
   orgMenuItems: MenuItem[] = [];
   orgMenuItem: MenuItem[] = [];
   isSettings: boolean = false;
-  submenu :boolean = false;
+  submenu: boolean = false;
   isTwoFactor: boolean = true;
-  
+
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private renderer: Renderer2,
@@ -55,7 +56,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
     public router: Router,
     private authenService: AuthenService,
     private adminService: AdminService,
-    private studentService: StudentsService
+    private studentService: StudentsService,
+    public breadcrumbService: BreadcrumbServiceService
   ) {
     this.elementRef.nativeElement.closest('body');
 
@@ -70,7 +72,10 @@ export class SidebarComponent implements OnInit, OnDestroy {
           this.isSettings = false;
           this.menuitem = this.orgMenuItems;
         } else {
-          if (this.userType == AppConstants.ADMIN_ROLE || AppConstants.INSTRUCTOR_ROLE) {
+          if (
+            this.userType == AppConstants.ADMIN_ROLE ||
+            AppConstants.INSTRUCTOR_ROLE
+          ) {
             this.isSettings = true;
             this.menuitem = this.orgMenuItem;
           } else {
@@ -100,7 +105,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
     }
   }
   callToggleMenu(event: Event, length: number) {
-    
     if (length > 0) {
       const parentElement = (event.target as HTMLInputElement).closest('li');
       const activeClass = parentElement?.classList.contains('active');
@@ -113,7 +117,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
   getUserTypeList(filters?: any) {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-    this.adminService.getUserTypeList({ allRows: true },userId).subscribe(
+    this.adminService.getUserTypeList({ allRows: true }, userId).subscribe(
       (response: any) => {
         let userType = localStorage.getItem('user_type');
         let data = response.filter((item: any) => item.typeName === userType);
@@ -142,18 +146,33 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   navigateTo(menu: any, url?: any, length?: any): void {
     this.menuItemClick.emit();
-    let userType = localStorage.getItem('user_type');
-    console.log("navigate",url,menu);
-      this.router.navigateByUrl(menu + '/' + url);
+    const breadcrumbs = [menu.title];
+    this.breadcrumbService.setItems(breadcrumbs);
+    this.breadcrumbService.setActiveItem(url.title);
+
+    this.router.navigate([menu.id + '/' + url.id], {
+      skipLocationChange: false,
+    });
   }
-  navigateToMian(url: string, menu: string) {
-    console.log("navigateToMian",url,menu);
-    this.router.navigateByUrl(url + '/' + menu);
+
+  navigateToMian(url: any, menu: any) {
+    this.menuItemClick.emit();
+    const breadcrumbs = [url.title];
+    this.breadcrumbService.setItems(breadcrumbs);
+    this.breadcrumbService.setActiveItem(menu.title);
+    this.router.navigate([`${url.id}/${menu.id}`], {
+      skipLocationChange: false,
+    });
   }
   navigateToSubItem2(menu: any, url?: any, subUrl?: any) {
     this.menuItemClick.emit();
-    let userType = localStorage.getItem('user_type');
-    this.router.navigateByUrl(menu + '/' + url + '/' + subUrl);
+    const breadcrumbs = [url.title];
+    this.breadcrumbService.setItems(breadcrumbs);
+    this.breadcrumbService.setActiveItem(subUrl.title);
+
+    this.router.navigate([`${menu.id}/${url.id}/${subUrl.id}`], {
+      skipLocationChange: false,
+    });
   }
   ngOnInit() {
     this.userProfile = this.authenService.getUserProfile();
@@ -193,7 +212,10 @@ export class SidebarComponent implements OnInit, OnDestroy {
       }
     }
 
-    if(this.userType === AppConstants.ADMIN_ROLE || this.userType === AppConstants.ADMIN_USERTYPE){
+    if (
+      this.userType === AppConstants.ADMIN_ROLE ||
+      this.userType === AppConstants.ADMIN_USERTYPE
+    ) {
       this.submenu = true;
     }
 
@@ -263,7 +285,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.authService.logout().subscribe((res) => {
       if (!res.success) {
         let userType = JSON.parse(localStorage.getItem('user_data')!).user.type;
-        if (userType == AppConstants.ADMIN_USERTYPE|| AppConstants.ADMIN_ROLE || userType == AppConstants.INSTRUCTOR_ROLE) {
+        if (
+          userType == AppConstants.ADMIN_USERTYPE ||
+          AppConstants.ADMIN_ROLE ||
+          userType == AppConstants.INSTRUCTOR_ROLE
+        ) {
           this.router.navigate(['/authentication/TMS/signin']);
         } else if (userType == AppConstants.STUDENT_ROLE) {
           this.router.navigate(['/authentication/LMS/signin']);

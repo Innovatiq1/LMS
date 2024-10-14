@@ -43,7 +43,7 @@
                               [formGroupName]="i">
                               <div class="d-flex justify-content-between align-items-start">
                                 <label for="subcategory_name_{{i}}">Sub Category <span class="mandatory">&nbsp;*</span></label>
-                                <app-feather-icons (click)="deleteSubCategoryField(i,subcategory)"
+                                <app-feather-icons *ngIf="i > 0" (click)="deleteSubCategoryField(i,subcategory)"
                                 [icon]="'trash-2'"
                                 [class]="'tbl-fav-delete'" style="cursor: pointer;"
                               ></app-feather-icons>

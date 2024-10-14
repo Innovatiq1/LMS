@@ -14,15 +14,15 @@
                 <div class="row">
                   <div class="col-md-12">
                     <div *ngFor="let row of dataSource" class="log-item">
-                      <span class="name">{{ row.name | capitalizeFirstLetter }} {{ row.last_name ? row.last_name : '' | capitalizeFirstLetter }}</span>
+                      <span class="name">{{ row.name | titlecase }} {{ row.last_name ? row.last_name : '' | titlecase }}</span>
                       <span class="user-type">{{ row.type | titlecase }}</span>
-                      <div class="user-updated-container">
+                      <!-- <div class="user-updated-container">
                         
                         <span class="updated-time">{{ row.updatedAt | date:'medium' }}</span>
-                      </div>
-                      <span class="login-time">Logged in at {{ row.loginTime | date:'medium' }}</span>
+                      </div> -->
+                      <span class="login-time"><span class="text_bold">Logged in</span> at {{ row.loginTime | date:'medium' }}</span>
                       <span *ngIf="row.logoutTime" class="and-separator">&</span>
-                      <span *ngIf="row.logoutTime" class="logout-time">Logged out at   {{ row.logoutTime | date:'medium' }}</span>
+                      <span *ngIf="row.logoutTime" class="logout-time"> <span class="text_bold">Logged out</span> at   {{ row.logoutTime | date:'medium' }}</span>
                     </div>
                     
 

@@ -115,7 +115,7 @@ deleteItem(row: any) {
   // this.id = row.id;
    Swal.fire({
      title: "Confirm Deletion",
-     text: "Are you sure you want to delete this Instructor?",
+     text: `Are you sure you want to delete this ${row.role}?`,
      icon: "warning",
      showCancelButton: true,
      confirmButtonColor: "#d33",
@@ -128,7 +128,7 @@ deleteItem(row: any) {
          () => {
            Swal.fire({
              title: "Deleted",
-             text: "Instructor deleted successfully",
+             text: `${row.role} deleted successfully`,
              icon: "success",
            });
            this.loadData()
@@ -136,7 +136,7 @@ deleteItem(row: any) {
          },
          (error: { message: any; error: any; }) => {
            Swal.fire(
-             "Failed to delete  Instructor",
+             `Failed to delete  ${row.role}`,
              error.message || error.error,
              "error"
            );

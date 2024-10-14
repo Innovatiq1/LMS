@@ -91,7 +91,7 @@ export class AllCourseComponent {
   private showAlert = false;
   filterName: string = "";
   userGroupIds: string = "";
-
+  filterBody: any = {};
   constructor(
     public _courseService: CourseService,
     private route: Router,
@@ -189,7 +189,6 @@ getAllTpCourses() {
   this.isLoading = true;  
   this.courseService.getRetreiveTPCourses().subscribe(
     (response: any) => {
-      console.log("MyResponse==response==> ", response);
       this.isLoading = false;  
       Swal.fire({
         title: 'SSG Courses',
@@ -276,39 +275,35 @@ getAllTpCourses() {
   }
  
 
-applyFilter() {
-  let body: any = {};
-
-  if (this.selectedCourses.length > 0) {
-    body.title = this.selectedCourses;
-  }
-  if (this.selectedVendors.length > 0) {
-    body.vendor = this.selectedVendors;
-  }
-  if (this.selectedStatus.length > 0) {
-    body.status = this.selectedStatus;
-  }
-  if (this.selectedCreators.length > 0) {
-    body.creator = this.selectedCreators;
-  }
-
+  applyFilter() {
+    this.filterBody = {};
+    
+    if (this.selectedCourses.length > 0) {
+      this.filterBody.title = this.selectedCourses;
+    }
+    if (this.selectedVendors.length > 0) {
+      this.filterBody.vendor = this.selectedVendors;
+    }
+    if (this.selectedStatus.length > 0) {
+      this.filterBody.status = this.selectedStatus;
+    }
+    if (this.selectedCreators.length > 0) {
+      this.filterBody.creator = this.selectedCreators;
+    }
   
-  this.paginator.pageIndex = 0;
-  this.coursePaginationModel.page = 1;
-
-  this._courseService.getFilteredCourseData(body, { ...this.coursePaginationModel })
-    .subscribe((response) => {
-      this.courseData = response.data.docs;
-      this.totalItems = response.data.totalDocs;
-      this.coursePaginationModel.docs = response.data.docs;
-      this.coursePaginationModel.page = response.data.page;
-      this.coursePaginationModel.limit = response.data.limit;
-      this.coursePaginationModel.totalDocs = response.data.totalDocs;
-      this.filter = false;  
-    });
-}
-
-
+    this.paginator.pageIndex = 0;
+    this.coursePaginationModel.page = 1;
+    this._courseService.getFilteredCourseData(this.filterBody, { ...this.coursePaginationModel })
+      .subscribe((response) => {
+        this.courseData = response.data.docs;
+        this.totalItems = response.data.totalDocs;
+        this.coursePaginationModel.docs = response.data.docs;
+        this.coursePaginationModel.page = response.data.page;
+        this.coursePaginationModel.limit = response.data.limit;
+        this.coursePaginationModel.totalDocs = response.data.totalDocs;
+        this.filter = true;  
+      });
+  }
   
   
 
@@ -356,16 +351,9 @@ applyFilter() {
     doc.save('AllCourses-list.pdf');
   }
   performSearch() {
-    if (this.searchTerm) {
-      this.courseData = this.courseData?.filter(
-        (item: any) => {
-          const searchList = item.title.toLowerCase();
-          return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1;
-        }
-      );
-    } else {
+    this.coursePaginationModel.page = 1;
+    this.paginator.pageIndex = 0;
       this.getAllCourses();
-    }
   }
   viewActiveProgram(id: string, status: string): void {
     this.route.navigate(['/admin/courses/view-course/', 'data.id']);
@@ -424,15 +412,24 @@ applyFilter() {
         );
   }
   
-pageSizeChange($event: any) {
-  this.coursePaginationModel.page = $event?.pageIndex + 1;
-  this.coursePaginationModel.limit = $event?.pageSize;
-  if (this.filter) {
-    this.applyFilter();
-  } else {
-    this.getAllCourses();
+  pageSizeChange($event: any) {
+    this.coursePaginationModel.page = $event?.pageIndex + 1;
+    this.coursePaginationModel.limit = $event?.pageSize;
+    
+    if (this.filter) {
+      this._courseService.getFilteredCourseData(this.filterBody, { ...this.coursePaginationModel })
+        .subscribe((response) => {
+          this.courseData = response.data.docs;
+          this.totalItems = response.data.totalDocs;
+          this.coursePaginationModel.docs = response.data.docs;
+          this.coursePaginationModel.page = response.data.page;
+          this.coursePaginationModel.limit = response.data.limit;
+          this.coursePaginationModel.totalDocs = response.data.totalDocs;
+        });
+    } else {
+      this.getAllCourses();
+    }
   }
-}
 
   
   private mapCategories(): void {
@@ -456,7 +453,6 @@ pageSizeChange($event: any) {
     payload.userGroupId=this.userGroupIds
   }
     this._courseService.getAllCoursesWithPagination(payload).subscribe((response) => {
-      console.log("filtered ",response)
       this.courseData = response.data.docs;
       this.totalItems = response.data.totalDocs;
       this.coursePaginationModel.docs = response.data.docs;
