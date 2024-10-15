@@ -129,7 +129,7 @@ export class CreateClassComponent {
     const currentYear = new Date().getFullYear();
     this.minDate = new Date(currentYear - 5, 0, 1);
     this.maxDate = new Date(currentYear + 1, 11, 31);
-    
+
     this.commonRoles = {
 
       INSTRUCTOR_ROLE: 'Instructor',

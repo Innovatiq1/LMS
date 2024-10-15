@@ -156,7 +156,8 @@ Status(element: Student, status:string) {
           icon: 'success',
         });
         this.getCompletedClasses();
-        this._router.navigate(['/admin/program/student-program/pending-program'])
+         this._router.navigate(['admin/program/student-program/registered-pending-program'])
+        // this._router.navigate(['/admin/program/student-program/pending-program']);
       }, (error) => {
         Swal.fire({
           title: 'Error',

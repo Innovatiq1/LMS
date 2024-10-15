@@ -793,6 +793,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       }),
       tutorial: this.questionService.getTutorialQuestionJson({
         status: 'approved',
+        isAll: true,
         companyId: userId,
       }),
       survey: this.surveyService.getSurvey(),
