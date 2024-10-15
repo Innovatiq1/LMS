@@ -33,7 +33,7 @@ export class StudentPendingCoursesComponent {
     'Fee Type',
     'classstartDate',
     'classendDate',
-    'registeredDate',
+    'Registered Date',
     'programFee',
     'instructorFee',
   ];
