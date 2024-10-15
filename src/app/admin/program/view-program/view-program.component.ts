@@ -15,13 +15,7 @@ import { AuthenService } from '@core/service/authen.service';
   styleUrls: ['./view-program.component.scss'],
 })
 export class ViewProgramComponent {
-  breadscrums = [
-    {
-      title: 'Blank',
-      items: ['Program Name'],
-      active: 'View Program',
-    },
-  ];
+  breadcrumbs: any[] = [];
   private subscription: Subscription = new Subscription();
   programData: any;
   courseId: any;
@@ -33,11 +27,23 @@ export class ViewProgramComponent {
   button: boolean = false;
   edit = false;
   isDelete = false;
+  storedItems: string | null;
   constructor(private courseService: CourseService, private activatedRoute: ActivatedRoute,
     private router: Router, private classService: ClassService, 
     private modalServices: BsModalService, private authenService: AuthenService
   ) {
     // constructor
+    this.storedItems = localStorage.getItem('activeBreadcrumb');
+    if (this.storedItems) {
+     this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+     this.breadcrumbs = [
+       {
+         title: '', 
+         items: [this.storedItems],  
+         active: 'View Course',  
+       },
+     ];
+   }
 
     this.activatedRoute.queryParams.subscribe((params: any) => {
       this.courseId = params?.id;
@@ -46,7 +52,7 @@ export class ViewProgramComponent {
     });
     if(this.status === 'pending'){
       this.button = true;
-      this.breadscrums = [
+      this.breadcrumbs = [
         {
           title: 'Blank',
           items: ['Pending Program'],
@@ -55,7 +61,7 @@ export class ViewProgramComponent {
       ];
     }
     else if(this.status === 'approved'){
-      this.breadscrums = [
+      this.breadcrumbs = [
         {
           title: 'Blank',
           items: ['Approved Programs'],

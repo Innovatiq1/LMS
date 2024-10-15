@@ -86,11 +86,30 @@
     margin-right: 5px; 
   }
 
-  .badge {
-    box-shadow: none !important; /* Remove any shadow effect */
-    background-color: transparent; /* Ensure no background that might cause shadows */
-    border: none; /* Optionally remove borders */
+  // .badge {
+  //   box-shadow: none !important; /* Remove any shadow effect */
+  //    background-color: transparent; /* Ensure no background that might cause shadows */
+  //   border: none; /* Optionally remove borders */
+  // }
+  // .badge {
+  //   box-shadow: none !important; /* Remove any shadow effect */
+  //   background-color: rgba(255, 255, 255, -1); /* Almost transparent background */
+  //   border: none; /* Optionally remove borders */
+  // }
+  span .badge{
+    min-width: auto;
+    float: none;
+    font-size: 13px;
+}
+.badge-solid-green{
+    color: #198754;
+    background-color: rgba(25, 135, 84, 0.15);
+    border: none;
+    padding: 5px 12px;
+    font-weight: 500;
+    line-height: 1.2;
   }
+  
     .status-align{
       padding-right: 20px!important;
     }

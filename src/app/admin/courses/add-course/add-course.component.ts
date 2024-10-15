@@ -101,13 +101,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   isExamTypeCertificate: boolean = false;
   isAfterExamType: boolean = false;
   draftId!: string;
-  breadscrums = [
-    {
-      title: 'Create Course',
-      items: ['Course Name'],
-      active: 'Create Course',
-    },
-  ];
+  breadcrumbs:any[] = []
   config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -138,6 +132,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   vendors: any;
   certificates: any;
   dept: any;
+  storedItems: string | null;
 
   constructor(
     private router: Router,
@@ -155,12 +150,24 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     public utils: UtilsService,
     private commonService: CommonService
   ) {
+
+    this.storedItems = localStorage.getItem('activeBreadcrumb');
+    if (this.storedItems) {
+     this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+     this.breadcrumbs = [
+       {
+         title: '', 
+         items: [this.storedItems],  
+         active: 'Create Program',  
+       },
+     ];
+   }
     let urlPath = this.router.url.split('/');
     this.editUrl = urlPath.includes('edit-course');
     this.viewUrl = urlPath.includes('view-course');
 
     if (this.editUrl === true) {
-      this.breadscrums = [
+      this.breadcrumbs = [
         {
           title: 'Edit Course',
           items: ['Pending Courses'],
@@ -168,7 +175,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         },
       ];
     } else if (this.viewUrl === true) {
-      this.breadscrums = [
+      this.breadcrumbs = [
         {
           title: 'View Course',
           items: ['Course Name'],

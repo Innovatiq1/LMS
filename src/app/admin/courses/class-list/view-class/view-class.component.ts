@@ -12,13 +12,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./view-class.component.scss']
 })
 export class ViewClassComponent {
-  breadscrums = [
-    {
-      title: 'Blank',
-      items: ['Course Class'],
-      active: 'View Course Class',
-    },
-  ];
+  breadcrumbs:any[] = [];
   classDataById: any;
   classData: any;
   coursePaginationModel!: Partial<CoursePaginationModel>;
@@ -30,8 +24,20 @@ export class ViewClassComponent {
   edit = false;
   isDelete = false;
   isZoomMeetingFormVisible: boolean = false;
-  duration: string = '';
+  duration: string = '';  storedItems: string | null;
+
   constructor(public _classService: ClassService,private _router: Router, private activatedRoute: ActivatedRoute,private authenService: AuthenService) {
+    this.storedItems = localStorage.getItem('activeBreadcrumb');
+    if (this.storedItems) {
+     this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+     this.breadcrumbs = [
+       {
+         title: '', 
+         items: [this.storedItems],  
+         active: 'View Course class',  
+       },
+     ];
+   }
     this.coursePaginationModel = {};
     this.activatedRoute.params.subscribe((params: any) => {
       
