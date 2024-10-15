@@ -124,6 +124,7 @@ import { DocumentViewComponent } from './view-course/document-view/document-view
 import { MatDialogModule } from '@angular/material/dialog';
 import { SocialLoginComponent } from './settings/social-login/social-login.component';
 import { SafePipe } from './safe.pipe';
+import { ZoomKeysComponent } from './settings/zoom-keys/zoom-keys.component';
 
 
 @NgModule({
@@ -227,7 +228,7 @@ import { SafePipe } from './safe.pipe';
     TutorialQuestionsComponent,
     DocumentViewComponent,
     SocialLoginComponent,    
-    SafePipe,
+    SafePipe, ZoomKeysComponent,
    // SafeUrlPipe,
   ],
   imports: [
