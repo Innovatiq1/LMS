@@ -130,6 +130,17 @@ export class CreateClassComponent {
     this.minDate = new Date(currentYear - 5, 0, 1);
     this.maxDate = new Date(currentYear + 1, 11, 31);
     
+    this.commonRoles = {
+
+      INSTRUCTOR_ROLE: 'Instructor',
+
+      STUDENT_ROLE: 'Student',
+
+      DURATION_LABEL:'Duration'
+
+    };
+
+    this.loadForm();
   }
   ngOnInit(): void {
     this._activeRoute.queryParams.subscribe(params => {
