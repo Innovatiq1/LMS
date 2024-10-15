@@ -449,14 +449,24 @@ export class CreateClassComponent {
     } else {
       if (sessions) {
         this.classForm.value.sessions = sessions;
-        this.classForm.value.courseName = this.courseTitle
-        let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-                this.classForm.value.companyId=userId;
-
-                if (this.code) {
-                  this.classForm.value.code = this.code; // Attach 'code' to the form data
-                }
-        Swal.fire({
+        this.classForm.value.courseName = this.courseTitle;      
+        const userData = localStorage.getItem('user_data');
+        if (userData) {
+          let userId = JSON.parse(userData).user.companyId;
+          this.classForm.value.companyId = userId;
+        }
+              if (this.code) {
+          this.classForm.value.code = this.code;
+        }
+              if (!this.classForm.valid) {
+          Swal.fire({
+            title: 'Error',
+            text: 'Please fill out all required fields before submitting.',
+            icon: 'error',
+          });
+          return;
+        }
+              Swal.fire({
           title: 'Are you sure?',
           text: 'Do you want to schedule a class!',
           icon: 'warning',
@@ -464,24 +474,45 @@ export class CreateClassComponent {
           showCancelButton: true,
           cancelButtonColor: '#d33',
         }).then((result) => {
-          if (result.isConfirmed){
-            this._classService
-            .saveClass(this.classForm.value)
-            .subscribe((response) => {
-              if (response) {
+          if (result.isConfirmed) {
+            Swal.fire({
+              title: 'Please wait',
+              text: 'Scheduling your class...',
+              allowOutsideClick: false,
+              didOpen: () => {
+                Swal.showLoading();
+              },
+            });
+      
+            // Call the save class service
+            this._classService.saveClass(this.classForm.value).subscribe(
+              (response) => {
+                // On success, show a success message
                 Swal.fire({
                   title: 'Success',
                   text: 'Class Created Successfully.',
                   icon: 'success',
+                }).then(() => {
+                  // Optionally navigate after showing the success message
+                  this.router.navigateByUrl(`/timetable/class-list`);
+                });
+      
+                // Clean up localStorage
+                localStorage.removeItem('classFormData');
+              },
+              (error) => {
+                // Handle any error from the API call
+                Swal.fire({
+                  title: 'Error',
+                  text: 'There was an issue scheduling the class. Please try again later.',
+                  icon: 'error',
                 });
               }
-              localStorage.removeItem('classFormData');
-              this.router.navigateByUrl(`/timetable/class-list`);
-
-            });
+            );
           }
         });
       }
+      
     }
   }else{
     this.classForm.markAllAsTouched();
