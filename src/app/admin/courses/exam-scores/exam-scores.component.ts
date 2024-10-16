@@ -38,6 +38,8 @@ export class ExamScoresComponent {
   @ViewChild('filter', { static: true }) filter!: ElementRef;
   private keyupSubject: Subject<Event> = new Subject<Event>();
   commonRoles: any;
+  userGroupIds: any;
+  filterName: any;
 
   constructor(public utils: UtilsService, private assessmentService: AssessmentService){
     this.assessmentPaginationModel = {};
@@ -56,10 +58,12 @@ export class ExamScoresComponent {
 
    getAllAnswers() {
     let company = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-    this.assessmentService.getExamAnswersV2({ ...this.assessmentPaginationModel,company})
+    let filterProgram = this.filterName;
+    const payload = { ...this.assessmentPaginationModel, company, studentName:filterProgram };
+ 
+    this.assessmentService.getExamAnswersV2(payload)
       .subscribe(res => {
         this.dataSource = res.data.docs;
-        console.log("dataSourse==",this.dataSource)
         this.examScores = res.data.docs;
         this.totalItems = res.data.totalDocs;
         this.assessmentPaginationModel.docs = res.docs;
@@ -68,7 +72,11 @@ export class ExamScoresComponent {
       })
   }
 
-  
+  performSearch() {
+    this.assessmentPaginationModel.page = 1;
+    this.paginator.pageIndex = 0;
+      this.getAllAnswers();
+  }
   pageSizeChange($event: any) {
     this.assessmentPaginationModel.page = $event?.pageIndex + 1;
     this.assessmentPaginationModel.limit = $event?.pageSize;

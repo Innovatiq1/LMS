@@ -158,7 +158,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
        {
          title: '', 
          items: [this.storedItems],  
-         active: 'Create Program',  
+         active: 'Create Course',  
        },
      ];
    }
@@ -170,7 +170,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       this.breadcrumbs = [
         {
           title: 'Edit Course',
-          items: ['Pending Courses'],
+          items: [this.storedItems],
           active: 'Edit Course',
         },
       ];
@@ -178,7 +178,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       this.breadcrumbs = [
         {
           title: 'View Course',
-          items: ['Course Name'],
+          items: [this.storedItems],
           active: 'View Course',
         },
       ];
