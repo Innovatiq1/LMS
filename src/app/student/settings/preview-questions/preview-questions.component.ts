@@ -45,22 +45,29 @@ export class PreviewQuestionsComponent {
   public answerAssessmentId!: any;
   assessmentType:string|null =  ''
 
-  breadscrums = [
-    {
-      title: 'Questions',
-      items: ['Assessment Configuration'],
-      active: 'Preview',
-    },
-  ];
+  breadcrumbs:any[] = []
 
   question: any;
+  storedItems: string | null;
 
   constructor(
     private assessmentService: AssessmentService,
     private route: ActivatedRoute,
     private router: Router,
     private questionService: QuestionService
-  ) {}
+  ) {
+    this.storedItems = localStorage.getItem('activeBreadcrumb');
+  if (this.storedItems) {
+   this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+   this.breadcrumbs = [
+     {
+       title: '', 
+       items: [this.storedItems],  
+       active: 'Preview',  
+     },
+   ];
+ }
+  }
 
   ngOnInit(): void {
     this.assessmentType = this.route.snapshot.queryParamMap.get('assessmentType');
