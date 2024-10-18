@@ -34,6 +34,9 @@ export class SettingsService {
       if (filter.page) {
         params = params.set('page', filter.page?.toString());
       }
+      if (filter.title) {
+        params = params.set("title", filter.title?.toString());
+      }
 
       if (filter.companyId) {
         params = params.set('companyId', filter.companyId);
@@ -51,10 +54,12 @@ export class SettingsService {
 
 
   getRetakeRequest(filter?: Partial<CoursePaginationModel>): Observable<ApiResponse> {
+    console.log("retakeRequest",filter)
+
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     const apiUrl = `${this.defaultUrl}admin/retakeRequest?companyId=${userId}&page=${filter?.page}&limit=${filter?.limit}`;
   
-    return this._Http.get<ApiResponse>(apiUrl);
+    return this._Http.get<ApiResponse>(apiUrl,{params:this.buildParams(filter)});
   }
   
   putRetakeRequestByStudentIdCourseId(studentId:any,courseId:any,data: any){

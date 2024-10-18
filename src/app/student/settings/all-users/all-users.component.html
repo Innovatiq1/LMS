@@ -120,7 +120,7 @@
                             [src]="row.avatar || 'assets/profile.png'"
                             [routerLink]=" isView ? [
                               '/student/settings/all-user/all-users/view-all-users',
-                              row.id
+                              row._id
                             ] : null"
                           />
                         </mat-cell>
@@ -134,7 +134,7 @@
                           class="name"
                           [routerLink]=" isView ? [
                           '/student/settings/all-user/all-users/view-all-users',
-                          row.id
+                          row._id
                         ] : null"
                         >
                           <span class="mobile-label">Name:</span
@@ -163,7 +163,7 @@
                           *matCellDef="let row"
                           [routerLink]=" isView ? [
                           '/student/settings/all-user/all-users/view-all-users',
-                          row.id
+                          row._id
                         ] : null"
                         >
                           <span class="mobile-label">Gender:</span>
@@ -193,7 +193,7 @@
                           *matCellDef="let row"
                           [routerLink]=" isView ? [
                           '/student/settings/all-user/all-users/view-all-users',
-                          row.id
+                          row._id
                         ] : null"
                         >
                           <span class="mobile-label">Education:</span
@@ -208,7 +208,7 @@
                           *matCellDef="let row"
                           [routerLink]=" isView ? [
                           '/student/settings/all-user/all-users/view-all-users',
-                          row.id
+                          row._id
                         ] : null"
                         >
                           <span class="mobile-label">Mobile:</span
@@ -224,7 +224,7 @@
                           *matCellDef="let row"
                           [routerLink]=" isView ? [
                           '/student/settings/all-user/all-users/view-all-users',
-                          row.id
+                          row._id
                         ] : null"
                         >
                           <span class="mobile-label">Email:</span>
@@ -244,23 +244,23 @@
                           *matCellDef="let row"
                           [routerLink]=" isView ? [
                           '/student/settings/all-user/all-users/view-all-users',
-                          row.id
+                          row._id
                         ] : null"
                         >
                           <span class="mobile-label">Status:</span
                           ><span
                             [class]="
-                              row?.Active
+                              row?.isLogin
                                 ? 'badge badge-solid-green'
                                 : 'badge badge-solid-red'
                             "
                           >
                             <span
                               [class]="
-                                row?.Active ? 'status-dot' : 'status-red'
+                                row?.isLogin ? 'status-dot' : 'status-red'
                               "
                             ></span>
-                            {{ row.Active ? "Active" : "Inactive" }}
+                            {{ row.isLogin ? "Active" : "Inactive" }}
                           </span>
                         </mat-cell>
                       </ng-container>

@@ -318,11 +318,30 @@ export class CreateAllUsersComponent {
   }
 
 
+  // getUserTypeList(filters?: any, typeName?: any) {
+  //   let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+  //   this.adminService.getUserTypeList({ allRows: true },userId).subscribe(
+  //     (response: any) => {
+  //       console.log("all users==",response)
+  //       this.userTypes = response;
+  //       if (typeName) {
+  //         this.userForm.patchValue({
+  //           type: typeName,
+  //         });
+  //       }
+  //     },
+  //     (error) => {}
+  //   );
+  // }
   getUserTypeList(filters?: any, typeName?: any) {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-    this.adminService.getUserTypeList({ allRows: true },userId).subscribe(
+    this.adminService.getUserTypeList({ allRows: true }, userId).subscribe(
       (response: any) => {
-        this.userTypes = response;
+        console.log("all users==", response);
+        
+        // Filter out inactive user types
+        this.userTypes = response.filter((userType: any) => userType.status !== 'inactive');
+        
         if (typeName) {
           this.userForm.patchValue({
             type: typeName,
@@ -331,7 +350,8 @@ export class CreateAllUsersComponent {
       },
       (error) => {}
     );
-  }
+}
+
 
   getDepartment() {
     this.StudentService.getAllDepartments().subscribe((response: any) => {
