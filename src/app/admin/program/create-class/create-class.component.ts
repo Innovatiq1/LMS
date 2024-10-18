@@ -224,16 +224,17 @@ export class CreateClassComponent {
           sessions: item?.sessions,
           userGroupId: item?.userGroupId
         });
+        
         item.sessions.forEach((item: any) => {
-          let sessionStartDate = item.sessionStartDate.split('T')[0];
-          let sessionEndDate = item.sessionEndDate.split('T')[0];
-
+          const start = moment(`${moment(item.sessionStartDate).format('YYYY-MM-DD')}T${item.sessionStartTime}`).format();
+          const end = moment(`${moment(item.sessionEndDate).format('YYYY-MM-DD')}T${item.sessionEndTime}`).format();
+      
           this.dataSourceArray.push({
-            start: sessionStartDate,
-            end: sessionEndDate,
-            instructor: item.instructorId?.id,
+              start: start,
+              end: end,
+              instructor: item.instructorId?.id,
           });
-        });
+      });
         this.dataSource = this.dataSourceArray;
         this.cd.detectChanges();
       });

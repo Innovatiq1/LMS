@@ -234,9 +234,9 @@ applyFilter() {
   this.coursePaginationModel.page = 1;
   this.paginator.pageIndex = 0;
   this.courseService.getFilteredProgramData(this.filterBody, { ...this.coursePaginationModel }).subscribe((response) => {
-    this.programData = response.data.docs;
+    this.programData = response.data.docs.sort((a: { createdAt: string | number | Date; }, b: { createdAt: string | number | Date; }) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     this.totalItems = response.data.totalDocs;
-    this.isFiltered = false;
+    this.isFiltered = true;
     this.coursePaginationModel.docs = response.data.docs;
     this.coursePaginationModel.page = response.data.page;
     this.coursePaginationModel.limit = response.data.limit;
@@ -333,24 +333,23 @@ getFilterData(filters?: any) {
   pageSizeChange($event: any) {
     this.coursePaginationModel.page = $event?.pageIndex + 1;
     this.coursePaginationModel.limit = $event?.pageSize;
-  
+
     if (this.isFiltered) {
-      if (this.filter) {
-        this.courseService.getAllPrograms(this.filterBody, { ...this.coursePaginationModel }).subscribe(
-          (response: any) => {
+      this.courseService.getFilteredProgramData(this.filterBody, { ...this.coursePaginationModel }).subscribe(
+        (response: any) => {
             this.isLoading = false;
-            this.programData = response.docs;
-            this.totalItems = response.totalDocs;
-            this.coursePaginationModel.docs = response.docs;
-            this.coursePaginationModel.page = response.page;
-            this.coursePaginationModel.limit = response.limit;
-            this.coursePaginationModel.totalDocs = response.totalDocs;
+            this.programData = response.data.docs;
+            this.totalItems = response.data.totalDocs;
+            this.isFiltered = true;
+            this.coursePaginationModel.docs = response.data.docs;
+            this.coursePaginationModel.page = response.data.page;
+            this.coursePaginationModel.limit = response.data.limit;
+            this.coursePaginationModel.totalDocs = response.data.totalDocs;
           },
           (error) => {
             this.isLoading = false;
           }
         );
-      }
     } else {
       this.getProgramList();
     }
@@ -380,7 +379,7 @@ getFilterData(filters?: any) {
     this.getAllVendorsAndUsers();
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     forkJoin({
-      courses: this.courseService.getAllProgramsWithoutPagination({ ...this.coursePaginationModel},userId),
+      courses: this.courseService.getAllProgramsWithoutPagination({ ...this.coursePaginationModel,},userId),
     }).subscribe((response) => {
       this.programList = response.courses;
     });

@@ -50,7 +50,7 @@
                   <div>
                     <h5 class="float-end" style="margin-top: 100px;">All Courses</h5>
                   </div>
-                  <div class="col-green" style="cursor: pointer;" routerLink="/admin/courses/all-courses/course">
+                  <div class="col-green" style="cursor: pointer;" routerLink="/admin/courses/all-courses/course-name">
                     <h3 class="font-weight-bold float-end mb-0">{{count?.courses}}</h3>
                   </div>
                 </div>
@@ -116,23 +116,12 @@
                 <h2>
                   {{commonRoles.STUDENT_ROLE}}s Survey</h2>
               </div>
-              <div class="body" *ngIf="isArea" style="cursor: pointer;">
-                <apx-chart [series]="areaChartOptions.series!" [chart]="areaChartOptions.chart!"
-                  [xaxis]="areaChartOptions.xaxis!" [yaxis]="areaChartOptions.yaxis!" [colors]="areaChartOptions.colors!"
-                  [stroke]="areaChartOptions.stroke!" [legend]="areaChartOptions.legend!" [grid]="areaChartOptions.grid!"
-                  [tooltip]="areaChartOptions.tooltip!" [dataLabels]="areaChartOptions.dataLabels!"></apx-chart>
-              </div>
-              <div class="body" *ngIf="isSurveyBar">
+              <div class="body">
                 <apx-chart [series]="surveyBarChartOptions.series!" [chart]="surveyBarChartOptions.chart!"
                   [xaxis]="surveyBarChartOptions.xaxis!" [yaxis]="surveyBarChartOptions.yaxis!"
                   [colors]="surveyBarChartOptions.colors!" [stroke]="surveyBarChartOptions.stroke!"
                   [legend]="surveyBarChartOptions.legend!" [grid]="surveyBarChartOptions.grid!"
                   [tooltip]="surveyBarChartOptions.tooltip!" [dataLabels]="surveyBarChartOptions.dataLabels!"></apx-chart>
-              </div>
-              <div class="body" *ngIf="isSurveyPie">
-                <apx-chart [series]="surveyPieChartOptions.series!" [chart]="surveyPieChartOptions.chart!"
-                  [labels]="surveyPieChartOptions.labels!" [legend]="surveyPieChartOptions.legend!"
-                  [colors]="surveyPieChartOptions.colors!" [responsive]="surveyPieChartOptions.responsive!"></apx-chart>
               </div>
     
             </div>
@@ -147,31 +136,12 @@
               <div class="float-start ms-3 me-3">
                 <h5>{{count?.users}} Users(All) <span class="text-muted font-12"></span></h5>
               </div>
-              <div class="body" *ngIf="isUsersPie" style="cursor: pointer;" >
+              <div class="body" style="cursor: pointer;" >
                 <apx-chart [series]="polarChartOptions.series2!" [chart]="polarChartOptions.chart!"
                   [labels]="polarChartOptions.labels!" [title]="polarChartOptions.title!" [theme]="polarChartOptions.theme!"
                   [fill]="polarChartOptions.fill!" [yaxis]="polarChartOptions.yaxis!" [stroke]="polarChartOptions.stroke!"
                   [legend]="polarChartOptions.legend!" [plotOptions]="polarChartOptions.plotOptions!"
                   [colors]="polarChartOptions.colors!"></apx-chart>
-              </div>
-              <div class="body" *ngIf="isUsersLine">
-                <apx-chart [series]="usersLineChartOptions.series!" [chart]="usersLineChartOptions.chart!"
-                  [xaxis]="usersLineChartOptions.xaxis!" [stroke]="usersLineChartOptions.stroke!"
-                  [colors]="usersLineChartOptions.colors!" [dataLabels]="usersLineChartOptions.dataLabels!"
-                  [legend]="usersLineChartOptions.legend!" [markers]="usersLineChartOptions.markers!"
-                  [grid]="usersLineChartOptions.grid!" [yaxis]="usersLineChartOptions.yaxis!"
-                  [tooltip]="usersLineChartOptions.tooltip!" [title]="usersLineChartOptions.title!">
-                </apx-chart>
-    
-              </div>
-              <div class="body" *ngIf="isUsersBar">
-                <apx-chart [series]="usersBarChartOptions.series!" [chart]="usersBarChartOptions.chart!"
-                  [xaxis]="usersBarChartOptions.xaxis!" [stroke]="usersBarChartOptions.stroke!"
-                  [colors]="usersBarChartOptions.colors!" [dataLabels]="usersBarChartOptions.dataLabels!"
-                  [legend]="usersBarChartOptions.legend!" [markers]="usersBarChartOptions.markers!"
-                  [grid]="usersBarChartOptions.grid!" [yaxis]="usersBarChartOptions.yaxis!"
-                  [tooltip]="usersBarChartOptions.tooltip!" [title]="usersBarChartOptions.title!">
-                </apx-chart>
               </div>
             </div>
           </div>
@@ -396,7 +366,7 @@
                       [responsive]="studentPieChartOptions.responsive!">
                     </apx-chart>
                   </div>
-                  <div class="recent-report__chart" *ngIf="isStudentBar">
+                  <!-- <div class="recent-report__chart" *ngIf="isStudentBar">
                     <apx-chart [series]="studentBarChartOptions.series!" [chart]="studentBarChartOptions.chart!"
                       [dataLabels]="studentBarChartOptions.dataLabels!" [labels]="studentBarChartOptions.labels!"
                       [legend]="studentBarChartOptions.legend!" [fill]="studentBarChartOptions.fill!"
@@ -409,7 +379,7 @@
                       [legend]="studentLineChartOptions.legend!" [fill]="studentLineChartOptions.fill!"
                       [responsive]="studentLineChartOptions.responsive!">
                     </apx-chart>
-                  </div>
+                  </div> -->
                 </div>
   
               </div>

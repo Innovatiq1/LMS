@@ -274,8 +274,8 @@
                           />
                           <mat-icon matSuffix [owlDateTimeTrigger]="date" class="date-icon">today</mat-icon>
                           <owl-date-time #date></owl-date-time>
-                          <mat-error *ngIf="startInput.invalid && startInput.touched">
-                            Choose a start date
+                          <mat-error *ngIf="startInput.invalid && (startInput.touched || form.submitted)">
+                            Select Start Date
                           </mat-error>
                         </mat-form-field>
                       </div>
@@ -295,8 +295,8 @@
                           />
                           <mat-icon matSuffix [owlDateTimeTrigger]="date2" class="date-icon">today</mat-icon>
                           <owl-date-time #date2></owl-date-time>
-                          <mat-error *ngIf="endInput.invalid && endInput.touched">
-                            Choose a end date
+                          <mat-error *ngIf="endInput.invalid && (endInput.touched || form.submitted)">
+                            Select End Date
                           </mat-error>
                         </mat-form-field>
                       </div>

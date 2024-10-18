@@ -79,6 +79,7 @@ export class ProgramPaymentComponent {
     let filterProgram = this.searchTerm;
     const payload = { ...this.coursePaginationModel,title:filterProgram };
     this.courseService.getAllProgramsPayments(payload,userId).subscribe(response =>{
+      // console.log("data==",response);
      this.dataSource = response.data.docs;
      this.ref.detectChanges();
      this.totalItems = response.data.totalDocs;

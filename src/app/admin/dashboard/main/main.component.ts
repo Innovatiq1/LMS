@@ -2341,30 +2341,34 @@ private attendanceBarChart() {
     })
   }
   setSurveyChart() {
-    if (this.dashboard.content[0].viewType == 'Bar Chart') {
-      this.isSurveyBar = true;
-      this.getStudentsList();
-    } else if (this.dashboard.content[0].viewType == 'Pie Chart') {
-      this.isSurveyPie = true;
-      this.getStudentsList();
-    }
-    else if (this.dashboard.content[0].viewType == 'Line Chart') {
-      this.isArea = true;
-      this.getStudentsList();
-    }
+    this.isSurveyBar = true;
+    this.getStudentsList();
+    // if (this.dashboard.content[0].viewType == 'Bar Chart') {
+    //   this.isSurveyBar = true;
+    //   this.getStudentsList();
+    // } else if (this.dashboard.content[0].viewType == 'Pie Chart') {
+    //   this.isSurveyPie = true;
+    //   this.getStudentsList();
+    // }
+    // else if (this.dashboard.content[0].viewType == 'Line Chart') {
+    //   this.isArea = true;
+    //   this.getStudentsList();
+    // }
   }
   setPerformanceChart() {
-    if (this.dashboard.content[1].viewType == 'Bar Chart') {
-      this.isBar = true;
-      this.performanceBarChart();
-    } else if (this.dashboard.content[1].viewType == 'Pie Chart') {
-      this.isPie = true;
-      this.performancePieChart();
-    }
-    else if (this.dashboard.content[1].viewType == 'Line Chart') {
-      this.isLine = true;
-      this.performanceLineChart();
-    }
+    this.isBar = true;
+    this.performanceBarChart();
+    // if (this.dashboard.content[1].viewType == 'Bar Chart') {
+    //   this.isBar = true;
+    //   this.performanceBarChart();
+    // } else if (this.dashboard.content[1].viewType == 'Pie Chart') {
+    //   this.isPie = true;
+    //   this.performancePieChart();
+    // }
+    // else if (this.dashboard.content[1].viewType == 'Line Chart') {
+    //   this.isLine = true;
+    //   this.performanceLineChart();
+    // }
   }
   setAttendanceChart() {
     if (this.dashboard.content[2].viewType == 'Bar Chart') {
@@ -2380,20 +2384,23 @@ private attendanceBarChart() {
     }
   }
   setUsersChart() {
-    if (this.dashboard?.content[3].viewType == 'Bar Chart') {
-      this.isUsersBar = true;
-      // this.getCount();
-      this.usersBarChart();
-    } else if (this.dashboard?.content[3].viewType == 'Pie Chart') {
-      this.isUsersPie = true;
+    this.isUsersPie = true;
       // this.getCount();
       this.usersPieChart();
-    }
-    else if (this.dashboard?.content[3].viewType == 'Line Chart') {
-      this.isUsersLine = true;
-      // this.getCount();
-      this.usersLineChart();
-    }
+    // if (this.dashboard?.content[3].viewType == 'Bar Chart') {
+    //   this.isUsersBar = true;
+    //   // this.getCount();
+    //   this.usersBarChart();
+    // } else if (this.dashboard?.content[3].viewType == 'Pie Chart') {
+    //   this.isUsersPie = true;
+    //   // this.getCount();
+    //   this.usersPieChart();
+    // }
+    // else if (this.dashboard?.content[3].viewType == 'Line Chart') {
+    //   this.isUsersLine = true;
+    //   // this.getCount();
+    //   this.usersLineChart();
+    // }
   }
 
   getStudentDashboard(){
@@ -2405,16 +2412,18 @@ private attendanceBarChart() {
   }
 
   setStudentsChart(){
-    if (this.studentDashboard.content[0].viewType == 'Pie Chart') {
-      this.isStudentPie = true;
-      this.studentPieChart();
-    } else if (this.studentDashboard.content[0].viewType == 'Bar Chart') {
-      this.isStudentBar = true;
-      this.studentBarChart();
-    } else if (this.studentDashboard.content[0].viewType == 'Line Chart') {
-      this.isStudentLine = true;
-      this.studentLineChart();
-    } 
+    this.isStudentPie = true;
+    this.studentPieChart();
+    // if (this.studentDashboard.content[0].viewType == 'Pie Chart') {
+    //   this.isStudentPie = true;
+    //   this.studentPieChart();
+    // } else if (this.studentDashboard.content[0].viewType == 'Bar Chart') {
+    //   this.isStudentBar = true;
+    //   this.studentBarChart();
+    // } else if (this.studentDashboard.content[0].viewType == 'Line Chart') {
+    //   this.isStudentLine = true;
+    //   this.studentLineChart();
+    // } 
     
   }
   getCompletedClasses() {

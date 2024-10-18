@@ -24,7 +24,7 @@ import { RetakeRequestsComponent } from './retake-requests/retake-requests.compo
 import { ScheduleMeetingComponent } from './schedule-meeting/schedule-meeting.component';
 const routes: Routes = [
   {
-    path: 'all-courses/course',
+    path: 'all-courses/course-name',
     component: AllCourseComponent,
   },
   {
@@ -56,11 +56,11 @@ const routes: Routes = [
     component: CreateClassComponent,
   },
   {
-    path: 'student-courses/completed-courses',
+    path: 'student-courses/course-completed-courses',
     component: CompletionListComponent,
   },
   {
-    path: 'student-courses/completed-courses/edit',
+    path: 'student-courses/course-completed-courses/edit',
     component: CompletionListComponent,
   },
 
@@ -85,7 +85,7 @@ const routes: Routes = [
     component: ViewCompletionComponent,
   },
   {
-    path: 'student-courses/completed-courses/view-completion-list',
+    path: 'student-courses/course-completed-courses/view-completion-list',
     component: ViewCompletionComponent,
   },
   {

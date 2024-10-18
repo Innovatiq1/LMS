@@ -25,7 +25,7 @@ MENU_LIST =[
           "children": [
             {
               "title": "Program Name",
-              "id": "program",
+              "id": "program-name",
               "children": [],
               "actions": [
                 {
@@ -233,7 +233,7 @@ MENU_LIST =[
             },
             {
               "title": "Completed Programs",
-              "id": "completed-program",
+              "id": "program-completed-program",
               "children": [],
               "actions": [
                 {
@@ -285,7 +285,7 @@ MENU_LIST =[
           "children": [
             {
               "title": "Course Name",
-              "id": "course",
+              "id": "course-name",
               "children": [],
               "actions": [
                 {
@@ -521,7 +521,7 @@ MENU_LIST =[
             },
             {
               "title": "Completed Courses",
-              "id": "completed-courses",
+              "id": "course-completed-courses",
               "children": [],
               "actions": [
                 {

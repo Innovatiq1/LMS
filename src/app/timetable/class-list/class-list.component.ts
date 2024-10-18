@@ -110,9 +110,11 @@ export class ClassListComponent extends UnsubscribeOnDestroyAdapter implements O
   }
 
   getClassList() {
+    let filterClass = this.filterName;
+    const payload = { ...this.coursePaginationModel,courseName:filterClass };
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
         this._classService
-      .getClassListWithPagination({ ...this.coursePaginationModel },userId)
+      .getClassListWithPagination(payload,userId)
       .subscribe(
         (response) => {
           if (response.data) {
@@ -295,15 +297,9 @@ export class ClassListComponent extends UnsubscribeOnDestroyAdapter implements O
       });
   }
   performSearch() {
-    if (this.searchTerm) {
-      this.dataSource = this.dataSource?.filter((item: any) =>
-        item.courseId?.title
-          .toLowerCase()
-          .includes(this.searchTerm.toLowerCase())
-      );
-    } else {
+    this.coursePaginationModel.page = 1;
+    this.paginator.pageIndex = 0;
       this.getClassList();
-    }
   }
   exportExcel() {
     const exportData: Partial<TableElement>[] = this.dataSource.map(
