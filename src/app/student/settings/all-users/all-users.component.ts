@@ -184,6 +184,8 @@ removeSelectedRows() {
   
 }
 performSearch() {
+  this.coursePaginationModel.page = 1;
+    this.paginator.pageIndex = 0;
 this.getBlogsList()
 console.log("this.dataSourse",this.dataSource)
 }
