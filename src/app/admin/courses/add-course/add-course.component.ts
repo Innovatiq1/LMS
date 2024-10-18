@@ -793,6 +793,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       }),
       tutorial: this.questionService.getTutorialQuestionJson({
         status: 'approved',
+        isAll: true,
         companyId: userId,
       }),
       survey: this.surveyService.getSurvey(),
@@ -823,12 +824,12 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   }
 
   submit() {
-    console.log(this.firstFormGroup.value)
+    // console.log(this.firstFormGroup.value)
     let certicate_temp_id = this.certificates.filter(
       (certificate: any) =>
         certificate.title === this.firstFormGroup.value.certificate_temp
     );
-    console.log("form",this.firstFormGroup)
+    // console.log("form",this.firstFormGroup)
     // if (this.firstFormGroup.valid) {
       const courseData = this.firstFormGroup.value;
       let creator = JSON.parse(localStorage.getItem('user_data')!).user.name;
@@ -929,10 +930,11 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     }).subscribe((response: any) => {
       this.mainCategories = response.mainCategory;
       this.fundingGrants = response.fundingGrant;
-      this.courseKits = response.courseKit?.reverse();
-      this.assessments = response.assessment?.data.reverse();
-      this.exam_assessments = response.exam_assessment.data.reverse();
-      this.tutorials = response.tutorial?.data.reverse();
+      
+       this.courseKits = response.courseKit?.docs;
+        this.assessments = response.assessment?.data?.docs;
+      this.exam_assessments = response.exam_assessment.data.docs;
+       this.tutorials = response.tutorial?.data.docs;
       this.feedbacks = response.survey?.data.docs;
       this.allSubCategories = response.subCategory;
       this.course = response.course;
@@ -958,6 +960,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         this.isTestIssueCertificate = true;
       }
       this.firstFormGroup.patchValue({
+        
         currency_code: this.course.currency_code
           ? this.course.currency_code
           : null,
