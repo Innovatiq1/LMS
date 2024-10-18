@@ -193,18 +193,18 @@ export class CompletionListComponent {
     }
   }
   performSearch() {
-    // if (this.searchTerm) {
-    //   this.dataSource = this.dataSource?.filter(
-    //     (item: any) => {
-    //       const searchList = (
-    //         item.classId.courseId?.title + item.studentId?.name
-    //       ).toLowerCase();
-    //       return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1;
-    //     }
-    //   );
-    // } else {
+    if (this.searchTerm) {
+      this.dataSource = this.dataSource?.filter(
+        (item: any) => {
+          const searchList = (
+            item.classId.courseId?.title + item.studentId?.name
+          ).toLowerCase();
+          return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1;
+        }
+      );
+    } else {
       this.getCompletedClasses();
-    // }
+    }
   }
   getCompletedClasses() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;

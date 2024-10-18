@@ -12,7 +12,13 @@ import Swal from 'sweetalert2';
   styleUrls: ['./create-feedback.component.scss'],
 })
 export class CreateFeedbackComponent  {
-  breadscrums = [ ];
+  breadscrums = [
+    {
+      title: 'Feedback',
+      items: ['Customize'],
+      active: 'Survey',
+    },
+  ];
   questionTypes: any = [
     {
       id: 'text',
@@ -55,8 +61,10 @@ export class CreateFeedbackComponent  {
     const urlPath = this.router.url.split('/');
     this.editUrl = urlPath.includes('edit-feedback');
     if (this.editUrl) {
-      // this.breadscrums[0].active = 'Edit Survey';
-    } 
+      this.breadscrums[0].active = 'Edit Feedback Form';
+    } else {
+      this.breadscrums[0].active = 'Create Feedback Form';
+    }
 
     this.activatedRoute.params.subscribe((params: any) => {
       this.surveyId = params.id;

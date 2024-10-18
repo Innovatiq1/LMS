@@ -19,12 +19,13 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { formatDate } from '@angular/common';
 import { UtilsService } from '@core/service/utils.service';
 import { MatTableDataSource } from '@angular/material/table';
+
 @Component({
-  selector: 'app-reports',
-  templateUrl: './reports.component.html',
-  styleUrls: ['./reports.component.scss']
+  selector: 'app-meeting-report',
+  templateUrl: './meeting-report.component.html',
+  styleUrls: ['./meeting-report.component.scss']
 })
-export class ReportsComponent implements OnInit{
+export class MeetingReportComponent {
   breadscrums = [
     {
       title: 'Reoprts',
@@ -37,8 +38,11 @@ export class ReportsComponent implements OnInit{
     'code',
     'startDate',
     'endDate',
-    'Users'
+     'totalMeetings',
+     'meetingPlatform',
+     'registerdUsers'
   ];
+  
   coursePaginationModel: Partial<CoursePaginationModel>;
   courseData: any;
   pagination: any;
@@ -119,19 +123,20 @@ export class ReportsComponent implements OnInit{
     this.isFilter = !this.isFilter;
   }
   exportExcel() {
-    const exportData: Partial<TableElement>[] = this.courseData.map(
-      (x: any) => ({
-        'Course': x.title,
-        'Course Code': x.courseCode,
-        'Start Date':
-          formatDate(new Date(x.sessionStartDate), 'yyyy-MM-dd', 'en') || '',
-        'End Date':
-          formatDate(new Date(x.sessionEndDate), 'yyyy-MM-dd', 'en') || '',
-      })
-    );
-
+    const exportData: Partial<TableElement>[] = this.courseData.map((x: any) => ({
+      'Course': x.courseId?.title || '',  // Course Title from courseId
+      'Course Code': x.courseId?.courseCode || '',  // Course Code from courseId
+      'Start Date': formatDate(new Date(x.sessions[0]?.sessionStartDate), 'yyyy-MM-dd', 'en') || '',  // Start Date
+      'End Date': formatDate(new Date(x.sessions[0]?.sessionEndDate), 'yyyy-MM-dd', 'en') || '',  // End Date
+      'Total Meetings': x.occurrences.length || 0,  // Total Meetings
+      'Meeting Platform': x.meetingPlatform || '',
+      'Registered Users': x.registeredUsers.length==0 ?0:x.registerdUsers.length-1 || 0,
+    }));
+  
+    // Call the utility to export to Excel
     TableExportUtil.exportToExcel(exportData, 'Reports');
   }
+  
   onSelectionChange(event: any, field: any) {
     if (field == 'course') {
       this.selectedCourses = event.value;
@@ -213,20 +218,25 @@ export class ReportsComponent implements OnInit{
     const doc = new jsPDF();
     const headers = [
       [
-        'Course',
-        'Course Code',
-        'Start Date ',
-        'End Date   ',
-        
+        'name',
+    'code',
+    'startDate',
+    'endDate',
+     'totalMeetings',
+     'meetingPlatform',
+        'registerdUsers'
       ],
     ];
     const data = this.courseData.map((x: any) => [
-      x.title,
-      x.courseCode,
-      formatDate(new Date(x.sessionStartDate), 'yyyy-MM-dd', 'en') || '',
-      formatDate(new Date(x.sessionEndDate), 'yyyy-MM-dd', 'en') || '',
-      
+      x.courseId?.title,  
+      x.courseId?.courseCode,  
+      formatDate(new Date(x.sessions[0]?.sessionStartDate), 'yyyy-MM-dd', 'en') || '',  // Start Date
+      formatDate(new Date(x.sessions[0]?.sessionEndDate), 'yyyy-MM-dd', 'en') || '',  // End Date
+      x.occurrences.length,  
+      x.meetingPlatform ,
+      x.registeredUsers.length==0 ?0:x.registerdUsers.length-1 || 0,
     ]);
+    
     const columnWidths = [50, 20, 30, 20, 20, 20, 30, 30, 30, 20];
     (doc as any).autoTable({
       head: headers,
@@ -310,20 +320,9 @@ export class ReportsComponent implements OnInit{
           this.selection.select(row)
         );
   }
-  // pageSizeChange($event: any) {
-  //   this.coursePaginationModel.page = $event?.pageIndex + 1;
-  //   this.coursePaginationModel.limit = $event?.pageSize;
-  //   if (this.filter) {
-  //     this.applyFilter();
-  //   } else {
-  //     this.getAllCourses();
-  //   }
-  // }
   pageSizeChange($event: any) {
     this.coursePaginationModel.page = $event?.pageIndex + 1;
     this.coursePaginationModel.limit = $event?.pageSize;
- 
-    // Fetch data based on whether a filter is applied or not
     if (this.filter) {
        this.applyFilter();
     } else {
@@ -344,26 +343,39 @@ export class ReportsComponent implements OnInit{
       )?.category_name;
     });
   }
-  // getAllCourses() {
-  //   this._courseService.getAllCoursesWithPagination().subscribe((response) => {
-  //     this.courseData = response.data.docs;
-  //     this.totalItems = response.data.totalDocs;
-  //     this.coursePaginationModel.docs = response.data.docs;
-  //     this.coursePaginationModel.page = response.data.page;
-  //     this.coursePaginationModel.limit = response.data.limit;
-  //     this.coursePaginationModel.totalDocs = response.data.totalDocs;
-  //   });
-  // }
   getAllCourses() {
-    this._courseService.getAllCoursesWithPagination().subscribe((response) => {
-       this.courseData = response.data.docs; // Update courseData with the new page data
-       this.dataSource = new MatTableDataSource(this.courseData); // Update dataSource for the table
-       this.totalItems = response.data.totalDocs; // Set the total number of items for the paginator
-       this.coursePaginationModel.docs = response.data.docs;
-       this.coursePaginationModel.page = response.data.page;
-       this.coursePaginationModel.limit = response.data.limit;
-       this.coursePaginationModel.totalDocs = response.data.totalDocs;
-    });
- }
- 
+    const userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+
+    const paginationParams = {
+      page: this.coursePaginationModel.page || 1, 
+      limit: this.coursePaginationModel.limit || 10, 
+       classDeliveryType: 'online'
+    };
+  
+    this.classService.getClassListWithPagination(paginationParams, userId).subscribe(
+      (response) => {
+        if (response.data) {
+          console.log("Class List Response Data==", response.data);
+          this.courseData = response.data.docs;
+          this.dataSource = new MatTableDataSource(this.courseData);
+          this.totalItems = response.data.totalDocs; // Total count for paginator
+          this.coursePaginationModel = {
+            ...this.coursePaginationModel,
+            docs: response.data.docs,
+            page: response.data.page,
+            limit: response.data.limit,
+            totalDocs: response.data.totalDocs
+          };
+          
+          // Update paginator properties
+          this.paginator.pageIndex = response.data.page - 1; // Adjusting pageIndex to zero-based
+          this.paginator.length = response.data.totalDocs; // Total items
+        }
+      },
+      (error) => {
+        console.error("Error fetching class list data:", error);
+      }
+    );
+  }
+  
 }

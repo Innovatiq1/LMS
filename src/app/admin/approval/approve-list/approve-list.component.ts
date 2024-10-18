@@ -50,7 +50,7 @@ export class ApproveListComponent {
     'Fee Type',
     'classstartDate',
     'classendDate',
-    'Registered Date',
+    'registeredDate',
     'programFee',
     'instructorFee',
   ];
@@ -84,7 +84,6 @@ export class ApproveListComponent {
     private authenService: AuthenService
   ) {
     this.studentPaginationModel = {} as StudentPaginationModel;
-    this.coursePaginationModel = {}
     // super();
   }
 
@@ -120,8 +119,8 @@ export class ApproveListComponent {
     });
   }
   pageSizeChange($event: any) {
-    this.coursePaginationModel.page = $event?.pageIndex + 1;
-    this.coursePaginationModel.limit = $event?.pageSize;
+    this.studentPaginationModel.page = $event?.pageIndex + 1;
+    this.studentPaginationModel.limit = $event?.pageSize;
     this.getRegisteredClasses();
   }
 
@@ -136,9 +135,9 @@ export class ApproveListComponent {
       .getApprovedClasse(userId,
         payload
       )
-      .subscribe((response: { data: CoursePaginationModel }) => {
+      .subscribe((response: { data: StudentPaginationModel }) => {
         this.isLoading = false;
-        this.coursePaginationModel = response.data;
+        this.studentPaginationModel = response.data;
         this.dataSource = response.data.docs;
         this.dataSource.sort = this.matSort;
         this.totalItems = response.data.totalDocs;
@@ -258,9 +257,22 @@ export class ApproveListComponent {
     });
   }
   performSearch() {
+    // if (this.searchTerm) {
+    //   this.dataSource = this.dataSource?.filter(
+    //     (item: any) => {
+    //       const searchList = (
+    //         item.classId?.courseId?.title +
+    //         item.studentId?.name +
+    //         item.studentId?.last_name
+    //       ).toLowerCase();
+    //       return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1;
+    //     }
+    //   );
+    // } else {
       this.paginator.pageIndex = 0;
     this.coursePaginationModel.page = 1;
       this.getRegisteredClasses();
+    // }
   }
   private refreshTable() {
     this.paginator._changePageSize(this.paginator.pageSize);

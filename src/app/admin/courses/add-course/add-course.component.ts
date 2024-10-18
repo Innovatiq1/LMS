@@ -158,7 +158,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
        {
          title: '', 
          items: [this.storedItems],  
-         active: 'Create Course',  
+         active: 'Create Program',  
        },
      ];
    }
@@ -170,7 +170,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       this.breadcrumbs = [
         {
           title: 'Edit Course',
-          items: [this.storedItems],
+          items: ['Pending Courses'],
           active: 'Edit Course',
         },
       ];
@@ -178,7 +178,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       this.breadcrumbs = [
         {
           title: 'View Course',
-          items: [this.storedItems],
+          items: ['Course Name'],
           active: 'View Course',
         },
       ];
@@ -793,7 +793,6 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       }),
       tutorial: this.questionService.getTutorialQuestionJson({
         status: 'approved',
-        isAll: true,
         companyId: userId,
       }),
       survey: this.surveyService.getSurvey(),

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, HostListener, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener } from '@angular/core';
 import { CoursePaginationModel } from '@core/models/course.model';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ClassService } from 'app/admin/schedule-class/class.service';
@@ -20,7 +20,6 @@ import { ProgramService } from 'app/admin/program/program.service';
 import { LecturesService } from 'app/teacher/lectures/lectures.service';
 import { AppConstants } from '@shared/constants/app.constants';
 import { AuthenService } from '@core/service/authen.service';
-import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-schedule-class',
@@ -52,7 +51,6 @@ export class ScheduleClassComponent {
   selectedLabPosition: number = 0;
   dataSourceArray: DataSourceModel[] = [];
   coursePaginationModel!: Partial<CoursePaginationModel>;
-  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   pageSizeArr = [10, 20, 50, 100];
   searchTerm: string = '';
 
@@ -133,9 +131,8 @@ export class ScheduleClassComponent {
 
   getClassList() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-    const payload = { ...this.coursePaginationModel,programName:this.searchTerm };
     this.courseService
-      .getProgramClassListWithPagination(userId,payload)
+      .getProgramClassListWithPagination(userId,{ ...this.coursePaginationModel })
       .subscribe(
         (response) => {
           this.dataSource = response.data.docs;
@@ -387,10 +384,14 @@ export class ScheduleClassComponent {
   }
 
   performSearch() {
-    this.coursePaginationModel.page = 1;
-    this.paginator.pageIndex = 0;
+    if (this.searchTerm) {
+      this.dataSource = this.dataSource?.filter((item: any) => {
+        const search = (item.courseId?.title).toLowerCase();
+        return search.indexOf(this.searchTerm.toLowerCase()) !== -1;
+      });
+    } else {
       this.getClassList();
-    
+    }
   }
 
   getStatusClass(classDeliveryType: string): string {

@@ -1,20 +1,16 @@
-
-
 <section class="content">
   <div class="content-block">
-    <div class="block-header" >
-      <!-- breadcrumb -->
-      <app-breadcrumb >
-      </app-breadcrumb>
+    <div class="block-header" *ngFor="let breadscrum of breadscrums">
+       <!-- breadcrumb -->
+      <app-breadcrumb [items]="breadscrum.items" [active_item]="breadscrum.active">
+      </app-breadcrumb> 
     </div>
     <div class="row">
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
           <div class="materialTableHeader">
-            
             <div class="right">
               <ul class="tbl-export-btn">
-               
                 <li>
                   <ul class="header-buttons-left ms-0">
                     <!-- <li class="tbl-search-box">
@@ -38,20 +34,12 @@
                     </li>
                   </ul>
                 </li>
-                <li class="tbl-header-btn">
-                  <div class="m-l-10" [hidden]=!selection.hasValue() matTooltip="DELETE">
-                    <button mat-mini-fab color="warn" (click)="removeSelectedRows()">
-                      <mat-icon class="col-white">delete
-                      </mat-icon>
-                    </button>
-                  </div>
-                </li>
                 <li>
                   <span style="font-weight: bold;">Export as</span>
                 </li>
                 <li>
-                  <div class="export-button m-l-10" matTooltip="XLSX" (click)="exportExcel()">
-                    <img src="assets/excel.svg" alt=""/>
+                  <div class="export-button m-l-10" matTooltip="XLSX" (click)="exportExcel()" >
+                    <img src="assets/excel.svg" alt="" />
                   </div>
                 </li>
                 <li>
@@ -64,13 +52,14 @@
           </div>
           <div class="body overflow-auto">
             <div class="responsive_table">
-              <table mat-table matSort [dataSource]="dataSource" class="mat-cell advance-table">
-              
-                 <ng-container matColumnDef="Student Name">
+              <table mat-table matSort [dataSource]="dataSource" >
+                <!-- Name Column -->
+                <ng-container matColumnDef="Student Name">
                   <mat-header-cell *matHeaderCellDef >{{commonRoles.STUDENT_ROLE}}</mat-header-cell>
-                  <mat-cell *matCellDef="let row" class="name" (click)="isView ? view(row._id) : null">
-                    <span class="mobile-label">{{commonRoles.STUDENT_ROLE}}:</span>{{row.name}}</mat-cell>
+                  <mat-cell *matCellDef="let row" (click)="isView ? view(row._id) : null" class="name">
+                    <span class="mobile-label">Student:</span>{{row.name}}</mat-cell>
                 </ng-container>
+                <!-- email -->
                 <ng-container matColumnDef="email">
                   <mat-header-cell *matHeaderCellDef >Email</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row._id) : null">
@@ -79,44 +68,51 @@
                     <span class="email-address">{{row.email}}</span>
                   </mat-cell>
                 </ng-container>
+
+
+                <!-- Program Name -->
                 <ng-container matColumnDef="Program Name">
                   <mat-header-cell *matHeaderCellDef >Program</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row._id) : null">
-                    <span class="mobile-label">Program:</span>{{row.program}}</mat-cell>
+                    <span class="mobile-label">Name:</span>{{row.program}}</mat-cell>
                 </ng-container>
+                <!-- Amount -->
                 <ng-container matColumnDef="Amount">
                   <mat-header-cell *matHeaderCellDef  class="amount">Fee</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row._id) : null" class="payment-cell">
-                    <span class="mobile-label">Fee:</span><span>$</span> {{row.price||0}}.00</mat-cell>
+                    <span class="mobile-label">Amount:</span><span>$</span> {{row.price||0}}.00</mat-cell>
                 </ng-container>
+                <!-- Payment Date -->
                 <ng-container matColumnDef="Payment Date">
                   <mat-header-cell *matHeaderCellDef >Payment Date</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row._id) : null">
                     <span class="mobile-label">Payment Date:</span>{{row.createdAt | date}}</mat-cell>
                 </ng-container>
-                 
-                
-                 <ng-container matColumnDef="Payment Status">
-                  <mat-header-cell *matHeaderCellDef  class="compulsory-count-header"> Status</mat-header-cell>
-                  <mat-cell *matCellDef="let row" (click)="isView ? view(row._id) : null" >
+
+                <!-- Payment status -->
+                <ng-container matColumnDef="Payment Status">
+                  <mat-header-cell *matHeaderCellDef > Status</mat-header-cell>
+                  <mat-cell *matCellDef="let row" (click)="isView ? view(row._id) : null" [ngClass]="getStatusClass(row.status)">
+                    <!-- <div class="status-container">
+                      <span class="badge badge-solid-green">
+                      <span class="status-dot"></span>
+                      {{row.status | titlecase}}</span>
+                    </div> -->
                     <span class="mobile-label">Status:</span>
-                      <span
-                      [class]=" row.status === 'Success' ? 'badge badge-solid-green' : 'badge badge-solid-red'">
-                      <span
-                        [class]=" row.status === 'Success' ? 'status-dot' : 'status-red'"></span>
-                      {{ row.status ==='Success'? 'Success':'Failed' | titlecase}}</span>
+                        <span
+                        [class]=" row.status === 'success' ? 'badge badge-solid-green' : 'badge badge-solid-red'">
+                        <span
+                          [class]=" row.status === 'success' ? 'status-dot' : 'status-red'"></span>
+                        {{ row.status ==='success'? 'Success':'Failed' | titlecase}}</span>
                   </mat-cell>
                 </ng-container>
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: displayedColumns;"
-                  [style.cursor]="'pointer'" matRipple>
+                <mat-row *matRowDef="let row; columns: displayedColumns;" [style.cursor]="'pointer'" matRipple>
                 </mat-row>
               </table>
-
               <mat-paginator #paginator [length]="totalItems" (page)="pageSizeChange($event)"
-              [pageSizeOptions]="pageSizeArr" aria-label="select pagination option">
-          </mat-paginator>
-
+                [pageSizeOptions]="pageSizeArr" aria-label="select pagination option">
+            </mat-paginator>
             </div>
           </div>
         </div>

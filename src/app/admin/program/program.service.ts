@@ -29,7 +29,6 @@ export class ProgramService {
         params = params.set("sortBy", `${filter.sortByDirection == "asc" ? "+" : "-"}${filter.sortBy}`);
       if (filter.limit) params = params.set("limit", filter.limit?.toString());
       if (filter.page) params = params.set("page", filter.page?.toString());
-      if (filter.programName) params = params.set("programName", filter.programName?.toString());
       if (filter.filterText) params = params.set("title", filter.filterText?.toString());
     }
     return params;

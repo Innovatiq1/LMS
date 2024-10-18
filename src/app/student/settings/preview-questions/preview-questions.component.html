@@ -1,8 +1,8 @@
 <section class="content">
     <div class="content-block">
-            <div class="block-header" *ngFor="let breadscrum of breadcrumbs">
-              <app-static-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items"  [active_item]="breadscrum.active">
-              </app-static-breadcrumb>
+            <div class="block-header" *ngFor="let breadscrum of breadscrums">
+              <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items"  [active_item]="breadscrum.active">
+              </app-breadcrumb>
             </div>
         <div class="card border shadow card-height border-radius mb-5">
             <ng-container >
