@@ -93,9 +93,10 @@
                         Choose file
                         <input
                           formControlName="documentLink"
-                          (change)="onFileUpload($event)"
+                          (change)="onFileUpload($event, isScormKit)"
                           class="file-input"
-                          type="file" accept=".pdf,.ppt,.pptx,.doc,.docx,.xls,.xlsx,.txt"
+                          type="file" 
+                          [accept]="isScormKit? '.zip':'.pdf,.ppt,.pptx,.doc,.docx,.xls,.xlsx,.txt'"
                         />
                       </button>
                       <span class="file-msg">

@@ -49,28 +49,28 @@ h5 {
     padding: 10px;
 }
 
-:host ::ng-deep .ck-editor__editable_inline {
-    --mdc-outlined-text-field-container-shape: 12px;
-    min-height: 150px;
-    min-width: 90%;
+// :host ::ng-deep .ck-editor__editable_inline {
+//     --mdc-outlined-text-field-container-shape: 12px;
+//     min-height: 150px;
+//     min-width: 90%;
 
-}
+// }
 
-::ng-deep .ck-rounded-corners .ck.ck-editor__main>.ck-editor__editable,
-.ck.ck-editor__main>.ck-editor__editable.ck-rounded-corners {
-    border-radius: var(--ck-border-radius);
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
-    margin: -3px 25px;
-}
+// ::ng-deep .ck-rounded-corners .ck.ck-editor__main>.ck-editor__editable,
+// .ck.ck-editor__main>.ck-editor__editable.ck-rounded-corners {
+//     border-radius: var(--ck-border-radius);
+//     border-bottom-left-radius: 12px;
+//     border-bottom-right-radius: 12px;
+//     margin: -3px 25px;
+// }
 
-::ng-deep .ck-rounded-corners .ck.ck-editor__top .ck-sticky-panel .ck-toolbar,
-.ck.ck-editor__top .ck-sticky-panel .ck-toolbar.ck-rounded-corners {
-    border-radius: var(--ck-border-radius);
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-    margin: -3px 25px;
-}
+// ::ng-deep .ck-rounded-corners .ck.ck-editor__top .ck-sticky-panel .ck-toolbar,
+// .ck.ck-editor__top .ck-sticky-panel .ck-toolbar.ck-rounded-corners {
+//     border-radius: var(--ck-border-radius);
+//     border-top-left-radius: 12px;
+//     border-top-right-radius: 12px;
+//     margin: -3px 25px;
+// }
 
 
 
@@ -100,3 +100,12 @@ h5 {
 .btn {
     border: none;
 }
+
+angular-editor ol {
+    list-style-type: decimal;
+    padding-left: 40px;  /* Ensure proper indentation */
+  }
+  angular-editor ul {
+    list-style-type: disc;
+    padding-left: 40px;  /* Ensure proper indentation */
+  }
