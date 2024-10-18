@@ -58,6 +58,7 @@ export class SurveyListComponent
   commonRoles: any;
   isView = false;
   totalItems: any;
+  searchTerm: string = '';
   pageSizeArr = [10, 25, 50, 100];
   coursePaginationModel: Partial<CoursePaginationModel>;
   constructor(
@@ -127,6 +128,7 @@ export class SurveyListComponent
       }
     });
   }
+  
   generatePdf() {
     const doc = new jsPDF();
     const headers = [[[AppConstants.STUDENT_ROLE],'Course/Program Name' ]];
@@ -181,6 +183,7 @@ export class SurveyListComponent
       // confirmButtonColor: '#526D82',
     });
   }
+
   public loadData() {
     // this.exampleDatabase = new SurveyService(this.httpClient);
     // this.dataSource = new ExampleDataSource(
@@ -196,7 +199,10 @@ export class SurveyListComponent
     //     this.dataSource.filter = this.filter.nativeElement.value;
     //   }
     // );
-    this.surveyService.getSurveyList({ ...this.coursePaginationModel })
+    let filterProgram = this.searchTerm;
+    const payload = { ...this.coursePaginationModel,title:filterProgram };
+ 
+    this.surveyService.getSurveyList(payload)
     .subscribe(response => {
       this.isLoading = false;
       this.totalItems = response.data.totalDocs
@@ -216,6 +222,12 @@ export class SurveyListComponent
   pageSizeChange($event: any) {
     this.coursePaginationModel.page = $event?.pageIndex + 1;
     this.coursePaginationModel.limit = $event?.pageSize;
+    this.loadData();
+  }
+
+  performSearch() {
+    this.coursePaginationModel.page = 1;
+    this.paginator.pageIndex = 0;
     this.loadData();
   }
 

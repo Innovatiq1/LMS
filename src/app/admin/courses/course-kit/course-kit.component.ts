@@ -99,24 +99,48 @@ export class CourseKitComponent implements OnInit{
     return this.actionItems?.length ? this.actionItems.includes(action): true
   }
 
-  fetchCourseKits() {
-    this.courseService.getCourseKit({ ...this.courseKitModel })
-      .subscribe(response => {
-        this.isLoading = false;
-        this.totalItems = response.totalDocs
+  // fetchCourseKits() {
+  //   this.courseService.getCourseKit({ ...this.courseKitModel })
+  //     .subscribe(response => {
+  //       console.log("courseKit response",response)
+  //       this.isLoading = false;
+  //       this.totalItems = response.totalDocs
 
+  //       this.dataSource = response.docs;
+  //       this.courseKitModel.docs = response.docs;
+  //       this.courseKitModel.page = response.page;
+  //       this.courseKitModel.limit = response.limit;
+  //       this.courseKitModel.totalDocs = response.totalDocs;
+
+  //       this.getJobTemplates();
+
+  //     }, (error) => {
+
+  //     });
+  // }
+  fetchCourseKits() {
+    const filter = { 
+      ...this.courseKitModel,
+      title: this.searchTerm 
+    };
+  
+    this.courseService.getCourseKit(filter)
+      .subscribe(response => {
+        console.log("courseKit response", response);
+        this.isLoading = false;
+        this.totalItems = response.totalDocs;
         this.dataSource = response.docs;
         this.courseKitModel.docs = response.docs;
         this.courseKitModel.page = response.page;
         this.courseKitModel.limit = response.limit;
         this.courseKitModel.totalDocs = response.totalDocs;
-
+  
         this.getJobTemplates();
-
       }, (error) => {
-
+        // Handle error
       });
   }
+  
 
   getJobTemplates() {
     this.courseService.getJobTempletes().subscribe(
@@ -268,18 +292,25 @@ export class CourseKitComponent implements OnInit{
 
   }
   performSearch() {
-    if(this.searchTerm){
-    this.dataSource = this.dataSource?.filter((item: any) =>{
-      const search = (item.name + item.shortDescription + item.longDescription).toLowerCase()
-      return search.indexOf(this.searchTerm.toLowerCase())!== -1;
-
-    }
-    );
-    } else {
-       this.fetchCourseKits();
-
-    }
+    this.courseKitModel.page = 1;
+    this.paginator.pageIndex = 0;
+    this.fetchCourseKits();
   }
+  
+  // performSearch() {
+  //   if(this.searchTerm){
+  //   this.dataSource = this.dataSource?.filter((item: any) =>{
+  //     const search = (item.name + item.shortDescription + item.longDescription).toLowerCase()
+  //     console.log("search",search);
+  //     return search.indexOf(this.searchTerm.toLowerCase())!== -1;
+
+  //   }
+  //   );
+  //   } else {
+  //      this.fetchCourseKits();
+
+  //   }
+  // }
   exportExcel() {
    const exportData: Partial<TableElement>[] = this.dataSource.map(
      (user: any) => ({

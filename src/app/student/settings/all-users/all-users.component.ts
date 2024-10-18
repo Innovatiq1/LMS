@@ -77,6 +77,7 @@ getBlogsList(filters?:any) {
   let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
   this.alluserService.getUserList({filterText,...this.coursePaginationModel},userId).subscribe((response: any) => {
     this.dataSource = response.data.data;
+    console.log("dataSource==",this.dataSource)
     this.isLoading = false;
     this.ref.detectChanges();
     this.totalItems = response.totalRecords
@@ -184,6 +185,12 @@ removeSelectedRows() {
 }
 performSearch() {
 this.getBlogsList()
+console.log("this.dataSourse",this.dataSource)
+}
+getData(row:any){
+  console.log("row==",row)
+  console.log("row.id==",row.id)
+
 }
 edit(row:any){
 this.router.navigate(['/admin/users/edit-all-users'], {queryParams:{row:row}})
