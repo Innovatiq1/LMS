@@ -98,7 +98,7 @@
                    <ng-container matColumnDef="Student Name">
                     <mat-header-cell *matHeaderCellDef >{{commonRoles.STUDENT_ROLE}}</mat-header-cell>
                     <mat-cell *matCellDef="let row" class="name" (click)="isView ? view(row._id) : null">
-                      <span class="mobile-label">Student Name:</span>{{row.name}}</mat-cell>
+                      <span class="mobile-label">{{commonRoles.STUDENT_ROLE}}:</span>{{row.name}}</mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="email">
                     <mat-header-cell *matHeaderCellDef >Email</mat-header-cell>
@@ -122,7 +122,7 @@
                   <ng-container matColumnDef="Amount">
                     <mat-header-cell *matHeaderCellDef  class="amount">Fee</mat-header-cell>
                     <mat-cell *matCellDef="let row" (click)="isView ? view(row._id) : null" class="payment-cell">
-                      <span class="mobile-label">Amount:</span><span>$</span> {{row.price||0}}.00</mat-cell>
+                      <span class="mobile-label">Fee:</span><span>$</span> {{row.price||0}}.00</mat-cell>
                   </ng-container>
                   <!-- Short Description -->
                   <ng-container matColumnDef="Payment Date">

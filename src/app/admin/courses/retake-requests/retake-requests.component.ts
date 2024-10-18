@@ -21,7 +21,7 @@ export class RetakeRequestsComponent implements OnInit {
     'select',
     'studentname',
     'coursename',
-    'registeredDate',
+    'Registered Date',
     'examType',
     'action'
   ];

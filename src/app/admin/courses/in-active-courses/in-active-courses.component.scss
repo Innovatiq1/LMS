@@ -16,4 +16,11 @@ mat-cell, mat-header-cell{
 .payment-cell{
   padding-right: 110px !important;
 }
- 
+@media (max-width: 768px) {
+  .payment-cell {
+    display: block;
+    justify-content: center;
+    margin-top: 10px;
+    padding-right: 0px !important;
+  }
+}
