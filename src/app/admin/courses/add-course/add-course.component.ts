@@ -112,22 +112,31 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     defaultParagraphSeparator: 'p',
     defaultFontName: 'Arial',
     sanitize: false,
-    toolbarHiddenButtons: [['strikethrough']],
-    customClasses: [
-      {
-        name: 'quote',
-        class: 'quote',
-      },
-      {
-        name: 'redText',
-        class: 'redText',
-      },
-      {
-        name: 'titleText',
-        class: 'titleText',
-        tag: 'h1',
-      },
-    ],
+    toolbarHiddenButtons: [[
+      'strikethrough',
+      'subscript',
+      'superscript',
+      'indent',
+      'outdent',
+      'insertOrderedList',
+      'fontName',
+      'heading',
+  ]],
+    // customClasses: [
+    //   {
+    //     name: 'quote',
+    //     class: 'quote',
+    //   },
+    //   {
+    //     name: 'redText',
+    //     class: 'redText',
+    //   },
+    //   {
+    //     name: 'titleText',
+    //     class: 'titleText',
+    //     tag: 'h1',
+    //   },
+    // ],
   };
   vendors: any;
   certificates: any;
