@@ -46,6 +46,9 @@ export class AdminService {
       if (filter.filterText) {
         params = params.set('title', filter.filterText?.toString());
       }
+      if (filter.title) {
+        params = params.set('title', filter.title?.toString());
+      }
       if (filter.status && filter.status === 'active') {
         params = params.set('status', 'active');
       } else if (filter.status && filter.status === 'inactive') {
@@ -89,6 +92,7 @@ export class AdminService {
  
 
   getUserTypeList(filter: any,id?:any): Observable<any> {
+    console.log("filter==",filter)
     let apiUrl;
     if(id){
       apiUrl = `${this.defaultUrl}userType?companyId=${id}`;

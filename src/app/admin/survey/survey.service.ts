@@ -41,6 +41,9 @@ export class SurveyService extends UnsubscribeOnDestroyAdapter {
       if (filter.filterText) {
         params = params.set("title", filter.filterText?.toString());
       }
+      if (filter.title) {
+        params = params.set("title", filter.title?.toString());
+      }
       if (filter.status && filter.status === "active") {
         params = params.set("status", "active");
       } else if (filter.status && filter.status === "inactive") {
@@ -80,6 +83,7 @@ export class SurveyService extends UnsubscribeOnDestroyAdapter {
   //       .pipe(map((response) => response));
   // }
   getSurveyList(filter?: Partial<CoursePaginationModel>): Observable<ApiResponse> {
+    // console.log("filters servay",filter)
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     const apiUrl = `${this.prefix}admin/survey-builder?companyId=${userId}`;
     return this.httpClient
@@ -117,6 +121,7 @@ export class SurveyService extends UnsubscribeOnDestroyAdapter {
   }
   getSurvey( filter?: Partial<CoursePaginationModel>): Observable<ApiResponse> {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    console.log("servey==",filter)
         const apiUrl = `${this.prefix}admin/survey?companyId=${userId}`;
     return this.httpClient.get<any>(apiUrl, {
       params: this.buildParams(filter),
