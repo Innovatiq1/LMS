@@ -24,8 +24,8 @@ export class ViewClassComponent {
   edit = false;
   isDelete = false;
   isZoomMeetingFormVisible: boolean = false;
-  duration: string = '';  storedItems: string | null;
-
+  duration: string = '';
+  storedItems: string | null;
   constructor(public _classService: ClassService,private _router: Router, private activatedRoute: ActivatedRoute,private authenService: AuthenService) {
     this.storedItems = localStorage.getItem('activeBreadcrumb');
     if (this.storedItems) {

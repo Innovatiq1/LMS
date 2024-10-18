@@ -12,7 +12,6 @@ import { GenereateReportComponent } from './genereate-report/genereate-report.co
 import { FeedbackReportComponent } from './feedback-report/feedback-report.component';
 import { UserReportComponent } from './user-report/user-report.component';
 import { PaymentReportComponent } from './payment-report/payment-report.component';
-import { MeetingReportComponent } from './meeting-report/meeting-report.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +20,6 @@ import { MeetingReportComponent } from './meeting-report/meeting-report.componen
     FeedbackReportComponent,
     UserReportComponent,
     PaymentReportComponent,
-    MeetingReportComponent,
   ],
   imports: [
     CommonModule,

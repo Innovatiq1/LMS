@@ -152,11 +152,7 @@ const routes: Routes = [
   {
     path: 'submitted-courses/submitted-pending-courses/course-view',
     component: CourseViewComponent,
-  },  {
-    path:'create-class/schedule-meeting',
-    component: ScheduleMeetingComponent
-  }
-
+  },
  
 ];
 

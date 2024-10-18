@@ -49,8 +49,6 @@ export class CreateProgramComponent {
       },
     ]
   };
-  
-
   files: any[] = [];
 
   coreProgramCards: { coreProgramName: string; coreProgramCode: string }[] = [{ coreProgramName: '', coreProgramCode: '' }];

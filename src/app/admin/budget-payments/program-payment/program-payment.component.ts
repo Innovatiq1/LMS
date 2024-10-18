@@ -29,7 +29,14 @@ export class ProgramPaymentComponent {
     'Amount',
     'Payment Status',
   ];
- 
+  breadscrums = [
+    {
+      // title: 'Programs',
+      items: ['Finance'],
+      active: 'Program Payment',
+    },
+  ];
+  
   courseKitModel!: Partial<CourseKitModel>;
   totalItems: any;
   pageSizeArr = this.utils.pageSizeArr;

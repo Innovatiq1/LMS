@@ -21,7 +21,13 @@ export class AddQuestionsComponent implements OnInit {
   @Input() approved: boolean = false;
   formType: string = 'Create';
 
-  breadcrumbs:any[] = []
+  breadscrums = [
+    {
+      title: 'Questions',
+      items: ['Assessment configuration'],
+      active: 'Create assessments',
+    },
+  ];
 
 questionForm!: FormGroup;
 questionId!: string;
@@ -33,31 +39,19 @@ selectedTabIndex: number = 0;
 @ViewChild(AssesmentQuestionsComponent) assessmentComponent!: AssesmentQuestionsComponent;
   @ViewChild(AddExamQuestionsComponent) examComponent!: AddExamQuestionsComponent;
   @ViewChild(TutorialQuestionsComponent) tutorialComponent!: TutorialQuestionsComponent;
-  storedItems: string | null;
 
 constructor(private formBuilder: FormBuilder,private router: Router, private questionService: QuestionService, private cdr: ChangeDetectorRef,private activatedRoute: ActivatedRoute,private ngZone: NgZone) {
 
-  this.storedItems = localStorage.getItem('activeBreadcrumb');
-  if (this.storedItems) {
-   this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
-   this.breadcrumbs = [
-     {
-       title: '', 
-       items: [this.storedItems],  
-       active: 'Create Certificate',  
-     },
-   ];
- }
   let urlPath = this.router.url.split('/')
   this.editUrl = urlPath.includes('edit-questions');
 
 
   if(this.editUrl===true){
-    this.breadcrumbs = [
+    this.breadscrums = [
       {
         title:'Edit Questions',
-        items: [this.storedItems], 
-        active: 'Edit assessments',
+        items: ['Assessments'],
+        active: 'Edit Questions',
       },
     ];
   }

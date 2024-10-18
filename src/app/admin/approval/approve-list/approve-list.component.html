@@ -81,7 +81,7 @@
                     >Course</mat-header-cell
                   >
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
-                    <span class="mobile-label">Course:</span>{{row?.title }}
+                    <span class="mobile-label">Course Name:</span>{{row?.title }}
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="Fee Type">
@@ -94,12 +94,12 @@
                 <ng-container matColumnDef="programFee">
                   <mat-header-cell *matHeaderCellDef  class="amount">Course Fee</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null" class="payment-cell">
-                      <span class="mobile-label">Course Fee:</span> <span>$</span> {{row?.classId?.courseId?.fee || 0}}.00</mat-cell>
+                      <span class="mobile-label">Program Fee:</span> <span>$</span> {{row?.classId?.courseId?.fee || 0}}.00</mat-cell>
               </ng-container>
               <ng-container matColumnDef="instructorFee">
                   <mat-header-cell *matHeaderCellDef  class="amount">{{commonRoles?.INSTRUCTOR_ROLE}} Fee</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null" class="payment-cell">
-                      <span class="mobile-label">{{commonRoles?.INSTRUCTOR_ROLE}} Fee:</span><span>$</span> {{row?.classId?.instructorCost || 0 }}.00</mat-cell>
+                      <span class="mobile-label">Instructor Fee:</span><span>$</span> {{row?.classId?.instructorCost || 0 }}.00</mat-cell>
               </ng-container>
                 <!-- Class start date -->
 
@@ -117,28 +117,21 @@
                     >End Date
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
-                    <span class="mobile-label">End Date:</span>{{row?.classId?.sessions[0]?.sessionEndDate ? (row?.classId?.sessions[0]?.sessionEndDate | date) : "--" }}
+                    <span class="mobile-label">Class End Date:</span>{{row?.classId?.sessions[0]?.sessionEndDate ? (row?.classId?.sessions[0]?.sessionEndDate | date) : "--" }}
                   </mat-cell>
                 </ng-container>
                 <!--Registered date -->
-                <!-- <ng-container matColumnDef="registeredDate">
+                <ng-container matColumnDef="registeredDate">
                   <mat-header-cell *matHeaderCellDef 
                     >Registered Date
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
                     <span class="mobile-label">Registered Date:</span>{{row?.registeredOn ? (row?.registeredOn | date) : "--"}}
                   </mat-cell>
-                </ng-container> -->
-                <ng-container matColumnDef="Registered Date">
-                  <mat-header-cell *matHeaderCellDef >Registered Date
-                  </mat-header-cell>
-                  <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
-                    <span class="mobile-label">Registered Date:</span>{{row?.registeredOn ? (row.registeredOn | date) : "--"}} </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="status">
                   <mat-header-cell *matHeaderCellDef class="pr-0">Status</mat-header-cell>
                   <mat-cell *matCellDef="let row" class="pr-0" (click)="isView ? view(row.id) : null">
-                    <span class="mobile-label">Status:</span>
                     <span class="badge badge-solid-green">
                       <span class="status-dot"></span>
                       {{row.status | titlecase}}</span>

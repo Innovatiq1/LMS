@@ -19,7 +19,13 @@ import { FormService } from '@core/service/customization.service';
   styleUrls: ['./creat-announcement.component.scss']
 })
 export class CreatAnnouncementComponent {
-  breadcrumbs:any[] = []
+  breadscrums = [
+    {
+      title: 'Create Announcement',
+      items: ['Announcement'],
+      active: 'Create Announcement',
+    },
+  ];
   create = true;
   status = true;
   isChecked = false;
@@ -72,7 +78,6 @@ export class CreatAnnouncementComponent {
       },
     ]
   };
-  storedItems: string | null;
 
   toggleStatus() {
     this.status = !this.status;
@@ -103,19 +108,6 @@ cancel(){
   constructor(private router: Router, public classService: ClassService, public utils: UtilsService, private formBuilder: FormBuilder,
     private formService: FormService,
     private announcementService: AnnouncementService,private adminService: AdminService,) {
-
-      
-  this.storedItems = localStorage.getItem('activeBreadcrumb');
-  if (this.storedItems) {
-   this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
-   this.breadcrumbs = [
-     {
-       title: '', 
-       items: [this.storedItems],  
-       active: 'Create Certificate',  
-     },
-   ];
- }
       this.forms = [];
     let urlPath = this.router.url.split('/')
     this.editUrl = urlPath.includes('edit-announcement');
@@ -124,19 +116,19 @@ cancel(){
     this.currentId = urlPath[urlPath.length - 1];
 
     if (this.editUrl === true) {
-      this.breadcrumbs = [
+      this.breadscrums = [
         {
           title: 'Edit Announcement',
-          items: [this.storedItems],  
+          items: ['Announcement'],
           active: 'Edit Announcement',
         },
       ];
     }
     else if(this.viewUrl===true){
-      this.breadcrumbs = [
+      this.breadscrums = [
         {
           title:'View Announcement',
-          items: [this.storedItems],  
+          items: ['Announcement'],
           active: 'View Announcement',
         },
       ];

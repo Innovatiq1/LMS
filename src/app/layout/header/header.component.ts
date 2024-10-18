@@ -206,12 +206,10 @@ export class HeaderComponent
     let payload = {
       announcementFor: AppConstants.STUDENT_ROLE,
     };
-    console.log(JSON.stringify(payload));
     this.announcementService
-      .getAnnouncementList(payload)
+      .getAnnouncementsForStudents(payload)
       .subscribe((res: { data: { data: any[] }; totalRecords: number }) => {
-        const announcementsData: any = res.data.data;
-        console.log("announcementsData",announcementsData)
+        const announcementsData: any = res.data;
         this.announcements = announcementsData.reverse();
       });
   }

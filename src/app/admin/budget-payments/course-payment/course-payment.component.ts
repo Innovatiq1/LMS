@@ -79,9 +79,7 @@ export class CoursePaymentComponent {
    this.getAllCourse();
   }
   getAllCourse(){
-
-    const payload = { ...this.coursePaginationModel,title:this.searchTerm };
-    this.courseService.getAllPayments(payload).subscribe(response =>{
+    this.courseService.getAllPayments({ ...this.coursePaginationModel}).subscribe(response =>{
      this.dataSource = response.data.docs;
      this.ref.detectChanges();
      this.totalItems = response.data.totalDocs;
@@ -166,15 +164,28 @@ this.router.navigate(['/admin/budgets/view-course-payment/'], {queryParams:{id:i
       }
     });
    
+    // this.showNotification(
+    //   'snackbar-danger',
+    //   totalSelect + ' Record Delete Successfully...!!!',
+    //   'top',
+    //   'right'
+    // );
   }
    //search functinality
    performSearch() {
     
-    this.coursePaginationModel.page = 1;
-    this.paginator.pageIndex = 0;
-   
+    
+    if(this.searchTerm){
+    this.dataSource = this.dataSource?.filter((item: any) =>{   
+      const search = (item.course + item.name).toLowerCase()
+      return search.indexOf(this.searchTerm.toLowerCase())!== -1;
+      
+    }
+    );
+    } else {
        this.getAllCourse();
 
+    }
   }
   exportExcel() {
     //k//ey name with space add in brackets

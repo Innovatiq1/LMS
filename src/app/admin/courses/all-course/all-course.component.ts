@@ -23,11 +23,6 @@ import * as XLSX from 'xlsx';
 
 import * as JSZip from 'jszip';
 import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf';
-
-interface Course {
-  title: string;
-  _id: string;
-}
 @Component({
   selector: 'app-all-course',
   templateUrl: './all-course.component.html',
@@ -182,19 +177,8 @@ export class AllCourseComponent {
     this.getAllVendorsAndUsers();
     forkJoin({
       courses: this.classService.getAllCourses(),
-    }).subscribe((response: { courses: Course[] }) => {  // Specify the type of response
-      this.courseList = response.courses
-        .filter(course => course.title && course.title.trim() !== "")  // Remove empty or space-only titles
-        .map(course => ({ ...course, title: course.title.trim() }))   // Trim any extra spaces from the title
-        .reduce((acc: Course[], current: Course) => {
-          // Remove duplicates based on 'title'
-          const duplicate = acc.find(item => item.title === current.title);
-          if (!duplicate) {
-            acc.push(current);
-          }
-          return acc;
-        }, [])
-        .reverse();  // Reverse the final list if necessary
+    }).subscribe((response) => {
+      this.courseList = response.courses.reverse();
     });
     this.commonRoles = AppConstants;
     

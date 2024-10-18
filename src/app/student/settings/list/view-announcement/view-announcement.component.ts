@@ -10,7 +10,13 @@ import Swal from 'sweetalert2';
   styleUrls: ['./view-announcement.component.scss']
 })
 export class ViewAnnouncementComponent {
-  breadcrumbs:any[] = []
+  breadscrums = [
+    {
+      title: 'Blank',
+      items: ['Announcement'],
+      active: 'View Announcement',
+    },
+  ];
 
   aboutData1!: any;
   subscribeParams: any;
@@ -18,7 +24,6 @@ export class ViewAnnouncementComponent {
   id?: number;
   isEdit = false;
   isDelete = false;
-  storedItems: string | null;
   
   constructor(
     private activatedRoute:ActivatedRoute,
@@ -27,17 +32,7 @@ export class ViewAnnouncementComponent {
     private cdr: ChangeDetectorRef,
     private authenService: AuthenService
   ) {
-    this.storedItems = localStorage.getItem('activeBreadcrumb');
-    if (this.storedItems) {
-     this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
-     this.breadcrumbs = [
-       {
-         title: '', 
-         items: [this.storedItems],  
-         active: 'View Announcement ',  
-       },
-     ];
-   }
+    
     this.subscribeParams = this.activatedRoute.params.subscribe((params:any) => {
       this.departmentId = params.id;
     });
