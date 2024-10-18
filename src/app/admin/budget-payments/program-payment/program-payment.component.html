@@ -101,10 +101,10 @@
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row._id) : null" >
                     <span class="mobile-label">Status:</span>
                       <span
-                      [class]=" row.status === 'Success' ? 'badge badge-solid-green' : 'badge badge-solid-red'">
+                      [class]=" row.status === 'success' ? 'badge badge-solid-green' : 'badge badge-solid-red'">
                       <span
-                        [class]=" row.status === 'Success' ? 'status-dot' : 'status-red'"></span>
-                      {{ row.status ==='Success'? 'Success':'Failed' | titlecase}}</span>
+                        [class]=" row.status === 'success' ? 'status-dot' : 'status-red'"></span>
+                      {{ row.status ==='success'? 'Success':'Failed' | titlecase}}</span>
                   </mat-cell>
                 </ng-container>
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

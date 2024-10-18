@@ -57,7 +57,7 @@ export class SettingsService {
     console.log("retakeRequest",filter)
 
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-    const apiUrl = `${this.defaultUrl}admin/retakeRequest?companyId=${userId}&page=${filter?.page}&limit=${filter?.limit}`;
+    const apiUrl = `${this.defaultUrl}admin/retakeRequest?companyId=${userId}`;
   
     return this._Http.get<ApiResponse>(apiUrl,{params:this.buildParams(filter)});
   }

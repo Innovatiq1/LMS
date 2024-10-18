@@ -241,7 +241,7 @@ export class ViewCompletionComponent {
             icon: 'success',
           });
           this.getCompletedClasses();
-          this._router.navigate(['/admin/courses/student-courses/pending-courses'])
+          this._router.navigate(['/admin/courses/student-courses/registered-pending-courses'])
         }, (error) => {
           Swal.fire({
             title: 'Error',
