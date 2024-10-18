@@ -260,13 +260,16 @@ export class CreateClassComponent {
         userGroupId: item?.userGroupId
       });
       item.sessions.forEach((item: any) => {
-
+        const start = moment(`${moment(item.sessionStartDate).format('YYYY-MM-DD')}T${item.sessionStartTime}`).format();
+        const end = moment(`${moment(item.sessionEndDate).format('YYYY-MM-DD')}T${item.sessionEndTime}`).format();
+    
         this.dataSourceArray.push({
-          start: `${moment(item.sessionStartDate).format('YYYY-MM-DD')}`,
-          end: `${moment(item.sessionEndDate).format('YYYY-MM-DD')}`,
-          instructor: item.instructorId?.id,
+            start: start,
+            end: end,
+            instructor: item.instructorId?.id,
         });
-      });
+    });
+    
       this.dataSource = this.dataSourceArray;
       this.cd.detectChanges();
     });

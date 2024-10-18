@@ -203,10 +203,7 @@ const routes: Routes = [
     path: 'settings/users',
     component: SettingsComponent,
   },
-  {
-    path: 'settings/all-user',
-    component: SettingsComponent,
-  },
+ 
   {
     path: 'settings/integration',
     component: SettingsComponent,

@@ -14,7 +14,8 @@
             <div class="right">
               <ul class="tbl-export-btn">
                 <li >
-                  <ul class="header-buttons-left ms-0">
+                  <!-- <ul class="header-buttons-left ms-0">
+                    
                     <li class="tbl-search-box">
                       <label for="search-input"
                         ><i class="material-icons search-icon">search</i></label
@@ -28,6 +29,13 @@
                         (input)="performSearch()"
                         aria-label="Search box"
                       />
+                    </li>
+                  </ul> -->
+                  <ul class="header-buttons-left ms-0">
+                    <li class="tbl-search-box">
+                      <label for="search-input"><i class="material-icons search-icon">search</i></label>
+                      <input placeholder="Search" type="text" #filter class="browser-default search-field"
+                        aria-label="Search box" [(ngModel)]="filterName" (input)="performSearch()" />
                     </li>
                   </ul>
                 </li>
