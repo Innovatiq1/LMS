@@ -277,7 +277,7 @@ export class CompletionListComponent {
 
 
   view(id: string) {
-    this.router.navigate(['/admin/courses/student-courses/completed-courses/view-completion-list'], {
+    this.router.navigate(['/admin/courses/student-courses/course-completed-courses/view-completion-list'], {
       queryParams: { id: id, status: 'completed' },
     });
   }

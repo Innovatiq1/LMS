@@ -30,7 +30,7 @@ SIDEMENU_LIST =[
             "children": [
               {
                 "title": "Program Name",
-                "id": "program",
+                "id": "program-name",
                 "class": "ml-menu2",
                 "actions": [
                   {
@@ -159,7 +159,7 @@ SIDEMENU_LIST =[
               },
               {
                 "title": "Completed Programs",
-                "id": "completed-program",
+                "id": "program-completed-program",
                 "class": "ml-menu2",
                 "actions": [
                   {
@@ -195,7 +195,7 @@ SIDEMENU_LIST =[
               {
                 
                 "title": "Course Name",
-                "id": "course",
+                "id": "course-name",
                 "class": "ml-menu2",
                 "actions": [
                   {
@@ -352,7 +352,7 @@ SIDEMENU_LIST =[
               },
               {
                 "title": "Completed Courses",
-                "id": "registered-completed-courses",
+                "id": "course-completed-courses",
                 "class": "ml-menu2",
                 "actions": [
                   {
@@ -488,7 +488,7 @@ SIDEMENU_LIST =[
           },
           {
             "title": "Assessment",
-            "id": "exam",
+            "id": "assessment-exam",
             "class": "ml-menu",
             "actions": [
               {

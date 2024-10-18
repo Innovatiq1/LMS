@@ -133,7 +133,7 @@ const routes: Routes = [
     component: ProgramComponent,
   },
   {
-    path: 'enrollment/exam',
+    path: 'enrollment/assessment-exam',
     component: ExamComponent,
   },
   {

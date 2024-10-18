@@ -171,7 +171,7 @@ export class ViewProgramComponent {
               text: 'Program deleted successfully.',
               icon: 'success',
             }).then(() => {
-              this.router.navigate(['/admin/program/program-list/program'])
+              this.router.navigate(['/admin/program/program-list/program-name'])
             });
           });
         });
@@ -202,7 +202,7 @@ export class ViewProgramComponent {
             icon: 'success',
           });
           this.getPendingProgramLists();
-          this.router.navigate(['/admin/program/program-list/program'])
+          this.router.navigate(['/admin/program/program-list/program-name'])
         }, (error) => {
           Swal.fire({
             title: 'Error',
