@@ -1,5 +1,5 @@
-import { Component, OnInit, TemplateRef, ViewChild, HostListener, ElementRef } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, TemplateRef, ViewChild, HostListener, ElementRef, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router ,NavigationStart } from '@angular/router';
 import { AssessmentService } from '@core/service/assessment.service';
 import { StudentsService } from '../../admin/students/students.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 import { CourseService } from '@core/service/course.service';
 import { ClassService } from 'app/admin/schedule-class/class.service';
 import { Location } from '@angular/common';
-
+import { Subscription, timer } from 'rxjs';
 
 @Component({
   selector: 'app-exam-questions',
@@ -54,8 +54,22 @@ export class ExamQuestionsComponent {
   studentClassId:any;
   public examAssessmentId!: any;
   public answerAssessmentId!: any;
+  isDragging: boolean = false; 
+  offsetX: number = 0;
+  offsetY: number = 0;
+  isRecording: boolean = false;
 
-
+  @ViewChild('proctoringDiv', { static: true }) proctoringDiv!: ElementRef;
+  @ViewChild('videoElement') videoElement!: ElementRef;
+  mediaRecorder: any;
+  recordedChunks: any[] = [];
+  mediaStream: MediaStream | null = null;
+  visibilityChangeListener: (() => void) | null = null;
+  violationCount: number = 0;
+  maxViolations: number = 4;
+  totalTimes: number = 60; // Example: 60 seconds countdown
+  timerSubscription!: Subscription;
+  private routerSubscription!: Subscription;
   constructor(
     private assessmentService: AssessmentService,
     private route: ActivatedRoute,
@@ -76,7 +90,16 @@ export class ExamQuestionsComponent {
           });    
           this.applyBlurEffect(); 
           this.startVideoSession(); 
-          this.startMonitoringTabSwitch();                      
+          this.startMonitoringTabSwitch();   
+          this.startTimer();  
+          this.routerSubscription = this.router.events.subscribe((event) => {
+            if (event instanceof NavigationStart) {
+              // Stop recording when navigation occurs
+              if (this.isRecording) {
+                this.stopRecording();
+              }
+            }
+          });                 
       }
 
       getClassDetails():void{
@@ -352,6 +375,9 @@ export class ExamQuestionsComponent {
               this.totalTime--;
             } else {
               clearInterval(this.interval);
+              if (this.isRecording) {
+                this.stopRecording();
+              }
               this.submitAnswers(); 
             }
           }, 1000);
@@ -359,6 +385,12 @@ export class ExamQuestionsComponent {
       
         ngOnDestroy() {
           clearInterval(this.interval);
+          if (this.timerSubscription) {
+            this.timerSubscription.unsubscribe();
+          }
+          if (this.routerSubscription) {
+            this.routerSubscription.unsubscribe();
+          }
         }
       
         navigate() {
@@ -409,41 +441,22 @@ export class ExamQuestionsComponent {
         }
        
 
-        //video record
-        isDragging: boolean = false; // State to check if dragging is active
-  offsetX: number = 0;
-  offsetY: number = 0;
-  isRecording: boolean = false;
-
-  @ViewChild('proctoringDiv', { static: true }) proctoringDiv!: ElementRef;
-  @ViewChild('videoElement') videoElement!: ElementRef;
-  mediaRecorder: any;
-  recordedChunks: any[] = [];
-  mediaStream: MediaStream | null = null;
-  visibilityChangeListener: (() => void) | null = null;
-  violationCount: number = 0; // Counter for violations
-  maxViolations: number = 4; // Set maximum allowed violations
-  // Mouse Down Event to Start Dragging
+        //Proctoring video record
   onMouseDown(event: MouseEvent) {
     this.isDragging = true;
     this.offsetX = event.clientX - this.proctoringDiv.nativeElement.offsetLeft;
     this.offsetY = event.clientY - this.proctoringDiv.nativeElement.offsetTop;
-
-    // Attach mousemove and mouseup events to the document for smooth dragging
     document.addEventListener('mousemove', this.onMouseMove.bind(this));
     document.addEventListener('mouseup', this.onMouseUp.bind(this));
   }
 
-  // Mouse Move Event to Drag the Div
   onMouseMove(event: MouseEvent) {
     if (this.isDragging) {
-      // Calculate the new position and apply styles to move the div
       this.proctoringDiv.nativeElement.style.left = event.clientX - this.offsetX + 'px';
       this.proctoringDiv.nativeElement.style.top = event.clientY - this.offsetY + 'px';
     }
   }
 
-  // Mouse Up Event to Stop Dragging
   onMouseUp() {
     this.isDragging = false;
     document.removeEventListener('mousemove', this.onMouseMove.bind(this));
@@ -452,7 +465,7 @@ export class ExamQuestionsComponent {
 
   startVideoSession() {
     this.isRecording = true;
-    this.removeBlurEffect(); // Remove blur when starting the recording
+    this.removeBlurEffect();
 
     navigator.mediaDevices.getUserMedia({ video: true, audio: true })
       .then((stream) => {
@@ -488,21 +501,17 @@ export class ExamQuestionsComponent {
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
-
-        // Stop all tracks in the media stream
         if (this.mediaStream) {
           this.mediaStream.getTracks().forEach((track) => track.stop());
         }
         this.clearWarnings();
         this.stopMonitoringTabSwitch();
-
         this.applyBlurEffect(); 
         this.isRecording = false;
       };
     }
   }
 
-  // Monitor media devices to ensure availability of audio and video inputs
   checkMediaDevices() {
     navigator.mediaDevices.enumerateDevices()
       .then((devices) => {
@@ -522,22 +531,19 @@ export class ExamQuestionsComponent {
       });
   }
 
-  // Apply blur effect to the body
   applyBlurEffect() {
     document.body.classList.add('blur-background');
   }
 
-  // Remove blur effect from the body
   removeBlurEffect() {
     document.body.classList.remove('blur-background');
   }
 
-  // Start monitoring tab switches to show warnings
   startMonitoringTabSwitch() {
     this.visibilityChangeListener = () => {
       if (document.hidden) {
         this.showWarning('Tab switch detected.');
-        this.showViolationAlert(); // Trigger violation alert on tab switch
+        this.showViolationAlert();
       }
     };
     document.addEventListener('visibilitychange', this.visibilityChangeListener);
@@ -557,14 +563,10 @@ export class ExamQuestionsComponent {
       warningMessage.className = 'alert alert-warning';
       warningMessage.innerText = message;
       warningDiv.appendChild(warningMessage);
-
-      // Apply blur effect
       this.applyBlurEffect();
-
-      // Clear the warning after 2 seconds
       setTimeout(() => {
         warningDiv.removeChild(warningMessage);
-        this.clearWarnings(); // Clear all warnings after timeout
+        this.clearWarnings();
       }, 5000);
     }
   }
@@ -574,20 +576,14 @@ export class ExamQuestionsComponent {
     if (warningDiv) {
       warningDiv.innerHTML = '';
     }
-
-    // Remove blur effect
     this.removeBlurEffect();
   }
 
   showViolationAlert() {
     this.violationCount++;
-
-    // Show browser alert
     alert(
       `You are violating the exam rules. If this happens again, the exam will be canceled and you will be terminated.`
     );
-
-    // Check if violation count exceeds maximum allowed violations
     if (this.violationCount > this.maxViolations) {
       this.cancelExam();
     }
@@ -595,19 +591,15 @@ export class ExamQuestionsComponent {
 
   cancelExam() {
     alert("The exam has been canceled due to permission denial.");
-    
-    // Stop recording automatically
-    this.stopRecording(); // Automatically stop recording on page unload
-  
-    // Delay navigation to allow the alert to show
+    this.stopRecording();
     setTimeout(() => {
-      this.location.back(); // Navigate back to the previous page
-    }, 2000); // Delay of 1 second (1000 milliseconds)
+      this.location.back();
+    }, 2000);
   }
   
 
   showPermissionError() {
-    this.applyBlurEffect(); // Blur the background
+    this.applyBlurEffect(); 
     Swal.fire({
       title: 'Camera and Microphone Required',
       text: 'Please allow access to your camera and microphone to start the exam.',
@@ -617,17 +609,17 @@ export class ExamQuestionsComponent {
       cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.startVideoSession(); // Retry starting the video session
+        this.startVideoSession(); 
       } else {
-        this.cancelExam(); // Handle case where the user cancels
+        this.cancelExam(); 
       }
     });
   }
 
   @HostListener('window:beforeunload', ['$event'])
   handleUnload(event: any) {
-    this.stopRecording(); // Automatically stop recording on page unload
+    this.stopRecording(); 
   }
- 
+
 
 }
