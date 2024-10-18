@@ -23,39 +23,39 @@
                         </button>
                     </div>
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-xl-6 col-md-12 col-sm-12">
                             <img class="image-link" src="{{response?.courseId?.image_link || 'assets/noimage.jpg'}}">
                           </div>
-                        <div class="col-6">
+                        <div class="col-xl-6 col-md-12 col-sm-12">
                             <div class="row mt-3 mx-auto">
-                                        <div class="col-6">
+                                        <div class="col-xl-6 col-md-12 col-sm-12">
                                            <h6>Course</h6>
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-xl-6 col-md-12 col-sm-12">
                                             <p>{{response?.courseId?.title}}</p>
                                         </div>
                             </div>
                             <div class="row mt-3 mx-auto">
-                                <div class="col-6">
+                                <div class="col-xl-6 col-md-12 col-sm-12">
                                     <h6>Course Code</h6>
                                 </div>
-                                <div class="col-6" style="width: 40%;display: flex;">
+                                <div class="col-xl-6 col-md-12 col-sm-12" style="width: 40%;display: flex;">
                                     <p>{{response?.courseId?.courseCode}}</p>
                                 </div>
                             </div>
                             <div class="row mt-3 mx-auto">
-                                <div class="col-6">
+                                <div class="col-xl-6 col-md-12 col-sm-12">
                                     <h6>{{commonRoles?.INSTRUCTOR_ROLE}}</h6>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-xl-6 col-md-12 col-sm-12">
                                     <p>{{response.sessions[0]?.instructorId?.name | titlecase}}</p>
                                 </div>
                             </div>
                             <div class="row mt-3 mx-auto">
-                                <div class="col-6">
+                                <div class="col-xl-6 col-md-12 col-sm-12">
                                     <h6>Class</h6>
                                 </div>
-                                        <div class="col-6">
+                                        <div class="col-xl-6 col-md-12 col-sm-12">
                                             <h6
                                       [ngClass]="
                                       response.classDeliveryType === 'online'
@@ -78,29 +78,29 @@
                         </div>
                         </div>
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-xl-6 col-md-12 col-sm-12">
                             <div class="p-2">
                                 <div class="row pt-2">
-                                    <div class="col-6">
+                                    <div class="col-xl-6 col-md-12 col-sm-12">
                                         <h6>Class Type</h6>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-xl-6 col-md-12 col-sm-12">
                                         <p>{{response?.classType == '2'?'Private':'Public'}}</p>
                                     </div>
                                 </div>
                                 <div class="row pt-2">
-                                    <div class="col-6">
+                                    <div class="col-xl-6 col-md-12 col-sm-12">
                                         <h6>Start Date</h6>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-xl-6 col-md-12 col-sm-12">
                                         <p>{{response.sessions[0]?.sessionStartDate | date }}</p>
                                     </div>
                                 </div>
                                 <div class="row pt-2">
-                                    <div class="col-6">
+                                    <div class="col-xl-6 col-md-12 col-sm-12">
                                         <h6>Minimum{{commonRoles.STUDENT_ROLE}}s</h6>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-xl-6 col-md-12 col-sm-12">
                                         <p>{{response?.minimumEnrollment}}</p>
                                     </div>
                                    
@@ -108,29 +108,29 @@
 
                             </div>
                         </div>
-                        <div class="col-6">
+                        <div class="col-xl-6 col-md-12 col-sm-12">
                             <div class="p-2">
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-xl-6 col-md-12 col-sm-12">
                                         <h6>{{commonRoles?.INSTRUCTOR_ROLE}} Fee</h6>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-xl-6 col-md-12 col-sm-12">
                                         <p>$ {{response?.instructorCost}}.00</p>
                                     </div>
                                 </div>
                                 <div class="row pt-2">
-                                    <div class="col-6">
+                                    <div class="col-xl-6 col-md-12 col-sm-12">
                                         <h6>End Date</h6>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-xl-6 col-md-12 col-sm-12">
                                         <p>{{response.sessions[0]?.sessionEndDate | date }}</p>
                                     </div>
                                 </div>
                                 <div class="row pt-2">
-                                    <div class="col-6">
+                                    <div class="col-xl-6 col-md-12 col-sm-12">
                                         <h6>Maximum {{commonRoles.STUDENT_ROLE}}s</h6>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-xl-6 col-md-12 col-sm-12">
                                         <p>{{response?.maximumEnrollment}}</p>
                                     </div>
                                 </div>

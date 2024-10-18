@@ -15,4 +15,9 @@ svg {
   padding-left: 3px;
   padding-right: 3px;
 }
-
+@media (max-width: 768px) {
+  .materialTableHeader .right {
+      height: 140px;
+  }
+ 
+}
