@@ -54,7 +54,7 @@
                   <mat-header-cell *matHeaderCellDef >Decription
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row" class="mt-3" [routerLink]="isView ? ['/student/settings/automation/announcement/view-announcement',row.id] : null">
-                    <p [innerHTML]="row.details | bulletPoints"></p>
+                    <p [innerHTML]="row.details | bulletPoints | truncate:30"></p>
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="User Role">

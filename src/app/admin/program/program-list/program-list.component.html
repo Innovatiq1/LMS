@@ -356,7 +356,7 @@
                                       <p class="fw-semibold fs-6" style="color: #979595">Description</p>
                                     </div>
                                     <div class="col" style="margin-left: 45px;">
-                                      <p [innerHTML]="core?.coreProgramDescription">
+                                      <p [innerHTML]="core?.coreProgramDescription | truncate:20">
                                       </p>
                                     </div>
                                   </div>
@@ -389,7 +389,7 @@
                                     </div>
                                     <div class="col" style="margin-left: 15px;">
                                       <p
-                                        [innerHTML]="elective?.electiveProgramDescription">
+                                        [innerHTML]="elective?.electiveProgramDescription | truncate:20">
                                     </div>
                                   </div>
                                 </div>
