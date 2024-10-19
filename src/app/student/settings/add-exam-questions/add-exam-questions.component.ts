@@ -111,6 +111,7 @@ export class AddExamQuestionsComponent implements OnInit, OnDestroy{
    }
    startAutoSave() {
     setTimeout(() => {
+      console.log('draftSubscription')
       if (!this.draftSubscription) {
         this.draftSubscription = timer(0, 30000).subscribe(() => {
           this.saveDraft();
