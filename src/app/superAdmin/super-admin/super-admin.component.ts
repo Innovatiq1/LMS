@@ -81,7 +81,7 @@ export class SuperAdminComponent extends UnsubscribeOnDestroyAdapter {
       })
       .subscribe(
         (response: any) => {
-          this.dataSource = [...this.dataSource, ...response.data.data];
+          this.dataSource = [...this.dataSource, ...response.data.data.docs];
           this.totalItems = this.dataSource.length;
 
           if (this.dataSource.length < this.totalItems) {

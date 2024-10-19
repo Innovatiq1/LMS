@@ -51,45 +51,7 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                  <div class="label-container">
-                    <label>Main Category <span class="mandatory">&nbsp;*</span></label>
-                    <button class="btn" [routerLink]="['/student/settings/create-categories']">
-                      <img src="/assets/Close.svg" alt="plus" />
-                    </button>
-                  </div>
-                  <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <mat-select formControlName="main_category" required (selectionChange)="mainCategoryChange()">
-                      <mat-option *ngFor="let item of mainCategories" [value]="item.id" [disabled]="viewUrl == true">
-                        {{ item.category_name }}
-                      </mat-option>
-                    </mat-select>
-                    <mat-error
-                      *ngIf="firstFormGroup.get('main_category')?.hasError('required') || firstFormGroup.get('main_category')?.touched">
-                      Select Main Category
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                  <label>Sub Category <span class="mandatory">&nbsp;*</span></label>
-                  <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <mat-select formControlName="sub_category" required>
-                      <mat-option *ngFor="let item of subCategories" [value]="item.id" [disabled]="viewUrl == true">
-                        {{ item.category_name }}
-                      </mat-option>
-                    </mat-select>
-                    <mat-error *ngIf="
-                        firstFormGroup
-                          .get('sub_category')
-                          ?.hasError('required') ||
-                        firstFormGroup.get('sub_category')?.touched
-                      ">
-                      Select Sub Category
-                    </mat-error>
-                  </mat-form-field>
-                </div>
+                
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <div class="label-container">
                     <label>Funding/Grant <span class="mandatory">&nbsp;*</span></label>
@@ -113,6 +75,10 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
+              
+              </div>
+              <div class="row">
+             
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <label>Issue Certificate
                     <span class="mandatory">&nbsp;*</span></label>
