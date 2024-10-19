@@ -61,6 +61,9 @@ export class AnnouncementService {
       if(filter.isAll) {
         params = params.set('isAll', filter.isAll)
       }
+      if(filter.announcementFor) {
+        params = params.set('announcementFor', filter.announcementFor)
+      }
     }
     return params;
   }
