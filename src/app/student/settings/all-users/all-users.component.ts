@@ -73,17 +73,16 @@ export class AllUsersComponent {
 @ViewChild('filter', { static: true }) filter!: ElementRef;
 
 getBlogsList(filters?:any) {
-  let filterText = this.searchTerm;
+  let user = this.searchTerm;
   let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-  this.alluserService.getUserList({filterText,...this.coursePaginationModel},userId).subscribe((response: any) => {
-    this.dataSource = response.data.data;
-    console.log("dataSource==",this.dataSource)
+  this.alluserService.getUserList({user,...this.coursePaginationModel},userId).subscribe((response: any) => {
+    this.dataSource = response.data.data.docs;
     this.isLoading = false;
     this.ref.detectChanges();
-    this.totalItems = response.totalRecords
+    this.totalItems = response.data.data.totalDocs
     this.coursePaginationModel.docs = response.docs;
-    this.coursePaginationModel.page = response.page;
-    this.coursePaginationModel.limit = response.limit;
+    this.coursePaginationModel.page = response.data.data.page;
+    this.coursePaginationModel.limit = response.data.data.limit;
 
   }, error => {
   });

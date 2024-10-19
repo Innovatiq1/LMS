@@ -305,6 +305,8 @@ export interface CoursePaginationModel extends Pagination {
 	programName:string;
 	courseName:string;
 	announcementFor:string;
+	className:string;
+	user:string;
 }
 
 export interface ProgramCourse {
