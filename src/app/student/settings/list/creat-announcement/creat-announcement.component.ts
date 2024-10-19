@@ -19,7 +19,7 @@ import { FormService } from '@core/service/customization.service';
   styleUrls: ['./creat-announcement.component.scss']
 })
 export class CreatAnnouncementComponent {
-  breadcrumbs:any[] = []
+  breadcrumbs:any[]=[];
   create = true;
   status = true;
   isChecked = false;
@@ -47,29 +47,29 @@ export class CreatAnnouncementComponent {
   config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
-    height: '15rem',
+    height: '12rem',
     minHeight: '5rem',
-    placeholder: 'Enter text here...',
+    placeholder: 'Description',
     translate: 'no',
     defaultParagraphSeparator: 'p',
     defaultFontName: 'Arial',
+   
+   
     toolbarHiddenButtons: [
-      ['bold']
-      ],
-    customClasses: [
-      {
-        name: "quote",
-        class: "quote",
-      },
-      {
-        name: 'redText',
-        class: 'redText'
-      },
-      {
-        name: "titleText",
-        class: "titleText",
-        tag: "h1",
-      },
+      [
+        'customClasses',
+        'strikeThrough',
+        'removeFormat',
+        'toggleEditorMode',
+        'subscript',
+        'superscript',
+        'indent',
+        'outdent',
+         'insertOrderedList',
+         'insertUnorderedList',
+        'heading',
+        'fontName'
+      ]
     ]
   };
   storedItems: string | null;
@@ -112,7 +112,7 @@ cancel(){
      {
        title: '', 
        items: [this.storedItems],  
-       active: 'Create Certificate',  
+       active: 'Create Announcement',  
      },
    ];
  }
@@ -127,7 +127,7 @@ cancel(){
       this.breadcrumbs = [
         {
           title: 'Edit Announcement',
-          items: [this.storedItems],  
+          items: ['Announcement'],
           active: 'Edit Announcement',
         },
       ];
@@ -136,7 +136,7 @@ cancel(){
       this.breadcrumbs = [
         {
           title:'View Announcement',
-          items: [this.storedItems],  
+          items: ['Announcement'],
           active: 'View Announcement',
         },
       ];
