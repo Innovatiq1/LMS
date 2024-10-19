@@ -56,6 +56,9 @@ export class UserService {
       if (filter.filterText) {
         params = params.set("title", filter.filterText?.toString());
       }
+      if (filter.user) {
+        params = params.set("user", filter.user);
+      }
       if (filter.title) {
         params = params.set("title", filter.title?.toString());
       }
