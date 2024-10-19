@@ -99,30 +99,29 @@ export class CompletionListComponent {
   config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
-    height: '15rem',
+    height: '12rem',
     minHeight: '5rem',
-    placeholder: 'Enter text here...',
+    placeholder: 'Description',
     translate: 'no',
     defaultParagraphSeparator: 'p',
     defaultFontName: 'Arial',
-    sanitize: false,
+   
+   
     toolbarHiddenButtons: [
-      ['strikethrough']
-      ],
-    customClasses: [
-      {
-        name: "quote",
-        class: "quote",
-      },
-      {
-        name: 'redText',
-        class: 'redText'
-      },
-      {
-        name: "titleText",
-        class: "titleText",
-        tag: "h1",
-      },
+      [
+        'customClasses',
+        'strikeThrough',
+        'removeFormat',
+        'toggleEditorMode',
+        'subscript',
+        'superscript',
+        'indent',
+        'outdent',
+         'insertOrderedList',
+         'insertUnorderedList',
+        'heading',
+        'fontName'
+      ]
     ]
   };
   thumbnail: any;
@@ -214,10 +213,9 @@ export class CompletionListComponent {
     payload.userGroupId=this.userGroupIds
   }
         this.classService
-      .getSessionCompletedStudent(
+      .getSessionsCompletedStudent(
         userId,
-        this.studentPaginationModel.page,
-        this.studentPaginationModel.limit
+        payload
       )
       .subscribe(
         (response: { docs: any; page: any; limit: any; totalDocs: any }) => {

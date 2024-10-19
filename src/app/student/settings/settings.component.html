@@ -817,38 +817,29 @@
           />
         </div>
       </div>
+     
+
+
       <div class="body">
-        <div class="row px-4">
-          <div class="col-md-6 banner">
+        <div class="row">
+          <div class="col-xl-3 col-md-6 col-sm-12 p-4">
             <button id="saved" [routerLink]="['/admin/budgets/create-budget']">
               Budget Creation
             </button>
           </div>
-          <div class="col-md-5">
+          <div class="col-xl-5 col-md-6 col-sm-12 p-4">
             <button
-              id="saved"
-              [routerLink]="['/admin/budgets/create-dept-budget-request']"
-            >
-              Department Budget Creation
-            </button>
+            id="saved"
+            [routerLink]="['/admin/budgets/create-dept-budget-request']"
+          >
+            Department Budget Creation
+          </button>
           </div>
-        </div>
-        <div class="row px-4 py-4">
-          <div class="col-md-6 banner">
+          <div class="col-xl-4 col-md-6 col-sm-12 p-4">
             <button id="saved" [routerLink]="['/admin/budgets/create-request']">
               Training Request Creation
             </button>
           </div>
-        </div>
-
-        <div class="col-md-12 py-3">
-          <button
-            mat-raised-button
-            id="back"
-            [routerLink]="['/student/settings/customize/customization-forms']"
-          >
-            Back
-          </button>
         </div>
       </div>
     </div>

@@ -53,29 +53,29 @@ export class CreatAnnouncementComponent {
   config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
-    height: '15rem',
+    height: '12rem',
     minHeight: '5rem',
-    placeholder: 'Enter text here...',
+    placeholder: 'Description',
     translate: 'no',
     defaultParagraphSeparator: 'p',
     defaultFontName: 'Arial',
+   
+   
     toolbarHiddenButtons: [
-      ['bold']
-      ],
-    customClasses: [
-      {
-        name: "quote",
-        class: "quote",
-      },
-      {
-        name: 'redText',
-        class: 'redText'
-      },
-      {
-        name: "titleText",
-        class: "titleText",
-        tag: "h1",
-      },
+      [
+        'customClasses',
+        'strikeThrough',
+        'removeFormat',
+        'toggleEditorMode',
+        'subscript',
+        'superscript',
+        'indent',
+        'outdent',
+         'insertOrderedList',
+         'insertUnorderedList',
+        'heading',
+        'fontName'
+      ]
     ]
   };
 
@@ -108,6 +108,19 @@ cancel(){
   constructor(private router: Router, public classService: ClassService, public utils: UtilsService, private formBuilder: FormBuilder,
     private formService: FormService,
     private announcementService: AnnouncementService,private adminService: AdminService,) {
+
+      
+  this.storedItems = localStorage.getItem('activeBreadcrumb');
+  if (this.storedItems) {
+   this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+   this.breadcrumbs = [
+     {
+       title: '', 
+       items: [this.storedItems],  
+       active: 'Create Announcement',  
+     },
+   ];
+ }
       this.forms = [];
     let urlPath = this.router.url.split('/')
     this.editUrl = urlPath.includes('edit-announcement');

@@ -1,8 +1,10 @@
 <section class="content">
   <div class="content-block">
-    <div class="block-header" *ngFor="let breadscrum of breadscrums">
+    <div class="block-header" *ngFor="let breadscrum of breadcrumbs">
       <!-- breadcrumb -->
-      <app-static-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
+      <app-static-breadcrumb  [title]="breadscrum.title"
+      [items]="breadscrum.items"
+      [active_item]="breadscrum.active">
       </app-static-breadcrumb>
     </div>
     <div class="row clearfix">
