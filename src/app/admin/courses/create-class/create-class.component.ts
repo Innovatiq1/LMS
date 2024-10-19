@@ -269,6 +269,7 @@ export class CreateClassComponent {
       instructorCost: ['', Validators.required],
       instructorCostCurrency: ['USD'],
       department:['',Validators.required],
+      userGroupId: ['', [Validators.required]],
       currency: [''],
       isGuaranteedToRun: [false, Validators.required],
       externalRoom: [false],
@@ -277,7 +278,7 @@ export class CreateClassComponent {
       meetingPlatform:[''],
       classStartDate: [''],
       classEndDate: [''],
-      userGroupId: [null],
+      // userGroupId: [null],
       duration:[''],
       code: ''
     });

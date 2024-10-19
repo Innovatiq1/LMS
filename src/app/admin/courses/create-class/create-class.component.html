@@ -139,6 +139,11 @@
                         {{userGroup.group_name }}
                       </mat-option>
                     </mat-select>
+                      <mat-error
+                      *ngIf="classForm.get('userGroupId')?.hasError('required')"
+                    >
+                      Select Any User Group
+                    </mat-error>
                   </mat-form-field>
                 </div>
                 <!-- Meeting Platform Selection -->

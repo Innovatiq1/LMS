@@ -311,13 +311,14 @@ export class CreateClassComponent {
       instructorCostCurrency: ['USD'],
       currency: [''],
       department: ['', [Validators.required]],
+      userGroupId: ['', [Validators.required]],
       isGuaranteedToRun: [false, [Validators.required]],
       externalRoom: [false],
       minimumEnrollment: ['', [Validators.required]],
       maximumEnrollment: ['', [Validators.required]],
       classStartDate: ['2023-05-20'],
       classEndDate: ['2023-06-10'],
-      userGroupId: ['',[Validators.required]]
+      // userGroupId: ['',[Validators.required]]
     });
     this.secondFormGroup = this._fb.group({
       sessions: ['', [Validators.required]],
