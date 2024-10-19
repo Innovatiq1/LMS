@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { CoursePaginationModel } from '@core/models/course.model';
 import { UserService } from '@core/service/user.service';
@@ -20,8 +27,10 @@ export class EditUpdateDashboardComponent {
   @Input() isEdit: boolean = false;
   @Output() isCreateChange = new EventEmitter<boolean>();
   @Output() isEditChange = new EventEmitter<string>();
+  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   dashboards: any;
   filteredDashboards: any[] = [];
+  filterName: any;
 
   constructor(
     private router: Router,
@@ -30,10 +39,7 @@ export class EditUpdateDashboardComponent {
   ) {
     this.coursePaginationModel = {};
   }
-  displayedColumns = [
-    'type',
-    'Dashboards',
-  ];
+  displayedColumns = ['type', 'Dashboards'];
   breadscrums = [
     {
       title: 'Customize',
@@ -49,9 +55,16 @@ export class EditUpdateDashboardComponent {
   getDashboardComponents() {
     const companyId = JSON.parse(localStorage.getItem('user_data')!).user
       .companyId;
-    this.userService.getDashboardsByCompanyId(companyId).subscribe(
+    let filterProgram = this.filterName;
+    const payload = { ...this.coursePaginationModel, title: filterProgram };
+    this.userService.getAllDashboardList(companyId, payload).subscribe(
       (data: any) => {
-        const dashboards = data.data;
+        const dashboards = data.data.docs;
+        this.totalItems = data.data.totalDocs;
+        this.coursePaginationModel.docs = data.data.docs;
+        this.coursePaginationModel.page = data.data.page;
+        this.coursePaginationModel.limit = data.data.limit;
+        this.coursePaginationModel.totalDocs = data.data.totalDocs;
         const processedData = dashboards.map(
           (dashboard: { typeName: any; dashboards: any[] }) => {
             return {
@@ -90,14 +103,19 @@ export class EditUpdateDashboardComponent {
 
     doc.save('Module Access-list.pdf');
   }
-  exportExcel() {
-  
-  }
+  exportExcel() {}
 
-  removeSelectedRows() {
-  }
+  removeSelectedRows() {}
   pageSizeChange($event: any) {
+    console.log('$event', $event);
     this.coursePaginationModel.page = $event?.pageIndex + 1;
     this.coursePaginationModel.limit = $event?.pageSize;
+    this.getDashboardComponents();
+  }
+
+  performSearch() {
+    this.paginator.pageIndex = 0;
+    this.coursePaginationModel.page = 1;
+    this.getDashboardComponents();
   }
 }
