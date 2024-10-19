@@ -56,12 +56,12 @@ svg {
 
 
 
-  .mat-cell {
-    width: fit-content;
-    height: 1px;
-    border-color: white;
-    align-self: stretch;
-  }
+  // .mat-cell {
+  //   width: fit-content;
+  //   height: 1px;
+  //    border-color: white;
+  //   align-self: stretch;
+  // }
   .mat-header-cell {
     color: white;
     background-color: #000046;
@@ -75,17 +75,25 @@ svg {
     vertical-align: middle; /* Align icon vertically with text */
   }
 
-  .status-dot {
-    width: 8px;
-    height: 8px;
-    background-color: #198754;
-    border-radius: 50%; // To make it a circle
-    display: inline-block;
-    margin-right: 5px; // Space between dot and text
-  }
+  // .status-dot {
+  //   width: 8px;
+  //   height: 8px;
+  //   background-color: #198754;
+  //   border-radius: 50%; // To make it a circle
+  //   display: inline-block;
+  //   margin-right: 5px; // Space between dot and text
+  // }
   .amount{
     display: flex;
     justify-content: flex-end;
     padding-right: 65px !important;
 }
+// .badge-solid-green{
+//     color: #198754;
+//     background-color: rgba(25, 135, 84, 0.15);
+//     border: none;
+//     padding: 5px 12px;
+//     font-weight: 500;
+//     line-height: 1.2;
+//   }
   

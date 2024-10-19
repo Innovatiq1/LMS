@@ -60,31 +60,31 @@
       padding: 10px; /* Adjust padding as needed */
     }
     
-    .status-container {
-      display: inline-flex;
-      align-items: center;
-      // padding-left: 40px!important;
-      margin-left: 50px!important;
+    // .status-container {
+    //   display: inline-flex;
+    //   align-items: center;
+    //   padding-left: 40px!important;
+    //   margin-left: 50px!important;
 
-    }
+    // }
    
     
-     .status-dot {
-    width: 8px;
-    height: 8px;
-    background-color: #198754;
-    border-radius: 50%; 
-    display: inline-block;
-    margin-right: 5px; 
-  }
-  .status-red {
-    width: 8px;
-    height: 8px;
-    background-color: #f11541;
-    border-radius: 50%; 
-    display: inline-block;
-    margin-right: 5px; 
-  }
+  //    .status-dot {
+  //   width: 8px;
+  //   height: 8px;
+  //   background-color: #198754;
+  //   border-radius: 50%; 
+  //   display: inline-block;
+  //   margin-right: 5px; 
+  // }
+  // .status-red {
+  //   width: 8px;
+  //   height: 8px;
+  //   background-color: #f11541;
+  //   border-radius: 50%; 
+  //   display: inline-block;
+  //   margin-right: 5px; 
+  // }
 
   // .badge {
   //   box-shadow: none !important; /* Remove any shadow effect */
@@ -96,20 +96,24 @@
   //   background-color: rgba(255, 255, 255, -1); /* Almost transparent background */
   //   border: none; /* Optionally remove borders */
   // }
-  span .badge{
-    min-width: auto;
-    float: none;
-    font-size: 13px;
-}
-.badge-solid-green{
-    color: #198754;
-    background-color: rgba(25, 135, 84, 0.15);
-    border: none;
-    padding: 5px 12px;
-    font-weight: 500;
-    line-height: 1.2;
-  }
+//   span .badge{
+//     min-width: auto;
+//     float: none;
+//     font-size: 13px;
+// }
+// .badge-solid-green{
+//     color: #198754;
+//     background-color: rgba(25, 135, 84, 0.15);
+//     border: none;
+//     padding: 5px 12px;
+//     font-weight: 500;
+//     line-height: 1.2;
+//   }
   
-    .status-align{
-      padding-right: 20px!important;
+    // .status-align{
+    //   padding-right: 20px!important;
+    // }
+
+    .payment-align{
+      padding-right: 50px!important;
     }
