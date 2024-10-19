@@ -19,13 +19,7 @@ import { FormService } from '@core/service/customization.service';
   styleUrls: ['./creat-announcement.component.scss']
 })
 export class CreatAnnouncementComponent {
-  breadscrums = [
-    {
-      title: 'Create Announcement',
-      items: ['Announcement'],
-      active: 'Create Announcement',
-    },
-  ];
+  breadcrumbs:any[]=[];
   create = true;
   status = true;
   isChecked = false;
@@ -78,6 +72,7 @@ export class CreatAnnouncementComponent {
       ]
     ]
   };
+  storedItems: string | null;
 
   toggleStatus() {
     this.status = !this.status;
@@ -129,7 +124,7 @@ cancel(){
     this.currentId = urlPath[urlPath.length - 1];
 
     if (this.editUrl === true) {
-      this.breadscrums = [
+      this.breadcrumbs = [
         {
           title: 'Edit Announcement',
           items: ['Announcement'],
@@ -138,7 +133,7 @@ cancel(){
       ];
     }
     else if(this.viewUrl===true){
-      this.breadscrums = [
+      this.breadcrumbs = [
         {
           title:'View Announcement',
           items: ['Announcement'],
