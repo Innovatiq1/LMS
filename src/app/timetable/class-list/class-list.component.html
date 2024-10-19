@@ -139,25 +139,13 @@
                   <span style="font-weight: bold">Export as</span>
                 </li>
                 <li>
-                  <div
-                    class="export-button m-l-10"
-                    matTooltip="XLSX"
-                    (click)="exportExcel()"
-                  >
-                    <img src="assets/excel.svg" alt="" />
-                  </div>
+                
                 </li>
                 <li>
-                  <div class="export-button m-l-10" matTooltip="PDF">
-                    <img
-                      src="assets/pdf (1).svg"
-                      alt=""
-                      (click)="generatePdf()"
-                    />
-                  </div>
+                 
                 </li>
               </ul>
-            </div>
+            </div> -->
           </div>
           <div class="body overflow-auto">
             <div class="responsive_table">
@@ -177,8 +165,7 @@
                     [routerLink]="isView ? ['/admin/courses/timetable/class-list/view-class/', row.id] : null"
                   >
                     <span class="mobile-label">Course:</span>
-                    {{ row.courseId?.title
-                       }}</mat-cell
+                    {{ row.courseName }}</mat-cell
                   >
                 </ng-container>
                 <ng-container matColumnDef="Code" *ngIf="isAdmin">
@@ -238,7 +225,7 @@
                     *matCellDef="let row"
                     [routerLink]="isView ? ['/admin/courses/timetable/class-list/view-class/', row.id] : null"
                   >
-                    <span class="mobile-label">Start:</span
+                    <span class="mobile-label">Start Date:</span
                     >{{ row.sessions[0]?.sessionStartDate | date }}
                   </mat-cell>
                 </ng-container>
@@ -251,7 +238,7 @@
                     *matCellDef="let row"
                     [routerLink]="isView ? ['/admin/courses/timetable/class-list/view-class/', row.id] : null"
                   >
-                    <span class="mobile-label">End:</span
+                    <span class="mobile-label">End Date:</span
                     >{{ row.sessions[0]?.sessionEndDate | date }}
                   </mat-cell>
                 </ng-container>
@@ -282,7 +269,7 @@
                     *matCellDef="let row"
                     [routerLink]="isView ? ['/admin/courses/timetable/class-list/view-class/', row.id] : null"
                   >
-                    <span class="mobile-label">Minimum:</span>
+                    <span class="mobile-label">Min {{commonRoles.STUDENT_ROLE}}s:</span>
                     {{ row.minimumEnrollment }}</mat-cell
                   >
                 </ng-container>
@@ -294,7 +281,7 @@
                     *matCellDef="let row"
                     [routerLink]="isView ? ['/admin/courses/timetable/class-list/view-class/', row.id] : null"
                   >
-                    <span class="mobile-label">Maximum:</span>
+                    <span class="mobile-label">Max {{commonRoles.STUDENT_ROLE}}s:</span>
                     {{ row.maximumEnrollment }}</mat-cell
                   >
                 </ng-container>
