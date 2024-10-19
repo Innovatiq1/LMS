@@ -214,7 +214,26 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" >
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                  <div class="button-container">
+                    <label>Select User Group</label> <span class="mandatory">&nbsp;*</span>
+                  </div>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-select formControlName="userGroupId" multiple required>
+                      <mat-option #allSelected (click)="toggleAllSelection()" [value]="0">
+                        All
+                      </mat-option>
+                      <mat-option [value]="userGroup.id" *ngFor="let userGroup of userGroups">
+                        {{ userGroup.group_name }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="classForm.get('userGroupId')?.hasError('required') && classForm.get('userGroupId')?.touched">
+                      Select User Group
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                
+                <!-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" >
                   <div class="button-container">
                     <label>Select User Group </label>
                   </div>
@@ -237,7 +256,7 @@
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
-                </div>
+                </div> -->
                 <!-- <div
                   class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mt-3"
                   *ngIf="labelStatusCheck('Is Guaranteed To Run')"
