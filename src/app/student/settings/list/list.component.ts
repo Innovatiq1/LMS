@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnnouncementService } from '@core/service/announcement.service';
 import { UtilsService } from '@core/service/utils.service';
@@ -8,6 +8,8 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { BulletPointsPipe } from '@core/service/content.pipe';
 import { AuthenService } from '@core/service/authen.service';
+import { CoursePaginationModel } from '@core/models/course.model';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-list',
@@ -22,11 +24,16 @@ export class ListComponent {
       active: 'Announcement',
     },
   ];
+  filterName: string = "";
   displayedColumns: string[] = [
     'Title',
     'Decription',
     'User Role',
   ];
+  coursePaginationModel: Partial<CoursePaginationModel>;
+  searchTerm: string = '';
+  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
+
   dataSource: any;
   create = true;
   status = true;
@@ -97,7 +104,12 @@ export class ListComponent {
     private authenService: AuthenService
 
   ) {
-
+    this.coursePaginationModel = {
+      page: 1, 
+      limit: 10, 
+      totalDocs: 0,
+      docs: []
+    };
   }
   ngOnInit(): void {
     const roleDetails =this.authenService.getRoleDetails()[0].settingsMenuItems
@@ -121,10 +133,27 @@ export class ListComponent {
     });
   }
 
-  getAnnouncementList(filter: any) {
-    this.announcementService.getAnnouncementList(filter).subscribe((res: { data: { data: any[]; }; totalRecords: number; }) => {
+  pageSizeChange($event: any) {
+    this.coursePaginationModel.page = $event?.pageIndex + 1;
+    this.coursePaginationModel.limit = $event?.pageSize;
+      this.getAnnouncementList(this.coursePaginationModel);
+  }
+  performSearch() {
+    this.coursePaginationModel.page = 1;
+    this.paginator.pageIndex = 0;
+      this.getAnnouncementList();
+  }
+  getAnnouncementList(filter?: any) {
+    let filterProgram = this.filterName;
+    const payload = { ...this.coursePaginationModel,title:filterProgram };
+    this.announcementService.getAnnouncementList(payload).subscribe((res:any) => {
       this.isLoading = false;
-      this.dataSource = res.data.data;
+      this.dataSource = res.data.data.docs;
+       this.totalItems = res.data.data.totalDocs;
+          this.coursePaginationModel.docs = res.data.data.docs;
+          this.coursePaginationModel.page = res.data.data.page;
+          this.coursePaginationModel.limit = res.data.data.limit;
+          this.coursePaginationModel.totalDocs = res.data.data.totalDocs;
       let limit = filter.limit ? filter.limit : 10
       if (res.totalRecords <= limit || res.totalRecords <= 0) {
 

@@ -204,19 +204,17 @@ export class HeaderComponent
   }
 
   getAnnouncementForStudents(filter?: any) {
+    let role = JSON.parse(localStorage.getItem('user_data')!).user.role;
+
     let payload = {
-      announcementFor: AppConstants.STUDENT_ROLE,
+      announcementFor:role,
     };
     this.announcementService
-      .getAnnouncementsForStudents(payload)
-      .subscribe((res: { data: { data: any[] }; totalRecords: number }) => {
-        const announcementsData: any = res.data.data;
-        this.announcements = announcementsData.sort((a: any, b: any) => {
-          return new Date(b.date).getTime() - new Date(a.date).getTime();
-        });
-        this.notificationCount = this.announcements.length;
+      .getAnnouncementList(payload)
+      .subscribe((res: { results: { data: any[] }; totalRecords: number }) => {
+        const announcementsData: any = res.results;
+        this.announcements = announcementsData.reverse();
       });
-     
   }
   showCustomHtml(data: any) {
     Swal.fire({
