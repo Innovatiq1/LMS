@@ -232,7 +232,7 @@ export class ViewCompletionComponent {
     }).then((result) => {
       if (result.isConfirmed){
         this._classService
-        .saveApprovedClasses(element.id, item)
+        .saveApprovedClasses(element._id, item)
         .subscribe((response: any) => {
           Swal.fire({
             title: 'Success',
