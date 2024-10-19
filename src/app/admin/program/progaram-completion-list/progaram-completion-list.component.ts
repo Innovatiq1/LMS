@@ -81,6 +81,7 @@ selectedRows: any[] = [];
 
       this.coursePaginationModel = {};
     // this.studentPaginationModel = {} as StudentPaginationModel;
+    this.userGroupIds = (JSON.parse(localStorage.getItem('user_data')!).user.userGroup.map((v:any)=>v.id) || []).join()
   }
 
   ngOnInit(): void {
@@ -125,6 +126,7 @@ selectedRows: any[] = [];
       .subscribe((response: any) => {
         this.isLoading = false;
         this.dataSource = response.docs;
+        console.log("searchData", this.dataSource);
         this.totalPages = response.totalDocs;
         this.coursePaginationModel.docs = response.docs;
         this.coursePaginationModel.page = response.page;

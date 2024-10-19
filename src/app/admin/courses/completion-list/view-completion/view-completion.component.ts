@@ -15,13 +15,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./view-completion.component.scss']
 })
 export class ViewCompletionComponent {
-  breadscrums = [
-    {
-      title: 'Blank',
-      items: ['Discount Verification'],
-      active: 'View Discount Verification',
-    },
-  ];
+  breadscrums :any[]= [];
 
   classDataById: any;
   completedData: any;
@@ -37,10 +31,22 @@ export class ViewCompletionComponent {
   isDiscount = false;
   edit = false;
   delete = false;
+  storedItems: string | null;
 
   constructor(private classService: ClassService,private courseService: CourseService,private _router: Router, private activatedRoute: ActivatedRoute,public _classService: ClassService, private assessmentService: AssessmentService, 
     private authenService: AuthenService) {
 
+      this.storedItems = localStorage.getItem('activeBreadcrumb');
+    if (this.storedItems) {
+     this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+     this.breadscrums = [
+       {
+         title: '', 
+         items: [this.storedItems],  
+         active: 'View Pending Courses',  
+       },
+     ];
+   }
     this.studentPaginationModel = {} as StudentPaginationModel;
     this.activatedRoute.queryParams.subscribe((params: any) => {
       
