@@ -1,15 +1,22 @@
-// #submit {
-//   width: 140px;
-//    padding: 5px 13px 5px 13px;
-//  }
-//  #issued{
-//    width: 140px;
-//    padding: 5px 13px 5px 11px;
-//  }
-//  #enableExam {
-//    width: 140px;
-//    padding: 5px 13px 5px 11px;
-//  }
+#submit {
+  width: 140px;
+   padding: 5px 13px 5px 13px;
+ }
+ #issued{
+   width: 140px;
+   padding: 5px 13px 5px 11px;
+ }
+ #enableExam {
+   width: 140px;
+   padding: 5px 13px 5px 11px;
+ }
+ .custom-button-padding {
+    display: inline-block; 
+    padding-top: 8px; 
+    padding-bottom: 8px; 
+    font-size: 14px; 
+    line-height: 1.2; 
+  }
 //  .mat-column-actions {
 //    width: 450px;
 // }
