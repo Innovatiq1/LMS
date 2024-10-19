@@ -48,6 +48,7 @@ export class ClassService extends UnsubscribeOnDestroyAdapter {
       if (filter.program) params = params.set("program", filter.program);
       if (filter.courseId) params = params.set("courseId", filter.courseId);
       if (filter.courseName) params = params.set("title", filter.courseName);
+      if (filter.className) params = params.set("className", filter.className);
 
     }
     return params;
