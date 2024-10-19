@@ -100,6 +100,8 @@ export class InstructorLeaveRequestService extends UnsubscribeOnDestroyAdapter {
       .subscribe({
         next: (data) => {
           this.dialogData = leaveRequest;
+          window.location.reload();
+
           const updatedData = this.data.map(item =>
             item.id === id ? leaveRequest : item
           );
