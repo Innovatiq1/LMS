@@ -469,14 +469,13 @@
                   </mat-form-field>
                 </div>
           
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
-                  <label for="instructor">Select {{commonRoles?.INSTRUCTOR_ROLE}}<span class="mandatory">&nbsp;*</span></label>
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12" *ngIf="labelStatusCheck('Select Trainer')">
+                  <label for="instructor" >Select {{commonRoles?.INSTRUCTOR_ROLE}}</label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <mat-select
                       id="instructor"
                       [(ngModel)]="element.instructor"
                       name="instructor"
-                      required
                       #instructor="ngModel"
                       (selectionChange)="onSelectChange1($event, element)"
                       (change)="onChangeInstructor(element, index)"

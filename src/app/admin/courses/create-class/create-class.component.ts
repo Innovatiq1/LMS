@@ -185,7 +185,6 @@ export class CreateClassComponent {
 
 
     this.instructorService.getInstructorLists(payload).subscribe((res) => {
-      console.log("userrs",res)
       this.instructorList = res;
     });
 
@@ -362,20 +361,42 @@ export class CreateClassComponent {
       panelClass: colorName,
     });
   }
+  // getSession() {
+  //   let sessions: any = [];
+  //   this.dataSource.forEach((item: any, index: any) => {
+  //     if (
+  //       this.isInstructorFailed == 0 &&
+  //       item.instructor != '0'
+  //     ) {
+  //       sessions.push({
+  //         sessionNumber: index + 1,
+  //         sessionStartDate: moment(item.start).format('YYYY-MM-DD'),
+  //         sessionEndDate: moment(item.end).format('YYYY-MM-DD'),
+  //         sessionStartTime: moment(item.start).format('HH:mm'),
+  //         sessionEndTime: moment(item.end).format('HH:mm'),
+  //         instructorId: item.instructor||null,
+  //         courseName: this.courseTitle,
+  //         courseCode: this.courseCode,
+  //         status: 'Pending',
+  //         user_id: this.user_id,
+  //       });
+  //     } else {
+  //       sessions = null;
+  //     }
+  //   });
+  //   return sessions;
+  // }
   getSession() {
     let sessions: any = [];
     this.dataSource.forEach((item: any, index: any) => {
-      if (
-        this.isInstructorFailed == 0 &&
-        item.instructor != '0'
-      ) {
+      if (this.isInstructorFailed === 0) {
         sessions.push({
           sessionNumber: index + 1,
           sessionStartDate: moment(item.start).format('YYYY-MM-DD'),
           sessionEndDate: moment(item.end).format('YYYY-MM-DD'),
           sessionStartTime: moment(item.start).format('HH:mm'),
           sessionEndTime: moment(item.end).format('HH:mm'),
-          instructorId: item.instructor,
+          instructorId: item.instructor ||'', // Allow null if instructor is not selected
           courseName: this.courseTitle,
           courseCode: this.courseCode,
           status: 'Pending',
@@ -387,6 +408,7 @@ export class CreateClassComponent {
     });
     return sessions;
   }
+  
   toggleAllSelection() {
     if (this.allSelected.selected) {
       this.classForm.controls['userGroupId']
@@ -450,7 +472,8 @@ export class CreateClassComponent {
         });
 
       }
-    } else {
+    }
+     else {
       if (sessions) {
         this.classForm.value.sessions = sessions;
         this.classForm.value.courseName = this.courseTitle;      

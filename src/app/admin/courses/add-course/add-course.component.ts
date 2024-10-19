@@ -888,7 +888,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       tutorial: this.questionService.getTutorialQuestionJson({ status: 'approved' }),
       survey: this.surveyService.getSurvey(),
       course: this.courseService.getCourseById(this.courseId),
-      exam_assessment: this.questionService.getExamQuestionJson(),
+      exam_assessment: this.questionService.getExamQuestionJson({ status: 'approved' }),
     }).subscribe((response: any) => {
       this.fundingGrants = response.fundingGrant;
       
