@@ -453,7 +453,7 @@ getAllTpCourses() {
     payload.userGroupId=this.userGroupIds
   }
     this._courseService.getAllCoursesWithPagination(payload).subscribe((response) => {
-      this.courseData = response.data.docs.reverse();
+      this.courseData = response.data.docs;
       this.totalItems = response.data.totalDocs;
       this.coursePaginationModel.docs = response.data.docs;
       this.coursePaginationModel.page = response.data.page; 

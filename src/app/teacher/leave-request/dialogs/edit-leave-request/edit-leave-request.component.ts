@@ -96,6 +96,7 @@ export class EditLeaveRequestComponent {
         .saveApprovedClasses(element._id, item)
         .subscribe((_response: any) => {
           let data=this.leaveRequestForm.value
+          this.dialogRef.close(1);  // Returning 1 to indicate success
           this.leaveRequestService.updateLeaveRequest(data,this._id)
         }, );
       })
