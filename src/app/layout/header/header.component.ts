@@ -76,6 +76,7 @@ export class HeaderComponent
   commonRoles: any;
   settingsItems: any;
   isTwoFactor: boolean = true;
+  notificationCount = 0;
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private renderer: Renderer2,
@@ -206,14 +207,16 @@ export class HeaderComponent
     let payload = {
       announcementFor: AppConstants.STUDENT_ROLE,
     };
-    console.log(JSON.stringify(payload));
     this.announcementService
       .getAnnouncementList(payload)
       .subscribe((res: { data: { data: any[] }; totalRecords: number }) => {
         const announcementsData: any = res.data.data;
-        console.log("announcementsData",announcementsData)
-        this.announcements = announcementsData.reverse();
+        this.announcements = announcementsData.sort((a: any, b: any) => {
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+        });
+        this.notificationCount = this.announcements.length;
       });
+     
   }
   showCustomHtml(data: any) {
     Swal.fire({
@@ -226,12 +229,14 @@ export class HeaderComponent
       focusConfirm: false,
       confirmButtonText: '<i class="fa fa-thumbs-up"></i> Great!',
     });
+    this.cancel(data.id)
   }
 
   cancel(id: any) {
     this.announcements = this.announcements.filter(
       (res: { id: any }) => res.id !== id
     );
+    this.notificationCount = this.announcements.length;
   }
 
   student() {

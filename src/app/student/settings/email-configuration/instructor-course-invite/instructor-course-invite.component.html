@@ -54,7 +54,7 @@
                                 <div class="col-xl-10 col-lg-10 col-md-12 col-sm-12 mb-2 mx-auto">
                                     <label>Text<span class="mandatory">&nbsp;*</span></label>
                                     <div [class.error]="emailTemplateForm.get('email_content')?.invalid &&(emailTemplateForm.get('email_content')?.touched || emailTemplateForm.get('email_content')?.pristine) && !emailTemplateForm.get('email_content')?.value">
-                                      <angular-editor placeholder="Enter text..." formControlName="email_content" ></angular-editor>
+                                      <angular-editor placeholder="Enter text..." formControlName="email_content" [config]="config"></angular-editor>
                                       <mat-error class="editor" *ngIf="emailTemplateForm.get('email_content')?.invalid && emailTemplateForm.get('email_content')?.touched">
                                           {{ utils.getErrorMessage1(emailTemplateForm.get('email_content'), 'email_content') }}
                                       </mat-error> 
