@@ -235,7 +235,7 @@
                 
                 <!-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" >
                   <div class="button-container">
-                    <label>Select User Group </label>
+                    <label>Select User Group <span class="mandatory">&nbsp;*</span></label>
                   </div>
                   <mat-form-field
                     class="example-full-width mb-3"
@@ -255,6 +255,11 @@
                         {{ userGroup.group_name }}
                       </mat-option>
                     </mat-select>
+                    <mat-error
+                    *ngIf="classForm.get('userGroupId')?.hasError('required')"
+                  >
+                    Select Any User Group
+                  </mat-error>
                   </mat-form-field>
                 </div> -->
                 <!-- <div
