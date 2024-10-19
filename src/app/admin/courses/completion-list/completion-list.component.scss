@@ -10,19 +10,26 @@
    width: 140px;
    padding: 5px 13px 5px 11px;
  }
- .mat-column-actions {
-   width: 450px;
-}
- svg {
-   position: absolute;
-   fill: #000;
-   background-color: #d3cdcd;
-   margin-top: -15px;
-   margin-left: -15px;
-   border-radius: 10px;
-   padding-left: 3px;
-   padding-right: 3px;
-}
+ .custom-button-padding {
+    display: inline-block; 
+    padding-top: 8px; 
+    padding-bottom: 8px; 
+    font-size: 14px; 
+    line-height: 1.2; 
+  }
+//  .mat-column-actions {
+//    width: 450px;
+// }
+//  svg {
+//    position: absolute;
+//    fill: #000;
+//    background-color: #d3cdcd;
+//    margin-top: -15px;
+//    margin-left: -15px;
+//    border-radius: 10px;
+//    padding-left: 3px;
+//    padding-right: 3px;
+// }
 
 // modal-box styling
 ::ng-deep .mat-mdc-menu-content {
