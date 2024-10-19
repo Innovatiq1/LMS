@@ -119,6 +119,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       'indent',
       'outdent',
       'insertOrderedList',
+      'insertUnorderedList',
       'fontName',
       'heading',
   ]],
