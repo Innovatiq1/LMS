@@ -101,9 +101,7 @@ draftId!: string;
     this.getAllPassingCriteria();
     this.getAllScoreAlgo();
     this.getAllTimeAlgo();
-    if (this.formType === 'Assessment' || this.formType === 'Create') {
       this.startAutoSave();
-    }
     if (!this.editUrl) {
       this.draftId = this.commonService.generate4DigitId();
     }
