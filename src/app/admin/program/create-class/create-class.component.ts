@@ -360,9 +360,12 @@ export class CreateClassComponent {
   getSession() {
     let sessions: any = [];
     this.dataSource.forEach((item: any, index: any) => {
+      // if (
+      //   this.isInstructorFailed == 0 &&
+      //   item.instructor != '0'
+      // )
       if (
-        this.isInstructorFailed == 0 &&
-        item.instructor != '0'
+        this.isInstructorFailed === 0
       ) {
         sessions.push({
           sessionNumber: index + 1,
@@ -370,7 +373,7 @@ export class CreateClassComponent {
           sessionEndDate: moment(item.end).format('YYYY-MM-DD'),
           sessionStartTime: moment(item.start).format('HH:mm'),
           sessionEndTime: moment(item.end).format('HH:mm'),
-          instructorId: item.instructor,
+          instructorId: item.instructor||'',
           courseName: this.courseTitle,
           courseCode: this.courseCode,
           status: 'Pending',
