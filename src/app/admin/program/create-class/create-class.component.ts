@@ -317,7 +317,7 @@ export class CreateClassComponent {
       maximumEnrollment: ['', [Validators.required]],
       classStartDate: ['2023-05-20'],
       classEndDate: ['2023-06-10'],
-      userGroupId: [null]
+      userGroupId: ['',[Validators.required]]
     });
     this.secondFormGroup = this._fb.group({
       sessions: ['', [Validators.required]],
