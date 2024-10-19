@@ -234,8 +234,9 @@ applyFilter() {
   this.coursePaginationModel.page = 1;
   this.paginator.pageIndex = 0;
   this.courseService.getFilteredProgramData(this.filterBody, { ...this.coursePaginationModel }).subscribe((response) => {
-    this.programData = response.data.docs.sort((a: { createdAt: string | number | Date; }, b: { createdAt: string | number | Date; }) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    this.programData = response.data.docs;
     this.totalItems = response.data.totalDocs;
+    console.log(response)
     this.isFiltered = true;
     this.coursePaginationModel.docs = response.data.docs;
     this.coursePaginationModel.page = response.data.page;

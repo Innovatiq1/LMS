@@ -23,6 +23,7 @@
       "ES2022",
       "dom"
     ],
+    "typeRoots": ["node_modules/@types"],
     "paths": {
       "@core": ["app/core"],
       "@core/*": ["app/core/*"],
@@ -31,6 +32,7 @@
       "@config": ["app/config"],
       "@config/*": ["app/config/*"],
     },
+
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
