@@ -101,8 +101,8 @@ export class StudentPendingCoursesComponent {
     });
   }
   pageSizeChange($event: any) {
-    this.studentPaginationModel.page = $event?.pageIndex + 1;
-    this.studentPaginationModel.limit = $event?.pageSize;
+    this.coursePaginationModel.page = $event?.pageIndex + 1;
+    this.coursePaginationModel.limit = $event?.pageSize;
     this.getRegisteredClasses();
   }
 
@@ -115,9 +115,9 @@ export class StudentPendingCoursesComponent {
   }
         this._classService
       .getRegisteredClasse(userId,payload)
-      .subscribe((response: { data: StudentPaginationModel; }) => {
+      .subscribe((response: { data: CoursePaginationModel; }) => {
       this.isLoading = false;
-        this.studentPaginationModel = response.data;
+        this.coursePaginationModel = response.data;
         this.dataSource = response.data.docs;
         this.dataSource.sort = this.matSort;
         this.totalItems = response.data.totalDocs;

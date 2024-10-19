@@ -67,9 +67,9 @@
                     <span class="mobile-label">{{commonRoles.STUDENT_ROLE}} :</span> {{getStudentName(row) }}</mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="courseName">
-                  <mat-header-cell *matHeaderCellDef >Course</mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef >Title</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="editCall(row.id)" (contextmenu)="onContextMenu($event, row)">
-                    <span class="mobile-label">Course :</span> {{row?.courseName}}</mat-cell>
+                    <span class="mobile-label">Title :</span> {{row?.courseName}}</mat-cell>
                 </ng-container>
 
 

@@ -79,3 +79,14 @@ text-align: left;
 .gmail{
   margin-top: 2px;
 }
+
+
+.mat-badge-medium .mat-badge-content {
+  width: 20px !important;
+  height: 20px !important;
+  line-height: 22px !important;
+}
+
+.mat-badge-medium.mat-badge-above .mat-badge-content {
+  top: -4px !important;
+}
