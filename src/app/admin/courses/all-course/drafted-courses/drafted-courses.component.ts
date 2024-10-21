@@ -110,18 +110,12 @@ export class DraftedCoursesComponent {
     const roleDetails = this.authenService.getRoleDetails()[0].menuItems;
     let urlPath = this.route.url.split('/');
     const parentId = `${urlPath[1]}/${urlPath[2]}`;
-    const childId = urlPath[urlPath.length - 2];
-    const subChildId = urlPath[urlPath.length - 1];
-    let parentData = roleDetails.filter((item: any) => item.id == parentId);
-    let childData = parentData[0].children.filter(
-      (item: any) => item.id == childId
-    );
-    let subChildData = childData[0].children.filter(
-      (item: any) => item.id == subChildId
-    );
-    let actions = subChildData[0].actions;
-    let editAction = actions.filter((item: any) => item.title == 'Edit');
-    let viewAction = actions.filter((item: any) => item.title == 'View');
+    const childId =  urlPath[urlPath.length - 1];
+    let parentData = roleDetails?.filter((item: any) => item.id == parentId);
+    let childData = parentData[0]?.children?.filter((item: any) => item.id == childId);
+    let actions = childData[0]?.actions
+    let editAction = actions?.filter((item:any) => item.title == 'Edit')
+    let viewAction = actions?.filter((item:any) => item.title == 'View')
 
     if (editAction.length > 0) {
       this.edit = true;

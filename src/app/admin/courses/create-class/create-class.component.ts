@@ -444,7 +444,7 @@ export class CreateClassComponent {
                   icon: 'success',
                 });
               }
-              this.router.navigateByUrl(`/timetable/class-list`);
+              window.history.back();
             });
           }
         });

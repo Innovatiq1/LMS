@@ -69,6 +69,9 @@ private tpUrl=environment.Url;
       if(filter.isAll) {
         params = params.set('isAll', filter.isAll)
       }
+      if(filter.status) {
+        params = params.set('status', filter.status)
+      }
     }
     return params;
   }

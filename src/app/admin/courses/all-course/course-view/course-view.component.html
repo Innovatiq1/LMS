@@ -98,14 +98,14 @@
                               [ngClass]="
                               sourceData?.status === 'active'
                                   ? 'badge badge-solid-green'
-                                  : sourceData?.status === 'inactive' ? 'badge badge-solid-red' : ''
+                                  : sourceData?.status === 'inactive' ? 'badge badge-solid-red' : 'badge badge-solid-red'
                               "
                             >
                               <span
                                 [ngClass]="
                                 sourceData?.status === 'active'
                                     ? 'status-dot' :
-                                    sourceData?.status === 'inactive' ? 'status-red' : ''
+                                    sourceData?.status === 'inactive' ? 'status-red' : 'status-red'
                                 "
                               ></span
                               >{{ sourceData?.status | titlecase }}
