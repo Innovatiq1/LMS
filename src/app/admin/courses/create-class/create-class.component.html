@@ -19,7 +19,7 @@
                       <label>Course<span class="mandatory">&nbsp;*</span></label>
                       <mat-form-field class="example-full-width mb-3" appearance="outline">
                         <mat-select required formControlName="courseId" (selectionChange)="onSelectChange($event)">
-                          <mat-option> Choose Course Name... </mat-option>
+                          <mat-option> Select Course... </mat-option>
                           <mat-option *ngFor="let courseName of courseList" [value]="courseName.id">
                             {{ courseName.title }}
                           </mat-option>
@@ -44,7 +44,7 @@
                             classForm.get('classDeliveryType')?.hasError('required') ||
                             classForm.get('classDeliveryType')?.touched
                           ">
-                          Select Class Delivery Type
+                          Select Class Delivery
                         </mat-error>
                       </mat-form-field>
                     </div>
@@ -57,7 +57,7 @@
                             classForm.get('instructorCost')?.hasError('required') ||
                             classForm.get('instructorCost')?.touched
                           ">
-                          Enter Instructor Fee .
+                          Enter {{commonRoles.INSTRUCTOR_ROLE}} Fee
                         </mat-error>
                       </mat-form-field>
                     </div>
@@ -69,8 +69,8 @@
                             classForm.get('minimumEnrollment')?.hasError('required') ||
                             classForm.get('minimumEnrollment')?.touched
                           ">
-                      Enter Minimum {{commonRoles.STUDENT_ROLE}}s.
-                    </mat-error>
+                          Enter Minimum {{commonRoles.STUDENT_ROLE}}s
+                        </mat-error>
 
                   </mat-form-field>
                 </div>
@@ -82,7 +82,7 @@
                             classForm.get('maximumEnrollment')?.hasError('required') ||
                             classForm.get('maximumEnrollment')?.touched
                           ">
-                          Enter Maximum {{commonRoles.STUDENT_ROLE}}s .
+                          Enter Maximum {{commonRoles.STUDENT_ROLE}}s 
                         </mat-error>
                       </mat-form-field>
                     </div>
@@ -128,7 +128,7 @@
                       <mat-error
                         *ngIf="classForm.get('department')?.hasError('required')"
                       >
-                        Select Any Department
+                        Select Department
                       </mat-error>
                     </mat-form-field>
                   </div>
@@ -163,49 +163,6 @@
                          {{userGroup.group_name }}
                         </mat-option>
                       </mat-select>
-                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2" *ngIf="labelStatusCheck('Select Currency Type')">
-                  <label>Select Currency</label>
-                  <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <mat-select formControlName="currency">
-                      <mat-option value="USD">USD</mat-option>
-                      <mat-option value="SGD">SGD</mat-option>
-                      <mat-option value="NZD">NZD</mat-option>
-                      <mat-option value="YEN">YEN</mat-option>
-                      <mat-option value="GBP">GBP</mat-option>
-                      <mat-option value="KWN">KWN</mat-option>
-                      <mat-option value="IDR">IDR</mat-option>
-                      <mat-option value="TWD">TWD</mat-option>
-                      <mat-option value="MYR">MYR</mat-option>
-                      <mat-option value="AUD">AUD</mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                  <div class="button-container">
-                    <label>Select Department <span class="mandatory">&nbsp;*</span></label>
-                  </div>
-                  <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <mat-select formControlName="department" required>
-                      <mat-option [value]="dept.department" *ngFor="let dept of dept">
-                        {{dept.department }}
-                      </mat-option>
-                    </mat-select>
-                    <mat-error *ngIf="classForm.get('department')?.hasError('required')">
-                      Select Any Department
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                  <div class="button-container">
-                    <label>Select User Group <span class="mandatory">&nbsp;*</span></label>
-                  </div>
-                  <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <mat-select formControlName="userGroupId" multiple>
-                      <mat-option #allSelected (click)="toggleAllSelection()" [value]="0">All</mat-option>
-                      <mat-option [value]="userGroup.id" *ngFor="let userGroup of userGroups">
-                        {{userGroup.group_name }}
-                      </mat-option>
-                    </mat-select>
                       <mat-error
                       *ngIf="classForm.get('userGroupId')?.hasError('required')"
                     >
