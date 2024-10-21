@@ -128,7 +128,8 @@ export class ForgotPasswordComponent implements OnInit {
             if (user && user.data && user.data[0].isLogin) {
               let body ={
                 email:this.authForm.value.email,
-                companyId:companyId
+                companyId:companyId,
+                subdomain:this.extractedName
               }
               
               this.authService.forgotPassword(body).subscribe({
@@ -141,9 +142,9 @@ export class ForgotPasswordComponent implements OnInit {
                     });
                     
                     if (this.tmsUrl) {
-                      this.router.navigate(['/authentication/TMS/signin']);
+                      this.router.navigate([`${this.extractedName}/authentication/TMS/signin`]);
                     } else if (this.lmsUrl) {
-                      this.router.navigate(['/authentication/LMS/signin']);
+                      this.router.navigate([`${this.extractedName}/authentication/LMS/signin`]);
                     }
                   }
                 },
