@@ -36,7 +36,6 @@ export class ActiveCoursesComponent {
     'status',
     'code',
     'Fee Type',
-    'Main Category',
     // 'Days',
     // 'Training Hours',
     'Vendor',
@@ -94,7 +93,7 @@ export class ActiveCoursesComponent {
   getAllCourse() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     let filterProgram = this.filterName;
-    const payload = { ...this.coursePaginationModel,title:filterProgram,status: 'active' };
+    const payload = { ...this.coursePaginationModel,title:filterProgram,status: 'rejected' };
   if(this.userGroupIds){
     payload.userGroupId=this.userGroupIds
   }

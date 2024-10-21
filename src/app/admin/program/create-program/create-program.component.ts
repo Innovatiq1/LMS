@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProgramKit } from '@core/models/course.model';
 import { CertificateService } from '@core/service/certificate.service';
@@ -21,34 +21,35 @@ import { StudentsService } from 'app/admin/students/students.service';
 })
 export class CreateProgramComponent {
   breadcrumbs: any[] =[]
-  config: AngularEditorConfig = {
+   config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
-    height: '12rem',
+    height: '15rem',
     minHeight: '5rem',
-    placeholder: 'Description',
+    placeholder: 'Enter text here...',
     translate: 'no',
     defaultParagraphSeparator: 'p',
     defaultFontName: 'Arial',
-   
-   
-    toolbarHiddenButtons: [
-      [
-        'customClasses',
-        'strikeThrough',
-        'removeFormat',
-        'toggleEditorMode',
-        'subscript',
-        'superscript',
-        'indent',
-        'outdent',
-         'insertOrderedList',
-         'insertUnorderedList',
-        'heading',
-        'fontName'
-      ]
-    ]
-  };
+    sanitize: false,
+    toolbarHiddenButtons: [[
+      'subscript',
+      'superscript',
+      'indent',
+      'outdent',
+      'insertOrderedList',
+      'insertUnorderedList',
+      'fontName',
+      'heading',
+      'customClasses',
+      'removeFormat',
+      'toggleEditorMode',
+      'link',
+      'unlink',
+      'insertVideo'
+  ]],
+};
+  
+
   files: any[] = [];
 
   coreProgramCards: { coreProgramName: string; coreProgramCode: string }[] = [{ coreProgramName: '', coreProgramCode: '' }];
@@ -186,7 +187,7 @@ export class CreateProgramComponent {
       this.fb.group({
         coreProgramName: ["", []],
         coreProgramCode: ["", []],
-        coreProgramDescription: ["", []],
+        coreProgramDescription: new FormControl('', []),
       })
     );
   }

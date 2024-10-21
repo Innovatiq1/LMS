@@ -9,7 +9,6 @@ import { ProgramTimetableComponent } from './program-timetable/program-timetable
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from '@danielmoncada/angular-datetime-picker';
 import { ScheduleClassComponent } from './schedule-class/schedule-class.component';
-import { ClassListComponent } from './class-list/class-list.component';
 import { ViewProgramClassComponent } from './schedule-class/view-program-class/view-program-class.component';
 import { EAttendanceComponent } from './e-attendance/e-attendance.component';
 import { EventDetailDialogComponent } from './program-timetable/event-detail-dialog/event-detail-dialog.component';
@@ -20,7 +19,6 @@ import { MyCoursesComponent } from './my-courses/my-courses.component';
     CourseTimetableComponent,
     ProgramTimetableComponent,
     ScheduleClassComponent,
-    ClassListComponent,
     ViewProgramClassComponent,
     EAttendanceComponent,
     EventDetailDialogComponent,

@@ -69,6 +69,7 @@ import { AppConstants } from '@shared/constants/app.constants';
 import { StudentPaginationModel } from '@core/models/class.model';
 import { AssessmentQuestionsPaginationModel } from '@core/models/assessment-answer.model';
 import { AssessmentService } from '@core/service/assessment.service';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 export type barChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -334,7 +335,7 @@ export class MainComponent implements OnInit {
     private authenticationService:AuthenService,private leaveService: LeaveService,
     public lecturesService: LecturesService,
     private settingsService: SettingsService,
-    private assessmentService: AssessmentService
+    private assessmentService: AssessmentService, private sanitizer: DomSanitizer,
   ) {
     //constructor
     let urlPath = this.router.url.split('/')
@@ -374,6 +375,9 @@ export class MainComponent implements OnInit {
 
     this.studentPaginationModel = {} as StudentPaginationModel;
     this.assessmentPaginationModel = {};
+  }
+  getSafeHtml(html: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(html);
   }
 
   getCount() {

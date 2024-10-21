@@ -520,23 +520,10 @@ export class CreateClassComponent {
                   title: 'Success',
                   text: 'Class Created Successfully.',
                   icon: 'success',
-                }).then(() => {
-                  // Optionally navigate after showing the success message
-                  this.router.navigateByUrl(`/timetable/class-list`);
-                });
-      
-                // Clean up localStorage
-                localStorage.removeItem('classFormData');
-              },
-              (error) => {
-                // Handle any error from the API call
-                Swal.fire({
-                  title: 'Error',
-                  text: 'There was an issue scheduling the class. Please try again later.',
-                  icon: 'error',
                 });
               }
-            );
+              window.history.back();
+            });
           }
         });
       }

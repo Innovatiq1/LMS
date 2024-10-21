@@ -209,7 +209,7 @@
                     </thead>
                     <tbody>
                       <tr *ngFor="let class of classesList " style="cursor: pointer;"
-                        [routerLink]="['/admin/courses/timetable/class-list/view-class/',class.id]">
+                        [routerLink]="['/admin/courses/class-list/view-class/',class.id]">
                         <!-- <td class="table-img">
                     <img src="{{class?.courseId?.image_link}}" alt="course">
                   </td> -->
@@ -484,7 +484,7 @@
                   <div *ngFor="let announcement of announcements.reverse()" class="notice-board">
                     <div class="notice-body">
                       <h5 class="notice-heading col-green">{{announcement?.announcementBy?.name}}</h5>
-                      <p [innerHTML]="announcement?.details | truncate:150"></p>
+                      <p [innerHTML]="getSafeHtml(announcement?.details)"></p>
                       <small class="text-muted float-end">{{announcement?.createdAt | date}}</small>
                     </div>
                   </div>

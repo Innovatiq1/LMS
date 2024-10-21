@@ -4,7 +4,6 @@ import { AllCourseComponent } from './all-course/all-course.component';
 import { AddCourseComponent } from './add-course/add-course.component';
 import { CompletionListComponent } from './completion-list/completion-list.component';
 import { CreateClassComponent } from './create-class/create-class.component';
-import { ViewClassComponent } from './class-list/view-class/view-class.component';
 import { ViewCompletionComponent } from './completion-list/view-completion/view-completion.component';
 import { CourseViewComponent } from './all-course/course-view/course-view.component';
 import { CourseKitComponent } from './course-kit/course-kit.component';
@@ -21,18 +20,20 @@ import { VerificationListComponent } from './verification-list/verification-list
 import { StudentCourseComponent } from './all-course/student-course/student-course.component';
 import { DraftedCoursesComponent } from './all-course/drafted-courses/drafted-courses.component';
 import { RetakeRequestsComponent } from './retake-requests/retake-requests.component';
+import { ViewClassComponent } from './class-view/view-class/view-class.component';
+import { ClassListComponent } from './class-list/class-list.component';
 import { ScheduleMeetingComponent } from './schedule-meeting/schedule-meeting.component';
 const routes: Routes = [
   {
-    path: 'all-courses/course-name',
+    path: 'course-name',
     component: AllCourseComponent,
   },
   {
-    path: 'all-courses/ccreator',
+    path: 'ccreator',
     component: AllCourseComponent,
   },
   {
-    path: 'submitted-courses/submitted-approved-courses',
+    path: 'submitted-courses/submitted-rejected-courses',
     component: ActiveCoursesComponent,
   },
   {
@@ -46,6 +47,10 @@ const routes: Routes = [
   {
     path: 'edit-course/:id',
     component: AddCourseComponent,
+  },
+  {
+    path: 'class-list',
+    component: ClassListComponent,
   },
   {
     path: 'view-course/:id',
@@ -65,13 +70,10 @@ const routes: Routes = [
   },
 
   {
-    path: 'view-class/:id',
+    path: 'class-list/view-class/:id',
     component: ViewClassComponent,
   },
-  {
-    path: 'timetable/class-list/view-class/:id',
-    component: ViewClassComponent,
-  },
+
   {
     path: 'view-completion-list',
     component: ViewCompletionComponent,
@@ -146,7 +148,7 @@ const routes: Routes = [
     component: StudentCourseComponent,
   },
   {
-    path: 'all-courses/drafts',
+    path: 'drafts',
     component: DraftedCoursesComponent,
   },
   {

@@ -83,7 +83,7 @@ export class ClassListComponent extends UnsubscribeOnDestroyAdapter implements O
   ngOnInit(): void {
     const roleDetails =this.authenService.getRoleDetails()[0].menuItems
     let urlPath = this._router.url.split('/');
-    const parentId = urlPath[urlPath.length - 2];
+    const parentId = `${urlPath[1]}/${urlPath[2]}`;
     const childId =  urlPath[urlPath.length - 1];
     let parentData = roleDetails.filter((item: any) => item.id == parentId);
     let childData = parentData[0].children.filter((item: any) => item.id == childId);

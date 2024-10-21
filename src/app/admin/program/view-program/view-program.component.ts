@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { VideoPlayerComponent } from 'app/admin/courses/course-kit/video-player/video-player.component';
 import { AuthenService } from '@core/service/authen.service';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 
 @Component({
@@ -30,7 +31,7 @@ export class ViewProgramComponent {
   storedItems: string | null;
   constructor(private courseService: CourseService, private activatedRoute: ActivatedRoute,
     private router: Router, private classService: ClassService, 
-    private modalServices: BsModalService, private authenService: AuthenService
+    private modalServices: BsModalService, private authenService: AuthenService, private sanitizer: DomSanitizer,
   ) {
     // constructor
     this.storedItems = localStorage.getItem('activeBreadcrumb');
@@ -70,7 +71,9 @@ export class ViewProgramComponent {
       ];
     }
   }
-
+  getSafeHtml(html: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(html);
+  }
   getProgramLists() {
     this.courseService
       .getCourseProgram({ status: 'active' })

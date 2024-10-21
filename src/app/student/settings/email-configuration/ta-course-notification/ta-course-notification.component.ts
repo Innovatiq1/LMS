@@ -43,30 +43,29 @@ export class TaCourseNotificationComponent {
   config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
-    height: '12rem',
+    height: '15rem',
     minHeight: '5rem',
-    placeholder: 'Description',
+    placeholder: 'Enter text here...',
     translate: 'no',
     defaultParagraphSeparator: 'p',
     defaultFontName: 'Arial',
-   
-   
-    toolbarHiddenButtons: [
-      [
-        'customClasses',
-        'strikeThrough',
-        'removeFormat',
-        'toggleEditorMode',
-        'subscript',
-        'superscript',
-        'indent',
-        'outdent',
-         'insertOrderedList',
-         'insertUnorderedList',
-        'heading',
-        'fontName'
-      ]
-    ]
+    sanitize: false,
+    toolbarHiddenButtons: [[
+      'subscript',
+      'superscript',
+      'indent',
+      'outdent',
+      'insertOrderedList',
+      'insertUnorderedList',
+      'fontName',
+      'heading',
+      'customClasses',
+      'removeFormat',
+      'toggleEditorMode',
+      'link',
+      'unlink',
+      'insertVideo'
+  ]],
   };
   constructor(
      private emailConfigurationService: EmailConfigService,

@@ -109,7 +109,6 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     defaultFontName: 'Arial',
     sanitize: false,
     toolbarHiddenButtons: [[
-      'strikethrough',
       'subscript',
       'superscript',
       'indent',
@@ -118,22 +117,13 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       'insertUnorderedList',
       'fontName',
       'heading',
+      'customClasses',
+      'removeFormat',
+      'toggleEditorMode',
+      'link',
+      'unlink',
+      'insertVideo'
   ]],
-    // customClasses: [
-    //   {
-    //     name: 'quote',
-    //     class: 'quote',
-    //   },
-    //   {
-    //     name: 'redText',
-    //     class: 'redText',
-    //   },
-    //   {
-    //     name: 'titleText',
-    //     class: 'titleText',
-    //     tag: 'h1',
-    //   },
-    // ],
   };
   vendors: any;
   certificates: any;

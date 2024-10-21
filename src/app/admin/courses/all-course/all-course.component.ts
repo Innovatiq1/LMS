@@ -158,14 +158,12 @@ export class AllCourseComponent {
     const roleDetails =this.authenService.getRoleDetails()[0].menuItems
     let urlPath = this.route.url.split('/');
     const parentId = `${urlPath[1]}/${urlPath[2]}`;
-    const childId =  urlPath[urlPath.length - 2];
-    const subChildId =  urlPath[urlPath.length - 1];
-    let parentData = roleDetails.filter((item: any) => item.id == parentId);
-    let childData = parentData[0].children.filter((item: any) => item.id == childId);
-    let subChildData = childData[0].children.filter((item: any) => item.id == subChildId);
-    let actions = subChildData[0].actions
-    let createAction = actions.filter((item:any) => item.title == 'Create')
-    let viewAction = actions.filter((item:any) => item.title == 'View')
+    const childId =  urlPath[urlPath.length - 1];
+    let parentData = roleDetails?.filter((item: any) => item.id == parentId);
+    let childData = parentData[0]?.children?.filter((item: any) => item.id == childId);
+    let actions = childData[0]?.actions
+    let createAction = actions?.filter((item:any) => item.title == 'Create')
+    let viewAction = actions?.filter((item:any) => item.title == 'View')
 
     if(createAction.length > 0){
       this.create = true
@@ -541,8 +539,12 @@ getAllTpCourses() {
   public logFormData(formData: FormData) {
     formData.forEach((value, key) => {
       let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-      let courses = JSON.parse(localStorage.getItem('user_data')!).user.courses;
-  
+      let subdomain = localStorage.getItem('subdomain')
+      if(subdomain){
+      this.userService
+      .getCompanyByIdentifierWithoutToken(subdomain)
+      .subscribe((resp: any) => {
+        let courses = resp[0]?.courses;
       if (typeof value === 'string') {
         let cleanedValue = value.replace(/^"|"$/g, '');
         let parsedValue;
@@ -568,6 +570,8 @@ getAllTpCourses() {
               icon: 'success',
             });
             this.getAllCourses();
+            this.route.navigate(['/admin/courses/all-courses/drafts'])
+
           },
           (error: any) => {
           }
@@ -576,6 +580,8 @@ getAllTpCourses() {
         console.error("The value is not a string and cannot be parsed as JSON:", value);
       }
     });
+  }
+  })
   }
   
 
