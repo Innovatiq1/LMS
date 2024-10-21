@@ -155,7 +155,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
        {
          title: '', 
          items: [this.storedItems],  
-         active: 'Create Program',  
+         active: 'Create Course',  
        },
      ];
    }
