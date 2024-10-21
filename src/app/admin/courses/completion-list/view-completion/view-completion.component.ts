@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Session, Student, StudentApproval, StudentPaginationModel } from '@core/models/class.model';
 import { AssessmentService } from '@core/service/assessment.service';
@@ -34,7 +35,7 @@ export class ViewCompletionComponent {
   storedItems: string | null;
 
   constructor(private classService: ClassService,private courseService: CourseService,private _router: Router, private activatedRoute: ActivatedRoute,public _classService: ClassService, private assessmentService: AssessmentService, 
-    private authenService: AuthenService) {
+    private authenService: AuthenService, private sanitizer: DomSanitizer,) {
 
       this.storedItems = localStorage.getItem('activeBreadcrumb');
     if (this.storedItems) {
@@ -93,7 +94,9 @@ export class ViewCompletionComponent {
   back(){
     window.history.back()
   }
-
+  getSafeHtml(html: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(html);
+  }
     ngOnInit(): void {
       const roleDetails =this.authenService.getRoleDetails()[0].menuItems
       let urlPath = this._router.url.split('/');

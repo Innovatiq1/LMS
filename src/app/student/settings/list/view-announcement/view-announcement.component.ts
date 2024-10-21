@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnnouncementService } from '@core/service/announcement.service';
 import { AuthenService } from '@core/service/authen.service';
@@ -25,7 +26,8 @@ export class ViewAnnouncementComponent {
     private announcementService: AnnouncementService,
     private router: Router,
     private cdr: ChangeDetectorRef,
-    private authenService: AuthenService
+    private authenService: AuthenService,
+    private sanitizer: DomSanitizer,
   ) {
     this.storedItems = localStorage.getItem('activeBreadcrumb');
     if (this.storedItems) {
@@ -61,7 +63,9 @@ export class ViewAnnouncementComponent {
       }
     this.loadData()
   }
-
+  getSafeHtml(html: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(html);
+  }
   loadData(){
   this.announcementService.getAnnouncementById(this.departmentId).subscribe((response:any)=>{
     this.aboutData1 = response.data.data;
