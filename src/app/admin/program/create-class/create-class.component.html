@@ -34,7 +34,7 @@
                       formControlName="courseId"
                       (selectionChange)="onSelectChange($event)"
                     >
-                      <mat-option> Choose Program Name... </mat-option>
+                      <mat-option> Choose Program... </mat-option>
                       <mat-option
                         *ngFor="let programName of programList"
                         [value]="programName.id"
@@ -48,7 +48,7 @@
                         classForm.get('courseId')?.touched
                       "
                     >
-                      Enter Program Name.
+                      Select Program
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -73,7 +73,7 @@
                         classForm.get('classDeliveryType')?.touched
                       "
                     >
-                      Enter Class Delivery Type .
+                      Enter Class Delivery
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -99,7 +99,7 @@
                         classForm.get('instructorCost')?.touched
                       "
                     >
-                      Enter {{commonRoles?.INSTRUCTOR_ROLE}} Fee .
+                      Enter {{commonRoles?.INSTRUCTOR_ROLE}} Fee
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -123,7 +123,7 @@
                         classForm.get('minimumEnrollment')?.touched
                       "
                     >
-                      Enter Minimum {{commonRoles.STUDENT_ROLE}}s.
+                      Enter Minimum {{commonRoles.STUDENT_ROLE}}s
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -146,7 +146,7 @@
                         classForm.get('maximumEnrollment')?.touched
                       "
                     >
-                      Enter Maximum {{commonRoles.STUDENT_ROLE}}s.
+                      Enter Maximum {{commonRoles.STUDENT_ROLE}}s
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -210,7 +210,7 @@
                     <mat-error
                       *ngIf="classForm.get('department')?.hasError('required')"
                     >
-                      Select Any Department
+                      Select Department
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -443,7 +443,7 @@
                     <mat-icon matSuffix [owlDateTimeTrigger]="date" class="date-icon">today</mat-icon>
                     <owl-date-time #date></owl-date-time>
                     <mat-error *ngIf="startDate.invalid && (startDate.touched || form.submitted)">
-                      Select a Date
+                      Select Start Date
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -464,7 +464,7 @@
                     <mat-icon matSuffix [owlDateTimeTrigger]="date2" class="date-icon">today</mat-icon>
                     <owl-date-time #date2></owl-date-time>
                     <mat-error *ngIf="endDate.invalid && (endDate.touched || form.submitted)">
-                      Select a Date 
+                      Select End Date 
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -485,7 +485,7 @@
                       </mat-option>
                     </mat-select>
                     <mat-error *ngIf="instructor.invalid && instructor.touched">
-                      Please select an {{commonRoles?.INSTRUCTOR_ROLE}}
+                      Select {{commonRoles?.INSTRUCTOR_ROLE}}
                     </mat-error>
                   </mat-form-field>
                 </div>

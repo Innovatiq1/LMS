@@ -193,10 +193,10 @@ export class CreateClassComponent {
     if (this.editUrl) {
       let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
       forkJoin({
-        courses: this.courseService.getCourseProgram({
+        courses: this.courseService.getCourseProgram(userId,{
           ...this.coursePaginationModel,
           status: 'active',
-        },userId),
+        }),
         instructors: this.instructorService.getInstructor({
           type: this.commonRoles?.INSTRUCTOR_ROLE,
           companyId:userId

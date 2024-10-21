@@ -19,7 +19,7 @@
                       <label>Course<span class="mandatory">&nbsp;*</span></label>
                       <mat-form-field class="example-full-width mb-3" appearance="outline">
                         <mat-select required formControlName="courseId" (selectionChange)="onSelectChange($event)">
-                          <mat-option> Choose Course Name... </mat-option>
+                          <mat-option> Select Course... </mat-option>
                           <mat-option *ngFor="let courseName of courseList" [value]="courseName.id">
                             {{ courseName.title }}
                           </mat-option>
@@ -44,7 +44,7 @@
                             classForm.get('classDeliveryType')?.hasError('required') ||
                             classForm.get('classDeliveryType')?.touched
                           ">
-                          Select Class Delivery Type
+                          Select Class Delivery
                         </mat-error>
                       </mat-form-field>
                     </div>
@@ -57,7 +57,7 @@
                             classForm.get('instructorCost')?.hasError('required') ||
                             classForm.get('instructorCost')?.touched
                           ">
-                          Enter Instructor Fee .
+                          Enter {{commonRoles.INSTRUCTOR_ROLE}} Fee
                         </mat-error>
                       </mat-form-field>
                     </div>
@@ -69,7 +69,7 @@
                             classForm.get('minimumEnrollment')?.hasError('required') ||
                             classForm.get('minimumEnrollment')?.touched
                           ">
-                          Enter Minimum {{commonRoles.STUDENT_ROLE}}s.
+                          Enter Minimum {{commonRoles.STUDENT_ROLE}}s
                         </mat-error>
 
                       </mat-form-field>
@@ -82,7 +82,7 @@
                             classForm.get('maximumEnrollment')?.hasError('required') ||
                             classForm.get('maximumEnrollment')?.touched
                           ">
-                          Enter Maximum {{commonRoles.STUDENT_ROLE}}s .
+                          Enter Maximum {{commonRoles.STUDENT_ROLE}}s 
                         </mat-error>
                       </mat-form-field>
                     </div>
@@ -128,7 +128,7 @@
                       <mat-error
                         *ngIf="classForm.get('department')?.hasError('required')"
                       >
-                        Select Any Department
+                        Select Department
                       </mat-error>
                     </mat-form-field>
                   </div>
