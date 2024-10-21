@@ -35,7 +35,7 @@
                   <label>Announcement For<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <mat-select multiple formControlName="announcementFor" required>
-                      <mat-option value={{users.typeName}} [disabled]="viewUrl == true" *ngFor="let users of userTypeNames">{{users.typeName}}</mat-option>
+                      <mat-option value={{users.typeName}}  *ngFor="let users of userTypeNames">{{users.typeName}}</mat-option>
                     </mat-select>
                     <mat-error
                       *ngIf="announcementForm.get('announcementFor')?.hasError('required') ||announcementForm.get('announcementFor')?.touched">

@@ -55,6 +55,8 @@ export class PendingProgramsComponent {
   selection = new SelectionModel<CourseModel>(true, []);
   searchTerm :string ='';
   view = false;
+  filterName: any;
+  userGroupIds: any;
 
   constructor(private router: Router,
   private courseService: CourseService,private cd: ChangeDetectorRef,private route :Router, private snackBar: MatSnackBar, private authenService: AuthenService){
@@ -107,8 +109,14 @@ export class PendingProgramsComponent {
    }
 
   getProgramList(filters?: any) {
+   
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-    this.courseService.getCourseProgram(userId,{...this.coursePaginationModel,status:'inactive'}).subscribe(
+    let filterProgram = this.filterName;
+    const payload = { ...this.coursePaginationModel,title:filterProgram ,status:'inactive'};
+  if(this.userGroupIds){
+    payload.userGroupId=this.userGroupIds
+  }
+    this.courseService.getCourseProgram(userId,payload).subscribe(
       (response: any) => {
         this.totalItems = response.totalDocs;
         this.dataSource = response.docs;
@@ -120,18 +128,13 @@ export class PendingProgramsComponent {
       (error) => {
       }
     );
-  }
+  
+}
   performSearch() {
-    if(this.searchTerm){
-    this.dataSource = this.dataSource?.filter((item: any) =>{
-      const searchList = (item?.title).toLowerCase()
-      return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1
-    }
-    );
-    } else {
+    this.paginator.pageIndex = 0;
+    this.coursePaginationModel.page = 1;
       this.getProgramList();
 
-    }
   }
 
   addNew() {
