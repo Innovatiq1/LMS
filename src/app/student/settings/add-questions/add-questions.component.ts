@@ -62,9 +62,9 @@ constructor(private formBuilder: FormBuilder,private router: Router, private que
   if(this.editUrl===true){
     this.breadscrums = [
       {
-        title:'Edit Questions',
+        title:'Edit assessment',
         items: ['Assessments'],
-        active: 'Edit Questions',
+        active: 'Edit assessment',
       },
     ];
   }
