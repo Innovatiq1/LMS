@@ -88,7 +88,7 @@
                     </mat-cell>
                   </ng-container>
                 
-                  <ng-container matColumnDef="Registered Date">
+                  <ng-container matColumnDef="registeredDate">
                     <mat-header-cell *matHeaderCellDef >
                       Registered Date
                     </mat-header-cell>
@@ -111,8 +111,8 @@
                     <mat-cell *matCellDef="let row">
                       <!-- Conditionally display buttons or status text based on requestStatus -->
                       <ng-container *ngIf="row.requestStatus === 'requested'; else statusText">
-                        <button mat-raised-button class="btn1" color="primary" id="submit" (click)="approve(row)">Approve</button>
-                        <button mat-raised-button class="m-l-10" color="warn" (click)="reject(row)">Reject</button>
+                        <button mat-raised-button class="btn1" color="primary" id="submit1" (click)="approve(row)">Approve</button>
+                        <button mat-raised-button class="reject m-l-10" color="warn" (click)="reject(row)">Reject</button>
                       </ng-container>
                       <ng-template #statusText>
               
