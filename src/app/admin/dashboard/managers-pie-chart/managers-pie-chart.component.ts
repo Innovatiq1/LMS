@@ -30,7 +30,6 @@ export class ManagersPieChartComponent {
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.Courses = JSON.parse(params['data']); 
-      console.log("parsed data: ", this.Courses);
     });
   }
 

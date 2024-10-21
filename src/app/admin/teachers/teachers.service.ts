@@ -37,17 +37,7 @@ export class TeachersService extends UnsubscribeOnDestroyAdapter {
       },
     });
   }
-  getInstructor(filter?: Partial<UsersPaginationModel>): Observable<ApiResponse> {
-    const apiUrl = `${this.prefix}auth/instructorList/`;
-    return this.httpClient
-      .post<ApiResponse>(apiUrl, { params: this.buildParams(filter) })
-      .pipe(
-        map((response:any) => {
-          return response.data;
-          //this.isTblLoading = false;
-        })
-      );
-  }
+ 
   private buildParams(filter?: Partial<UsersPaginationModel>): HttpParams {
     let params = new HttpParams();
     if (filter) {
@@ -64,8 +54,8 @@ export class TeachersService extends UnsubscribeOnDestroyAdapter {
         params = params.set("page", filter.page?.toString());
       }
       
-      if (filter.filterText) {
-        params = params.set("title", filter.filterText?.toString());
+      if (filter.title) {
+        params = params.set("title", filter.title?.toString());
       }
       if (filter.status && filter.status === "active") {
         params = params.set("status", "active");
@@ -76,45 +66,7 @@ export class TeachersService extends UnsubscribeOnDestroyAdapter {
     return params;
   }
 
-  addTeachers(teachers: Teachers): void {
-    this.dialogData = teachers;
 
-    // this.httpClient.post(this.API_URL, teachers)
-    //   .subscribe({
-    //     next: (data) => {
-    //       this.dialogData = teachers;
-    //     },
-    //     error: (error: HttpErrorResponse) => {
-    //        // error code here
-    //     },
-    //   });
-  }
-  updateTeachers(teachers: Teachers): void {
-    this.dialogData = teachers;
-
-    // this.httpClient.put(this.API_URL + teachers.id, teachers)
-    //     .subscribe({
-    //       next: (data) => {
-    //         this.dialogData = teachers;
-    //       },
-    //       error: (error: HttpErrorResponse) => {
-    //          // error code here
-    //       },
-    //     });
-  }
-  deleteTeachers(id: number): void {
-    
-
-    // this.httpClient.delete(this.API_URL + id)
-    //     .subscribe({
-    //       next: (data) => {
-    //         
-    //       },
-    //       error: (error: HttpErrorResponse) => {
-    //          // error code here
-    //       },
-    //     });
-  }
   getUserById(id: string) {
     const apiUrl = `${this.prefix}auth/instructorListByID/${id}`;
     return this.httpClient.get<Users>(apiUrl).pipe(map((response) => response));
@@ -129,5 +81,18 @@ export class TeachersService extends UnsubscribeOnDestroyAdapter {
   deleteUser(userId: string): Observable<ApiResponse> {
     const apiUrl = `${this.prefix}auth/instructorDelete/${userId}`;
     return this.httpClient.delete<ApiResponse>(apiUrl);
+  }
+
+  getInstructor(filter?: Partial<UsersPaginationModel>,type?:string): Observable<ApiResponse> {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    const apiUrl = `${this.prefix}auth/instructorList?companyId=${userId}&type=${type}`;
+    return this.httpClient
+      .get<ApiResponse>(apiUrl, { params: this.buildParams(filter) })
+      .pipe(
+        map((response:any) => {
+          return response;
+          //this.isTblLoading = false;
+        })
+      );
   }
 }

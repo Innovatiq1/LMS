@@ -206,7 +206,6 @@ export class CreateClassComponent {
         this.programList = response.courses.docs;
         this.instructorList = response.instructors;
         let item = response.class;
-        console.log("patchvalue=",item.courseId?.id)
         this.classForm.patchValue({
           
           courseId: item.courseId?.id,

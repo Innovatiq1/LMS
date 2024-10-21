@@ -1,11 +1,16 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, map, tap } from 'rxjs';
 import { Students } from './students.model';
-import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpParams,
+} from '@angular/common/http';
 import { UnsubscribeOnDestroyAdapter } from '@shared';
 import { environment } from 'environments/environment.development';
 import { Student, UsersPaginationModel } from '@core/models/user.model';
 import { ApiResponse } from '@core/models/general.response';
+import { CoursePaginationModel } from '@core/models/course.model';
 @Injectable()
 export class StudentsService extends UnsubscribeOnDestroyAdapter {
   private readonly API_URL = 'assets/data/students.json';
@@ -13,15 +18,18 @@ export class StudentsService extends UnsubscribeOnDestroyAdapter {
   isTblLoading = true;
   private configuration: any;
   dataChange: BehaviorSubject<Students[]> = new BehaviorSubject<Students[]>([]);
-  private configurationSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  public configuration$: Observable<any> = this.configurationSubject.asObservable();
+  private configurationSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
+    null
+  );
+  public configuration$: Observable<any> =
+    this.configurationSubject.asObservable();
+
   // Temporarily stores data from dialogs
   dialogData!: Students;
   constructor(private httpClient: HttpClient) {
     super();
   }
   get data(): Students[] {
-    console.log("merge",this.dataChange.value)
     return this.dataChange.value;
   }
   getDialogData() {
@@ -33,24 +41,24 @@ export class StudentsService extends UnsubscribeOnDestroyAdapter {
     if (filter) {
       if (filter.sortBy) {
         params = params.set(
-          "sortBy",
-          `${filter.sortByDirection === "asc" ? "+" : "-"}${filter.sortBy}`
+          'sortBy',
+          `${filter.sortByDirection === 'asc' ? '+' : '-'}${filter.sortBy}`
         );
       }
       if (filter.limit) {
-        params = params.set("limit", filter.limit?.toString());
+        params = params.set('limit', filter.limit?.toString());
       }
       if (filter.page) {
-        params = params.set("page", filter.page?.toString());
+        params = params.set('page', filter.page?.toString());
       }
 
-      if (filter.filterText) {
-        params = params.set("title", filter.filterText?.toString());
+      if (filter.title) {
+        params = params.set('title', filter.title?.toString());
       }
-      if (filter.status && filter.status === "active") {
-        params = params.set("status", "active");
-      } else if (filter.status && filter.status === "inactive") {
-        params = params.set("status", "inactive");
+      if (filter.status && filter.status === 'active') {
+        params = params.set('status', 'active');
+      } else if (filter.status && filter.status === 'inactive') {
+        params = params.set('status', 'inactive');
       }
     }
     return params;
@@ -69,30 +77,44 @@ export class StudentsService extends UnsubscribeOnDestroyAdapter {
   // }
 
   /** CRUD METHODS */
-  getAllStudentss(body:any): void {
-    
-    const apiUrl = `${this.defaultUrl}auth/instructorList/`;
-    this.subs.sink = this.httpClient.post<Students>(apiUrl,body).subscribe({
-      next: (response) => {
-        this.isTblLoading = false;
-        this.dataChange.next(response.data);
-      },
-      error: (error: HttpErrorResponse) => {
-        this.isTblLoading = false;
-        console.log(error.name + ' ' + error.message);
-      },
+  // getAllStudentss(body:any): void {
+
+  //   const apiUrl = `${this.defaultUrl}auth/instructorList/`;
+  //   this.subs.sink = this.httpClient.post<Students>(apiUrl,body).subscribe({
+  //     next: (response) => {
+  //       this.isTblLoading = false;
+  //       this.dataChange.next(response.data);
+  //     },
+  //     error: (error: HttpErrorResponse) => {
+  //       this.isTblLoading = false;
+  //       console.log(error.name + ' ' + error.message);
+  //     },
+  //   });
+  // }
+
+  getAllStudentss(
+    filter?: Partial<UsersPaginationModel>,
+    type?: string
+  ): Observable<ApiResponse> {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    const apiUrl = `${this.defaultUrl}auth/instructorList?companyId=${userId}&type=${type}`;
+
+    return this.httpClient.get<ApiResponse>(apiUrl, {
+      params: this.buildParams(filter),
     });
   }
 
   getStudent(data: any) {
     const apiUrl = `${this.defaultUrl}auth/instructorList`;
-    return this.httpClient.post<Student>(apiUrl,data).pipe(map((response) => response));
+    return this.httpClient
+      .post<Student>(apiUrl, data)
+      .pipe(map((response) => response));
   }
 
   getStudentById(id: string): Observable<any> {
     const apiUrl = `${this.defaultUrl}auth/instructorListByID/${id}`;
     return this.httpClient.get<any>(apiUrl).pipe(
-      map(response => {
+      map((response) => {
         const configuration = response.configuration;
         this.updateConfigurationState(configuration);
         return response;
@@ -133,23 +155,20 @@ export class StudentsService extends UnsubscribeOnDestroyAdapter {
   updateStudents(students: Students): void {
     this.dialogData = students;
 
-    this.httpClient.put(this.API_URL + students.id, students)
-        .subscribe({
-          next: (data) => {
-            this.dialogData = students;
-          },
-          error: (error: HttpErrorResponse) => {
-             // error code here
-          },
-        });
+    this.httpClient.put(this.API_URL + students.id, students).subscribe({
+      next: (data) => {
+        this.dialogData = students;
+      },
+      error: (error: HttpErrorResponse) => {
+        // error code here
+      },
+    });
   }
   deleteStudents(id: number): void {
-    
-
     // this.httpClient.delete(this.API_URL + id)
     //     .subscribe({
     //       next: (data) => {
-    //         
+    //
     //       },
     //       error: (error: HttpErrorResponse) => {
     //          // error code here
@@ -159,134 +178,130 @@ export class StudentsService extends UnsubscribeOnDestroyAdapter {
 
   CreateStudent(user: Student): Observable<ApiResponse> {
     //const apiUrl = `${this.prefix}admin/course-kit/`;
-    const loginUrl =this.defaultUrl + 'auth/instructorCreate';
+    const loginUrl = this.defaultUrl + 'auth/instructorCreate';
     return this.httpClient.post<ApiResponse>(loginUrl, user);
   }
   uploadVideo(files: File): Observable<any> {
     const formData = new FormData();
     //for (let file of files) {
-      formData.append('Files', files, files.name);
+    formData.append('Files', files, files.name);
     //}
     const apiUrl = `${this.defaultUrl}admin/video/upload`;
     return this.httpClient.post(apiUrl, formData);
   }
-  updateStudent(
-      id: string,
-      users: Student
-    ): Observable<ApiResponse> {
-      const apiUrl = `${this.defaultUrl}auth/instructorUpdate/${id}`;
-      return this.httpClient.put<ApiResponse>(apiUrl, users);
-    }
-    deleteUser(userId: string): Observable<ApiResponse> {
-      const apiUrl = `${this.defaultUrl}auth/instructorDelete/${userId}`;
-      return this.httpClient.delete<ApiResponse>(apiUrl);
-    }
+  updateStudent(id: string, users: Student): Observable<ApiResponse> {
+    const apiUrl = `${this.defaultUrl}auth/instructorUpdate/${id}`;
+    return this.httpClient.put<ApiResponse>(apiUrl, users);
+  }
+  deleteUser(userId: string): Observable<ApiResponse> {
+    const apiUrl = `${this.defaultUrl}auth/instructorDelete/${userId}`;
+    return this.httpClient.delete<ApiResponse>(apiUrl);
+  }
 
-    confrim(userId: string,type?: string): Observable<ApiResponse> {
-      let user={
-        isLogin:true,
-        type:type
+  confrim(userId: string, type?: string): Observable<ApiResponse> {
+    let user = {
+      isLogin: true,
+      type: type,
+    };
+    const apiUrl = `${this.defaultUrl}auth/instructorConfirm/${userId}`;
+    return this.httpClient.put<ApiResponse>(apiUrl, user);
+  }
+  deActiveconfrim(userId: string, type?: string): Observable<ApiResponse> {
+    let user = {
+      isLogin: false,
+      type: type,
+    };
+    const apiUrl = `${this.defaultUrl}auth/instructorConfirm/${userId}`;
+    return this.httpClient.put<ApiResponse>(apiUrl, user);
+  }
 
-      }
-      const apiUrl = `${this.defaultUrl}auth/instructorConfirm/${userId}`;
-      return this.httpClient.put<ApiResponse>(apiUrl,user);
-    }
-    deActiveconfrim(userId: string,type?: string): Observable<ApiResponse> {
-      let user={
-        isLogin:false,
-        type:type
+  getAllDepartments(): Observable<ApiResponse> {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    const apiUrl = `${this.defaultUrl}admin/department?companyId=${userId}`;
+    return this.httpClient.get<ApiResponse>(apiUrl);
+  }
+  getDepartmentsForSuperAdmin(): Observable<ApiResponse> {
+    const apiUrl = `${this.defaultUrl}admin/department`;
+    return this.httpClient.get<ApiResponse>(apiUrl);
+  }
 
-      }
-      const apiUrl = `${this.defaultUrl}auth/instructorConfirm/${userId}`;
-      return this.httpClient.put<ApiResponse>(apiUrl,user);
-    }
+  submitAssessment(data: any): Observable<ApiResponse> {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    data.companyId = userId;
+    const apiUrl = `${this.defaultUrl}admin/assesment-answers`;
 
-    getAllDepartments(): Observable<ApiResponse> {
-      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-            const apiUrl = `${this.defaultUrl}admin/department?companyId=${userId}`;
-      return this.httpClient.get<ApiResponse>(apiUrl);
-    }
-    getDepartmentsForSuperAdmin(): Observable<ApiResponse> {
-      const apiUrl = `${this.defaultUrl}admin/department`;
-      return this.httpClient.get<ApiResponse>(apiUrl);
-    }
+    return this.httpClient
+      .post<ApiResponse>(apiUrl, data)
+      .pipe(map((response) => response));
+  }
+  submitTutorial(data: any): Observable<ApiResponse> {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    data.companyId = userId;
+    const apiUrl = `${this.defaultUrl}admin/tutorial-answers`;
 
+    return this.httpClient
+      .post<ApiResponse>(apiUrl, data)
+      .pipe(map((response) => response));
+  }
 
+  getAnswerById(id: string): Observable<any> {
+    const apiUrl = `${this.defaultUrl}admin/assesment-answers/${id}`;
+    return this.httpClient.get<any>(apiUrl).pipe(
+      map((response) => {
+        return response;
+      })
+    );
+  }
+  getTutorialAnswerById(id: string): Observable<any> {
+    const apiUrl = `${this.defaultUrl}admin/tutorial-answers/${id}`;
+    return this.httpClient.get<any>(apiUrl).pipe(
+      map((response) => {
+        return response;
+      })
+    );
+  }
 
-    submitAssessment(data: any): Observable<ApiResponse> {
-      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-      data.companyId = userId
-      const apiUrl = `${this.defaultUrl}admin/assesment-answers`;
+  getDepartmentById(companyId: string, department: string): Observable<any> {
+    const apiUrl = `${this.defaultUrl}admin/courses-new/course/${companyId}/${department}`;
+    return this.httpClient.get<any>(apiUrl).pipe(
+      map((response) => {
+        const configuration = response.configuration;
+        this.updateConfigurationState(configuration);
+        return response;
+      })
+    );
+  }
+  getManagerandStaffCount(
+    companyId: string,
+    department: string,
+    headId: string
+  ): Observable<any> {
+    const apiUrl = `${this.defaultUrl}admin/user/${companyId}/${department}/${headId}`;
+    return this.httpClient.get<any>(apiUrl).pipe(
+      map((response) => {
+        return response;
+      })
+    );
+  }
 
-      return this.httpClient.post<ApiResponse>(apiUrl, data).pipe(
-        map(response => response)
-      );
-    }
-    submitTutorial(data: any): Observable<ApiResponse> {
-      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-      data.companyId = userId
-      const apiUrl = `${this.defaultUrl}admin/tutorial-answers`;
+  getCourseStatus(companyId: string, department: string): Observable<any> {
+    const apiUrl = `${this.defaultUrl}admin/studentClasses/${companyId}/${department}`;
+    return this.httpClient.get<any>(apiUrl).pipe(
+      map((response) => {
+        return response;
+      })
+    );
+  }
 
-      return this.httpClient.post<ApiResponse>(apiUrl, data).pipe(
-        map(response => response)
-      );
-    }
-
-    getAnswerById(id: string): Observable<any> {
-      const apiUrl = `${this.defaultUrl}admin/assesment-answers/${id}`;
-      return this.httpClient.get<any>(apiUrl).pipe(
-        map(response => {
-          return response;
-        })
-      );
-    }
-    getTutorialAnswerById(id: string): Observable<any> {
-      const apiUrl = `${this.defaultUrl}admin/tutorial-answers/${id}`;
-      return this.httpClient.get<any>(apiUrl).pipe(
-        map(response => {
-          return response;
-        })
-      );
-    }
-
-    getDepartmentById(companyId: string, department:string): Observable<any> {
-      const apiUrl = `${this.defaultUrl}admin/courses-new/course/${companyId}/${department}`;
-      return this.httpClient.get<any>(apiUrl).pipe(
-        map(response => {
-          const configuration = response.configuration;
-          this.updateConfigurationState(configuration);
-          return response;
-        })
-      );
-    }
-    getManagerandStaffCount(companyId: string, department:string, headId:string): Observable<any> {
-      const apiUrl = `${this.defaultUrl}admin/user/${companyId}/${department}/${headId}`;
-      return this.httpClient.get<any>(apiUrl).pipe(
-        map(response => {
-          return response;
-        })
-      );
-    }
-
-    getCourseStatus(companyId: string, department:string): Observable<any> {
-      const apiUrl = `${this.defaultUrl}admin/studentClasses/${companyId}/${department}`;
-      return this.httpClient.get<any>(apiUrl).pipe(
-        map(response => {
-          return response;
-        })
-      );
-    }
-
-    getStudentClassById(id: string): Observable<any> {
-      const apiUrl = `${this.defaultUrl}admin/studentClasses/${id}`;
-      return this.httpClient.get<any>(apiUrl).pipe(
-        map(response => {
-          return response;
-        })
-      );
-    }
+  getStudentClassById(id: string): Observable<any> {
+    const apiUrl = `${this.defaultUrl}admin/studentClasses/${id}`;
+    return this.httpClient.get<any>(apiUrl).pipe(
+      map((response) => {
+        return response;
+      })
+    );
+  }
 }
-
 
 // updateUser(
 //   id: string,
