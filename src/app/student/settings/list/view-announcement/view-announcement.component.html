@@ -36,7 +36,15 @@
                             </div>
                             <div class="row mt-2 mx-2">
                                 <h6>Description</h6>
-                                <p [innerHTML]="aboutData1.details | bulletPoints"></p>
+                                <p
+                                class="text-default"
+                                [innerHTML]="
+                                  
+                                  getSafeHtml(aboutData1?.details)
+                                    
+                                "
+                              ></p>
+                                <!-- <p [innerHTML]="aboutData1.details | bulletPoints"></p> -->
                             </div>
                         <h2 class="text-end"><span></span></h2>
                         <p class="m-b-0"></p>

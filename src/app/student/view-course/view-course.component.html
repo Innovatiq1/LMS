@@ -25,7 +25,7 @@
                 alt=""
               />
               <p
-                [innerHTML]="courseDetails?.course_description | bulletPoints"
+                [innerHTML]="getSafeHtml(courseDetails?.course_description)"
               ></p>
 
               <div class="row">
@@ -189,7 +189,7 @@
                     <span class="font-bold">Course Description:</span>
                     <p
                       [innerHTML]="
-                        courseDetails?.course_description | bulletPoints
+                      getSafeHtml(courseDetails?.course_description)
                       "
                     ></p>
                     <div class="row p-2 bg-light" style="border-radius: 5px">
@@ -534,8 +534,7 @@
                     <p
                       class="m-t-30"
                       [innerHTML]="
-                        courseDetails?.course_detailed_description
-                          | bulletPoints
+                      getSafeHtml(courseDetails?.course_detailed_description)
                       "
                     >
                       <br />
@@ -633,7 +632,7 @@
               />
               <p
                 [innerHTML]="
-                  classDetails?.courseId?.course_description | bulletPoints
+                getSafeHtml(classDetails?.courseId?.course_description)
                 "
               ></p>
 
@@ -674,8 +673,8 @@
                 <p
                   class="text-default"
                   [innerHTML]="
-                    classDetails?.courseId?.course_detailed_description
-                      | bulletPoints 
+                  getSafeHtml(classDetails?.courseId?.course_detailed_description
+                      )
                   "
                 ></p>
 
@@ -831,8 +830,8 @@
                     <span class="font-bold">Course Description:</span>
                     <p
                       [innerHTML]="
-                        classDetails?.courseId?.course_description
-                          | bulletPoints
+                      getSafeHtml(classDetails?.courseId?.course_description
+                          )
                       "
                     ></p>
                     <div class="row p-2 bg-light" style="border-radius: 5px">
@@ -1343,8 +1342,7 @@
                     <p
                       class="m-t-30"
                       [innerHTML]="
-                        classDetails?.courseId?.course_detailed_description
-                          | bulletPoints
+                      getSafeHtml(classDetails?.courseId?.course_detailed_description)
                       "
                     >
                       <br />
