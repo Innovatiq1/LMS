@@ -570,7 +570,7 @@ getAllTpCourses() {
               icon: 'success',
             });
             this.getAllCourses();
-            this.route.navigate(['/admin/courses/all-courses/drafts'])
+            this.route.navigate(['/admin/courses/drafts'])
 
           },
           (error: any) => {
