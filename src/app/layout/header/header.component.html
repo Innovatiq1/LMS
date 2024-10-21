@@ -96,7 +96,7 @@
             <app-feather-icons [icon]="'settings'" [class]="'user-menu-icons'"></app-feather-icons>
           </button>
           <mat-menu #menu="matMenu" class="horizontal-menu">
-            <div class="menu-row" [ngClass]="{'single-item': settingsItems.length === 1, 'two-items': settingsItems.length === 2}">
+            <div class="menu-row" [ngClass]="{'single-item': settingsItems?.length === 1, 'two-items': settingsItems?.length === 2}">
               <div class="user-container">
                 <div class="user-options" *ngFor="let menu of settingsItems" [routerLink]="[menu.id, menu.children?.[0]?.id]">
                   <img src={{menu.icon}} alt="User" class="user-image">

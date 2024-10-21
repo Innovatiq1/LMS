@@ -353,10 +353,15 @@ export class HeaderComponent
       const logoSpan = document.querySelector('.logo-name');
     }
   }
-  checkViewSettings(role: any) {
-    if (this.settingsItems.length > 0) {
-      return true;
+  checkViewSettings(role: any): boolean {
+    if (this.settingsItems) {
+      if (this.settingsItems.length > 0) {
+        return true; 
+      }
+      return role ? AppConstants.ALLTHREEROLES.includes(role) : false; 
     }
-    return role ? AppConstants.ALLTHREEROLES.includes(role) : false;
+    
+    return false; 
   }
+    
 }

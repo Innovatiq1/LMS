@@ -802,8 +802,8 @@
       </div>
     </div>
     <div
-      class="card"
-      style="margin: auto; height: fit-content; width: 65%"
+      class="card card-h"
+      
       *ngIf="showFinanceForms"
     >
       <div class="row">
@@ -822,12 +822,12 @@
 
       <div class="body">
         <div class="row">
-          <div class="col-xl-3 col-md-6 col-sm-12 p-4">
+          <div class="col-xl-6 col-md-6 col-sm-6 p-md-3 p-0">
             <button id="saved" [routerLink]="['/admin/budgets/create-budget']">
               Budget Creation
             </button>
           </div>
-          <div class="col-xl-5 col-md-6 col-sm-12 p-4">
+          <div class="col-xl-6 col-md-6 col-sm-6 p-md-3 p-0">
             <button
             id="saved"
             [routerLink]="['/admin/budgets/create-dept-budget-request']"
@@ -835,7 +835,7 @@
             Department Budget Creation
           </button>
           </div>
-          <div class="col-xl-4 col-md-6 col-sm-12 p-4">
+          <div class="col-xl-6 col-md-6 col-sm-6 p-md-3 p-0">
             <button id="saved" [routerLink]="['/admin/budgets/create-request']">
               Training Request Creation
             </button>
