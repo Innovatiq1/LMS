@@ -42,6 +42,17 @@ selectedTabIndex: number = 0;
 
 constructor(private formBuilder: FormBuilder,private router: Router, private questionService: QuestionService, private cdr: ChangeDetectorRef,private activatedRoute: ActivatedRoute,private ngZone: NgZone) {
 
+  this.storedItems = localStorage.getItem('activeBreadcrumb');
+  if (this.storedItems) {
+   this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+   this.breadcrumbs = [
+     {
+       title: '', 
+       items: [this.storedItems],  
+       active: 'Create assessments',  
+     },
+   ];
+ }
   let urlPath = this.router.url.split('/')
   this.editUrl = urlPath.includes('edit-questions');
 

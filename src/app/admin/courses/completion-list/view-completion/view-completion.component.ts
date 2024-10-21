@@ -40,12 +40,12 @@ export class ViewCompletionComponent {
     if (this.storedItems) {
      this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
      this.breadscrums = [
-       {
-         title: '', 
-         items: [this.storedItems],  
-         active: 'View Pending Courses',  
-       },
-     ];
+      {
+        title: 'Blank',
+        items: [this.storedItems],
+        active: 'View Discount Verification',
+      },
+    ];
    }
     this.studentPaginationModel = {} as StudentPaginationModel;
     this.activatedRoute.queryParams.subscribe((params: any) => {
@@ -58,25 +58,33 @@ export class ViewCompletionComponent {
     if(params['verify'] === 'false') {
       this.verify = true;
     }
-    // this.breadscrums = [
-    //   {
-    //     title: 'Blank',
-    //     items: ['Pending Courses'],
-    //     active: 'View Pending Courses',
-    //   },
-    // ];
+    this.breadscrums = [
+      {
+        title: 'Blank',
+        items: [this.storedItems],
+        active: 'View Pending Courses',
+      },
+    ];
   } else if(params['status'] === 'approved') {
     this.status = false;
     this.showTab = false;
-    // this.breadscrums = [
-    //   {
-    //     title: 'Blank',
-    //     items: ['Approved Courses'],
-    //     active: 'View Approved Courses',
-    //   },
-    // ];
+    this.breadscrums = [
+      {
+        title: 'Blank',
+        items: [this.storedItems],
+        active: 'View Approved Courses',
+      },
+    ];
   } else if(params['status'] === 'completed'){
     this.showTab = true;
+   
+    this.breadscrums = [
+      {
+        title: '', 
+        items: [this.storedItems],  
+        active: 'View Completed Courses',  
+      },
+    ];
   }
   this.paramStatus =  params['status'];
     });

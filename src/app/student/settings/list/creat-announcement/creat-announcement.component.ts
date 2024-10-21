@@ -141,7 +141,7 @@ cancel(){
         },
       ];
     }
-      this.getAnnouncementList()
+      this.getAnnouncementList( this.currentId)
 
     this.announcementForm = this.formBuilder.group({
       subject: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0-9]/)]),
@@ -270,24 +270,35 @@ cancel(){
     this.instructors = event.target.checked
   }
 
+  getAnnouncementById(){
 
-  getAnnouncementList(filter?: any) {
+  }
+
+  getAnnouncementList(filter: any) {
     this.isLoading = true;
-    this.announcementService.getAnnouncementList(filter).subscribe(response => {
+    this.announcementService.getAnnouncementById(filter).subscribe(response => {
       this.isLoading = false;
       this.announcementList = response.data.data;
-      let data = this.announcementList.find((id: any) => id._id === this.currentId);
-      if (data) {
+      this.announcementForm.patchValue({
+        subject: this.announcementList?.subject,
+        details: this.announcementList?.details,
+        announcementFor: Array.isArray(this.announcementList?.announcementFor)
+          ? this.announcementList?.announcementFor
+          : [this.announcementList?.announcementFor], 
+      });
+      // let data = this.announcementList.find((id: any) => id._id === this.currentId);
+      // if (data) {
 
-        let anuFor:any =[];
-        anuFor.push(data.announcementFor)
-       let anuce = anuFor.map((res:any) => res).toString().replace(' / ',',').split(',');
-        this.announcementForm.patchValue({
-          subject: data?.subject,
-          details: data?.details,
-          announcementFor: anuce,
-        });
-      }
+      //   let anuFor:any =[];
+      //   anuFor.push(data.announcementFor)
+      //  let anuce = anuFor.map((res:any) => res).toString().replace(' / ',',').split(',');
+  
+      //   this.announcementForm.patchValue({
+      //     subject: data?.subject,
+      //     details: data?.details,
+      //     announcementFor: anuce,
+      //   });
+      // }
     }, error => {
       this.isLoading = false;
 

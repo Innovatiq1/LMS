@@ -212,3 +212,15 @@ h5 {
 ::ng-deep .mat-mdc-tab-body-content{
   overflow-x: hidden !important;
 }
+
+.card-h{
+margin: auto;
+height: fit-content;
+width: 65%;
+}
+
+@media (max-width: 767px) {
+  .card-h {
+   width: auto;
+  }
+}

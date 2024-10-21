@@ -15,6 +15,7 @@ export class Students {
   avatar:string;
   address:string;
   data:any;
+  docs:any;
   isLogin:boolean;
   country_name!:string;
   education!: string;
