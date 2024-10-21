@@ -169,17 +169,17 @@ export class CreateClassComponent {
     if(this.classId){
       this.breadscrums = [
         {
-          title: 'Edit Class',
-          items: ['Course Class'],
-          active: 'Edit Course Class',
+          title: 'Edit Course Batch',
+          items: ['Course Batch'],
+          active: 'Edit Course Batch',
         },
       ];
     }else{
       this.breadscrums = [
         {
-          title: 'Create Class',
-          items: ['Course Class'],
-          active: 'Create Course Class',
+          title: 'Create Course Batch',
+          items: ['Course Batch'],
+          active: 'Create Course Batch',
         },
       ];
     }

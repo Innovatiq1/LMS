@@ -34,7 +34,7 @@ export class ViewClassComponent {
        {
          title: '', 
          items: [this.storedItems],  
-         active: 'View Course class',  
+         active: 'View Course Batch',  
        },
      ];
    }
