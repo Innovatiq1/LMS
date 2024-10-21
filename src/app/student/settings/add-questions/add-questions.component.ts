@@ -59,12 +59,13 @@ constructor(private formBuilder: FormBuilder,private router: Router, private que
   this.editUrl = urlPath.includes('edit-questions');
 
 
+
   if(this.editUrl===true){
-    this.breadscrums = [
+    this.breadcrumbs = [
       {
-        title:'Edit assessment',
-        items: ['Assessments'],
-        active: 'Edit assessment',
+        title:'Edit Assessments',
+        items: [this.storedItems], 
+        active: 'Edit Assessments',
       },
     ];
   }
