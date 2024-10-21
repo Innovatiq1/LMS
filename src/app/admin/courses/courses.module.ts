@@ -62,7 +62,6 @@ import { ScheduleMeetingComponent } from './schedule-meeting/schedule-meeting.co
     DraftedCoursesComponent,
     RetakeRequestsComponent,
     ScheduleMeetingComponent,
-    ,
     ClassListComponent
     
 

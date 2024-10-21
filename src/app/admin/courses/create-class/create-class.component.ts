@@ -521,17 +521,21 @@ export class CreateClassComponent {
                   text: 'Class Created Successfully.',
                   icon: 'success',
                 });
-              }
+              })
               window.history.back();
-            });
-          }
-        });
-      }
+            }});
+          
+          
       
-    }
+      
+      
+    
+    
   }else{
     this.classForm.markAllAsTouched();
   }
+  }
+}
   }
   startDateChange(element: { end: any; start: any }) {
     element.end = element.start;
