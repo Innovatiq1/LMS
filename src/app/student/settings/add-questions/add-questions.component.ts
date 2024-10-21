@@ -39,6 +39,8 @@ selectedTabIndex: number = 0;
 @ViewChild(AssesmentQuestionsComponent) assessmentComponent!: AssesmentQuestionsComponent;
   @ViewChild(AddExamQuestionsComponent) examComponent!: AddExamQuestionsComponent;
   @ViewChild(TutorialQuestionsComponent) tutorialComponent!: TutorialQuestionsComponent;
+  storedItems: string | null;
+  breadcrumbs:any[] = []
 
 constructor(private formBuilder: FormBuilder,private router: Router, private questionService: QuestionService, private cdr: ChangeDetectorRef,private activatedRoute: ActivatedRoute,private ngZone: NgZone) {
 
