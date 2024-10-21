@@ -1,331 +1,312 @@
 <section class="content">
   <div class="content-block">
-    <div class="block-header" *ngFor="let breadscrum of breadscrums">
-      <!-- breadcrumb -->
-      <app-static-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
-      </app-static-breadcrumb>
-    </div>
-    <div class="row clearfix">
-      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-        <div class="card">
-          <div class="header">
+      <div class="block-header" *ngFor="let breadscrum of breadscrums">
+          <!-- breadcrumb -->
+          <app-static-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
+          </app-static-breadcrumb>
+      </div>
+      <div class="row clearfix">
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+              <div class="card">
+                  <div class="header">
+                  </div>
+                  <form [formGroup]="classForm">
+                      <ng-template matSteplabel>{{classId? "Edit Class" :"Create Class" }}</ng-template>
+                      <div class="body">
+                          <div class="row">
+
+                              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-2">
+                                  <label>Course<span class="mandatory">&nbsp;*</span></label>
+                                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                      <mat-select required formControlName="courseId" (selectionChange)="onSelectChange($event)">
+                                          <mat-option> Select Course... </mat-option>
+                                          <mat-option *ngFor="let courseName of courseList" [value]="courseName.id">
+                                              {{ courseName.title }}
+                                          </mat-option>
+                                      </mat-select>
+                                      <mat-error *ngIf="
+                            classForm.get('courseId')?.hasError('required') ||
+                            classForm.get('courseId')?.touched
+                          ">
+                                          Select Course
+                                      </mat-error>
+                                  </mat-form-field>
+                              </div>
+                              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-2">
+                                  <label>Class delivery<span class="mandatory">&nbsp;*</span></label>
+                                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                      <mat-select formControlName="classDeliveryType">
+                                          <mat-option [value]="'online'"> Online </mat-option>
+                                          <mat-option [value]="'offline'"> Offline </mat-option>
+                                          <mat-option [value]="'hybrid'"> Hybrid </mat-option>
+                                      </mat-select>
+                                      <mat-error *ngIf="
+                          classForm.get('classDeliveryType')?.hasError('required') ||
+                          classForm.get('classDeliveryType')?.touched
+                        ">
+                                          Select Class delivery
+                                      </mat-error>
+                                  </mat-form-field>
+                              </div>
+                              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-2">
+                                  <label>{{commonRoles.INSTRUCTOR_ROLE}} Fee<span class="mandatory">&nbsp;*</span></label>
+                                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                      <input matInput formControlName="instructorCost" (keypress)="keyPressNumbers($event)" required />
+                                      <mat-error *ngIf="
+                          classForm.get('instructorCost')?.hasError('required') ||
+                          classForm.get('instructorCost')?.touched
+                        ">
+                                          Enter {{commonRoles.INSTRUCTOR_ROLE}} Fee
+                                      </mat-error>
+                                  </mat-form-field>
+                              </div>
+                              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2">
+                                  <label>Minimum {{commonRoles.STUDENT_ROLE}}s<span class="mandatory">&nbsp;*</span></label>
+                                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                      <input matInput formControlName="minimumEnrollment" />
+                                      <mat-error *ngIf="
+                          classForm.get('minimumEnrollment')?.hasError('required') ||
+                          classForm.get('minimumEnrollment')?.touched
+                        ">
+                                          Enter Minimum {{commonRoles.STUDENT_ROLE}}s
+                                      </mat-error>
+
+                                  </mat-form-field>
+                              </div>
+                              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2">
+                                  <label>Maximum {{commonRoles.STUDENT_ROLE}}s<span class="mandatory">&nbsp;*</span></label>
+                                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                      <input matInput formControlName="maximumEnrollment" />
+                                      <mat-error *ngIf="
+                          classForm.get('maximumEnrollment')?.hasError('required') ||
+                          classForm.get('maximumEnrollment')?.touched
+                        ">
+                                          Enter Maximum {{commonRoles.STUDENT_ROLE}}s
+                                      </mat-error>
+                                  </mat-form-field>
+                              </div>
+                              <!-- <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-2" *ngIf="labelStatusCheck('Class Type')">
+                    <label>Class Type</label>
+                    <mat-form-field class="example-full-width mb-3" appearance="outline">
+                      <mat-select formControlName="classType">
+                        <mat-option [value]="'2'"> Private </mat-option>
+                        <mat-option [value]="'1'"> Public </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div> -->
+
+                              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2" *ngIf="labelStatusCheck('Select Currency Type')">
+                                  <label>Select Currency</label>
+                                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                      <mat-select formControlName="currency">
+                                          <mat-option value="USD">USD</mat-option>
+                                          <mat-option value="SGD">SGD</mat-option>
+                                          <mat-option value="NZD">NZD</mat-option>
+                                          <mat-option value="YEN">YEN</mat-option>
+                                          <mat-option value="GBP">GBP</mat-option>
+                                          <mat-option value="KWN">KWN</mat-option>
+                                          <mat-option value="IDR">IDR</mat-option>
+                                          <mat-option value="TWD">TWD</mat-option>
+                                          <mat-option value="MYR">MYR</mat-option>
+                                          <mat-option value="AUD">AUD</mat-option>
+                                      </mat-select>
+                                  </mat-form-field>
+                              </div>
+                              <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                                  <div class="button-container">
+                                      <label>Select Department <span class="mandatory">&nbsp;*</span></label>
+                                  </div>
+                                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                      <mat-select formControlName="department" required>
+                                          <mat-option [value]="dept.department" *ngFor="let dept of dept">
+                                              {{dept.department }}
+                                          </mat-option>
+                                      </mat-select>
+                                      <mat-error *ngIf="classForm.get('department')?.hasError('required')">
+                                          Select Department
+                                      </mat-error>
+                                  </mat-form-field>
+                              </div>
+                              <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                                  <div class="button-container">
+                                      <label>Select User Group <span class="mandatory">&nbsp;*</span></label>
+                                  </div>
+                                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                      <mat-select formControlName="userGroupId" multiple required>
+                                          <mat-option #allSelected (click)="toggleAllSelection()" [value]="0">All</mat-option>
+                                          <mat-option [value]="userGroup.id" *ngFor="let userGroup of userGroups">
+                                              {{ userGroup.group_name }}
+                                          </mat-option>
+                                      </mat-select>
+                                  </mat-form-field>
+                              </div>
+                              <!-- Meeting Platform Selection -->
+                              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-2" *ngIf="classForm.get('classDeliveryType')?.value === 'online'">
+                                  <label>Select a Meeting Platform<span class="mandatory">&nbsp;*</span></label>
+                                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                      <mat-select formControlName="meetingPlatform">
+                                          <mat-option [value]="'zoom'">Zoom</mat-option>
+                                          <mat-option [value]="'googlemeet'">Google Meet</mat-option>
+                                          <mat-option [value]="'teams'">Microsoft Teams</mat-option>
+                                      </mat-select>
+                                      <!-- <mat-error *ngIf="
+ classForm.get('meetingPlatform')?.hasError('required') || 
+ classForm.get('meetingPlatform')?.touched
+">
+                    Select a Meeting Platform Type
+                  </mat-error> -->
+                                  </mat-form-field>
+                              </div>
+
+                              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-2" *ngIf="classForm.get('classDeliveryType')?.value === 'online'">
+                                  <label>Duration <span class="mandatory">&nbsp;*</span></label>
+                                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                      <input matInput formControlName="duration" type="time" />
+                                      <!-- <mat-error *ngIf="
+                            classForm.get('duration')?.hasError('required') ||
+                            classForm.get('duration')?.touched
+                          ">
+                        Enter Meeting Duration.
+                    </mat-error> -->
+                                  </mat-form-field>
+                              </div>
+                              <!-- <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mt-3" *ngIf="labelStatusCheck('Is Guaranteed To Run')">
+                <section class="example-section">
+                  <mat-checkbox class="example-margin" formControlName="isGuaranteedToRun"><span class="fs-6">Is
+                      Guaranteed To Run</span></mat-checkbox>
+                </section>
+              </div>
+               <!-- Schedule Meet Button -->
+                              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mt-3" *ngIf="classForm.get('classDeliveryType')?.value === 'online' && 
+                      classForm.get('meetingPlatform')?.value ==='zoom' && 
+                      !codeExists">
+                                  <button mat-raised-button color="primary" (click)="scheduleMeet()">Create Zoom Session</button>
+                              </div>
+                              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mt-3" *ngIf="labelStatusCheck('External Room')">
+                                  <section class="example-section">
+                                      <mat-checkbox class="example-margin" formControlName="externalRoom"><span class="fs-6">External
+                                              Room</span></mat-checkbox>
+                                  </section>
+                              </div>
+                          </div>
+                      </div>
+                  </form>
+                  <!-- <form>
+          <div>
+            <h5 class="mx-3">Assign {{commonRoles.INSTRUCTOR_ROLE}}</h5>
           </div>
-          <form [formGroup]="classForm">
-            <ng-template matSteplabel>{{classId? "Edit Class" :"Create Class" }}</ng-template>
-            <div class="body">
-              <div class="row">
-
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-2">
-                      <label>Course<span class="mandatory">&nbsp;*</span></label>
-                      <mat-form-field class="example-full-width mb-3" appearance="outline">
-                        <mat-select required formControlName="courseId" (selectionChange)="onSelectChange($event)">
-                          <mat-option> Select Course... </mat-option>
-                          <mat-option *ngFor="let courseName of courseList" [value]="courseName.id">
-                            {{ courseName.title }}
-                          </mat-option>
-                        </mat-select>
-                        <mat-error *ngIf="
-                              classForm.get('courseId')?.hasError('required') ||
-                              classForm.get('courseId')?.touched
-                            ">
-                          Select Course
-                        </mat-error>
-                      </mat-form-field>
-                    </div>
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-2">
-                      <label>Class delivery<span class="mandatory">&nbsp;*</span></label>
-                      <mat-form-field class="example-full-width mb-3" appearance="outline">
-                        <mat-select formControlName="classDeliveryType">
-                          <mat-option [value]="'online'"> Online </mat-option>
-                          <mat-option [value]="'offline'"> Offline </mat-option>
-                          <mat-option [value]="'hybrid'"> Hybrid </mat-option>
-                        </mat-select>
-                        <mat-error *ngIf="
-                            classForm.get('classDeliveryType')?.hasError('required') ||
-                            classForm.get('classDeliveryType')?.touched
-                          ">
-                          Select Class delivery
-                        </mat-error>
-                      </mat-form-field>
-                    </div>
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-2">
-                      <label>{{commonRoles.INSTRUCTOR_ROLE}} Fee<span class="mandatory">&nbsp;*</span></label>
-                      <mat-form-field class="example-full-width mb-3" appearance="outline">
-                        <input matInput formControlName="instructorCost" (keypress)="keyPressNumbers($event)"
-                          required />
-                        <mat-error *ngIf="
-                            classForm.get('instructorCost')?.hasError('required') ||
-                            classForm.get('instructorCost')?.touched
-                          ">
-                          Enter {{commonRoles.INSTRUCTOR_ROLE}} Fee
-                        </mat-error>
-                      </mat-form-field>
-                    </div>
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2">
-                      <label>Minimum {{commonRoles.STUDENT_ROLE}}s<span class="mandatory">&nbsp;*</span></label>
-                      <mat-form-field class="example-full-width mb-3" appearance="outline">
-                        <input matInput formControlName="minimumEnrollment" />
-                        <mat-error *ngIf="
-                            classForm.get('minimumEnrollment')?.hasError('required') ||
-                            classForm.get('minimumEnrollment')?.touched
-                          ">
-                          Enter Minimum {{commonRoles.STUDENT_ROLE}}s
-                        </mat-error>
-
-                  </mat-form-field>
-                </div>
-                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2">
-                  <label>Maximum {{commonRoles.STUDENT_ROLE}}s<span class="mandatory">&nbsp;*</span></label>
-                  <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <input matInput formControlName="maximumEnrollment" />
-                    <mat-error *ngIf="
-                            classForm.get('maximumEnrollment')?.hasError('required') ||
-                            classForm.get('maximumEnrollment')?.touched
-                          ">
-                          Enter Maximum {{commonRoles.STUDENT_ROLE}}s 
-                        </mat-error>
-                      </mat-form-field>
-                    </div>
-                     <!-- <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-2" *ngIf="labelStatusCheck('Class Type')">
-                      <label>Class Type</label>
-                      <mat-form-field class="example-full-width mb-3" appearance="outline">
-                        <mat-select formControlName="classType">
-                          <mat-option [value]="'2'"> Private </mat-option>
-                          <mat-option [value]="'1'"> Public </mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                    </div> -->
-
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2" *ngIf="labelStatusCheck('Select Currency Type')">
-                      <label>Select Currency</label>
-                      <mat-form-field class="example-full-width mb-3" appearance="outline">
-                        <mat-select formControlName="currency">
-                          <mat-option value="USD">USD</mat-option>
-                          <mat-option value="SGD">SGD</mat-option>
-                          <mat-option value="NZD">NZD</mat-option>
-                          <mat-option value="YEN">YEN</mat-option>
-                          <mat-option value="GBP">GBP</mat-option>
-                          <mat-option value="KWN">KWN</mat-option>
-                          <mat-option value="IDR">IDR</mat-option>
-                          <mat-option value="TWD">TWD</mat-option>
-                          <mat-option value="MYR">MYR</mat-option>
-                          <mat-option value="AUD">AUD</mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                  </div>
-                  <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                    <div class="button-container">
-                      <label>Select Department <span class="mandatory">&nbsp;*</span></label>
-                    </div>
-                    <mat-form-field
-                      class="example-full-width mb-3"
-                      appearance="outline">
-                      <mat-select formControlName="department" required >
-                        <mat-option [value]="dept.department" *ngFor="let dept of dept">
-                         {{dept.department }}
-                        </mat-option>
-                      </mat-select>
-                      <mat-error
-                        *ngIf="classForm.get('department')?.hasError('required')"
-                      >
-                        Select Department
-                      </mat-error>
-                    </mat-form-field>
-                  </div>
-                  <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                    <div class="button-container">
-                      <label>Select User Group <span class="mandatory">&nbsp;*</span></label>
-                    </div>
-                    <mat-form-field class="example-full-width mb-3" appearance="outline">
-                      <mat-select formControlName="userGroupId" multiple required>
-                        <mat-option #allSelected (click)="toggleAllSelection()" [value]="0">All</mat-option>
-                        <mat-option [value]="userGroup.id" *ngFor="let userGroup of userGroups">
-                          {{ userGroup.group_name }}
-                        </mat-option>
-                      </mat-select>
-                      <!-- Add mat-error here -->
-                      <mat-error *ngIf="classForm.get('userGroupId')?.hasError('required') || classForm.get('userGroupId')?.touched">
-                        Select User Group
-                      </mat-error>
-                    </mat-form-field>
-                  </div>
-                  
-                  <!-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                    <div class="button-container">
-                      <label>Select User Group <span class="mandatory">&nbsp;*</span></label>
-                    </div>
-                    <mat-form-field
-                      class="example-full-width mb-3"
-                      appearance="outline">
-                      <mat-select formControlName="userGroupId" multiple>
-                        <mat-option #allSelected (click)="toggleAllSelection()" [value]="0">All</mat-option>
-                        <mat-option [value]="userGroup.id" *ngFor="let userGroup of userGroups">
-                         {{userGroup.group_name }}
-                        </mat-option>
-                      </mat-select>
-                      <mat-error
-                      *ngIf="classForm.get('userGroupId')?.hasError('required')"
-                    >
-                      Select Any User Group
-                    </mat-error>
-                    </mat-form-field>
-                  </div> -->
-
-                  <!-- <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mt-3" *ngIf="labelStatusCheck('Is Guaranteed To Run')">
-                    <section class="example-section">
-                      <mat-checkbox class="example-margin" formControlName="isGuaranteedToRun"><span class="fs-6">Is
-                          Guaranteed To Run</span></mat-checkbox>
-                    </section>
-                  </div>
-                  <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mt-3" *ngIf="labelStatusCheck('External Room')">
-                    <section class="example-section">
-                      <mat-checkbox class="example-margin" formControlName="externalRoom"><span class="fs-6">External
-                          Room</span></mat-checkbox>
-                    </section>
-                  </div> -->
-                </div>
-                </div>
-              </form>
-              <!-- <form>
-              <div >
-                <h5 class="mx-3">Assign {{commonRoles.INSTRUCTOR_ROLE}}</h5>
+          <div class="body">
+            <div class="row " *ngFor="let element of dataSource; index as index">
+              <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 ">
+                <label>Start Date</label>
+                <mat-form-field class="example-full-width mb-3" appearance="outline">
+                  <mat-label>Choose a date</mat-label>
+                  <input matInput [owlDateTimeTrigger]="date" [owlDateTime]="date" [(ngModel)]="element.start"
+                    (change)="startDateChange(element)" [value]="element.start" name="start" />
+                  <mat-icon matSuffix [owlDateTimeTrigger]="date" class="date-icon">today</mat-icon>
+                  <owl-date-time #date></owl-date-time>
+                  <mat-error *ngIf="!element.start">enter</mat-error>
+                </mat-form-field>
               </div>
-              <div class="body">
-                <div class="row " *ngFor="let element of dataSource; index as index">
-                  <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 ">
-                    <label>Start Date</label>
-                    <mat-form-field class="example-full-width mb-3" appearance="outline">
-                      <mat-label>Choose a date</mat-label>
-                      <input matInput [owlDateTimeTrigger]="date" [owlDateTime]="date" [(ngModel)]="element.start"
-                        (change)="startDateChange(element)" [value]="element.start" name="start"/>
-                      <mat-icon matSuffix [owlDateTimeTrigger]="date" class="date-icon">today</mat-icon>
-                      <owl-date-time #date></owl-date-time>
-                      <mat-error *ngIf="!element.start">enter</mat-error>
-                    </mat-form-field>
-                  </div>
-                  <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 ">
-                    <label>End Date</label>
-                    <mat-form-field class="example-full-width mb-3" appearance="outline">
-                      <mat-label>Choose a date</mat-label>
-                      <input matInput [owlDateTimeTrigger]="date2" [owlDateTime]="date2" [(ngModel)]="element.end"
-                        [value]="element.end" name="end"/>
-                      <mat-icon matSuffix [owlDateTimeTrigger]="date2" class="date-icon">today</mat-icon>
-                      <owl-date-time #date2></owl-date-time>
-                    </mat-form-field>
-                  </div>
-                  <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 ">
-                    <label>Select {{commonRoles.INSTRUCTOR_ROLE}}</label>
-                    <mat-form-field class="example-full-width mb-3" appearance="outline">
-                      <mat-label>Choose {{commonRoles.INSTRUCTOR_ROLE}}</mat-label>
-                      <mat-select [(ngModel)]="element.instructor" name="instructor" (selectionChange)="onSelectChange1($event,element)"
-                        (change)="onChangeInstructor(element,index)">
-                        <mat-option *ngFor="let instructor of instructorList" [value]="instructor.id">
-                          {{ instructor?.name + " " + instructor?.last_name }}
-                        </mat-option>
-                      </mat-select>
-                      <mat-error> Enter Class Type </mat-error>
-                    </mat-form-field>
-                  </div>
-                </div>
+              <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 ">
+                <label>End Date</label>
+                <mat-form-field class="example-full-width mb-3" appearance="outline">
+                  <mat-label>Choose a date</mat-label>
+                  <input matInput [owlDateTimeTrigger]="date2" [owlDateTime]="date2" [(ngModel)]="element.end"
+                    [value]="element.end" name="end" />
+                  <mat-icon matSuffix [owlDateTimeTrigger]="date2" class="date-icon">today</mat-icon>
+                  <owl-date-time #date2></owl-date-time>
+                </mat-form-field>
               </div>
-              <div class="row mt-4 mx-2" style="float: right;">
-                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
-                  <button class="btn-space" type="button" mat-raised-button color="warn" (click)="cancel()">
-                    Cancel
-                  </button>
-                  <button *ngIf="!classId" mat-raised-button id="submit" (click)="submit()">
-                    Create
-                  </button>
-                  <button *ngIf="classId" mat-raised-button id="submit" (click)="submit()">
-                    Update
-                  </button>
-                </div>
+              <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 ">
+                <label>Select {{commonRoles.INSTRUCTOR_ROLE}}</label>
+                <mat-form-field class="example-full-width mb-3" appearance="outline">
+                  <mat-label>Choose {{commonRoles.INSTRUCTOR_ROLE}}</mat-label>
+                  <mat-select [(ngModel)]="element.instructor" name="instructor"
+                    (selectionChange)="onSelectChange1($event,element)" (change)="onChangeInstructor(element,index)">
+                    <mat-option *ngFor="let instructor of instructorList" [value]="instructor.id">
+                      {{ instructor?.name + " " + instructor?.last_name }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error> Enter Class Type </mat-error>
+                </mat-form-field>
+              </div>  
+  
+            </div>
+          </div>
+          <div class="row mt-4 mx-2" style="float: right;">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
+              <button class="btn-space" type="button" mat-raised-button color="warn" (click)="cancel()">
+                Cancel
+              </button>
+              <button *ngIf="!classId" mat-raised-button id="submit" (click)="submit()">
+                Create
+              </button>
+              <button *ngIf="classId" mat-raised-button id="submit" (click)="submit()">
+                  Update
+                </button>
               </div>
-                </form> -->
- <form #form="ngForm">
-  <div>
-    <h5 class="mx-3">Assign {{commonRoles.INSTRUCTOR_ROLE}}</h5>
-  </div>
-  <div class="body">
-    <div class="row" *ngFor="let element of dataSource; index as index">
-      <!-- Start Date Input -->
-      <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
-        <label for="start-date">Start Date<span class="mandatory">&nbsp;*</span></label>
-        <mat-form-field class="example-full-width mb-3" appearance="outline">
-          <input
-            matInput
-            id="start-date"
-            [owlDateTimeTrigger]="date"
-            [owlDateTime]="date"
-            [(ngModel)]="element.start"
-            name="start"
-            #startInput="ngModel"
-            required
-            (change)="startDateChange(element)"
-          />
-          <mat-icon matSuffix [owlDateTimeTrigger]="date" class="date-icon">today</mat-icon>
-          <owl-date-time #date></owl-date-time>
-          <mat-error *ngIf="startInput.invalid && (startInput.touched || form.submitted)">
-            Select Start Date
-          </mat-error>
-        </mat-form-field>
-      </div>
+            </div>
+              </form> -->
+                  <form #form="ngForm">
+                      <div>
+                          <h5 class="mx-3">Assign {{commonRoles.INSTRUCTOR_ROLE}}</h5>
+                      </div>
+                      <div class="body">
+                          <div class="row" *ngFor="let element of dataSource; index as index">
+                              <!-- Start Date Input -->
+                              <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
+                                  <label for="start-date">Start Date<span class="mandatory">&nbsp;*</span></label>
+                                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                      <input matInput id="start-date" [owlDateTimeTrigger]="date" [owlDateTime]="date" [(ngModel)]="element.start" name="start" #startInput="ngModel" required [min]="minDates" (change)="startDateChange(element)" />
+                                      <mat-icon matSuffix [owlDateTimeTrigger]="date" class="date-icon">today</mat-icon>
+                                      <owl-date-time #date></owl-date-time>
+                                      <mat-error *ngIf="startInput.invalid && (startInput.touched || form.submitted)">
+                                          Select Start Date
+                                      </mat-error>
+                                  </mat-form-field>
+                              </div>
 
-      <!-- End Date Input -->
-      <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
-        <label for="end-date">End Date<span class="mandatory">&nbsp;*</span></label>
-        <mat-form-field class="example-full-width mb-3" appearance="outline">
-          <input
-            matInput
-            id="end-date"
-            [owlDateTimeTrigger]="date2"
-            [owlDateTime]="date2"
-            [(ngModel)]="element.end"
-            name="end"
-            #endInput="ngModel"
-            required
-          />
-          <mat-icon matSuffix [owlDateTimeTrigger]="date2" class="date-icon">today</mat-icon>
-          <owl-date-time #date2></owl-date-time>
-          <mat-error *ngIf="endInput.invalid && (endInput.touched || form.submitted)">
-            Select End Date
-          </mat-error>
-        </mat-form-field>
-      </div>
+                              <!-- End Date Input -->
+                              <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
+                                  <label for="end-date">End Date<span class="mandatory">&nbsp;*</span></label>
+                                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                      <input matInput id="end-date" [owlDateTimeTrigger]="date2" [owlDateTime]="date2" [(ngModel)]="element.end" name="end" #endInput="ngModel" required [min]="minDates" />
+                                      <mat-icon matSuffix [owlDateTimeTrigger]="date2" class="date-icon">today</mat-icon>
+                                      <owl-date-time #date2></owl-date-time>
+                                      <mat-error *ngIf="endInput.invalid && (endInput.touched || form.submitted)">
+                                          Select End Date
+                                      </mat-error>
+                                  </mat-form-field>
+                              </div>
 
-      <!-- Instructor Dropdown (Optional) -->
-      <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12" *ngIf="labelStatusCheck('Select Trainer')">
-        <label for="instructor">Select {{commonRoles.INSTRUCTOR_ROLE}}</label>
-        <mat-form-field class="example-full-width mb-3" appearance="outline">
-          <mat-select
-            id="instructor"
-            [(ngModel)]="element.instructor"
-            name="instructor"
-            (selectionChange)="onSelectChange1($event, element)"
-            (change)="onChangeInstructor(element, index)"
-          >
-            <mat-option *ngFor="let instructor of instructorList" [value]="instructor.id">
-              {{ instructor?.name + ' ' + instructor?.last_name }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-    </div>
-  </div>
+                              <!-- Instructor Dropdown (Optional) -->
+                              <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12" *ngIf="labelStatusCheck('Select Trainer')">
+                                  <label for="instructor">Select {{commonRoles.INSTRUCTOR_ROLE}}</label>
+                                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                      <mat-select id="instructor" [(ngModel)]="element.instructor" name="instructor" (selectionChange)="onSelectChange1($event, element)" (change)="onChangeInstructor(element, index)">
+                                          <mat-option *ngFor="let instructor of instructorList" [value]="instructor.id">
+                                              {{ instructor?.name + ' ' + instructor?.last_name }}
+                                          </mat-option>
+                                      </mat-select>
+                                  </mat-form-field>
+                              </div>
+                          </div>
+                      </div>
 
-  <div class="row mt-4 mx-2" style="float: right;">
-    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
-      <button class="btn-space" type="button" mat-raised-button color="warn" (click)="cancel()">Cancel</button>
-      <button *ngIf="!classId" mat-raised-button id="submit" (click)="submit()">Create</button>
-      <button *ngIf="classId" mat-raised-button id="submit" (click)="submit()">Update</button>
-    </div>
-  </div>
-</form>
+                      <div class="row mt-4 mx-2" style="float: right;">
+                          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
+                              <button class="btn-space" type="button" mat-raised-button color="warn" (click)="cancel()">Cancel</button>
+                              <button *ngIf="!classId" mat-raised-button id="submit" (click)="submit()">Create</button>
+                              <button *ngIf="classId" mat-raised-button id="submit" (click)="submit()">Update</button>
+                          </div>
+                      </div>
+                  </form>
 
-                
-                
-        </div>
+
+
+              </div>
+          </div>
       </div>
-    </div>
   </div>
 </section>

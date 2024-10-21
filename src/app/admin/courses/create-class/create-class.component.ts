@@ -94,6 +94,7 @@ export class CreateClassComponent {
   instructorCost:string='';
   codeExists: boolean = false;
   code: string | null = null;
+  minDates: Date = new Date();
   addNewRow() {
     if (this.isInstructorFailed != 1) {
       this.isInstructorFailed = 0;
