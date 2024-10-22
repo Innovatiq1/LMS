@@ -91,7 +91,7 @@
                     <mat-header-cell *matHeaderCellDef  class="compulsory-count-header">Fee Type
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null"> <span
-                        class="mobile-label">Fee Type:</span>{{row.courseId.feeType | titlecase}}
+                        class="mobile-label">Fee Type:</span>{{row?.courseId?.feeType | titlecase}}
                     </mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="programFee">
