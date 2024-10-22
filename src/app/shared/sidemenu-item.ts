@@ -372,31 +372,16 @@ SIDEMENU_LIST =[
                 ]
               },
               {
-                "title": "Discount Verification",
-                "id": "verification-list",
-                "class": "ml-menu2",
-                "actions": [
-                  {
-                    "title": "Edit",
-                    "id": "edit-discount",
-                    "class": "ml-menu3"
-                  },
-                  {
-                    "title": "View",
-                    "id": "view-discount",
-                    "class": "ml-menu3"
-                  }
-                ]
-              },
-              {
                 "title": "Exam Scores",
                 "id": "exam-scores",
                 "actions": [],
+                  "class": "ml-menu2"
               },
               {
                 "title": "Retake Requests",
                 "id": "retake-requests",
                 "actions": [],
+                "class":"ml-menu2"
               }
             ]
           },

@@ -55,7 +55,7 @@ export class CompletionListComponent {
     'email',
     'Course',
     'Fee Type',
-    'Instructorfee',
+    // 'Instructorfee',
     'Classstart',
     'Classend',
     'Registered Date',
@@ -381,7 +381,7 @@ export class CompletionListComponent {
         [AppConstants.STUDENT_ROLE],
         'Email',
         'Course',
-        [`${AppConstants.INSTRUCTOR_ROLE} Fee`],
+        // [`${AppConstants.INSTRUCTOR_ROLE} Fee`],
         'Start Date',
         'End date',
         'Registered Date',
@@ -417,8 +417,8 @@ export class CompletionListComponent {
         [AppConstants.STUDENT_ROLE]: user.studentId?.name,
         Email: user.studentId?.email,
         Course: user.courseId?.title,
-        [`${AppConstants.INSTRUCTOR_ROLE} Fee`]:
-          '$ ' + user.classId?.instructorCost,
+        // [`${AppConstants.INSTRUCTOR_ROLE} Fee`]:
+          // '$ ' + user.classId?.instructorCost,
         'Start Date': user.classStartDate,
         'End date': user.classEndDate,
         'Registered Date': user.registeredOn,
