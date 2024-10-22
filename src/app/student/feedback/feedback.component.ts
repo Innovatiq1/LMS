@@ -202,7 +202,7 @@ export class FeedbackComponent {
               this.classService
                 .saveApprovedClasses(this.classId, payload)
                 .subscribe((response) => {
-                  this.router.navigate(['/student/exams/exam-results']);
+                  this.router.navigate(['/student/enrollment/exam-results']);
                 });
             } else if(this.isFree || isDirect){
               const userdata = JSON.parse(localStorage.getItem('currentUser')!);
@@ -216,7 +216,7 @@ export class FeedbackComponent {
               this.classService
                 .saveApprovedClasses(this.courseId, payload)
                 .subscribe((response) => {
-                  this.router.navigate(['/student/exams/exam-results']);
+                  this.router.navigate(['/student/enrollment/exam-results']);
                 });
             }
 
@@ -238,7 +238,7 @@ saveApprovedClass(){
     this.classService
       .saveApprovedClasses(this.classId, payload)
       .subscribe((response) => {
-        this.router.navigate(['/student/exams/exam-results']);
+        this.router.navigate(['/student/enrollment/exam-results']);
       });
   } else if(this.isFree || isDirect){
     const userdata = JSON.parse(localStorage.getItem('currentUser')!);
@@ -252,7 +252,7 @@ saveApprovedClass(){
     this.classService
       .saveApprovedClasses(this.courseId, payload)
       .subscribe((response) => {
-        this.router.navigate(['/student/exams/exam-results']);
+        this.router.navigate(['/student/enrollment/exam-results']);
       });
   }
 }
