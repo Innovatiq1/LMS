@@ -308,6 +308,50 @@ MENU_LIST =[
           "isLeaf": true
         },
         {
+          "title": "Course Batch",
+          "id": "class-list",
+          "children": [],
+          "actions": [
+            {
+              "title": "Create",
+              "id": "create-course-class",
+              "checked": true,
+              "indeterminate": false,
+              "isLeaf": true,
+              "isAction": true
+            },
+            {
+              "title": "Edit",
+              "id": "edit-course-class",
+              "checked": true,
+              "indeterminate": false,
+              "isLeaf": true,
+              "isAction": true
+            },
+            {
+              "title": "View",
+              "id": "view-course-class",
+              "checked": true,
+              "indeterminate": false,
+              "isLeaf": true,
+              "isAction": true
+            },
+            {
+              "title": "Delete",
+              "id": "delete-course-class",
+              "checked": true,
+              "indeterminate": false,
+              "isLeaf": true,
+              "isAction": true
+            }
+          ],
+          "isAction": false,
+          "checked": true,
+          "indeterminate": false,
+          "class": "ml-menu",
+          "isLeaf": true
+        },
+        {
           "title": "Drafts",
           "id": "drafts",
           "children": [],
@@ -595,50 +639,6 @@ MENU_LIST =[
             {
               "title": "Delete",
               "id": "delete-coursekit",
-              "checked": true,
-              "indeterminate": false,
-              "isLeaf": true,
-              "isAction": true
-            }
-          ],
-          "isAction": false,
-          "checked": true,
-          "indeterminate": false,
-          "class": "ml-menu",
-          "isLeaf": true
-        },
-        {
-          "title": "Course Batch",
-          "id": "class-list",
-          "children": [],
-          "actions": [
-            {
-              "title": "Create",
-              "id": "create-course-class",
-              "checked": true,
-              "indeterminate": false,
-              "isLeaf": true,
-              "isAction": true
-            },
-            {
-              "title": "Edit",
-              "id": "edit-course-class",
-              "checked": true,
-              "indeterminate": false,
-              "isLeaf": true,
-              "isAction": true
-            },
-            {
-              "title": "View",
-              "id": "view-course-class",
-              "checked": true,
-              "indeterminate": false,
-              "isLeaf": true,
-              "isAction": true
-            },
-            {
-              "title": "Delete",
-              "id": "delete-course-class",
               "checked": true,
               "indeterminate": false,
               "isLeaf": true,

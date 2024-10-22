@@ -206,6 +206,34 @@ SIDEMENU_LIST =[
                   }
                 ]
               },
+              {
+                "title": "Course Batch",
+                "id": "class-list",
+                "class": "ml-menu",
+                "actions": [
+                  {
+                    "title": "Create",
+                    "id": "create-course-class",
+                    "class": "ml-menu3"
+                  },
+                  {
+                    "title": "Edit",
+                    "id": "edit-course-class",
+                    "class": "ml-menu3"
+                  },
+                  {
+                    "title": "View",
+                    "id": "view-course-class",
+                    "class": "ml-menu3"
+                  },
+                  {
+                    "title": "Delete",
+                    "id": "delete-course-class",
+                    "class": "ml-menu3"
+                  }
+                ],
+                "children": []
+              },
              
               {
                 "title": "Drafts",
@@ -400,34 +428,7 @@ SIDEMENU_LIST =[
             ],
             "children": []
           },
-          {
-            "title": "Course Batch",
-            "id": "class-list",
-            "class": "ml-menu",
-            "actions": [
-              {
-                "title": "Create",
-                "id": "create-course-class",
-                "class": "ml-menu3"
-              },
-              {
-                "title": "Edit",
-                "id": "edit-course-class",
-                "class": "ml-menu3"
-              },
-              {
-                "title": "View",
-                "id": "view-course-class",
-                "class": "ml-menu3"
-              },
-              {
-                "title": "Delete",
-                "id": "delete-course-class",
-                "class": "ml-menu3"
-              }
-            ],
-            "children": []
-          }
+        
         ]
       },
       {
