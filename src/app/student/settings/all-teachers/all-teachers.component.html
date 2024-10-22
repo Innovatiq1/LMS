@@ -24,7 +24,7 @@
                             <li class="tbl-search-box">
                               <label for="search-input"><i class="material-icons search-icon">search</i></label>
                               <input placeholder="Search" type="text" #filter class="browser-default search-field"
-                                aria-label="Search box">
+                                aria-label="Search box" [(ngModel)]="filterName" (input)="performSearch()">
                             </li>
                           </ul>
                         </li>
@@ -191,12 +191,13 @@
                       </mat-menu>
                       <!-- context menu end -->
                       <div *ngIf="!exampleDatabase?.isTblLoading" class="no-results"
-                        [style.display]="dataSource.filteredData.length === 0 ? '' : 'none'">
+                        [style.display]="dataSource.length === 0 ? '' : 'none'">
                         No results
                       </div>
-                      <mat-paginator #paginator [length]="dataSource.filteredData.length" [pageIndex]="0"
-                        [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
-                      </mat-paginator>
+                      <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems"
+                      (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr"
+                      aria-label="select pagination option">
+                    </mat-paginator>
                     </div>
                   </div>
                 </div>
@@ -209,7 +210,7 @@
               Grid View
             </ng-template>
             <div class="row mt-4 ml-0 mr-0">
-              <div class="col-md-3"  *ngFor="let row of dataSource.filteredData">
+              <div class="col-md-3"  *ngFor="let row of dataSource">
                 <div class="card border-apply" style="height: 220px; margin-top: 20px;cursor: pointer;" (click)="aboutInstructor(row.id)">
                     <div class="contact-grid">
                       <div class="row">
@@ -253,8 +254,9 @@
                 </div>
               </div>
             </div>
-            <mat-paginator class="paginator" #paginator [length]="dataSource.filteredData.length" [pageIndex]="0"
-            [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+            <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems"
+            (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr"
+            aria-label="select pagination option">
           </mat-paginator>
           </mat-tab>
         </mat-tab-group>

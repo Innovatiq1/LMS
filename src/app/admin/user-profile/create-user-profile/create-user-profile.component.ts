@@ -113,7 +113,6 @@ export class CreateUserProfileComponent {
     this.userService.getCompanyByIdentifierWithoutToken(subdomain).subscribe(
       (res: any) => {
     if (!formObj.invalid) {
-      console.log('======', formObj.type);
       formObj['Active'] = this.status;
       formObj['type'] = formObj.type;
       formObj['role'] = formObj.type;
@@ -304,7 +303,6 @@ export class CreateUserProfileComponent {
     });
 
     this.activeRoute.queryParams.subscribe((params) => {
-      console.log('params', params['id']);
     });
   }
 
@@ -378,7 +376,6 @@ export class CreateUserProfileComponent {
 
     this.userService.getUserById(this.currentId).subscribe(
       (response: any) => {
-        console.log('listing user', response);
         this.data = response.data.data;
         // this.fileName = this.data.filename
         this.avatar = this.data?.avatar;
@@ -523,7 +520,6 @@ back(){
 
   getHeadList() {
     let companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-    console.log("companyId",companyId)
     this.userService.getAllUsersByRole(this.userForm.value.headrole,companyId).subscribe((response: any) => {
       this.headUsers = response?.results;
     });

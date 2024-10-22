@@ -288,7 +288,6 @@ getStudentsApprovedClasses(): Observable<any> {
 
 getClassListWithPagination(
   filter?:Partial<CoursePaginationModel>,id?:any): Observable<ApiResponse> {
-    console.log("filter for classlist",filter)
   const apiUrl = `${this.prefix}admin/class?companyId=${id}`;
   return this.http.get<ApiResponse>(apiUrl, { params: this.buildParams(filter) })
 }

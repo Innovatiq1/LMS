@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {
   MatSnackBar,
   MatSnackBarHorizontalPosition,
@@ -64,7 +64,7 @@ export class ApproveListComponent {
   ];
   searchTerm: string = '';
   studentPaginationModel: StudentPaginationModel;
-  coursePaginationModel!: Partial<CoursePaginationModel> ;
+  coursePaginationModel: Partial<CoursePaginationModel> ;
   selection = new SelectionModel<ClassModel>(true, []);
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild(MatSort) matSort!: MatSort;
@@ -81,9 +81,10 @@ export class ApproveListComponent {
     public _classService: ClassService,
     private snackBar: MatSnackBar,
     public router: Router,
-    private authenService: AuthenService
+    private authenService: AuthenService,private changeDetectorRef: ChangeDetectorRef
   ) {
     this.studentPaginationModel = {} as StudentPaginationModel;
+    this.coursePaginationModel = {} as CoursePaginationModel;
     // super();
   }
 
@@ -154,25 +155,30 @@ export class ApproveListComponent {
     });
   }
   mapClassList() {
-    this.studentPaginationModel.docs.forEach((item: Student) => {
-      const startDateArr: any = [];
-      const endDateArr: any = [];
-      item?.classId?.sessions?.forEach((session) => {
-        startDateArr.push(new Date(session?.sessionStartDate?.toString()));
-        endDateArr.push(new Date(session?.sessionEndDate?.toString()));
+    if (Array.isArray(this.coursePaginationModel?.docs)) {
+      this.coursePaginationModel.docs.forEach((item: any) => {
+        const startDateArr: any = [];
+        const endDateArr: any = [];
+        
+        item?.classId?.sessions?.forEach((session: { sessionStartDate: { toString: () => string | number | Date; }; sessionEndDate: { toString: () => string | number | Date; }; }) => {
+          startDateArr.push(new Date(session?.sessionStartDate?.toString()));
+          endDateArr.push(new Date(session?.sessionEndDate?.toString()));
+        });
+  
+        const minStartDate = new Date(Math.min.apply(null, startDateArr));
+        const maxEndDate = new Date(Math.max.apply(null, endDateArr));
+  
+        item.classStartDate = !isNaN(minStartDate.valueOf())
+          ? moment(minStartDate).format('YYYY-DD-MM')
+          : '';
+        item.classEndDate = !isNaN(maxEndDate.valueOf())
+          ? moment(maxEndDate).format('YYYY-DD-MM')
+          : '';
+        item.studentId.name = `${item?.studentId?.name}`;
       });
-      const minStartDate = new Date(Math.min.apply(null, startDateArr));
-      const maxEndDate = new Date(Math.max.apply(null, endDateArr));
-
-      item.classStartDate = !isNaN(minStartDate.valueOf())
-        ? moment(minStartDate).format('YYYY-DD-MM')
-        : '';
-      item.classEndDate = !isNaN(maxEndDate.valueOf())
-        ? moment(maxEndDate).format('YYYY-DD-MM')
-        : '';
-      item.studentId.name = `${item?.studentId?.name}`;
-    });
+    }
   }
+  
 
   getCurrentUserId(): string {
     return JSON.parse(localStorage.getItem('user_data')!).user.id;
@@ -257,22 +263,13 @@ export class ApproveListComponent {
     });
   }
   performSearch() {
-    // if (this.searchTerm) {
-    //   this.dataSource = this.dataSource?.filter(
-    //     (item: any) => {
-    //       const searchList = (
-    //         item.classId?.courseId?.title +
-    //         item.studentId?.name +
-    //         item.studentId?.last_name
-    //       ).toLowerCase();
-    //       return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1;
-    //     }
-    //   );
-    // } else {
-      this.paginator.pageIndex = 0;
+    this.paginator.pageIndex = 0;
     this.coursePaginationModel.page = 1;
-      this.getRegisteredClasses();
-    // }
+    
+    // Ensure change detection runs
+    this.changeDetectorRef.detectChanges();
+    
+    this.getRegisteredClasses();
   }
   private refreshTable() {
     this.paginator._changePageSize(this.paginator.pageSize);

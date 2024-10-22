@@ -72,12 +72,10 @@ export class ViewUsersComponent {
       this.studentApprovedModel = {};
       this.studentCompletedModel = {};
    this.activeRoute.queryParams.subscribe(param =>{
-   console.log("params:",param['data'])
 
    this.aboutDataId = param['data'];
    })
    this.activeRoute.queryParams.subscribe(param =>{
-    console.log("params:",param['data'])
  
     this.aboutDataId1 = param['data'];
     })
@@ -94,7 +92,6 @@ export class ViewUsersComponent {
   
     // this.userType = localStorage.getItem("user_type")
     if(this.userType == 'Staff'){
-      console.log("student", this.userType)
     this.loadData();
     this.getRegisteredCourse();
     this.getApprovedCourse();
@@ -112,7 +109,6 @@ export class ViewUsersComponent {
     }else{
       this.loadData1();
     }
-    console.log("users", this.userType)
   })
   }
 
@@ -120,7 +116,6 @@ export class ViewUsersComponent {
   loadData(){
     this.StudentService.getStudentById( this.currentId).subscribe(res => {
       this.aboutData = res;
-      console.log("edit",this.aboutData)
 
     })
 }
@@ -178,13 +173,11 @@ this.studentCompletedPrograms = response.data.docs;
 }
 
 editCall(row: Students) {
-  console.log("edit",row)
   this.router.navigate(['/admin/users/add-student'],{queryParams:{id:row.id}})
 }
 
 deleteItem(row: any) {
   // this.id = row.id;
-  console.log("kjkj",row);
    Swal.fire({
      title: "Confirm Deletion",
      text: "Are you sure you want to delete this user?",
@@ -261,7 +254,6 @@ deleteItem(row: any) {
  loadData1(){
   this._courseService.getUserById( this.currentId).subscribe(res => {
     this.aboutData1 = res;
-    console.log("edit",this.aboutData)
 
   })
 }

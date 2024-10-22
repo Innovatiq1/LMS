@@ -107,7 +107,6 @@ export class RetakeRequestsComponent implements OnInit {
 
           // Call the approve API for each row
           this.settingService.putRetakeRequestByStudentIdCourseId(studentId, courseId, row).subscribe((response) => {
-            console.log('response', response);
           });
         });
 
@@ -211,7 +210,6 @@ export class RetakeRequestsComponent implements OnInit {
         const studentId = row.studentId;
 
         this.settingService.putRetakeRequestByStudentIdCourseId(studentId, courseId, row).subscribe((response) => {
-          console.log('response', response);
           Swal.fire(
             'Rejected!',
             'The retake request has been rejected.',

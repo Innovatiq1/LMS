@@ -74,12 +74,10 @@ export class ViewUsersComponent implements OnInit{
       this.studentApprovedModel = {};
       this.studentCompletedModel = {};
    this.activeRoute.queryParams.subscribe(param =>{
-   console.log("params:",param['data'])
 
    this.aboutDataId = param['data'];
    })
    this.activeRoute.queryParams.subscribe(param =>{
-    console.log("params:",param['data'])
  
     this.aboutDataId1 = param['data'];
     })
@@ -93,13 +91,9 @@ export class ViewUsersComponent implements OnInit{
     this.commonRoles = AppConstants
     this.userService.getUserById(this.currentId).subscribe((response: any) => {
       this.userType = response.data.data.type
-      console.log("id",this.currentId)
-      console.log("dddd",response.data)
   
     // this.userType = localStorage.getItem("user_type")
-console.log("vvvvv", this.userType)
     if(this.userType == AppConstants.STUDENT_ROLE){
-      console.log("student", this.userType)
     this.loadData();
     this.getRegisteredCourse();
     this.getApprovedCourse();
@@ -117,7 +111,6 @@ console.log("vvvvv", this.userType)
     }else{
       this.loadData1();
     }
-    console.log("users", this.userType)
   })
   }
 
@@ -125,7 +118,6 @@ console.log("vvvvv", this.userType)
   loadData(){
     this.StudentService.getStudentById( this.currentId).subscribe(res => {
       this.aboutData = res;
-      console.log("edit",this.aboutData)
 
     })
 }
@@ -183,7 +175,6 @@ this.studentCompletedPrograms = response.data.docs;
 }
 
 editCall(row: Students) {
-  console.log("edit",row)
   this.router.navigate(['/admin/users/add-student'],{queryParams:{id:row.id}})
 }
 
@@ -265,7 +256,6 @@ deleteItem(row: any) {
  loadData1(){
   this._courseService.getUserById( this.currentId).subscribe(res => {
     this.aboutData1 = res;
-    console.log("edit",this.aboutData)
 
   })
 }

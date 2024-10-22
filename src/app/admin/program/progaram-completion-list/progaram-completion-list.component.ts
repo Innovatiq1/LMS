@@ -388,7 +388,7 @@ genratePdf3(convertIdDynamic: any, memberId: any, memberProgrmId: any, pdfBlob: 
       
       
                 }, (err) => {
-                  console.log("error==",err);
+                  console.log("error",err);
       
                 }
                 )
@@ -485,7 +485,6 @@ isAnyRowSelected(): boolean {
 }
 enableMultipleCertificates() {
   if (this.selectedRows.length === 0) {
-    console.log('No rows selected');
     return;
   }
   this.isGeneratingCertificates = true;

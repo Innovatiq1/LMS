@@ -285,7 +285,6 @@ export class CreateProgramComponent {
       (certificate: any) =>
         certificate.title === this.programFormGroup.value.certificate_temp
     );
-    console.log("programFormGroup",this.programFormGroup.value)
     if (this.programFormGroup.valid) {
       let creator = JSON.parse(localStorage.getItem('user_data')!).user.name;
       let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
