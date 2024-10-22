@@ -1,13 +1,13 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, TemplateRef, ViewChild, HostListener, ElementRef, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router ,NavigationStart } from '@angular/router';
 import { AssessmentService } from '@core/service/assessment.service';
 import { StudentsService } from '../../admin/students/students.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import Swal from 'sweetalert2';
 import { CourseService } from '@core/service/course.service';
 import { ClassService } from 'app/admin/schedule-class/class.service';
-
-
+import { Location } from '@angular/common';
+import { Subscription, timer } from 'rxjs';
 
 @Component({
   selector: 'app-exam-questions',
@@ -54,15 +54,30 @@ export class ExamQuestionsComponent {
   studentClassId:any;
   public examAssessmentId!: any;
   public answerAssessmentId!: any;
+  isDragging: boolean = false; 
+  offsetX: number = 0;
+  offsetY: number = 0;
+  isRecording: boolean = false;
 
-
+  @ViewChild('proctoringDiv', { static: true }) proctoringDiv!: ElementRef;
+  @ViewChild('videoElement') videoElement!: ElementRef;
+  mediaRecorder: any;
+  recordedChunks: any[] = [];
+  mediaStream: MediaStream | null = null;
+  visibilityChangeListener: (() => void) | null = null;
+  violationCount: number = 0;
+  maxViolations: number = 4;
+  totalTimes: number = 60; // Example: 60 seconds countdown
+  timerSubscription!: Subscription;
+  private routerSubscription!: Subscription;
   constructor(
     private assessmentService: AssessmentService,
     private route: ActivatedRoute,
     private router: Router,
     private studentService : StudentsService,
     private courseService:CourseService,
-    private classService: ClassService
+    private classService: ClassService,
+    private location: Location
       ) { }
 
       ngOnInit(): void {
@@ -72,7 +87,19 @@ export class ExamQuestionsComponent {
           this.student();
           this.route.queryParams.subscribe(params => {
             this.retake = params['retake'] === 'true'; 
-          });                          
+          });    
+          this.applyBlurEffect(); 
+          this.startVideoSession(); 
+          this.startMonitoringTabSwitch();   
+          this.startTimer();  
+          this.routerSubscription = this.router.events.subscribe((event) => {
+            if (event instanceof NavigationStart) {
+              // Stop recording when navigation occurs
+              if (this.isRecording) {
+                this.stopRecording();
+              }
+            }
+          });                 
       }
 
       getClassDetails():void{
@@ -194,6 +221,7 @@ export class ExamQuestionsComponent {
           cancelButtonText: 'Cancel'
         }).then((result) => {
           clearInterval(this.interval);
+          this.stopRecording();
           if (this.retake && result.isConfirmed) {
             this.updateAnswers();
         } else if (result.isConfirmed) {
@@ -347,6 +375,9 @@ export class ExamQuestionsComponent {
               this.totalTime--;
             } else {
               clearInterval(this.interval);
+              if (this.isRecording) {
+                this.stopRecording();
+              }
               this.submitAnswers(); 
             }
           }, 1000);
@@ -354,6 +385,12 @@ export class ExamQuestionsComponent {
       
         ngOnDestroy() {
           clearInterval(this.interval);
+          if (this.timerSubscription) {
+            this.timerSubscription.unsubscribe();
+          }
+          if (this.routerSubscription) {
+            this.routerSubscription.unsubscribe();
+          }
         }
       
         navigate() {
@@ -402,5 +439,187 @@ export class ExamQuestionsComponent {
             this.router.navigate(['/student/feedback/freecourse', this.classId, this.studentId, this.courseId], {queryParams: {...queryParam,examAssessmentAnswerId}});
           }
         }
+       
+
+        //Proctoring video record
+  onMouseDown(event: MouseEvent) {
+    this.isDragging = true;
+    this.offsetX = event.clientX - this.proctoringDiv.nativeElement.offsetLeft;
+    this.offsetY = event.clientY - this.proctoringDiv.nativeElement.offsetTop;
+    document.addEventListener('mousemove', this.onMouseMove.bind(this));
+    document.addEventListener('mouseup', this.onMouseUp.bind(this));
+  }
+
+  onMouseMove(event: MouseEvent) {
+    if (this.isDragging) {
+      this.proctoringDiv.nativeElement.style.left = event.clientX - this.offsetX + 'px';
+      this.proctoringDiv.nativeElement.style.top = event.clientY - this.offsetY + 'px';
+    }
+  }
+
+  onMouseUp() {
+    this.isDragging = false;
+    document.removeEventListener('mousemove', this.onMouseMove.bind(this));
+    document.removeEventListener('mouseup', this.onMouseUp.bind(this));
+  }
+
+  startVideoSession() {
+    this.isRecording = true;
+    this.removeBlurEffect();
+
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+      .then((stream) => {
+        this.mediaStream = stream;
+        this.videoElement.nativeElement.srcObject = stream;
+        this.mediaRecorder = new MediaRecorder(stream);
+        this.mediaRecorder.ondataavailable = (event: any) => {
+          if (event.data.size > 0) {
+            this.recordedChunks.push(event.data);
+          }
+        };
+        this.mediaRecorder.start();
+      })
+      .catch((error) => {
+        this.showWarning('Camera or microphone not accessible.');
+        this.isRecording = false;
+        this.showPermissionError(); 
+      });
+
+    this.checkMediaDevices();
+  }
+
+  stopRecording() {
+    if (this.mediaRecorder) {
+      this.mediaRecorder.stop();
+      this.mediaRecorder.onstop = () => {
+        const blob = new Blob(this.recordedChunks, { type: 'video/webm' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = 'recorded-session.webm';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        if (this.mediaStream) {
+          this.mediaStream.getTracks().forEach((track) => track.stop());
+        }
+        this.clearWarnings();
+        this.stopMonitoringTabSwitch();
+        this.applyBlurEffect(); 
+        this.isRecording = false;
+      };
+    }
+  }
+
+  checkMediaDevices() {
+    navigator.mediaDevices.enumerateDevices()
+      .then((devices) => {
+        const videoInput = devices.find((device) => device.kind === 'videoinput');
+        const audioInput = devices.find((device) => device.kind === 'audioinput');
+
+        if (!videoInput) {
+          this.showWarning('No video input device found.');
+        }
+
+        if (!audioInput) {
+          this.showWarning('No audio input device found.');
+        }
+      })
+      .catch((error) => {
+        this.showWarning('Error accessing media devices.');
+      });
+  }
+
+  applyBlurEffect() {
+    document.body.classList.add('blur-background');
+  }
+
+  removeBlurEffect() {
+    document.body.classList.remove('blur-background');
+  }
+
+  startMonitoringTabSwitch() {
+    this.visibilityChangeListener = () => {
+      if (document.hidden) {
+        this.showWarning('Tab switch detected.');
+        this.showViolationAlert();
+      }
+    };
+    document.addEventListener('visibilitychange', this.visibilityChangeListener);
+  }
+
+  stopMonitoringTabSwitch() {
+    if (this.visibilityChangeListener) {
+      document.removeEventListener('visibilitychange', this.visibilityChangeListener);
+      this.visibilityChangeListener = null;
+    }
+  }
+
+  showWarning(message: string) {
+    const warningDiv = document.getElementById('warnings');
+    if (warningDiv) {
+      const warningMessage = document.createElement('div');
+      warningMessage.className = 'alert alert-warning';
+      warningMessage.innerText = message;
+      warningDiv.appendChild(warningMessage);
+      this.applyBlurEffect();
+      setTimeout(() => {
+        warningDiv.removeChild(warningMessage);
+        this.clearWarnings();
+      }, 5000);
+    }
+  }
+
+  clearWarnings() {
+    const warningDiv = document.getElementById('warnings');
+    if (warningDiv) {
+      warningDiv.innerHTML = '';
+    }
+    this.removeBlurEffect();
+  }
+
+  showViolationAlert() {
+    this.violationCount++;
+    alert(
+      `You are violating the exam rules. If this happens again, the exam will be canceled and you will be terminated.`
+    );
+    if (this.violationCount > this.maxViolations) {
+      this.cancelExam();
+    }
+  }
+
+  cancelExam() {
+    alert("The exam has been canceled due to permission denial.");
+    this.stopRecording();
+    setTimeout(() => {
+      this.location.back();
+    }, 2000);
+  }
+  
+
+  showPermissionError() {
+    this.applyBlurEffect(); 
+    Swal.fire({
+      title: 'Camera and Microphone Required',
+      text: 'Please allow access to your camera and microphone to start the exam.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Retry',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.startVideoSession(); 
+      } else {
+        this.cancelExam(); 
+      }
+    });
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  handleUnload(event: any) {
+    this.stopRecording(); 
+  }
+
 
 }

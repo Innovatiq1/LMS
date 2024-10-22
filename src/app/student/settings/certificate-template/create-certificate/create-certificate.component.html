@@ -1,7 +1,7 @@
 <section class="content">
   <div class="content-block">
-    <div class="block-header" *ngFor="let breadscrum of breadcrumbs">
-      <app-static-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active"></app-static-breadcrumb>
+    <div class="block-header" *ngFor="let breadscrum of breadscrums">
+      <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active"></app-breadcrumb>
     </div>
     <div class="row clearfix">
       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
@@ -44,10 +44,9 @@
               <!-- Background Image Upload -->
               <div class="form-group">
                 <label>Background Image</label>
-                <div class="file-drop-area" (dragover)="onDragOver($event)"
-                    (drop)="onDrop($event)">
+                <div class="file-drop-area">
                   <div class="file">
-                    <button mat-raised-button color="primary" class="btn" >
+                    <button mat-raised-button color="primary" class="btn">
                       Choose file
                       <input formControlName="image_link" (change)="onFileUpload($event)" class="file-input" type="file" />
                     </button>
@@ -132,7 +131,7 @@
 
             <!-- Certificate Preview -->
             <div class="certificate-preview">
-              <div #backgroundTable
+              <div
                 class="certificate-canvas"
                 [ngStyle]="{
                   'background-image': 'url(' + image_link + ')',

@@ -232,45 +232,94 @@
       
       
     
-      <ng-container *ngFor="let component of dashboard.components">
-      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" *ngIf="component.checked && component.id === 'new-trainees-list'">
-        <div class="card" style="border-radius: 31px;">
-          <div class="header mt-3">
-            <h2>New {{commonRoles.STUDENT_ROLE}} List</h2>
+        <ng-container *ngFor="let component of dashboard.components">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" *ngIf="component.checked && component.id === 'new-trainees-list'">
+            <div class="card" style="border-radius: 31px;">
+              <div class="header mt-3">
+                <h2>New {{commonRoles.STUDENT_ROLE}} List</h2>
+              </div>
+              <div class="tableBody">
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>{{commonRoles.STUDENT_ROLE}}</th>
+                        <th>Education</th>
+                        <th>Joining Date</th>
+                        <th>Mobile</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let student of students" style="cursor: pointer;" (click)="aboutStudent(student.id)">
+                        <td class="table-img">
+                          <img src="{{student?.avatar || 'assets/profile.png'}}" alt="">
+                        </td>
+                        <td>{{student?.name | titlecase}}</td>
+                        <td>{{student?.education}}</td>
+                        <td>{{student?.createdAt | date}}</td>
+                        <td>{{student?.mobile}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+        
+            <!-- Latest Enrolled Courses Section -->
+            <div *ngIf="component.checked && component.id === 'new-trainees-list'" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <div class="card">
+                <div class="header">
+                  <h2>Latest Enrolled Courses</h2>
+                </div>
+                <div class="tableBody">
+                  <ng-scrollbar style="height: 300px" visibility="hover">
+                    <div class="table-responsive">
+                      <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th>Course</th>
+                            <th>Duration</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Meeting URL</th>
+                            <th>Enrolled Participants</th>
+                            <th>Completed</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let course of classListSample">
+                            <td>{{course?.courseId?.title | titlecase}}</td>
+                            <td>
+                              {{ course?.duration ? (course?.duration + ' Hour') : '\u00A0' }}
+                            </td>
+                            <td>{{course?.sessions[0]?.sessionStartDate | date}}</td>
+                            <td>{{course?.sessions[0]?.sessionEndDate | date}}</td>
+                            <td>
+                              <ng-container *ngIf="course?.meetingUrl; else noUrl">
+                                <a [href]="course?.meetingUrl" target="_blank" style="color: rgb(7, 7, 7);">
+                                  Join Meeting
+                                </a>
+                              </ng-container>
+                              <ng-template #noUrl style="color: rgb(133, 127, 127);">
+                              </ng-template>
+                            </td>
+                            <td>{{ course?.registeredUsers?.length > 0 ? course.registeredUsers.length - 1 : 0 }}</td>
 
-          </div>
-          <div class="tableBody">
-            <div class="table-responsive">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>{{commonRoles.STUDENT_ROLE}}</th>
-                    <th>Education</th>
-                    <th>Joining Date</th>
-                    <th>Mobile</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let student of students" style="cursor: pointer;"  (click)="aboutStudent(student.id)">
-                    <td class="table-img">
-                      <img src="{{student?.avatar || 'assets/profile.png'}}" alt="">
-                    </td>
-                    <td >{{student?.name | titlecase}}</td>
-                    <td>{{student?.education}}</td>
-                    <td>{{student?.createdAt | date}}</td>
-                    <td>
-                      {{student?.mobile}}
-                    </td>
-
-                  </tr>
-                </tbody>
-              </table>
+                            <td [ngClass]="{'red-text': course?.playbackTime?.toFixed(2) < 50, 'green-text': course?.playbackTime?.toFixed(2) >= 50}">
+                              {{course?.playbackTime?.toFixed(2) || 0}}%
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </ng-scrollbar>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-    </ng-container>
+        </ng-container>
+        
     </div>
 
   </mat-tab>
@@ -346,7 +395,7 @@
       <ng-container *ngFor="let dashboard of dashboards">
       <div class="row">
         <ng-container *ngFor="let component of dashboard.components">
-        <div *ngIf="component.id === 'latest-enrolled-courses'" class="col-xl-6 col-lg-6 col-md-14 col-sm-14">
+        <div *ngIf="component.id === 'latest-enrolled-courses'" class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
           <div class="card">
             <div class="header">
               <h2>Latest Enrolled Courses</h2>
@@ -360,6 +409,7 @@
                         <th>Course</th>
                         <th>Duration</th>
                         <th>End Date</th>
+                        <th>Meeting URL</th>
                         <th>Completed</th>
                       </tr>
                     </thead>
@@ -368,6 +418,16 @@
                         <td>{{course?.classId?.courseId?.title}}</td>
                         <td>{{course?.classId?.courseId?.training_hours}} Days</td>
                         <td>{{course?.classId?.sessions[0]?.sessionEndDate | date}}
+                        </td>
+                        <td>
+                          <ng-container *ngIf="course?.classId?.meetingUrl; else noUrl">
+                            <a [href]="course?.classId?.meetingUrl" target="_blank" style="color: rgb(7, 7, 7);">
+                              Join Meeting
+                            </a>
+                          </ng-container>
+                          <ng-template #noUrl style="color: rgb(133, 127, 127);">
+                            No Meeting URL
+                          </ng-template>
                         </td>
                         <td
                           [ngClass]="{'red-text': course?.playbackTime?.toFixed(2) < 50, 'green-text': course?.playbackTime?.toFixed(2) >= 50}">
@@ -383,7 +443,7 @@
         </div>
         </ng-container>
         <ng-container *ngFor="let component of dashboard.components">
-        <div *ngIf="component.id === 'upcoming-course-classes'" class="col-xl-6 col-lg-6 col-md-14 col-sm-14">
+        <div *ngIf="component.id === 'upcoming-course-classes'" class="col-xl-4 col-lg-4 col-md-6 col-sm-12">
           <div class="card">
             <div class="header">
               <h2>
@@ -397,6 +457,8 @@
                     <div class="set-flex">
                       <div class="media-title font-16">{{upcomingclass?.classId?.courseName}}</div>
                       <div class="text-job text-muted mb-0">{{upcomingclass?.classId?.courseId?.courseCode}}</div>
+                      <div class="text-job text-muted mb-0">{{upcomingclass?.classId?.courseId?.meetingUr}}</div>
+
                     </div>
                     <div class="ms-auto">
                       <div class="media-title font-16">{{upcomingclass?.classId?.sessions[0]?.sessionStartDate | date}}

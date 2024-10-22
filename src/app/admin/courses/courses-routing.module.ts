@@ -22,6 +22,7 @@ import { DraftedCoursesComponent } from './all-course/drafted-courses/drafted-co
 import { RetakeRequestsComponent } from './retake-requests/retake-requests.component';
 import { ViewClassComponent } from './class-view/view-class/view-class.component';
 import { ClassListComponent } from './class-list/class-list.component';
+import { ScheduleMeetingComponent } from './schedule-meeting/schedule-meeting.component';
 const routes: Routes = [
   {
     path: 'course-name',

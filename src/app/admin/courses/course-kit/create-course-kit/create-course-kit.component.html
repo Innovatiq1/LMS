@@ -64,38 +64,74 @@
                                     </div>
                                 </div> -->
 
-                                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
-                                    *ngIf="labelStatusCheck('Short Description')">
-                                    <label>Short Description</label>
-                                    <mat-form-field class="example-full-width mb-3" appearance="outline">
-                                        <!-- <mat-label>Course Name</mat-label> -->
+                <div
+                  class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
+                  *ngIf="labelStatusCheck('Short Description')"
+                >
+                  <label>Short Description</label>
+                  <mat-form-field
+                    class="example-full-width mb-3"
+                    appearance="outline"
+                  >
+                    <!-- <mat-label>Course Name</mat-label> -->
 
-                                        <input matInput type="text" id="name" formControlName="shortDescription"
-                                            class="form-control">
-                                        <mat-error
-                                            *ngIf=" courseKitForm.get('shortDescription')?.invalid && courseKitForm.get('shortDescription')?.touched ">
-                                            {{utils.getErrorMessage1(courseKitForm.get("shortDescription"),
-                                            "shortDescription") }}
-                                        </mat-error>
-                                    </mat-form-field>
-                                </div>
+                    <input
+                      matInput
+                      type="text"
+                      id="name"
+                      formControlName="shortDescription"
+                      class="form-control"
+                    />
+                    <mat-error
+                      *ngIf="
+                        courseKitForm.get('shortDescription')?.invalid &&
+                        courseKitForm.get('shortDescription')?.touched
+                      "
+                    >
+                      {{
+                        utils.getErrorMessage1(
+                          courseKitForm.get("shortDescription"),
+                          "shortDescription"
+                        )
+                      }}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
 
-                                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
-                                    *ngIf="labelStatusCheck('Long Description')">
-                                    <label>Long Description</label>
-                                    <mat-form-field class="example-full-width mb-3" appearance="outline">
-                                        <input matInput type="text" id="name" formControlName="longDescription"
-                                            class="form-control">
-                                        <mat-error
-                                            *ngIf=" courseKitForm.get('longDescription')?.invalid && courseKitForm.get('longDescription')?.touched ">
-                                            {{utils.getErrorMessage1(courseKitForm.get("longDescription"),
-                                            "longDescription") }}
-                                        </mat-error>
-                                    </mat-form-field>
-                                </div>
+                <div
+                  class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
+                  *ngIf="labelStatusCheck('Long Description')"
+                >
+                  <label>Long Description</label>
+                  <mat-form-field
+                    class="example-full-width mb-3"
+                    appearance="outline"
+                  >
+                    <input
+                      matInput
+                      type="text"
+                      id="name"
+                      formControlName="longDescription"
+                      class="form-control"
+                    />
+                    <mat-error
+                      *ngIf="
+                        courseKitForm.get('longDescription')?.invalid &&
+                        courseKitForm.get('longDescription')?.touched
+                      "
+                    >
+                      {{
+                        utils.getErrorMessage1(
+                          courseKitForm.get("longDescription"),
+                          "longDescription"
+                        )
+                      }}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
 
                                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-5"
-                                    *ngIf="labelStatusCheck('Upload Media')">
+                                    *ngIf="labelStatusCheck('Upload Media') && !isScormKit">
                                     <label>Upload Media </label>
                                     <div class="file-drop-area">
                                         <div class="file">
@@ -109,36 +145,63 @@
                                                 <h6>{{videoSrc ? videoSrc : 'Drag and Drop File Here' }}</h6>
                                             </span>
 
-                                            <div class="files-list">
-                                                <div class="single-file" *ngFor="let file of files; let i = index">
-                                                    <img src="../../assets/images/dnd/ic-file.svg" alt=""
-                                                        class="file-icon" />
-                                                    <div class="infos">
-                                                        <p class="name">{{ file?.name }}</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <mat-error class="error"
-                                        *ngIf=" courseKitForm.get('videoLink')?.invalid && courseKitForm.get('videoLink')?.touched ">
-                                        {{utils.getErrorMessage1(courseKitForm.get("videoLink"), "media") }}
-                                    </mat-error>
-                                </div>
-                            </div>
+                      <div class="files-list">
+                        <div
+                          class="single-file"
+                          *ngFor="let file of files; let i = index"
+                        >
+                          <img
+                            src="../../assets/images/dnd/ic-file.svg"
+                            alt=""
+                            class="file-icon"
+                          />
+                          <div class="infos">
+                            <p class="name">{{ file?.name }}</p>
+                          </div>
                         </div>
-                    </form>
-                    <div class="row body">
-                        <div class="col-md-10">
-                            <button mat-raised-button id="back"
-                                [routerLink]="['/admin/courses/course-kit']">Back</button>
-                        </div>
-                        <div class="col-md-2">
-                            <button mat-raised-button id="submit" (click)="submitCourseKit1()">Create</button>
-                        </div>
+                      </div>
                     </div>
+                  </div>
+                  <mat-error
+                    class="error"
+                    *ngIf="
+                      courseKitForm.get('videoLink')?.invalid &&
+                      courseKitForm.get('videoLink')?.touched
+                    "
+                  >
+                    {{
+                      utils.getErrorMessage1(
+                        courseKitForm.get("videoLink"),
+                        "media"
+                      )
+                    }}
+                  </mat-error>
                 </div>
+              </div>
             </div>
+          </form>
+          <div class="row body">
+            <div class="col-md-10">
+              <button
+                mat-raised-button
+                id="back"
+                [routerLink]="['/admin/courses/course-kit']"
+              >
+                Back
+              </button>
+            </div>
+            <div class="col-md-2">
+              <button
+                mat-raised-button
+                id="submit"
+                (click)="submitCourseKit1()"
+              >
+                Create
+              </button>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </section>

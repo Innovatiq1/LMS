@@ -16,13 +16,13 @@
   }
   .flex-end {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     font-size: 20px;
   }
   .flex-start {
     display: flex;
-    justify-content: start;
-    align-items: end;
+    justify-content: flex-start;
+    align-items: flex-end;
   }
 li {
     list-style-type: none;
