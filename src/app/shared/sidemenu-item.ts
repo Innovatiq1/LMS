@@ -206,6 +206,34 @@ SIDEMENU_LIST =[
                   }
                 ]
               },
+              {
+                "title": "Course Batch",
+                "id": "class-list",
+                "class": "ml-menu",
+                "actions": [
+                  {
+                    "title": "Create",
+                    "id": "create-course-class",
+                    "class": "ml-menu3"
+                  },
+                  {
+                    "title": "Edit",
+                    "id": "edit-course-class",
+                    "class": "ml-menu3"
+                  },
+                  {
+                    "title": "View",
+                    "id": "view-course-class",
+                    "class": "ml-menu3"
+                  },
+                  {
+                    "title": "Delete",
+                    "id": "delete-course-class",
+                    "class": "ml-menu3"
+                  }
+                ],
+                "children": []
+              },
              
               {
                 "title": "Drafts",
@@ -279,14 +307,14 @@ SIDEMENU_LIST =[
           },
           {
             
-            "title": "Registered Courses",
+            "title": "Trainee/Student",
             "id": "student-courses",
             "class": "ml-sub-menu",
             "actions": [],
             "children": [
               {
                 
-                "title": "Approved Courses",
+                "title": "Approved",
                 "id": "registered-approved-courses",
                 "class": "ml-menu2",
                 "actions": [
@@ -305,7 +333,7 @@ SIDEMENU_LIST =[
               },
               {
                
-                "title": "Pending Courses",
+                "title": "Approval Pending",
                 "id": "registered-pending-courses",
                 "class": "ml-menu2",
                 "actions": [
@@ -327,7 +355,7 @@ SIDEMENU_LIST =[
                 ]
               },
               {
-                "title": "Completed Courses",
+                "title": "Completed",
                 "id": "course-completed-courses",
                 "class": "ml-menu2",
                 "actions": [
@@ -359,6 +387,16 @@ SIDEMENU_LIST =[
                     "class": "ml-menu3"
                   }
                 ]
+              },
+              {
+                "title": "Exam Scores",
+                "id": "exam-scores",
+                "actions": [],
+              },
+              {
+                "title": "Retake Requests",
+                "id": "retake-requests",
+                "actions": [],
               }
             ]
           },
@@ -390,41 +428,7 @@ SIDEMENU_LIST =[
             ],
             "children": []
           },
-          {
-            "title": "Course Batch",
-            "id": "class-list",
-            "class": "ml-menu",
-            "actions": [
-              {
-                "title": "Create",
-                "id": "create-course-class",
-                "class": "ml-menu3"
-              },
-              {
-                "title": "Edit",
-                "id": "edit-course-class",
-                "class": "ml-menu3"
-              },
-              {
-                "title": "View",
-                "id": "view-course-class",
-                "class": "ml-menu3"
-              },
-              {
-                "title": "Delete",
-                "id": "delete-course-class",
-                "class": "ml-menu3"
-              }
-            ],
-            "children": []
-          },
-          {
-            "title": "Exam Scores",
-            "id": "exam-scores",
-            "class": "ml-menu",
-            "actions": [],
-            "children": []
-          }
+        
         ]
       },
       {
@@ -506,6 +510,20 @@ SIDEMENU_LIST =[
                 "class": "ml-menu3"
               }
             ],
+            "children": []
+          },
+          {
+            "title": "Exam",
+            "id": "exam",
+            "class": "ml-menu",
+            "actions": [],
+            "children": []
+          },
+          {
+            "title": "Exam Results",
+            "id": "exam-results",
+            "class": "ml-menu",
+            "actions": [],
             "children": []
           }
         ]
@@ -813,29 +831,6 @@ SIDEMENU_LIST =[
           {
             "title": "List",
             "id": "audit-list",
-            "class": "ml-menu",
-            "actions": [],
-            "children": []
-          }
-        ]
-      },
-      {
-        "title": "Exams",
-        "id": "student/exams",
-        "iconsrc": "http://203.118.55.27:3004/uploads\\.png\\exams-1712992567093.png",
-        "class": "menu-toggle",
-        "actions": [],
-        "children": [
-          {
-            "title": "Exam",
-            "id": "exam",
-            "class": "ml-menu",
-            "actions": [],
-            "children": []
-          },
-          {
-            "title": "Exam Results",
-            "id": "exam-results",
             "class": "ml-menu",
             "actions": [],
             "children": []

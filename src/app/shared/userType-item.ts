@@ -53,7 +53,7 @@ MENU_LIST =[
             },
             {
               "title": "Creator",
-              "id": "creator",
+              "id": "pcreator",
               "children": [],
               "actions": [
                 {
@@ -93,7 +93,7 @@ MENU_LIST =[
           "children": [
             {
               "title": "Approved Programs",
-              "id": "approved-program",
+              "id": "submitted-approved-program",
               "children": [],
               "actions": [
                 {
@@ -121,7 +121,7 @@ MENU_LIST =[
             },
             {
               "title": "Pending Programs",
-              "id": "pending-program",
+              "id": "submitted-pending-program",
               "children": [],
               "actions": [
                 {
@@ -169,7 +169,7 @@ MENU_LIST =[
           "children": [
             {
               "title": "Approved Programs",
-              "id": "approved-program",
+              "id": "registered-approved-program",
               "children": [],
               "actions": [
                 {
@@ -197,7 +197,7 @@ MENU_LIST =[
             },
             {
               "title": "Pending Programs",
-              "id": "pending-program",
+              "id": "registered-pending-program",
               "children": [],
               "actions": [
                 {
@@ -281,112 +281,116 @@ MENU_LIST =[
       "children": [
         {
           "title": "Course List",
-          "id": "all-courses",
-          "children": [
+          "id": "course-name",
+          "children": [],
+          "actions": [
             {
-              "title": "Course Name",
-              "id": "course-name",
-              "children": [],
-              "actions": [
-                {
-                  "title": "Create",
-                  "id": "create-course",
-                  "checked": true,
-                  "indeterminate": false,
-                  "isLeaf": true,
-                  "isAction": true
-                },
-                {
-                  "title": "View",
-                  "id": "view-course",
-                  "checked": true,
-                  "indeterminate": false,
-                  "isLeaf": true,
-                  "isAction": true
-                }
-              ],
-              "isAction": false,
+              "title": "Create",
+              "id": "create-course",
               "checked": true,
               "indeterminate": false,
-              "class": "ml-menu2",
-              "isLeaf": true
+              "isLeaf": true,
+              "isAction": true
             },
             {
-              "title": "Creator",
-              "id": "creator",
-              "children": [],
-              "actions": [
-                {
-                  "title": "Create",
-                  "id": "create-course-creator",
-                  "checked": true,
-                  "indeterminate": false,
-                  "isLeaf": true,
-                  "isAction": true
-                },
-                {
-                  "title": "View",
-                  "id": "view-course-creator",
-                  "checked": true,
-                  "indeterminate": false,
-                  "isLeaf": true,
-                  "isAction": true
-                }
-              ],
-              "isAction": false,
+              "title": "View",
+              "id": "view-course",
               "checked": true,
               "indeterminate": false,
-              "class": "ml-menu2",
-              "isLeaf": true
-            },
-            {
-              "title": "Drafts",
-              "id": "drafts",
-              "children": [],
-              "actions": [
-                {
-                  "title": "Edit",
-                  "id": "edit-drafts",
-                  "checked": true,
-                  "indeterminate": false,
-                  "isLeaf": true,
-                  "isAction": true
-                },
-                {
-                  "title": "View",
-                  "id": "view-drafts",
-                  "checked": true,
-                  "indeterminate": false,
-                  "isLeaf": true,
-                  "isAction": true
-                }
-              ],
-              "isAction": false,
-              "checked": true,
-              "indeterminate": false,
-              "class": "ml-menu2",
-              "isLeaf": true
+              "isLeaf": true,
+              "isAction": true
             }
           ],
-          "actions": [],
           "isAction": false,
           "checked": true,
           "indeterminate": false,
-          "class": "ml-sub-menu",
+          "class": "ml-menu",
           "isLeaf": true
         },
         {
-          "title": "Submitted Course",
+          "title": "Course Batch",
+          "id": "class-list",
+          "children": [],
+          "actions": [
+            {
+              "title": "Create",
+              "id": "create-course-class",
+              "checked": true,
+              "indeterminate": false,
+              "isLeaf": true,
+              "isAction": true
+            },
+            {
+              "title": "Edit",
+              "id": "edit-course-class",
+              "checked": true,
+              "indeterminate": false,
+              "isLeaf": true,
+              "isAction": true
+            },
+            {
+              "title": "View",
+              "id": "view-course-class",
+              "checked": true,
+              "indeterminate": false,
+              "isLeaf": true,
+              "isAction": true
+            },
+            {
+              "title": "Delete",
+              "id": "delete-course-class",
+              "checked": true,
+              "indeterminate": false,
+              "isLeaf": true,
+              "isAction": true
+            }
+          ],
+          "isAction": false,
+          "checked": true,
+          "indeterminate": false,
+          "class": "ml-menu",
+          "isLeaf": true
+        },
+        {
+          "title": "Drafts",
+          "id": "drafts",
+          "children": [],
+          "actions": [
+            {
+              "title": "Edit",
+              "id": "edit-drafts",
+              "checked": true,
+              "indeterminate": false,
+              "isLeaf": true,
+              "isAction": true
+            },
+            {
+              "title": "View",
+              "id": "view-drafts",
+              "checked": true,
+              "indeterminate": false,
+              "isLeaf": true,
+              "isAction": true
+            }
+          ],
+          "isAction": false,
+          "checked": true,
+          "indeterminate": false,
+          "class": "ml-menu",
+          "isLeaf": true
+        },
+        {
+          "title": "Approval Course",
           "id": "submitted-courses",
           "children": [
             {
-              "title": "Approved Course",
-              "id": "approved-courses",
+              "title": "Rejected",
+              "id": "submitted-rejected-courses",
               "children": [],
               "actions": [
                 {
                   "title": "View",
-                  "id": "view-sub-approved-course",
+                  "id": "view-sub-rejected-course",
                   "checked": true,
                   "indeterminate": false,
                   "isLeaf": true,
@@ -394,7 +398,7 @@ MENU_LIST =[
                 },
                 {
                   "title": "Delete",
-                  "id": "delete-sub-approved-course",
+                  "id": "delete-sub-rejected-course",
                   "checked": true,
                   "indeterminate": false,
                   "isLeaf": true,
@@ -408,8 +412,8 @@ MENU_LIST =[
               "isLeaf": true
             },
             {
-              "title": "Pending Courses",
-              "id": "pending-courses",
+              "title": "Pending",
+              "id": "submitted-pending-courses",
               "children": [],
               "actions": [
                 {
@@ -452,12 +456,12 @@ MENU_LIST =[
           "isLeaf": true
         },
         {
-          "title": "Registered Courses",
+          "title": "Trainee/Student",
           "id": "student-courses",
           "children": [
             {
-              "title": "Approved Courses",
-              "id": "approved-courses",
+              "title": "Approved",
+              "id": "registered-approved-courses",
               "children": [],
               "actions": [
                 {
@@ -484,8 +488,8 @@ MENU_LIST =[
               "isLeaf": true
             },
             {
-              "title": "Pending Courses",
-              "id": "pending-courses",
+              "title": "Approval Pending",
+              "id": "registered-pending-courses",
               "children": [],
               "actions": [
                 {
@@ -520,7 +524,7 @@ MENU_LIST =[
               "isLeaf": true
             },
             {
-              "title": "Completed Courses",
+              "title": "Completed",
               "id": "course-completed-courses",
               "children": [],
               "actions": [
@@ -574,6 +578,26 @@ MENU_LIST =[
               "indeterminate": false,
               "class": "ml-menu2",
               "isLeaf": true
+            },
+            {
+              "title": "Retake Requests",
+              "id": "retake-requests",
+              "children": [],
+              "actions": [],
+              "isAction": false,
+              "checked": true,
+              "indeterminate": false,
+              "isLeaf": true
+            },
+            {
+              "title": "Exam Scores",
+              "id": "exam-scores",
+              "children": [],
+              "actions": [],
+              "isAction": false,
+              "checked": true,
+              "indeterminate": false,
+              "isLeaf": true
             }
           ],
           "actions": [],
@@ -626,17 +650,6 @@ MENU_LIST =[
           "indeterminate": false,
           "class": "ml-menu",
           "isLeaf": true
-        },
-        {
-          "title": "Exam Scores",
-          "id": "exam-scores",
-          "children": [],
-          "actions": [],
-          "isAction": false,
-          "checked": true,
-          "indeterminate": false,
-          "class": "ml-menu",
-          "isLeaf": true
         }
       ],
       "actions": [],
@@ -651,6 +664,17 @@ MENU_LIST =[
       "id": "timetable",
       "children": [
         {
+          "title": "All Programs",
+          "id": "program-timetable",
+          "children": [],
+          "actions": [],
+          "isAction": false,
+          "checked": true,
+          "indeterminate": false,
+          "class": "ml-menu",
+          "isLeaf": true
+        },
+        {
           "title": "All Courses",
           "id": "course-timetable",
           "children": [],
@@ -662,13 +686,13 @@ MENU_LIST =[
           "isLeaf": true
         },
         {
-          "title": "Course Class",
-          "id": "class-list",
+          "title": "Program Class",
+          "id": "schedule-class",
           "children": [],
           "actions": [
             {
               "title": "Create",
-              "id": "create-course-class",
+              "id": "create-program-class",
               "checked": true,
               "indeterminate": false,
               "isLeaf": true,
@@ -676,7 +700,7 @@ MENU_LIST =[
             },
             {
               "title": "Edit",
-              "id": "edit-course-class",
+              "id": "edit-program-class",
               "checked": true,
               "indeterminate": false,
               "isLeaf": true,
@@ -684,7 +708,7 @@ MENU_LIST =[
             },
             {
               "title": "View",
-              "id": "view-course-class",
+              "id": "view-program-class",
               "checked": true,
               "indeterminate": false,
               "isLeaf": true,
@@ -692,13 +716,24 @@ MENU_LIST =[
             },
             {
               "title": "Delete",
-              "id": "delete-course-class",
+              "id": "delete-program-class",
               "checked": true,
               "indeterminate": false,
               "isLeaf": true,
               "isAction": true
             }
           ],
+          "isAction": false,
+          "checked": true,
+          "indeterminate": false,
+          "class": "ml-menu",
+          "isLeaf": true
+        },
+        {
+          "title": "E-Attendance",
+          "id": "e-attendance",
+          "children": [],
+          "actions": [],
           "isAction": false,
           "checked": true,
           "indeterminate": false,
@@ -718,10 +753,27 @@ MENU_LIST =[
       "id": "admin/budgets",
       "children": [
         {
-          "title": "All Requests",
-          "id": "all-requests",
+          "title": "Program Payment ",
+          "id": "program-payment",
           "children": [],
-          "actions": [],
+          "actions": [
+            {
+              "title": "View",
+              "id": "view-program-payment",
+              "checked": true,
+              "indeterminate": false,
+              "isLeaf": true,
+              "isAction": true
+            },
+            {
+              "title": "Delete",
+              "id": "delete-program-payment",
+              "checked": true,
+              "indeterminate": false,
+              "isLeaf": true,
+              "isAction": true
+            }
+          ],
           "isAction": false,
           "checked": true,
           "indeterminate": false,
@@ -918,6 +970,17 @@ MENU_LIST =[
           "indeterminate": false,
           "class": "ml-menu",
           "isLeaf": true
+        },
+        {
+          "title": "Meeting Reports",
+          "id": "meeting-report",
+          "children": [],
+          "actions": [],
+          "isAction": false,
+          "checked": true,
+          "indeterminate": false,
+          "class": "ml-menu",
+          "isLeaf": true
         }
       ],
       "actions": [],
@@ -934,7 +997,7 @@ MENU_LIST =[
   "description": "Admin Role",
   "settingsMenuItems": [
     {
-      "title": "Users",
+      "title": "Manage Users",
       "id": "student/settings",
       "children": [
         {
@@ -994,34 +1057,6 @@ MENU_LIST =[
           "isLeaf": true
         },
         {
-          "title": "Department Profile",
-          "id": "all-departments",
-          "children": [],
-          "actions": [
-            {
-              "title": "View",
-              "id": "view-dept-profile",
-              "checked": true,
-              "indeterminate": false,
-              "isLeaf": true,
-              "isAction": true
-            },
-            {
-              "title": "Delete",
-              "id": "delete-dept-profile",
-              "checked": true,
-              "indeterminate": false,
-              "isLeaf": true,
-              "isAction": true
-            }
-          ],
-          "isAction": false,
-          "checked": true,
-          "indeterminate": false,
-          "class": "ml-menu",
-          "isLeaf": true
-        },
-        {
           "title": "Department",
           "id": "create-department",
           "children": [],
@@ -1045,6 +1080,14 @@ MENU_LIST =[
             {
               "title": "Delete",
               "id": "delete-dept",
+              "checked": true,
+              "indeterminate": false,
+              "isLeaf": true,
+              "isAction": true
+            },
+            {
+              "title": "View",
+              "id": "view-dept",
               "checked": true,
               "indeterminate": false,
               "isLeaf": true,
@@ -1381,43 +1424,10 @@ MENU_LIST =[
       "id": "student/settings/configuration",
       "children": [
         {
-          "title": "Categories",
-          "id": "categories",
+          "title": "Forms",
+          "id": "forms",
           "children": [],
-          "actions": [
-            {
-              "title": "Create",
-              "id": "create-category",
-              "checked": true,
-              "indeterminate": false,
-              "isLeaf": true,
-              "isAction": true
-            },
-            {
-              "title": "Edit",
-              "id": "edit-category",
-              "checked": true,
-              "indeterminate": false,
-              "isLeaf": true,
-              "isAction": true
-            },
-            {
-              "title": "View",
-              "id": "view-category",
-              "checked": true,
-              "indeterminate": false,
-              "isLeaf": true,
-              "isAction": true
-            },
-            {
-              "title": "Delete",
-              "id": "delete-category",
-              "checked": true,
-              "indeterminate": false,
-              "isLeaf": true,
-              "isAction": true
-            }
-          ],
+          "actions": [],
           "isAction": false,
           "checked": true,
           "indeterminate": false,
@@ -1425,8 +1435,8 @@ MENU_LIST =[
           "isLeaf": true
         },
         {
-          "title": "Forms",
-          "id": "forms",
+          "title": "Languages",
+          "id": "languages",
           "children": [],
           "actions": [],
           "isAction": false,
@@ -1766,7 +1776,7 @@ MENU_LIST =[
           "isLeaf": true
         },
         {
-          "title": "Zoom credentials",
+          "title": "zoom credentials",
           "id": "zoom-credentials",
           "children": [],
           "actions": [],
@@ -1775,8 +1785,7 @@ MENU_LIST =[
           "indeterminate": false,
           "class": "ml-menu",
           "isLeaf": true
-        },
-
+        }
       ],
       "actions": [],
       "isAction": false,

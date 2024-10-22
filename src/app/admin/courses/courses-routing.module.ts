@@ -128,7 +128,7 @@ const routes: Routes = [
   },
   
   {
-    path: 'exam-scores',
+    path: 'student-courses/exam-scores',
     component: ExamScoresComponent,
   },
   {

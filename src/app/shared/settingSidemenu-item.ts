@@ -309,34 +309,6 @@ SETTING_SIDEMENU_LIST =[
         "actions": [],
         "children": [
           {
-            "title": "Categories",
-            "id": "categories",
-            "class": "ml-menu",
-            "actions": [
-              {
-                "title": "Create",
-                "id": "create-category",
-                "class": "ml-menu3"
-              },
-              {
-                "title": "Edit",
-                "id": "edit-category",
-                "class": "ml-menu3"
-              },
-              {
-                "title": "View",
-                "id": "view-category",
-                "class": "ml-menu3"
-              },
-              {
-                "title": "Delete",
-                "id": "delete-category",
-                "class": "ml-menu3"
-              }
-            ],
-            "children": []
-          },
-          {
             "title": "Forms",
             "id": "forms",
             "class": "ml-menu",

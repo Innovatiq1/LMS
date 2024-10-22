@@ -332,7 +332,7 @@ export class ExamTestListComponent {
                         };
                         options.modal.ondismiss = () => {
                           alert('Transaction has been cancelled.');
-                          this.router.navigate(['/student/exams/exam']);
+                          this.router.navigate(['/student/enrollment/exam']);
                         };
                         const rzp = new this.courseService.nativeWindow.Razorpay(
                           options

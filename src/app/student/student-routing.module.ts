@@ -138,11 +138,11 @@ const routes: Routes = [
     component: ExamComponent,
   },
   {
-    path: 'exams/exam-results',
+    path: 'enrollment/exam-results',
     component: ExamResultsComponent,
   },
   {
-    path: 'exams/exam',
+    path: 'enrollment/exam',
     component: ExamTestListComponent,
   },
 
