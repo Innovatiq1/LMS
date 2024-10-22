@@ -35,7 +35,7 @@ export class StudentPendingCoursesComponent {
     'classendDate',
     'Registered Date',
     'programFee',
-    'instructorFee',
+    // 'instructorFee',
   ];
 
   breadscrums = [
@@ -294,7 +294,7 @@ export class StudentPendingCoursesComponent {
         Status:  user.status === 'inactive' ? 'Pending' : '',
         'Course': user.classId?.courseId?.title,
         'Course Fee': '$'+user.classId?.courseId?.fee,
-        [`${AppConstants.INSTRUCTOR_ROLE} Fee`]: '$'+user.classId?.instructorCost,
+        // [`${AppConstants.INSTRUCTOR_ROLE} Fee`]: '$'+user.classId?.instructorCost,
         'Start Date': user.classStartDate,
         'End Date': user.classEndDate,
         'Registered On':  formatDate(new Date(user.registeredOn), 'yyyy-MM-dd', 'en') || '',
@@ -310,7 +310,7 @@ export class StudentPendingCoursesComponent {
         'Status',
         'Course',
         'Course Fee',
-        [`${AppConstants.INSTRUCTOR_ROLE} Fee`],
+        // [`${AppConstants.INSTRUCTOR_ROLE} Fee`],
         'Start Date  ',
         'End date  ',
         'Registered Date',
@@ -321,7 +321,7 @@ export class StudentPendingCoursesComponent {
       user.status === 'inactive' ? 'Pending' : '',
       user.classId?.courseId?.title,
       '$'+user.classId?.courseId?.fee,
-      '$'+user.classId?.instructorCost,
+      // '$'+user.classId?.instructorCost,
       user.classStartDate,
       user.classEndDate,
       formatDate(new Date(user.registeredOn), 'yyyy-MM-dd', 'en') || '',

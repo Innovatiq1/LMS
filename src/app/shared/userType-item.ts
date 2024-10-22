@@ -552,34 +552,6 @@ MENU_LIST =[
               "isLeaf": true
             },
             {
-              "title": "Discount Verification",
-              "id": "verification-list",
-              "children": [],
-              "actions": [
-                {
-                  "title": "Edit",
-                  "id": "edit-discount",
-                  "checked": true,
-                  "indeterminate": false,
-                  "isLeaf": true,
-                  "isAction": true
-                },
-                {
-                  "title": "View",
-                  "id": "view-discount",
-                  "checked": true,
-                  "indeterminate": false,
-                  "isLeaf": true,
-                  "isAction": true
-                }
-              ],
-              "isAction": false,
-              "checked": true,
-              "indeterminate": false,
-              "class": "ml-menu2",
-              "isLeaf": true
-            },
-            {
               "title": "Retake Requests",
               "id": "retake-requests",
               "children": [],

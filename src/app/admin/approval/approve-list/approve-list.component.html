@@ -96,11 +96,11 @@
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null" class="payment-cell">
                       <span class="mobile-label">Course Fee:</span> <span>$</span> {{row?.classId?.courseId?.fee || 0}}.00</mat-cell>
               </ng-container>
-              <ng-container matColumnDef="instructorFee">
+              <!-- <ng-container matColumnDef="instructorFee">
                   <mat-header-cell *matHeaderCellDef  class="amount">{{commonRoles?.INSTRUCTOR_ROLE}} Fee</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null" class="payment-cell">
                       <span class="mobile-label">{{commonRoles?.INSTRUCTOR_ROLE}} Fee:</span><span>$</span> {{row?.classId?.instructorCost || 0 }}.00</mat-cell>
-              </ng-container>
+              </ng-container> -->
                 <!-- Class start date -->
 
                 <ng-container matColumnDef="classstartDate">

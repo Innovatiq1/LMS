@@ -1,14 +1,4 @@
-<section class="content">
-    <div class="content-block">
-      <div class="block-header" *ngFor="let breadscrum of breadscrums">
-        <!-- breadcrumb -->
-        <app-breadcrumb
-          [title]="breadscrum.title"
-          [items]="breadscrum.items"
-          [active_item]="breadscrum.active"
-        >
-        </app-breadcrumb>
-      </div>
+
       <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <div class="card">
@@ -91,11 +81,11 @@
                     <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null" class="payment-cell">
                         <span class="mobile-label">Program Fee:</span><span >$</span> {{row?.classId?.courseId?.fee || 0}}.00</mat-cell>
                 </ng-container>
-                <ng-container matColumnDef="instructorFee">
+                <!-- <ng-container matColumnDef="instructorFee">
                     <mat-header-cell *matHeaderCellDef  class="amount">{{commonRoles?.INSTRUCTOR_ROLE}} Fee</mat-header-cell>
                     <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null" class="payment-cell">
                         <span class="mobile-label">Instructor Fee:</span><span >$</span> {{row?.classId?.instructorCost  || 0}}.00</mat-cell>
-                </ng-container>
+                </ng-container> -->
                   <!-- Class start date -->
   
                   <ng-container matColumnDef="classstartDate">
@@ -185,6 +175,5 @@
           </div>
         </div>
       </div>
-    </div>
-  </section>
+ 
   
