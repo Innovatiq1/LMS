@@ -183,6 +183,7 @@ export class CreateClassComponent {
           companyId:userId
         }),
       }).subscribe((response) => {
+        console.log(response)
         this.programList = response.courses;
         this.instructorList = response.instructors;
         this.cd.detectChanges();
