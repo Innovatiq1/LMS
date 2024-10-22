@@ -53,6 +53,13 @@ export class ViewCompletionComponent {
       
       this.courseId = params['id'];
       this.getCategoryByID(this.courseId);
+      if(params['status'] === 'verification') {
+        this.status = true;
+        this.showTab = false;
+        if(params['verify'] === 'false') {
+          this.verify = true;
+        }
+      }    
   if(params['status'] === 'pending') {
     this.status = true;
     this.showTab = false;
