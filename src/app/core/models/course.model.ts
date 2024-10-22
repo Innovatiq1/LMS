@@ -8,8 +8,10 @@ export interface CourseKit {
 	docs: CourseKit[];
 	shortDescription: string;
 	longDescription: string;
-	videoLink:string[];
-	documentLink: string;
+	videoLink?:string[];
+	documentLink?: string;
+	scormKit?: string;
+	kitType: string;
 	createdAt: string;
 	updatedAt: string;
 	__v: number;
@@ -256,8 +258,10 @@ export interface CourseKit {
 	docs: CourseKit[];
 	shortDescription: string;
 	longDescription: string;
-	videoLink:string[];
-	documentLink: string;
+	videoLink?:string[];
+	documentLink?: string;
+	kitType: string;
+	scormKit?: string;
 	createdAt: string;
 	updatedAt: string;
 	__v: number;

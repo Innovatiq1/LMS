@@ -49,12 +49,3 @@
 .payment-cell{
   padding-right: 60px !important;
 }
-
-@media (max-width: 768px) {
-  .payment-cell {
-    display: block;
-    justify-content: center;
-    margin-top: 10px;
-    padding-right: 0px !important;
-  }
-}

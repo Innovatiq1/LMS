@@ -110,8 +110,7 @@
                   <mat-header-cell *matHeaderCellDef  >{{commonRoles?.INSTRUCTOR_ROLE}}
                     Fee</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null" >
-                    <span class="mobile-label">{{commonRoles?.INSTRUCTOR_ROLE}}
-                      Fee:</span>
+                    <span class="mobile-label">Instructor Fee:</span>
                     <span *ngIf="row.classId?.instructorCost !== null && row.classId?.instructorCost !== undefined">
                       <span>$</span> {{row.classId?.instructorCost || 0 }}.00
                     </span>
@@ -123,13 +122,13 @@
                 <ng-container matColumnDef="Classstart">
                   <mat-header-cell *matHeaderCellDef >Start Date</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
-                    <span class="mobile-label">Start Date:</span>{{ row?.classId?.sessions[0]?.sessionStartDate ? (row.classId?.sessions[0]?.sessionStartDate | date) : "--"}}
+                    <span class="mobile-label">Class Start:</span>{{ row?.classId?.sessions[0]?.sessionStartDate ? (row.classId?.sessions[0]?.sessionStartDate | date) : "--"}}
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="Classend">
                   <mat-header-cell *matHeaderCellDef >End Date</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
-                    <span class="mobile-label">End Date:</span>{{row?.classId?.sessions[0]?.sessionEndDate ? (row.classId?.sessions[0]?.sessionEndDate | date)  :"--"}}
+                    <span class="mobile-label">Class End:</span>{{row?.classId?.sessions[0]?.sessionEndDate ? (row.classId?.sessions[0]?.sessionEndDate | date)  :"--"}}
                   </mat-cell>
                 </ng-container>
                 <!-- Student Name -->

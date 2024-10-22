@@ -112,6 +112,8 @@ export class CourseTimetableComponent implements OnInit {
                   id: courseClass?.id,
                   courseName: courseClass?.courseName,
                   status: courseClass?.status,
+                  meetingUrl: courseClass?.meetingUrl,
+                  duration: courseClass?.duration,
                 },
               });
               currentDate.setDate(currentDate.getDate() + 1);
@@ -159,6 +161,7 @@ export class CourseTimetableComponent implements OnInit {
   }
   
   openDialog(event: { title: any; extendedProps: { [x: string]: any } }) {
+    console.log("events",event.extendedProps)
     this.dialog.open(EventDetailDialogComponent, {
       width: '700px',
       data: {
@@ -173,7 +176,9 @@ export class CourseTimetableComponent implements OnInit {
         instructorCost: event.extendedProps['instructorCost'],
         id: event.extendedProps['id'],
         courseName: event.extendedProps['courseName'],
-        department:event.extendedProps['department']
+        department:event.extendedProps['department'],
+        meetingUrl: event.extendedProps['meetingUrl'],
+        duration: event.extendedProps['duration']
       },
     });
   }
@@ -211,6 +216,8 @@ export class CourseTimetableComponent implements OnInit {
           const department = courseClass?.department;
           const id = courseClass?.id;
           const courseName = courseClass?.courseName;
+          const duration = courseClass?.duration;
+          const meetingUrl = courseClass?.meetingUrl;
           const datesArray = [];
           let currentDate = startDate;
           while (currentDate <= endDate) {
@@ -229,6 +236,8 @@ export class CourseTimetableComponent implements OnInit {
                 deliveryType: deliveryType,
                 id: id,
                 courseName: courseName,
+                duration:duration,
+                meetingUrl: meetingUrl
               },
             });
             currentDate.setDate(currentDate.getDate() + 1);

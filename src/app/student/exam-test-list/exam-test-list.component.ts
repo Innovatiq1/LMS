@@ -3,7 +3,7 @@ import { StudentPaginationModel } from 'app/admin/schedule-class/class.model';
 import { ClassService } from 'app/admin/schedule-class/class.service';
 import { UtilsService } from '@core/service/utils.service';
 import { MatSort } from '@angular/material/sort';
-import { Router } from '@angular/router';
+import { Router ,ActivatedRoute } from '@angular/router';
 import { AssessmentService } from '@core/service/assessment.service';
 import { AssessmentQuestionsPaginationModel } from '@core/models/assessment-answer.model';
 import { CourseService } from '@core/service/course.service';
@@ -57,7 +57,8 @@ export class ExamTestListComponent {
     private changeDetectorRef: ChangeDetectorRef,
     private courseService: CourseService,
     @Inject(DOCUMENT) private document: any,
-    private location: Location
+    private location: Location,
+    private route: ActivatedRoute
   ) {
     this.assessmentPaginationModel = {};
     this.studentId = localStorage.getItem('id') || '';
@@ -95,17 +96,37 @@ export class ExamTestListComponent {
   }
 
   navToExam(data: any) {
-    const studentClasses = data.studentClassId||[];
-    if(studentClasses.length && studentClasses.some((v:any)=>v.status =='approved')){
-      const courseDetails = data.courseId;
-      const studentId = localStorage.getItem('id');
-      this.studentClassId = studentClasses[0]?._id
-      const examAssessment = data.courseId.exam_assessment._id;
-      this.redirectToExam(courseDetails, studentId, null)
-    }else{
-      this.paidDirectExamFlow(data)
-    }
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Please ensure to allow your camera and microphone while taking the exam. If permissions are not granted, the exam may be canceled.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, Start Exam!',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Proceed with existing logic if user confirms
+        const studentClasses = data.studentClassId || [];
+        
+        if (studentClasses.length && studentClasses.some((v: any) => v.status == 'approved')) {
+          const courseDetails = data.courseId;
+          const studentId = localStorage.getItem('id');
+          this.studentClassId = studentClasses[0]?._id;
+          const examAssessment = data.courseId.exam_assessment._id;
+  
+          // Call redirectToExam if all conditions are met
+          this.redirectToExam(courseDetails, studentId, null);
+        } else {
+          // Call paidDirectExamFlow if conditions are not met
+          this.paidDirectExamFlow(data);
+        }
+      } else {
+        // If canceled, you can optionally show a message or take other actions here.
+        console.log('Exam start was canceled by the user.');
+      }
+    });
   }
+  
 
   getLabel(data:any):string{
     const course = data.courseId;
@@ -494,4 +515,31 @@ export class ExamTestListComponent {
       { queryParams: { retake: false, submitted: true } }
     );
   }
+
+  takeExam(row: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Please ensure to allow your camera and audio while taking the exam.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, Start Exam!',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Navigate to the exam route programmatically if confirmed
+        this.router.navigate(
+          [
+            '/student/exam-questions/',
+            this.studentClassId,
+            row._id,
+            row?.studentId,
+            row?.courseId?._id,
+            row?.examAssessmentId?._id,
+          ],
+          { queryParams: { retake: true, submitted: false } }
+        );
+      }
+    });
+  }
+  
 }

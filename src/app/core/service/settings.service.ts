@@ -315,9 +315,22 @@ export class SettingsService {
     });
   }
 
+  getZoomKeysByCompanyId(companyId: string): Observable<ApiResponse> {
+    const apiUrl = `${this.publicUrl}getZoomKeys?companyId=${companyId}`;
+    return this._Http.get<ApiResponse>(apiUrl, {
+    });
+  }
+
     
   updateKey(data: any) {
     const apiUrl = `${this.prefix}admin/social-keys`;
+    return this._Http
+      .put<ApiResponse>(apiUrl, data)
+      .pipe(map((response) => {response}));
+  }
+
+  updateZoomKey(data: any) {
+    const apiUrl = `${this.prefix}admin/zoom-keys`;
     return this._Http
       .put<ApiResponse>(apiUrl, data)
       .pipe(map((response) => {response}));

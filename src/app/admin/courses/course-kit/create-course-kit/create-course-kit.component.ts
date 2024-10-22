@@ -68,6 +68,11 @@ export class CreateCourseKitComponent implements OnInit {
   videoLink: any;
   videoSrc: any;
   forms!: any[];
+  kitType: any[] = [
+    { code: 'course', label: 'Course' },
+    { code: 'scorm', label: 'Scorm' },
+  ];
+  isScormKit: boolean = false;
 
   constructor(
     private router: Router,
@@ -90,8 +95,7 @@ export class CreateCourseKitComponent implements OnInit {
         ...this.utils.validators.name,
         ...this.utils.validators.noLeadingSpace,
       ]),
-      documentLink: new FormControl('', [
-      ]),
+      documentLink: new FormControl('', []),
       shortDescription: new FormControl('', [
         ...this.utils.validators.descripton,
         ...this.utils.validators.noLeadingSpace,
@@ -100,8 +104,11 @@ export class CreateCourseKitComponent implements OnInit {
         ...this.utils.validators.longDescription,
         ...this.utils.validators.noLeadingSpace,
       ]),
-      videoLink: new FormControl('', [
-        ...this.utils.validators.noLeadingSpace,]),
+      videoLink: new FormControl('', [...this.utils.validators.noLeadingSpace]),
+      kitType: new FormControl('course', [
+        ...this.utils.validators.longDescription,
+        ...this.utils.validators.noLeadingSpace,
+      ]),
     });
 
     this.subscribeParams = this.activatedRoute.params.subscribe(
@@ -109,6 +116,18 @@ export class CreateCourseKitComponent implements OnInit {
         this.courseId = params.id;
       }
     );
+
+    this.courseKitForm.get('kitType')?.valueChanges.subscribe((value) => {
+      if (value === 'scorm') {
+        this.isScormKit = true;
+      this.courseKitForm.patchValue({
+        videoLink: '',
+        documentLink: '',
+      });
+      } else {
+        this.isScormKit = false;
+      }
+    });
   }
   dateValidator(group: FormGroup) {
     const startDate = group.get('startDate')?.value;
@@ -125,10 +144,11 @@ export class CreateCourseKitComponent implements OnInit {
   initCourseKitForm(): void {
     this.courseKitForm = this.formBuilder.group({
       name: ['', Validators.required],
-      shortDescription: ['',Validators.required],
-      longDescription: ['',Validators.required],
-      videoLink: ['',Validators.required],
-      documentLink: ['',[]],
+      shortDescription: ['', Validators.required],
+      longDescription: ['', Validators.required],
+      videoLink: ['', Validators.required],
+      documentLink: ['', []],
+      kitType: ['course', Validators.required],
     });
   }
   startDateChange(element: { end: any; start: any }) {
@@ -136,20 +156,21 @@ export class CreateCourseKitComponent implements OnInit {
   }
   ngOnInit(): void {
     this.getForms();
-    this.courseService.getAllCourseKit().subscribe((data) => {
-    });
+    this.courseService.getAllCourseKit().subscribe((data) => {});
   }
   submitCourseKit1() {
-    if(this.courseKitForm.valid) {
+    if (this.courseKitForm.valid) {
       const formdata = new FormData();
       if (this.docs) {
         formdata.append('files', this.docs);
       }
-      if (this.videoLink) {
+      if (this.videoLink && !this.isScormKit) {
         formdata.append('files', this.videoLink);
       }
-      formdata.append('video_filename', this.videoSrc || '');
-      formdata.append('doc_filename', this.uploadedDocument || '');
+      if (!this.isScormKit) {
+        formdata.append('video_filename', this.videoSrc || '');
+        formdata.append('doc_filename', this.uploadedDocument || '');
+      }
       Swal.fire({
         title: 'Uploading...',
         text: 'Please wait...',
@@ -158,27 +179,36 @@ export class CreateCourseKitComponent implements OnInit {
         timerProgressBar: true,
       });
       setTimeout(() => {
-        if(formdata){
-          this.courseService.saveVideo(formdata).subscribe((data) => {
-            const courseKitData: CourseKit = this.courseKitForm.value;
-            courseKitData.videoLink = data.data._id;
-           courseKitData.documentLink = data.data.document || '';
-            if(courseKitData){
-              this.createCourseKit(courseKitData);
-            }
-          });
+        if (formdata) {
+          if (this.isScormKit) {
+            this.courseService.saveScormKit(formdata).subscribe((data) => {
+              const courseKitData: CourseKit = this.courseKitForm.value;
+              delete courseKitData.videoLink;
+              delete courseKitData.documentLink;
+              courseKitData.scormKit = data.data._id;
+              if (courseKitData) {
+                this.createCourseKit(courseKitData);
+              }
+            });
+          } else {
+            this.courseService.saveVideo(formdata).subscribe((data) => {
+              const courseKitData: CourseKit = this.courseKitForm.value;
+              courseKitData.videoLink = data.data._id;
+              courseKitData.documentLink = data.data.document || '';
+              if (courseKitData) {
+                this.createCourseKit(courseKitData);
+              }
+            });
+          }
         }
       }, 5000);
-    }else{
+    } else {
       this.courseKitForm.markAllAsTouched();
     }
-  
-   
-    
   }
   private createCourseKit(courseKitData: CourseKit): void {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-        Swal.fire({
+    Swal.fire({
       title: 'Are you sure?',
       text: 'You want to create a course kit!',
       icon: 'warning',
@@ -187,7 +217,7 @@ export class CreateCourseKitComponent implements OnInit {
       cancelButtonColor: '#d33',
     }).then((result) => {
       if (result.isConfirmed) {
-         courseKitData.companyId=userId;
+        courseKitData.companyId = userId;
         this.courseService.createCourseKit(courseKitData).subscribe(
           (res) => {
             Swal.fire({
@@ -212,8 +242,8 @@ export class CreateCourseKitComponent implements OnInit {
 
   getForms(): void {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-        this.formService
-      .getAllForms(userId,'Course kit Creation Form')
+    this.formService
+      .getAllForms(userId, 'Course kit Creation Form')
       .subscribe((forms) => {
         this.forms = forms;
       });

@@ -7,7 +7,9 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "ng-high-memory": "node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng build"
+    "ng-high-memory,": "node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng build",
+    "dev": "node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng serve"
+
   },
   "private": true,
   "dependencies": {

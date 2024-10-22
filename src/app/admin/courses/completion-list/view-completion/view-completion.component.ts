@@ -171,7 +171,6 @@ export class ViewCompletionComponent implements OnInit {
         courseId:element.courseId._id,
         verify:true
       };
-
   
       Swal.fire({
         title: 'Are you sure?',
