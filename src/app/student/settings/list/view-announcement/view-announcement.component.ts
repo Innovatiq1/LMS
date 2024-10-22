@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnnouncementService } from '@core/service/announcement.service';
 import { AuthenService } from '@core/service/authen.service';
@@ -10,13 +11,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./view-announcement.component.scss']
 })
 export class ViewAnnouncementComponent {
-  breadscrums = [
-    {
-      title: 'Blank',
-      items: ['Announcement'],
-      active: 'View Announcement',
-    },
-  ];
+  breadcrumbs:any[] = []
 
   aboutData1!: any;
   subscribeParams: any;
@@ -24,15 +19,27 @@ export class ViewAnnouncementComponent {
   id?: number;
   isEdit = false;
   isDelete = false;
+  storedItems: string | null;
   
   constructor(
     private activatedRoute:ActivatedRoute,
     private announcementService: AnnouncementService,
     private router: Router,
     private cdr: ChangeDetectorRef,
-    private authenService: AuthenService
+    private authenService: AuthenService,
+    private sanitizer: DomSanitizer,
   ) {
-    
+    this.storedItems = localStorage.getItem('activeBreadcrumb');
+    if (this.storedItems) {
+     this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+     this.breadcrumbs = [
+       {
+         title: '', 
+         items: [this.storedItems],  
+         active: 'View Announcement ',  
+       },
+     ];
+   }
     this.subscribeParams = this.activatedRoute.params.subscribe((params:any) => {
       this.departmentId = params.id;
     });
@@ -56,7 +63,9 @@ export class ViewAnnouncementComponent {
       }
     this.loadData()
   }
-
+  getSafeHtml(html: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(html);
+  }
   loadData(){
   this.announcementService.getAnnouncementById(this.departmentId).subscribe((response:any)=>{
     this.aboutData1 = response.data.data;

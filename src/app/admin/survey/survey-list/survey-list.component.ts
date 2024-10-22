@@ -26,6 +26,7 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { AppConstants } from '@shared/constants/app.constants';
 import { AuthenService } from '@core/service/authen.service';
+import { CoursePaginationModel } from '@core/models/course.model';
 @Component({
   selector: 'app-survey-list',
   templateUrl: './survey-list.component.html',
@@ -56,6 +57,10 @@ export class SurveyListComponent
   // ];
   commonRoles: any;
   isView = false;
+  totalItems: any;
+  searchTerm: string = '';
+  pageSizeArr = [10, 25, 50, 100];
+  coursePaginationModel: Partial<CoursePaginationModel>;
   constructor(
     public httpClient: HttpClient,
     public dialog: MatDialog,
@@ -65,6 +70,7 @@ export class SurveyListComponent
     private authenService: AuthenService
   ) {
     super();
+    this.coursePaginationModel = {};
   }
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
@@ -122,6 +128,7 @@ export class SurveyListComponent
       }
     });
   }
+  
   generatePdf() {
     const doc = new jsPDF();
     const headers = [[[AppConstants.STUDENT_ROLE],'Course/Program Name' ]];
@@ -176,21 +183,52 @@ export class SurveyListComponent
       // confirmButtonColor: '#526D82',
     });
   }
+
   public loadData() {
-    this.exampleDatabase = new SurveyService(this.httpClient);
-    this.dataSource = new ExampleDataSource(
-      this.exampleDatabase,
-      this.paginator,
-      this.sort
-    );
-    this.subs.sink = fromEvent(this.filter.nativeElement, 'keyup').subscribe(
-      () => {
-        if (!this.dataSource) {
-          return;
-        }
-        this.dataSource.filter = this.filter.nativeElement.value;
-      }
-    );
+    // this.exampleDatabase = new SurveyService(this.httpClient);
+    // this.dataSource = new ExampleDataSource(
+    //   this.exampleDatabase,
+    //   this.paginator,
+    //   this.sort
+    // );
+    // this.subs.sink = fromEvent(this.filter.nativeElement, 'keyup').subscribe(
+    //   () => {
+    //     if (!this.dataSource) {
+    //       return;
+    //     }
+    //     this.dataSource.filter = this.filter.nativeElement.value;
+    //   }
+    // );
+    let filterProgram = this.searchTerm;
+    const payload = { ...this.coursePaginationModel,title:filterProgram };
+ 
+    this.surveyService.getSurveyList(payload)
+    .subscribe(response => {
+      this.isLoading = false;
+      this.totalItems = response.data.totalDocs
+
+      this.dataSource = response.data.docs;
+      this.coursePaginationModel.docs = response.data.docs;
+      this.coursePaginationModel.page = response.data.page;
+      this.coursePaginationModel.limit = response.data.limit;
+      this.coursePaginationModel.totalDocs = response.data.totalDocs;
+
+      // this.getJobTemplates();
+
+    }, (error) => {
+
+    });
+  }
+  pageSizeChange($event: any) {
+    this.coursePaginationModel.page = $event?.pageIndex + 1;
+    this.coursePaginationModel.limit = $event?.pageSize;
+    this.loadData();
+  }
+
+  performSearch() {
+    this.coursePaginationModel.page = 1;
+    this.paginator.pageIndex = 0;
+    this.loadData();
   }
 
   // export table data in excel file

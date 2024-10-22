@@ -50,7 +50,7 @@
                   <div>
                     <h5 class="float-end" style="margin-top: 100px;">All Courses</h5>
                   </div>
-                  <div class="col-green" style="cursor: pointer;" routerLink="/admin/courses/all-courses/course">
+                  <div class="col-green" style="cursor: pointer;" routerLink="/admin/courses/all-courses/course-name">
                     <h3 class="font-weight-bold float-end mb-0">{{count?.courses}}</h3>
                   </div>
                 </div>
@@ -116,7 +116,7 @@
                 <h2>
                   {{commonRoles.STUDENT_ROLE}}s Survey</h2>
               </div>
-              <div class="body" *ngIf="isSurveyBar">
+              <div class="body">
                 <apx-chart [series]="surveyBarChartOptions.series!" [chart]="surveyBarChartOptions.chart!"
                   [xaxis]="surveyBarChartOptions.xaxis!" [yaxis]="surveyBarChartOptions.yaxis!"
                   [colors]="surveyBarChartOptions.colors!" [stroke]="surveyBarChartOptions.stroke!"
@@ -136,7 +136,7 @@
               <div class="float-start ms-3 me-3">
                 <h5>{{count?.users}} Users(All) <span class="text-muted font-12"></span></h5>
               </div>
-              <div class="body" *ngIf="isUsersPie" style="cursor: pointer;" >
+              <div class="body" style="cursor: pointer;" >
                 <apx-chart [series]="polarChartOptions.series2!" [chart]="polarChartOptions.chart!"
                   [labels]="polarChartOptions.labels!" [title]="polarChartOptions.title!" [theme]="polarChartOptions.theme!"
                   [fill]="polarChartOptions.fill!" [yaxis]="polarChartOptions.yaxis!" [stroke]="polarChartOptions.stroke!"
@@ -209,7 +209,7 @@
                     </thead>
                     <tbody>
                       <tr *ngFor="let class of classesList " style="cursor: pointer;"
-                        [routerLink]="['/admin/courses/timetable/class-list/view-class/',class.id]">
+                        [routerLink]="['/admin/courses/class-list/view-class/',class.id]">
                         <!-- <td class="table-img">
                     <img src="{{class?.courseId?.image_link}}" alt="course">
                   </td> -->
@@ -422,7 +422,7 @@
                   <div *ngFor="let announcement of announcements.reverse()" class="notice-board">
                     <div class="notice-body">
                       <h5 class="notice-heading col-green">{{announcement?.announcementBy?.name}}</h5>
-                      <p [innerHTML]="announcement?.details | truncate:150"></p>
+                      <p [innerHTML]="getSafeHtml(announcement?.details)"></p>
                       <small class="text-muted float-end">{{announcement?.createdAt | date}}</small>
                     </div>
                   </div>

@@ -37,7 +37,6 @@ export class FormDialogComponent {
     // Set the defaults
     this.action = data.action;
     if (this.action === 'edit') {
-      console.log(data.studentAttendance.date);
       this.dialogTitle = data.studentAttendance.sName;
       this.studentAttendance = data.studentAttendance;
     } else {
@@ -59,7 +58,6 @@ export class FormDialogComponent {
       : '';
   }
   createContactForm(): UntypedFormGroup {
-    console.log(this.studentAttendance.id);
     return this.fb.group({
       id: [this.studentAttendance.id],
       img: [this.studentAttendance.img],

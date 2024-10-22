@@ -77,10 +77,10 @@ export class AddExamQuestionsComponent implements OnInit, OnDestroy{
 
     this.questionFormTab2 = this.formBuilder.group({
       name: ['', Validators.required],
-      timer: [15],
-      retake:[1],
+      timer: [],
+      retake:[],
       passingCriteria:['', Validators.required],
-      scoreAlgorithm:[1, [Validators.required,Validators.min(0.1)]],
+      scoreAlgorithm:[, [Validators.required,Validators.min(0.1)]],
       questions: this.formBuilder.array([]),
     });
     if (!this.editUrl) {
@@ -111,6 +111,7 @@ export class AddExamQuestionsComponent implements OnInit, OnDestroy{
    }
    startAutoSave() {
     setTimeout(() => {
+      console.log('draftSubscription')
       if (!this.draftSubscription) {
         this.draftSubscription = timer(0, 30000).subscribe(() => {
           this.saveDraft();
@@ -126,6 +127,24 @@ export class AddExamQuestionsComponent implements OnInit, OnDestroy{
     }
   }
 saveDraft(data?: string) {
+  const formValues = this.questionFormTab2.value;
+    const isFormEmpty = !formValues.name &&
+    !formValues.timer &&
+    !formValues.retake &&
+    !formValues.passingCriteria &&
+    !formValues.scoreAlgorithm
+    
+                  if (isFormEmpty && data) {
+                        // If the form is empty, do not make the API call
+                        Swal.fire({
+                          title: 'Warning',
+                          text: 'Please fill in at least one field to save as draft.',
+                          icon: 'warning',
+                        });
+                        return; // Exit the function early
+                      }
+
+  if (!isFormEmpty) {
   let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
         const payload = {
           draftId: this.draftId,
@@ -153,7 +172,7 @@ saveDraft(data?: string) {
                 }
               },
             );
-  }
+  }}
    loadData(){
     this.studentId = localStorage.getItem('id')
     this.studentsService.getStudentById(this.studentId).subscribe(res => {
@@ -315,6 +334,13 @@ saveDraft(data?: string) {
         } else {
           this.questions.removeAt(questionIndex);
         }
+        Swal.fire({
+          title: 'Deleted!',
+          text: 'Deleted successfully.',
+          icon: 'success',
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'OK',
+        });
       }
     });
   }

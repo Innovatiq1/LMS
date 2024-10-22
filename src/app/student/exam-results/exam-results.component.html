@@ -7,7 +7,7 @@
           <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="card">
-                  <div class="materialTableHeader">
+                  <!-- <div class="materialTableHeader">
                     <div class="right">
                       <ul class="tbl-export-btn">
                        <li>
@@ -21,27 +21,27 @@
                 </li>
                 </ul>
               </div>
-                    </div>
+                    </div> -->
                     <div class="body overflow-auto">
                         <div class="responsive_table">
                           <table mat-table matSort [dataSource]="dataSource" class="mat-cell advance-table">
                             <!-- Course Code -->
                             <ng-container matColumnDef="Course Title">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header>Course
+                              <mat-header-cell *matHeaderCellDef>Course
                               </mat-header-cell>
                               <mat-cell *matCellDef="let row">
                                 <span class="mobile-label">Course Title:</span>{{row?.courseId?.title | titlecase}}</mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="Exam Name">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header> Exam
+                                <mat-header-cell *matHeaderCellDef> Exam
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let row">
                                   <span class="mobile-label">Exam Name:</span>{{ row?.examAssessmentId?.name | capitalizeFirstLetter }}
                                 </mat-cell>
                               </ng-container>
                             <ng-container matColumnDef="Exam Score">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>Exam Score
+                                <mat-header-cell *matHeaderCellDef>Exam Score
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let row">
                                   <span class="mobile-label">Exam Score:</span>{{ row?.score }} / {{row?.totalScore}}
@@ -49,7 +49,7 @@
                               </ng-container>
 
                               <ng-container matColumnDef="Submitted At">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>Submitted At
+                                <mat-header-cell *matHeaderCellDef>Submitted At
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let row">
                                   <span class="mobile-label">Submitted At:</span>{{ row?.submittedAt  | date: 'MM/dd/yyyy' }}
@@ -57,7 +57,7 @@
                               </ng-container>
 
                               <ng-container matColumnDef="Retakes left">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>Retakes left
+                                <mat-header-cell *matHeaderCellDef>Retakes left
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let row">
                                   <span class="mobile-label">Retakes left:</span>{{ row?.retakeLeft || 0 }}
@@ -65,23 +65,23 @@
                               </ng-container>
 
                               <ng-container matColumnDef="Exam">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>Exam</mat-header-cell>
+                                <mat-header-cell *matHeaderCellDef>Exam</mat-header-cell>
                                 <mat-cell *matCellDef="let row">
                                   <button 
                                     [disabled]="(row.retakeLeft <= 0||row.studentClassId.certificate)"
                                     (click)="handleRetakeTest(row)"
-                                    mat-flat-button color="primary">
-                                    Retake Test
+                                    mat-raised-button  id="submit1">
+                                    Retake Exam
                                   </button>
                                 </mat-cell>
                               </ng-container>
                               <ng-container matColumnDef="Request Retake">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>Request Retake</mat-header-cell>
+                                <mat-header-cell *matHeaderCellDef>Request Retake</mat-header-cell>
                                 <mat-cell *matCellDef="let row">
                                   <button
                                   [disabled]="!(row.retakeLeft == 0 && !row.studentClassId.certificate)" 
                                           mat-flat-button
-                                          color="accent"
+                                          color="accent" class="request"
                                           (click)="onRequestRetake(row)">
                                     Request Retake
                                   </button>

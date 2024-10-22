@@ -12,6 +12,7 @@ import { TableElement, TableExportUtil } from '@shared';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import Swal from 'sweetalert2';
+import { AppConstants } from '@shared/constants/app.constants';
 
 
 @Component({
@@ -43,6 +44,7 @@ export class PaymentReportComponent {
   dataSource: any;
   coursePaginationModel!: Partial<CoursePaginationModel>;
   searchTerm: string = '';
+  commonRoles: any;
  
 
   constructor(private router: Router, private formBuilder: FormBuilder,
@@ -57,6 +59,7 @@ export class PaymentReportComponent {
 
   
   ngOnInit(): void {
+    this.commonRoles = AppConstants
    this.getAllCourse();
   }
   getAllCourse(){

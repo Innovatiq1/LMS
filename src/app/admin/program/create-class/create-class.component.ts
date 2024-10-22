@@ -183,6 +183,7 @@ export class CreateClassComponent {
           companyId:userId
         }),
       }).subscribe((response) => {
+        console.log(response)
         this.programList = response.courses;
         this.instructorList = response.instructors;
         this.cd.detectChanges();
@@ -193,10 +194,10 @@ export class CreateClassComponent {
     if (this.editUrl) {
       let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
       forkJoin({
-        courses: this.courseService.getCourseProgram({
+        courses: this.courseService.getCourseProgram(userId,{
           ...this.coursePaginationModel,
           status: 'active',
-        },userId),
+        }),
         instructors: this.instructorService.getInstructor({
           type: this.commonRoles?.INSTRUCTOR_ROLE,
           companyId:userId
@@ -206,7 +207,6 @@ export class CreateClassComponent {
         this.programList = response.courses.docs;
         this.instructorList = response.instructors;
         let item = response.class;
-        console.log("patchvalue=",item.courseId?.id)
         this.classForm.patchValue({
           
           courseId: item.courseId?.id,
@@ -224,16 +224,17 @@ export class CreateClassComponent {
           sessions: item?.sessions,
           userGroupId: item?.userGroupId
         });
+        
         item.sessions.forEach((item: any) => {
-          let sessionStartDate = item.sessionStartDate.split('T')[0];
-          let sessionEndDate = item.sessionEndDate.split('T')[0];
-
+          const start = moment(`${moment(item.sessionStartDate).format('YYYY-MM-DD')}T${item.sessionStartTime}`).format();
+          const end = moment(`${moment(item.sessionEndDate).format('YYYY-MM-DD')}T${item.sessionEndTime}`).format();
+      
           this.dataSourceArray.push({
-            start: sessionStartDate,
-            end: sessionEndDate,
-            instructor: item.instructorId?.id,
+              start: start,
+              end: end,
+              instructor: item.instructorId?.id,
           });
-        });
+      });
         this.dataSource = this.dataSourceArray;
         this.cd.detectChanges();
       });
@@ -310,13 +311,14 @@ export class CreateClassComponent {
       instructorCostCurrency: ['USD'],
       currency: [''],
       department: ['', [Validators.required]],
+      userGroupId: ['', [Validators.required]],
       isGuaranteedToRun: [false, [Validators.required]],
       externalRoom: [false],
       minimumEnrollment: ['', [Validators.required]],
       maximumEnrollment: ['', [Validators.required]],
       classStartDate: ['2023-05-20'],
       classEndDate: ['2023-06-10'],
-      userGroupId: [null]
+      // userGroupId: ['',[Validators.required]]
     });
     this.secondFormGroup = this._fb.group({
       sessions: ['', [Validators.required]],
@@ -358,9 +360,12 @@ export class CreateClassComponent {
   getSession() {
     let sessions: any = [];
     this.dataSource.forEach((item: any, index: any) => {
+      // if (
+      //   this.isInstructorFailed == 0 &&
+      //   item.instructor != '0'
+      // )
       if (
-        this.isInstructorFailed == 0 &&
-        item.instructor != '0'
+        this.isInstructorFailed === 0
       ) {
         sessions.push({
           sessionNumber: index + 1,
@@ -368,7 +373,7 @@ export class CreateClassComponent {
           sessionEndDate: moment(item.end).format('YYYY-MM-DD'),
           sessionStartTime: moment(item.start).format('HH:mm'),
           sessionEndTime: moment(item.end).format('HH:mm'),
-          instructorId: item.instructor,
+          instructorId: item.instructor||'',
           courseName: this.courseTitle,
           courseCode: this.courseCode,
           status: 'Pending',

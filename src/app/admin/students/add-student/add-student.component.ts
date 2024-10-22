@@ -44,7 +44,6 @@ export class AddStudentComponent {
     private courseService: CourseService,
   ) {
     this.activatedRoute.queryParams.subscribe((params: any) => {
-      console.log('id', params);
       this.StudentId = params.id;
       this.patchValues(this.StudentId);
     });
@@ -150,7 +149,6 @@ export class AddStudentComponent {
   //   }
   // }
   onSubmit() {
-    console.log('Form Value', this.stdForm.value);
     if (!this.stdForm.invalid) {
         const userData: Student = this.stdForm.value;
         
@@ -206,7 +204,6 @@ export class AddStudentComponent {
 getDepartment(){
   this.StudentService.getAllDepartments().subscribe((response: any) =>{
     this.dept = response.data.docs;
-    console.log("dept",this.dept)
    })
 
 }
@@ -221,7 +218,6 @@ getDepartment(){
 
 
   patchValues(id: string) {
-    console.log('ids', id);
     if (id != undefined) {
       this.viewUrl = true;
       this.edit = true;
@@ -233,7 +229,6 @@ getDepartment(){
       let image  = this.uploaded?.pop();
       this.uploaded= image?.split('\\');
       this.fileName = this.uploaded?.pop();
-        console.log('editdata', this.editData);
         // this.stdForm.get('department')?.setValue(this.editData.department);
         this.stdForm.patchValue({
           name: this.editData.name,
@@ -346,7 +341,6 @@ getDepartment(){
   //   }
   // }
   update() {
-    console.log('Form Value', this.stdForm.value);
 
     // Check if the form is valid
     if (this.stdForm.valid) {

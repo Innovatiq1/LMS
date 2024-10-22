@@ -34,7 +34,7 @@
                       formControlName="courseId"
                       (selectionChange)="onSelectChange($event)"
                     >
-                      <mat-option> Choose Program Name... </mat-option>
+                      <mat-option> Choose Program... </mat-option>
                       <mat-option
                         *ngFor="let programName of programList"
                         [value]="programName.id"
@@ -48,7 +48,7 @@
                         classForm.get('courseId')?.touched
                       "
                     >
-                      Enter Program Name.
+                      Select Program
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -73,7 +73,7 @@
                         classForm.get('classDeliveryType')?.touched
                       "
                     >
-                      Enter Class Delivery Type .
+                      Select Class delivery
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -99,7 +99,7 @@
                         classForm.get('instructorCost')?.touched
                       "
                     >
-                      Enter {{commonRoles?.INSTRUCTOR_ROLE}} Fee .
+                      Enter {{commonRoles?.INSTRUCTOR_ROLE}} Fee
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -123,7 +123,7 @@
                         classForm.get('minimumEnrollment')?.touched
                       "
                     >
-                      Enter Minimum {{commonRoles.STUDENT_ROLE}}s.
+                      Enter Minimum {{commonRoles.STUDENT_ROLE}}s
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -146,7 +146,7 @@
                         classForm.get('maximumEnrollment')?.touched
                       "
                     >
-                      Enter Maximum {{commonRoles.STUDENT_ROLE}}s.
+                      Enter Maximum {{commonRoles.STUDENT_ROLE}}s
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -210,13 +210,32 @@
                     <mat-error
                       *ngIf="classForm.get('department')?.hasError('required')"
                     >
-                      Select Any Department
+                      Select Department
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" >
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <div class="button-container">
-                    <label>Select User Group </label>
+                    <label>Select User Group</label> <span class="mandatory">&nbsp;*</span>
+                  </div>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-select formControlName="userGroupId" multiple required>
+                      <mat-option #allSelected (click)="toggleAllSelection()" [value]="0">
+                        All
+                      </mat-option>
+                      <mat-option [value]="userGroup.id" *ngFor="let userGroup of userGroups">
+                        {{ userGroup.group_name }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="classForm.get('userGroupId')?.hasError('required') && classForm.get('userGroupId')?.touched">
+                      Select User Group
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                
+                <!-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" >
+                  <div class="button-container">
+                    <label>Select User Group <span class="mandatory">&nbsp;*</span></label>
                   </div>
                   <mat-form-field
                     class="example-full-width mb-3"
@@ -236,8 +255,13 @@
                         {{ userGroup.group_name }}
                       </mat-option>
                     </mat-select>
+                    <mat-error
+                    *ngIf="classForm.get('userGroupId')?.hasError('required')"
+                  >
+                    Select Any User Group
+                  </mat-error>
                   </mat-form-field>
-                </div>
+                </div> -->
                 <!-- <div
                   class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mt-3"
                   *ngIf="labelStatusCheck('Is Guaranteed To Run')"
@@ -418,8 +442,8 @@
                     />
                     <mat-icon matSuffix [owlDateTimeTrigger]="date" class="date-icon">today</mat-icon>
                     <owl-date-time #date></owl-date-time>
-                    <mat-error *ngIf="startDate.invalid && startDate.touched">
-                      Select a Date
+                    <mat-error *ngIf="startDate.invalid && (startDate.touched || form.submitted)">
+                      Select Start Date
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -439,20 +463,19 @@
                     />
                     <mat-icon matSuffix [owlDateTimeTrigger]="date2" class="date-icon">today</mat-icon>
                     <owl-date-time #date2></owl-date-time>
-                    <mat-error *ngIf="endDate.invalid && endDate.touched">
-                      Select a Date 
+                    <mat-error *ngIf="endDate.invalid && (endDate.touched || form.submitted)">
+                      Select End Date 
                     </mat-error>
                   </mat-form-field>
                 </div>
           
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
-                  <label for="instructor">Select {{commonRoles?.INSTRUCTOR_ROLE}}<span class="mandatory">&nbsp;*</span></label>
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12" *ngIf="labelStatusCheck('Select Trainer')">
+                  <label for="instructor" >Select {{commonRoles?.INSTRUCTOR_ROLE}}</label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <mat-select
                       id="instructor"
                       [(ngModel)]="element.instructor"
                       name="instructor"
-                      required
                       #instructor="ngModel"
                       (selectionChange)="onSelectChange1($event, element)"
                       (change)="onChangeInstructor(element, index)"
@@ -462,7 +485,7 @@
                       </mat-option>
                     </mat-select>
                     <mat-error *ngIf="instructor.invalid && instructor.touched">
-                      Please select an {{commonRoles?.INSTRUCTOR_ROLE}}
+                      Select {{commonRoles?.INSTRUCTOR_ROLE}}
                     </mat-error>
                   </mat-form-field>
                 </div>

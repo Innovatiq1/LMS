@@ -1,7 +1,7 @@
 <section class="content">
   <div class="content-block">
-    <div class="block-header" *ngFor="let breadscrum of breadscrums">
-      <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active"></app-breadcrumb>
+    <div class="block-header" *ngFor="let breadscrum of breadcrumbs">
+      <app-static-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active"></app-static-breadcrumb>
     </div>
     <div class="row clearfix">
       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
@@ -16,9 +16,12 @@
             <div *ngIf="!viewUrl" class="form-row">
             <form [formGroup]="certificateForm">
               <div class="form-group">
-                <label for="certificate-title">Certificate Title</label>
+                <label for="certificate-title">Certificate Title<span class="mandatory">&nbsp;*</span></label>
                 <mat-form-field appearance="outline" style="width: 100%;">
                   <input matInput id="certificate-title" placeholder="Enter Certificate Title" formControlName="title" />
+                  <mat-error *ngIf="certificateForm.get('title')?.hasError('required') && certificateForm.get('title')?.touched">
+                    Enter Certificate title
+                  </mat-error>
                 </mat-form-field>
               </div>
             </form>
@@ -41,9 +44,10 @@
               <!-- Background Image Upload -->
               <div class="form-group">
                 <label>Background Image</label>
-                <div class="file-drop-area">
+                <div class="file-drop-area" (dragover)="onDragOver($event)"
+                    (drop)="onDrop($event)">
                   <div class="file">
-                    <button mat-raised-button color="primary" class="btn">
+                    <button mat-raised-button color="primary" class="btn" >
                       Choose file
                       <input formControlName="image_link" (change)="onFileUpload($event)" class="file-input" type="file" />
                     </button>
@@ -87,6 +91,7 @@
                   />
                   <button
                     mat-raised-button
+                    id="submit"
                     color="primary"
                     class="insert-button"
                     (click)="insertElement()"
@@ -127,7 +132,7 @@
 
             <!-- Certificate Preview -->
             <div class="certificate-preview">
-              <div
+              <div #backgroundTable
                 class="certificate-canvas"
                 [ngStyle]="{
                   'background-image': 'url(' + image_link + ')',
@@ -137,7 +142,7 @@
                   'background-size': '100% 100%',
                   'border': '0.5px solid lightgray',
                   'height': '700px',
-                  'width': '800px',
+                  'width': '700px',
                   'position': 'relative'
                 }"
                 (drop)="onDrop($event)"
@@ -192,7 +197,17 @@
                         </div>
                       </ng-container>
                       <ng-container *ngIf="element.type === 'Signature';">
+                        <div
+                          class="resizable-logo"
+                          [ngStyle]="{
+                            width: element.width + 'px',
+                            height: element.height + 'px'
+                          }"
+                          (mousedown)="startResizing($event, i)"
+                        >
                         <img [src]="element.imageUrl" alt="Signature" style="max-width: 100%; height: auto;">
+                        <div class="resizer"></div>
+                        </div>
                       </ng-container>
                       
 

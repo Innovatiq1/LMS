@@ -148,24 +148,23 @@ export class CreateClassComponent {
     if(this.classId){
       this.breadscrums = [
         {
-          title: 'Edit Class',
-          items: ['Course Class'],
-          active: 'Edit Course Class',
+          title: 'Edit Course Batch',
+          items: ['Course Batch'],
+          active: 'Edit Course Batch',
         },
       ];
     }else{
       this.breadscrums = [
         {
-          title: 'Create Class',
-          items: ['Course Class'],
-          active: 'Create Course Class',
+          title: 'Create Course Batch',
+          items: ['Course Batch'],
+          active: 'Create Course Batch',
         },
       ];
     }
 
 
     this.instructorService.getInstructorLists(payload).subscribe((res) => {
-      console.log("userrs",res)
       this.instructorList = res;
     });
 
@@ -221,6 +220,7 @@ export class CreateClassComponent {
       instructorCost: ['', Validators.required],
       instructorCostCurrency: ['USD'],
       department:['',Validators.required],
+      userGroupId: ['', [Validators.required]],
       currency: [''],
       isGuaranteedToRun: [false, Validators.required],
       externalRoom: [false],
@@ -228,7 +228,7 @@ export class CreateClassComponent {
       maximumEnrollment: ['', Validators.required],
       classStartDate: ['2023-05-20'],
       classEndDate: ['2023-06-10'],
-      userGroupId: [null]
+      // userGroupId: [null]
     });
     this.secondFormGroup = this._fb.group({
       sessions: ['', Validators.required],
@@ -260,13 +260,16 @@ export class CreateClassComponent {
         userGroupId: item?.userGroupId
       });
       item.sessions.forEach((item: any) => {
-
+        const start = moment(`${moment(item.sessionStartDate).format('YYYY-MM-DD')}T${item.sessionStartTime}`).format();
+        const end = moment(`${moment(item.sessionEndDate).format('YYYY-MM-DD')}T${item.sessionEndTime}`).format();
+    
         this.dataSourceArray.push({
-          start: `${moment(item.sessionStartDate).format('YYYY-MM-DD')}`,
-          end: `${moment(item.sessionEndDate).format('YYYY-MM-DD')}`,
-          instructor: item.instructorId?.id,
+            start: start,
+            end: end,
+            instructor: item.instructorId?.id,
         });
-      });
+    });
+    
       this.dataSource = this.dataSourceArray;
       this.cd.detectChanges();
     });
@@ -303,20 +306,42 @@ export class CreateClassComponent {
       panelClass: colorName,
     });
   }
+  // getSession() {
+  //   let sessions: any = [];
+  //   this.dataSource.forEach((item: any, index: any) => {
+  //     if (
+  //       this.isInstructorFailed == 0 &&
+  //       item.instructor != '0'
+  //     ) {
+  //       sessions.push({
+  //         sessionNumber: index + 1,
+  //         sessionStartDate: moment(item.start).format('YYYY-MM-DD'),
+  //         sessionEndDate: moment(item.end).format('YYYY-MM-DD'),
+  //         sessionStartTime: moment(item.start).format('HH:mm'),
+  //         sessionEndTime: moment(item.end).format('HH:mm'),
+  //         instructorId: item.instructor||null,
+  //         courseName: this.courseTitle,
+  //         courseCode: this.courseCode,
+  //         status: 'Pending',
+  //         user_id: this.user_id,
+  //       });
+  //     } else {
+  //       sessions = null;
+  //     }
+  //   });
+  //   return sessions;
+  // }
   getSession() {
     let sessions: any = [];
     this.dataSource.forEach((item: any, index: any) => {
-      if (
-        this.isInstructorFailed == 0 &&
-        item.instructor != '0'
-      ) {
+      if (this.isInstructorFailed === 0) {
         sessions.push({
           sessionNumber: index + 1,
           sessionStartDate: moment(item.start).format('YYYY-MM-DD'),
           sessionEndDate: moment(item.end).format('YYYY-MM-DD'),
           sessionStartTime: moment(item.start).format('HH:mm'),
           sessionEndTime: moment(item.end).format('HH:mm'),
-          instructorId: item.instructor,
+          instructorId: item.instructor ||'', // Allow null if instructor is not selected
           courseName: this.courseTitle,
           courseCode: this.courseCode,
           status: 'Pending',
@@ -328,6 +353,7 @@ export class CreateClassComponent {
     });
     return sessions;
   }
+  
   toggleAllSelection() {
     if (this.allSelected.selected) {
       this.classForm.controls['userGroupId']
@@ -391,7 +417,8 @@ export class CreateClassComponent {
         });
 
       }
-    } else {
+    }
+     else {
       if (sessions) {
         this.classForm.value.sessions = sessions;
         this.classForm.value.courseName = this.courseTitle
@@ -417,7 +444,7 @@ export class CreateClassComponent {
                   icon: 'success',
                 });
               }
-              this.router.navigateByUrl(`/timetable/class-list`);
+              window.history.back();
             });
           }
         });

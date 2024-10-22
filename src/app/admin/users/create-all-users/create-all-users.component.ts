@@ -142,11 +142,9 @@ export class CreateAllUsersComponent {
 
   // }
   addBlog(formObj: any) {
-    console.log('Form Value', formObj);
     if (!formObj.invalid) {
       // Process form data without uploading anything
       // Additional logic can be added here as needed
-      console.log('======', formObj.type);
       formObj['Active'] = this.status;
       formObj['role'] = formObj.type;
       formObj['isLogin'] = true;
@@ -306,7 +304,6 @@ export class CreateAllUsersComponent {
   //   }
   // }
   updateBlog(formObj: any) {
-    console.log('Form Value', formObj);
     if (!formObj.invalid) {
       // Prepare user data for update
       formObj['Active'] = this.status;
@@ -427,7 +424,6 @@ export class CreateAllUsersComponent {
     });
 
     this.activeRoute.queryParams.subscribe((params) => {
-      console.log('params', params['id']);
     });
   }
 
@@ -478,7 +474,6 @@ export class CreateAllUsersComponent {
 
     this.userService.getUserById(this.currentId).subscribe(
       (response: any) => {
-        console.log('listing user', response);
         this.data = response.data.data;
         // this.fileName = this.data.filename
         this.avatar = this.data?.avatar;

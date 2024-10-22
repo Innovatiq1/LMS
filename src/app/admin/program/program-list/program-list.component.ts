@@ -83,7 +83,7 @@ export class ProgramListComponent {
   users: any;
   selectedCreators: any = [];
   filterForm!: FormGroup
-
+  filterBody: any = {};
 row: any;
   programsData: any;
   create = false;
@@ -213,30 +213,30 @@ clearFilter() {
 }
 
 applyFilter() {
-  
-  let body: any = {};
+
+  this.filterBody = {};
 
   if (this.selectedPrograms.length > 0) {
-    body.title = this.selectedPrograms;
+    this.filterBody.title = this.selectedPrograms;
   }
   if (this.selectedVendors.length > 0) {
-    body.vendor = this.selectedVendors;
+    this.filterBody.vendor = this.selectedVendors;
   }
   if (this.selectedStatus.length > 0) {
-    body.status = this.selectedStatus;
+    this.filterBody.status = this.selectedStatus;
   }
   if (this.selectedCreators.length > 0) {
-    body.creator = this.selectedCreators;
+    this.filterBody.creator = this.selectedCreators;
   }
    if (this.selectedCreators.length > 0) {
-    body.creator = this.selectedCreators;
+    this.filterBody.creator = this.selectedCreators;
   }
   this.coursePaginationModel.page = 1;
   this.paginator.pageIndex = 0;
-  this.courseService.getFilteredProgramData(body, { ...this.coursePaginationModel }).subscribe((response) => {
+  this.courseService.getFilteredProgramData(this.filterBody, { ...this.coursePaginationModel }).subscribe((response) => {
     this.programData = response.data.docs;
     this.totalItems = response.data.totalDocs;
-    this.isFiltered = false;
+    this.isFiltered = true;
     this.coursePaginationModel.docs = response.data.docs;
     this.coursePaginationModel.page = response.data.page;
     this.coursePaginationModel.limit = response.data.limit;
@@ -333,9 +333,23 @@ getFilterData(filters?: any) {
   pageSizeChange($event: any) {
     this.coursePaginationModel.page = $event?.pageIndex + 1;
     this.coursePaginationModel.limit = $event?.pageSize;
-  
+
     if (this.isFiltered) {
-      this.applyFilter();
+      this.courseService.getFilteredProgramData(this.filterBody, { ...this.coursePaginationModel }).subscribe(
+        (response: any) => {
+            this.isLoading = false;
+            this.programData = response.data.docs;
+            this.totalItems = response.data.totalDocs;
+            this.isFiltered = true;
+            this.coursePaginationModel.docs = response.data.docs;
+            this.coursePaginationModel.page = response.data.page;
+            this.coursePaginationModel.limit = response.data.limit;
+            this.coursePaginationModel.totalDocs = response.data.totalDocs;
+          },
+          (error) => {
+            this.isLoading = false;
+          }
+        );
     } else {
       this.getProgramList();
     }
@@ -365,7 +379,7 @@ getFilterData(filters?: any) {
     this.getAllVendorsAndUsers();
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     forkJoin({
-      courses: this.courseService.getAllProgramsWithoutPagination({ ...this.coursePaginationModel},userId),
+      courses: this.courseService.getAllProgramsWithoutPagination({ ...this.coursePaginationModel,},userId),
     }).subscribe((response) => {
       this.programList = response.courses;
     });
@@ -403,16 +417,10 @@ getFilterData(filters?: any) {
   
 
 performSearch() {
-  // if(this.searchTerm){
-  // this.programData = this.programData?.filter((item: any) =>{
-  //   const searchList = (item.title).toLowerCase();
-  //   return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1
-  // }
-  // );
-  // } else {
+  this.coursePaginationModel.page = 1;
+    this.paginator.pageIndex = 0;
     this.getProgramList();
 
-  // }
 }
 
 viewActiveProgram(id:string, status: string):void {

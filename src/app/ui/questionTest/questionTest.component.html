@@ -80,8 +80,7 @@
             *ngIf="!isAnswersSubmitted"
           >
             <button
-              mat-flat-button
-              color="primary"
+            mat-raised-button  id="submit"
               (click)="confirmSubmit()"
               class="me-2"
             >
@@ -180,10 +179,9 @@
           *ngIf="isAnswersSubmitted"
         >
           <button
-            mat-flat-button
-            color="primary"
+          mat-raised-button  id="submit"
             class="mls-2"
-            [routerLink] = "['/student/enrollment/exam']"
+            [routerLink] = "['/student/enrollment/assessment-exam']"
           >
             Retake
           </button>

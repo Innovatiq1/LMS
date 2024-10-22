@@ -19,13 +19,7 @@ import { FormService } from '@core/service/customization.service';
   styleUrls: ['./creat-announcement.component.scss']
 })
 export class CreatAnnouncementComponent {
-  breadscrums = [
-    {
-      title: 'Create Announcement',
-      items: ['Announcement'],
-      active: 'Create Announcement',
-    },
-  ];
+  breadcrumbs:any[]=[];
   create = true;
   status = true;
   isChecked = false;
@@ -59,25 +53,25 @@ export class CreatAnnouncementComponent {
     translate: 'no',
     defaultParagraphSeparator: 'p',
     defaultFontName: 'Arial',
-    toolbarHiddenButtons: [
-      ['bold']
-      ],
-    customClasses: [
-      {
-        name: "quote",
-        class: "quote",
-      },
-      {
-        name: 'redText',
-        class: 'redText'
-      },
-      {
-        name: "titleText",
-        class: "titleText",
-        tag: "h1",
-      },
-    ]
+    sanitize: false,
+    toolbarHiddenButtons: [[
+      'subscript',
+      'superscript',
+      'indent',
+      'outdent',
+      'insertOrderedList',
+      'insertUnorderedList',
+      'fontName',
+      'heading',
+      'customClasses',
+      'removeFormat',
+      'toggleEditorMode',
+      'link',
+      'unlink',
+      'insertVideo'
+  ]],
   };
+  storedItems: string | null;
 
   toggleStatus() {
     this.status = !this.status;
@@ -108,6 +102,19 @@ cancel(){
   constructor(private router: Router, public classService: ClassService, public utils: UtilsService, private formBuilder: FormBuilder,
     private formService: FormService,
     private announcementService: AnnouncementService,private adminService: AdminService,) {
+
+      
+  this.storedItems = localStorage.getItem('activeBreadcrumb');
+  if (this.storedItems) {
+   this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+   this.breadcrumbs = [
+     {
+       title: '', 
+       items: [this.storedItems],  
+       active: 'Create Announcement',  
+     },
+   ];
+ }
       this.forms = [];
     let urlPath = this.router.url.split('/')
     this.editUrl = urlPath.includes('edit-announcement');
@@ -116,7 +123,7 @@ cancel(){
     this.currentId = urlPath[urlPath.length - 1];
 
     if (this.editUrl === true) {
-      this.breadscrums = [
+      this.breadcrumbs = [
         {
           title: 'Edit Announcement',
           items: ['Announcement'],
@@ -125,7 +132,7 @@ cancel(){
       ];
     }
     else if(this.viewUrl===true){
-      this.breadscrums = [
+      this.breadcrumbs = [
         {
           title:'View Announcement',
           items: ['Announcement'],
@@ -133,7 +140,7 @@ cancel(){
         },
       ];
     }
-      this.getAnnouncementList()
+      this.getAnnouncementList( this.currentId)
 
     this.announcementForm = this.formBuilder.group({
       subject: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0-9]/)]),
@@ -262,24 +269,35 @@ cancel(){
     this.instructors = event.target.checked
   }
 
+  getAnnouncementById(){
 
-  getAnnouncementList(filter?: any) {
+  }
+
+  getAnnouncementList(filter: any) {
     this.isLoading = true;
-    this.announcementService.getAnnouncementList(filter).subscribe(response => {
+    this.announcementService.getAnnouncementById(filter).subscribe(response => {
       this.isLoading = false;
       this.announcementList = response.data.data;
-      let data = this.announcementList.find((id: any) => id._id === this.currentId);
-      if (data) {
+      this.announcementForm.patchValue({
+        subject: this.announcementList?.subject,
+        details: this.announcementList?.details,
+        announcementFor: Array.isArray(this.announcementList?.announcementFor)
+          ? this.announcementList?.announcementFor
+          : [this.announcementList?.announcementFor], 
+      });
+      // let data = this.announcementList.find((id: any) => id._id === this.currentId);
+      // if (data) {
 
-        let anuFor:any =[];
-        anuFor.push(data.announcementFor)
-       let anuce = anuFor.map((res:any) => res).toString().replace(' / ',',').split(',');
-        this.announcementForm.patchValue({
-          subject: data?.subject,
-          details: data?.details,
-          announcementFor: anuce,
-        });
-      }
+      //   let anuFor:any =[];
+      //   anuFor.push(data.announcementFor)
+      //  let anuce = anuFor.map((res:any) => res).toString().replace(' / ',',').split(',');
+  
+      //   this.announcementForm.patchValue({
+      //     subject: data?.subject,
+      //     details: data?.details,
+      //     announcementFor: anuce,
+      //   });
+      // }
     }, error => {
       this.isLoading = false;
 

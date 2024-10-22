@@ -21,7 +21,7 @@ export class RetakeRequestsComponent implements OnInit {
     'select',
     'studentname',
     'coursename',
-    'registeredDate',
+    'Registered Date',
     'examType',
     'action'
   ];
@@ -42,7 +42,7 @@ export class RetakeRequestsComponent implements OnInit {
   isLoading = true;
   commonRoles: any;
   isView = false;
-
+  
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild(MatSort) matSort!: MatSort;
 
@@ -107,7 +107,6 @@ export class RetakeRequestsComponent implements OnInit {
 
           // Call the approve API for each row
           this.settingService.putRetakeRequestByStudentIdCourseId(studentId, courseId, row).subscribe((response) => {
-            console.log('response', response);
           });
         });
 
@@ -117,30 +116,53 @@ export class RetakeRequestsComponent implements OnInit {
       }
     });
   }
-
   getAllRetakeRequests() {
-    const filter = {
-      page: this.coursePaginationModel.page,
-      limit: this.coursePaginationModel.limit,
-    };
-  
-    this.settingService.getRetakeRequest(filter).subscribe((response) => {
-      // console.log("datasocurse==",response.data.docs)
-      this.dataSource.data = response.data.docs; 
-      this.totalItems = response.data.totalDocs; 
-      this.dataSource.paginator = this.paginator;
-      this.paginator.pageIndex = this.coursePaginationModel.page - 1;
-      this.paginator.length = this.totalItems;
-  
-      this.dataSource.sort = this.matSort;
-      this.isLoading = false;
-    }, error => {
-      this.isLoading = false;
-      console.error('Error fetching retake requests:', error);
-    });
+    let filterProgram = this.searchTerm;
+    const payload = { ...this.coursePaginationModel,title:filterProgram };
+    this.settingService.getRetakeRequest(payload)
+      .subscribe(response => {
+        this.isLoading = false;
+        this.totalItems = response.data.totalDocs
+
+        this.dataSource = response.data.docs;
+        this.coursePaginationModel.docs = response.data.docs;
+        this.coursePaginationModel.page = response.data.page;
+        this.coursePaginationModel.limit = response.data.limit;
+
+      }, (error) => {
+        this.isLoading = false;
+        console.error('Error fetching retake requests:', error);
+      });
   }
+  // getAllRetakeRequests() {
+  //   const filter = {
+  //     page: this.coursePaginationModel.page,
+  //     limit: this.coursePaginationModel.limit,
+  //   };
   
+  //   this.settingService.getRetakeRequest(filter).subscribe((response) => {
+  //     // console.log("datasocurse==",response.data.docs)
+  //     this.dataSource.data = response.data.docs; 
+  //     this.totalItems = response.data.totalDocs; 
+  //     this.courseKitModel.page = response.page;
+  //     this.courseKitModel.limit = response.limit;
+  //     // this.dataSource.paginator = this.paginator;
+  //     // this.paginator.pageIndex = this.coursePaginationModel.page - 1;
+  //     // this.paginator.length = this.totalItems;
   
+  //     // this.dataSource.sort = this.matSort;
+  //     this.isLoading = false;
+  //   }, error => {
+  //     this.isLoading = false;
+  //     console.error('Error fetching retake requests:', error);
+  //   });
+  // }
+  
+  performSearch() {
+    this.coursePaginationModel.page = 1;
+    this.paginator.pageIndex = 0;
+    this.getAllRetakeRequests();
+  }
   
 
   approve(row: any) {
@@ -188,7 +210,6 @@ export class RetakeRequestsComponent implements OnInit {
         const studentId = row.studentId;
 
         this.settingService.putRetakeRequestByStudentIdCourseId(studentId, courseId, row).subscribe((response) => {
-          console.log('response', response);
           Swal.fire(
             'Rejected!',
             'The retake request has been rejected.',

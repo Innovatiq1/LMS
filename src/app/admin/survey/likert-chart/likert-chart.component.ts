@@ -49,6 +49,7 @@ export class LikertChartComponent {
   selection = new SelectionModel<any>(true, []);
   create = false;
   isView = false;
+  searchTerm: string = '';
 
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild('filter', { static: true }) filter!: ElementRef;
@@ -86,7 +87,9 @@ export class LikertChartComponent {
     this.getAllSurveys();
   }
   getAllSurveys() {
-    this.surveyService.getSurvey({ ...this.coursePaginationModel})
+    let filterProgram = this.searchTerm;
+    const payload = { ...this.coursePaginationModel,title:filterProgram };
+    this.surveyService.getSurvey(payload)
       .subscribe(res => {
         this.dataSource = res.data.docs;
         this.totalItems = res.data.totalDocs;
@@ -94,6 +97,11 @@ export class LikertChartComponent {
         this.coursePaginationModel.page = res.page;
         this.coursePaginationModel.limit = res.limit;
       })
+  }
+  performSearch() {
+     this.coursePaginationModel.page = 1;
+    this.paginator.pageIndex = 0;
+    this.getAllSurveys();
   }
   pageSizeChange($event: any) {
     this.coursePaginationModel.page = $event?.pageIndex + 1;

@@ -144,7 +144,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   navigateTo(menu: any, url?: any, length?: any): void {
-    console.log("hellohi")
     this.menuItemClick.emit();
     const breadcrumbs = [menu.title];
     this.breadcrumbService.setItems(breadcrumbs);
@@ -156,7 +155,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   navigateToMian(url: any, menu: any) {
-    console.log("hello")
     this.menuItemClick.emit();
     const breadcrumbs = [url.title];
     this.breadcrumbService.setItems(breadcrumbs);

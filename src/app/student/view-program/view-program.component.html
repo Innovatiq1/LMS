@@ -158,7 +158,7 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <tr *ngFor="let item of courseCompletedDetails" class="odd gradeX">
+                            <tr *ngFor="let item of courseCompletedDetails" style="cursor: pointer;" class="odd gradeX" [routerLink]="['/student/view-programcourse', item?.id]">
                               <td class="center">{{item?.title | titlecase}}</td>
                               <td [ngClass]="{'red-text': item.playbackTime< 50, 'green-text': item.playbackTime>= 50}">{{item?.playbackTime?.toFixed(2) || 0}}%</td>
                               </tr>
@@ -172,7 +172,7 @@
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  <tr *ngFor="let item of electivecourseCompletedDetails" class="odd gradeX">
+                                  <tr *ngFor="let item of electivecourseCompletedDetails" style="cursor: pointer;" class="odd gradeX" [routerLink]="['/student/view-programcourse', item?.id]">
                                     <td class="center">{{item?.electivetitle | titlecase}}</td>
                                     <td [ngClass]="{'red-text': item.electiveplaybackTime< 50, 'green-text': item.electiveplaybackTime>= 50}">{{item?.electiveplaybackTime?.toFixed(2) || 0}}%</td>
                                     </tr>

@@ -76,6 +76,7 @@ export class HeaderComponent
   commonRoles: any;
   settingsItems: any;
   isTwoFactor: boolean = true;
+  notificationCount = 0;
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private renderer: Renderer2,
@@ -203,13 +204,15 @@ export class HeaderComponent
   }
 
   getAnnouncementForStudents(filter?: any) {
+    let role = JSON.parse(localStorage.getItem('user_data')!).user.role;
+
     let payload = {
-      announcementFor: AppConstants.STUDENT_ROLE,
+      announcementFor:role,
     };
     this.announcementService
-      .getAnnouncementsForStudents(payload)
-      .subscribe((res: { data: { data: any[] }; totalRecords: number }) => {
-        const announcementsData: any = res.data;
+      .getAnnouncementList(payload)
+      .subscribe((res: { results: { data: any[] }; totalRecords: number }) => {
+        const announcementsData: any = res.results;
         this.announcements = announcementsData.reverse();
       });
   }
@@ -224,12 +227,14 @@ export class HeaderComponent
       focusConfirm: false,
       confirmButtonText: '<i class="fa fa-thumbs-up"></i> Great!',
     });
+    this.cancel(data.id)
   }
 
   cancel(id: any) {
     this.announcements = this.announcements.filter(
       (res: { id: any }) => res.id !== id
     );
+    this.notificationCount = this.announcements.length;
   }
 
   student() {
@@ -348,10 +353,15 @@ export class HeaderComponent
       const logoSpan = document.querySelector('.logo-name');
     }
   }
-  checkViewSettings(role: any) {
-    if (this.settingsItems.length > 0) {
-      return true;
+  checkViewSettings(role: any): boolean {
+    if (this.settingsItems) {
+      if (this.settingsItems.length > 0) {
+        return true; 
+      }
+      return role ? AppConstants.ALLTHREEROLES.includes(role) : false; 
     }
-    return role ? AppConstants.ALLTHREEROLES.includes(role) : false;
+    
+    return false; 
   }
+    
 }

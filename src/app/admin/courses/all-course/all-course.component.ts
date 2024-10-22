@@ -23,6 +23,11 @@ import * as XLSX from 'xlsx';
 
 import * as JSZip from 'jszip';
 import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf';
+
+interface Course {
+  title: string;
+  _id: string;
+}
 @Component({
   selector: 'app-all-course',
   templateUrl: './all-course.component.html',
@@ -158,14 +163,12 @@ export class AllCourseComponent {
     const roleDetails =this.authenService.getRoleDetails()[0].menuItems
     let urlPath = this.route.url.split('/');
     const parentId = `${urlPath[1]}/${urlPath[2]}`;
-    const childId =  urlPath[urlPath.length - 2];
-    const subChildId =  urlPath[urlPath.length - 1];
-    let parentData = roleDetails.filter((item: any) => item.id == parentId);
-    let childData = parentData[0].children.filter((item: any) => item.id == childId);
-    let subChildData = childData[0].children.filter((item: any) => item.id == subChildId);
-    let actions = subChildData[0].actions
-    let createAction = actions.filter((item:any) => item.title == 'Create')
-    let viewAction = actions.filter((item:any) => item.title == 'View')
+    const childId =  urlPath[urlPath.length - 1];
+    let parentData = roleDetails?.filter((item: any) => item.id == parentId);
+    let childData = parentData[0]?.children?.filter((item: any) => item.id == childId);
+    let actions = childData[0]?.actions
+    let createAction = actions?.filter((item:any) => item.title == 'Create')
+    let viewAction = actions?.filter((item:any) => item.title == 'View')
 
     if(createAction.length > 0){
       this.create = true
@@ -177,8 +180,19 @@ export class AllCourseComponent {
     this.getAllVendorsAndUsers();
     forkJoin({
       courses: this.classService.getAllCourses(),
-    }).subscribe((response) => {
-      this.courseList = response.courses.reverse();
+    }).subscribe((response: { courses: Course[] }) => {  // Specify the type of response
+      this.courseList = response.courses
+        .filter(course => course.title && course.title.trim() !== "")  // Remove empty or space-only titles
+        .map(course => ({ ...course, title: course.title.trim() }))   // Trim any extra spaces from the title
+        .reduce((acc: Course[], current: Course) => {
+          // Remove duplicates based on 'title'
+          const duplicate = acc.find(item => item.title === current.title);
+          if (!duplicate) {
+            acc.push(current);
+          }
+          return acc;
+        }, [])
+        .reverse();  // Reverse the final list if necessary
     });
     this.commonRoles = AppConstants;
     
@@ -189,7 +203,6 @@ getAllTpCourses() {
   this.isLoading = true;  
   this.courseService.getRetreiveTPCourses().subscribe(
     (response: any) => {
-      console.log("MyResponse==response==> ", response);
       this.isLoading = false;  
       Swal.fire({
         title: 'SSG Courses',
@@ -277,7 +290,6 @@ getAllTpCourses() {
  
 
   applyFilter() {
-    // Prepare filter criteria and store in filterBody
     this.filterBody = {};
     
     if (this.selectedCourses.length > 0) {
@@ -293,11 +305,8 @@ getAllTpCourses() {
       this.filterBody.creator = this.selectedCreators;
     }
   
-    // Reset pagination when applying a new filter
     this.paginator.pageIndex = 0;
     this.coursePaginationModel.page = 1;
-    
-    // Fetch filtered data with pagination
     this._courseService.getFilteredCourseData(this.filterBody, { ...this.coursePaginationModel })
       .subscribe((response) => {
         this.courseData = response.data.docs;
@@ -306,7 +315,7 @@ getAllTpCourses() {
         this.coursePaginationModel.page = response.data.page;
         this.coursePaginationModel.limit = response.data.limit;
         this.coursePaginationModel.totalDocs = response.data.totalDocs;
-        this.filter = true;  // Set filter state to true
+        this.filter = true;  
       });
   }
   
@@ -356,16 +365,9 @@ getAllTpCourses() {
     doc.save('AllCourses-list.pdf');
   }
   performSearch() {
-    if (this.searchTerm) {
-      this.courseData = this.courseData?.filter(
-        (item: any) => {
-          const searchList = item.title.toLowerCase();
-          return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1;
-        }
-      );
-    } else {
+    this.coursePaginationModel.page = 1;
+    this.paginator.pageIndex = 0;
       this.getAllCourses();
-    }
   }
   viewActiveProgram(id: string, status: string): void {
     this.route.navigate(['/admin/courses/view-course/', 'data.id']);
@@ -425,13 +427,10 @@ getAllTpCourses() {
   }
   
   pageSizeChange($event: any) {
-    // Update pagination model based on the event
-    console.log("Page index: ", $event?.pageIndex, "Page size: ", $event?.pageSize);
     this.coursePaginationModel.page = $event?.pageIndex + 1;
     this.coursePaginationModel.limit = $event?.pageSize;
     
     if (this.filter) {
-      // Use the preserved filterBody when moving to the next page
       this._courseService.getFilteredCourseData(this.filterBody, { ...this.coursePaginationModel })
         .subscribe((response) => {
           this.courseData = response.data.docs;
@@ -442,7 +441,6 @@ getAllTpCourses() {
           this.coursePaginationModel.totalDocs = response.data.totalDocs;
         });
     } else {
-      // If no filter, fetch all courses with updated pagination
       this.getAllCourses();
     }
   }
@@ -469,7 +467,6 @@ getAllTpCourses() {
     payload.userGroupId=this.userGroupIds
   }
     this._courseService.getAllCoursesWithPagination(payload).subscribe((response) => {
-      console.log("filtered ",response)
       this.courseData = response.data.docs;
       this.totalItems = response.data.totalDocs;
       this.coursePaginationModel.docs = response.data.docs;
@@ -558,8 +555,12 @@ getAllTpCourses() {
   public logFormData(formData: FormData) {
     formData.forEach((value, key) => {
       let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-      let courses = JSON.parse(localStorage.getItem('user_data')!).user.courses;
-  
+      let subdomain = localStorage.getItem('subdomain')
+      if(subdomain){
+      this.userService
+      .getCompanyByIdentifierWithoutToken(subdomain)
+      .subscribe((resp: any) => {
+        let courses = resp[0]?.courses;
       if (typeof value === 'string') {
         let cleanedValue = value.replace(/^"|"$/g, '');
         let parsedValue;
@@ -585,6 +586,8 @@ getAllTpCourses() {
               icon: 'success',
             });
             this.getAllCourses();
+            this.route.navigate(['/admin/courses/drafts'])
+
           },
           (error: any) => {
           }
@@ -593,6 +596,8 @@ getAllTpCourses() {
         console.error("The value is not a string and cannot be parsed as JSON:", value);
       }
     });
+  }
+  })
   }
   
 

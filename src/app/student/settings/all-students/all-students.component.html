@@ -36,7 +36,7 @@
                                 type="text"
                                 #filter
                                 class="browser-default search-field"
-                                aria-label="Search box"
+                                aria-label="Search box" [(ngModel)]="filterName" (input)="performSearch()"
                               />
                             </li>
                           </ul>
@@ -68,6 +68,10 @@
                           </div>
                         </li>
                         <li>
+                          <span style="font-weight: bold">Export as</span>
+                        </li>
+      
+                        <li>
                           <div class="export-button m-l-10" matTooltip="XLSX">
                             <img
                               src="assets/excel.svg"
@@ -97,7 +101,7 @@
                         class="mat-cell advance-table"
                       >
                         <ng-container matColumnDef="id">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header
+                          <mat-header-cell *matHeaderCellDef 
                             >Id
                           </mat-header-cell>
                           <mat-cell *matCellDef="let row">{{
@@ -125,7 +129,7 @@
                           </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="name">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header
+                          <mat-header-cell *matHeaderCellDef 
                             >Name
                           </mat-header-cell>
                           <mat-cell
@@ -140,7 +144,7 @@
                           </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="department">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header
+                          <mat-header-cell *matHeaderCellDef 
                             >Department
                           </mat-header-cell>
                           <mat-cell
@@ -153,7 +157,7 @@
                           >
                         </ng-container>
                         <ng-container matColumnDef="gender">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header>
+                          <mat-header-cell *matHeaderCellDef >
                             Gender
                           </mat-header-cell>
                           <mat-cell
@@ -180,7 +184,7 @@
                           </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="education">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header
+                          <mat-header-cell *matHeaderCellDef 
                             >Education
                           </mat-header-cell>
                           <mat-cell
@@ -193,7 +197,7 @@
                           </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="mobile">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header
+                          <mat-header-cell *matHeaderCellDef 
                             >Mobile
                           </mat-header-cell>
                           <mat-cell
@@ -206,7 +210,7 @@
                           </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="email">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header
+                          <mat-header-cell *matHeaderCellDef 
                             >Email</mat-header-cell
                           >
                           <mat-cell
@@ -224,7 +228,7 @@
                           </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="status">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header
+                          <mat-header-cell *matHeaderCellDef 
                             >Status
                           </mat-header-cell>
                           <mat-cell
@@ -258,7 +262,7 @@
                         </mat-row>
                       </table>
                       <div
-                        *ngIf="exampleDatabase?.isTblLoading"
+                        *ngIf="isTblLoading"
                         class="tbl-spinner"
                       >
                         <mat-progress-spinner
@@ -319,14 +323,10 @@
                           <span>Item 3</span>
                         </button>
                       </mat-menu>
-                      <mat-paginator
-                        #paginator
-                        [length]="dataSource.filteredData.length"
-                        [pageIndex]="0"
-                        [pageSize]="10"
-                        [pageSizeOptions]="[5, 10, 25, 100]"
-                      >
-                      </mat-paginator>
+                      <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems"
+                      (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr"
+                      aria-label="select pagination option">
+                    </mat-paginator>
                     </div>
                   </div>
                 </div>
@@ -341,7 +341,7 @@
             <div class="row mt-4 ml-0 mr-0">
               <div
                 class="col-md-3"
-                *ngFor="let data of dataSource.filteredData"
+                *ngFor="let data of dataSource"
               >
                 <div
                   class="card border-apply"
@@ -413,15 +413,10 @@
                   </div>
                 </div>
               </div>
-              <mat-paginator
-                class="paginator"
-                #paginator
-                [length]="dataSource.filteredData.length"
-                [pageIndex]="0"
-                [pageSize]="10"
-                [pageSizeOptions]="[5, 10, 25, 100]"
-              >
-              </mat-paginator>
+              <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems"
+              (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr"
+              aria-label="select pagination option">
+            </mat-paginator>
             </div>
           </mat-tab>
         </mat-tab-group>

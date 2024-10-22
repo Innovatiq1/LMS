@@ -9,6 +9,7 @@ import {
 import Swal from 'sweetalert2';
 import { ClassService } from 'app/admin/schedule-class/class.service';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-rescheduled-courses',
@@ -23,6 +24,10 @@ export class RescheduledCoursesComponent {
       active: 'Rescheduled Courses',
     },
   ];
+  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
+
+  filterName: string = "";
+
 
   coursePaginationModel: Partial<CoursePaginationModel>;
   studentApprovedModel!: Partial<CoursePaginationModel>;
@@ -56,8 +61,13 @@ export class RescheduledCoursesComponent {
   ngOnInit() {
     this.getApprovedCourse();
   }
-
+  performSearch() {
+    this.coursePaginationModel.page = 1;
+    this.paginator.pageIndex = 0;
+      this.getApprovedCourse();
+  }
   getApprovedCourse() {
+    let filterCourse = this.filterName;
     let studentId = localStorage.getItem('id');
     let filterApprovedCourse = this.filterApproved;
     const payload = {
@@ -65,6 +75,7 @@ export class RescheduledCoursesComponent {
       studentId: studentId,
       rescheduledDate: 'yes',
       status: 'approved',
+      className:filterCourse,
       ...this.coursePaginationModel,
     };
     this.classService
@@ -90,17 +101,5 @@ export class RescheduledCoursesComponent {
     this.studentApprovedModel.limit = $event?.pageSize;
     this.getApprovedCourse();
   }
-
-  performSearch() {
-    if (this.filterApproved) {
-      this.studentApprovedClasses = this.studentApprovedClasses?.filter(
-        (item: any) => {
-          const searchList = item.title.toLowerCase();
-          return searchList.indexOf(this.filterApproved.toLowerCase()) !== -1;
-        }
-      );
-    } else {
-      this.getApprovedCourse();
-    }
-  }
 }
+ 

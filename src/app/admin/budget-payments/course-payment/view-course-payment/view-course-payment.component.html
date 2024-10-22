@@ -56,7 +56,8 @@
                                         </li>
                                         <li class="list-group-item">
                                             <b>Payment Status</b>
-                                            <div class="profile-desc-item float-end">{{status | titlecase}}</div>
+                                            <div class="profile-desc-item float-end"><span class="badge badge-solid-green">
+                                                <span class="status-dot"></span>{{status | titlecase}}</span></div>
                                         </li>
                                         <li class="list-group-item" *ngIf="payment_intent !== null">
                                             <b>Payment Intent</b>

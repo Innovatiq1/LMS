@@ -41,6 +41,7 @@ import * as moment from 'moment';
 import jsPDF from 'jspdf';
 import { AssessmentService } from '@core/service/assessment.service';
 import { AppConstants } from '@shared/constants/app.constants';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 export interface PeriodicElement {
   name: string;
   position: number;
@@ -182,7 +183,8 @@ export class ViewCourseComponent implements OnDestroy {
     public dialog: MatDialog,
     private settingsService: SettingsService,
     private assessmentService: AssessmentService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private sanitizer: DomSanitizer,
   ) {
     let urlPath = this.router.url.split('/');
     this.paidCourse = urlPath.includes('view-course');
@@ -235,6 +237,9 @@ export class ViewCourseComponent implements OnDestroy {
   //     height: '80%'
   //   });
   // }
+  getSafeHtml(html: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(html);
+  }
   openDocumentDialog(url: string,filename: string): void {
    // console.log("viewCourse page ==",url);
     this.dialog.open(DocumentViewComponent, {
@@ -1378,7 +1383,7 @@ else if(this.feeType=="free"){
       this.questionList = this.assessmentInfo?.questions || [];
       this.assessmentTempInfo = null;
       this.isAnswersSubmitted = false;
-      this.router.navigate(['/student/enrollment/exam']);
+      this.router.navigate(['/student/enrollment/assessment-exam']);
     }
     this.updateShowAssessmentQuestions();
   }
@@ -1450,7 +1455,7 @@ else if(this.feeType=="free"){
         this.feedbackInfo = feedbackInfo;
         this.isShowFeedback= false;
         if(!this.assessmentInfo.resultAfterFeedback){
-          this.router.navigate(['/student/enrollment/exam']);
+          this.router.navigate(['/student/enrollment/assessment-exam']);
         }else {
           this.updateShowAssessmentQuestions();
         }

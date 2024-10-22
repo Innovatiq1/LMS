@@ -36,13 +36,13 @@ export class AllQuestionsComponent {
   isCreate = false;
   isEdit = false;
   isView = false;
-  breadscrums = [
-    {
-      title: 'Questions',
-      items: ['Configuration'],
-      active: 'Assessment Configuration',
-    },
-  ];
+  // breadscrums = [
+  //   {
+  //     title: 'Questions',
+  //     items: ['Configuration'],
+  //     active: 'Assessment Configuration',
+  //   },
+  // ];
   private keyupSubject: Subject<Event> = new Subject<Event>();
   editUrl: boolean = false;
   viewUrl: boolean = false;
@@ -143,6 +143,8 @@ export class AllQuestionsComponent {
   }
 
   onKeyup(event: Event) {
+    this.coursePaginationModel.page = 1;
+    this.paginator.pageIndex = 0;
     this.keyupSubject.next(event);
   }
 

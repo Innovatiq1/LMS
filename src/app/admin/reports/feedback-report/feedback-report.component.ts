@@ -18,12 +18,15 @@ import {
   TableElement,
   UnsubscribeOnDestroyAdapter,
 } from '@shared';
-import { SurveyService } from 'app/admin/survey/survey.service';
-import { SurveyBuilderModel } from 'app/admin/survey/survey.model';
+import { SurveyService } from '../../survey/survey.service';
+import { SurveyBuilderModel } from '../../survey/survey.model';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { AppConstants } from '@shared/constants/app.constants';
+import { AuthenService } from '@core/service/authen.service';
+import { CoursePaginationModel } from '@core/models/course.model';
 
 @Component({
   selector: 'app-feedback-report',
@@ -31,31 +34,43 @@ import Swal from 'sweetalert2';
   styleUrls: ['./feedback-report.component.scss']
 })
 export class FeedbackReportComponent  extends UnsubscribeOnDestroyAdapter
-implements OnInit{
+  implements OnInit
+{
   displayedColumns = [
+    // 'select',
+
     'studentName',
     'courseName',
+    // 'actions',
   ];
   exampleDatabase?: SurveyService;
   dataSource!: ExampleDataSource;
   selection = new SelectionModel<SurveyBuilderModel>(true, []);
   id?: number;
   isLoading = true;
-  breadscrums = [
-    {
-      title: 'Feedbacks List',
-      items: ['Reports'],
-      active: 'Feedback Reports',
-    },
-  ];
+  // breadscrums = [
+  //   {
+  //     title: 'Feedbacks List',
+  //     items: ['Survey'],
+  //     active: 'Feedbacks List',
+  //   },
+  // ];
+  commonRoles: any;
+  isView = false;
+  totalItems: any;
+  searchTerm: string = '';
+  pageSizeArr = [10, 25, 50, 100];
+  coursePaginationModel: Partial<CoursePaginationModel>;
   constructor(
     public httpClient: HttpClient,
     public dialog: MatDialog,
     public surveyService: SurveyService,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private authenService: AuthenService
   ) {
     super();
+    this.coursePaginationModel = {};
   }
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
@@ -65,16 +80,28 @@ implements OnInit{
   contextMenuPosition = { x: '0px', y: '0px' };
 
   ngOnInit() {
+    const roleDetails =this.authenService.getRoleDetails()[0].menuItems
+    let urlPath = this.router.url.split('/');
+    const parentId = `${urlPath[1]}/${urlPath[2]}`;
+    const childId =  urlPath[urlPath.length - 1];
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let actions = childData[0].actions
+    let viewAction = actions.filter((item:any) => item.title == 'View')
+
+    if(viewAction.length >0){
+      this.isView = true;
+    }
+    this.commonRoles = AppConstants
     this.loadData();
   }
   refresh() {
     this.loadData();
   }
   editCall(row: SurveyBuilderModel) {
-    this.router.navigate(['/admin/survey/view-survey'], {
+    this.router.navigate(['/admin/survey/feedbacks-list/view-survey'], {
       queryParams: { id: row },
     });
-   
   }
   getStudentName(data: any) {
     return data.studentId
@@ -101,9 +128,10 @@ implements OnInit{
       }
     });
   }
+  
   generatePdf() {
     const doc = new jsPDF();
-    const headers = [['User Name','Course/Program Name' ]];
+    const headers = [[[AppConstants.STUDENT_ROLE],'Course/Program Name' ]];
     ;
     const data = this.dataSource.filteredData.map((user: any) => [
       user.studentFirstName,
@@ -119,7 +147,7 @@ implements OnInit{
         cellWidth: 'wrap',
       },
     });
-    doc.save('Feedback Report.pdf');
+    doc.save('Feedbackreport.pdf');
   }
   private refreshTable() {
     this.paginator._changePageSize(this.paginator.pageSize);
@@ -129,6 +157,7 @@ implements OnInit{
     const numRows = this.dataSource.renderedData.length;
     return numSelected === numRows;
   }
+
   masterToggle() {
     this.isAllSelected()
       ? this.selection.clear()
@@ -151,29 +180,64 @@ implements OnInit{
       title: 'Success',
       text: 'Record Deleted Successfully...!!!',
       icon: 'success',
+      // confirmButtonColor: '#526D82',
     });
   }
+
   public loadData() {
-    this.exampleDatabase = new SurveyService(this.httpClient);
-    this.dataSource = new ExampleDataSource(
-      this.exampleDatabase,
-      this.paginator,
-      this.sort
-    );
-    this.subs.sink = fromEvent(this.filter.nativeElement, 'keyup').subscribe(
-      () => {
-        if (!this.dataSource) {
-          return;
-        }
-        this.dataSource.filter = this.filter.nativeElement.value;
-      }
-    );
+    // this.exampleDatabase = new SurveyService(this.httpClient);
+    // this.dataSource = new ExampleDataSource(
+    //   this.exampleDatabase,
+    //   this.paginator,
+    //   this.sort
+    // );
+    // this.subs.sink = fromEvent(this.filter.nativeElement, 'keyup').subscribe(
+    //   () => {
+    //     if (!this.dataSource) {
+    //       return;
+    //     }
+    //     this.dataSource.filter = this.filter.nativeElement.value;
+    //   }
+    // );
+    let filterProgram = this.searchTerm;
+    const payload = { ...this.coursePaginationModel,title:filterProgram };
+ 
+    this.surveyService.getSurveyList(payload)
+    .subscribe(response => {
+      this.isLoading = false;
+      this.totalItems = response.data.totalDocs
+
+      this.dataSource = response.data.docs;
+      this.coursePaginationModel.docs = response.data.docs;
+      this.coursePaginationModel.page = response.data.page;
+      this.coursePaginationModel.limit = response.data.limit;
+      this.coursePaginationModel.totalDocs = response.data.totalDocs;
+
+      // this.getJobTemplates();
+
+    }, (error) => {
+
+    });
+  }
+  pageSizeChange($event: any) {
+    this.coursePaginationModel.page = $event?.pageIndex + 1;
+    this.coursePaginationModel.limit = $event?.pageSize;
+    this.loadData();
   }
 
+  performSearch() {
+    this.coursePaginationModel.page = 1;
+    this.paginator.pageIndex = 0;
+    this.loadData();
+  }
+
+  // export table data in excel file
   exportExcel() {
+
+    // key name with space add in brackets
     const exportData: Partial<TableElement>[] =
-      this.dataSource.filteredData.map((x) => ({
-        'User Name': x.studentFirstName,
+      this.dataSource.map((x) => ({
+        [AppConstants.STUDENT_ROLE]: x.studentFirstName,
         'Course Name': x.courseName,
        
       }));
@@ -194,6 +258,7 @@ implements OnInit{
       panelClass: colorName,
     });
   }
+  // context menu
   onContextMenu(event: MouseEvent, item: SurveyBuilderModel) {
     event.preventDefault();
     this.contextMenuPosition.x = event.clientX + 'px';
@@ -206,6 +271,9 @@ implements OnInit{
   }
 }
 export class ExampleDataSource extends DataSource<SurveyBuilderModel> {
+  map(arg0: (x: any) => { [x: number]: any; 'Course Name': any; }): Partial<TableElement>[] {
+    throw new Error('Method not implemented.');
+  }
   filterChange = new BehaviorSubject('');
   get filter(): string {
     return this.filterChange.value;

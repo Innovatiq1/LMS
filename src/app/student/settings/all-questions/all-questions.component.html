@@ -1,7 +1,7 @@
 <section class="content">
     <div class="content-block">
-      <div class="block-header" *ngFor="let breadscrum of breadscrums">
-        <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items"  [active_item]="breadscrum.active">
+      <div class="block-header" >
+        <app-breadcrumb >
         </app-breadcrumb>
       </div>
       <div class="row">
@@ -33,7 +33,7 @@
                 <table mat-table [dataSource]="dataSource" matSort class="mat-cell advance-table">
                  
                   <ng-container matColumnDef="Name">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef >Name</mat-header-cell>
                     <mat-cell *matCellDef="let row"
                               [routerLink]="getRouterLink(row)"
                               [queryParams]="{ approved: true, assessmentType: assessmentType(row) }"
@@ -43,19 +43,19 @@
                   </ng-container>
                  
                   <ng-container matColumnDef="Count">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>No.of Questions</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef >No.of Questions</mat-header-cell>
                     <mat-cell *matCellDef="let row" [routerLink]="getRouterLink(row)" [queryParams]="{ approved: true, assessmentType: assessmentType(row) }">
                        <span class="mobile-label">Count:</span>{{row.questions.length}}</mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="Created At">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Created At</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef >Created At</mat-header-cell>
                     <mat-cell *matCellDef="let row" [routerLink]="getRouterLink(row)" [queryParams]="{ approved: true, assessmentType: assessmentType(row) }">
                       <span class="mobile-label">Created At:</span>{{row.createdAt | date: 'MM/dd/yyyy' }}
                     </mat-cell>
                   </ng-container>
 
                   <ng-container matColumnDef="Assessment Type">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Form Type</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef >Form Type</mat-header-cell>
                     <mat-cell *matCellDef="let row" [routerLink]="getRouterLink(row)" [queryParams]="{ approved: true, assessmentType: assessmentType(row) }">
                       <div class="status-container">
                         <span class="status-text">{{ assessmentType(row) }}</span>
@@ -64,7 +64,7 @@
                   </ng-container>
                  
                   <ng-container matColumnDef="Approval Status">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef >Status</mat-header-cell>
                     <mat-cell *matCellDef="let row" [routerLink]="getRouterLink(row)" [queryParams]="{ approved: true, assessmentType: assessmentType(row) }" [ngClass]="getStatusClass(row.status)">
                       <span
                             [class]="row?.status === 'approved' ? 'badge badge-solid-green' : row?.status === 'draft' ? 'badge badge-solid-orange': row?.status === 'open' ? 'badge badge-solid-red' : ''">

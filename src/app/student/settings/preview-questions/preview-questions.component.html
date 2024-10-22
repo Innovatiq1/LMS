@@ -1,8 +1,8 @@
 <section class="content">
     <div class="content-block">
-            <div class="block-header" *ngFor="let breadscrum of breadscrums">
-              <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items"  [active_item]="breadscrum.active">
-              </app-breadcrumb>
+            <div class="block-header" *ngFor="let breadscrum of breadcrumbs">
+              <app-static-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items"  [active_item]="breadscrum.active">
+              </app-static-breadcrumb>
             </div>
         <div class="card border shadow card-height border-radius mb-5">
             <ng-container >
@@ -11,7 +11,7 @@
                     <div class="text-left font-weight-bold mt-3 col-lg-5 col-md-12 col-sm-12 col-12">
                         <div class="text-primary mb-1">{{ question.name }}</div>
                         <div class="text-primary">Total Questions: {{ questionList?.length }}</div>
-                        <div>Remaining Questions: {{ questionList.length }}</div>
+                        <!-- <div>Remaining Questions: {{ questionList.length }}</div> -->
                     </div>
                 
                     <!-- Right side div -->

@@ -30,7 +30,7 @@ SIDEMENU_LIST =[
             "children": [
               {
                 "title": "Program Name",
-                "id": "program",
+                "id": "program-name",
                 "class": "ml-menu2",
                 "actions": [
                   {
@@ -159,7 +159,7 @@ SIDEMENU_LIST =[
               },
               {
                 "title": "Completed Programs",
-                "id": "completed-program",
+                "id": "program-completed-program",
                 "class": "ml-menu2",
                 "actions": [
                   {
@@ -185,18 +185,12 @@ SIDEMENU_LIST =[
         "class": "menu-toggle",
         "actions": [],
         "children": [
-          {
-            
-            "title": "Course List",
-            "id": "all-courses",
-            "class": "ml-sub-menu",
-            "actions": [],
-            "children": [
+             
               {
                 
-                "title": "Course Name",
-                "id": "course",
-                "class": "ml-menu2",
+                "title": "Course List",
+                "id": "course-name",
+                "class": "ml-menu",
                 "actions": [
                   {
                    
@@ -212,28 +206,11 @@ SIDEMENU_LIST =[
                   }
                 ]
               },
-              {
-                
-                "title": "Creator",
-                "id": "ccreator",
-                "class": "ml-menu2",
-                "actions": [
-                  {
-                    "title": "Create",
-                    "id": "create-course-creator",
-                    "class": "ml-menu3"
-                  },
-                  {
-                    "title": "View",
-                    "id": "view-course-creator",
-                    "class": "ml-menu3"
-                  }
-                ]
-              },
+             
               {
                 "title": "Drafts",
                 "id": "drafts",
-                "class": "ml-menu2",
+                "class": "ml-menu",
                 "actions": [
                   {
                    
@@ -248,35 +225,17 @@ SIDEMENU_LIST =[
                     "class": "ml-menu3"
                   }
                 ]
-              }
-            ]
-          },
+              }, 
           {
             
-            "title": "Submitted Course",
+            "title": "Approval Course",
             "id": "submitted-courses",
             "class": "ml-sub-menu",
             "actions": [],
             "children": [
+          
               {
-                "title": "Approved Course",
-                "id": "submitted-approved-courses",
-                "class": "ml-menu2",
-                "actions": [
-                  {
-                    "title": "View",
-                    "id": "view-sub-approved-course",
-                    "class": "ml-menu3"
-                  },
-                  {
-                    "title": "Delete",
-                    "id": "delete-sub-approved-course",
-                    "class": "ml-menu3"
-                  }
-                ]
-              },
-              {
-                "title": "Pending Courses",
+                "title": "Pending",
                 "id": "submitted-pending-courses",
                 "class": "ml-menu2",
                 "actions": [
@@ -298,7 +257,24 @@ SIDEMENU_LIST =[
                     "class": "ml-menu3"
                   }
                 ]
-              }
+              },
+              {
+                "title": "Rejected",
+                "id": "submitted-rejected-courses",
+                "class": "ml-menu2",
+                "actions": [
+                  {
+                    "title": "View",
+                    "id": "view-sub-approved-course",
+                    "class": "ml-menu3"
+                  },
+                  {
+                    "title": "Delete",
+                    "id": "delete-sub-approved-course",
+                    "class": "ml-menu3"
+                  }
+                ]
+              },
             ]
           },
           {
@@ -352,7 +328,7 @@ SIDEMENU_LIST =[
               },
               {
                 "title": "Completed Courses",
-                "id": "registered-completed-courses",
+                "id": "course-completed-courses",
                 "class": "ml-menu2",
                 "actions": [
                   {
@@ -409,6 +385,34 @@ SIDEMENU_LIST =[
               {
                 "title": "Delete",
                 "id": "delete-coursekit",
+                "class": "ml-menu3"
+              }
+            ],
+            "children": []
+          },
+          {
+            "title": "Course Batch",
+            "id": "class-list",
+            "class": "ml-menu",
+            "actions": [
+              {
+                "title": "Create",
+                "id": "create-course-class",
+                "class": "ml-menu3"
+              },
+              {
+                "title": "Edit",
+                "id": "edit-course-class",
+                "class": "ml-menu3"
+              },
+              {
+                "title": "View",
+                "id": "view-course-class",
+                "class": "ml-menu3"
+              },
+              {
+                "title": "Delete",
+                "id": "delete-course-class",
                 "class": "ml-menu3"
               }
             ],
@@ -488,7 +492,7 @@ SIDEMENU_LIST =[
           },
           {
             "title": "Assessment",
-            "id": "exam",
+            "id": "assessment-exam",
             "class": "ml-menu",
             "actions": [
               {
@@ -592,34 +596,7 @@ SIDEMENU_LIST =[
             ],
             "children": []
           },
-          {
-            "title": "Course Class",
-            "id": "class-list",
-            "class": "ml-menu",
-            "actions": [
-              {
-                "title": "Create",
-                "id": "create-course-class",
-                "class": "ml-menu3"
-              },
-              {
-                "title": "Edit",
-                "id": "edit-course-class",
-                "class": "ml-menu3"
-              },
-              {
-                "title": "View",
-                "id": "view-course-class",
-                "class": "ml-menu3"
-              },
-              {
-                "title": "Delete",
-                "id": "delete-course-class",
-                "class": "ml-menu3"
-              }
-            ],
-            "children": []
-          },
+        
           {
             "title": "E-Attendance",
             "id": "e-attendance",

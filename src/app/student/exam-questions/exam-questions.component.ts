@@ -372,7 +372,7 @@ export class ExamQuestionsComponent {
           if(this.retake) {
             this.router.navigate(['student/enrollment/exam-results']);
           } else {
-            this.router.navigate(['student/enrollment/exam']);
+            this.router.navigate(['student/enrollment/assessment-exam']);
           }
         }
 

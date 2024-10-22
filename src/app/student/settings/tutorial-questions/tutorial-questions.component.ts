@@ -73,7 +73,7 @@ draftId!: string;
     this.questionFormTab3 = this.formBuilder.group({
       name: ['', Validators.required],
       timer: [''],
-      scoreAlgorithm: [1, [Validators.required, Validators.min(0.1)]],
+      scoreAlgorithm: [, [Validators.required, Validators.min(0.1)]],
       questions: this.formBuilder.array([]),
     });
     if (!this.editUrl) {
@@ -118,6 +118,23 @@ draftId!: string;
   }
 
 saveDraft(data?: string) {
+  const formValues = this.questionFormTab3.value;
+    const isFormEmpty = !formValues.name &&
+                      !formValues.timer &&
+                      !formValues.scoreAlgorithm 
+                      
+                  if (isFormEmpty && data) {
+                        // If the form is empty, do not make the API call
+                        Swal.fire({
+                          title: 'Warning',
+                          text: 'Please fill in at least one field to save as draft.',
+                          icon: 'warning',
+                        });
+                        return; // Exit the function early
+                      }
+
+  if (!isFormEmpty) {
+ 
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     const payload = {
       draftId: this.draftId,
@@ -145,6 +162,7 @@ saveDraft(data?: string) {
               },
             );
   }
+}
   loadData() {
     this.studentId = localStorage.getItem('id');
     this.studentsService.getStudentById(this.studentId).subscribe((res) => {});
@@ -288,6 +306,13 @@ saveDraft(data?: string) {
         } else {
           this.questions.removeAt(questionIndex);
         }
+        Swal.fire({
+          title: 'Deleted!',
+          text: 'Deleted successfully.',
+          icon: 'success',
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'OK',
+        });
       }
     });
   }

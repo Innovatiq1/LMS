@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { VideoPlayerComponent } from 'app/admin/courses/course-kit/video-player/video-player.component';
 import { AuthenService } from '@core/service/authen.service';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 
 @Component({
@@ -15,13 +16,7 @@ import { AuthenService } from '@core/service/authen.service';
   styleUrls: ['./view-program.component.scss'],
 })
 export class ViewProgramComponent {
-  breadscrums = [
-    {
-      title: 'Blank',
-      items: ['Program'],
-      active: 'View Program',
-    },
-  ];
+  breadcrumbs: any[] = [];
   private subscription: Subscription = new Subscription();
   programData: any;
   courseId: any;
@@ -33,11 +28,23 @@ export class ViewProgramComponent {
   button: boolean = false;
   edit = false;
   isDelete = false;
+  storedItems: string | null;
   constructor(private courseService: CourseService, private activatedRoute: ActivatedRoute,
     private router: Router, private classService: ClassService, 
-    private modalServices: BsModalService, private authenService: AuthenService
+    private modalServices: BsModalService, private authenService: AuthenService, private sanitizer: DomSanitizer,
   ) {
     // constructor
+    this.storedItems = localStorage.getItem('activeBreadcrumb');
+    if (this.storedItems) {
+     this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+     this.breadcrumbs = [
+       {
+         title: '', 
+         items: [this.storedItems],  
+         active: 'View Program',  
+       },
+     ];
+   }
 
     this.activatedRoute.queryParams.subscribe((params: any) => {
       this.courseId = params?.id;
@@ -46,7 +53,7 @@ export class ViewProgramComponent {
     });
     if(this.status === 'pending'){
       this.button = true;
-      this.breadscrums = [
+      this.breadcrumbs = [
         {
           title: 'Blank',
           items: ['Pending Program'],
@@ -55,7 +62,7 @@ export class ViewProgramComponent {
       ];
     }
     else if(this.status === 'approved'){
-      this.breadscrums = [
+      this.breadcrumbs = [
         {
           title: 'Blank',
           items: ['Approved Programs'],
@@ -64,7 +71,9 @@ export class ViewProgramComponent {
       ];
     }
   }
-
+  getSafeHtml(html: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(html);
+  }
   getProgramLists() {
     this.courseService
       .getCourseProgram({ status: 'active' })
@@ -165,7 +174,7 @@ export class ViewProgramComponent {
               text: 'Program deleted successfully.',
               icon: 'success',
             }).then(() => {
-              this.router.navigate(['/admin/program/program-list/program'])
+              this.router.navigate(['/admin/program/program-list/program-name'])
             });
           });
         });
@@ -196,7 +205,7 @@ export class ViewProgramComponent {
             icon: 'success',
           });
           this.getPendingProgramLists();
-          this.router.navigate(['/admin/program/program-list/program'])
+          this.router.navigate(['/admin/program/program-list/program-name'])
         }, (error) => {
           Swal.fire({
             title: 'Error',

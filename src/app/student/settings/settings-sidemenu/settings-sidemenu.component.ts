@@ -13,8 +13,8 @@ export class SettingsSidemenuComponent {
   breadscrums = [
     {
       title: 'Blank',
-      items: ['Sidemenu'],
-      active: 'Cutomization',
+      items: ['Customize'],
+      active: 'Settings sidemenu',
     },
   ];
   sideMenuForm!: FormGroup;

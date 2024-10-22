@@ -27,6 +27,8 @@ export class FeedbackViewComponent {
   surveyName: any;
   edit = false;
   isDelete = false;
+  breadcrumbs:any[] = [];
+  storedItems: string | null;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -38,6 +40,19 @@ export class FeedbackViewComponent {
 
 
   ) {
+
+    this.storedItems = localStorage.getItem('activeBreadcrumb');
+    if (this.storedItems) {
+     this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+     this.breadcrumbs = [
+       {
+         title: '', 
+         items: [this.storedItems],  
+         active: 'View survey ',  
+       },
+     ];
+   }
+  
     this.activatedRoute.params.subscribe((params: any) => {
       this.surveyId = params.id;
     });

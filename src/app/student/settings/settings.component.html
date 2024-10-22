@@ -511,7 +511,7 @@
         <div class="row py-3 mb-3"></div>
       </div>
     </div>
-    <div
+    <!-- <div
       class="card"
       style="margin: auto; height: 350px; width: 65%"
       *ngIf="showAllUsers"
@@ -556,7 +556,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <div
       class="card"
       style="margin: auto; height: fit-content; width: 65%"
@@ -783,11 +783,11 @@
               {{ commonRoles?.INSTRUCTOR_ROLE }}
             </button>
           </div>
-          <div class="col-md-5">
+          <!-- <div class="col-md-5">
             <button id="saved" [routerLink]="['/student/settings/add-staff']">
               Staff
             </button>
-          </div>
+          </div> -->
         </div>
 
         <div class="col-md-12 py-3">
@@ -802,8 +802,8 @@
       </div>
     </div>
     <div
-      class="card"
-      style="margin: auto; height: fit-content; width: 65%"
+      class="card card-h"
+      
       *ngIf="showFinanceForms"
     >
       <div class="row">
@@ -817,38 +817,29 @@
           />
         </div>
       </div>
+     
+
+
       <div class="body">
-        <div class="row px-4">
-          <div class="col-md-6 banner">
+        <div class="row">
+          <div class="col-xl-6 col-md-6 col-sm-6 p-md-3 p-0">
             <button id="saved" [routerLink]="['/admin/budgets/create-budget']">
               Budget Creation
             </button>
           </div>
-          <div class="col-md-5">
+          <div class="col-xl-6 col-md-6 col-sm-6 p-md-3 p-0">
             <button
-              id="saved"
-              [routerLink]="['/admin/budgets/create-dept-budget-request']"
-            >
-              Department Budget Creation
-            </button>
+            id="saved"
+            [routerLink]="['/admin/budgets/create-dept-budget-request']"
+          >
+            Department Budget Creation
+          </button>
           </div>
-        </div>
-        <div class="row px-4 py-4">
-          <div class="col-md-6 banner">
+          <div class="col-xl-6 col-md-6 col-sm-6 p-md-3 p-0">
             <button id="saved" [routerLink]="['/admin/budgets/create-request']">
               Training Request Creation
             </button>
           </div>
-        </div>
-
-        <div class="col-md-12 py-3">
-          <button
-            mat-raised-button
-            id="back"
-            [routerLink]="['/student/settings/customize/customization-forms']"
-          >
-            Back
-          </button>
         </div>
       </div>
     </div>
@@ -988,13 +979,22 @@
               {{ commonRoles?.INSTRUCTOR_ROLE }} Creation
             </button>
           </div>
-          <div class="col-md-5">
+          <!-- <div class="col-md-5">
             <button
               id="saved"
               [routerLink]="['/student/settings/form-customization']"
               [queryParams]="{ name: 'Staff Creation Form' }"
             >
               Staff Creation
+            </button>
+          </div> -->
+          <div class="col-md-5">
+            <button
+              id="saved"
+              [routerLink]="['/student/settings/form-customization']"
+              [queryParams]="{ name: 'Course kit Creation Form' }"
+            >
+              Course kit Creation
             </button>
           </div>
         </div>
@@ -1008,7 +1008,7 @@
               Announcement
             </button>
           </div>
-          <div class="col-md-5">
+          <!-- <div class="col-md-5">
             <button
               id="saved"
               [routerLink]="['/student/settings/form-customization']"
@@ -1016,7 +1016,7 @@
             >
               Course kit Creation
             </button>
-          </div>
+          </div> -->
 
         </div>
       </div>
@@ -1110,7 +1110,7 @@
     </div>
     <div *ngIf="showStudentDb">
       <mat-tab-group>
-        <mat-tab label="Chart">
+        <!-- <mat-tab label="Chart">
           <div class="content-block">
             <div class="row clearfix">
               <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -1153,7 +1153,7 @@
               </div>
             </div>
           </div>
-        </mat-tab>
+        </mat-tab> -->
         <mat-tab label="Content">
           <div *ngIf="isCreate" class="content-block">
             <div class="card" style="min-height: 745px">

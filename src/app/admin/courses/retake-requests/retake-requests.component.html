@@ -14,7 +14,20 @@
               <ul class="tbl-export-btn mt-2">
                 <li>
                   <ul class="header-buttons-left ms-0">
-                    
+                    <li class="tbl-search-box alignRight">
+                      <label for="search-input"
+                        ><i class="material-icons search-icon">search</i></label
+                      >
+                      <input
+                        placeholder="Search"
+                        type="text"
+                        #filter
+                        class="browser-default search-field"
+                        [(ngModel)]="searchTerm"
+                        (input)="performSearch()"
+                        aria-label="Search box"
+                      />
+                    </li>
                   </ul>
                 </li>
                 </ul>
@@ -98,8 +111,8 @@
                     <mat-cell *matCellDef="let row">
                       <!-- Conditionally display buttons or status text based on requestStatus -->
                       <ng-container *ngIf="row.requestStatus === 'requested'; else statusText">
-                        <button mat-raised-button class="btn1" color="primary" id="submit" (click)="approve(row)">Approve</button>
-                        <button mat-raised-button class="m-l-10" color="warn" (click)="reject(row)">Reject</button>
+                        <button mat-raised-button class="btn1" color="primary" id="submit1" (click)="approve(row)">Approve</button>
+                        <button mat-raised-button class="reject m-l-10" color="warn" (click)="reject(row)">Reject</button>
                       </ng-container>
                       <ng-template #statusText>
               

@@ -71,6 +71,9 @@
                         </div>
                       </li>
                       <li>
+                        <span style="font-weight: bold">Export as</span>
+                      </li>    
+                      <li>
                         <div
                           class="export-button m-l-10"
                           matTooltip="XLSX"
@@ -117,13 +120,13 @@
                             [src]="row.avatar || 'assets/profile.png'"
                             [routerLink]=" isView ? [
                               '/student/settings/all-user/all-users/view-all-users',
-                              row.id
+                              row._id
                             ] : null"
                           />
                         </mat-cell>
                       </ng-container>
                       <ng-container matColumnDef="Name">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header
+                        <mat-header-cell *matHeaderCellDef 
                           >Name</mat-header-cell
                         >
                         <mat-cell
@@ -131,7 +134,7 @@
                           class="name"
                           [routerLink]=" isView ? [
                           '/student/settings/all-user/all-users/view-all-users',
-                          row.id
+                          row._id
                         ] : null"
                         >
                           <span class="mobile-label">Name:</span
@@ -140,7 +143,7 @@
                       </ng-container>
                       <!-- Course Code -->
                       <ng-container matColumnDef="User Type">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header
+                        <mat-header-cell *matHeaderCellDef 
                           >Role
                         </mat-header-cell>
                         <mat-cell
@@ -152,7 +155,7 @@
                         >
                       </ng-container>
                       <ng-container matColumnDef="gender">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <mat-header-cell *matHeaderCellDef >
                           Gender
                         </mat-header-cell>
                         <mat-cell
@@ -160,7 +163,7 @@
                           *matCellDef="let row"
                           [routerLink]=" isView ? [
                           '/student/settings/all-user/all-users/view-all-users',
-                          row.id
+                          row._id
                         ] : null"
                         >
                           <span class="mobile-label">Gender:</span>
@@ -183,14 +186,14 @@
                       </ng-container>
                       <!-- Main Category -->
                       <ng-container matColumnDef="Qualification">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header
+                        <mat-header-cell *matHeaderCellDef 
                           >Education
                         </mat-header-cell>
                         <mat-cell
                           *matCellDef="let row"
                           [routerLink]=" isView ? [
                           '/student/settings/all-user/all-users/view-all-users',
-                          row.id
+                          row._id
                         ] : null"
                         >
                           <span class="mobile-label">Education:</span
@@ -198,14 +201,14 @@
                         >
                       </ng-container>
                       <ng-container matColumnDef="Mobile">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header
+                        <mat-header-cell *matHeaderCellDef 
                           >Mobile
                         </mat-header-cell>
                         <mat-cell
                           *matCellDef="let row"
                           [routerLink]=" isView ? [
                           '/student/settings/all-user/all-users/view-all-users',
-                          row.id
+                          row._id
                         ] : null"
                         >
                           <span class="mobile-label">Mobile:</span
@@ -214,14 +217,14 @@
                       </ng-container>
                       <!-- Sub Category -->
                       <ng-container matColumnDef="Email">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header
+                        <mat-header-cell *matHeaderCellDef 
                           >Email</mat-header-cell
                         >
                         <mat-cell
                           *matCellDef="let row"
                           [routerLink]=" isView ? [
                           '/student/settings/all-user/all-users/view-all-users',
-                          row.id
+                          row._id
                         ] : null"
                         >
                           <span class="mobile-label">Email:</span>
@@ -234,30 +237,30 @@
                         </mat-cell>
                       </ng-container>
                       <ng-container matColumnDef="Status">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header
+                        <mat-header-cell *matHeaderCellDef 
                           >Status
                         </mat-header-cell>
                         <mat-cell
                           *matCellDef="let row"
                           [routerLink]=" isView ? [
                           '/student/settings/all-user/all-users/view-all-users',
-                          row.id
+                          row._id
                         ] : null"
                         >
                           <span class="mobile-label">Status:</span
                           ><span
                             [class]="
-                              row?.Active
+                              row?.isLogin
                                 ? 'badge badge-solid-green'
                                 : 'badge badge-solid-red'
                             "
                           >
                             <span
                               [class]="
-                                row?.Active ? 'status-dot' : 'status-red'
+                                row?.isLogin ? 'status-dot' : 'status-red'
                               "
                             ></span>
-                            {{ row.Active ? "Active" : "Inactive" }}
+                            {{ row.isLogin ? "Active" : "Inactive" }}
                           </span>
                         </mat-cell>
                       </ng-container>

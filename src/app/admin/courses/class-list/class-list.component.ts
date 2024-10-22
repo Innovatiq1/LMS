@@ -83,7 +83,7 @@ export class ClassListComponent extends UnsubscribeOnDestroyAdapter implements O
   ngOnInit(): void {
     const roleDetails =this.authenService.getRoleDetails()[0].menuItems
     let urlPath = this._router.url.split('/');
-    const parentId = urlPath[urlPath.length - 2];
+    const parentId = `${urlPath[1]}/${urlPath[2]}`;
     const childId =  urlPath[urlPath.length - 1];
     let parentData = roleDetails.filter((item: any) => item.id == parentId);
     let childData = parentData[0].children.filter((item: any) => item.id == childId);
@@ -110,9 +110,11 @@ export class ClassListComponent extends UnsubscribeOnDestroyAdapter implements O
   }
 
   getClassList() {
+    let filterClass = this.filterName;
+    const payload = { ...this.coursePaginationModel,courseName:filterClass };
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
         this._classService
-      .getClassListWithPagination({ ...this.coursePaginationModel },userId)
+      .getClassListWithPagination(payload,userId)
       .subscribe(
         (response) => {
           if (response.data) {
@@ -295,15 +297,9 @@ export class ClassListComponent extends UnsubscribeOnDestroyAdapter implements O
       });
   }
   performSearch() {
-    if (this.searchTerm) {
-      this.dataSource = this.dataSource?.filter((item: any) =>
-        item.courseId?.title
-          .toLowerCase()
-          .includes(this.searchTerm.toLowerCase())
-      );
-    } else {
+    this.coursePaginationModel.page = 1;
+    this.paginator.pageIndex = 0;
       this.getClassList();
-    }
   }
   exportExcel() {
     const exportData: Partial<TableElement>[] = this.dataSource.map(

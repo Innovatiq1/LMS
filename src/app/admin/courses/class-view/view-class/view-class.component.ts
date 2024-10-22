@@ -12,13 +12,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./view-class.component.scss']
 })
 export class ViewClassComponent {
-  breadscrums = [
-    {
-      title: 'Blank',
-      items: ['Course Class'],
-      active: 'View Course Class',
-    },
-  ];
+  breadcrumbs:any[] = [];
   classDataById: any;
   classData: any;
   coursePaginationModel!: Partial<CoursePaginationModel>;
@@ -29,8 +23,20 @@ export class ViewClassComponent {
   commonRoles: any;
   edit = false;
   isDelete = false;
+  storedItems: string | null;
 
   constructor(public _classService: ClassService,private _router: Router, private activatedRoute: ActivatedRoute,private authenService: AuthenService) {
+    this.storedItems = localStorage.getItem('activeBreadcrumb');
+    if (this.storedItems) {
+     this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+     this.breadcrumbs = [
+       {
+         title: '', 
+         items: [this.storedItems],  
+         active: 'View Course Batch',  
+       },
+     ];
+   }
     this.coursePaginationModel = {};
     this.activatedRoute.params.subscribe((params: any) => {
       
@@ -41,10 +47,19 @@ export class ViewClassComponent {
   ngOnInit(): void {
     const roleDetails =this.authenService.getRoleDetails()[0].menuItems
     let urlPath = this._router.url.split('/');
-    const parentId = urlPath[urlPath.length - 4];
+    console.log('url',urlPath)
+    const parentId = `${urlPath[1]}/${urlPath[2]}`;
     const childId =  urlPath[urlPath.length - 3];
+    console.log('chilldd',childId)
+    const subChildId =  urlPath[urlPath.length - 2];
+
     let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    console.log('parentdata',parentData)
     let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    console.log('child',childData)
+
+    // let subChildData = childData[0].children.filter((item: any) => item.id == subChildId);
+
     let actions = childData[0].actions
     let editAction = actions.filter((item:any) => item.title == 'Edit')
     let deleteAction = actions.filter((item:any) => item.title == 'Delete')
@@ -141,6 +156,10 @@ export class ViewClassComponent {
     });
 
     });
+  }
+  back(){
+    window.history.back();
+
   }
 
 }

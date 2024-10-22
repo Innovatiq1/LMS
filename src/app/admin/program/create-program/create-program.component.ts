@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProgramKit } from '@core/models/course.model';
 import { CertificateService } from '@core/service/certificate.service';
@@ -20,14 +20,8 @@ import { StudentsService } from 'app/admin/students/students.service';
   styleUrls: ['./create-program.component.scss']
 })
 export class CreateProgramComponent {
-  breadscrums = [
-    {
-      title: 'Create Program',
-      items: ['Program'],
-      active: 'Create Program',
-    },
-  ];
-  config: AngularEditorConfig = {
+  breadcrumbs: any[] =[]
+   config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
     height: '15rem',
@@ -36,25 +30,26 @@ export class CreateProgramComponent {
     translate: 'no',
     defaultParagraphSeparator: 'p',
     defaultFontName: 'Arial',
-    toolbarHiddenButtons: [
-      ['bold']
-      ],
-    customClasses: [
-      {
-        name: "quote",
-        class: "quote",
-      },
-      {
-        name: 'redText',
-        class: 'redText'
-      },
-      {
-        name: "titleText",
-        class: "titleText",
-        tag: "h1",
-      },
-    ]
-  };
+    sanitize: false,
+    toolbarHiddenButtons: [[
+      'subscript',
+      'superscript',
+      'indent',
+      'outdent',
+      'insertOrderedList',
+      'insertUnorderedList',
+      'fontName',
+      'heading',
+      'customClasses',
+      'removeFormat',
+      'toggleEditorMode',
+      'link',
+      'unlink',
+      'insertVideo'
+  ]],
+};
+  
+
   files: any[] = [];
 
   coreProgramCards: { coreProgramName: string; coreProgramCode: string }[] = [{ coreProgramName: '', coreProgramCode: '' }];
@@ -80,6 +75,7 @@ export class CreateProgramComponent {
   configurationSubscription!: Subscription;
   defaultCurrency: string = '';
   certificates: any;
+  storedItems: string | null;
 
   constructor(private route: ActivatedRoute,
     private fb: FormBuilder,
@@ -93,6 +89,18 @@ export class CreateProgramComponent {
     private cd: ChangeDetectorRef,
     private formService: FormService
   ) {
+
+    this.storedItems = localStorage.getItem('activeBreadcrumb');
+    if (this.storedItems) {
+     this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+     this.breadcrumbs = [
+       {
+         title: '', 
+         items: [this.storedItems],  
+         active: 'Create Program',  
+       },
+     ];
+   }
     let urlPath = this.router.url.split('/')
     this.editPermission = urlPath.includes('edit-program');
     this.subscribeParams = this.activatedRoute.params.subscribe((params: any) => {
@@ -123,10 +131,10 @@ export class CreateProgramComponent {
 
     });
     if (this.editPermission === true) {
-      this.breadscrums = [
+      this.breadcrumbs = [
         {
           title: 'Edit Program',
-          items: ['Program'],
+          items: [this.storedItems],
           active: 'Edit Program',
         },
       ];
@@ -179,7 +187,7 @@ export class CreateProgramComponent {
       this.fb.group({
         coreProgramName: ["", []],
         coreProgramCode: ["", []],
-        coreProgramDescription: ["", []],
+        coreProgramDescription: new FormControl('', []),
       })
     );
   }
@@ -277,7 +285,6 @@ export class CreateProgramComponent {
       (certificate: any) =>
         certificate.title === this.programFormGroup.value.certificate_temp
     );
-    console.log("programFormGroup",this.programFormGroup.value)
     if (this.programFormGroup.valid) {
       let creator = JSON.parse(localStorage.getItem('user_data')!).user.name;
       let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;

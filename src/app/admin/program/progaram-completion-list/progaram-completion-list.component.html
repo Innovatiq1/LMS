@@ -16,7 +16,7 @@
                     <li class="tbl-search-box">
                       <label for="search-input"><i class="material-icons search-icon">search</i></label>
                       <input placeholder="Search" type="text" #filter class="browser-default search-field"
-                        aria-label="Search box" [(ngModel)]="filterName" class="browser-default search-field"  (keyup)="performSearch()">
+                        aria-label="Search box" [(ngModel)]="filterName" class="browser-default search-field"  (input)="performSearch()">
                     </li>
                   </ul>
                 </li>
@@ -149,9 +149,13 @@
                 <mat-progress-spinner color="primary" [diameter]="40" mode="indeterminate">
                 </mat-progress-spinner>
               </div>
-              <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems" (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr"
+              <!-- <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems" (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr"
               aria-label="select pagination option">
-            </mat-paginator>
+            </mat-paginator> -->
+            
+            <mat-paginator #paginator [length]="totalPages" (page)="pageSizeChange($event)"
+            [pageSizeOptions]="pageSizeArr" aria-label="select pagination option">
+        </mat-paginator>
             </div>
           </div>
         </div>
@@ -179,7 +183,7 @@
             'background-size': '100% 100%',
             'border': '0.5px solid lightgray',
             'height': '700px',
-            'width': '800px',
+            'width': '710px',
             'position': 'relative'
           }"
          

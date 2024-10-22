@@ -63,6 +63,15 @@ private tpUrl=environment.Url;
       } else if (filter.status && filter.status === "inactive") {
         params = params.set("status", "inactive");
       }
+      if(filter.companyId) {
+        params = params.set('companyId', filter.companyId)
+      }
+      if(filter.isAll) {
+        params = params.set('isAll', filter.isAll)
+      }
+      if(filter.status) {
+        params = params.set('status', filter.status)
+      }
     }
     return params;
   }
@@ -219,16 +228,18 @@ private tpUrl=environment.Url;
         })
       );
   }
-  getAllProgramsWithoutPagination(filter?: Partial<Program>,id?:any): Observable<ApiResponse> {
-    const apiUrl = `${this.prefix}admin/courseprogram?status=active&status=inactive&companyId=${id}`;
+  getAllProgramsWithoutPagination(filter?: Partial<Program>, id?: any): Observable<Program[]> {
+    const apiUrl = `${this.prefix}admin/courseprogram?companyId=${id}&isAll=true`;
     return this._Http
-      .get<ApiResponse>(apiUrl, { params: this.buildParams(filter)})
+      .get<ApiResponse>(apiUrl)
       .pipe(
         map((response) => {
-          return response.data.docs
+          // Accessing the docs array and sorting it
+          return response.data.docs.sort((a: { createdAt: string | number | Date; }, b: { createdAt: string | number | Date; }) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
         })
       );
-  }
+}
+
 
 
   getCount(id:any,

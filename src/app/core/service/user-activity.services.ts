@@ -37,7 +37,8 @@ export class UserActivityService {
 
   logoutUser() {
     this.authService.logout().subscribe(() => {
-      this.router.navigate(['/authentication/TMS/signin']);
+      let subdomain = localStorage.getItem('subdomain')
+      this.router.navigate([`${subdomain}/authentication/TMS/signin`]);
     });
   }
 }

@@ -36,7 +36,6 @@ export class ActiveCoursesComponent {
     'status',
     'code',
     'Fee Type',
-    'Main Category',
     // 'Days',
     // 'Training Hours',
     'Vendor',
@@ -94,7 +93,7 @@ export class ActiveCoursesComponent {
   getAllCourse() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     let filterProgram = this.filterName;
-    const payload = { ...this.coursePaginationModel,title:filterProgram,status: 'active' };
+    const payload = { ...this.coursePaginationModel,title:filterProgram,status: 'rejected' };
   if(this.userGroupIds){
     payload.userGroupId=this.userGroupIds
   }
@@ -235,16 +234,9 @@ export class ActiveCoursesComponent {
     doc.save('Approved Courses-list.pdf');
   }
   performSearch() {
-    // if (this.searchTerm) {
-    //   this.courseData = this.courseData?.filter(
-    //     (item: any) => {
-    //       const searchList = item.title.toLowerCase();
-    //       return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1;
-    //     }
-    //   );
-    // } else {
+    this.paginator.pageIndex = 0;
+    this.coursePaginationModel.page = 1;
       this.getAllCourse();
-    // }
   }
   private refreshTable() {
     this.paginator._changePageSize(this.paginator.pageSize);

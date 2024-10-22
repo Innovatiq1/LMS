@@ -1,9 +1,9 @@
 <section class="content">
   <div class="content-block">
-    <div class="block-header" *ngFor="let breadscrum of breadscrums">
+    <div class="block-header" *ngFor="let breadscrum of breadcrumbs">
       <!-- breadcrumb -->
-      <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
-      </app-breadcrumb>
+      <app-static-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
+      </app-static-breadcrumb>
     </div>
     <div class="row clearfix">
       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
@@ -12,7 +12,7 @@
 
           </div>
           <form [formGroup]="announcementForm">
-            <h3>{{ viewUrl ? 'View Announcement' : editUrl ? 'Update Announcement' : 'Create Announcement'}}</h3>
+            <!-- <h3>{{ viewUrl ? 'View Announcement' : editUrl ? 'Update Announcement' : 'Create Announcement'}}</h3> -->
 
             <div class="body m-4">
               <div class="row">
@@ -35,7 +35,7 @@
                   <label>Announcement For<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <mat-select multiple formControlName="announcementFor" required>
-                      <mat-option value={{users.typeName}} [disabled]="viewUrl == true" *ngFor="let users of userTypeNames">{{users.typeName}}</mat-option>
+                      <mat-option value={{users.typeName}}  *ngFor="let users of userTypeNames">{{users.typeName}}</mat-option>
                     </mat-select>
                     <mat-error
                       *ngIf="announcementForm.get('announcementFor')?.hasError('required') ||announcementForm.get('announcementFor')?.touched">
@@ -67,3 +67,4 @@
     </div>
   </div>
 </section>
+

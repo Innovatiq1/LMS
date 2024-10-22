@@ -46,7 +46,6 @@ export class EditStudentComponent {
 
 
     this.activatedRoute.queryParams.subscribe((params:any) => {
-      console.log("id",params)
       this.studentId = params.id;
       this.patchValues(this.studentId)
       // console.log("id",this.userId)
@@ -113,7 +112,6 @@ export class EditStudentComponent {
   patchValues(id:string){
     this.studentService.getStudentById(this.studentId).subscribe(res => {
       this.editData = res;
-      console.log(this.editData)
 
 
       this.stdForm.patchValue({
@@ -138,7 +136,6 @@ export class EditStudentComponent {
 
 
   onSubmit() {
-    console.log('Form Value', this.stdForm.value);
     if(this.stdForm.valid){
       // this.instructor.uploadVideo(this.files).subscribe(
       //   (response: any) => {

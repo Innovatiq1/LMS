@@ -33,7 +33,7 @@ export class StudentPendingCoursesComponent {
     'Fee Type',
     'classstartDate',
     'classendDate',
-    'registeredDate',
+    'Registered Date',
     'programFee',
     'instructorFee',
   ];
@@ -101,8 +101,8 @@ export class StudentPendingCoursesComponent {
     });
   }
   pageSizeChange($event: any) {
-    this.studentPaginationModel.page = $event?.pageIndex + 1;
-    this.studentPaginationModel.limit = $event?.pageSize;
+    this.coursePaginationModel.page = $event?.pageIndex + 1;
+    this.coursePaginationModel.limit = $event?.pageSize;
     this.getRegisteredClasses();
   }
 
@@ -115,9 +115,9 @@ export class StudentPendingCoursesComponent {
   }
         this._classService
       .getRegisteredClasse(userId,payload)
-      .subscribe((response: { data: StudentPaginationModel; }) => {
+      .subscribe((response: { data: CoursePaginationModel; }) => {
       this.isLoading = false;
-        this.studentPaginationModel = response.data;
+        this.coursePaginationModel = response.data;
         this.dataSource = response.data.docs;
         this.dataSource.sort = this.matSort;
         this.totalItems = response.data.totalDocs;
@@ -134,23 +134,46 @@ export class StudentPendingCoursesComponent {
     this.router.navigate(['/admin/courses/student-courses/registered-pending-courses/view-completion-list'],{queryParams: {id:id, status:'pending'}});
   }
 
+  // mapClassList() {
+  //   this.studentPaginationModel.docs.forEach((item: Student) => {
+  //     const startDateArr: any = [];
+  //     const endDateArr: any = [];
+  //     item?.classId?.sessions?.forEach((session) => {
+  //       startDateArr.push(new Date(session?.sessionStartDate?.toString()));
+  //       endDateArr.push(new Date(session?.sessionEndDate?.toString()));
+  //     });
+  //     const minStartDate = new Date(Math.min.apply(null, startDateArr));
+  //     const maxEndDate = new Date(Math.max.apply(null, endDateArr));
+
+  //     item.classStartDate = !isNaN(minStartDate.valueOf()) ? moment(minStartDate).format("YYYY-DD-MM") : "";
+  //     item.classEndDate = !isNaN(maxEndDate.valueOf()) ? moment(maxEndDate).format("YYYY-DD-MM") : "";
+  //     item.studentId.name = `${item?.studentId?.name}`;
+  //   });
+  // }
   mapClassList() {
-    this.studentPaginationModel.docs.forEach((item: Student) => {
-      const startDateArr: any = [];
-      const endDateArr: any = [];
-      item?.classId?.sessions?.forEach((session) => {
-        startDateArr.push(new Date(session?.sessionStartDate?.toString()));
-        endDateArr.push(new Date(session?.sessionEndDate?.toString()));
+    if (Array.isArray(this.coursePaginationModel?.docs)) {
+      this.coursePaginationModel.docs.forEach((item: any) => {
+        const startDateArr: any = [];
+        const endDateArr: any = [];
+        
+        item?.classId?.sessions?.forEach((session: { sessionStartDate: { toString: () => string | number | Date; }; sessionEndDate: { toString: () => string | number | Date; }; }) => {
+          startDateArr.push(new Date(session?.sessionStartDate?.toString()));
+          endDateArr.push(new Date(session?.sessionEndDate?.toString()));
+        });
+  
+        const minStartDate = new Date(Math.min.apply(null, startDateArr));
+        const maxEndDate = new Date(Math.max.apply(null, endDateArr));
+  
+        item.classStartDate = !isNaN(minStartDate.valueOf())
+          ? moment(minStartDate).format('YYYY-DD-MM')
+          : '';
+        item.classEndDate = !isNaN(maxEndDate.valueOf())
+          ? moment(maxEndDate).format('YYYY-DD-MM')
+          : '';
+        item.studentId.name = `${item?.studentId?.name}`;
       });
-      const minStartDate = new Date(Math.min.apply(null, startDateArr));
-      const maxEndDate = new Date(Math.max.apply(null, endDateArr));
-
-      item.classStartDate = !isNaN(minStartDate.valueOf()) ? moment(minStartDate).format("YYYY-DD-MM") : "";
-      item.classEndDate = !isNaN(maxEndDate.valueOf()) ? moment(maxEndDate).format("YYYY-DD-MM") : "";
-      item.studentId.name = `${item?.studentId?.name}`;
-    });
+    }
   }
-
 
   getCurrentUserId(): string {
     return JSON.parse(localStorage.getItem('user_data')!).user.id;
@@ -235,16 +258,9 @@ export class StudentPendingCoursesComponent {
   
   }
   performSearch() {
-    // if(this.searchTerm){
-    // this.dataSource = this.dataSource?.filter((item: any) =>{
-    //   const searchList = (item.classId?.courseId?.title + item.studentId?.name + item.studentId?.last_name).toLowerCase();
-    //   return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1
-    // }
-    // );
-    // } else {
+    this.paginator.pageIndex = 0;
+    this.coursePaginationModel.page = 1;
       this.getRegisteredClasses();
-
-    // }
   }
   private refreshTable() {
     this.paginator._changePageSize(this.paginator.pageSize);

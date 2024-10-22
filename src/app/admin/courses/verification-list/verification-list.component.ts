@@ -42,7 +42,7 @@ export class VerificationListComponent {
     'coursename',
     'classstartDate',
     'classendDate',
-    'registeredDate',
+    'Registered Date',
     'programFee',
     'instructorFee',
   ];
@@ -76,6 +76,7 @@ export class VerificationListComponent {
     private authenService: AuthenService
   ) {
     this.studentPaginationModel = {} as StudentPaginationModel;
+    this.coursePaginationModel = {} as CoursePaginationModel;
   }
 
   ngOnInit(): void {
@@ -130,9 +131,9 @@ export class VerificationListComponent {
       .getPendingVerificationLists(
         userId,payload
       )
-      .subscribe((response: { data: StudentPaginationModel }) => {
+      .subscribe((response: { data: CoursePaginationModel }) => {
         this.isLoading = false;
-        this.studentPaginationModel = response.data;
+        this.coursePaginationModel = response.data;
         this.dataSource = response.data.docs;
         this.dataSource.sort = this.matSort;
         this.totalItems = response.data.totalDocs;
@@ -146,7 +147,7 @@ export class VerificationListComponent {
   view(id: string) {
     this.router.navigate(
       ['/admin/courses/student-courses/verification-list/view-completion-list'],
-      { queryParams: { id: id, status: 'pending', verify: false } }
+      { queryParams: { id: id, status: 'verification', verify: false } }
     );
   }
 
@@ -255,18 +256,9 @@ export class VerificationListComponent {
     });
   }
   performSearch() {
-    // if (this.searchTerm) {
-    //   this.dataSource = this.dataSource?.filter((item: any) => {
-    //     const searchList = (
-    //       item.classId?.courseId?.title +
-    //       item.studentId?.name +
-    //       item.studentId?.last_name
-    //     ).toLowerCase();
-    //     return searchList.indexOf(this.searchTerm.toLowerCase()) !== -1;
-    //   });
-    // } else {
+    this.paginator.pageIndex = 0;
+    this.coursePaginationModel.page = 1;
       this.getPendingVerificationList();
-    // }
   }
   private refreshTable() {
     this.paginator._changePageSize(this.paginator.pageSize);

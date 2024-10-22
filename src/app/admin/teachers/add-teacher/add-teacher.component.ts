@@ -94,7 +94,6 @@ export class AddTeacherComponent {
   getDepartment(){
     this.StudentService.getAllDepartments().subscribe((response: any) =>{
       this.dept = response.data.docs;
-      console.log("dept",this.dept)
      })
 
   }
@@ -132,7 +131,6 @@ export class AddTeacherComponent {
   //   }
   // }
   onSubmit() {
-    console.log('Form Value', this.proForm.value);
     if (!this.proForm.invalid) {
         const userData: Users = this.proForm.value;
         
