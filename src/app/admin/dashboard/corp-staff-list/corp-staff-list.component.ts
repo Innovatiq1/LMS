@@ -40,7 +40,6 @@ export class CorpStaffListComponent {
 
   ngOnInit(): void {
     this.staff = history.state.staff;
-    console.log('stafdfff', this.staff);
     if (this.staff.length !== 0) {
       this.isLoading = false;
     }

@@ -42,8 +42,6 @@ isLoading: boolean = false;
 
   ngOnInit() {
     this.courseData = history.state.courses; 
-
-    console.log(this.courseData)
   }
 
   pageSizeChange($event: any) {

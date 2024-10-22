@@ -134,23 +134,46 @@ export class StudentPendingCoursesComponent {
     this.router.navigate(['/admin/courses/student-courses/registered-pending-courses/view-completion-list'],{queryParams: {id:id, status:'pending'}});
   }
 
+  // mapClassList() {
+  //   this.studentPaginationModel.docs.forEach((item: Student) => {
+  //     const startDateArr: any = [];
+  //     const endDateArr: any = [];
+  //     item?.classId?.sessions?.forEach((session) => {
+  //       startDateArr.push(new Date(session?.sessionStartDate?.toString()));
+  //       endDateArr.push(new Date(session?.sessionEndDate?.toString()));
+  //     });
+  //     const minStartDate = new Date(Math.min.apply(null, startDateArr));
+  //     const maxEndDate = new Date(Math.max.apply(null, endDateArr));
+
+  //     item.classStartDate = !isNaN(minStartDate.valueOf()) ? moment(minStartDate).format("YYYY-DD-MM") : "";
+  //     item.classEndDate = !isNaN(maxEndDate.valueOf()) ? moment(maxEndDate).format("YYYY-DD-MM") : "";
+  //     item.studentId.name = `${item?.studentId?.name}`;
+  //   });
+  // }
   mapClassList() {
-    this.studentPaginationModel.docs.forEach((item: Student) => {
-      const startDateArr: any = [];
-      const endDateArr: any = [];
-      item?.classId?.sessions?.forEach((session) => {
-        startDateArr.push(new Date(session?.sessionStartDate?.toString()));
-        endDateArr.push(new Date(session?.sessionEndDate?.toString()));
+    if (Array.isArray(this.coursePaginationModel?.docs)) {
+      this.coursePaginationModel.docs.forEach((item: any) => {
+        const startDateArr: any = [];
+        const endDateArr: any = [];
+        
+        item?.classId?.sessions?.forEach((session: { sessionStartDate: { toString: () => string | number | Date; }; sessionEndDate: { toString: () => string | number | Date; }; }) => {
+          startDateArr.push(new Date(session?.sessionStartDate?.toString()));
+          endDateArr.push(new Date(session?.sessionEndDate?.toString()));
+        });
+  
+        const minStartDate = new Date(Math.min.apply(null, startDateArr));
+        const maxEndDate = new Date(Math.max.apply(null, endDateArr));
+  
+        item.classStartDate = !isNaN(minStartDate.valueOf())
+          ? moment(minStartDate).format('YYYY-DD-MM')
+          : '';
+        item.classEndDate = !isNaN(maxEndDate.valueOf())
+          ? moment(maxEndDate).format('YYYY-DD-MM')
+          : '';
+        item.studentId.name = `${item?.studentId?.name}`;
       });
-      const minStartDate = new Date(Math.min.apply(null, startDateArr));
-      const maxEndDate = new Date(Math.max.apply(null, endDateArr));
-
-      item.classStartDate = !isNaN(minStartDate.valueOf()) ? moment(minStartDate).format("YYYY-DD-MM") : "";
-      item.classEndDate = !isNaN(maxEndDate.valueOf()) ? moment(maxEndDate).format("YYYY-DD-MM") : "";
-      item.studentId.name = `${item?.studentId?.name}`;
-    });
+    }
   }
-
 
   getCurrentUserId(): string {
     return JSON.parse(localStorage.getItem('user_data')!).user.id;

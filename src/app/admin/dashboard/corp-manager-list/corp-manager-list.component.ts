@@ -56,7 +56,6 @@ managers: any = [];
  
   ngOnInit() {
     this.managers = history.state.managersList; 
-    console.log("mnnnnnn",this.managers)
     if(this.managers.length !== 0) {
       this.isLoading = false;
     }

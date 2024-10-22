@@ -73,7 +73,6 @@ export class AddStaffComponent {
     );
 
     this.active.queryParams.subscribe((param) => {
-      console.log('param', param['id']);
       this.paramId = param['id'];
       if (this.paramId != undefined) {
         this.updateBtn = true;
@@ -151,11 +150,7 @@ export class AddStaffComponent {
   //    }
   //   }
   addBlog(formObj: any) {
-    console.log('Form Value', formObj.value);
     if (!formObj.invalid) {
-      // Process form data without uploading anything
-      // Additional logic can be added here as needed
-      console.log('======', formObj.type);
       formObj['Active'] = this.status;
       formObj['role'] = formObj.type;
       formObj['isLogin'] = true;
@@ -287,7 +282,6 @@ export class AddStaffComponent {
   //   }
   // }
   updateBlog(formObj: any) {
-    console.log('Form Value', formObj.value);
     if (!formObj.invalid) {
       // Prepare user data for update
       formObj['Active'] = this.status;

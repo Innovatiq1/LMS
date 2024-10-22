@@ -236,7 +236,6 @@ applyFilter() {
   this.courseService.getFilteredProgramData(this.filterBody, { ...this.coursePaginationModel }).subscribe((response) => {
     this.programData = response.data.docs;
     this.totalItems = response.data.totalDocs;
-    console.log(response)
     this.isFiltered = true;
     this.coursePaginationModel.docs = response.data.docs;
     this.coursePaginationModel.page = response.data.page;

@@ -92,7 +92,6 @@ export class AdminService {
  
 
   getUserTypeList(filter: any,id?:any): Observable<any> {
-    console.log("filter==",filter)
     let apiUrl;
     if(id){
       apiUrl = `${this.defaultUrl}userType?companyId=${id}`;

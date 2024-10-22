@@ -233,7 +233,6 @@ export class FeedbackReportComponent  extends UnsubscribeOnDestroyAdapter
 
   // export table data in excel file
   exportExcel() {
-    console.log('data',this.dataSource)
 
     // key name with space add in brackets
     const exportData: Partial<TableElement>[] =

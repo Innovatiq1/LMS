@@ -168,7 +168,6 @@ performSearch() {
   if (this.searchTerm) {
     this.dataSource = this.dataSource?.filter(
       (item: any) => {
-        console.log(item)
         const searchList = (
           item?.name +
           item?.role +

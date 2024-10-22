@@ -121,7 +121,6 @@ export class SurveyService extends UnsubscribeOnDestroyAdapter {
   }
   getSurvey( filter?: Partial<CoursePaginationModel>): Observable<ApiResponse> {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-    console.log("servey==",filter)
         const apiUrl = `${this.prefix}admin/survey?companyId=${userId}`;
     return this.httpClient.get<any>(apiUrl, {
       params: this.buildParams(filter),

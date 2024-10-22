@@ -34,7 +34,6 @@ constructor(private route:ActivatedRoute){
   ngOnInit(): void {
   this.route.queryParams.subscribe(params =>{
     this.officers = params['managers'] ? JSON.parse(params['managers']) : null;
-    console.log(this.officers);
   });
   if (this.officers.length !== 0) {
     this.isLoading = false;
