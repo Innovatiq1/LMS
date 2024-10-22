@@ -15,8 +15,15 @@
                   <ul class="header-buttons-left ms-0">
                     <li class="tbl-search-box">
                       <label for="search-input"><i class="material-icons search-icon">search</i></label>
-                      <input placeholder="Search" type="text" [(ngModel)]="filterName"
-                        class="browser-default search-field" (keyup)="performSearch()" aria-label="Search box">
+                      <input
+                      placeholder="Search"
+                      type="text"
+                      #filter
+                      class="browser-default search-field"
+                      aria-label="Search box"
+                      [(ngModel)]="filterName" (input)="performSearch()"
+  
+                    />
                     </li>
                   </ul>
                 </li>
@@ -210,9 +217,9 @@
 
               </div>
               
-              <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems"
-                (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr" aria-label="select pagination option">
-              </mat-paginator>
+              <mat-paginator #paginator [length]="totalItems" (page)="pageSizeChange($event)"
+              [pageSizeOptions]="pageSizeArr" aria-label="select pagination option">
+          </mat-paginator>
             </div>
           </div>
         </div>

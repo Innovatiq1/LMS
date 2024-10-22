@@ -42,6 +42,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { AssessmentService } from '@core/service/assessment.service';
 import { CourseModel, CoursePaginationModel } from '@core/models/course.model';
+import { UtilsService } from '@core/service/utils.service';
 @Component({
   selector: 'app-completion-list',
   templateUrl: './completion-list.component.html',
@@ -73,7 +74,7 @@ export class CompletionListComponent {
     },
   ];
   @ViewChild('certificateDialog') certificateDialog!: TemplateRef<any>;
-  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
+  @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 
   pdfData: any = [];
   dafaultGenratepdf: boolean = false;
@@ -81,7 +82,7 @@ export class CompletionListComponent {
   certifiacteUrl: boolean = false;
   isGeneratingCertificates = false;
   dataSource: any;
-  pageSizeArr = [10, 20];
+  pageSizeArr = this.utils.pageSizeArr;
   totalItems: any;
   studentPaginationModel: StudentPaginationModel;
   coursePaginationModel!: Partial<CoursePaginationModel>;
@@ -149,7 +150,8 @@ export class CompletionListComponent {
     private courseService: CourseService,
     private fb: FormBuilder,
     private authenService: AuthenService,
-    private assessmentService: AssessmentService
+    private assessmentService: AssessmentService,
+    public utils: UtilsService,
   ) {
     this.studentPaginationModel = {} as StudentPaginationModel;
     this.coursePaginationModel = {} ;
@@ -191,8 +193,8 @@ export class CompletionListComponent {
   }
 
   pageSizeChange($event: any) {
-    this.studentPaginationModel.page = $event?.pageIndex + 1;
-    this.studentPaginationModel.limit = $event?.pageSize;
+    this.coursePaginationModel.page = $event?.pageIndex + 1;
+    this.coursePaginationModel.limit = $event?.pageSize;
     this.getCompletedClasses();
   }
 
@@ -205,10 +207,11 @@ export class CompletionListComponent {
     }
   }
   performSearch() {
-    if (this.paginator) {
-      this.paginator.pageIndex = 0;  
-    }
+    this.paginator.pageIndex = 0;
     this.coursePaginationModel.page = 1;
+    
+    this.changeDetectorRef.detectChanges();
+    
     this.getCompletedClasses();
   }
   getCompletedClasses() {
