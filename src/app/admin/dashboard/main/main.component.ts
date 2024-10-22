@@ -391,15 +391,12 @@ export class MainComponent implements OnInit {
     });
   }
   getInstructorsList() {
-    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-        let payload = {
-      type: AppConstants.INSTRUCTOR_ROLE,
-      companyId:userId
-
-    };
-    this.instructorService.getInstructor(payload).subscribe(
+   
+      const type = AppConstants.INSTRUCTOR_ROLE
+    
+    this.instructorService.getInstructorsList(type).subscribe(
       (response: any) => {
-        this.instructors = response.slice(0, 5);
+        this.instructors = response.data.docs.slice(0, 5);
       },
       (error) => {}
     );
@@ -526,14 +523,11 @@ export class MainComponent implements OnInit {
   }
   getStudentsList() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-        let payload = {
-      type: AppConstants.STUDENT_ROLE,
-      companyId:userId
-
-    };
-    this.instructorService.getInstructor(payload).subscribe(
+     
+      const type = AppConstants.STUDENT_ROLE
+    this.instructorService.getInstructorsList(type).subscribe(
       (response: any) => {
-        this.students = response?.slice(0, 5);
+        this.students = response?.data?.docs.slice(0, 5);
         const currentDate = new Date();
         const currentMonth = currentDate.getMonth();
         const currentYear = currentDate.getFullYear();
@@ -568,42 +562,42 @@ export class MainComponent implements OnInit {
         const tenMonths = new Date(currentYear, currentMonth - 10, 0);
         const twelveMonths = new Date(currentYear, currentMonth - 12, 0);
 
-        this.tillPreviousTwoMonthsStudents = response.filter(
+        this.tillPreviousTwoMonthsStudents = response.data?.docs.filter(
           (item: { createdAt: string | number | Date }) => {
             const createdAtDate = new Date(item.createdAt);
             return createdAtDate >= monthsAgo && createdAtDate <= twoMonths;
           }
         );
 
-        this.tillPreviousFourMonthsStudents = response.filter(
+        this.tillPreviousFourMonthsStudents = response.data?.docs.filter(
           (item: { createdAt: string | number | Date }) => {
             const createdAtDate = new Date(item.createdAt);
             return createdAtDate >= monthsAgo && createdAtDate <= fourMonths;
           }
         );
 
-        this.tillPreviousSixMonthsStudents = response.filter(
+        this.tillPreviousSixMonthsStudents = response.data?.docs.filter(
           (item: { createdAt: string | number | Date }) => {
             const createdAtDate = new Date(item.createdAt);
             return createdAtDate >= monthsAgo && createdAtDate <= sixMonths;
           }
         );
 
-        this.tillPreviousEightMonthsStudents = response.filter(
+        this.tillPreviousEightMonthsStudents = response.data?.docs.filter(
           (item: { createdAt: string | number | Date }) => {
             const createdAtDate = new Date(item.createdAt);
             return createdAtDate >= monthsAgo && createdAtDate <= eightMonths;
           }
         );
 
-        this.tillPreviousTenMonthsStudents = response.filter(
+        this.tillPreviousTenMonthsStudents = response.data?.docs.filter(
           (item: { createdAt: string | number | Date }) => {
             const createdAtDate = new Date(item.createdAt);
             return createdAtDate >= monthsAgo && createdAtDate <= tenMonths;
           }
         );
 
-        this.tillPreviousTwelveMonthsStudents = response.filter(
+        this.tillPreviousTwelveMonthsStudents = response.data?.docs.filter(
           (item: { createdAt: string | number | Date }) => {
             const createdAtDate = new Date(item.createdAt);
             return createdAtDate >= monthsAgo && createdAtDate <= twelveMonths;
@@ -611,7 +605,7 @@ export class MainComponent implements OnInit {
         );
 
         // Filtered students who joined in the specified time periods
-        this.twoMonthsAgoStudents = response.filter(
+        this.twoMonthsAgoStudents = response.data?.docs.filter(
           (item: { createdAt: string | number | Date }) => {
             const createdAtDate = new Date(item.createdAt);
             return (
@@ -621,7 +615,7 @@ export class MainComponent implements OnInit {
           }
         );
 
-        this.fourMonthsAgoStudents = response.filter(
+        this.fourMonthsAgoStudents = response.data?.docs.filter(
           (item: { createdAt: string | number | Date }) => {
             const createdAtDate = new Date(item.createdAt);
             return (
@@ -631,7 +625,7 @@ export class MainComponent implements OnInit {
           }
         );
 
-        this.sixMonthsAgoStudents = response.filter(
+        this.sixMonthsAgoStudents = response.data?.docs.filter(
           (item: { createdAt: string | number | Date }) => {
             const createdAtDate = new Date(item.createdAt);
             return (
@@ -640,7 +634,7 @@ export class MainComponent implements OnInit {
             );
           }
         );
-        this.eightMonthsAgoStudents = response.filter(
+        this.eightMonthsAgoStudents = response.data?.docs.filter(
           (item: { createdAt: string | number | Date }) => {
             const createdAtDate = new Date(item.createdAt);
             return (
@@ -649,7 +643,7 @@ export class MainComponent implements OnInit {
             );
           }
         );
-        this.tenMonthsAgoStudents = response.filter(
+        this.tenMonthsAgoStudents = response.data?.docs.filter(
           (item: { createdAt: string | number | Date }) => {
             const createdAtDate = new Date(item.createdAt);
             return (
@@ -658,7 +652,7 @@ export class MainComponent implements OnInit {
             );
           }
         );
-        this.twelveMonthsAgoStudents = response.filter(
+        this.twelveMonthsAgoStudents = response.data?.docs.filter(
           (item: { createdAt: string | number | Date }) => {
             const createdAtDate = new Date(item.createdAt);
             return (
@@ -2062,10 +2056,9 @@ private attendanceBarChart() {
   }
 
   instructorData() {
-    let payload = {
-      type: AppConstants.INSTRUCTOR_ROLE,
-    };
-    this.instructorService.getInstructors(payload).subscribe(
+    const  type = AppConstants.INSTRUCTOR_ROLE
+  console.log("type",type)
+    this.instructorService.getInstructorsList(type).subscribe(
       (response: { data: any }) => {
         this.latestInstructor = response?.data[0];
       },

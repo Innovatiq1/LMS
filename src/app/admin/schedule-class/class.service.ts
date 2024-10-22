@@ -190,7 +190,7 @@ getAllInstructor(): Observable<InstructorList[]> {
   return this.http.get<ApiResponse>(apiUrl).pipe(map((response) => response.data));
 }
 getInstructor(body:any): Observable<ApiResponse> {
-  const apiUrl = `${this.prefix}auth/instructorList/`;
+  const apiUrl = `${this.prefix}auth/instructorList1/`;
   return this.http
     .post<ApiResponse>(apiUrl,body)
     .pipe(
