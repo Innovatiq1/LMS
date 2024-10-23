@@ -31,6 +31,8 @@ export class CourseComponent {
   filterApproved='';
   filterCompleted ='';
   classesData: any;
+  activeCourses: any;
+
   pagination :any;
   totalItems: any;
   totalRegisteredItems: any;
@@ -44,12 +46,14 @@ export class CourseComponent {
   studentCompletedClasses: any;
   totalApprovedItems: any;
   totalCompletedItems: any;
+  totalCourseItems:any;
 
   @ViewChild('filter', { static: true }) filter!: ElementRef;
   tab: number = 0;
   department: any;
   totalFreeItems: any;
   userGroupIds: string = '';
+  allBatches = false;
   allCourses = false;
   register = false;
   approve = false;
@@ -76,13 +80,17 @@ export class CourseComponent {
     let parentData = roleDetails.filter((item: any) => item.id == parentId);
     let childData = parentData[0].children.filter((item: any) => item.id == childId);
     let actions = childData[0].actions
-    let allAction = actions.filter((item:any) => item.title == 'All Courses')
-    let registeredAction = actions.filter((item:any) => item.title == 'Registered Courses')
-    let approvedAction = actions.filter((item:any) => item.title == 'Approved Courses')
-    let completedAction = actions.filter((item:any) => item.title == 'Completed Courses')
+    let allAction = actions.filter((item:any) => item.title == 'All Batches')
+    let coursesAction = actions.filter((item:any) => item.title == 'All Courses')
+    let registeredAction = actions.filter((item:any) => item.title == 'Registered')
+    let approvedAction = actions.filter((item:any) => item.title == 'Approved')
+    let completedAction = actions.filter((item:any) => item.title == 'Completed')
 
-    if(allAction.length >0){
+    if(coursesAction.length >0){
       this.allCourses = true;
+    }
+    if(allAction.length >0){
+      this.allBatches = true;
     }
     if(registeredAction.length >0){
       this.register = true;
@@ -98,6 +106,7 @@ export class CourseComponent {
     this.getRegisteredCourse();
     this.getApprovedCourse();
     this.getCompletedCourse();
+    this.getActiveCourse();
   }
 
   tabChanged(event: MatTabChangeEvent) {
@@ -109,6 +118,8 @@ export class CourseComponent {
       this.tab = 2
     } else if(event.index == 3){
       this.tab = 3
+    }  else if(event.index == 4){
+      this.tab = 4
     }
   }
 getAllCourse(){
@@ -130,10 +141,28 @@ getAllCourse(){
   })
 }
 
+getActiveCourse(){
+  console.log('filterprem',this.filterName)
+  let filterText = this.filterName
+  const payload = { filterText,...this.coursePaginationModel, status: 'active' ,department:this.department, datefilter:'yes'}
+  let companyId= JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+  this._courseService.getAllCourses(companyId,payload).subscribe(response =>{
+   this.activeCourses = response.data.docs;
+   this.totalCourseItems = response.data.totalDocs
+   this.coursePaginationModel.docs = response.data.docs;
+   this.coursePaginationModel.page = response.data.page;
+   this.coursePaginationModel.limit = response.data.limit;
+   this.coursePaginationModel.totalDocs = response.data.totalDocs;
+   this.coursePaginationModel.page = 1; // Set the page to 1
+
+  })
+}
+
+
 
 getRegisteredCourse(){
   let studentId=localStorage.getItem('id')
-  let filterRegisteredCourse = this.filterRegistered
+  let filterRegisteredCourse = this.filterName
   const payload = {  filterRegisteredCourse,studentId: studentId,datefilter:'yes', status: 'registered' ,...this.coursePaginationModel};
   this.classService.getStudentRegisteredClasses(payload).subscribe(response =>{
    this.studentRegisteredClasses = response.data.docs;
@@ -146,7 +175,7 @@ getRegisteredCourse(){
 }
 getApprovedCourse(){
   let studentId=localStorage.getItem('id')
-  let filterApprovedCourse = this.filterApproved
+  let filterApprovedCourse = this.filterName
   const payload = {  filterApprovedCourse,studentId: studentId,datefilter:'yes', status: 'approved' ,...this.coursePaginationModel};
   this.classService.getStudentRegisteredClasses(payload).subscribe(response =>{
    this.studentApprovedClasses = response.data.docs;
@@ -160,7 +189,7 @@ getApprovedCourse(){
 
 getCompletedCourse(){
   let studentId=localStorage.getItem('id')
-  let filterCompletedCourse = this.filterCompleted
+  let filterCompletedCourse = this.filterName
   const payload = {  filterCompletedCourse,studentId: studentId, status: 'completed' ,...this.coursePaginationModel};
   this.classService.getStudentRegisteredClasses(payload).subscribe(response =>{
    this.studentCompletedClasses = response.data.docs;
@@ -178,6 +207,11 @@ pageSizeChange($event: any) {
   this.coursePaginationModel.page = $event?.pageIndex + 1;
   this.coursePaginationModel.limit = $event?.pageSize;
   this.getAllCourse();
+}
+activePageSizeChange($event: any) {
+  this.coursePaginationModel.page = $event?.pageIndex + 1;
+  this.coursePaginationModel.limit = $event?.pageSize;
+  this.getActiveCourse();
 }
 pageStudentRegisteredSizeChange($event: any) {
   this.coursePaginationModel.page = $event?.pageIndex + 1;
@@ -272,6 +306,7 @@ delete(id: string) {
 
 performSearch() {
     this.getAllCourse();
+    this.getActiveCourse();
     this.getRegisteredCourse();
     this.getApprovedCourse();
     this.getCompletedCourse();
