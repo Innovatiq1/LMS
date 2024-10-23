@@ -45,6 +45,7 @@ export class ProgramPaymentComponent {
   coursePaginationModel!: Partial<CoursePaginationModel>;
   commonRoles: any;
   isView = false;
+  searchTerm: string = '';
 
   constructor(private router: Router, private formBuilder: FormBuilder,
     public utils: UtilsService, private courseService: CourseService,
@@ -75,7 +76,10 @@ export class ProgramPaymentComponent {
   }
   getAllPrograms(){
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-    this.courseService.getAllProgramsPayments({ ...this.coursePaginationModel},userId).subscribe(response =>{
+    let filterProgram = this.searchTerm;
+    const payload = { ...this.coursePaginationModel,title:filterProgram };
+    this.courseService.getAllProgramsPayments(payload,userId).subscribe(response =>{
+      // console.log("data==",response);
      this.dataSource = response.data.docs;
      this.ref.detectChanges();
      this.totalItems = response.data.totalDocs;
@@ -85,6 +89,12 @@ export class ProgramPaymentComponent {
      }, error => {
      });
   }
+  performSearch() {
+    this.coursePaginationModel.page = 1;
+    this.paginator.pageIndex = 0;
+    this.getAllPrograms();
+  }
+
   view(id:any){
     
     this.router.navigate(['/admin/budgets/view-program-payment/'], {queryParams:{id:id}})

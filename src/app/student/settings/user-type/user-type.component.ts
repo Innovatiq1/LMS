@@ -45,6 +45,7 @@ export class UserTypeComponent {
   isLoading = true;
   selection = new SelectionModel<UserType>(true, []);
   dataSource: any[] = [];
+  searchTerm:string = '';
 
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   menu: any;
@@ -82,6 +83,12 @@ export class UserTypeComponent {
     this.router.navigate(['/student/settings/user-type/edit-user-type'], {
       queryParams: { id: id },
     });
+  }
+
+  performSearch(){
+    this.coursePaginationModel.page = 1;
+    this.paginator.pageIndex = 0;
+    this.getUserTypeList(true);
   }
 
   changeInActive(dataDetails: UserType): void {
@@ -158,15 +165,33 @@ export class UserTypeComponent {
   }
 
   pageSizeChange($event: any) {
+    console.log("sfdfs",this.searchTerm)
     this.coursePaginationModel.page = $event?.pageIndex + 1;
     this.coursePaginationModel.limit = $event?.pageSize;
+    if(this.searchTerm!="")
+    {
+      console.log("hiii")
+      this.getUserTypeList(true);
+    }
+    else
     this.getUserTypeList();
   }
 
   getUserTypeList(filters?: any) {
+    // let filterText = this.searchTerm;
+    console.log("filter",filters)
+    let payload;
+    if(filters && this.searchTerm!=""){
+      let filterProgram = this.searchTerm;
+      payload = { ...this.coursePaginationModel,typeName:filterProgram };
+    }
+    else{
+      payload = { ...this.coursePaginationModel };
+    }
+    
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
         this.adminService
-      .getUserTypeList({ ...this.coursePaginationModel },userId)
+      .getUserTypeList(payload,userId)
       .subscribe(
         (response: any) => {
           this.isLoading = false;
@@ -212,6 +237,7 @@ export class UserTypeComponent {
       }
     });
   }
+  
   exportExcel() {
     const exportData: Partial<TableElement>[] = this.typesList.map(
       (x: any) => ({

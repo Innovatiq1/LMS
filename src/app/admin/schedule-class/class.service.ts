@@ -47,6 +47,8 @@ export class ClassService extends UnsubscribeOnDestroyAdapter {
       if (filter.rescheduledDate) params = params.set("rescheduledDate", filter.rescheduledDate);
       if (filter.program) params = params.set("program", filter.program);
       if (filter.courseId) params = params.set("courseId", filter.courseId);
+      if (filter.courseName) params = params.set("courseName", filter.courseName);
+      if (filter.className) params = params.set("className", filter.className);
 
     }
     return params;
@@ -194,7 +196,7 @@ getAllInstructor(): Observable<InstructorList[]> {
   return this.http.get<ApiResponse>(apiUrl).pipe(map((response) => response.data));
 }
 getInstructor(body:any): Observable<ApiResponse> {
-  const apiUrl = `${this.prefix}auth/instructorList/`;
+  const apiUrl = `${this.prefix}auth/instructorList1/`;
   return this.http
     .post<ApiResponse>(apiUrl,body)
     .pipe(

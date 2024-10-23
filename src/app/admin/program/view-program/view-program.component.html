@@ -148,7 +148,7 @@
                               <tbody>
                                 <tr style="cursor: pointer;" *ngFor="let course of response?.coreprogramCourse">
                                   <td>{{ course?.coreProgramName?.title }}</td>
-                                  <td [innerHTML]="course?.coreProgramDescription | bulletPoints | truncate:150"></td>
+                                  <td [innerHTML]="getSafeHtml(course?.coreProgramDescription)"></td>
                                   <td  style="text-align: right; padding-right: 200px;">
                                     <span>$</span> {{ course?.coreProgramName?.fee > 0 ? course?.coreProgramName?.fee : 0 }}.00
                                   </td>
@@ -211,7 +211,7 @@
                               <tbody>
                                 <tr style="cursor: pointer;" *ngFor="let course of response?.electiveprogramCourse">
                                   <td>{{ course?.electiveProgramName?.title }}</td>
-                                  <td [innerHTML]="course?.electiveProgramDescription | bulletPoints | truncate:150">
+                                  <td [innerHTML]="getSafeHtml(course?.electiveProgramDescription)">
                                   </td>
                                   <td style="text-align: right; padding-right: 200px;"><span>$ </span>{{ course?.electiveProgramName?.fee>0?course?.electiveProgramName?.fee:0 }}.00</td>
                                 </tr>

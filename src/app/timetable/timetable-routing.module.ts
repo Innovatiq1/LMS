@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { CourseTimetableComponent } from './course-timetable/course-timetable.component';
 import { ProgramTimetableComponent } from './program-timetable/program-timetable.component';
 import { ScheduleClassComponent } from './schedule-class/schedule-class.component';
-import { ClassListComponent } from './class-list/class-list.component';
 import { ViewProgramClassComponent } from './schedule-class/view-program-class/view-program-class.component';
 import { EAttendanceComponent } from './e-attendance/e-attendance.component';
 import { MyProgramsComponent } from './my-programs/my-programs.component';
@@ -29,10 +28,7 @@ const routes: Routes = [
     path: 'schedule-class',
     component: ScheduleClassComponent,
   },
-  {
-    path: 'class-list',
-    component: ClassListComponent,
-  },
+ 
   {
     path: 'view-schedule-class/:id',
     component: ViewProgramClassComponent,

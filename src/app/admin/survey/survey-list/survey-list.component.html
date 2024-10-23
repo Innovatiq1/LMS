@@ -14,9 +14,18 @@
                 <li>
                   <ul class="header-buttons-left ms-0">
                     <li class="tbl-search-box">
-                      <label for="search-input"><i class="material-icons search-icon">search</i></label>
-                      <input placeholder="Search" type="text" #filter class="browser-default search-field"
-                        aria-label="Search box">
+                      <label for="search-input"
+                        ><i class="material-icons search-icon">search</i></label
+                      >
+                      <input
+                        placeholder="Search"
+                        type="text"
+                        #filter
+                        class="browser-default search-field"
+                        [(ngModel)]="searchTerm"
+                        (input)="performSearch()"
+                        aria-label="Search box"
+                      />
                     </li>
                   </ul>
                 </li>
@@ -60,7 +69,7 @@
                 <ng-container matColumnDef="courseName">
                   <mat-header-cell *matHeaderCellDef >Title</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="editCall(row.id)" (contextmenu)="onContextMenu($event, row)">
-                    <span class="mobile-label">Course :</span> {{row?.courseName}}</mat-cell>
+                    <span class="mobile-label">Title :</span> {{row?.courseName}}</mat-cell>
                 </ng-container>
 
 

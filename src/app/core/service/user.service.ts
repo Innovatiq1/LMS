@@ -56,6 +56,12 @@ export class UserService {
       if (filter.filterText) {
         params = params.set("title", filter.filterText?.toString());
       }
+      if (filter.user) {
+        params = params.set("user", filter.user);
+      }
+      if (filter.title) {
+        params = params.set("title", filter.title?.toString());
+      }
       if (filter.status && filter.status === "active") {
         params = params.set("status", "active");
       } else if (filter.status && filter.status === "inactive") {
@@ -364,15 +370,21 @@ export class UserService {
     return this.http.get<ApiResponse>(apiUrl,{ params }).pipe(map((response) => response));
   }
 
-  getDashboardsByCompanyId(companyId: string, typeName?:any): Observable<ApiResponse> {
-    let apiUrl
-    if(typeName){
-      apiUrl = `${this.defaultUrl}customzDashboard/${companyId}/${typeName}`;
-    }else{
-      apiUrl = `${this.defaultUrl}customzDashboard/${companyId}`;
-    }
-    return this.http.get<ApiResponse>(apiUrl).pipe(map((response) => response));
+  getDashboardsByCompanyId(companyId: string, typeName?:any,filter?: Partial<CoursePaginationModel>): Observable<ApiResponse> {
+    
+     const apiUrl = `${this.defaultUrl}customzDashboard/${companyId}/${typeName}`;
+   
+    return this.http.get<ApiResponse>(apiUrl, {
+      params: this.buildParams(filter),
+    }).pipe(map((response) => response));
   }
+  getAllDashboardList(companyId: string,filter?: Partial<CoursePaginationModel>){
+    const apiUrl = `${this.defaultUrl}customzDashboard/dashboard?companyId=${companyId}`;
+    return this.http.get<ApiResponse>(apiUrl, {
+      params: this.buildParams(filter),
+    }).pipe(map((response) => response));
+  }
+ 
   getUsersById(head: any){
     const apiUrl = `${this.defaultUrl}admin/user/headId?head=${head.headId}`;
       return this.http

@@ -175,13 +175,11 @@ export class Dashboard2Component implements OnInit,AfterViewInit {
 
   getInstructorsList() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-    let payload = {
-      type: AppConstants.INSTRUCTOR_ROLE,
-      companyId:userId
-
-    }
-    this.instructorService.getInstructor(payload).subscribe((response: any) => {
-      this.instructors = response.slice(0, 8);
+   
+      const type = AppConstants.INSTRUCTOR_ROLE
+     
+    this.instructorService.getInstructorsList(type).subscribe((response: any) => {
+      this.instructors = response.data.docs.slice(0, 8);
       const currentDate = new Date();
       const currentMonth = currentDate.getMonth();
       const currentYear = currentDate.getFullYear();

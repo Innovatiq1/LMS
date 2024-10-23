@@ -10,7 +10,7 @@
     <div class="row">
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
-          <div class="materialTableHeader">
+          <!-- <div class="materialTableHeader">
             <div class="right">
               <ul class="tbl-export-btn">
                 <li>
@@ -24,7 +24,7 @@
                 </li>
               </ul>
             </div>
-          </div>
+          </div> -->
           <mat-tab-group (selectedTabChange)="onTabChange($event)">
 
             <mat-tab *ngIf="isAssessment">
@@ -86,6 +86,7 @@
                         <button [disabled] ="calculateRetaks(row) > 0 || row.is_exam_completed"
                                 mat-flat-button
                                 color="accent"
+                                class="request"
                                 (click)="onRequestRetake(row)">
                           Request Retake
                         </button>

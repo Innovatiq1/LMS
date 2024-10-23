@@ -355,7 +355,7 @@ export class ReportsComponent implements OnInit{
   //   });
   // }
   getAllCourses() {
-    this._courseService.getAllCoursesWithPagination().subscribe((response) => {
+    this._courseService.getAllCoursesWithPagination({ ...this.coursePaginationModel }).subscribe((response) => {
        this.courseData = response.data.docs; // Update courseData with the new page data
        this.dataSource = new MatTableDataSource(this.courseData); // Update dataSource for the table
        this.totalItems = response.data.totalDocs; // Set the total number of items for the paginator

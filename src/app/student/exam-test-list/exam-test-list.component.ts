@@ -152,11 +152,11 @@ export class ExamTestListComponent {
 
   async freeExamFlow(courseDetails: any, data:any){
     const courseKitDetails = courseDetails?.course_kit;
-    const courseKit = courseKitDetails.map((kit: any) => ({
-      shortDescription: kit.shortDescription,
-      longDescription: kit.longDescription,
-      documentLink: kit.documentLink,
-      name: kit.name,
+    const courseKit = courseKitDetails?.map((kit: any) => ({
+      shortDescription: kit?.shortDescription,
+      longDescription: kit?.longDescription,
+      documentLink: kit?.documentLink,
+      name: kit?.name,
       filename: kit?.videoLink[0]?.doc_filename,
       videoId: kit?.videoLink[0]?.id,
       inputUrl: kit?.videoLink[0]?.video_url,
@@ -332,7 +332,7 @@ export class ExamTestListComponent {
                         };
                         options.modal.ondismiss = () => {
                           alert('Transaction has been cancelled.');
-                          this.router.navigate(['/student/exams/exam']);
+                          this.router.navigate(['/student/enrollment/exam']);
                         };
                         const rzp = new this.courseService.nativeWindow.Razorpay(
                           options

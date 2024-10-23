@@ -81,6 +81,7 @@ selectedRows: any[] = [];
 
       this.coursePaginationModel = {};
     // this.studentPaginationModel = {} as StudentPaginationModel;
+    this.userGroupIds = (JSON.parse(localStorage.getItem('user_data')!).user.userGroup.map((v:any)=>v.id) || []).join()
   }
 
   ngOnInit(): void {
@@ -125,6 +126,7 @@ selectedRows: any[] = [];
       .subscribe((response: any) => {
         this.isLoading = false;
         this.dataSource = response.docs;
+        console.log("searchData", this.dataSource);
         this.totalPages = response.totalDocs;
         this.coursePaginationModel.docs = response.docs;
         this.coursePaginationModel.page = response.page;
@@ -386,7 +388,7 @@ genratePdf3(convertIdDynamic: any, memberId: any, memberProgrmId: any, pdfBlob: 
       
       
                 }, (err) => {
-                  console.log("error==",err);
+                  console.log("error",err);
       
                 }
                 )
@@ -483,7 +485,6 @@ isAnyRowSelected(): boolean {
 }
 enableMultipleCertificates() {
   if (this.selectedRows.length === 0) {
-    console.log('No rows selected');
     return;
   }
   this.isGeneratingCertificates = true;

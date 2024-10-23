@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
@@ -24,11 +24,14 @@ import { Router } from '@angular/router';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import Swal from 'sweetalert2';
-import { Users } from '@core/models/user.model';
+import { Users, UsersPaginationModel } from '@core/models/user.model';
 import { Students } from 'app/admin/students/students.model';
 import { StudentsService } from 'app/admin/students/students.service';
 import { AppConstants } from '@shared/constants/app.constants';
 import { AuthenService } from '@core/service/authen.service';
+import { CoursePaginationModel } from '@core/models/course.model';
+import { UtilsService } from '@core/service/utils.service';
+import { UserProfileModule } from 'app/admin/user-profile/user-profile.module';
 @Component({
   selector: 'app-all-students',
   templateUrl: './all-students.component.html',
@@ -51,8 +54,9 @@ export class AllStudentsComponent
     'status',
   ];
   exampleDatabase?: StudentsService;
-  dataSource!: ExampleDataSource;
+  dataSource!: any;
   selection = new SelectionModel<Students>(true, []);
+  usersPaginationModel!: Partial<UsersPaginationModel>;
   id?: number;
   students?: Students;
   rowData: any;
@@ -65,6 +69,10 @@ export class AllStudentsComponent
   ];
   isCreate: boolean = false;
   isView: boolean = false;
+  isTblLoading: boolean = true;
+  totalItems:any;
+  pageSizeArr = this.utils.pageSizeArr;
+  filterName: any;
 
   constructor(
     public httpClient: HttpClient,
@@ -72,9 +80,11 @@ export class AllStudentsComponent
     public studentsService: StudentsService,
     private snackBar: MatSnackBar,
     private router: Router,
-    private authenService: AuthenService
+    private authenService: AuthenService,
+    private ref: ChangeDetectorRef,  public utils: UtilsService
   ) {
     super();
+    this.usersPaginationModel = {};
   }
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
@@ -84,23 +94,27 @@ export class AllStudentsComponent
   contextMenuPosition = { x: '0px', y: '0px' };
 
   ngOnInit() {
-
-    const roleDetails =this.authenService.getRoleDetails()[0].settingsMenuItems
+    const roleDetails =
+      this.authenService.getRoleDetails()[0].settingsMenuItems;
     let urlPath = this.router.url.split('/');
     const parentId = `${urlPath[1]}/${urlPath[2]}`;
-    const childId =  urlPath[urlPath.length - 2];
-    const subChildId =  urlPath[urlPath.length - 1];
+    const childId = urlPath[urlPath.length - 2];
+    const subChildId = urlPath[urlPath.length - 1];
     let parentData = roleDetails.filter((item: any) => item.id == parentId);
-    let childData = parentData[0].children.filter((item: any) => item.id == childId);
-    let subChildData = childData[0].children.filter((item: any) => item.id == subChildId);
-    let actions = subChildData[0].actions
-    let createAction = actions.filter((item:any) => item.title == 'Create')
-    let viewAction = actions.filter((item:any) => item.title == 'View')
+    let childData = parentData[0].children.filter(
+      (item: any) => item.id == childId
+    );
+    let subChildData = childData[0].children.filter(
+      (item: any) => item.id == subChildId
+    );
+    let actions = subChildData[0].actions;
+    let createAction = actions.filter((item: any) => item.title == 'Create');
+    let viewAction = actions.filter((item: any) => item.title == 'View');
 
-    if(createAction.length >0){
+    if (createAction.length > 0) {
       this.isCreate = true;
     }
-    if(viewAction.length >0){
+    if (viewAction.length > 0) {
       this.isView = true;
     }
     this.loadData();
@@ -191,15 +205,13 @@ export class AllStudentsComponent
   masterToggle() {
     this.isAllSelected()
       ? this.selection.clear()
-      : this.dataSource.renderedData.forEach((row) =>
-          this.selection.select(row)
-        );
+      : this.dataSource.forEach((row: Students) => this.selection.select(row));
   }
   removeSelectedRows() {
     const totalSelect = this.selection.selected.length;
     this.selection.selected.forEach((item) => {
-      const index: number = this.dataSource.renderedData.findIndex(
-        (d) => d === item
+      const index: number = this.dataSource.findIndex(
+        (d: Students) => d === item
       );
 
       this.exampleDatabase?.dataChange.value.splice(index, 1);
@@ -214,25 +226,42 @@ export class AllStudentsComponent
   }
 
   public loadData() {
-    this.exampleDatabase = new StudentsService(this.httpClient);
-    this.dataSource = new ExampleDataSource(
-      this.exampleDatabase,
-      this.paginator,
-      this.sort
-    );
-
-    this.subs.sink = fromEvent(this.filter.nativeElement, 'keyup').subscribe(
-      () => {
-        if (!this.dataSource) {
-          return;
-        }
-        this.dataSource.filter = this.filter.nativeElement.value;
-      }
-    );
+  const type = AppConstants.STUDENT_ROLE;
+  let filterProgram = this.filterName;
+  const payload = { ...this.usersPaginationModel,title:filterProgram };
+    this.studentsService.getAllStudentss(payload,type).subscribe((result) => {
+      console.log('result: ', result.data);
+      this.isTblLoading = false;
+      this.dataSource = result.data.docs;
+      this.totalItems = result.data.totalDocs;
+      this.usersPaginationModel.docs = result.data.docs;
+      this.usersPaginationModel.page = result.data.page;
+      this.usersPaginationModel.limit = result.data.limit;
+    });
   }
+  performSearch() {
+    this.usersPaginationModel.page = 1;
+    this.paginator.pageIndex = 0;
+      this.loadData();
+  }
+  pageSizeChange($event: any) {
+    this.usersPaginationModel.page = $event?.pageIndex + 1;
+    this.usersPaginationModel.limit = $event?.pageSize;
+    this.loadData()
+  
+  }
+  
   exportExcel() {
-    const exportData: Partial<TableElement>[] =
-      this.dataSource.filteredData.map((x) => ({
+    const exportData: Partial<TableElement>[] = this.dataSource.map(
+      (x: {
+        name: any;
+        department: any;
+        gender: any;
+        education: any;
+        mobile: any;
+        email: any;
+        Active: any;
+      }) => ({
         Name: x.name,
         Department: x.department,
         Gender: x.gender,
@@ -240,7 +269,8 @@ export class AllStudentsComponent
         Mobile: x.mobile,
         Email: x.email,
         Status: x.Active ? 'Active' : 'Inactive',
-      }));
+      })
+    );
 
     TableExportUtil.exportToExcel(exportData, 'StudentList');
   }
@@ -283,9 +313,12 @@ export class AllStudentsComponent
   }
 
   aboutStudent(id: any) {
-    this.router.navigate(['/student/settings/all-user/all-students/view-student'], {
-      queryParams: { data: id },
-    });
+    this.router.navigate(
+      ['/student/settings/all-user/all-students/view-student'],
+      {
+        queryParams: { data: id },
+      }
+    );
   }
 
   showNotification(
@@ -322,99 +355,99 @@ export class AllStudentsComponent
     );
   }
 }
-export class ExampleDataSource extends DataSource<Students> {
-  filterChange = new BehaviorSubject('');
-  get filter(): string {
-    return this.filterChange.value;
-  }
-  set filter(filter: string) {
-    this.filterChange.next(filter);
-  }
-  filteredData: Students[] = [];
-  renderedData: Students[] = [];
-  rowData: any;
-  constructor(
-    public exampleDatabase: StudentsService,
-    public paginator: MatPaginator,
-    public _sort: MatSort
-  ) {
-    super();
-    this.filterChange.subscribe(() => (this.paginator.pageIndex = 0));
-  }
-  connect(): Observable<Students[]> {
-    const displayDataChanges = [
-      this.exampleDatabase.dataChange,
-      this._sort.sortChange,
-      this.filterChange,
-      this.paginator.page,
-      
-    ];
-    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-    let payload = {
-      type: AppConstants.STUDENT_ROLE,
-      companyId:userId
-    };
-    this.exampleDatabase.getAllStudentss(payload);
+// export class ExampleDataSource extends DataSource<Students> {
+//   filterChange = new BehaviorSubject('');
+//   get filter(): string {
+//     return this.filterChange.value;
+//   }
+//   set filter(filter: string) {
+//     this.filterChange.next(filter);
+//   }
+//   filteredData: Students[] = [];
+//   renderedData: Students[] = [];
+//   rowData: any;
+//   constructor(
+//     public exampleDatabase: StudentsService,
+//     public paginator: MatPaginator,
+//     public _sort: MatSort
+//   ) {
+//     super();
+//     this.filterChange.subscribe(() => (this.paginator.pageIndex = 0));
+//   }
+//   connect(): Observable<Students[]> {
+//     const displayDataChanges = [
+//       this.exampleDatabase.dataChange,
+//       this._sort.sortChange,
+//       this.filterChange,
+//       this.paginator.page,
 
-    this.rowData = this.exampleDatabase.data;
-    return merge(...displayDataChanges).pipe(
-      map((x) => {
-        this.filteredData = this.exampleDatabase.data
-          .slice()
-          .filter((students: Students) => {
-            const searchStr = (
-              students.rollNo +
-              students.name +
-              students.last_name +
-              students.department +
-              students.mobile
-            ).toLowerCase();
-            return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
-          });
-        const sortedData = this.sortData(this.filteredData.slice());
-        const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
-        this.renderedData = sortedData.splice(
-          startIndex,
-          this.paginator.pageSize
-        );
-        return this.renderedData;
-      })
-    );
-  }
-  disconnect() {
-  }
-  sortData(data: Students[]): Students[] {
-    if (!this._sort.active || this._sort.direction === '') {
-      return data;
-    }
-    return data.sort((a, b) => {
-      let propertyA: number | string = '';
-      let propertyB: number | string = '';
-      switch (this._sort.active) {
-        case 'id':
-          [propertyA, propertyB] = [a.id, b.id];
-          break;
-        case 'name':
-          [propertyA, propertyB] = [a.name, b.name];
-          break;
-        case 'email':
-          [propertyA, propertyB] = [a.email, b.email];
-          break;
-        case 'date':
-          [propertyA, propertyB] = [a.joiningDate, b.joiningDate];
-          break;
-        case 'time':
-          [propertyA, propertyB] = [a.department, b.department];
-          break;
-        case 'mobile':
-          [propertyA, propertyB] = [a.mobile, b.mobile];
-          break;
-      }
-      const valueA = isNaN(+propertyA) ? propertyA : +propertyA;
-      const valueB = isNaN(+propertyB) ? propertyB : +propertyB;
-      return (
-        (valueA < valueB ? -1 : 1) * (this._sort.direction === 'asc' ? 1 : -1)
-      );
-    });
-  }
-}
+//     ];
+//     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+//     let payload = {
+//       type: AppConstants.STUDENT_ROLE,
+//       companyId:userId
+//     };
+//     this.exampleDatabase.getAllStudentss(payload);
+
+//     this.rowData = this.exampleDatabase.data;
+//     return merge(...displayDataChanges).pipe(
+//       map((x) => {
+//         this.filteredData = this.exampleDatabase.data
+//           .slice()
+//           .filter((students: Students) => {
+//             const searchStr = (
+//               students.rollNo +
+//               students.name +
+//               students.last_name +
+//               students.department +
+//               students.mobile
+//             ).toLowerCase();
+//             return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
+//           });
+//         const sortedData = this.sortData(this.filteredData.slice());
+//         const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
+//         this.renderedData = sortedData.splice(
+//           startIndex,
+//           this.paginator.pageSize
+//         );
+//         return this.renderedData;
+//       })
+//     );
+//   }
+//   disconnect() {
+//   }
+//   sortData(data: Students[]): Students[] {
+//     if (!this._sort.active || this._sort.direction === '') {
+//       return data;
+//     }
+//     return data.sort((a, b) => {
+//       let propertyA: number | string = '';
+//       let propertyB: number | string = '';
+//       switch (this._sort.active) {
+//         case 'id':
+//           [propertyA, propertyB] = [a.id, b.id];
+//           break;
+//         case 'name':
+//           [propertyA, propertyB] = [a.name, b.name];
+//           break;
+//         case 'email':
+//           [propertyA, propertyB] = [a.email, b.email];
+//           break;
+//         case 'date':
+//           [propertyA, propertyB] = [a.joiningDate, b.joiningDate];
+//           break;
+//         case 'time':
+//           [propertyA, propertyB] = [a.department, b.department];
+//           break;
+//         case 'mobile':
+//           [propertyA, propertyB] = [a.mobile, b.mobile];
+//           break;
+//       }
+//       const valueA = isNaN(+propertyA) ? propertyA : +propertyA;
+//       const valueB = isNaN(+propertyB) ? propertyB : +propertyB;
+//       return (
+//         (valueA < valueB ? -1 : 1) * (this._sort.direction === 'asc' ? 1 : -1)
+//       );
+//     });
+//   }
+// }

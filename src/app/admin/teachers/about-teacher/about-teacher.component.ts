@@ -37,7 +37,6 @@ export class AboutTeacherComponent {
    public teachersService: TeachersService,) {
     this.coursePaginationModel = {};
     this.activeRoute.queryParams.subscribe(param =>{
-    console.log("params:",param['data'])
  
     this.aboutDataId = param['data'];
     })
@@ -53,7 +52,6 @@ export class AboutTeacherComponent {
    loadData(){
      this.teachersService.getUserById( this.aboutDataId).subscribe(res => {
        this.aboutData = res;
-       console.log("edit",this.aboutData)
  
      })
  }

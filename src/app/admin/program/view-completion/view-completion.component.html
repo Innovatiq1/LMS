@@ -72,7 +72,7 @@
                                                                         <h6>Email</h6>
                                                                     </div>
                                                                     <div class="col-7">
-                                                                        <p>{{response.studentId?.email}}</p>
+                                                                        <p>{{response?.studentId?.email}}</p>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -265,7 +265,7 @@
                     <div class="row mx-3">
                         <div class="col-md-10 mb-3">
                             <button *ngIf="!isApproved" mat-raised-button id="back"
-                                [routerLink]="['/admin/program/student-program/completed-program']">Back</button>
+                                [routerLink]="['/admin/program/student-program/program-completed-program']">Back</button>
                             <button *ngIf="isApproved" mat-raised-button id="back"
                                 [routerLink]="['/admin/program/student-program/registered-approved-program']">Back</button>
                         </div>

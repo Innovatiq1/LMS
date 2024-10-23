@@ -35,7 +35,6 @@ export class StaffService extends UnsubscribeOnDestroyAdapter {
       },
       error: (error: HttpErrorResponse) => {
         this.isTblLoading = false;
-        console.log(error.name + ' ' + error.message);
       },
     });
   }

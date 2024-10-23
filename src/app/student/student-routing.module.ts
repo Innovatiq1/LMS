@@ -134,15 +134,15 @@ const routes: Routes = [
     component: ProgramComponent,
   },
   {
-    path: 'enrollment/exam',
+    path: 'enrollment/assessment-exam',
     component: ExamComponent,
   },
   {
-    path: 'exams/exam-results',
+    path: 'enrollment/exam-results',
     component: ExamResultsComponent,
   },
   {
-    path: 'exams/exam',
+    path: 'enrollment/exam',
     component: ExamTestListComponent,
   },
 
@@ -204,10 +204,7 @@ const routes: Routes = [
     path: 'settings/users',
     component: SettingsComponent,
   },
-  {
-    path: 'settings/all-user',
-    component: SettingsComponent,
-  },
+ 
   {
     path: 'settings/integration',
     component: SettingsComponent,

@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProgramKit } from '@core/models/course.model';
 import { CertificateService } from '@core/service/certificate.service';
@@ -21,7 +21,7 @@ import { StudentsService } from 'app/admin/students/students.service';
 })
 export class CreateProgramComponent {
   breadcrumbs: any[] =[]
-  config: AngularEditorConfig = {
+   config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
     height: '15rem',
@@ -30,25 +30,26 @@ export class CreateProgramComponent {
     translate: 'no',
     defaultParagraphSeparator: 'p',
     defaultFontName: 'Arial',
-    toolbarHiddenButtons: [
-      ['bold']
-      ],
-    customClasses: [
-      {
-        name: "quote",
-        class: "quote",
-      },
-      {
-        name: 'redText',
-        class: 'redText'
-      },
-      {
-        name: "titleText",
-        class: "titleText",
-        tag: "h1",
-      },
-    ]
-  };
+    sanitize: false,
+    toolbarHiddenButtons: [[
+      'subscript',
+      'superscript',
+      'indent',
+      'outdent',
+      'insertOrderedList',
+      'insertUnorderedList',
+      'fontName',
+      'heading',
+      'customClasses',
+      'removeFormat',
+      'toggleEditorMode',
+      'link',
+      'unlink',
+      'insertVideo'
+  ]],
+};
+  
+
   files: any[] = [];
 
   coreProgramCards: { coreProgramName: string; coreProgramCode: string }[] = [{ coreProgramName: '', coreProgramCode: '' }];
@@ -186,7 +187,7 @@ export class CreateProgramComponent {
       this.fb.group({
         coreProgramName: ["", []],
         coreProgramCode: ["", []],
-        coreProgramDescription: ["", []],
+        coreProgramDescription: new FormControl('', []),
       })
     );
   }
@@ -284,7 +285,6 @@ export class CreateProgramComponent {
       (certificate: any) =>
         certificate.title === this.programFormGroup.value.certificate_temp
     );
-    console.log("programFormGroup",this.programFormGroup.value)
     if (this.programFormGroup.valid) {
       let creator = JSON.parse(localStorage.getItem('user_data')!).user.name;
       let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;

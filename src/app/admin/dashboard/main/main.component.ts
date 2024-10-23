@@ -69,6 +69,7 @@ import { AppConstants } from '@shared/constants/app.constants';
 import { StudentPaginationModel } from '@core/models/class.model';
 import { AssessmentQuestionsPaginationModel } from '@core/models/assessment-answer.model';
 import { AssessmentService } from '@core/service/assessment.service';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 export type barChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -334,7 +335,7 @@ export class MainComponent implements OnInit {
     private authenticationService:AuthenService,private leaveService: LeaveService,
     public lecturesService: LecturesService,
     private settingsService: SettingsService,
-    private assessmentService: AssessmentService
+    private assessmentService: AssessmentService, private sanitizer: DomSanitizer,
   ) {
     //constructor
     let urlPath = this.router.url.split('/')
@@ -375,6 +376,9 @@ export class MainComponent implements OnInit {
     this.studentPaginationModel = {} as StudentPaginationModel;
     this.assessmentPaginationModel = {};
   }
+  getSafeHtml(html: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(html);
+  }
 
   getCount() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
@@ -387,15 +391,12 @@ export class MainComponent implements OnInit {
     });
   }
   getInstructorsList() {
-    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-        let payload = {
-      type: AppConstants.INSTRUCTOR_ROLE,
-      companyId:userId
-
-    };
-    this.instructorService.getInstructor(payload).subscribe(
+   
+      const type = AppConstants.INSTRUCTOR_ROLE
+    
+    this.instructorService.getInstructorsList(type).subscribe(
       (response: any) => {
-        this.instructors = response.slice(0, 5);
+        this.instructors = response.data.docs.slice(0, 5);
       },
       (error) => {}
     );
@@ -527,14 +528,11 @@ export class MainComponent implements OnInit {
   }
   getStudentsList() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-        let payload = {
-      type: AppConstants.STUDENT_ROLE,
-      companyId:userId
-
-    };
-    this.instructorService.getInstructor(payload).subscribe(
+     
+      const type = AppConstants.STUDENT_ROLE
+    this.instructorService.getInstructorsList(type).subscribe(
       (response: any) => {
-        this.students = response?.slice(0, 5);
+        this.students = response?.data?.docs.slice(0, 5);
         const currentDate = new Date();
         const currentMonth = currentDate.getMonth();
         const currentYear = currentDate.getFullYear();
@@ -569,42 +567,42 @@ export class MainComponent implements OnInit {
         const tenMonths = new Date(currentYear, currentMonth - 10, 0);
         const twelveMonths = new Date(currentYear, currentMonth - 12, 0);
 
-        this.tillPreviousTwoMonthsStudents = response.filter(
+        this.tillPreviousTwoMonthsStudents = response.data?.docs.filter(
           (item: { createdAt: string | number | Date }) => {
             const createdAtDate = new Date(item.createdAt);
             return createdAtDate >= monthsAgo && createdAtDate <= twoMonths;
           }
         );
 
-        this.tillPreviousFourMonthsStudents = response.filter(
+        this.tillPreviousFourMonthsStudents = response.data?.docs.filter(
           (item: { createdAt: string | number | Date }) => {
             const createdAtDate = new Date(item.createdAt);
             return createdAtDate >= monthsAgo && createdAtDate <= fourMonths;
           }
         );
 
-        this.tillPreviousSixMonthsStudents = response.filter(
+        this.tillPreviousSixMonthsStudents = response.data?.docs.filter(
           (item: { createdAt: string | number | Date }) => {
             const createdAtDate = new Date(item.createdAt);
             return createdAtDate >= monthsAgo && createdAtDate <= sixMonths;
           }
         );
 
-        this.tillPreviousEightMonthsStudents = response.filter(
+        this.tillPreviousEightMonthsStudents = response.data?.docs.filter(
           (item: { createdAt: string | number | Date }) => {
             const createdAtDate = new Date(item.createdAt);
             return createdAtDate >= monthsAgo && createdAtDate <= eightMonths;
           }
         );
 
-        this.tillPreviousTenMonthsStudents = response.filter(
+        this.tillPreviousTenMonthsStudents = response.data?.docs.filter(
           (item: { createdAt: string | number | Date }) => {
             const createdAtDate = new Date(item.createdAt);
             return createdAtDate >= monthsAgo && createdAtDate <= tenMonths;
           }
         );
 
-        this.tillPreviousTwelveMonthsStudents = response.filter(
+        this.tillPreviousTwelveMonthsStudents = response.data?.docs.filter(
           (item: { createdAt: string | number | Date }) => {
             const createdAtDate = new Date(item.createdAt);
             return createdAtDate >= monthsAgo && createdAtDate <= twelveMonths;
@@ -612,7 +610,7 @@ export class MainComponent implements OnInit {
         );
 
         // Filtered students who joined in the specified time periods
-        this.twoMonthsAgoStudents = response.filter(
+        this.twoMonthsAgoStudents = response.data?.docs.filter(
           (item: { createdAt: string | number | Date }) => {
             const createdAtDate = new Date(item.createdAt);
             return (
@@ -622,7 +620,7 @@ export class MainComponent implements OnInit {
           }
         );
 
-        this.fourMonthsAgoStudents = response.filter(
+        this.fourMonthsAgoStudents = response.data?.docs.filter(
           (item: { createdAt: string | number | Date }) => {
             const createdAtDate = new Date(item.createdAt);
             return (
@@ -632,7 +630,7 @@ export class MainComponent implements OnInit {
           }
         );
 
-        this.sixMonthsAgoStudents = response.filter(
+        this.sixMonthsAgoStudents = response.data?.docs.filter(
           (item: { createdAt: string | number | Date }) => {
             const createdAtDate = new Date(item.createdAt);
             return (
@@ -641,7 +639,7 @@ export class MainComponent implements OnInit {
             );
           }
         );
-        this.eightMonthsAgoStudents = response.filter(
+        this.eightMonthsAgoStudents = response.data?.docs.filter(
           (item: { createdAt: string | number | Date }) => {
             const createdAtDate = new Date(item.createdAt);
             return (
@@ -650,7 +648,7 @@ export class MainComponent implements OnInit {
             );
           }
         );
-        this.tenMonthsAgoStudents = response.filter(
+        this.tenMonthsAgoStudents = response.data?.docs.filter(
           (item: { createdAt: string | number | Date }) => {
             const createdAtDate = new Date(item.createdAt);
             return (
@@ -659,7 +657,7 @@ export class MainComponent implements OnInit {
             );
           }
         );
-        this.twelveMonthsAgoStudents = response.filter(
+        this.twelveMonthsAgoStudents = response.data?.docs.filter(
           (item: { createdAt: string | number | Date }) => {
             const createdAtDate = new Date(item.createdAt);
             return (
@@ -2066,10 +2064,9 @@ private attendanceBarChart() {
   }
 
   instructorData() {
-    let payload = {
-      type: AppConstants.INSTRUCTOR_ROLE,
-    };
-    this.instructorService.getInstructors(payload).subscribe(
+    const  type = AppConstants.INSTRUCTOR_ROLE
+  console.log("type",type)
+    this.instructorService.getInstructorsList(type).subscribe(
       (response: { data: any }) => {
         this.latestInstructor = response?.data[0];
       },
@@ -2341,30 +2338,34 @@ private attendanceBarChart() {
     })
   }
   setSurveyChart() {
-    if (this.dashboard.content[0].viewType == 'Bar Chart') {
-      this.isSurveyBar = true;
-      this.getStudentsList();
-    } else if (this.dashboard.content[0].viewType == 'Pie Chart') {
-      this.isSurveyPie = true;
-      this.getStudentsList();
-    }
-    else if (this.dashboard.content[0].viewType == 'Line Chart') {
-      this.isArea = true;
-      this.getStudentsList();
-    }
+    this.isSurveyBar = true;
+    this.getStudentsList();
+    // if (this.dashboard.content[0].viewType == 'Bar Chart') {
+    //   this.isSurveyBar = true;
+    //   this.getStudentsList();
+    // } else if (this.dashboard.content[0].viewType == 'Pie Chart') {
+    //   this.isSurveyPie = true;
+    //   this.getStudentsList();
+    // }
+    // else if (this.dashboard.content[0].viewType == 'Line Chart') {
+    //   this.isArea = true;
+    //   this.getStudentsList();
+    // }
   }
   setPerformanceChart() {
-    if (this.dashboard.content[1].viewType == 'Bar Chart') {
-      this.isBar = true;
-      this.performanceBarChart();
-    } else if (this.dashboard.content[1].viewType == 'Pie Chart') {
-      this.isPie = true;
-      this.performancePieChart();
-    }
-    else if (this.dashboard.content[1].viewType == 'Line Chart') {
-      this.isLine = true;
-      this.performanceLineChart();
-    }
+    this.isBar = true;
+    this.performanceBarChart();
+    // if (this.dashboard.content[1].viewType == 'Bar Chart') {
+    //   this.isBar = true;
+    //   this.performanceBarChart();
+    // } else if (this.dashboard.content[1].viewType == 'Pie Chart') {
+    //   this.isPie = true;
+    //   this.performancePieChart();
+    // }
+    // else if (this.dashboard.content[1].viewType == 'Line Chart') {
+    //   this.isLine = true;
+    //   this.performanceLineChart();
+    // }
   }
   setAttendanceChart() {
     if (this.dashboard.content[2].viewType == 'Bar Chart') {
@@ -2380,20 +2381,23 @@ private attendanceBarChart() {
     }
   }
   setUsersChart() {
-    if (this.dashboard?.content[3].viewType == 'Bar Chart') {
-      this.isUsersBar = true;
-      // this.getCount();
-      this.usersBarChart();
-    } else if (this.dashboard?.content[3].viewType == 'Pie Chart') {
-      this.isUsersPie = true;
+    this.isUsersPie = true;
       // this.getCount();
       this.usersPieChart();
-    }
-    else if (this.dashboard?.content[3].viewType == 'Line Chart') {
-      this.isUsersLine = true;
-      // this.getCount();
-      this.usersLineChart();
-    }
+    // if (this.dashboard?.content[3].viewType == 'Bar Chart') {
+    //   this.isUsersBar = true;
+    //   // this.getCount();
+    //   this.usersBarChart();
+    // } else if (this.dashboard?.content[3].viewType == 'Pie Chart') {
+    //   this.isUsersPie = true;
+    //   // this.getCount();
+    //   this.usersPieChart();
+    // }
+    // else if (this.dashboard?.content[3].viewType == 'Line Chart') {
+    //   this.isUsersLine = true;
+    //   // this.getCount();
+    //   this.usersLineChart();
+    // }
   }
 
   getStudentDashboard(){
@@ -2405,16 +2409,18 @@ private attendanceBarChart() {
   }
 
   setStudentsChart(){
-    if (this.studentDashboard.content[0].viewType == 'Pie Chart') {
-      this.isStudentPie = true;
-      this.studentPieChart();
-    } else if (this.studentDashboard.content[0].viewType == 'Bar Chart') {
-      this.isStudentBar = true;
-      this.studentBarChart();
-    } else if (this.studentDashboard.content[0].viewType == 'Line Chart') {
-      this.isStudentLine = true;
-      this.studentLineChart();
-    } 
+    this.isStudentPie = true;
+    this.studentPieChart();
+    // if (this.studentDashboard.content[0].viewType == 'Pie Chart') {
+    //   this.isStudentPie = true;
+    //   this.studentPieChart();
+    // } else if (this.studentDashboard.content[0].viewType == 'Bar Chart') {
+    //   this.isStudentBar = true;
+    //   this.studentBarChart();
+    // } else if (this.studentDashboard.content[0].viewType == 'Line Chart') {
+    //   this.isStudentLine = true;
+    //   this.studentLineChart();
+    // } 
     
   }
   getCompletedClasses() {

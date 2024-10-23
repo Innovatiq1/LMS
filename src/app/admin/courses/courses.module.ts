@@ -15,8 +15,6 @@ import { CreateClassComponent } from './create-class/create-class.component';
 import { CompletionListComponent } from './completion-list/completion-list.component';
 
 import { AngularEditorModule } from '@kolkov/angular-editor';
-import { ViewClassComponent } from './class-list/view-class/view-class.component';
-import { ViewCompletionComponent } from './completion-list/view-completion/view-completion.component';
 import { CourseViewComponent } from './all-course/course-view/course-view.component';
 import { ActiveCoursesComponent } from './active-courses/active-courses.component';
 import { InActiveCoursesComponent } from './in-active-courses/in-active-courses.component';
@@ -33,6 +31,9 @@ import { StudentCourseComponent } from './all-course/student-course/student-cour
 import { DraftedCoursesComponent } from './all-course/drafted-courses/drafted-courses.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RetakeRequestsComponent } from './retake-requests/retake-requests.component';
+import { ViewCompletionComponent } from './completion-list/view-completion/view-completion.component';
+import { ViewClassComponent } from './class-view/view-class/view-class.component';
+import { ClassListComponent } from './class-list/class-list.component';
 import { ScheduleMeetingComponent } from './schedule-meeting/schedule-meeting.component';
 
 
@@ -61,7 +62,7 @@ import { ScheduleMeetingComponent } from './schedule-meeting/schedule-meeting.co
     DraftedCoursesComponent,
     RetakeRequestsComponent,
     ScheduleMeetingComponent,
-    
+    ClassListComponent
     
 
   ],

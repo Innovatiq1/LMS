@@ -143,6 +143,8 @@ export class AllQuestionsComponent {
   }
 
   onKeyup(event: Event) {
+    this.coursePaginationModel.page = 1;
+    this.paginator.pageIndex = 0;
     this.keyupSubject.next(event);
   }
 

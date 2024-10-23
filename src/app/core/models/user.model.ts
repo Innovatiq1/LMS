@@ -31,6 +31,7 @@ export interface Student {
     sortBy: string;
     sortByDirection: string;
     status: string;
+    title:string;
   }
 
   export interface Users {

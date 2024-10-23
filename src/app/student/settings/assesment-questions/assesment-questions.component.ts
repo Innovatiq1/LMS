@@ -78,7 +78,7 @@ draftId!: string;
       timer: [''],
       retake: [''],
       passingCriteria:['', Validators.required],
-      scoreAlgorithm: [1, [Validators.required, Validators.min(0.1)]],
+      scoreAlgorithm: [, [Validators.required, Validators.min(0.1)]],
       resultAfterFeedback: [null, [Validators.required]],
       questions: this.formBuilder.array([]),
     });
@@ -101,9 +101,7 @@ draftId!: string;
     this.getAllPassingCriteria();
     this.getAllScoreAlgo();
     this.getAllTimeAlgo();
-    if (this.formType === 'Assessment' || this.formType === 'Create') {
       this.startAutoSave();
-    }
     if (!this.editUrl) {
       this.draftId = this.commonService.generate4DigitId();
     }
@@ -125,36 +123,64 @@ draftId!: string;
     }
   }
 
-saveDraft(data?: string) {
+  saveDraft(data?: string) {
+    // Get form values
+    const formValues = this.questionFormTab3.value;
+  
+    // Check if all form fields are empty
+    const isFormEmpty = !formValues.name &&
+                        !formValues.timer &&
+                        !formValues.retake &&
+                        !formValues.passingCriteria &&
+                        !formValues.scoreAlgorithm &&
+                        !formValues.resultAfterFeedback 
+                        
+                    if (isFormEmpty && data) {
+                          // If the form is empty, do not make the API call
+                          Swal.fire({
+                            title: 'Warning',
+                            text: 'Please fill in at least one field to save as draft.',
+                            icon: 'warning',
+                          });
+                          return; // Exit the function early
+                        }
+  
+    if (!isFormEmpty) {
+   
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-      const payload = {
-        draftId: this.draftId,
-        name: this.questionFormTab3.value.name,
-        timer: this.questionFormTab3.value.timer,
-        retake: this.questionFormTab3.value.retake,
-        passingCriteria:this.questionFormTab3.value.passingCriteria,
-        scoreAlgorithm: this.questionFormTab3.value.scoreAlgorithm,
-        resultAfterFeedback: this.questionFormTab3.value.resultAfterFeedback,
-        status: 'draft',
-        companyId:userId,
-        questions: this.questionFormTab3.value.questions.map((v: any) => ({
-          options: v.options,
-          questionText: v.questionText,
-        })),
-      };
-      this.questionService.createQuestion(payload).subscribe(
-              (res: any) => {
-                if (data) {
-                  Swal.fire({
-                    title: 'Successful',
-                    text: 'Assessment Questions drafted successfully',
-                    icon: 'success',
-                  });
-                  window.history.back();
-                }
-              },
-            );
+    const payload = {
+      draftId: this.draftId,
+      name: formValues.name,
+      timer: formValues.timer,
+      retake: formValues.retake,
+      passingCriteria: formValues.passingCriteria,
+      scoreAlgorithm: formValues.scoreAlgorithm,
+      resultAfterFeedback: formValues.resultAfterFeedback,
+      status: 'draft',
+      companyId: userId,
+      questions: formValues.questions.map((v: any) => ({
+        options: v.options,
+        questionText: v.questionText,
+      })),
+    };
+  
+    // Call the API if any field is filled
+    this.questionService.createQuestion(payload).subscribe(
+      (res: any) => {
+        if (data) {
+          Swal.fire({
+            title: 'Successful',
+            text: 'Assessment Questions drafted successfully',
+            icon: 'success',
+          });
+          window.history.back();
+        }
+      },
+    );
   }
+}
+
+  
   loadData() {
     this.studentId = localStorage.getItem('id');
     this.studentsService.getStudentById(this.studentId).subscribe((res) => {});

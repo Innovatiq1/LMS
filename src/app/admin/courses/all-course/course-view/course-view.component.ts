@@ -71,8 +71,8 @@ export class CourseViewComponent {
       this.breadcrumbs = [
         {
           title: 'Blank',
-          items: ['Approved Course'],
-          active: 'View Approved Course',
+          items: ['Rejected Course'],
+          active: 'View Rejected Course',
         },
       ];
     }

@@ -73,16 +73,16 @@ export class AllUsersComponent {
 @ViewChild('filter', { static: true }) filter!: ElementRef;
 
 getBlogsList(filters?:any) {
-  let filterText = this.searchTerm;
+  let user = this.searchTerm;
   let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-  this.alluserService.getUserList({filterText,...this.coursePaginationModel},userId).subscribe((response: any) => {
-    this.dataSource = response.data.data;
+  this.alluserService.getUserList({user,...this.coursePaginationModel},userId).subscribe((response: any) => {
+    this.dataSource = response.data.data.docs;
     this.isLoading = false;
     this.ref.detectChanges();
-    this.totalItems = response.totalRecords
+    this.totalItems = response.data.data.totalDocs
     this.coursePaginationModel.docs = response.docs;
-    this.coursePaginationModel.page = response.page;
-    this.coursePaginationModel.limit = response.limit;
+    this.coursePaginationModel.page = response.data.data.page;
+    this.coursePaginationModel.limit = response.data.data.limit;
 
   }, error => {
   });
@@ -183,7 +183,15 @@ removeSelectedRows() {
   
 }
 performSearch() {
+  this.coursePaginationModel.page = 1;
+    this.paginator.pageIndex = 0;
 this.getBlogsList()
+console.log("this.dataSourse",this.dataSource)
+}
+getData(row:any){
+  console.log("row==",row)
+  console.log("row.id==",row.id)
+
 }
 edit(row:any){
 this.router.navigate(['/admin/users/edit-all-users'], {queryParams:{row:row}})

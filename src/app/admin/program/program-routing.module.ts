@@ -15,7 +15,7 @@ import { ViewStudentPendingListComponent } from './view-student-pending-list/vie
 
 const routes: Routes = [
   {
-    path:'program-list/program', 
+    path:'program-list/program-name', 
     component:ProgramListComponent
   },
   {
@@ -72,7 +72,7 @@ const routes: Routes = [
   },
 
   {
-    path:'student-program/completed-program', 
+    path:'student-program/program-completed-program', 
     component:ProgaramCompletionListComponent
   },
   {

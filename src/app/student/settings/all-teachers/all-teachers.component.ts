@@ -20,7 +20,7 @@ import {
   UnsubscribeOnDestroyAdapter,
 } from '@shared';
 import { formatDate } from '@angular/common';
-import { UsersModel } from '@core/models/user.model';
+import { UsersModel, UsersPaginationModel } from '@core/models/user.model';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import jsPDF from 'jspdf';
@@ -52,11 +52,12 @@ export class AllTeachersComponent
     'Status',
   ];
   exampleDatabase?: TeachersService;
-  dataSource!: ExampleDataSource;
+  dataSource!: any;
   selection = new SelectionModel<Teachers>(true, []);
   id?: number;
   teachers?: Teachers;
   UsersModel!: Partial<UsersModel>;
+  usersPaginationModel!: Partial<UsersPaginationModel>;
   breadscrums = [
     {
       title: 'Instructors',
@@ -68,6 +69,9 @@ export class AllTeachersComponent
   pageSizeArr = this.utils.pageSizeArr;
   isCreate: boolean = false;
   isView: boolean = false;
+  isTblLoading: boolean = true;
+  userGroupIds: any;
+  filterName: any;
   constructor(
     public httpClient: HttpClient,
     public dialog: MatDialog,
@@ -79,7 +83,7 @@ export class AllTeachersComponent
     private authenService: AuthenService
   ) {
     super();
-    this.UsersModel = {};
+    this.usersPaginationModel = {};
   }
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
@@ -164,15 +168,15 @@ export class AllTeachersComponent
   masterToggle() {
     this.isAllSelected()
       ? this.selection.clear()
-      : this.dataSource.renderedData.forEach((row) =>
+      : this.dataSource.forEach((row: Teachers) =>
           this.selection.select(row)
         );
   }
   removeSelectedRows() {
     const totalSelect = this.selection.selected.length;
     this.selection.selected.forEach((item) => {
-      const index: number = this.dataSource.renderedData.findIndex(
-        (d) => d === item
+      const index: number = this.dataSource.findIndex(
+        (d: Teachers) => d === item
       );
 
       this.exampleDatabase?.dataChange.value.splice(index, 1);
@@ -187,50 +191,39 @@ export class AllTeachersComponent
   }
 
   pageSizeChange($event: any) {
-    this.UsersModel.page = $event?.pageIndex + 1;
-    this.UsersModel.limit = $event?.pageSize;
-    this.instructorData();
+    this.usersPaginationModel.page = $event?.pageIndex + 1;
+    this.usersPaginationModel.limit = $event?.pageSize;
+    this.loadData();
   }
-
-  public loadData() {
-    this.exampleDatabase = new TeachersService(this.httpClient);
-    this.dataSource = new ExampleDataSource(
-      this.exampleDatabase,
-      this.paginator,
-      this.sort
-    );
-    this.subs.sink = fromEvent(this.filter.nativeElement, 'keyup').subscribe(
-      () => {
-        if (!this.dataSource) {
-          return;
-        }
-        this.dataSource.filter = this.filter.nativeElement.value;
+  performSearch() {
+    this.usersPaginationModel.page = 1;
+    this.paginator.pageIndex = 0;
+      this.loadData();
+  }
+ 
+    public loadData() {
+      let filterProgram = this.filterName;
+      const payload = { ...this.usersPaginationModel,title:filterProgram };
+    // if(this.userGroupIds){
+    //   payload.userGroupId=this.userGroupIds
+    // }
+      const type = AppConstants.INSTRUCTOR_ROLE
+        this.teachersService.getInstructor(payload,type).subscribe((result) => {
+          this.isTblLoading = false;
+          this.dataSource = result.data.docs;
+          this.totalItems = result.data.totalDocs;
+          this.usersPaginationModel.docs = result.data.docs;
+          this.usersPaginationModel.page = result.data.page;
+          this.usersPaginationModel.limit = result.data.limit;
+        });
       }
-    );
-  }
+    
+    
+  
 
-  public instructorData() {
-    this.teachersService.getInstructor({ ...this.UsersModel }).subscribe(
-      (response: {
-        docs: any;
-        totalDocs: any;
-        data: any;
-        page: any;
-        limit: any;
-      }) => {
-        this.totalItems = response.totalDocs;
-        this.dataSource = response?.docs;
-        this.UsersModel.docs = response?.docs;
-        this.UsersModel.page = response?.page;
-        this.UsersModel.limit = response?.limit;
-        this.UsersModel.totalDocs = response?.totalDocs;
-      },
-      (error) => {}
-    );
-  }
   exportExcel() {
     const exportData: Partial<TableElement>[] =
-      this.dataSource.filteredData.map((x) => ({
+      this.dataSource.map((x: { name: any; department: any; gender: any; qualification: any; mobile: any; email: any; Active: any; }) => ({
         Name: x.name,
         Department: x.department,
         Gender: x.gender,
@@ -304,99 +297,99 @@ export class AllTeachersComponent
     }
   }
 }
-export class ExampleDataSource extends DataSource<Teachers> {
-  rowData: any;
+// export class ExampleDataSource extends DataSource<Teachers> {
+//   rowData: any;
 
-  filterChange = new BehaviorSubject('');
-  get filter(): string {
-    return this.filterChange.value;
-  }
-  set filter(filter: string) {
-    this.filterChange.next(filter);
-  }
-  filteredData: Teachers[] = [];
-  renderedData: Teachers[] = [];
-  constructor(
-    public exampleDatabase: TeachersService,
-    public paginator: MatPaginator,
-    public _sort: MatSort
-  ) {
-    super();
-    this.filterChange.subscribe(() => (this.paginator.pageIndex = 0));
-  }
-  connect(): Observable<Teachers[]> {
-    const displayDataChanges = [
-      this.exampleDatabase.dataChange,
-      this._sort.sortChange,
-      this.filterChange,
-      this.paginator.page,
-    ];
-    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-    let payload = {
-      type: AppConstants.INSTRUCTOR_ROLE,
-      companyId:userId
-    };
-    this.exampleDatabase.getAllTeacherss(payload);
-    this.rowData = this.exampleDatabase.data;
-    return merge(...displayDataChanges).pipe(
-      map(() => {
-        this.filteredData = this.exampleDatabase.data
-          .slice()
-          .filter((teachers: Teachers) => {
-            const searchStr = (
-              teachers.name +
-              teachers.department +
-              teachers.gender +
-              teachers.degree +
-              teachers.email +
-              teachers.mobile
-            ).toLowerCase();
-            return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
-          });
-        const sortedData = this.sortData(this.filteredData.slice());
-        const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
-        this.renderedData = sortedData.splice(
-          startIndex,
-          this.paginator.pageSize
-        );
-        return this.renderedData;
-      })
-    );
-  }
-  disconnect() {
-  }
-  sortData(data: Teachers[]): Teachers[] {
-    if (!this._sort.active || this._sort.direction === '') {
-      return data;
-    }
-    return data.sort((a, b) => {
-      let propertyA: number | string = '';
-      let propertyB: number | string = '';
-      switch (this._sort.active) {
-        case 'id':
-          [propertyA, propertyB] = [a.id, b.id];
-          break;
-        case 'name':
-          [propertyA, propertyB] = [a.name, b.name];
-          break;
-        case 'email':
-          [propertyA, propertyB] = [a.email, b.email];
-          break;
-        case 'date':
-          [propertyA, propertyB] = [a.date, b.date];
-          break;
-        case 'time':
-          [propertyA, propertyB] = [a.department, b.department];
-          break;
-        case 'mobile':
-          [propertyA, propertyB] = [a.mobile, b.mobile];
-          break;
-      }
-      const valueA = isNaN(+propertyA) ? propertyA : +propertyA;
-      const valueB = isNaN(+propertyB) ? propertyB : +propertyB;
-      return (
-        (valueA < valueB ? -1 : 1) * (this._sort.direction === 'asc' ? 1 : -1)
-      );
-    });
-  }
-}
+//   filterChange = new BehaviorSubject('');
+//   get filter(): string {
+//     return this.filterChange.value;
+//   }
+//   set filter(filter: string) {
+//     this.filterChange.next(filter);
+//   }
+//   filteredData: Teachers[] = [];
+//   renderedData: Teachers[] = [];
+//   constructor(
+//     public exampleDatabase: TeachersService,
+//     public paginator: MatPaginator,
+//     public _sort: MatSort
+//   ) {
+//     super();
+//     this.filterChange.subscribe(() => (this.paginator.pageIndex = 0));
+//   }
+//   connect(): Observable<Teachers[]> {
+//     const displayDataChanges = [
+//       this.exampleDatabase.dataChange,
+//       this._sort.sortChange,
+//       this.filterChange,
+//       this.paginator.page,
+//     ];
+//     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+//     let payload = {
+//       type: AppConstants.INSTRUCTOR_ROLE,
+//       companyId:userId
+//     };
+//     this.exampleDatabase.getAllTeacherss(payload);
+//     this.rowData = this.exampleDatabase.data;
+//     return merge(...displayDataChanges).pipe(
+//       map(() => {
+//         this.filteredData = this.exampleDatabase.data
+//           .slice()
+//           .filter((teachers: Teachers) => {
+//             const searchStr = (
+//               teachers.name +
+//               teachers.department +
+//               teachers.gender +
+//               teachers.degree +
+//               teachers.email +
+//               teachers.mobile
+//             ).toLowerCase();
+//             return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
+//           });
+//         const sortedData = this.sortData(this.filteredData.slice());
+//         const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
+//         this.renderedData = sortedData.splice(
+//           startIndex,
+//           this.paginator.pageSize
+//         );
+//         return this.renderedData;
+//       })
+//     );
+//   }
+//   disconnect() {
+//   }
+//   sortData(data: Teachers[]): Teachers[] {
+//     if (!this._sort.active || this._sort.direction === '') {
+//       return data;
+//     }
+//     return data.sort((a, b) => {
+//       let propertyA: number | string = '';
+//       let propertyB: number | string = '';
+//       switch (this._sort.active) {
+//         case 'id':
+//           [propertyA, propertyB] = [a.id, b.id];
+//           break;
+//         case 'name':
+//           [propertyA, propertyB] = [a.name, b.name];
+//           break;
+//         case 'email':
+//           [propertyA, propertyB] = [a.email, b.email];
+//           break;
+//         case 'date':
+//           [propertyA, propertyB] = [a.date, b.date];
+//           break;
+//         case 'time':
+//           [propertyA, propertyB] = [a.department, b.department];
+//           break;
+//         case 'mobile':
+//           [propertyA, propertyB] = [a.mobile, b.mobile];
+//           break;
+//       }
+//       const valueA = isNaN(+propertyA) ? propertyA : +propertyA;
+//       const valueB = isNaN(+propertyB) ? propertyB : +propertyB;
+//       return (
+//         (valueA < valueB ? -1 : 1) * (this._sort.direction === 'asc' ? 1 : -1)
+//       );
+//     });
+//   }
+// }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Session, Student, StudentApproval, StudentPaginationModel } from '@core/models/class.model';
 import { AssessmentService } from '@core/service/assessment.service';
@@ -15,13 +16,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./view-completion.component.scss']
 })
 export class ViewCompletionComponent {
-  breadscrums = [
-    {
-      title: 'Blank',
-      items: ['Discount Verification'],
-      active: 'View Discount Verification',
-    },
-  ];
+  breadscrums :any[]= [];
 
   classDataById: any;
   completedData: any;
@@ -37,40 +32,67 @@ export class ViewCompletionComponent {
   isDiscount = false;
   edit = false;
   delete = false;
+  storedItems: string | null;
 
   constructor(private classService: ClassService,private courseService: CourseService,private _router: Router, private activatedRoute: ActivatedRoute,public _classService: ClassService, private assessmentService: AssessmentService, 
-    private authenService: AuthenService) {
+    private authenService: AuthenService, private sanitizer: DomSanitizer,) {
 
+      this.storedItems = localStorage.getItem('activeBreadcrumb');
+    if (this.storedItems) {
+     this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+     this.breadscrums = [
+      {
+        title: 'Blank',
+        items: [this.storedItems],
+        active: 'View Discount Verification',
+      },
+    ];
+   }
     this.studentPaginationModel = {} as StudentPaginationModel;
     this.activatedRoute.queryParams.subscribe((params: any) => {
       
       this.courseId = params['id'];
       this.getCategoryByID(this.courseId);
+      if(params['status'] === 'verification') {
+        this.status = true;
+        this.showTab = false;
+        if(params['verify'] === 'false') {
+          this.verify = true;
+        }
+      }    
   if(params['status'] === 'pending') {
     this.status = true;
     this.showTab = false;
     if(params['verify'] === 'false') {
       this.verify = true;
     }
-    // this.breadscrums = [
-    //   {
-    //     title: 'Blank',
-    //     items: ['Pending Courses'],
-    //     active: 'View Pending Courses',
-    //   },
-    // ];
+    this.breadscrums = [
+      {
+        title: 'Blank',
+        items: [this.storedItems],
+        active: 'View Pending Courses',
+      },
+    ];
   } else if(params['status'] === 'approved') {
     this.status = false;
     this.showTab = false;
-    // this.breadscrums = [
-    //   {
-    //     title: 'Blank',
-    //     items: ['Approved Courses'],
-    //     active: 'View Approved Courses',
-    //   },
-    // ];
+    this.breadscrums = [
+      {
+        title: 'Blank',
+        items: [this.storedItems],
+        active: 'View Approved Courses',
+      },
+    ];
   } else if(params['status'] === 'completed'){
     this.showTab = true;
+   
+    this.breadscrums = [
+      {
+        title: '', 
+        items: [this.storedItems],  
+        active: 'View Completed Courses',  
+      },
+    ];
   }
   this.paramStatus =  params['status'];
     });
@@ -79,7 +101,9 @@ export class ViewCompletionComponent {
   back(){
     window.history.back()
   }
-
+  getSafeHtml(html: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(html);
+  }
     ngOnInit(): void {
       const roleDetails =this.authenService.getRoleDetails()[0].menuItems
       let urlPath = this._router.url.split('/');
@@ -232,7 +256,7 @@ export class ViewCompletionComponent {
     }).then((result) => {
       if (result.isConfirmed){
         this._classService
-        .saveApprovedClasses(element.id, item)
+        .saveApprovedClasses(element._id, item)
         .subscribe((response: any) => {
           Swal.fire({
             title: 'Success',
@@ -240,7 +264,7 @@ export class ViewCompletionComponent {
             icon: 'success',
           });
           this.getCompletedClasses();
-          this._router.navigate(['/admin/courses/student-courses/pending-courses'])
+          this._router.navigate(['/admin/courses/student-courses/registered-pending-courses'])
         }, (error) => {
           Swal.fire({
             title: 'Error',

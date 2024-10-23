@@ -12,13 +12,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./create-feedback.component.scss'],
 })
 export class CreateFeedbackComponent  {
-  breadscrums = [
-    {
-      title: 'Feedback',
-      items: ['Customize'],
-      active: 'Survey',
-    },
-  ];
+  breadcrumbs:any[] = []
   questionTypes: any = [
     {
       id: 'text',
@@ -46,6 +40,7 @@ export class CreateFeedbackComponent  {
     },
   ];
   feedbackForm: FormGroup;
+  storedItems: string | null;
   userSelectsString = '';
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
   editUrl: boolean = false;
@@ -58,13 +53,31 @@ export class CreateFeedbackComponent  {
     private activatedRoute: ActivatedRoute,
     private surveyService: SurveyService
   ) {
+
+    this.storedItems = localStorage.getItem('activeBreadcrumb');
+    if (this.storedItems) {
+     this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+     this.breadcrumbs = [
+       {
+         title: '', 
+         items: [this.storedItems],  
+         active: 'Create survey',  
+       },
+     ];
+   }
+  
     const urlPath = this.router.url.split('/');
     this.editUrl = urlPath.includes('edit-feedback');
     if (this.editUrl) {
-      this.breadscrums[0].active = 'Edit Feedback Form';
-    } else {
-      this.breadscrums[0].active = 'Create Feedback Form';
+      this.breadcrumbs = [
+        {
+          title: '', 
+          items: [this.storedItems],  
+          active: 'Edit survey',  
+        },
+      ];
     }
+    
 
     this.activatedRoute.params.subscribe((params: any) => {
       this.surveyId = params.id;

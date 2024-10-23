@@ -52,30 +52,29 @@ export class CreateCertificateComponent implements OnInit {
   config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
-    height: '15rem',
+    height: '12rem',
     minHeight: '5rem',
-    placeholder: 'Enter text here...',
+    placeholder: 'Description',
     translate: 'no',
     defaultParagraphSeparator: 'p',
     defaultFontName: 'Arial',
-    sanitize: false,
+   
+   
     toolbarHiddenButtons: [
-      ['strikethrough']
-      ],
-    customClasses: [
-      {
-        name: "quote",
-        class: "quote",
-      },
-      {
-        name: 'redText',
-        class: 'redText'
-      },
-      {
-        name: "titleText",
-        class: "titleText",
-        tag: "h1",
-      },
+      [
+        'customClasses',
+        'strikeThrough',
+        'removeFormat',
+        'toggleEditorMode',
+        'subscript',
+        'superscript',
+        'indent',
+        'outdent',
+         'insertOrderedList',
+         'insertUnorderedList',
+        'heading',
+        'fontName'
+      ]
     ]
   };
   elementOptions = ['H1', 'H2', 'H3', 'Paragraph', 'UserName', 'Signature', 'Logo','Course','Date'];

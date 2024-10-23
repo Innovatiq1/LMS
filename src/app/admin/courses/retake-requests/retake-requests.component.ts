@@ -42,7 +42,7 @@ export class RetakeRequestsComponent implements OnInit {
   isLoading = true;
   commonRoles: any;
   isView = false;
-
+  
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild(MatSort) matSort!: MatSort;
 
@@ -107,7 +107,6 @@ export class RetakeRequestsComponent implements OnInit {
 
           // Call the approve API for each row
           this.settingService.putRetakeRequestByStudentIdCourseId(studentId, courseId, row).subscribe((response) => {
-            console.log('response', response);
           });
         });
 
@@ -118,7 +117,9 @@ export class RetakeRequestsComponent implements OnInit {
     });
   }
   getAllRetakeRequests() {
-    this.settingService.getRetakeRequest({ ...this.coursePaginationModel })
+    let filterProgram = this.searchTerm;
+    const payload = { ...this.coursePaginationModel,title:filterProgram };
+    this.settingService.getRetakeRequest(payload)
       .subscribe(response => {
         this.isLoading = false;
         this.totalItems = response.data.totalDocs
@@ -157,7 +158,11 @@ export class RetakeRequestsComponent implements OnInit {
   //   });
   // }
   
-  
+  performSearch() {
+    this.coursePaginationModel.page = 1;
+    this.paginator.pageIndex = 0;
+    this.getAllRetakeRequests();
+  }
   
 
   approve(row: any) {
@@ -205,7 +210,6 @@ export class RetakeRequestsComponent implements OnInit {
         const studentId = row.studentId;
 
         this.settingService.putRetakeRequestByStudentIdCourseId(studentId, courseId, row).subscribe((response) => {
-          console.log('response', response);
           Swal.fire(
             'Rejected!',
             'The retake request has been rejected.',

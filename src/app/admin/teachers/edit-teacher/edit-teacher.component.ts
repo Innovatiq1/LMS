@@ -136,7 +136,6 @@ export class EditTeacherComponent {
   //   }
   // }
   onSubmit() {
-    console.log('Form Value', this.proForm.value);
 
     // Check if the form is valid
     if (this.proForm.valid) {
@@ -197,11 +196,7 @@ export class EditTeacherComponent {
       course: this.teachersService.getUserById(this.userId),
     }).subscribe((response: any) => {
       if (response) {
-        console.log('response?.course?.education', response?.course?.education);
-        console.log('====REsponnse===Gopal==', response);
         //this.user = response.course;
-
-        console.log('response?.course?.education', response?.course?.education);
         // this.fileName =response?.course?.filename
         this.avatar = response.course?.avatar;
         this.uploaded = this.avatar?.split('/');
@@ -270,7 +265,6 @@ export class EditTeacherComponent {
   getDepartment() {
     this.StudentService.getAllDepartments().subscribe((response: any) => {
       this.dept = response.data.docs;
-      console.log('dept', this.dept);
     });
   }
 }
