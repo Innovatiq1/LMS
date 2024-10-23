@@ -29,7 +29,7 @@ export class StudentApprovalListComponent {
     'status',
     'Program Name',
     'Program-Fee',
-    'Instructor-Fee',
+    // 'Instructor-Fee',
     'Class Start Date',
     'Class End Date',
     'Registered Date',

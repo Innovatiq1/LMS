@@ -1041,8 +1041,8 @@ export class SettingsComponent {
   onSubmit() {
     if (this.stdForm.valid) {
       const userData: Student = this.stdForm.value;
-      userData.type = 'Student';
-      userData.role = 'Student';
+      userData.type = AppConstants.STUDENT_ROLE;
+      userData.role = AppConstants.STUDENT_ROLE;
       this.updateInstructor(userData);
 
       Swal.close();
