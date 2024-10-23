@@ -69,11 +69,11 @@
                                     <mat-cell *matCellDef="let row" class="payment-cell" [routerLink]="view ? ['/admin/program/view-approved-program/',row.id] : null" >
                                         <span class="mobile-label">Program Fee:</span><span >$</span> {{row.classId.courseId.courseFee||0}}.00</mat-cell>
                                 </ng-container>
-                                <ng-container matColumnDef="Instructor-Fee">
+                                <!-- <ng-container matColumnDef="Instructor-Fee">
                                     <mat-header-cell *matHeaderCellDef >{{commonRoles?.INSTRUCTOR_ROLE}} Fee</mat-header-cell>
                                     <mat-cell *matCellDef="let row" class="payment-cell" [routerLink]="view ? ['/admin/program/view-approved-program/',row.id] : null">
                                         <span class="mobile-label">Instructor Fee:</span><span >$</span> {{row.classId.instructorCost||0 }}.00</mat-cell>
-                                </ng-container>
+                                </ng-container> -->
                                 <!-- Student Name -->
                             .
                                 <!-- Class Start Date -->
