@@ -221,6 +221,7 @@ export class CourseTimetableComponent implements OnInit {
           const datesArray = [];
           let currentDate = startDate;
           while (currentDate <= endDate) {
+            const isSpecialEvent = deliveryType === "online"
             datesArray.push({
               title: title,
               date: new Date(currentDate),
@@ -239,6 +240,8 @@ export class CourseTimetableComponent implements OnInit {
                 duration:duration,
                 meetingUrl: meetingUrl
               },
+              backgroundColor: isSpecialEvent ? '#fb8500' : '',
+              borderColor: isSpecialEvent ? 'darkgreen' : '',
             });
             currentDate.setDate(currentDate.getDate() + 1);
           }

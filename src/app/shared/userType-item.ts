@@ -918,6 +918,17 @@ MENU_LIST =[
           "indeterminate": false,
           "class": "ml-menu",
           "isLeaf": true
+        },
+        {
+          "title": "Meeting Reports ",
+          "id": "meeting-report",
+          "children": [],
+          "actions": [],
+          "isAction": false,
+          "checked": true,
+          "indeterminate": false,
+          "class": "ml-menu",
+          "isLeaf": true
         }
       ],
       "actions": [],

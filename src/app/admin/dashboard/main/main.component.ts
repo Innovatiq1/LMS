@@ -322,7 +322,7 @@ export class MainComponent implements OnInit {
   dashboards: any;
   roleType: any;
   roles:any;
-
+  classDataById: any;
   constructor(
     private courseService: CourseService,
     private userService: UserService,
@@ -2446,5 +2446,41 @@ private attendanceBarChart() {
         (error) => {
         }
       );
+  }
+  showRecordings(course: any): void {
+    this.classService.getClassRecordings(course.classId?.id).subscribe({
+      next: (response) => {
+        if (response.recordingLinks.length > 0) {
+          const linksHtml = response.recordingLinks.map((link: any) => {
+            const date = new Date(link.recording_start).toLocaleDateString();
+            return `<li><a href="${link.play_url}" target="_blank" style="color: #28a745;">Video Recording</a> - Recorded on ${date}</li>`;
+          }).join('');
+
+          Swal.fire({
+            title: 'Available Recordings',
+            html: `<ul style="list-style-type: none; padding-left: 0;">${linksHtml}</ul>`,
+            icon: 'info',
+            showCloseButton: true,
+            confirmButtonText: 'Close'
+          });
+        } else {
+          Swal.fire({
+            title: 'No Recordings Available',
+            text: 'There are no recordings for this course at the moment.',
+            icon: 'info',
+            confirmButtonText: 'Close'
+          });
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching recordings:', err);
+        Swal.fire({
+          title: 'Error',
+          text: 'Failed to retrieve the recordings. Please try again later.',
+          icon: 'error',
+          confirmButtonText: 'Close'
+        });
+      }
+    });
   }
 }
