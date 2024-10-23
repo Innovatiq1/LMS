@@ -1481,8 +1481,8 @@
 </div>
 <h2 mat-dialog-title>Select Discount</h2>
 <div mat-dialog-content>
-  <label>Discount</label>
   <mat-form-field>
+    <mat-label>Discount</mat-label>
     <mat-select [(ngModel)]="selectedDiscount">
       <mat-option *ngFor="let discount of allDiscounts" [value]="discount.id">{{
         discount.discountTitle
