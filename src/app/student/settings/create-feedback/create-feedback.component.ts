@@ -60,8 +60,8 @@ export class CreateFeedbackComponent  {
      this.breadcrumbs = [
        {
          title: '', 
-         items: [this.storedItems],  
-         active: 'Create survey',  
+         items: ['Customize'],  
+         active: 'Survey',  
        },
      ];
    }

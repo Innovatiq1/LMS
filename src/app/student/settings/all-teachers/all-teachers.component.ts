@@ -72,6 +72,7 @@ export class AllTeachersComponent
   isTblLoading: boolean = true;
   userGroupIds: any;
   filterName: any;
+  dataSourceGrid: any;
   constructor(
     public httpClient: HttpClient,
     public dialog: MatDialog,
@@ -113,6 +114,8 @@ export class AllTeachersComponent
       this.isView = true;
     }
     this.loadData();
+    this.GridloadData();
+    
   }
   refresh() {
     window.location.reload();
@@ -145,6 +148,7 @@ export class AllTeachersComponent
               icon: 'success',
             });
             this.loadData();
+            this.GridloadData();
           },
           (error: { message: any; error: any }) => {
             Swal.fire(
@@ -217,8 +221,26 @@ export class AllTeachersComponent
           this.usersPaginationModel.limit = result.data.limit;
         });
       }
+
+      public GridloadData() {
+        let filterProgram = this.filterName;
+        const payload = { ...this.usersPaginationModel,title:filterProgram };
+        const type = AppConstants.INSTRUCTOR_ROLE
+          this.teachersService.getInstructor(payload,type).subscribe((result) => {
+            this.isTblLoading = false;
+            this.dataSourceGrid = result.data.docs;
+            this.totalItems = result.data.totalDocs;
+            this.usersPaginationModel.docs = result.data.docs;
+            this.usersPaginationModel.page = result.data.page;
+            this.usersPaginationModel.limit = result.data.limit;
+          });
+        }
     
-    
+      GirdpageSizeChange($event: any) {
+        this.usersPaginationModel.page = $event?.pageIndex + 1;
+        this.usersPaginationModel.limit = $event?.pageSize;
+        this.GridloadData();
+      }
   
 
   exportExcel() {
