@@ -358,7 +358,11 @@ export class ViewCourseComponent implements OnDestroy {
               .getStudentClass(studentId, this.classId)
               .subscribe((response) => {
                 this.studentClassDetails = response.data.docs[0];
+                // console.log("this.studentClassDetails",this.studentClassDetails)
+                // console.log("studentId",studentId)
+                // console.log("this.classId",this.classId)
                 const issueCertificate=this.studentClassDetails.classId.courseId.issueCertificate;
+                const learningTutorial=this.studentClassDetails.classId.courseId.learningTutorial;
            const playBackTimes=this.studentClassDetails.playbackTime;
            this.isTest = (issueCertificate === 'test' && playBackTimes === 100) ? true : false; 
            this.isDocument=issueCertificate==='document'?false:true;          
@@ -376,6 +380,22 @@ export class ViewCourseComponent implements OnDestroy {
                         ]);
                       } else {
                       }
+                      }
+                      else if(issueCertificate=='video' && learningTutorial){
+                        if (this.classDetails.courseId.tutorial != null) {
+                          this.router.navigate([
+                            '/student/questions/',
+                            classId,
+                            studentId,
+                            this.courseId,
+                          ],
+                          {
+                            queryParams: { learningTutorial: this.studentClassDetails.classId.courseId.learningTutorial }
+                          }
+                        );
+                        }
+
+
                       }
                       else{
                         let payload={
@@ -415,6 +435,23 @@ export class ViewCourseComponent implements OnDestroy {
                           }
                      
                     }
+                    if(issueCertificate=='video' && learningTutorial){
+                      if (this.classDetails.courseId.tutorial != null) {
+                        this.router.navigate(
+                          [
+                            '/student/questions/freecourse/',
+                            classId,
+                            studentId,
+                            this.courseId,
+                          ],
+                          {
+                            queryParams: { learningTutorial: this.studentClassDetails.classId.courseId.learningTutorial }
+                          }
+                        );
+                      }
+
+                    }
+
                     else{
                       let payload={
                         classId:this.classId,
