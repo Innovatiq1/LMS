@@ -341,7 +341,7 @@
             <div class="row mt-4 ml-0 mr-0">
               <div
                 class="col-md-3"
-                *ngFor="let data of dataSource"
+                *ngFor="let data of dataSourceGrid"
               >
                 <div
                   class="card border-apply"
@@ -414,7 +414,7 @@
                 </div>
               </div>
               <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems"
-              (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr"
+              (page)="gridpageSizeChange($event)" [pageSizeOptions]="pageSizeArr"
               aria-label="select pagination option">
             </mat-paginator>
             </div>
