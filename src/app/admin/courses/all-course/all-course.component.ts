@@ -46,7 +46,6 @@ export class AllCourseComponent {
     'status',
     'code',
     'creator',
-    'Fees',
     // 'Days',
     // 'Training Hours',
     'Fee Type',
@@ -54,7 +53,7 @@ export class AllCourseComponent {
     'endDate',
     'Vendor',
     // 'Users',
-    // 'Fees',
+    'Fees',
     'Users',
   ];
   coursePaginationModel: Partial<CoursePaginationModel>;

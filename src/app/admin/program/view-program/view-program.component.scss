@@ -78,3 +78,12 @@ h5{
   cursor: pointer;
   color: #0D6EFD;
 }
+.fixed-table {
+  table-layout: fixed;
+}
+
+.fixed-table td:nth-child(3) {
+  width: 100px;
+  text-align: right;
+  padding-right: 200px;
+}
