@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Session, Student, StudentApproval, StudentPaginationModel } from '@core/models/class.model';
@@ -15,7 +15,7 @@ import Swal from 'sweetalert2';
   templateUrl: './view-completion.component.html',
   styleUrls: ['./view-completion.component.scss']
 })
-export class ViewCompletionComponent {
+export class ViewCompletionComponent implements OnInit {
   breadscrums :any[]= [];
 
   classDataById: any;
@@ -113,14 +113,19 @@ export class ViewCompletionComponent {
       let parentData = roleDetails.filter((item: any) => item.id == parentId);
       let childData = parentData[0].children.filter((item: any) => item.id == childId);
       let subChildData = childData[0].children.filter((item: any) => item.id == subChildId);
-      let actions = subChildData[0].actions
-      let editAction = actions.filter((item:any) => item.title == 'Edit')
-      let deleteAction = actions.filter((item:any) => item.title == 'Delete')
+      let actions = subChildData[0]?.actions
+      console.log('parentData',parentData)
+      console.log('childData',childData)
+      console.log('subChildData',subChildData)
+
+      console.log('actions',actions)
+      let editAction = actions?.filter((item:any) => item.title == 'Edit')
+      let deleteAction = actions?.filter((item:any) => item.title == 'Delete')
   
-      if(editAction.length >0){
+      if(editAction?.length >0){
         this.edit = true;
       }
-      if(deleteAction.length >0){
+      if(deleteAction?.length >0){
         this.delete = true;
       }
       this.commonRoles = AppConstants

@@ -211,8 +211,9 @@ export class HeaderComponent
     };
     this.announcementService
       .getAnnouncementList(payload)
-      .subscribe((res: { results: { data: any[] }; totalRecords: number }) => {
-        const announcementsData: any = res.results;
+      .subscribe((res: { data: { data: any[] }; totalRecords: number }) => {
+        const announcementsData: any = res.data.data;
+        console.log("announcementsData",announcementsData)
         this.announcements = announcementsData.reverse();
       });
   }

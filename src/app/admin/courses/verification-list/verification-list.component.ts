@@ -44,7 +44,7 @@ export class VerificationListComponent {
     'classendDate',
     'registeredDate',
     'programFee',
-    'instructorFee',
+    // 'instructorFee',
   ];
 
   breadscrums = [
@@ -83,19 +83,15 @@ export class VerificationListComponent {
     const roleDetails = this.authenService.getRoleDetails()[0].menuItems;
     let urlPath = this.router.url.split('/');
     const parentId = `${urlPath[1]}/${urlPath[2]}`;
-    const childId = urlPath[urlPath.length - 2];
-    const subChildId = urlPath[urlPath.length - 1];
+    const childId =  urlPath[urlPath.length - 2];
+    const subChildId =  urlPath[urlPath.length - 1];
     let parentData = roleDetails.filter((item: any) => item.id == parentId);
-    let childData = parentData[0].children.filter(
-      (item: any) => item.id == childId
-    );
-    let subChildData = childData[0].children.filter(
-      (item: any) => item.id == subChildId
-    );
-    let actions = subChildData[0].actions;
-    let viewAction = actions.filter((item: any) => item.title == 'View');
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let subChildData = childData[0].children.filter((item: any) => item.id == subChildId);
+    let actions = subChildData[0].actions
+    let viewAction = actions.filter((item:any) => item.title == 'View')
 
-    if (viewAction.length > 0) {
+    if(viewAction.length >0){
       this.isView = true;
     }
     this.commonRoles = AppConstants;
@@ -146,7 +142,7 @@ export class VerificationListComponent {
 
   view(id: string) {
     this.router.navigate(
-      ['/admin/courses/student-courses/verification-list/view-completion-list'],
+      ['/admin/courses/student-courses/registered-pending-courses/view-completion-list'],
       { queryParams: { id: id, status: 'verification', verify: false } }
     );
   }
@@ -290,7 +286,7 @@ export class VerificationListComponent {
         Status: user.status === 'inactive' ? 'Pending' : '',
         Course: user.classId?.courseId?.title,
         'Course Fee': '$' + user.classId?.courseId?.fee,
-        'Instructor Fee': '$' + user.classId?.instructorCost,
+        // 'Instructor Fee': '$' + user.classId?.instructorCost,
         'Start Date': user.classStartDate,
         'End Date': user.classEndDate,
         'Registered On':
@@ -307,7 +303,7 @@ export class VerificationListComponent {
         'Status',
         'Course',
         'Course Fee',
-        'Instructor Fee',
+        // 'Instructor Fee',
         'Start Date  ',
         'End date  ',
         'Registered Date',

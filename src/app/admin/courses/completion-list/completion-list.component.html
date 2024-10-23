@@ -106,7 +106,7 @@
                       class="mobile-label">Fee Type:</span>{{row.courseId.feeType | titlecase}}
                   </mat-cell>
                 </ng-container>
-                <ng-container matColumnDef="Instructorfee">
+                <!-- <ng-container matColumnDef="Instructorfee">
                   <mat-header-cell *matHeaderCellDef  >{{commonRoles?.INSTRUCTOR_ROLE}}
                     Fee</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null" >
@@ -118,7 +118,7 @@
                       <span>$</span> 0.00
                     </span>
                   </mat-cell>
-                </ng-container>
+                </ng-container> -->
                 <ng-container matColumnDef="Classstart">
                   <mat-header-cell *matHeaderCellDef >Start Date</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">

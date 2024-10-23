@@ -20,7 +20,7 @@
                     <div class="col-lg-12 col-md-12 col-sm-12">
                       <div class="project_widget">
                         <div class="header">
-                          <h2>{{commonRoles.STUDENT_ROLE}} Details</h2>
+                          <h2>{{commonRoles?.STUDENT_ROLE}} Details</h2>
                           <div class="buttons" *ngIf="status && !verify">
                             <button *ngIf="edit"
                               (click)="changeStatus(response, 'approved')"
@@ -60,6 +60,18 @@
                                 alt="approve"
                               />
                             </button>
+                            <button *ngIf="delete"
+                            mat-icon-button
+                            matTooltip="Withdraw"
+                            class="tbl-action-btn"
+                            (click)="Status(response, 'cancel')"
+                          >
+                            <img
+                              class="img-w"
+                              src="/assets/archive.svg"
+                              alt="approve"
+                            />
+                          </button>
                           </div>
                         </div>
                         <div class="body">
@@ -254,27 +266,7 @@
                                 </div>
                               </div>
                             </div>
-                            <div class="col-6">
-                              <div class="px-2">
-                                <div class="row">
-                                  <div class="col-6">
-                                    <h6>{{commonRoles?.INSTRUCTOR_ROLE}} Fee</h6>
-                                  </div>
-                                  <div class="col-6">
-                                    <p>
-                                      $
-                                      {{
-                                        response.classId?.instructorCost || 0
-                                      }}.00
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="row">
-                            
-                            <div class="col-6">
+                            <div class="col-xl-6 col-md-12 col-sm-12">
                               <div class="px-2">
                                 <div class="row">
                                   <div class="col-6">
@@ -286,7 +278,9 @@
                                 </div>
                               </div>
                             </div>
+                           
                           </div>
+                       
                           <div class="row">
                             <div
                               class="col-6"
