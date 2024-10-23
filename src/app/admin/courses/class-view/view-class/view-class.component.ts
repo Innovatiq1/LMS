@@ -183,8 +183,6 @@ export class ViewClassComponent {
   }
 
   updateDateTime(date: string, duration: string): void {
-    
-    // Validate that both date and duration are provided
     if (!date || !duration) {
       Swal.fire({
         title: 'Validation Error',
@@ -192,24 +190,20 @@ export class ViewClassComponent {
         icon: 'warning',
         confirmButtonText: 'OK'
       });
-      return; // Exit the function early if validation fails
+      return;
     }
-  
-    // Show confirmation dialog before proceeding
     Swal.fire({
       title: 'Are you sure?',
       text: 'Do you want to update the meeting with the new date and duration?',
       icon: 'question',
-      showCancelButton: true, // Show the cancel button
+      showCancelButton: true, 
       confirmButtonText: 'Yes, update it!',
       cancelButtonText: 'No, cancel',
-      reverseButtons: true // Optional: reverse the position of buttons (Yes/No)
+      reverseButtons: true 
     }).then((result) => {
       if (result.isConfirmed) {
-        // If user confirms, call the API to update the meeting
         this._classService.updateZoomMeetingForPurticularDays(date, this.classDataById, duration).subscribe({
-          next: (response) => {
-            // Handle successful response (e.g., show success message)
+          next: (response) => {   
             Swal.fire({
               title: 'Success',
               text: 'Meeting updated successfully.',
@@ -219,7 +213,6 @@ export class ViewClassComponent {
           },
           error: (err) => {
             console.error(err);
-            // Handle error response
             Swal.fire({
               title: 'Error',
               text: 'There was an error updating the meeting. Please try again.',
@@ -229,7 +222,6 @@ export class ViewClassComponent {
           }
         });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        // If user cancels, show a cancellation message
         Swal.fire({
           title: 'Cancelled',
           text: 'Your meeting update has been cancelled.',
@@ -248,7 +240,7 @@ export class ViewClassComponent {
             icon: 'warning',
             confirmButtonText: 'OK'
         });
-        return; // Exit the function early if validation fails
+        return;
     }
     const newDateTime = new Date(date);
     const formattedDate = newDateTime.toISOString().substring(0, 10);
@@ -262,10 +254,8 @@ export class ViewClassComponent {
         cancelButtonText: 'No, keep it'
     }).then((result) => {
         if (result.isConfirmed) {
-            // If the user confirms, call the service to delete the meeting
             this._classService.deleteZoomMeetingForPurticularDay(date, this.classDataById).subscribe({
                 next: (response) => {
-                    // Handle successful response (e.g., show success message)
                     Swal.fire({
                         title: 'Success',
                         text: 'Meeting deleted successfully.',
@@ -275,7 +265,6 @@ export class ViewClassComponent {
                 },
                 error: (err) => {
                     console.error(err);
-                    // Handle error response
                     Swal.fire({
                         title: 'Error',
                         text: 'There was an error deleting the meeting. Please try again.',
@@ -285,7 +274,6 @@ export class ViewClassComponent {
                 }
             });
         } else if (result.dismiss === Swal.DismissReason.cancel) {
-            // Handle the case when the user cancels the deletion
             Swal.fire({
                 title: 'Cancelled',
                 text: 'Your meeting is safe.',
@@ -305,20 +293,34 @@ zoomRecordings:string=''
 getRecordedVideoLink(): void {
   this._classService.getClassRecordings(this.classDataById).subscribe({
     next: (response) => {
-      if (response.success) {
-        const recordingLinks = response.recordingLinks;
+      // Filter only video recordings (e.g., MP4)
+      const videoRecordings = response.recordingLinks.filter((link: any) => link.file_type === 'MP4');
 
-        // Create HTML links for each recording URL
-        const linksHtml = recordingLinks
-          .map((link:any, index:any) => `<a href="${link}" target="_blank">Recording ${index + 1}</a>`)
-          .join('<br>');
+      // Sort video recordings by recording_start date in descending order
+      videoRecordings.sort((a: any, b: any) => {
+        return new Date(b.recording_start).getTime() - new Date(a.recording_start).getTime();
+      });
 
-        // Display the links in a SweetAlert pop-up
+      if (videoRecordings.length > 0) {
+        // Format and display video links with recording dates
+        const linksHtml = videoRecordings.map((link: any) => {
+          const date = new Date(link.recording_start).toLocaleDateString(); // Format the recording date
+          return `<li><a href="${link.play_url}" target="_blank" style="color: #28a745;">Video Recording</a> - Recorded on ${date}</li>`;
+        }).join('');
+
         Swal.fire({
-          title: 'Available Recordings',
-          html: linksHtml,
+          title: 'Available Video Recordings',
+          html: `<ul style="list-style-type: none; padding-left: 0;">${linksHtml}</ul>`,
           icon: 'info',
           showCloseButton: true,
+          confirmButtonText: 'Close'
+        });
+      } else {
+        // Display a message when no video recordings are found
+        Swal.fire({
+          title: 'No Video Recordings Available',
+          text: 'There are no video recordings for this class at the moment.',
+          icon: 'info',
           confirmButtonText: 'Close'
         });
       }
@@ -332,8 +334,11 @@ getRecordedVideoLink(): void {
         confirmButtonText: 'Close'
       });
     }
-  }); 
+  });
 }
+
+
+
 hideDurationField: boolean = false;
 toggleZoomMeetingFormDelete() {
   this.isZoomMeetingFormVisible = !this.isZoomMeetingFormVisible;

@@ -410,13 +410,17 @@
                         <th>Duration</th>
                         <th>End Date</th>
                         <th>Meeting URL</th>
+                        <th>Recordings</th>
                         <th>Completed</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr *ngFor="let course of studentApprovedClasses ">
                         <td>{{course?.classId?.courseId?.title}}</td>
-                        <td>{{course?.classId?.courseId?.training_hours}} Days</td>
+                        <td>
+                          {{ course?.classId?.occurrences.length > 0 ? course.classId.occurrences.length - 1 : 0 }} Days
+                        </td>
+                        
                         <td>{{course?.classId?.sessions[0]?.sessionEndDate | date}}
                         </td>
                         <td>
@@ -428,6 +432,9 @@
                           <ng-template #noUrl style="color: rgb(133, 127, 127);">
                             No Meeting URL
                           </ng-template>
+                        </td>
+                        <td>
+                          <button (click)="showRecordings(course)" class="btn">Show Recordings</button>
                         </td>
                         <td
                           [ngClass]="{'red-text': course?.playbackTime?.toFixed(2) < 50, 'green-text': course?.playbackTime?.toFixed(2) >= 50}">

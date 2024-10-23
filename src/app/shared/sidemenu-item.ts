@@ -941,6 +941,14 @@ SIDEMENU_LIST =[
             "class": "ml-menu",
             "actions": [],
             "children": []
+          },
+          {
+           
+            "title": "Meeting Reports ",
+            "id": "meeting-report",
+            "class": "ml-menu",
+            "actions": [],
+            "children": []
           }
         ]
       },
