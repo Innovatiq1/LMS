@@ -68,7 +68,7 @@ sendEmail() {
 
   mail.push({
     to: this.selectedEmails,
-    content: `<a href="http://192.168.1.190:4500/admin/survey/view-feedback/${this.data.surveyId}" target=_blank>${this.data.surveyName}</a>`,
+    content: `<a href="http://localhost:4200/admin/survey/view-feedback/${this.data.surveyId}" target=_blank>${this.data.surveyName}</a>`,
     from: userDetails.user.email,
     fromName: userDetails.user.name,
     fromProfile: userDetails.user.avatar,

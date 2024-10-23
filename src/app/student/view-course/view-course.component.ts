@@ -168,6 +168,7 @@ export class ViewCourseComponent implements OnDestroy {
   feeType:string='';
   RetakeRequestCount=0;
   retakeResponseData:any;
+  approval: any;
 
   constructor(
     private classService: ClassService,
@@ -252,6 +253,8 @@ export class ViewCourseComponent implements OnDestroy {
     this.classService.getClassById(this.classId).subscribe((response) => {
       this.classDetails = response;
   this.feeType=this.classDetails.courseId.feeType;
+  this.approval=this.classDetails?.courseId?.approval;
+
       this.courseId = this.classDetails.courseId.id;
       this.dataSource = this.classDetails.sessions;
       if(!this.paidProgram){
@@ -358,7 +361,11 @@ export class ViewCourseComponent implements OnDestroy {
               .getStudentClass(studentId, this.classId)
               .subscribe((response) => {
                 this.studentClassDetails = response.data.docs[0];
+                // console.log("this.studentClassDetails",this.studentClassDetails)
+                // console.log("studentId",studentId)
+                // console.log("this.classId",this.classId)
                 const issueCertificate=this.studentClassDetails.classId.courseId.issueCertificate;
+                const learningTutorial=this.studentClassDetails.classId.courseId.learningTutorial;
            const playBackTimes=this.studentClassDetails.playbackTime;
            this.isTest = (issueCertificate === 'test' && playBackTimes === 100) ? true : false; 
            this.isDocument=issueCertificate==='document'?false:true;          
@@ -376,6 +383,22 @@ export class ViewCourseComponent implements OnDestroy {
                         ]);
                       } else {
                       }
+                      }
+                      else if(issueCertificate=='video' && learningTutorial){
+                        if (this.classDetails.courseId.tutorial != null) {
+                          this.router.navigate([
+                            '/student/questions/',
+                            classId,
+                            studentId,
+                            this.courseId,
+                          ],
+                          {
+                            queryParams: { learningTutorial: this.studentClassDetails.classId.courseId.learningTutorial }
+                          }
+                        );
+                        }
+
+
                       }
                       else{
                         let payload={
@@ -415,6 +438,23 @@ export class ViewCourseComponent implements OnDestroy {
                           }
                      
                     }
+                    if(issueCertificate=='video' && learningTutorial){
+                      if (this.classDetails.courseId.tutorial != null) {
+                        this.router.navigate(
+                          [
+                            '/student/questions/freecourse/',
+                            classId,
+                            studentId,
+                            this.courseId,
+                          ],
+                          {
+                            queryParams: { learningTutorial: this.studentClassDetails.classId.courseId.learningTutorial }
+                          }
+                        );
+                      }
+
+                    }
+
                     else{
                       let payload={
                         classId:this.classId,
@@ -533,10 +573,37 @@ export class ViewCourseComponent implements OnDestroy {
     var userdata = JSON.parse(localStorage.getItem('currentUser')!);
     let department= JSON.parse(localStorage.getItem('user_data')!).user.department;
     var studentId = localStorage.getItem('id');
-    if (this.paid && this.feeType=="paid") {
+    if (this.paid && this.feeType=="paid" && this.approval == "yes") {
       this.getDiscounts(userdata.user.companyId);
    
-    } 
+    } else if(this.paid && this.approval == "no"){
+      let payload = {
+        studentId: studentId,
+        classId: this.classId,
+        title: this.title,
+        department:userdata.user.department,
+        coursekit: this.courseKit,
+        courseStartDate:this.classDetails?.courseId?.sessionStartDate,
+        courseEndDate:this.classDetails?.courseId?.sessionEndDate,
+        email: userdata.user.email,
+        name: userdata.user.name,
+        courseTitle: this.courseDetails?.title,
+        courseFee:this.courseDetails?.fee ,
+        courseId: this.courseDetails.id,
+        companyId:userdata.user.companyId,
+        verify:true,
+        paid:true,
+        status:"approved"
+      };
+      this.courseService.saveRegisterClass(payload).subscribe((response) => {
+        Swal.fire({
+          title: 'Thank you',
+          text: 'All the Best for learning!',
+          icon: 'success',
+        });
+        this.getRegisteredClassDetails();
+      });
+    }
     else if (this.free || this.feeType=="free") {
       let payload = {
         
@@ -576,7 +643,7 @@ export class ViewCourseComponent implements OnDestroy {
     var userdata = JSON.parse(localStorage.getItem('currentUser')!);
     var studentId = localStorage.getItem('id');
     if (this.paid) {
-if(this.feeType=="paid")
+if(this.feeType=="paid" && this.approval == 'yes')
 {
   const today = new Date();
   const date = today.toISOString().split('T')[0];
@@ -768,6 +835,35 @@ if(this.feeType=="paid")
         }
       });
     }
+  });
+} else if(this.feeType == 'paid' && this.approval == 'no'){
+  let payload = {
+    email: userdata.user.email,
+    name: userdata.user.name,
+    courseTitle: this.courseDetails?.title,
+    courseFee: 0,
+    studentId: studentId,
+    classId: null,
+    title: this.title,
+    coursekit: this.courseKit,
+    feeType: 'paid',
+    courseId: this.courseDetails.id,
+    courseStartDate:this.courseDetails?.sessionStartDate,
+    courseEndDate:this.courseDetails?.sessionEndDate,
+    companyId:userdata.user.companyId,
+    verify:true,
+    paid:true,
+    status:'approved'
+  };
+  this.courseService.saveRegisterClass(payload).subscribe((response) => {
+    Swal.fire({
+      title: 'Thank you',
+      text: 'You can start learning',
+      icon: 'success',
+    });
+    location.reload();
+
+    this.isRegistered = true;
   });
 }
 else if(this.feeType=="free"){

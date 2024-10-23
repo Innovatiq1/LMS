@@ -96,6 +96,8 @@ export class AllCourseComponent {
   filterName: string = "";
   userGroupIds: string = "";
   filterBody: any = {};
+  showRadio: boolean = false; 
+  selectedOption?: string;
   constructor(
     public _courseService: CourseService,
     private route: Router,
@@ -196,6 +198,13 @@ export class AllCourseComponent {
     this.commonRoles = AppConstants;
     
   }
+  navigateToCreate() {
+    if (this.selectedOption) {
+      // Navigate and pass the selected option in the router link
+      this.route.navigate(['/admin/courses/add-course'], { queryParams: { option: this.selectedOption } });
+    }
+  }
+
 
 isLoading:boolean=false;
 getAllTpCourses() {

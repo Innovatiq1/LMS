@@ -394,7 +394,7 @@ export class CreateClassComponent {
 
         Swal.fire({
           title: 'Are you sure?',
-          text: 'Do you want to update this class!',
+          text: 'Do you want to update this batch!',
           icon: 'warning',
           confirmButtonText: 'Yes',
           showCancelButton: true,
@@ -407,7 +407,7 @@ export class CreateClassComponent {
               if (response) {
                 Swal.fire({
                   title: 'Success',
-                  text: 'Class Updated Successfully.',
+                  text: 'Batch Updated Successfully.',
                   icon: 'success',
                 });
                 window.history.back();
@@ -427,7 +427,7 @@ export class CreateClassComponent {
 
         Swal.fire({
           title: 'Are you sure?',
-          text: 'Do you want to schedule a class!',
+          text: 'Do you want to schedule a batch!',
           icon: 'warning',
           confirmButtonText: 'Yes',
           showCancelButton: true,
@@ -440,7 +440,7 @@ export class CreateClassComponent {
               if (response) {
                 Swal.fire({
                   title: 'Success',
-                  text: 'Class Created Successfully.',
+                  text: 'Batch Created Successfully.',
                   icon: 'success',
                 });
               }
