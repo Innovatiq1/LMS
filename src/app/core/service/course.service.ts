@@ -72,6 +72,12 @@ private tpUrl=environment.Url;
       if(filter.status) {
         params = params.set('status', filter.status)
       }
+      if(filter.department) {
+        params = params.set('department', filter.department)
+      }
+      if(filter.filterText) {
+        params = params.set('title', filter.filterText)
+      }
     }
     return params;
   }
