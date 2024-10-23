@@ -85,6 +85,11 @@ SETTING_SIDEMENU_LIST =[
                 "title": "Delete",
                 "id": "delete-dept",
                 "class": "ml-menu3"
+              },
+              {
+                "title": "View",
+                "id": "view-dept",
+                "class": "ml-menu3"
               }
             ],
             "children": []

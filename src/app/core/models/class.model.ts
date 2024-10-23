@@ -3,7 +3,7 @@ import { Pagination } from "./pagination.model";
 
 export interface InstructorList {
   user_id: InstructorDetail[];
-  instructor_id: String;
+  instructor_id: any;
 }
 export interface InstructorDetail {
   name: String;
@@ -49,7 +49,7 @@ export interface SessionClassModel {
   sessionEndDate: string;
   sessionStartTime: string;
   sessionEndTime: string;
-  instructorId: string;
+  instructorId: any;
   students: StudentRegisteredClass[];
 }
 export interface ClassModel {
@@ -119,7 +119,7 @@ export interface CourseListModel extends Pagination {
 export interface DataSourceModel {
   start: string;
   end: string;
-  instructor: string;
+  instructor: any;
   lab: string;
   sessionStartDate:string;
 }
@@ -129,7 +129,7 @@ export interface SessionModel {
   sessionEndDate: string;
   sessionStartTime: string;
   sessionEndTime: string;
-  instructorId: string;
+  instructorId: any;
   laboratoryId: string;
   courseName:string;
   courseCode:string;
@@ -173,7 +173,7 @@ export interface CourseId {
 
 export interface Session {
   _id: string;
-  instructorId: string;
+  instructorId: any;
   laboratoryId: string;
   sessionEndDate: string;
   sessionEndTime: string;

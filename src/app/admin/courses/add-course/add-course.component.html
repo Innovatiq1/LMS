@@ -20,16 +20,16 @@
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <label>Course<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <input matInput formControlName="title" placeholder="Enter Course Name"
+                    <input matInput formControlName="title" placeholder="Enter Course"
                       [readonly]="isInputReadonly()" required />
                     <mat-error *ngIf="firstFormGroup.get('title')?.hasError('required')">
-                      Enter Course Name
+                      Enter Course
                     </mat-error>
                     <mat-error *ngIf="
                         firstFormGroup.get('title')?.hasError('pattern') &&
                         firstFormGroup.get('title')?.touched
                       ">
-                      Enter a valid Course name
+                      Enter a valid Course
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -91,10 +91,10 @@
                     <mat-error *ngIf="
                         firstFormGroup
                           .get('issueCertificate')
-                          ?.hasError('maxLength') ||
+                          ?.hasError('required') ||
                         firstFormGroup.get('issueCertificate')?.touched
                       ">
-                      Select Issue Certificate Type
+                      Select Certificate
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -111,7 +111,7 @@
                     <mat-error *ngIf="
                         firstFormGroup
                           .get('examType')
-                          ?.hasError('maxLength') ||
+                          ?.hasError('required') ||
                         firstFormGroup.get('examType')?.touched
                       ">
                       Select Exam Type
@@ -133,9 +133,11 @@
                       </mat-option>
                     </mat-select>
                     <mat-error *ngIf="
-                        firstFormGroup.get('exam_assessment')?.invalid &&
-                        firstFormGroup.get('exam_assessment')?.touched
-                      ">
+                    firstFormGroup
+                      .get('exam_assessment')
+                      ?.hasError('required') ||
+                    firstFormGroup.get('funding_grant')?.touched
+                  ">
                       Select Exam 
                       <!-- {{
                       utils.getErrorMessage1(
@@ -161,9 +163,11 @@
                       </mat-option>
                     </mat-select>
                     <mat-error *ngIf="
-                      firstFormGroup.get('assessment')?.invalid &&
-                      firstFormGroup.get('assessment')?.touched
-                    ">
+                    firstFormGroup
+                      .get('assessment')
+                      ?.hasError('required') ||
+                    firstFormGroup.get('funding_grant')?.touched
+                  ">
                     Select Assessment
                       <!-- {{
                       utils.getErrorMessage1(
@@ -189,9 +193,11 @@
                       </mat-option>
                     </mat-select>
                     <mat-error *ngIf="
-                      firstFormGroup.get('tutorial')?.invalid &&
-                      firstFormGroup.get('tutorial')?.touched
-                    ">
+                    firstFormGroup
+                      .get('tutorial')
+                      ?.hasError('required') ||
+                    firstFormGroup.get('funding_grant')?.touched
+                  ">
                     Select Tutorial
                       <!-- {{
                       utils.getErrorMessage1(
@@ -262,10 +268,10 @@
                     <mat-error *ngIf="
                         firstFormGroup
                           .get('isFeedbackRequired')
-                          ?.hasError('maxLength') ||
+                          ?.hasError('required') ||
                         firstFormGroup.get('isFeedbackRequired')?.touched
                       ">
-                      Select Feedback Mandatory or not 
+                      Select feedback mandatory or not 
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -285,7 +291,7 @@
                     <mat-error *ngIf="
                         firstFormGroup
                           .get('certificate_temp')
-                          ?.hasError('maxLength') ||
+                          ?.hasError('required') ||
                         firstFormGroup.get('certificate_temp')?.touched
                       ">
                       Select Certificate Template
