@@ -232,6 +232,21 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2">
+                  <label>Approval Required<span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-select formControlName="approval">
+                      <mat-option value="yes" [disabled]="viewUrl == true">Yes</mat-option>
+                      <mat-option value="no" [disabled]="viewUrl == true">No</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="
+                    firstFormGroup.get('approval')?.hasError('required') ||
+                    firstFormGroup.get('approval')?.touched
+                  ">
+                  Select Approval Required 
+                </mat-error>
+                  </mat-form-field>
+                </div>
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
                   *ngIf="labelStatusCheck('Assign Feedback Questionnaire')">
                   <div class="label-container">
