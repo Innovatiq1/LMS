@@ -102,7 +102,7 @@ export class CreateClassComponent {
       this.dataSourceArray.push({
         start: moment().set({ hour: 8, minute: 0 }).format('YYYY-MM-DD HH:mm'),
         end: moment().set({ hour: 8, minute: 0 }).format('YYYY-MM-DD HH:mm'),
-        instructor: '0',
+        instructor: 'date',
       });
       this.dataSource = this.dataSourceArray;
     }
@@ -450,7 +450,7 @@ export class CreateClassComponent {
 
         Swal.fire({
           title: 'Are you sure?',
-          text: 'Do you want to update this class!',
+          text: 'Do you want to update this batch!',
           icon: 'warning',
           confirmButtonText: 'Yes',
           showCancelButton: true,
@@ -463,7 +463,7 @@ export class CreateClassComponent {
               if (response) {
                 Swal.fire({
                   title: 'Success',
-                  text: 'Class Updated Successfully.',
+                  text: 'Batch Updated Successfully.',
                   icon: 'success',
                 });
                 window.history.back();
@@ -496,7 +496,7 @@ export class CreateClassComponent {
         }
               Swal.fire({
           title: 'Are you sure?',
-          text: 'Do you want to schedule a class!',
+          text: 'Do you want to schedule a batch!',
           icon: 'warning',
           confirmButtonText: 'Yes',
           showCancelButton: true,
@@ -518,7 +518,7 @@ export class CreateClassComponent {
                 // On success, show a success message
                 Swal.fire({
                   title: 'Success',
-                  text: 'Class Created Successfully.',
+                  text: 'Batch Created Successfully.',
                   icon: 'success',
                 });
               })

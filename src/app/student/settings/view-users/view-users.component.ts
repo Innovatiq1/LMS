@@ -215,7 +215,7 @@ deleteItem(row: any) {
          },
          (error: { message: any; error: any; }) => {
            Swal.fire(
-             "Failed to delete Student",
+             "Failed to delete User",
              error.message || error.error,
              "error"
            );
@@ -229,7 +229,7 @@ deleteItem(row: any) {
   console.log("ffrfr", row)
    Swal.fire({
      title: "Confirm Active",
-     text: "Are you sure you want to active this Student?",
+     text: "Are you sure you want to active this User?",
      icon: "warning",
      showCancelButton: true,
      confirmButtonColor: "#d33",
@@ -242,14 +242,14 @@ deleteItem(row: any) {
          () => {
            Swal.fire({
              title: "Active",
-             text: "Student Active successfully",
+             text: "User Active successfully",
              icon: "success",
            });
            this.loadData()
          },
          (error: { message: any; error: any; }) => {
            Swal.fire(
-             "Failed to Active Student",
+             "Failed to Active User",
              error.message || error.error,
              "error"
            );
@@ -326,7 +326,7 @@ this.lecturesService.getClassListWithPagination1(this.currentId, this.filterName
 deleteItem1(row: any) {
 Swal.fire({
   title: "Confirm Deletion",
-  text: "Are you sure you want to delete this Instructor?",
+  text: "Are you sure you want to delete this User?",
   icon: "warning",
   showCancelButton: true,
   confirmButtonColor: "#d33",
@@ -339,14 +339,14 @@ Swal.fire({
       () => {
         Swal.fire({
           title: "Deleted",
-          text: "Instructor deleted successfully",
+          text: "User deleted successfully",
           icon: "success",
         });
         this.loadData()
       },
       (error: { message: any; error: any; }) => {
         Swal.fire(
-          "Failed to delete  Instructor",
+          "Failed to delete  User",
           error.message || error.error,
           "error"
         );

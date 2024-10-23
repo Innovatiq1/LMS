@@ -381,7 +381,7 @@ SIDEMENU_LIST =[
                 "title": "Retake Requests",
                 "id": "retake-requests",
                 "actions": [],
-                  "class": "ml-menu2"
+                "class":"ml-menu2"
               }
             ]
           },
@@ -458,21 +458,26 @@ SIDEMENU_LIST =[
             "actions": [
               {
                 "title": "All Courses",
+                "id": "courses",
+                "class": "ml-menu3"
+              },
+              {
+                "title": "All Batches",
                 "id": "all-courses",
                 "class": "ml-menu3"
               },
               {
-                "title": "Registered Courses",
+                "title": "Registered",
                 "id": "registered-courses",
                 "class": "ml-menu3"
               },
               {
-                "title": "Approved Courses",
+                "title": "Approved",
                 "id": "approved-courses",
                 "class": "ml-menu3"
               },
               {
-                "title": "Completed Courses",
+                "title": "Completed",
                 "id": "completed-courses",
                 "class": "ml-menu3"
               }

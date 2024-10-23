@@ -1,5 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router,ActivatedRoute } from '@angular/router';
 import { ApiResponse } from '@core/models/response';
 import { CourseService } from '@core/service/course.service';
 import { QuestionService } from '@core/service/question.service';
@@ -49,9 +49,9 @@ export class QuestionComponent implements OnInit {
   freeCourse: boolean;
   isFree = false;
   isPaid = false;
-
+  isLearningTutorial: string | null = null;
   constructor(private questionService: QuestionService,private courseService:CourseService,private router: Router,
-    private studentService : StudentsService,
+    private studentService : StudentsService,private activatedRoute: ActivatedRoute, private classService: ClassService,
       ) {
         let urlPath = this.router.url.split('/');
         this.freeCourse = urlPath.includes('freecourse');
@@ -65,8 +65,14 @@ export class QuestionComponent implements OnInit {
 
   ngOnInit(): void {
     this.name = localStorage.getItem("name")!;
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.isLearningTutorial= params['learningTutorial'] || null;
+      // console.log('Option value from URL:', this.isLearningTutorial);
+    });
     this.getCourseDetails();
     this.student();
+    // console.log("question=studentId",this.studentId)
+    // console.log("question=studentId",this.classId)
   }
 
   onPageChange(event: PageEvent): void {
@@ -123,10 +129,11 @@ export class QuestionComponent implements OnInit {
   }
   getCourseDetails(): void {
     let urlPath = this.router.url.split('/');
-    this.courseId = urlPath[urlPath.length - 1];
+    // this.courseId = urlPath[urlPath.length - 1];
+    this.courseId = urlPath[urlPath.length - 1].split('?')[0];
     this.studentId = urlPath[urlPath.length - 2];
     this.classId = urlPath[urlPath.length - 3];
-
+    
     this.courseService.getCourseById(this.courseId).subscribe((response) => {
       this.questionList = response?.tutorial?.questions;
       this.assesmentId = response?.tutorial?.id;
@@ -191,7 +198,28 @@ student(){
       }
     );
   }
+updateCouseAsCompleted(){
+  let payload={
+    classId:this.classId,
+   playbackTime:100,
+    status:'completed',
+    studentId:this.studentId
 
+  }
+  this.classService.saveApprovedClasses(this.classId,payload).subscribe((response)=>{
+   Swal.fire({
+    title: 'Course Completed Successfully',
+    text: 'Please Wait For the Certificate',
+    icon: 'success',
+  })
+  // .then((result) => {
+  //   if (result.isConfirmed) {
+  //     location.reload();
+  //   }
+  // });
+
+  })
+}
 correctAnswers(value:any) {
   return this.questionList.filter((v: any) => v.status === value).length
 }
@@ -215,7 +243,11 @@ getAnswerById() {
         score : tutorialAnswer.score
       };
     });
-    this.isanswersSubmitted = true
+    this.isanswersSubmitted = true; 
+    if(this.isLearningTutorial)
+    {
+      this.updateCouseAsCompleted();
+    }
   });
 }
 
