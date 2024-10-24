@@ -102,6 +102,10 @@ export class ClassService extends UnsubscribeOnDestroyAdapter {
     const apiUrl = `${this.prefix}admin/studentClasses?status=approved&companyId=${id}`;
     return this.http.get<any>(apiUrl, { params: this.buildParams(filter) });
   }
+  getEnquiryClasse(id:any, filter?:Partial<CoursePaginationModel>): Observable<any> {
+    const apiUrl = `${this.prefix}admin/studentClasses?status=enquiry&companyId=${id}`;
+    return this.http.get<any>(apiUrl, { params: this.buildParams(filter) });
+  }
   getRegisteredClasse(id:any, filter?:Partial<CoursePaginationModel>): Observable<any> {
     const apiUrl = `${this.prefix}admin/studentClasses?companyId=${id}&status=registered&verify=true&paid=true`;
     return this.http.get<any>(apiUrl, { params: this.buildParams(filter) });
