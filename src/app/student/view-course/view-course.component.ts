@@ -101,6 +101,8 @@ export class ViewCourseComponent implements OnDestroy {
   isDocument:boolean=false;
   isCancelled = false;
   isCompleted = false;
+  isDiscountVerification : boolean= false;
+  isApproval : boolean= false;
   documentLink: any;
   uploadedDoc: any;
   title!: string;
@@ -525,7 +527,7 @@ export class ViewCourseComponent implements OnDestroy {
     })
 
   }
-  submitDiscount(dialogRef:any){
+  submitDiscount(dialogRef?:any){
     var userdata = JSON.parse(localStorage.getItem('currentUser')!);
     // let department= JSON.parse(localStorage.getItem('user_data')!).user.department;
     var studentId = localStorage.getItem('id');
@@ -553,7 +555,7 @@ export class ViewCourseComponent implements OnDestroy {
       coursekit: this.courseKit,
       date: date,
       verify:false,
-      discount:this.selectedDiscount.id
+      discount:this.selectedDiscount?.id
     };
               this.courseService
                 .saveRegisterClass(body)
@@ -563,9 +565,14 @@ export class ViewCourseComponent implements OnDestroy {
                     text: 'We will verify details & enable payment',
                     icon: 'success',
                   });
-                  dialogRef.close();
+                  dialogRef?.close();
                   this.payment = false;
                   this.isRegistered = true;
+                  this.getRegisteredClassDetails();
+                  if(this.isDiscountVerification == true){
+                    this.isDiscountVerification = false
+
+                  }
                 });
   }
 }
@@ -577,12 +584,77 @@ export class ViewCourseComponent implements OnDestroy {
     });    
 }
 
-  submitForVerification(classId: string) {
+reRegister(){
+  var userdata = JSON.parse(localStorage.getItem('currentUser')!);
+  let department= JSON.parse(localStorage.getItem('user_data')!).user.department;
+  var studentId = localStorage.getItem('id');
+  if(this.approval == "yes"){
+    let payload = {
+      studentId: studentId,
+      classId: this.classId,
+      title: this.title,
+      department:userdata.user.department,
+      coursekit: this.courseKit,
+      courseStartDate:this.classDetails?.courseId?.sessionStartDate,
+      courseEndDate:this.classDetails?.courseId?.sessionEndDate,
+      email: userdata.user.email,
+      name: userdata.user.name,
+      courseTitle: this.courseDetails?.title,
+      courseFee: this.courseDetails?.fee || 0,
+      courseId: this.courseDetails.id,
+      companyId:userdata.user.companyId,
+      verify:true,
+      paid:true
+    };
+    this.courseService.saveRegisterClass(payload).subscribe((response) => {
+      Swal.fire({
+        title: 'Thank you',
+        text: 'We will approve once verified',
+        icon: 'success',
+      });
+    this.getRegisteredClassDetails();
+    this.isApproval =false;
+    });
+  } else if(this.approval == "no"){
+    let payload = {
+      studentId: studentId,
+      classId: this.classId,
+      title: this.title,
+      department:userdata.user.department,
+      coursekit: this.courseKit,
+      courseStartDate:this.classDetails?.courseId?.sessionStartDate,
+      courseEndDate:this.classDetails?.courseId?.sessionEndDate,
+      email: userdata.user.email,
+      name: userdata.user.name,
+      courseTitle: this.courseDetails?.title,
+      courseFee: this.courseDetails?.fee || 0,
+      courseId: this.courseDetails.id,
+      companyId:userdata.user.companyId,
+      verify:true,
+      paid:true,
+      status:'approved'
+    };
+    this.courseService.saveRegisterClass(payload).subscribe((response) => {
+      Swal.fire({
+        title: 'Thank you',
+        text: 'All the Best for learning!',
+        icon: 'success',
+      });
+     this.getRegisteredClassDetails();
+    });
+  }
+
+}
+  submitForVerification(classId: string,action?:string) {
     var userdata = JSON.parse(localStorage.getItem('currentUser')!);
     let department= JSON.parse(localStorage.getItem('user_data')!).user.department;
     var studentId = localStorage.getItem('id');
     if (this.paid && this.feeType=="paid" && this.approval == "yes") {
-      this.getDiscounts(userdata.user.companyId);
+      if(this.isDiscountVerification == true){
+        this.submitDiscount()
+      } else {
+        this.getDiscounts(userdata.user.companyId);
+      }
    
     } else if(this.paid && this.feeType=="paid"&& this.approval == "no"){
       this.getDiscounts(userdata.user.companyId);
@@ -664,8 +736,8 @@ if(this.feeType=="paid" && this.approval == 'yes')
     title: this.title,
     coursekit: this.courseKit,
     date: date,
-    discountType:this.discountType,
-    discountValue:this.discountValue,
+    discountType:this.discountType? this.discountType:'',
+    discountValue:this.discountValue?this.discountValue: 0,
     courseStartDate:this.classDetails?.courseId?.sessionStartDate,
     courseEndDate:this.classDetails?.courseId?.sessionEndDate
   };
@@ -692,7 +764,7 @@ if(this.feeType=="paid" && this.approval == 'yes')
               email: userdata.user.email,
               name: userdata.user.name,
               courseTitle: this.classDetails?.courseId?.title,
-              courseFee:res.totalValue,
+              courseFee:res.totalValue?res.totalValue:res.courseFee,
               studentId: studentId,
               classId: this.classId,
               title: this.title,
@@ -856,8 +928,8 @@ if(this.feeType=="paid" && this.approval == 'yes')
     title: this.title,
     coursekit: this.courseKit,
     date: date,
-    discountType:this.selectedDiscount.discountType,
-    discountValue:this.selectedDiscount.value,
+    discountType:this.discountType? this.discountType:'',
+    discountValue:this.discountValue?this.discountValue: 0,
     courseStartDate:this.classDetails?.courseId?.sessionStartDate,
     courseEndDate:this.classDetails?.courseId?.sessionEndDate
   };
@@ -1283,9 +1355,16 @@ if(this.feeType=="paid" && this.approval == 'yes')
           this.isCertificate = "Yes";
           this.certificateIssued = true;
         }
-        if (this.studentClassDetails.status == 'cancel') {
+        if (this.studentClassDetails.status == 'cancel' && this.studentClassDetails.discountVerification == false) {
           this.isRegistered == true;
           this.isCancelled = true;
+          this.isDiscountVerification = true;
+        }
+
+        if (this.studentClassDetails.status == 'cancel' && this.studentClassDetails.approval == false) {
+          this.isRegistered == true;
+          this.isCancelled = true;
+          this.isApproval = true;
         }
       });
   }
@@ -1465,7 +1544,7 @@ if(this.feeType=="paid" && this.approval == 'yes')
     let classId = localStorage.getItem('classId');
     let courseId = this.courseDetailsId;
     let studentId = localStorage.getItem('id');
-
+console.log('lastButOneValue',lastButOneValue)
     if (this.paid) {
       let payload = {
         studentId: studentId,
@@ -1482,6 +1561,7 @@ if(this.feeType=="paid" && this.approval == 'yes')
             this.courseService
               .getStudentClass(studentId, classId)
               .subscribe((response) => {
+                debugger
                 this.studentClassDetails = response.data.docs[0];
                 this.coursekitDetails = response.data.docs[0].coursekit;
                 let totalPlaybackTime = 0;
