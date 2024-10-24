@@ -1,4 +1,12 @@
-
+<section class="content">
+    <div class="content-block">
+      <div class="block-header" >
+        <!-- breadcrumb -->
+        <app-breadcrumb
+          
+        >
+        </app-breadcrumb>
+      </div>
       <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <div class="card">
@@ -61,30 +69,37 @@
                   </ng-container>
                    <ng-container matColumnDef="studentname">
                     <mat-header-cell *matHeaderCellDef 
-                      >{{commonRoles.STUDENT_ROLE}}</mat-header-cell
+                      >{{commonRoles?.STUDENT_ROLE}}</mat-header-cell
                     >
-                    <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
-                      <span class="mobile-label">{{commonRoles.STUDENT_ROLE}}:</span>
-                      <span class="name" >{{row?.studentId?.last_name?row.studentId?.name + " " + row.studentId?.last_name:row.studentId?.name}}</span>
+                    <mat-cell *matCellDef="let row" >
+                      <span class="mobile-label">{{commonRoles?.STUDENT_ROLE}}:</span>
+                      <span class="name">{{row.studentId?.last_name?row.studentId?.name + " " + row.studentId?.last_name:row.studentId?.name}}</span>
                     </mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="coursename">
                     <mat-header-cell *matHeaderCellDef 
                       >Course</mat-header-cell
                     >
-                    <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
+                    <mat-cell *matCellDef="let row" >
                       <span class="mobile-label">Course:</span>{{row?.title }}
+                    </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="Fee Type">
+                    <mat-header-cell *matHeaderCellDef  class="compulsory-count-header">Fee Type
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"  > <span
+                        class="mobile-label">Fee Type:</span>{{row.courseId.feeType | titlecase}}
                     </mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="programFee">
                     <mat-header-cell *matHeaderCellDef  class="amount">Course Fee</mat-header-cell>
-                    <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null" class="payment-cell">
-                        <span class="mobile-label">Course Fee:</span><span >$</span> {{row?.classId?.courseId?.fee || 0}}.00</mat-cell>
+                    <mat-cell *matCellDef="let row"  class="payment-cell">
+                        <span class="mobile-label">Course Fee:</span> <span>$</span> {{row?.classId?.courseId?.fee || 0}}.00</mat-cell>
                 </ng-container>
                 <!-- <ng-container matColumnDef="instructorFee">
                     <mat-header-cell *matHeaderCellDef  class="amount">{{commonRoles?.INSTRUCTOR_ROLE}} Fee</mat-header-cell>
-                    <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null" class="payment-cell">
-                        <span class="mobile-label">Instructor Fee:</span><span >$</span> {{row?.classId?.instructorCost  || 0}}.00</mat-cell>
+                    <mat-cell *matCellDef="let row"  class="payment-cell">
+                        <span class="mobile-label">{{commonRoles?.INSTRUCTOR_ROLE}} Fee:</span><span>$</span> {{row?.classId?.instructorCost || 0 }}.00</mat-cell>
                 </ng-container> -->
                   <!-- Class start date -->
   
@@ -92,8 +107,8 @@
                     <mat-header-cell *matHeaderCellDef 
                       >Start Date
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
-                      <span class="mobile-label">Start Date:</span>{{ row?.classId?.sessions[0]?.sessionStartDate ? (row?.classId?.sessions[0]?.sessionStartDate| date): "--" }}
+                    <mat-cell *matCellDef="let row" >
+                      <span class="mobile-label">Start Date:</span>{{row?.courseStartDate? (row?.courseStartDate | date) : "--" }}
                     </mat-cell>
                   </ng-container>
                   <!--Class Enddate -->
@@ -101,30 +116,34 @@
                     <mat-header-cell *matHeaderCellDef 
                       >End Date
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
-                      <span class="mobile-label">End Date:</span>{{row?.classId?.sessions[0]?.sessionEndDate ? (row?.classId?.sessions[0]?.sessionEndDate | date) : "--" }}
+                    <mat-cell *matCellDef="let row" >
+                      <span class="mobile-label">End Date:</span>{{row?.courseEndDate? (row?.courseEndDate | date) : "--" }}
                     </mat-cell>
                   </ng-container>
                   <!--Registered date -->
-                  <ng-container matColumnDef="registeredDate">
+                  <!-- <ng-container matColumnDef="registeredDate">
                     <mat-header-cell *matHeaderCellDef 
                       >Registered Date
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
-                      <span class="mobile-label">Registered Date:</span>{{ row?.registeredOn ? (row?.registeredOn | date) : "--"}}
+                    <mat-cell *matCellDef="let row" >
+                      <span class="mobile-label">Registered Date:</span>{{row?.registeredOn ? (row?.registeredOn | date) : "--"}}
                     </mat-cell>
+                  </ng-container> -->
+                  <ng-container matColumnDef="Registered Date">
+                    <mat-header-cell *matHeaderCellDef >Registered Date
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row" >
+                      <span class="mobile-label">Registered Date:</span>{{row?.registeredOn ? (row.registeredOn | date) : "--"}} </mat-cell>
                   </ng-container>
-                  <ng-container matColumnDef="status" >
+                  <ng-container matColumnDef="status">
                     <mat-header-cell *matHeaderCellDef class="pr-0">Status</mat-header-cell>
-                    <mat-cell *matCellDef="let row" class="pr-0" (click)="isView ? view(row.id) : null">
+                    <mat-cell *matCellDef="let row" class="pr-0" >
                       <span class="mobile-label">Status:</span>
-                      <span class="badge badge-solid-red">
+                      <span class="badge badge-solid-green">
                         <span class="status-dot"></span>
-                        {{row.status === 'registered' ? 'Pending':'' | titlecase}}</span>
+                        {{row.status | titlecase}}</span>
                     </mat-cell>
                   </ng-container>
-                  <!-- actions -->
-                  
                   <mat-header-row
                     *matHeaderRowDef="displayedColumns"
                   ></mat-header-row>
@@ -176,5 +195,6 @@
           </div>
         </div>
       </div>
- 
+    </div>
+  </section>
   

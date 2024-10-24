@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, UntypedFormControl, UntypedFormGroup, Validator
 import { CourseTitleModel } from '@core/models/class.model';
 import { CoursePaginationModel } from '@core/models/course.model';
 import { CourseService } from '@core/service/course.service';
+import { AppConstants } from '@shared/constants/app.constants';
 import { ClassService } from 'app/admin/schedule-class/class.service';
 import { forkJoin } from 'rxjs';
 
@@ -21,7 +22,7 @@ export class EAttendanceComponent {
       'endDate',
       'registeredDate'
   ];
-  headeritems: string[] = ['Employee Name', ...Array.from({ length: 31 }, (_, i) => (i + 1).toString())];
+  headeritems: string[] = [ AppConstants.STUDENT_ROLE, ...Array.from({ length: 31 }, (_, i) => (i + 1).toString())];
   courseData = [
    
      
@@ -50,6 +51,7 @@ export class EAttendanceComponent {
   isProgram: boolean = false;
   totalItems: any;
   pageSizeArr = [10, 25, 50, 100];
+  commonRoles: any;
 
   constructor(
     private _classService: ClassService,
@@ -76,7 +78,7 @@ export class EAttendanceComponent {
       this.programList = response.programs;
       this.cd.detectChanges();
     });
- 
+    this.commonRoles = AppConstants
   }
   search() {
     var startdateObj = new Date(this.attendanceForm.value.fromDate);

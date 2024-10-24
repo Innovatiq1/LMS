@@ -74,13 +74,13 @@ getBlogsList(filters?:any) {
   let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
   let filterText = this.searchTerm
   this.alluserService.getUserList({filterText,...this.coursePaginationModel},userId).subscribe((response: any) => {
-    this.dataSource = response.data.data;
+    this.dataSource = response.data.data.docs;
     this.isLoading = false;
     this.ref.detectChanges();
-    this.totalItems = response.totalRecords
-    this.coursePaginationModel.docs = response.docs;
-    this.coursePaginationModel.page = response.page;
-    this.coursePaginationModel.limit = response.limit;
+    this.totalItems = response.data.data.totalDocs;
+    this.coursePaginationModel.docs = response.data.data.docs;
+    this.coursePaginationModel.page = response.data.data.page;
+    this.coursePaginationModel.limit = response.data.data.limit;
 
   }, error => {
   });

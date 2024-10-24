@@ -46,8 +46,8 @@
             <table mat-table [dataSource]="filteredDashboards" matSort class="mat-cell advance-table">
               <ng-container matColumnDef="type">
                 <mat-header-cell *matHeaderCellDef >Type</mat-header-cell>
-                <mat-cell *matCellDef="let row" class="name" (click)="edit(row)">
-                  <span class="mobile-label">Type:</span>{{ row.typeName }}
+                <mat-cell *matCellDef="let row" (click)="edit(row)">
+                  <span class="mobile-label">Type:</span> <span class="name" >{{ row.typeName }}</span>
                 </mat-cell>
               </ng-container>
         

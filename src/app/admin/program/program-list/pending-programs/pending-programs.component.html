@@ -73,13 +73,14 @@
               
               <ng-container matColumnDef="name">
                 <mat-header-cell *matHeaderCellDef >Program</mat-header-cell>
-                <mat-cell class="name" *matCellDef="let row" (click)="view ? viewInActiveProgram(row.id): null"><span
-                    class="mobile-label">Program Name:</span> <span >{{row.title |titlecase}}</span>
+                <mat-cell  *matCellDef="let row" (click)="view ? viewInActiveProgram(row.id): null"><span
+                    class="mobile-label">Program:</span> <span class="name">{{row.title |titlecase}}</span>
                 </mat-cell>
               </ng-container>
               <ng-container matColumnDef="status">
                 <mat-header-cell *matHeaderCellDef class="pr-0">Status</mat-header-cell>
-                <mat-cell *matCellDef="let row" class="pr-0">
+                <mat-cell *matCellDef="let row" class="pr-0"><span
+                  class="mobile-label">Status:</span>
                   <span class="badge badge-solid-red">
                     <span class="status-red"></span>
                     {{row.status ==='inactive'? 'Pending':'' | titlecase}}</span>
@@ -123,7 +124,7 @@
               <ng-container matColumnDef="Payment">
                 <mat-header-cell *matHeaderCellDef style="padding-left: 50px;" >Fee</mat-header-cell>
                 <mat-cell *matCellDef="let row" class="payment-cell" (click)="view ? viewInActiveProgram(row.id): null"> <span
-                    class="mobile-label">Payment:</span><span >$</span> {{row.courseFee||0}}.00
+                    class="mobile-label">Fee:</span><span >$</span> {{row.courseFee||0}}.00
                 </mat-cell>
               </ng-container>
               <!-- Course Code -->

@@ -41,3 +41,26 @@ svg {
 ::ng-deep .mat-column-registeredDate {
   white-space: nowrap;
 }
+@media (max-width: 768px) {
+  .payment-cell {
+    display: block;
+    justify-content: center;
+    margin-top: 10px;
+    padding-right: 0px !important;
+  }
+}
+mat-cell:first-of-type, mat-header-cell:first-of-type, mat-footer-cell:first-of-type {
+  padding-left: 24px; 
+ }
+ @media (max-width: 600px) {
+   mat-cell:first-of-type, mat-header-cell:first-of-type, mat-footer-cell:first-of-type {
+     padding-left: 15px;
+   }
+   }
+// @media (max-width: 600px) {
+//   .mobile-label {
+//     width: 115px;
+//     display: inline-block;
+//     font-weight: bold;
+//   }
+// }

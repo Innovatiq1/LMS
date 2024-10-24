@@ -31,6 +31,7 @@ export class ExamScoresComponent {
   totalItems: any;
   pageSizeArr = this.utils.pageSizeArr;
   id: any;
+  limit: any = 10;
   selection = new SelectionModel<any>(true, []);
   dataSource :any;
   examScores: any;
@@ -58,13 +59,15 @@ export class ExamScoresComponent {
     let company = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     this.assessmentService.getExamAnswersV2({ ...this.assessmentPaginationModel,company})
       .subscribe(res => {
+        console.log("reeeee",res.data)
         this.dataSource = res.data.docs;
         console.log("dataSourse==",this.dataSource)
         this.examScores = res.data.docs;
         this.totalItems = res.data.totalDocs;
-        this.assessmentPaginationModel.docs = res.docs;
-        this.assessmentPaginationModel.page = res.page;
-        this.assessmentPaginationModel.limit = res.limit;
+        this.assessmentPaginationModel.docs = res.data.docs;
+        this.assessmentPaginationModel.page = res.data.page;
+        this.assessmentPaginationModel.limit = res.data.limit;
+        this.assessmentPaginationModel.totalDocs = res.data.totalDocs;
       })
   }
 

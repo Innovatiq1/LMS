@@ -618,7 +618,7 @@ tr.group:hover {
     li {
       display: inline-block;
       position: relative;
-      margin-left: 10px;
+      margin-left: 5px;
     }
   }
 
@@ -928,7 +928,7 @@ mat-cell > span.truncate-text {
 
 @media (max-width: 380px) {
   .materialTableHeader .header-buttons-left input.search-field {
-    width: 140px;
+    width: 178px;
   }
 }
 @media (max-width: 300px) {

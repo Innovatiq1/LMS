@@ -165,7 +165,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
    }
     let urlPath = this.router.url.split('/');
     // console.log("urlPath==",this.router.url);
-    console.log('Option value from URL:', this.optionValue);
+    // console.log('Option value from URL:', this.optionValue);
     this.editUrl = urlPath.includes('edit-course');
     this.viewUrl = urlPath.includes('view-course');
 
@@ -203,7 +203,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       training_hours: new FormControl('', [
         Validators.pattern(/^\d+(\.\d+)?$/),
       ]),
-      department:['',[]],
+      department:['',[Validators.required]],
       skill_connect_code: new FormControl('', [
         Validators.pattern(/^[a-zA-Z0-9]/),
       ]),
@@ -270,7 +270,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.optionValue = params['option'] || null;
-      console.log('Option value from URL:', this.optionValue);
+      // console.log('Option value from URL:', this.optionValue);
     });
     if(this.optionValue=='OnlyLearning'||this.optionValue=='LearningAndTutorial')
       {

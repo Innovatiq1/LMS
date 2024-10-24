@@ -55,3 +55,23 @@ svg {
   font-size: 14px; 
   line-height: 1.2; 
 }
+@media (max-width: 768px) {
+  .materialTableHeader .right {
+      height: 149px;
+  }
+  #submit{
+    width: 182px;
+    padding: 5px 13px 5px 13px;
+  }
+  .m3{
+    padding: 17px;
+  }
+}
+mat-cell:first-of-type, mat-header-cell:first-of-type, mat-footer-cell:first-of-type {
+  padding-left: 24px; 
+ }
+ @media (max-width: 600px) {
+   mat-cell:first-of-type, mat-header-cell:first-of-type, mat-footer-cell:first-of-type {
+     padding-left: 15px;
+   }
+   }

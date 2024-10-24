@@ -131,14 +131,13 @@
                         >
                         <mat-cell
                           *matCellDef="let row"
-                          class="name"
                           [routerLink]=" isView ? [
                           '/student/settings/all-user/all-users/view-all-users',
                           row._id
                         ] : null"
                         >
                           <span class="mobile-label">Name:</span
-                          >{{ row.name | capitalizeFirstLetter }}</mat-cell
+                          ><span class="name" >{{ row.name | capitalizeFirstLetter }}</span></mat-cell
                         >
                       </ng-container>
                       <!-- Course Code -->
@@ -150,7 +149,7 @@
                           *matCellDef="let row"
                           (click)="addNew(row.type)"
                         >
-                          <span class="mobile-label">User Role:</span
+                          <span class="mobile-label">Role:</span
                           >{{ row.type | titlecase }}</mat-cell
                         >
                       </ng-container>

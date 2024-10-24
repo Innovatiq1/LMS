@@ -114,7 +114,7 @@ row: any;
 
   })
 
-  if (this.path == 'program'){
+  if (this.path == 'program-name'){
     this.isProgram = true;
     this.displayedColumns = [
       'program',

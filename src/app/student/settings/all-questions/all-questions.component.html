@@ -37,15 +37,15 @@
                     <mat-cell *matCellDef="let row"
                               [routerLink]="getRouterLink(row)"
                               [queryParams]="{ approved: true, assessmentType: assessmentType(row) }"
-                              style="color: deepskyblue; font-weight: 500">
-                      <span class="mobile-label">Name:</span> {{row.name}}
+                              >
+                      <span class="mobile-label">Name:</span><span class="name" >{{row.name}}</span>
                     </mat-cell>
                   </ng-container>
                  
                   <ng-container matColumnDef="Count">
                     <mat-header-cell *matHeaderCellDef >No.of Questions</mat-header-cell>
                     <mat-cell *matCellDef="let row" [routerLink]="getRouterLink(row)" [queryParams]="{ approved: true, assessmentType: assessmentType(row) }">
-                       <span class="mobile-label">Count:</span>{{row.questions.length}}</mat-cell>
+                       <span class="mobile-label">No.of Questions:</span>{{row.questions.length}}</mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="Created At">
                     <mat-header-cell *matHeaderCellDef >Created At</mat-header-cell>
@@ -57,6 +57,7 @@
                   <ng-container matColumnDef="Assessment Type">
                     <mat-header-cell *matHeaderCellDef >Form Type</mat-header-cell>
                     <mat-cell *matCellDef="let row" [routerLink]="getRouterLink(row)" [queryParams]="{ approved: true, assessmentType: assessmentType(row) }">
+                      <span class="mobile-label">Form Type:</span>
                       <div class="status-container">
                         <span class="status-text">{{ assessmentType(row) }}</span>
                         </div>
@@ -66,6 +67,7 @@
                   <ng-container matColumnDef="Approval Status">
                     <mat-header-cell *matHeaderCellDef >Status</mat-header-cell>
                     <mat-cell *matCellDef="let row" [routerLink]="getRouterLink(row)" [queryParams]="{ approved: true, assessmentType: assessmentType(row) }" [ngClass]="getStatusClass(row.status)">
+                      <span class="mobile-label">Status:</span>
                       <span
                             [class]="row?.status === 'approved' ? 'badge badge-solid-green' : row?.status === 'draft' ? 'badge badge-solid-orange': row?.status === 'open' ? 'badge badge-solid-red' : ''">
                             <span

@@ -22,6 +22,7 @@ import { DraftedCoursesComponent } from './all-course/drafted-courses/drafted-co
 import { RetakeRequestsComponent } from './retake-requests/retake-requests.component';
 import { ViewClassComponent } from './class-view/view-class/view-class.component';
 import { ClassListComponent } from './class-list/class-list.component';
+import { EnquiryListComponent } from './enquiry-list/enquiry-list.component';
 import { ScheduleMeetingComponent } from './schedule-meeting/schedule-meeting.component';
 const routes: Routes = [
   {
@@ -51,6 +52,10 @@ const routes: Routes = [
   {
     path: 'class-list',
     component: ClassListComponent,
+  },
+  {
+    path: 'enquiry-list',
+    component: EnquiryListComponent,
   },
   {
     path: 'view-course/:id',

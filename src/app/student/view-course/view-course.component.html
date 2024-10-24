@@ -786,9 +786,28 @@
                           >
                           <span
                             class="badge badge-solid-red mx-2"
-                            *ngIf="isCancelled"
-                            >Cancelled</span
+                            *ngIf="isCancelled && isDiscountVerification"
+                            >Cancelled   </span
                           >
+                          <button  *ngIf="isCancelled && isDiscountVerification"
+                           
+                        class="btn btn-primary"
+                        (click)="submitForVerification(courseDetails._id,'verification')"
+                      >
+                        Register
+                      </button>
+                          <span
+                          class="badge badge-solid-red mx-2"
+                          *ngIf="isCancelled && isApproval"
+                          >Cancelled</span
+                        >
+                        <button  *ngIf="isCancelled && isApproval"
+                           
+                        class="btn btn-primary"
+                        (click)="reRegister()"
+                      >
+                        Register
+                      </button>
                           <span
                             class="badge badge-solid-green mx-2"
                             *ngIf="isCompleted"

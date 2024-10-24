@@ -52,14 +52,14 @@
               <table mat-table matSort [dataSource]="dataSource" class="mat-cell advance-table">
                  <ng-container matColumnDef="Title">
                   <mat-header-cell *matHeaderCellDef >Title</mat-header-cell>
-                  <mat-cell *matCellDef="let row" class="name" (click)="isView ? view(row._id) : null">
-                    <span class="mobile-label">Student Name:</span>{{row.title}}</mat-cell>
+                  <mat-cell *matCellDef="let row" (click)="isView ? view(row._id) : null">
+                    <span class="mobile-label">Title:</span> <span class="name" >{{row.title}}</span></mat-cell>
                 </ng-container>
               
                 <ng-container matColumnDef="Creation Date">
                   <mat-header-cell *matHeaderCellDef >Creation Date</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row._id) : null" >
-                    <span class="mobile-label">Payment Date:</span>{{row.createdAt | date}}</mat-cell>
+                    <span class="mobile-label">Creation Date:</span>{{row.createdAt | date}}</mat-cell>
                 </ng-container>
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayedColumns;"
