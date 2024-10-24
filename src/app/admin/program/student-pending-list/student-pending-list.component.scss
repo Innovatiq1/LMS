@@ -58,3 +58,12 @@
     padding-right: 0px !important;
   }
 }
+
+@media (max-width: 768px) {
+  .materialTableHeader .right {
+      height: 147px;
+  }
+  .m-x{
+    margin-top: 3px;
+  }
+}

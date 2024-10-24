@@ -159,14 +159,10 @@
                 >
                 </mat-row>
               </table>
-              <mat-paginator
-                #paginator
-                [length]="totalItems"
-                (page)="pageSizeChange($event)"
-                [pageSizeOptions]="pageSizeArr"
-                aria-label="select pagination option"
-              >
-              </mat-paginator>
+              <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems"
+                          (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr"
+                          aria-label="select pagination option">
+                        </mat-paginator>
             </div>
           </div>
         </div>

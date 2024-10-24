@@ -17,6 +17,17 @@
     font-size: 14px; 
     line-height: 1.2; 
   }
+
+  @media (max-width: 768px) {
+    .materialTableHeader .right {
+        height: 169px;
+    }
+   
+   #submit {
+    width: 98px;
+    margin-top: 5px;
+   }
+  }
 //  .mat-column-actions {
 //    width: 450px;
 // }

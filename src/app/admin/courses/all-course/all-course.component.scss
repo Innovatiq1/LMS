@@ -164,7 +164,7 @@ mat-cell{
   // padding-right: 30px;
 }
 .amount{
-  padding-right: 60px !important;
+  width: 100% !important;
 }
 
 .payment-cell1{
@@ -277,11 +277,19 @@ mat-radio-button {
 
 
 
+@media only screen and (max-width: 767px) {
+  .amount{
+    padding-right: 76px !important;
+  }
+  
+}
 
 @media only screen and (max-width: 767px) {
   .hide-on-mobile {
     display: none;
   }
+  
+  
 }
 @media only screen and (max-width: 767px) {
   .no-justify-mobile {
@@ -302,3 +310,12 @@ mat-radio-button {
   }
  
 }
+
+mat-cell:first-of-type, mat-header-cell:first-of-type, mat-footer-cell:first-of-type {
+ padding-left: 24px; 
+}
+@media (max-width: 600px) {
+  mat-cell:first-of-type, mat-header-cell:first-of-type, mat-footer-cell:first-of-type {
+    padding-left: 15px;
+  }
+  }

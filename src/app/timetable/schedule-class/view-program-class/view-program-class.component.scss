@@ -28,6 +28,13 @@
       border: none;
       background: transparent;
   }
+  @media (max-width: 767px) {
+    .icons{
+      width: 32%;
+        margin: 0px;
+    }
+  }
+
   .border-class {
       margin: 3px;
   }

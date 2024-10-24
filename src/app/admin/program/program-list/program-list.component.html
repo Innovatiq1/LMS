@@ -123,11 +123,11 @@
                           </mat-cell>
                         </ng-container> -->
                         <ng-container matColumnDef="program">
-                          <mat-header-cell *matHeaderCellDef  >Program
+                          <mat-header-cell *matHeaderCellDef>Program
                           </mat-header-cell>
                           <mat-cell [class.name]="isProgram" *matCellDef="let row" 
-                          (click)="view ? viewActiveProgram(row.id, row.status) : null"><span class="mobile-label">Program Name:</span>
-                            <span>{{row.title |titlecase}}</span>
+                          (click)="view ? viewActiveProgram(row.id, row.status) : null"><span class="mobile-label">Program:</span>
+                            <span class="name">{{row.title |titlecase}}</span>
                           </mat-cell>
                         </ng-container>
                         <!-- <ng-container matColumnDef="program">
@@ -272,7 +272,7 @@
                               <img class="image-w mb-3" src="{{program?.image_link || 'assets/noimage.jpg'}}" >
                             </div>
                             </div>
-                              <div class="col-xl-7 col-sm-12 ">
+                              <div class="col-xl-7 col-sm-12 m3">
                                 <span class="text" style="cursor: pointer;"(click)="viewActiveProgram(program.id, program.status)"
                                 >
                                   <h5>{{program?.title | truncate:35}}

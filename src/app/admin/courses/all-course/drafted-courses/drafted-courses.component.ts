@@ -85,7 +85,7 @@ export class DraftedCoursesComponent {
   view = false;
   filterName: any;
   userGroupIds: any;
-
+  filterBody: any = {};
   constructor(
     public _courseService: CourseService,
     private route: Router,
@@ -136,9 +136,12 @@ export class DraftedCoursesComponent {
   getAllVendorsAndUsers() {
     this._courseService.getVendor().subscribe((response: any) => {
       this.vendors = response.reverse();
+  
     });
     this.userService.getAllUsers().subscribe((response: any) => {
-      this.users = response?.results;
+      const user = response?.results;
+      this.users = user.filter((x: any) => x.type == 'Trainer');
+      console.log("users", this.users)
     });
   }
 
@@ -188,34 +191,36 @@ export class DraftedCoursesComponent {
     this.coursePaginationModel.page = 1;
     this.getAllCourses();
   }
+
   applyFilter() {
-    let body: any = {};
+    this.filterBody = {};
     if (this.selectedCourses.length > 0) {
-      body.title = this.selectedCourses;
+      this.filterBody.title = this.selectedCourses;
     }
     if (this.selectedVendors.length > 0) {
-      body.vendor = this.selectedVendors;
+      this.filterBody.vendor = this.selectedVendors;
     }
     if (this.selectedStatus.length > 0) {
-      body.status = this.selectedStatus;
+      this.filterBody.status = this.selectedStatus;
     }
     if (this.selectedCreators.length > 0) {
-      body.creator = this.selectedCreators;
+      this.filterBody.creator = this.selectedCreators;
     }
     this.paginator.pageIndex = 0;
     this.coursePaginationModel.page = 1;
     this._courseService
-      .getFilteredCourseData(body, { ...this.coursePaginationModel })
+      .getFilteredCourseData( this.filterBody, { ...this.coursePaginationModel })
       .subscribe((response) => {
         this.courseData = response.data.docs;
         this.totalItems = response.data.totalDocs;
-        this.filter = false;
         this.coursePaginationModel.docs = response.data.docs;
         this.coursePaginationModel.page = response.data.page;
         this.coursePaginationModel.limit = response.data.limit;
         this.coursePaginationModel.totalDocs = response.data.totalDocs;
+        this.filter = true;
       });
   }
+
   generatePdf() {
     const doc = new jsPDF();
     const headers = [
@@ -319,13 +324,33 @@ export class DraftedCoursesComponent {
           this.selection.select(row)
         );
   }
-  pageSizeChange($event: any) {
+  // pageSizeChange($event: any) {
    
+  //   if (this.filter) {
+  //     this.applyFilter();
+  //   } else {
+  //     this.coursePaginationModel.page = $event?.pageIndex + 1;
+  //     this.coursePaginationModel.limit = $event?.pageSize;
+  //     this.getAllCourses();
+  //   }
+  // }
+
+
+  pageSizeChange($event: any) {
+    this.coursePaginationModel.page = $event?.pageIndex + 1;
+    this.coursePaginationModel.limit = $event?.pageSize;
+    
     if (this.filter) {
-      this.applyFilter();
+      this._courseService.getFilteredCourseData(this.filterBody, { ...this.coursePaginationModel })
+        .subscribe((response) => {
+          this.courseData = response.data.docs;
+          this.totalItems = response.data.totalDocs;
+          this.coursePaginationModel.docs = response.data.docs;
+          this.coursePaginationModel.page = response.data.page;
+          this.coursePaginationModel.limit = response.data.limit;
+          this.coursePaginationModel.totalDocs = response.data.totalDocs;
+        });
     } else {
-      this.coursePaginationModel.page = $event?.pageIndex + 1;
-      this.coursePaginationModel.limit = $event?.pageSize;
       this.getAllCourses();
     }
   }
