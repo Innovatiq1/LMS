@@ -531,6 +531,13 @@ export class ViewCourseComponent implements OnDestroy {
     var studentId = localStorage.getItem('id');
     const today = new Date();
     const date = today.toISOString().split('T')[0];
+    if(this.approval == 'no'){
+     
+      this.registerClass()
+      dialogRef.close();
+
+           
+    } else {
     let body = {
       email: userdata.user.email,
       name: userdata.user.name,
@@ -546,7 +553,7 @@ export class ViewCourseComponent implements OnDestroy {
       coursekit: this.courseKit,
       date: date,
       verify:false,
-      discount:this.selectedDiscount
+      discount:this.selectedDiscount.id
     };
               this.courseService
                 .saveRegisterClass(body)
@@ -561,6 +568,7 @@ export class ViewCourseComponent implements OnDestroy {
                   this.isRegistered = true;
                 });
   }
+}
 
   openDialog(templateRef: any): void {
     const dialogRef = this.dialog.open(templateRef, {
@@ -576,51 +584,22 @@ export class ViewCourseComponent implements OnDestroy {
     if (this.paid && this.feeType=="paid" && this.approval == "yes") {
       this.getDiscounts(userdata.user.companyId);
    
-    } else if(this.paid && this.approval == "no"){
-      let payload = {
-        studentId: studentId,
-        classId: this.classId,
-        title: this.title,
-        department:userdata.user.department,
-        coursekit: this.courseKit,
-        courseStartDate:this.classDetails?.courseId?.sessionStartDate,
-        courseEndDate:this.classDetails?.courseId?.sessionEndDate,
-        email: userdata.user.email,
-        name: userdata.user.name,
-        courseTitle: this.courseDetails?.title,
-        courseFee:this.courseDetails?.fee ,
-        courseId: this.courseDetails.id,
-        companyId:userdata.user.companyId,
-        verify:true,
-        paid:true,
-        status:"approved"
-      };
-      this.courseService.saveRegisterClass(payload).subscribe((response) => {
-        Swal.fire({
-          title: 'Thank you',
-          text: 'All the Best for learning!',
-          icon: 'success',
-        });
-        this.getRegisteredClassDetails();
-      });
+    } else if(this.paid && this.feeType=="paid"&& this.approval == "no"){
+      this.getDiscounts(userdata.user.companyId);
     }
-    else if (this.free || this.feeType=="free") {
+    else if (this.paid && this.feeType=="free"&& this.approval == "yes") {
       let payload = {
-        
-  
         studentId: studentId,
         classId: this.classId,
         title: this.title,
         department:userdata.user.department,
         coursekit: this.courseKit,
-       
         courseStartDate:this.classDetails?.courseId?.sessionStartDate,
         courseEndDate:this.classDetails?.courseId?.sessionEndDate,
         email: userdata.user.email,
         name: userdata.user.name,
         courseTitle: this.courseDetails?.title,
         courseFee: 0,
-        
         courseId: this.courseDetails.id,
         companyId:userdata.user.companyId,
         verify:true,
@@ -638,8 +617,36 @@ export class ViewCourseComponent implements OnDestroy {
         this.paidAmount=true;
       });
     }
+    else if (this.paid && this.feeType=="free"&& this.approval == "no") {
+      let payload = {
+        studentId: studentId,
+        classId: this.classId,
+        title: this.title,
+        department:userdata.user.department,
+        coursekit: this.courseKit,
+        courseStartDate:this.classDetails?.courseId?.sessionStartDate,
+        courseEndDate:this.classDetails?.courseId?.sessionEndDate,
+        email: userdata.user.email,
+        name: userdata.user.name,
+        courseTitle: this.courseDetails?.title,
+        courseFee: 0,
+        courseId: this.courseDetails.id,
+        companyId:userdata.user.companyId,
+        verify:true,
+        paid:true,
+        status:'approved'
+      };
+      this.courseService.saveRegisterClass(payload).subscribe((response) => {
+        Swal.fire({
+          title: 'Thank you',
+          text: 'All the Best for learning!',
+          icon: 'success',
+        });
+       this.getRegisteredClassDetails();
+      });
+    }
   }
-  registerClass(classId: string) {
+  registerClass(classId?: string) {
     var userdata = JSON.parse(localStorage.getItem('currentUser')!);
     var studentId = localStorage.getItem('id');
     if (this.paid) {
@@ -837,89 +844,203 @@ if(this.feeType=="paid" && this.approval == 'yes')
     }
   });
 } else if(this.feeType == 'paid' && this.approval == 'no'){
-  let payload = {
+  const today = new Date();
+  const date = today.toISOString().split('T')[0];
+  let body = {
     email: userdata.user.email,
     name: userdata.user.name,
-    courseTitle: this.courseDetails?.title,
-    courseFee: 0,
+    courseTitle: this.classDetails?.courseId?.title,
+    courseFee: this.classDetails?.courseId?.fee,
     studentId: studentId,
-    classId: null,
+    classId: this.classId,
     title: this.title,
     coursekit: this.courseKit,
-    feeType: 'paid',
-    courseId: this.courseDetails.id,
-    courseStartDate:this.courseDetails?.sessionStartDate,
-    courseEndDate:this.courseDetails?.sessionEndDate,
-    companyId:userdata.user.companyId,
-    verify:true,
-    paid:true,
-    status:'approved'
+    date: date,
+    discountType:this.selectedDiscount.discountType,
+    discountValue:this.selectedDiscount.value,
+    courseStartDate:this.classDetails?.courseId?.sessionStartDate,
+    courseEndDate:this.classDetails?.courseId?.sessionEndDate
   };
-  this.courseService.saveRegisterClass(payload).subscribe((response) => {
-    Swal.fire({
-      title: 'Thank you',
-      text: 'You can start learning',
-      icon: 'success',
-    });
-    location.reload();
+  const invoiceDialogRef = this.dialog.open(InvoiceComponent, {
+    width: '1000px',
+    height: '600px',
+    data: body,
+  });
+  invoiceDialogRef.afterClosed().subscribe((res) => {
+    if (res) {
+    
+      this.totalFee=res.totalValue
+      const dialogRef = this.dialog.open(PaymentDailogComponent, {
+        width: '450px',
+        height: '300px',
+        data: { payment: '' },
+      });
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          if (result.payment === 'card') {
+            this.generateInvoice(body);
+            setTimeout(() => {
+            let payload = {
+              email: userdata.user.email,
+              name: userdata.user.name,
+              courseTitle: this.classDetails?.courseId?.title,
+              courseFee:res.totalValue,
+              courseId: this.classDetails?.courseId?.id,
+              studentId: studentId,
+              classId: this.classId,
+              title: this.title,
+              coursekit: this.courseKit,
+              paid:true,
+              stripe:true,
+              adminEmail:userdata.user.adminEmail,
+              adminName:userdata.user.adminName,
+              companyId:userdata.user.companyId,
+              invoiceUrl:this.invoiceUrl,
+              courseStartDate:this.classDetails?.courseId?.sessionStartDate,
+              courseEndDate:this.classDetails?.courseId?.sessionEndDate,
+              status: 'approved',
+              verify:true
+            }
 
-    this.isRegistered = true;
-  });
-}
-else if(this.feeType=="free"){
-  let payload = {
-    email: userdata.user.email,
-    name: userdata.user.name,
-    courseTitle: this.courseDetails?.title,
-    courseFee: 0,
-    studentId: studentId,
-    classId: null,
-    title: this.title,
-    coursekit: this.courseKit,
-    feeType: 'paid',
-    courseId: this.courseDetails.id,
-    courseStartDate:this.courseDetails?.sessionStartDate,
-    courseEndDate:this.courseDetails?.sessionEndDate,
-    companyId:userdata.user.companyId,
-    verify:true,
-    paid:true
-  };
-  this.courseService.saveRegisterClass(payload).subscribe((response) => {
-    Swal.fire({
-      title: 'Thank you',
-      text: 'We will approve once verified',
-      icon: 'success',
-    });
-    this.isRegistered = true;
-  });
-}
-    } else if (this.free ) {
-      let payload = {
-        email: userdata.user.email,
-        name: userdata.user.name,
-        courseTitle: this.courseDetails?.title,
-        courseFee: 0,
-        studentId: studentId,
-        classId: null,
-        title: this.title,
-        coursekit: this.courseKit,
-        feeType: 'free',
-        courseId: this.courseDetails.id,
-        courseStartDate:this.courseDetails?.sessionStartDate,
-        courseEndDate:this.courseDetails?.sessionEndDate,
-        companyId:userdata.user.companyId,
-        verify:true,
-        paid:true
-      };
-      this.courseService.saveRegisterClass(payload).subscribe((response) => {
-        Swal.fire({
-          title: 'Thank you',
-          text: 'We will approve once verified',
-          icon: 'success',
-        });
-        this.isRegistered = true;
+            this.classService
+            this.courseService.saveRegisterClass(payload).subscribe((response) => {
+              this.document.location.href = response.data.session.url;
+                      this.getClassDetails();
+                this.getRegisteredClassDetails();
+              });                },5000)
+
+          } else if (result.payment === 'other') {
+            let payload = {
+              email: userdata.user.email,
+              name: userdata.user.name,
+              courseTitle: this.classDetails?.courseId?.title,
+              courseFee: res.totalValue,
+              studentId: studentId,
+              classId: this.classId,
+              title: this.title,
+              coursekit: this.courseKit,
+            };
+
+            this.courseService
+              .createOrder(payload)
+              .subscribe((response) => {
+                if (response.status == 200) {
+                  this.settingsService
+                    .getPayment()
+                    .subscribe((res: any) => {
+                      this.razorPayKey = res.data.docs[0].keyId;
+                      const paymentOrderId = response.data.id;
+                      const options: any = {
+                        key: this.razorPayKey,
+                        amount:this.totalFee,
+                        currency: 'INR',
+                        name: userdata.user.email,
+                        description: this.classDetails?.courseId?.title,
+                        order_id: paymentOrderId,
+                        modal: {
+                          escape: false,
+                        },
+                        notes: {},
+                        theme: {
+                          color: '#ddcbff',
+                        },
+                      };
+                      setTimeout(() => {
+                        options.handler = (response: any, error: any) => {
+                          options.response = response;
+                          if (error) {
+                            this.router.navigate([
+                              '/student/fail-course/',
+                              this.classId,
+                            ]);
+                          } else {
+                            this.courseService
+                              .verifyPaymentSignature(
+                                response,
+                                paymentOrderId
+                              )
+                              .subscribe((response: any) => {
+                                let body = {
+                                  courseTitle:
+                                    this.classDetails?.courseId?.title,
+                                  courseFee:
+                                  this.classDetails?.courseId?.fee
+                                };
+                                this.generateInvoice(body);
+                                setTimeout(() => {
+                                  let payload = {
+                                    email: userdata.user.email,
+                                    name: userdata.user.name,
+                                    courseTitle:
+                                      this.classDetails?.courseId?.title,
+                                    courseFee:
+                                      this.totalFee,
+                                    studentId: studentId,
+                                    classId: this.classId,
+                                    title: this.title,
+                                    coursekit: this.courseKit,
+                                    orderId:
+                                      response?.data?.payment
+                                        ?.original_order_id,
+                                    paymentId:
+                                      response?.data?.payment
+                                        ?.razorpay_payment_id,
+                                    razorpay: true,
+                                    invoiceUrl: this.invoiceUrl,
+                                    paid:true,
+                                    adminEmail:userdata.user.adminEmail,
+                                    adminName:userdata.user.adminName,
+                                    courseStartDate:this.classDetails?.courseId?.sessionStartDate,
+                                    courseEndDate:this.classDetails?.courseId?.sessionEndDate
+                            
+                              
+                                  };
+                          
+                                  this.classService
+                                    .saveApprovedClasses(this.registeredClassId,payload)
+                                    .subscribe((res) => {
+                                      this.getClassDetails();
+
+                                      response.data.isPaymentVerfied
+                                        ? this.router.navigate([
+                                            '/student/sucess-course/',
+                                            this.classId,
+                                          ])
+                                        : this.router.navigate([
+                                            '/student/fail-course/',
+                                            this.classId,
+                                          ]);
+                                    });
+                                }, 5000);
+                              });
+                          }
+                        };
+                        options.modal.ondismiss = () => {
+                          alert('Transaction has been cancelled.');
+                          this.router.navigate([
+                            '/student/fail-course/',
+                            this.classId,
+                          ]);
+                        };
+                        const rzp =
+                          new this.courseService.nativeWindow.Razorpay(
+                            options
+                          );
+                        rzp.open();
+                      }, 100);
+                    });
+                } else {
+                  alert('Server side error');
+                }
+              });
+          }
+        }
       });
     }
+  });
+
+}
+    } 
   }
   generateInvoice(element: any) {
     Swal.fire({
