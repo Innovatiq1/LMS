@@ -3,6 +3,7 @@ import { CourseService } from '@core/service/course.service';
 import {  CoursePaginationModel, MainCategory, SubCategory } from '@core/models/course.model';
 import Swal from 'sweetalert2';
 import { ClassService } from 'app/admin/schedule-class/class.service';
+
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { AuthenService } from '@core/service/authen.service';
 import { Router } from '@angular/router';
@@ -58,6 +59,7 @@ export class CourseComponent {
   register = false;
   approve = false;
   complete = false;
+  userData:any;
 
 
   constructor(public _courseService:CourseService,  private classService: ClassService, private router: Router,
@@ -73,6 +75,8 @@ export class CourseComponent {
   }
 
   ngOnInit(){
+    this.userData = JSON.parse(localStorage.getItem('currentUser')!);
+    console.log("this.userData",this.userData)
     const roleDetails =this.authenService.getRoleDetails()[0].menuItems
     let urlPath = this.router.url.split('/');
     const parentId = `${urlPath[1]}/${urlPath[2]}`;
@@ -148,6 +152,7 @@ getActiveCourse(){
   let companyId= JSON.parse(localStorage.getItem('user_data')!).user.companyId;
   this._courseService.getAllCourses(companyId,payload).subscribe(response =>{
    this.activeCourses = response.data.docs;
+   console.log("active Courses=",this.activeCourses)
    this.totalCourseItems = response.data.totalDocs
    this.coursePaginationModel.docs = response.data.docs;
    this.coursePaginationModel.page = response.data.page;
@@ -158,7 +163,43 @@ getActiveCourse(){
   })
 }
 
+showIntresr(row:any){
+let payload = {
+  email: this.userData.user.email,
+   name: this.userData.user.name,
+  courseTitle: row?.title,
+   studentId: this.userData.user._id,
+  title: row.title,
+  courseId: row._id,
+   courseStartDate:row?.sessionStartDate,
+   courseEndDate:row?.sessionEndDate,
+   companyId:this.userData.user.companyId,
+   status:"enquiry"
 
+};
+// this._courseService.saveRegisterClass(payload).subscribe
+this._courseService.saveRegisterClass(payload).subscribe((response) => {
+  Swal.fire({
+    title: 'Thank you',
+    text: 'Your Enquiry request has been submitted successfully',
+    icon: 'success',
+  });
+
+  // location.reload();
+
+  // this.isRegistered = true;
+},
+(error) => {
+  Swal.fire({
+    title: 'Error',
+    text:'Enquiry already submitted',
+    icon: 'error',
+  });
+  console.error('API error:', error);
+}
+
+);
+}
 
 getRegisteredCourse(){
   let studentId=localStorage.getItem('id')
