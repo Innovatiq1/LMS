@@ -360,7 +360,7 @@
                                           </thead>
                                           <tbody>
                                               <tr style="cursor: pointer">
-                                                  <td style="width: 45%;">{{response.title | titlecase}}</td>
+                                                  <td style="width: 45%;">{{response.title ||response.courseId.title  | titlecase}}</td>
                                                   <td style="text-align: center;">1</td>
                                                   <td>${{ response.courseId?.fee}}.00</td>
                                                   <td>${{ response.courseId?.fee}}.00</td>
