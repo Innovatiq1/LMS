@@ -135,9 +135,9 @@
                                             <ng-container matColumnDef="name">
                                                 <mat-header-cell *matHeaderCellDef >Course
                                                 </mat-header-cell>
-                                                <mat-cell *matCellDef="let row"
+                                                <mat-cell  *matCellDef="let row"
                                                 [routerLink]=" edit ? ['/admin/courses/edit-course/', row.id] : null"><span
-                                                        class="mobile-label">Course:</span>  <span class="name" >{{ row.title ? (row.title | titlecase) : '--' }}</span>
+                                                        class="mobile-label">Course:</span>  <span class="name">{{ row.title ? (row.title | titlecase) : '--' }}</span>
                                                 </mat-cell>
                                             </ng-container>
                                             <ng-container matColumnDef="code">

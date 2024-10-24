@@ -71,9 +71,9 @@
                     <mat-header-cell *matHeaderCellDef 
                       >{{commonRoles?.STUDENT_ROLE}}</mat-header-cell
                     >
-                    <mat-cell class="name" *matCellDef="let row" >
+                    <mat-cell *matCellDef="let row" >
                       <span class="mobile-label">{{commonRoles?.STUDENT_ROLE}}:</span>
-                      <span >{{row.studentId?.last_name?row.studentId?.name + " " + row.studentId?.last_name:row.studentId?.name}}</span>
+                      <span class="name">{{row.studentId?.last_name?row.studentId?.name + " " + row.studentId?.last_name:row.studentId?.name}}</span>
                     </mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="coursename">

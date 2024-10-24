@@ -46,6 +46,7 @@ export class AllCourseComponent {
     'status',
     'code',
     'creator',
+    // 'Fees',
     // 'Days',
     // 'Training Hours',
     'Fee Type',

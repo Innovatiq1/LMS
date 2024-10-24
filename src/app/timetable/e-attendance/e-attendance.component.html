@@ -64,7 +64,7 @@
                                 attendanceForm.get('course')?.touched
                               "
                             >
-                              Enter Course Name.
+                              Select Course
                             </mat-error>
                           </mat-form-field>
                         </div>
@@ -93,12 +93,12 @@
                                 attendanceForm.get('program')?.touched
                               "
                             >
-                              Enter Program Name.
+                              Select Program
                             </mat-error>
                           </mat-form-field>
                         </div>
                         <div class="col-2">
-                          <label>Start date</label>
+                          <label>Start Date</label>
                           <mat-form-field
                             class="example-full-width"
                             appearance="outline"
@@ -117,7 +117,7 @@
                           </mat-form-field>
                         </div>
                         <div class="col-2">
-                          <label>End date</label>
+                          <label>End Date</label>
                           <mat-form-field
                             class="example-full-width"
                             appearance="outline"
@@ -157,10 +157,10 @@
                     >
                       <ng-container matColumnDef="Student">
                         <mat-header-cell *matHeaderCellDef mat-sort-header
-                          >Student
+                          >{{commonRoles.STUDENT_ROLE}}
                         </mat-header-cell>
                         <mat-cell *matCellDef="let row" class="name">
-                          <span class="mobile-label">Student:</span
+                          <span class="mobile-label">{{commonRoles.STUDENT_ROLE}}:</span
                           >{{ row?.studentId?.name }}
                         </mat-cell>
                       </ng-container>
@@ -169,7 +169,7 @@
                           >Course
                         </mat-header-cell>
                         <mat-cell *matCellDef="let row"
-                          ><span class="mobile-label">Course Name:</span>
+                          ><span class="mobile-label">Course:</span>
                           <span>{{ row?.title | titlecase }}</span>
                         </mat-cell>
                       </ng-container>
@@ -190,7 +190,7 @@
                           >End Date
                         </mat-header-cell>
                         <mat-cell *matCellDef="let row">
-                          <span class="mobile-label">End date:</span
+                          <span class="mobile-label">End Date:</span
                           ><span>{{
                             row?.classId?.sessions[0]?.sessionEndDate | date
                           }}</span>
@@ -201,7 +201,7 @@
                           >Registered Date
                         </mat-header-cell>
                         <mat-cell *matCellDef="let row">
-                          <span class="mobile-label">Registered date:</span
+                          <span class="mobile-label">Registered Date:</span
                           ><span>{{ row.registeredOn | date }}</span>
                         </mat-cell>
                       </ng-container>
@@ -235,10 +235,10 @@
                     >
                       <ng-container matColumnDef="Student">
                         <mat-header-cell *matHeaderCellDef mat-sort-header
-                          >Student
+                          >{{commonRoles.STUDENT_ROLE}}
                         </mat-header-cell>
                         <mat-cell *matCellDef="let row" class="name">
-                          <span class="mobile-label">Student:</span
+                          <span class="mobile-label">{{commonRoles.STUDENT_ROLE}}:</span
                           >{{ row?.studentId?.name }}
                         </mat-cell>
                       </ng-container>
@@ -247,7 +247,7 @@
                           >Program
                         </mat-header-cell>
                         <mat-cell *matCellDef="let row"
-                          ><span class="mobile-label">Course Name:</span>
+                          ><span class="mobile-label">Program:</span>
                           <span>{{ row.programTitle | titlecase }}</span>
                         </mat-cell>
                       </ng-container>
@@ -268,7 +268,7 @@
                           >End Date
                         </mat-header-cell>
                         <mat-cell *matCellDef="let row">
-                          <span class="mobile-label">End date:</span
+                          <span class="mobile-label">End Date:</span
                           ><span>{{
                             row?.classId?.sessions[0]?.sessionEndDate | date
                           }}</span>
@@ -279,7 +279,7 @@
                           >Registered Date
                         </mat-header-cell>
                         <mat-cell *matCellDef="let row">
-                          <span class="mobile-label">Registered date:</span
+                          <span class="mobile-label">Registered Date:</span
                           ><span>{{ row.registeredOn | date }}</span>
                         </mat-cell>
                       </ng-container>
@@ -377,7 +377,7 @@
                           </mat-form-field>
                         </div>
                         <div class="col-2">
-                          <label>Start date</label>
+                          <label>Start Date</label>
                           <mat-form-field
                             class="example-full-width"
                             appearance="outline"
@@ -395,7 +395,7 @@
                           </mat-form-field>
                         </div>
                         <div class="col-2">
-                          <label>End date</label>
+                          <label>End Date</label>
                           <mat-form-field
                             class="example-full-width"
                             appearance="outline"

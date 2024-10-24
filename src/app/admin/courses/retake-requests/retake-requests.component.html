@@ -69,9 +69,9 @@
                     <mat-header-cell *matHeaderCellDef >
                       {{commonRoles.STUDENT_ROLE}}
                     </mat-header-cell>
-                    <mat-cell class="name" *matCellDef="let row" (click)="isView ? view(row.id) : null">
-                      <span class="mobile-label">Student Name:</span>
-                      <span>{{ row.studentName }}</span>
+                    <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
+                      <span class="mobile-label">{{commonRoles.STUDENT_ROLE}}:</span>
+                      <span class="name" >{{ row.studentName }}</span>
                     </mat-cell>
                   </ng-container>
                 
@@ -80,7 +80,7 @@
                       Course
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
-                      <span class="mobile-label">Course Name:</span>
+                      <span class="mobile-label">Course:</span>
                       <span>{{ row.courseName |titlecase}}</span> 
                     </mat-cell>
                   </ng-container>
@@ -104,8 +104,9 @@
                     </mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="action">
-                    <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
                     <mat-cell *matCellDef="let row">
+                      <span class="mobile-label">Actions:</span>
                       <!-- Conditionally display buttons or status text based on requestStatus -->
                       <ng-container *ngIf="row.requestStatus === 'requested'; else statusText">
                         <button mat-raised-button class="btn1" color="primary" id="submit1" (click)="approve(row)">Approve</button>

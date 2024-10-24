@@ -68,8 +68,8 @@
               
                  <ng-container matColumnDef="Student Name">
                   <mat-header-cell *matHeaderCellDef >{{commonRoles.STUDENT_ROLE}}</mat-header-cell>
-                  <mat-cell *matCellDef="let row" class="name" (click)="isView ? view(row._id) : null">
-                    <span class="mobile-label">{{commonRoles.STUDENT_ROLE}}:</span>{{row.name}}</mat-cell>
+                  <mat-cell *matCellDef="let row" (click)="isView ? view(row._id) : null">
+                    <span class="mobile-label">{{commonRoles.STUDENT_ROLE}}:</span><span class="name" >{{row.name}} </span></mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="email">
                   <mat-header-cell *matHeaderCellDef >Email</mat-header-cell>

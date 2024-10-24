@@ -62,14 +62,14 @@
                 </ng-container>
                 <ng-container matColumnDef="studentName">
                   <mat-header-cell *matHeaderCellDef >{{commonRoles.STUDENT_ROLE}} </mat-header-cell>
-                  <mat-cell *matCellDef="let row" class="name" (click)="isView ? editCall(row.id) : null"
+                  <mat-cell *matCellDef="let row" (click)="isView ? editCall(row.id) : null"
                     (contextmenu)="onContextMenu($event, row)">
-                    <span class="mobile-label">{{commonRoles.STUDENT_ROLE}} :</span> {{getStudentName(row) }}</mat-cell>
+                    <span class="mobile-label">{{commonRoles.STUDENT_ROLE}}:</span> <span class="name" >{{getStudentName(row) }}</span></mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="courseName">
                   <mat-header-cell *matHeaderCellDef >Course</mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="editCall(row.id)" (contextmenu)="onContextMenu($event, row)">
-                    <span class="mobile-label">Course :</span> {{row?.courseName}}</mat-cell>
+                    <span class="mobile-label">Course:</span> {{row?.courseName}}</mat-cell>
                 </ng-container>
 
 
@@ -77,6 +77,7 @@
                 <ng-container matColumnDef="actions">
                   <mat-header-cell *matHeaderCellDef class="pr-0">Actions</mat-header-cell>
                   <mat-cell *matCellDef="let row" class="pr-0">
+                    
                     <button mat-button [matMenuTriggerFor]="menu">
                       <svg class="dropdown-toggle border rounded-circle" data-bs-toggle="dropdown" aria-expanded="false"
                         xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"

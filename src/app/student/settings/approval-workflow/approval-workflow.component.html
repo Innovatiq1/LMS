@@ -38,8 +38,8 @@
                           <ng-container matColumnDef="Title">
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Title
                             </mat-header-cell>
-                            <mat-cell *matCellDef="let row" class="name"  [routerLink]="isView ? ['/student/settings/automation/approval-workflow/view-approval-flow', row.id] : null">
-                              <span class="mobile-label">Title:</span> {{row.title}}
+                            <mat-cell *matCellDef="let row"  [routerLink]="isView ? ['/student/settings/automation/approval-workflow/view-approval-flow', row.id] : null">
+                              <span class="mobile-label">Title:</span> <span class="name" >{{row.title}}</span>
                             </mat-cell>
                           </ng-container>
                           <ng-container matColumnDef="Level">

@@ -176,7 +176,7 @@
                           <ng-container matColumnDef="name">
                             <mat-header-cell *matHeaderCellDef >Course
                             </mat-header-cell>
-                            <mat-cell [class.name]="isCourse" *matCellDef="let row"
+                            <mat-cell  *matCellDef="let row"
                               (click)="view ? viewCourse(row.id) : null"><span class="mobile-label">Course:</span>
                               <span class="name">{{ row.title ? (row.title | titlecase) : '--' }}</span>
                             </mat-cell>
@@ -232,7 +232,7 @@
                             </mat-header-cell>
                             <mat-cell *matCellDef="let row"
                               [routerLink]="['/admin/courses/student-courses/',row.title,row.id]"> <span
-                                class="mobile-label">Users:</span>
+                                class="mobile-label">{{commonRoles?.STUDENT_ROLE}}:</span>
                               <button mat-icon-button class="tbl-action-btn">
                                 <app-feather-icons [icon]="'eye'" [class]="'tbl-fav-view'"></app-feather-icons>
                               </button>
@@ -283,8 +283,8 @@
                             <mat-header-cell *matHeaderCellDef class="payment-cell1">Fee
                             </mat-header-cell>
                             <mat-cell *matCellDef="let row" (click)="view ? viewCourse(row.id) : null"
-                             > <span class="mobile-label">Fee:</span><span class="amount">${{row.fee
-                              ||0}} .00 </span>
+                              > <span class="mobile-label">Fee:</span><span class="amount">$ {{row.fee
+                              ||0}} .00</span>
                             </mat-cell>
                           </ng-container>
                           <mat-header-row *matHeaderRowDef="displayedColumns">

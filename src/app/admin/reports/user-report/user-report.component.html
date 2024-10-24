@@ -93,11 +93,9 @@
                           >
                           <mat-cell
                             *matCellDef="let row"
-                            class="name"
-                           
                           >
                             <span class="mobile-label">Name:</span
-                            >{{ row.name | capitalizeFirstLetter }}</mat-cell
+                            > <span class="name" >{{ row.name | capitalizeFirstLetter }}</span></mat-cell
                           >
                         </ng-container>
                         <!-- Course Code -->

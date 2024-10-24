@@ -79,8 +79,8 @@
                         <mat-header-cell *matHeaderCellDef 
                           style="margin-right: -15%;">Role</mat-header-cell>
                         <mat-cell *matCellDef="let row" [routerLink]="['/student/settings/role-user/',row.typeName]"
-                          class="name" style="margin-right: -15%;">
-                          <span class="mobile-label">Role:</span>{{row?.typeName | capitalizeFirstLetter}} </mat-cell>
+                          style="margin-right: -15%;">
+                          <span class="mobile-label">Role:</span> <span class="name" >{{row?.typeName | capitalizeFirstLetter}} </span></mat-cell>
                       </ng-container>
                       <ng-container matColumnDef="Accessbility Module">
                         <mat-header-cell *matHeaderCellDef >Module</mat-header-cell>

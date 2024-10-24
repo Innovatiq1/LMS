@@ -82,11 +82,10 @@
                   >
                   <mat-cell
                     *matCellDef="let row"
-                    class="name"
                     [routerLink]="isView ? ['/timetable/schedule-class/view-schedule-class', row.id] : null"
                   >
                     <span class="mobile-label">Program:</span>
-                    {{ row.courseId?.title }}</mat-cell
+                    <span class="name" >{{ row.courseId?.title }}</span></mat-cell
                   >
                 </ng-container>
                 <ng-container matColumnDef="courseName" *ngIf="isInstructor">
@@ -95,11 +94,10 @@
                   >
                   <mat-cell
                     *matCellDef="let row"
-                    class="name"
                     [routerLink]="isView ? ['/timetable/schedule-class/view-schedule-class', row.id] : null"
                   >
-                    <span class="mobile-label">Program:</span>
-                    {{ row.programName }}</mat-cell
+                    <span class="mobile-label">Program:</span> <span class="name" >
+                    {{ row.programName }} </span></mat-cell
                   >
                 </ng-container>
                 <ng-container matColumnDef="Code" *ngIf="isAdmin">

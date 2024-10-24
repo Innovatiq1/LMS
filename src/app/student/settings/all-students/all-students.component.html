@@ -134,13 +134,12 @@
                           </mat-header-cell>
                           <mat-cell
                             *matCellDef="let row"
-                            class="name"
                             (click)="isView ? aboutStudent(row.id) : null"
                             (contextmenu)="onContextMenu($event, row)"
                           >
                             <span class="mobile-label">Name:</span
-                            >{{ row.name | titlecase }}
-                            {{ row.last_name ? row.last_name : "" }}
+                            ><span class="name" >{{ row.name | titlecase }}
+                            {{ row.last_name ? row.last_name : "" }}</span>
                           </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="department">
@@ -192,7 +191,7 @@
                             (click)="isView ? aboutStudent(row.id) : null"
                             (contextmenu)="onContextMenu($event, row)"
                           >
-                            <span class="mobile-label">Mobile:</span
+                            <span class="mobile-label">Education:</span
                             >{{ row?.education }}
                           </mat-cell>
                         </ng-container>

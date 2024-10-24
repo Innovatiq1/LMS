@@ -55,8 +55,8 @@
               <table mat-table matSort [dataSource]="dataSource" class="mat-cell advance-table">
                 <ng-container matColumnDef="Course">
                   <mat-header-cell *matHeaderCellDef >Course Kit</mat-header-cell>
-                  <mat-cell *matCellDef="let row" class="name" [routerLink]="view?['/admin/courses/course-kit/',row.id]:null">
-                    <span class="mobile-label">Course Name:</span>{{row.name ? (row.name) : "--"}}</mat-cell>
+                  <mat-cell *matCellDef="let row" [routerLink]="view?['/admin/courses/course-kit/',row.id]:null">
+                    <span class="mobile-label">Course Kit:</span> <span class="name" >{{row.name ? (row.name) : "--"}}</span></mat-cell>
                 </ng-container>
                 <!-- Short Description -->
                 <ng-container matColumnDef="Short Description">

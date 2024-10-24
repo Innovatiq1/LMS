@@ -91,11 +91,10 @@
                         >Course</mat-header-cell
                       >
                       <mat-cell
-                        class="name"
                         *matCellDef="let row"
                         (click)="view ? viewCourse(row.id) : null"
                         ><span class="mobile-label">Course:</span>
-                        <span>{{
+                        <span class="name">{{
                           row.title ? (row.title | titlecase) : "--"
                         }}</span>
                       </mat-cell>
@@ -128,7 +127,7 @@
                       </mat-cell>
                     </ng-container>
                     <!-- Main Category -->
-                    <ng-container matColumnDef="Main Category">
+                    <!-- <ng-container matColumnDef="Main Category">
                       <mat-header-cell *matHeaderCellDef
                         >Main Category
                       </mat-header-cell>
@@ -141,7 +140,7 @@
                           row.main_category_text ? row.main_category_text : "--"
                         }}</mat-cell
                       >
-                    </ng-container>
+                    </ng-container> -->
                     <!-- Days -->
                     <!-- <ng-container matColumnDef="days">
                       <mat-header-cell *matHeaderCellDef>Days </mat-header-cell>
@@ -190,7 +189,7 @@
                         (click)="view ? viewCourse(row.id) : null"
                         class="payment-cell"
                       >
-                        <span class="mobile-label">Payment:</span
+                        <span class="mobile-label">Fee:</span
                         ><span>$</span> {{ row.fee || 0 }}.00</mat-cell
                       >
                     </ng-container>
