@@ -81,6 +81,18 @@ svg{
     border-left: 1px solid #7A7A7A;
     // height: 240px;
 }
+@media (max-width: 768px) {
+  .count {
+      border: 0px;
+  }
+ 
+}
+@media (max-width: 768px) {
+  .m3 {
+      margin: 14px;
+  }
+ 
+}
 
 .title {
     text-align: right;
@@ -230,4 +242,11 @@ svg{
   /* height: 100%; */
   display: flex;
   align-items: center;
+}
+
+@media (max-width: 768px) {
+  .materialTableHeader .right {
+      height: 129px;
+  }
+ 
 }

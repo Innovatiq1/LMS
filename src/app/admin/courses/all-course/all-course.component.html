@@ -37,26 +37,12 @@
                           </li>
                           <li>
                             <ul class="tbl-export-btn ">
-                              <!-- here is adding radio button -->
                               <li class="tbl-header-btn">
-                                <div class="m-l-10" matTooltip="ADD" *ngIf="create">
-                                  <button mat-raised-button id="submit" (click)="showRadio = !showRadio">Create</button>
-                                </div>
-                              
-                                <!-- Radio Button Group: Only show when 'Create' is clicked -->
-                                <div *ngIf="showRadio" class="radio-button-container">
-                                  <mat-radio-group [(ngModel)]="selectedOption" (change)="navigateToCreate()">
-                                    <mat-radio-button value="OnlyLearning">Only Learning</mat-radio-button>
-                                    <mat-radio-button value="LearningAndTutorial">Learning And Tutorial</mat-radio-button>
-                                    <mat-radio-button value="OnlyExam">Only Exam</mat-radio-button>
-                                    <mat-radio-button value="AssessmentAndExam">Assessment And Exam</mat-radio-button>
-                                  </mat-radio-group>
+                                <div class="m-l-10" matTooltip="ADD" *ngIf="create"
+                                  [routerLink]="['/admin/courses/add-course']">
+                                  <button mat-raised-button id="submit">Create</button>
                                 </div>
                               </li>
-                              
-                              
-
-
                               <!-- <li class="tbl-header-btn">
                                 <div class="m-l-10" matTooltip="ADD" >
                                   
@@ -176,7 +162,7 @@
                           <ng-container matColumnDef="name">
                             <mat-header-cell *matHeaderCellDef >Course
                             </mat-header-cell>
-                            <mat-cell class="name" [class.name]="isCourse" *matCellDef="let row"
+                            <mat-cell  [class.name]="isCourse" *matCellDef="let row"
                               (click)="view ? viewCourse(row.id) : null"><span class="mobile-label">Course Name:</span>
                               <span>{{ row.title ? (row.title | titlecase) : '--' }}</span>
                             </mat-cell>
