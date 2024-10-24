@@ -571,17 +571,17 @@
                       <thead>
                         <tr>
                           <th class="text-start">Program Name</th>
-                          <th class="text-center">{{ commonRoles?.INSTRUCTOR_ROLE }} Fee</th>
+                          <!-- <th class="text-center">{{ commonRoles?.INSTRUCTOR_ROLE }} Fee</th> -->
                           <th class="text-center">Class</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr *ngIf="dataSource2?.length == 0">
-                          <td colspan="3" class="text-center">No records</td>
+                          <td colspan="2" class="text-center">No records</td>
                         </tr>
                         <tr style="cursor: pointer" *ngFor="let data of dataSource2">
                           <td class="text-start">{{ data?.programName }}</td>
-                          <td class="text-end payment-align">$ {{ data?.instructorCost || 0 }}.00</td>
+                          <!-- <td class="text-end payment-align">$ {{ data?.instructorCost || 0 }}.00</td> -->
                           <td class="text-center" >
                             <div class="status-container">
                               <span
@@ -713,17 +713,17 @@
                       <thead>
                         <tr>
                           <th class="text-start">Course Name</th>
-                          <th class="text-center">{{ commonRoles?.INSTRUCTOR_ROLE }} Fee</th>
+                          <!-- <th class="text-center">{{ commonRoles?.INSTRUCTOR_ROLE }} Fee</th> -->
                           <th class="text-center">Class</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr *ngIf="dataSource1.length == 0">
-                          <td colspan="3" class="text-center">No records</td>
+                          <td colspan="2" class="text-center">No records</td>
                         </tr>
                         <tr style="cursor: pointer" *ngFor="let data of dataSource1">
                           <td class="text-start">{{ data?.courseName }}</td>
-                          <td class="text-end  payment-align">${{ data?.instructorCost || 0 }}.00</td>
+                          <!-- <td class="text-end  payment-align">${{ data?.instructorCost || 0 }}.00</td> -->
                           <td class="text-center" >
                             <div class="status-container">
                               <span

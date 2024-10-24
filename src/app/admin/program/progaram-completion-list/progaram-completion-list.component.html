@@ -68,7 +68,7 @@
                   <mat-header-cell *matHeaderCellDef >{{commonRoles.STUDENT_ROLE}}
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row" class="name" [routerLink]="view ? ['/admin/program/view-completion-list/',row.id] : null">
-                    <span class="mobile-label">Student Name:</span> {{row.student_name | capitalizeFirstLetter}}</mat-cell>
+                    <span class="mobile-label">{{commonRoles.STUDENT_ROLE}}:</span> {{row.student_name | capitalizeFirstLetter}}</mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="email">
                   <mat-header-cell *matHeaderCellDef >Email</mat-header-cell>

@@ -211,7 +211,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-start">Program Name</th>
-                                    <th class="text-center ">{{commonRoles?.INSTRUCTOR_ROLE}} Fee</th>
+                                    <!-- <th class="text-center ">{{commonRoles?.INSTRUCTOR_ROLE}} Fee</th> -->
                                     <th class="text-center">Class</th>
                                 </tr>
                             </thead>
@@ -221,7 +221,7 @@
                                 </tr>
                                 <tr style="cursor: pointer" *ngFor="let data of dataSource2">
                                     <td class="text-start">{{ data?.programName }}</td>
-                                    <td class="text-end payment-align">$ {{ data?.instructorCost || 0}}.00</td>
+                                    <!-- <td class="text-end payment-align">$ {{ data?.instructorCost || 0}}.00</td> -->
                                     <td class="text-center">
                                         <div class="status-container">
                                             <span [class]="data.classDeliveryType === 'online' ? 'badge badge-solid-green' : data.classDeliveryType === 'offline' ? 'badge badge-solid-red' : ''">
@@ -248,7 +248,7 @@
                       <thead>
                         <tr>
                           <th class="text-start">Course Name</th>
-                          <th class="text-start">{{commonRoles?.INSTRUCTOR_ROLE}} Fee</th>
+                          <!-- <th class="text-start">{{commonRoles?.INSTRUCTOR_ROLE}} Fee</th> -->
                           <th class="text-center">Class</th>
                         </tr>
                       </thead>
@@ -261,7 +261,7 @@
                           *ngFor="let data of dataSource1"
                         >
                           <td class="text-start">{{ data?.courseName }}</td>
-                          <td class="text-end payment-align">$ {{ data?.instructorCost || 0}}.00</td>
+                          <!-- <td class="text-end payment-align">$ {{ data?.instructorCost || 0}}.00</td> -->
                           <td
                           class="text-center"
                           >

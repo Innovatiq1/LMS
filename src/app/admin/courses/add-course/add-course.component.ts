@@ -250,6 +250,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       examType: new FormControl(''),
       issueCertificate: new FormControl(''),
       certificate_temp: new FormControl(null, [Validators.required]),
+      approval: new FormControl('', [Validators.required]),
     });
     this.subscribeParams = this.activatedRoute.params.subscribe(
       (params: any) => {
@@ -411,6 +412,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       certificate_template: courseData?.certificate_temp,
       companyId: userId,
       courses: courses,
+      approval: courseData?.approval,
       status: 'draft',
     };
     this.courseService.saveCourse(payload).subscribe(
@@ -652,6 +654,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         training_hours: courseData?.training_hours,
         department: courseData?.department,
         fee: courseData?.fee,
+        approval: courseData?.approval,
         currency_code: courseData?.currency_code,
         skill_connect_code: courseData?.skill_connect_code,
         course_description: courseData?.course_description,
@@ -855,6 +858,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         training_hours: courseData?.training_hours,
         department: courseData?.department,
         fee: courseData?.fee,
+        approval: courseData?.approval,
         currency_code: courseData?.currency_code,
         skill_connect_code: courseData?.skill_connect_code,
         course_description: courseData?.course_description,
@@ -994,6 +998,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         course_detailed_description: this.course?.course_detailed_description,
         skill_connect_code: this.course?.skill_connect_code,
         fee: this.course?.fee?.toString(),
+        approval: this.course?.approval,
         sessionStartDate: `${moment(this.course?.sessionStartDate).format(
           'YYYY-MM-DD'
         )}`,

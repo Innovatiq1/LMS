@@ -31,8 +31,8 @@
           <form class="validate-form" [formGroup]="authForm" (ngSubmit)="onSubmit()">
             <div class="row mt-2">
               <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                <label>{{"Name" | translate}} <span class="mandatory">*</span></label>
                 <mat-form-field class="example-full-width" appearance="outline">
-                  <mat-label>{{"Name" | translate}}</mat-label>
                   <input matInput formControlName="name" required>
                   <mat-icon class="material-icons-two-tone color-icon p-3" matSuffix>face</mat-icon>
                   <mat-error *ngIf="authForm.get('name')?.hasError('required')">
@@ -43,8 +43,8 @@
             </div>
             <div class="row mt-2">
               <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                <label>{{ "Email" | translate }} <span class="mandatory">*</span></label>
                 <mat-form-field class="example-full-width" appearance="outline">
-                  <mat-label>{{ "Email" | translate }}</mat-label>
                   <input matInput formControlName="email" required>
                   <mat-icon class="material-icons-two-tone color-icon p-3" matSuffix>mail</mat-icon>
                   <mat-error *ngIf="authForm.get('email')?.hasError('required') && authForm.get('email')?.touched">
@@ -58,11 +58,11 @@
             </div>
            <div class="row mt-2">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+              <label>{{"Gender" | translate}} <span class="mandatory">*</span></label>
               <mat-form-field
                 class="example-full-width"
                 appearance="outline"
               >
-              <mat-label>{{"Gender" | translate}}</mat-label>
                 <mat-select formControlName="gender" required>
                   <mat-option [value]="'male'">{{"Male" | translate}}</mat-option>
                   <mat-option [value]="'female'"> {{"Female" | translate}} </mat-option>
@@ -79,8 +79,8 @@
            
            <div class="row mt-2">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+              <label>{{ "Password" | translate }} <span class="mandatory">*</span></label>
               <mat-form-field class="example-full-width" appearance="outline">
-                <mat-label>{{ "Password" | translate }}</mat-label>
                 <input matInput formControlName="password" [type]="hide ? 'password' : 'text'" required>
                 <mat-icon matSuffix (click)="hide = !hide">
                   {{ hide ? 'visibility_off' : 'visibility' }}
@@ -105,13 +105,11 @@
             </div>
           </div>
           
-          <!-- Conditionally apply the margin-top adjustment to the Confirm Password field -->
-          <div class="row mt-2">
+          <!-- Confirm Password field -->
+          <div class="row mt-2" [ngClass]="{'password-error-shown': authForm.get('password')?.hasError('passwordStrength')}">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
-              <mat-form-field class="example-full-width" 
-                appearance="outline" 
-                [ngClass]="{'password-error-shown': authForm.get('password')?.hasError('passwordStrength')}">
-                <mat-label>{{ "Confirm Password" | translate }}</mat-label>
+              <label>{{ "Confirm Password" | translate }} <span class="mandatory">*</span></label>
+              <mat-form-field class="example-full-width" appearance="outline">
                 <input matInput formControlName="cpassword" [type]="chide ? 'password' : 'text'" required>
                 <mat-icon matSuffix (click)="chide = !chide">
                   {{ chide ? 'visibility_off' : 'visibility' }}
@@ -128,6 +126,8 @@
               </mat-form-field>
             </div>
           </div>
+          
+          
           
           
           

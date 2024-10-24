@@ -176,9 +176,9 @@
                           <ng-container matColumnDef="name">
                             <mat-header-cell *matHeaderCellDef >Course
                             </mat-header-cell>
-                            <mat-cell class="name" [class.name]="isCourse" *matCellDef="let row"
-                              (click)="view ? viewCourse(row.id) : null"><span class="mobile-label">Course Name:</span>
-                              <span>{{ row.title ? (row.title | titlecase) : '--' }}</span>
+                            <mat-cell [class.name]="isCourse" *matCellDef="let row"
+                              (click)="view ? viewCourse(row.id) : null"><span class="mobile-label">Course:</span>
+                              <span class="name">{{ row.title ? (row.title | titlecase) : '--' }}</span>
                             </mat-cell>
                           </ng-container>
                           <ng-container matColumnDef="code">
@@ -251,7 +251,7 @@
                             <mat-header-cell *matHeaderCellDef  class="compulsory-count-header">End Date
                             </mat-header-cell>
                             <mat-cell *matCellDef="let row" (click)="view ? viewCourse(row.id) : null"> <span
-                                class="mobile-label">End date:</span><span>{{ row.sessionEndDate ?(row.sessionEndDate
+                                class="mobile-label">End Date:</span><span>{{ row.sessionEndDate ?(row.sessionEndDate
                                 | date) : "--"}}</span>
                             </mat-cell>
                           </ng-container>
@@ -273,8 +273,8 @@
                             <mat-header-cell *matHeaderCellDef class="payment-cell1">Fee
                             </mat-header-cell>
                             <mat-cell *matCellDef="let row" (click)="view ? viewCourse(row.id) : null"
-                              class="amount"> <span class="mobile-label">Payment:</span><span>$</span> {{row.fee
-                              ||0}} .00
+                             > <span class="mobile-label">Fee:</span><span class="amount">${{row.fee
+                              ||0}} .00 </span>
                             </mat-cell>
                           </ng-container>
                           <mat-header-row *matHeaderRowDef="displayedColumns">

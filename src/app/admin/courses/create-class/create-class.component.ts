@@ -496,7 +496,7 @@ export class CreateClassComponent {
         }
               Swal.fire({
           title: 'Are you sure?',
-          text: 'Do you want to schedule a batch!',
+          text: 'Do you want to create a batch!',
           icon: 'warning',
           confirmButtonText: 'Yes',
           showCancelButton: true,

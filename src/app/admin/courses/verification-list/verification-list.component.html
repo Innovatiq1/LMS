@@ -79,7 +79,7 @@
                   <ng-container matColumnDef="programFee">
                     <mat-header-cell *matHeaderCellDef  class="amount">Course Fee</mat-header-cell>
                     <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null" class="payment-cell">
-                        <span class="mobile-label">Program Fee:</span><span >$</span> {{row?.classId?.courseId?.fee || 0}}.00</mat-cell>
+                        <span class="mobile-label">Course Fee:</span><span >$</span> {{row?.classId?.courseId?.fee || 0}}.00</mat-cell>
                 </ng-container>
                 <!-- <ng-container matColumnDef="instructorFee">
                     <mat-header-cell *matHeaderCellDef  class="amount">{{commonRoles?.INSTRUCTOR_ROLE}} Fee</mat-header-cell>
