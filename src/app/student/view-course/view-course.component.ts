@@ -520,6 +520,7 @@ export class ViewCourseComponent implements OnDestroy {
   }
 
   getDiscounts(id:any){
+    debugger
     this.courseService.getDiscount(id).subscribe((response) => {
       this.discounts = response.filter(item => !item.discountTitle.includes('&'));
       this.allDiscounts = response;
@@ -528,6 +529,7 @@ export class ViewCourseComponent implements OnDestroy {
 
   }
   submitDiscount(dialogRef?:any){
+    debugger
     var userdata = JSON.parse(localStorage.getItem('currentUser')!);
     // let department= JSON.parse(localStorage.getItem('user_data')!).user.department;
     var studentId = localStorage.getItem('id');
@@ -646,6 +648,7 @@ reRegister(){
 
 }
   submitForVerification(classId: string,action?:string) {
+    debugger
     var userdata = JSON.parse(localStorage.getItem('currentUser')!);
     let department= JSON.parse(localStorage.getItem('user_data')!).user.department;
     var studentId = localStorage.getItem('id');
@@ -719,6 +722,7 @@ reRegister(){
     }
   }
   registerClass(classId?: string) {
+    debugger
     var userdata = JSON.parse(localStorage.getItem('currentUser')!);
     var studentId = localStorage.getItem('id');
     if (this.paid) {
@@ -916,6 +920,7 @@ if(this.feeType=="paid" && this.approval == 'yes')
     }
   });
 } else if(this.feeType == 'paid' && this.approval == 'no'){
+  debugger
   const today = new Date();
   const date = today.toISOString().split('T')[0];
   let body = {
@@ -928,8 +933,9 @@ if(this.feeType=="paid" && this.approval == 'yes')
     title: this.title,
     coursekit: this.courseKit,
     date: date,
-    discountType:this.discountType? this.discountType:'',
-    discountValue:this.discountValue?this.discountValue: 0,
+    discountType: this.discountType ? this.discountType : this.selectedDiscount ? this.selectedDiscount.discountType : '',
+    discountValue: this.discountValue ? this.discountValue : this.selectedDiscount ? this.selectedDiscount.value : 0,
+
     courseStartDate:this.classDetails?.courseId?.sessionStartDate,
     courseEndDate:this.classDetails?.courseId?.sessionEndDate
   };
