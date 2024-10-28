@@ -234,7 +234,10 @@ back() {
             icon: 'success',
           });
           this.getAllCourse();
-          window.history.back();
+          // window.history.back();
+          this.router.navigate([
+            '/admin/courses/course-name',
+          ]);
         }, (error) => {
           Swal.fire({
             title: 'Error',

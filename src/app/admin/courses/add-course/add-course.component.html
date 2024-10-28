@@ -9,6 +9,9 @@
     >
     </app-static-breadcrumb>
     </div>
+    <!-- <div>
+      <app-create-course-kit></app-create-course-kit>
+    </div> -->
     <div class="row clearfix">
       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
         <div class="card">
@@ -215,6 +218,9 @@
                     <button class="btn" [routerLink]="['/admin/courses/create-course-kit']">
                       <img src="/assets/Close.svg" alt="plus" />
                     </button>
+                    <!-- <button class="btn" (click)="openCreateCourseKitDialog()">
+                      <img src="/assets/Close.svg" alt="plus" />
+                    </button> -->
                   </div>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <mat-select formControlName="course_kit" multiple>
@@ -244,7 +250,7 @@
                     firstFormGroup.get('approval')?.touched
                   ">
                   Select Approval Required 
-                </mat-error>
+                    </mat-error>
                   </mat-form-field>
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
