@@ -48,7 +48,7 @@
                                                 <time>{{ data?.courseId?.courseCode }} </time>
                                             </p>
                                         </div>
-                                        <h6>{{ data?.courseId?.training_hours }}Hours</h6>
+                                        <h6>{{ data?.courseId?.department }}Department</h6>
                                         <p class="course-card-description" [innerHTML]=" data?.courseId?.course_detailed_description  | bulletPoints | truncate : 40 "></p>
                                         <div class="text-center mb-3">
 
