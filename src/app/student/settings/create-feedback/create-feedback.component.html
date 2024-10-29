@@ -152,7 +152,7 @@
 
                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12" *ngIf="questionsList?.questions?.length">
                   <h6 class="text-muted">Preview:</h6>
-                  <div class="shadow p-3 mb-5 bg-white rounded">
+                  <div class="shadow p-3  bg-white rounded">
                     <app-feedbackcommon [feedbackInfo]="questionsList" [isPreview]="true"
                       [col]="1"></app-feedbackcommon>
                   </div>
@@ -161,18 +161,20 @@
             </div>
           </div>
         </div>
+        
       </div>
-    </div>
-
-    <div class="d-flex justify-content-end body">
+      <div class="d-flex justify-content-end">
         <button *ngIf="!editUrl" class="btn-space" mat-raised-button color="primary" type="submit" id="submit"
           (click)="save()">
           Save
         </button>
 
-        <button *ngIf="editUrl" class="btn-space" mat-raised-button color="primary" type="submit" id="submit" (click)="update()">
+        <button *ngIf="editUrl" class="btn-space" mat-raised-button color="primary" type="submit"  (click)="update()">
           Update
         </button>
       </div>
+    </div>
+
+
     </div>
 </section>
