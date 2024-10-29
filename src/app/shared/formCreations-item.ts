@@ -86,6 +86,10 @@ FORMCREATION_LIST =[
       {
         "name": "Assign Tutorial",
         "checked": true
+      },
+      {
+        "name": "Funding/Grant",
+        "checked": true
       }
     ],
     "checked": false,
