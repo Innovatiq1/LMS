@@ -29,14 +29,14 @@
                         <div class="row">
                             <div class="col-md-3" *ngFor="let data of studentApprovedClasses">
                                 <div class="course-card course-card-blog">
-                                    <div *ngIf="data.courseId.feeType == 'paid'" class="course-card-image"
+                                    <div class="course-card-image"
                                         style="cursor: pointer" [routerLink]="['/student/view-course/', data.classId.id ]">
                                         <img class="img" [src]="  data?.courseId?.image_link || '../../../assets/noimage.jpg'" alt="Image" />
                                     </div>
-                                    <div *ngIf="data.courseId.feeType == 'free'" class="course-card-image"
+                                    <!-- <div *ngIf="data.courseId.feeType == 'free'" class="course-card-image"
                                         style="cursor: pointer" [routerLink]="['/student/view-freecourse/',data.courseId.id]">
                                         <img class="img" [src]=" data?.courseId?.image_link ||'../../../assets/noimage.jpg' " alt="Image" />
-                                    </div>
+                                    </div> -->
 
                                     <div class="blog-table">
                                         <div class="post-user mt-3">
