@@ -183,6 +183,13 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
       this.classService
         .saveApprovedClasses(this.classId, payload)
         .subscribe((response) => {
+          if(data){
+          Swal.fire({
+            icon: 'success',
+            title: 'Course Completed Successfully!',
+            text: 'Please wait for The certificate.',
+          });
+        }
           if(data)
           this.navigate.next(true);
         });

@@ -1384,6 +1384,7 @@ if(this.feeType=="paid" && this.approval == 'yes')
         // this.assessmentTaken = response['count']-this.RetakeRequestCount;
         this.assessmentTaken = response['count'];
         // const retakeRequestCount=this.getRetakeRequests(studentId,courseId);
+        console.log("assessmentTake=",this.assessmentTaken)
         if(this.RetakeRequestCount==1)
           {
             this.updateRetakeRequest(courseId)
@@ -1418,7 +1419,6 @@ if(this.feeType=="paid" && this.approval == 'yes')
     //  this.updateRetakeRequest(courseId)
   }
   
-
   updateShowAssessmentQuestions(){
     if(this.assessmentTempInfo && !this.assessmentInfo.resultAfterFeedback && this.isFeedBackSubmitted){
       this.assessmentTempInfo = null;
@@ -1430,7 +1430,13 @@ if(this.feeType=="paid" && this.approval == 'yes')
     {
       this.assessmentTaken=1;
     }
-    if(this.assessmentTaken < this.assessmentInfo.retake){
+     console.log("this.assessmentTaken",this.assessmentTaken);
+    console.log("this.assessmentInfo.retake",this.assessmentInfo.retake)
+    // if(this.assessmentTaken == this.assessmentInfo.retake){
+    //   // this.isShowAssessmentQuestions =  false;
+    //   this.isRetakeOver=false;
+    // }
+    if(this.assessmentTaken <= this.assessmentInfo.retake){
       if(this.assessmentTempInfo == null || (this.isAnswersSubmitted && !this.isFeedBackSubmitted)){
         if(this.assessmentInfo.resultAfterFeedback && this.isAnswersSubmitted && !this.isFeedBackSubmitted){
           this.isShowAssessmentQuestions =  false;
@@ -1567,7 +1573,7 @@ console.log('lastButOneValue',lastButOneValue)
             this.courseService
               .getStudentClass(studentId, classId)
               .subscribe((response) => {
-                debugger
+                // debugger
                 this.studentClassDetails = response.data.docs[0];
                 this.coursekitDetails = response.data.docs[0].coursekit;
                 let totalPlaybackTime = 0;
