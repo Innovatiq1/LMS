@@ -68,6 +68,7 @@ export class SigninComponent
   loginType!: string;
   body: any;
   linkedinKeys: any;
+  domain: any;
 
   constructor(
     private formBuilder: UntypedFormBuilder,
@@ -143,6 +144,7 @@ export class SigninComponent
       .getCompanyByIdentifierWithoutToken(this.extractedName)
       .subscribe((resp: any) => {
         let companyId = resp[0]?.companyId;
+        this.domain = resp[0]?.company;
         this.settingsService
           .getKeysByCompanyId(companyId)
           .subscribe((res: any) => {

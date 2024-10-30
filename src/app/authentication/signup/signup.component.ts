@@ -50,6 +50,7 @@ export class SignupComponent implements OnInit {
   tmsUrl: boolean;
   lmsUrl: boolean;
   extractedName: string;
+  domain: any;
   
   constructor(
     private formBuilder: UntypedFormBuilder,
@@ -64,6 +65,10 @@ export class SignupComponent implements OnInit {
     this.tmsUrl = urlPath.includes('TMS');
     this.lmsUrl = urlPath.includes('LMS');
     this.extractedName = urlPath[1];
+    this.userService.getCompanyByIdentifierWithoutToken(this.extractedName).subscribe(
+      (res: any) => {
+        this.domain = res[0]?.company;
+     
     this.authForm = this.formBuilder.group({
       name: ['', Validators.required],
       email: ['',[Validators.required,Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)] ],
@@ -75,6 +80,7 @@ export class SignupComponent implements OnInit {
       validator: ConfirmedValidator('password', 'cpassword')
     
     });
+  })
   }
 
 

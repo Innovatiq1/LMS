@@ -40,18 +40,9 @@
                               <!-- here is adding radio button -->
                               <li class="tbl-header-btn">
                                 <div class="m-l-10" matTooltip="ADD" *ngIf="create">
-                                  <button mat-raised-button id="submit" (click)="showRadio = !showRadio">Create</button>
+                                  <button mat-raised-button id="submit" (click)="openCourseDialog()">Create</button>
                                 </div>
-                              
-                                <!-- Radio Button Group: Only show when 'Create' is clicked -->
-                                <div *ngIf="showRadio" class="radio-button-container">
-                                  <mat-radio-group [(ngModel)]="selectedOption" (change)="navigateToCreate()">
-                                    <mat-radio-button value="OnlyLearning">Only Learning</mat-radio-button>
-                                    <mat-radio-button value="LearningAndTutorial">Learning And Tutorial</mat-radio-button>
-                                    <mat-radio-button value="OnlyExam">Only Exam</mat-radio-button>
-                                    <mat-radio-button value="AssessmentAndExam">Assessment And Exam</mat-radio-button>
-                                  </mat-radio-group>
-                                </div>
+                                                
                               </li>
                               
                               
@@ -337,18 +328,9 @@
                             </li> -->
                             <li class="tbl-header-btn">
                               <div class="m-l-10" matTooltip="ADD" *ngIf="create">
-                                <button mat-raised-button id="submit" (click)="showRadio = !showRadio">Create</button>
+                                <button mat-raised-button id="submit" (click)="openCourseDialog()">Create</button>
                               </div>
-                            
-                              <!-- Radio Button Group: Only show when 'Create' is clicked -->
-                              <div *ngIf="showRadio" class="radio-button-container">
-                                <mat-radio-group [(ngModel)]="selectedOption" (change)="navigateToCreate()">
-                                  <mat-radio-button value="OnlyLearning">Only Learning</mat-radio-button>
-                                  <mat-radio-button value="LearningAndTutorial">Learning And Tutorial</mat-radio-button>
-                                  <mat-radio-button value="OnlyExam">Only Exam</mat-radio-button>
-                                  <mat-radio-button value="AssessmentAndExam">Assessment And Exam</mat-radio-button>
-                                </mat-radio-group>
-                              </div>
+                          
                             </li>
                             <li>
                               <span style="font-weight: bold;font-size:medium;">Import</span>
@@ -437,3 +419,45 @@
   <mat-spinner class="centered-spinner" diameter="50"></mat-spinner>
 </div>
 </section>
+
+<ng-template #courseScenariosDialog let-dialogRef="dialogRef" let-data>
+  <div class="row mt-5 mx-3 my-3">
+    <div class="col-4">
+        <div class="card login" [class.selected]="selectedScenario === 'LearningAndTutorial'"
+            (click)="selectScenario('LearningAndTutorial')">
+            <h5 class="mt-3" style="text-align: center;">Learning & Tutorial</h5>
+            <p class="p-3">Enables {{commonRoles?.STUDENT_ROLE}} to read and understand course content, complete tutorials, and get the certifications.</p>
+            <div class="selected-overlay">
+                <i class="fas fa-check"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="card login" [class.selected]="selectedScenario === 'OnlyExam'"
+            (click)="selectScenario('OnlyExam')">
+            <h5 class="mt-3" style="text-align: center;">Only Exam</h5>
+            <p class="p-3">Allows {{commonRoles?.STUDENT_ROLE}} to take the exam directly and receive a certificate without going through the learning materials.</p>
+
+            <div class="selected-overlay">
+                <i class="fas fa-check"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+      <div class="card login" [class.selected]="selectedScenario === 'AssessmentAndExam'"
+          (click)="selectScenario('AssessmentAndExam')">
+         <h5 class="mt-3" style="text-align: center; ">Assessment & Exam</h5>
+         <p class="p-3">Enables {{commonRoles?.STUDENT_ROLE}} to study all course materials, complete multiple assessments (practical tests), and take a final exam to get a certificate.</p>
+          <div class="selected-overlay">
+              <i class="fas fa-check"></i>
+          </div>
+      </div>
+  </div>
+</div>
+ 
+  <div mat-dialog-actions style="float:right">
+    <button mat-raised-button color="warn" (click)="dialogRef.close()">Cancel</button>
+    <button mat-raised-button id="submit"(click)="navigateToCreate(dialogRef)">Create</button>
+
+  </div>
+  </ng-template>
