@@ -299,7 +299,17 @@
                                   </div>
                                 </ng-container>
                                 <ng-container *ngIf="element.type === 'Signature';">
+                                  <div
+                                    class="resizable-logo"
+                                    [ngStyle]="{
+                                      width: element.width + 'px',
+                                      height: element.height + 'px'
+                                    }"
+                                    
+                                  >
                                   <img [src]="element.imageUrl" alt="Signature" style="max-width: 100%; height: auto;">
+                                  <div class="resizer"></div>
+                                  </div>
                                 </ng-container>
           
                                 <ng-template #textElement>
