@@ -88,6 +88,7 @@ retakeRequestData:any;
   this.getAllAnswers();
   }
   onTabChange(event: MatTabChangeEvent) {
+    this.assessmentPaginationModel.page = 1;
     this.tab = event.index;
     this.getAllAnswers();
   }
@@ -121,6 +122,7 @@ retakeRequestData:any;
       
 
     } else if (this.tab === 1 && this.isTutorial) { 
+      
       this.assessmentService
         .getTutorialQuestionJsonV2({ ...this.assessmentPaginationModel, studentId })
         .subscribe((res) => {
@@ -251,6 +253,7 @@ retakeRequestData:any;
               'The tutorial has been deleted successfully.',
               'success'
             );
+            this.assessmentPaginationModel.page = 1
             this.getAllAnswers();
           },
           (error: any) => {
