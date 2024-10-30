@@ -75,7 +75,6 @@ export class SettingsComponent {
       'ALL COURSES',
       'TOTAL TRAINERS',
       'COURSE CLASSES',
-      'COURSE CLASSES LIST',
       'TRAINER SURVEY',
       'USERS',
       'CLASSES LIST',
