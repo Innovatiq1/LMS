@@ -49,8 +49,10 @@
                     >{{ classDetails?.courseId?.fee }}$</span
                   >
                   <span class="dis_font">Fee</span> -->
-                  <span class="day_font">${{ classDetails?.courseId?.fee || 0 }} </span>
-                  <span class="dis_font">Fee</span>
+                  <span class="day_font">
+                    ${{ (classDetails?.courseId?.fee || 0) + (classDetails?.instructorCost || 0) }}
+                </span>
+                                  <span class="dis_font">Fee</span>
                 </div>
               </div>
             </div>
@@ -261,7 +263,7 @@
                           </div> -->
                           <div>
                             <span class="day_font"
-                              >${{ classDetails?.courseId?.feeType == 'paid'? classDetails?.courseId?.fee:'0' }}.00</span
+                              >${{ classDetails?.courseId?.feeType == 'paid'? (classDetails?.courseId?.fee+ classDetails?.instructorCost):'0' }}.00</span
                             >
                             <span class="dis_font">Fee</span>
                           </div>

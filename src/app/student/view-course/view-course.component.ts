@@ -529,7 +529,6 @@ export class ViewCourseComponent implements OnDestroy {
 
   }
   submitDiscount(dialogRef?:any){
-    debugger
     var userdata = JSON.parse(localStorage.getItem('currentUser')!);
     // let department= JSON.parse(localStorage.getItem('user_data')!).user.department;
     var studentId = localStorage.getItem('id');
@@ -550,7 +549,7 @@ export class ViewCourseComponent implements OnDestroy {
       companyId:userdata.user.companyId,
       department:userdata.user.department,
       courseTitle: this.classDetails?.courseId?.title,
-      courseFee: this.classDetails?.courseId?.fee,
+      courseFee: this.classDetails?.courseId?.fee+this.classDetails?.instructorCost,
       studentId: studentId,
       classId: this.classId,
       title: this.title,
@@ -602,7 +601,7 @@ reRegister(){
       email: userdata.user.email,
       name: userdata.user.name,
       courseTitle: this.courseDetails?.title,
-      courseFee: this.courseDetails?.fee || 0,
+      courseFee: this.classDetails?.courseId?.fee+this.classDetails?.instructorCost || 0,
       courseId: this.courseDetails.id,
       companyId:userdata.user.companyId,
       verify:true,
@@ -629,7 +628,7 @@ reRegister(){
       email: userdata.user.email,
       name: userdata.user.name,
       courseTitle: this.courseDetails?.title,
-      courseFee: this.courseDetails?.fee || 0,
+      courseFee: this.classDetails?.courseId?.fee+this.classDetails?.instructorCost|| 0,
       courseId: this.courseDetails.id,
       companyId:userdata.user.companyId,
       verify:true,
@@ -722,7 +721,6 @@ reRegister(){
     }
   }
   registerClass(classId?: string) {
-    debugger
     var userdata = JSON.parse(localStorage.getItem('currentUser')!);
     var studentId = localStorage.getItem('id');
     if (this.paid) {
@@ -734,7 +732,8 @@ if(this.feeType=="paid" && this.approval == 'yes')
     email: userdata.user.email,
     name: userdata.user.name,
     courseTitle: this.classDetails?.courseId?.title,
-    courseFee: this.classDetails?.courseId?.fee,
+    courseFee: this.classDetails?.courseId?.fee+this.classDetails?.instructorCost,
+    instructorCost: this.classDetails?.instructorCost,
     studentId: studentId,
     classId: this.classId,
     title: this.title,
@@ -844,8 +843,8 @@ if(this.feeType=="paid" && this.approval == 'yes')
                                 let body = {
                                   courseTitle:
                                     this.classDetails?.courseId?.title,
-                                  courseFee:
-                                  this.classDetails?.courseId?.fee
+                                  courseFee: this.classDetails?.courseId?.fee+this.classDetails?.instructorCost,
+
                                 };
                                 this.generateInvoice(body);
                                 setTimeout(() => {
@@ -920,14 +919,14 @@ if(this.feeType=="paid" && this.approval == 'yes')
     }
   });
 } else if(this.feeType == 'paid' && this.approval == 'no'){
-  debugger
   const today = new Date();
   const date = today.toISOString().split('T')[0];
   let body = {
     email: userdata.user.email,
     name: userdata.user.name,
     courseTitle: this.classDetails?.courseId?.title,
-    courseFee: this.classDetails?.courseId?.fee,
+    courseFee: this.classDetails?.courseId?.fee+this.classDetails?.instructorCost,
+    instructorCost: this.classDetails?.instructorCost,
     studentId: studentId,
     classId: this.classId,
     title: this.title,
@@ -1041,8 +1040,8 @@ if(this.feeType=="paid" && this.approval == 'yes')
                                 let body = {
                                   courseTitle:
                                     this.classDetails?.courseId?.title,
-                                  courseFee:
-                                  this.classDetails?.courseId?.fee
+                                    courseFee: this.classDetails?.courseId?.fee+this.classDetails?.instructorCost,
+
                                 };
                                 this.generateInvoice(body);
                                 setTimeout(() => {
