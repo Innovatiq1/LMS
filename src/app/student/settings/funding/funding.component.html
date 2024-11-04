@@ -1,14 +1,22 @@
-<section class="content">
+<section [ngClass]="{'full-width': dialogStatus, 'content': true}">
+  <div *ngIf="dialogStatus" class="dialog-header">
+    <!-- <button mat-icon-button  color="warn" (click)="closeDialog()">
+      <mat-icon>close</mat-icon>
+    </button> -->
+    <button mat-raised-button color="warn" (click)="closeDialog()">Cancel</button>
+  </div>
     <div class="content-block">
+      <ng-container *ngIf="!dialogStatus">
       <div class="block-header" *ngFor="let breadscrum of breadscrums">
         <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
         </app-breadcrumb>
       </div>
+    </ng-container>
       <div class="row clearfix">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <div class="card" style="height: fit-content;">
             <div class="header">
-              <h2>Create Funding/Grant</h2>
+              <!-- <h2>Create Funding/Grant</h2> -->
             </div>
             <div class="body">
                 <form [formGroup]="fundingForm">
@@ -42,11 +50,14 @@
                 </form>
                 <hr/>
                 <div class="float-end">
-                    <div class="d-grid gap-3 d-md-flex">
+                    <!-- <div class="d-grid gap-3 d-md-flex">
                     <button  mat-raised-button *ngIf="isCreate"  id="submit" (click)="onSubmit()" > Create </button>
-                    </div>
+                    </div> -->
+                    <div class="col-md-2">
+                      <button mat-raised-button id="submit" (click)="onSubmit()">Create</button>
                   </div>
-                  <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
+                  </div>
+                  <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12" *ngIf="!dialogStatus">
                       <div class="header mt-3">
                         <h2>Funding/Grant Listing</h2>
                       </div>
@@ -77,3 +88,5 @@
       </div>
     </div>
   </section>
+<!-- here the code for dialogbox -->
+  

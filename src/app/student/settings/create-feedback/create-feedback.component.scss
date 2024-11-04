@@ -14,3 +14,15 @@ border-radius: 10px;
 .question-container{
   margin-left: 15px
 }
+
+.dialog-header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px;
+}
+
+.full-width {
+  margin: 0;
+  padding: 0;
+  width: 96%;
+}

@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit,Inject,Optional } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -15,7 +15,7 @@ import { StudentsService } from 'app/admin/students/students.service';
 import { SettingsService } from '@core/service/settings.service';
 import * as XLSX from 'xlsx';
 import { TestPreviewComponent } from '@shared/components/test-preview/test-preview.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog,MAT_DIALOG_DATA,MatDialogRef } from '@angular/material/dialog';
 import { CommonService } from '@core/service/common.service';
 
 @Component({
@@ -37,6 +37,7 @@ export class AssesmentQuestionsComponent implements OnInit, OnDestroy{
   configurationSubscription!: Subscription;
   defaultTimer: string = '';
   defaultRetake: string = '';
+  dialogStatus:boolean=false;
   currencyCodes: string[] = [
     'USD',
     'SGD',
@@ -55,6 +56,7 @@ scoreDataAlgo:any;
 draftId!: string;
 
   constructor(
+    @Optional() @Inject(MAT_DIALOG_DATA) public data11: any,
     private formBuilder: FormBuilder,
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -62,8 +64,13 @@ draftId!: string;
     private studentsService: StudentsService,
     private SettingsService:SettingsService,
     private dialog: MatDialog,
-    private commonService: CommonService
+    private commonService: CommonService,
+    @Optional() private dialogRef: MatDialogRef<AssesmentQuestionsComponent>
   ) {
+    if (data11) {
+      this.dialogStatus=true;
+      console.log("Received variable:", data11.variable);
+    }
     let urlPath = this.router.url.split('/');
     this.editUrl = urlPath.includes('edit-questions');
 
@@ -120,6 +127,11 @@ draftId!: string;
     if (this.draftSubscription) {
       this.draftSubscription.unsubscribe(); // Unsubscribe to stop auto-save
       this.draftSubscription = null;
+    }
+  }
+  closeDialog(): void {
+    if (this.dialogRef) {
+      this.dialogRef.close();
     }
   }
 
@@ -418,7 +430,7 @@ draftId!: string;
         passingCriteria:this.questionFormTab3.value.passingCriteria,
         scoreAlgorithm: this.questionFormTab3.value.scoreAlgorithm,
         resultAfterFeedback: this.questionFormTab3.value.resultAfterFeedback,
-        status: 'open',
+        status: this.dialogStatus?'approved':'open',
         companyId:userId,
         questions: this.questionFormTab3.value.questions.map((v: any) => ({
           options: v.options,
@@ -521,7 +533,9 @@ draftId!: string;
           text: 'Question created successfully',
           icon: 'success',
         });
-        window.history.back();
+        if(!this.dialogStatus){
+          window.history.back();
+        }
       },
       (err: any) => {
         Swal.fire('Failed to create Question', 'error');

@@ -24,8 +24,16 @@ import { StudentsService } from 'app/admin/students/students.service';
 import { UtilsService } from '@core/service/utils.service';
 import { CommonService } from '@core/service/common.service';
 import { UserService } from '@core/service/user.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog,MAT_DIALOG_DATA} from '@angular/material/dialog';
+// import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CreateCourseKitComponent } from '../course-kit/create-course-kit/create-course-kit.component';
+import { FundingComponent } from 'app/student/settings/funding/funding.component';
+import { CreateFeedbackComponent } from 'app/student/settings/create-feedback/create-feedback.component';
+import { CreateCertificateComponent } from 'app/student/settings/certificate-template/create-certificate/create-certificate.component';
+import { TutorialQuestionsComponent } from 'app/student/settings/tutorial-questions/tutorial-questions.component';
+import { AssesmentQuestionsComponent } from 'app/student/settings/assesment-questions/assesment-questions.component';
+import { AddExamQuestionsComponent } from 'app/student/settings/add-exam-questions/add-exam-questions.component';
+import { VendorComponent } from 'app/student/settings/vendor/vendor.component';
 import { CourseKitModel, CourseModel, CoursePaginationModel } from '@core/models/course.model';
 @Component({
   selector: 'app-add-course',
@@ -275,6 +283,12 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       this.optionValue = params['option'] || null;
       // console.log('Option value from URL:', this.optionValue);
     });
+    this.getCourseKitsnew()
+    this.getFundingGrantNew();
+    this.getSurveyNew();
+    this.getTutorialsNew();
+    this.getAssessementNew();
+     this.getExamNew();
     if(this.optionValue=='OnlyLearning'||this.optionValue=='LearningAndTutorial')
       {
         this.isLearningAndTutorial=this.optionValue=='LearningAndTutorial'?true:false;
@@ -316,6 +330,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     // Load other data
     this.getForms();
     if (!this.editUrl) {
+      // console.log("heloo friend true")
       this.setup();
     }
     if (this.viewUrl) {
@@ -333,45 +348,241 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     }, 30000);
   }
 
-  openCreateCourseKitDialog(): void {
-    const dialogRef = this.dialog.open(CreateCourseKitComponent, {
-      width: '80%',
-      height:'70%', 
-      disableClose: false, 
-    });
+  // openCreateCourseKitDialog(): void {
+  //   const dialogRef = this.dialog.open(CreateCourseKitComponent, {
+  //     width: '80%',
+  //     height:'70%', 
+  //     disableClose: false, 
+  //   });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
-  }
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     console.log('The dialog was closed');
+  //   });
+  // }
 
-
+//Working code is here belo
   // openCreateCourseKitDialog(): void {
   //   const dialogRef = this.dialog.open(CreateCourseKitComponent, {
   //     width: '80%',
   //     height: '70%',
   //     disableClose: false,
   //   });
-  
-  //   dialogRef.afterClosed().subscribe((result) => {
-  //     if (result) {
-  //       // Refresh the course kits list after a new kit is created
-  //       this.loadCourseKits();  // Assuming you have a method to load the course kits
-  //     }
+  //   console.log("dialogRef.componentInstance")
+
+  //   dialogRef.componentInstance.courseKitCreated.subscribe((newCourseKit: any) => {
+  //     console.log("newCourseKit==",newCourseKit)
+  //     // Update courseKits array with the new course kit data
+  //     console.log("helloo")
+  //     this.courseKits = [newCourseKit, ...this.courseKits];
+  //     console.log("this.courseKits==",this.courseKits)
+  //   });
+
+  //   dialogRef.afterClosed().subscribe(() => {
+  //     console.log('The dialog was closed');
   //   });
   // }
+
+  // trying new Ways
+   openCreateCourseKitDialog(): void {
+    const someVariable = 'dialogApproved';
+      const dialogRef = this.dialog.open(CreateCourseKitComponent, {
+        width: '150%',
+         height: '80%',
+         maxHeight: '90vh',
+        autoFocus: false,
+        disableClose: false,
+        data: { variable: someVariable },
+      });
   
-  // loadCourseKits() {
-  //   // Logic to fetch the course kits and update `courseKits`
-  //   const filter = { 
-  //     ...this.courseKitModel,
-  //     title: this.searchTerm 
-  //   };
-  //   this.courseService.getCourseKit(filter).subscribe((data) => {
-  //     this.courseKits = data;
-  //   });
-  // }
+      dialogRef.afterClosed().subscribe((result) => {
+        this.getCourseKitsnew();
+      });
+    
+  }
+getCourseKitsnew(){
+  this.courseService.getCourseKit({isAll: true}).subscribe((res: any)=>{
+    this.courseKits = res?.reverse();
+  })
+}
+
+openFundingComponent():void {
+  const someVariable = 'dialogApproved';
+  const dialogRef = this.dialog.open(FundingComponent, {
+    width: 'auto',
+    height: '60%',
+    maxHeight: '80vh',
+    autoFocus: false,
+    // width: 'auto', 
+    //  height: '46%', 
+    //  maxWidth: '90vw', 
+    //   maxHeight: '90vh', 
+    // autoFocus: false,
+    disableClose: false,
+    data: { variable: someVariable },
+  });
+
+  dialogRef.afterClosed().subscribe((result) => {
+    // this.getCourseKitsnew();
+    this.getFundingGrantNew();
+  });
+
+}
+getFundingGrantNew(){
+  this.courseService.getFundingGrant().subscribe((res)=>{
+    // console.log("res===",res)
+    this.fundingGrants=res?.reverse();
+  })
+}
+openCreateFeedbackComponent():void {
+  const someVariable = 'dialogApproved';
+  const dialogRef = this.dialog.open(CreateFeedbackComponent, {
+    width: '120%',
+    height: '80%',
+    maxHeight: '90vh',
+    autoFocus: false,
+    disableClose: false,
+    data: { variable: someVariable },
+  });
+
+  dialogRef.afterClosed().subscribe((result) => {
+    this.getSurveyNew();
+  });
+
+}
+getSurveyNew(){
+  this.surveyService.getSurvey().subscribe((res)=>{
+    // console.log("resServey",res);
+    this.feedbacks=res.data.docs;
+  })
+}
+
+openCertificateComponent():void {
+  const dialogRef = this.dialog.open(CreateCertificateComponent, {
+    width: '120%',
+    height: '80%',
+    maxHeight: '90vh',
+    autoFocus: false,
+    disableClose: false,
+  });
+
+  dialogRef.afterClosed().subscribe((result) => {
+    // this.getSurveyNew();
+  });
+
+}
+openVendorComponent():void {
+  const someVariable = 'dialogApproved';
+  const dialogRef = this.dialog.open(VendorComponent, {
+    width: 'auto',
+    height: '60%',
+    maxHeight: '80vh',
+    autoFocus: false,
+    disableClose: false,
+    data: { variable: someVariable },
+  });
+
+  dialogRef.afterClosed().subscribe((result) => {
+    // this.getSurveyNew();
+    this.getAllVendors();
+  });
+
+}
+
+openTutorialComponent():void {
+  // status:isQuestions?'open':'approved'
+  // this.router.navigate(['/student/settings/add-questions'], { queryParams: { isQuestions:'approved'} });
+  const someVariable = 'dialogApproved';
+  const dialogRef = this.dialog.open(TutorialQuestionsComponent, {
+    width: '120%',
+    height: '80%',
+    maxHeight: '90vh',
+    autoFocus: false,
+    disableClose: false,
+    data: { variable: someVariable },
+  });
+
+  dialogRef.afterClosed().subscribe((result) => {
+    // this.getSurveyNew();
+    this.getTutorialsNew();
+  });
+
+}
+getTutorialsNew(){
+  var userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+  this.questionService.getTutorialQuestionJson({
+    status: 'approved',
+    isAll: true,
+    companyId: userId,
+  }).subscribe((res)=>{
+    // console.log("getresponsess",res)
+    this.tutorials=res?.data.reverse();
+
+  })
+}
+openAssessmentComponent():void {
+  // status:isQuestions?'open':'approved'
+  // this.router.navigate(['/student/settings/add-questions'], { queryParams: { isQuestions:'approved'} });
+  const someVariable = 'dialogApproved';
+  const dialogRef = this.dialog.open(AssesmentQuestionsComponent, {
+    width: '120%',
+    height: '80%',
+    maxHeight: '90vh',
+    autoFocus: false,
+    disableClose: false,
+    data: { variable: someVariable },
+  });
+
+  dialogRef.afterClosed().subscribe((result) => {
+    // this.getSurveyNew();
+    this.getAssessementNew();
+  });
+
+}
+getAssessementNew(){
+  var userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+  this.questionService.getQuestionJson({
+    status: 'approved',
+    isAll: true,
+    companyId: userId,
+  }).subscribe((res)=>{
+    // console.log("assess====",res)
+    this.assessments=res?.data.reverse();
+  })
   
+}
+
+openExamComponent():void {
+  // status:isQuestions?'open':'approved'
+  // this.router.navigate(['/student/settings/add-questions'], { queryParams: { isQuestions:'approved'} });
+  const someVariable = 'dialogApproved';
+  const dialogRef = this.dialog.open(AddExamQuestionsComponent, {
+    width: '120%',
+    height: '80%',
+    maxHeight: '90vh',
+    autoFocus: false,
+    disableClose: false,
+    data: { variable: someVariable },
+  });
+
+  dialogRef.afterClosed().subscribe((result) => {
+    // this.getSurveyNew();
+    // this.setup();
+    this.getExamNew();
+  });
+
+}
+getExamNew(){
+  var userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+  this.questionService.getExamQuestionJson({
+    status: 'approved',
+    isAll: true,
+    companyId: userId,
+  }).subscribe((res)=>{
+// console.log("resExam==",res)
+this.exam_assessments=res?.data.reverse();
+  })
+}
+
   getDepartments() {
     this.studentsService.getAllDepartments().subscribe((response: any) => {
       this.dept = response.data.docs;
@@ -840,9 +1051,12 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         fundingGrant: any;
         courseKit: any;
       }) => {
+        
         this.fundingGrants = response.fundingGrant.reverse();
         this.courseKits = response.courseKit?.reverse();
+        // console.log("courseKits",this.courseKits)
         this.assessments = response.assessment.data.reverse();
+        // console.log("this.assess",this.assessments)
         this.exam_assessments = response.exam_assessment.data.reverse();
         this.tutorials = response.tutorial.data.reverse();
         this.feedbacks = response.survey.data.docs;
