@@ -32,6 +32,11 @@
                         aria-label="Search box"
                       />
                     </li>
+                
+                  </ul>
+                </li>
+                <li>
+                  <ul>
                     <li class="tbl-header-btn">
                       <div class="m-l-10" matTooltip="ADD" *ngIf="create">
                         <button mat-raised-button [routerLink]="['/student/settings/customize/create-feedback']"
@@ -63,7 +68,7 @@
                 <ng-container matColumnDef="Name">
                   <mat-header-cell *matHeaderCellDef >Name
                   </mat-header-cell>
-                  <mat-cell *matCellDef="let row" class="name"  [routerLink]="isView ? ['/admin/survey/survey-list/view-feedback',row.id] : null"><span class="mobile-label">Name:</span> {{row.name}}</mat-cell>
+                  <mat-cell *matCellDef="let row" [routerLink]="isView ? ['/admin/survey/survey-list/view-feedback',row.id] : null"><span class="mobile-label">Name:</span><span class="name" > {{row.name}} </span></mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="Count">
                   <mat-header-cell *matHeaderCellDef >No.of Questions</mat-header-cell>

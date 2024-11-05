@@ -34,6 +34,7 @@ import { RetakeRequestsComponent } from './retake-requests/retake-requests.compo
 import { ViewCompletionComponent } from './completion-list/view-completion/view-completion.component';
 import { ViewClassComponent } from './class-view/view-class/view-class.component';
 import { ClassListComponent } from './class-list/class-list.component';
+import { EnquiryListComponent } from './enquiry-list/enquiry-list.component';
 import { ScheduleMeetingComponent } from './schedule-meeting/schedule-meeting.component';
 
 
@@ -62,7 +63,8 @@ import { ScheduleMeetingComponent } from './schedule-meeting/schedule-meeting.co
     DraftedCoursesComponent,
     RetakeRequestsComponent,
     ScheduleMeetingComponent,
-    ClassListComponent
+    ClassListComponent,
+   EnquiryListComponent
     
 
   ],

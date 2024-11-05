@@ -14,7 +14,8 @@
           <!-- <button type="button" title="Back to role" class="arrow" (click)="goBack()">
             <i class="fas fa-arrow-left">&nbsp;&nbsp;Role</i>
           </button> -->
-          <h2 class="welcome-msg">  {{ 'Welcome to Learn Pro' | translate }} 
+          <h2 class="welcome-msg">    {{ 'Welcome to ' + (domain | translate) }} 
+
             <!-- <span *ngIf="tmsUrl">TMS</span> -->
             <!-- <span *ngIf="lmsUrl">LMS</span> -->
           </h2>
@@ -36,8 +37,10 @@
           <form class="validate-form" [formGroup]="authForm" (ngSubmit)="loginUser()" >
             <div class="row">
               <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2 custom-border-radius">
+                <label>
+                  {{ 'Email' | translate }} <span class="mandatory">*</span>
+                </label>
                 <mat-form-field class="example-full-width" appearance="outline">
-                  <mat-label>{{ 'Email' | translate }}</mat-label>
                   <input matInput formControlName="email" />
                   <mat-icon class="material-icons-two-tone color-icon p-3" matSuffix>mail</mat-icon>
                   <mat-error *ngIf="authForm.get('email')?.hasError('required')">
@@ -52,8 +55,8 @@
             
             <div class="row">
               <div class="col-xl-12col-lg-12 col-md-12 col-sm-12 mb-2">
+                <label>{{ 'Password' | translate }} <span class="mandatory">*</span></label>
                 <mat-form-field class="example-full-width" appearance="outline">
-                  <mat-label>{{ 'Password' | translate }}</mat-label>
                   <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
                   <a href="#" onClick="return false;" matSuffix (click)="hide = !hide"
                     [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">

@@ -44,9 +44,9 @@
                                             <ng-container matColumnDef="name">
                                                 <mat-header-cell *matHeaderCellDef >Course
                                                 </mat-header-cell>
-                                                <mat-cell  [class.name]="isCourse" *matCellDef="let row"
+                                                <mat-cell *matCellDef="let row"
                                                     ><span class="mobile-label">Course
-                                                        Name:</span> <span class="name">{{row.title |titlecase}}</span>
+                                                        :</span> <span class="name">{{row.title |titlecase}}</span>
                                                 </mat-cell>
                                             </ng-container>
                                             <ng-container matColumnDef="code">
@@ -83,7 +83,7 @@
                                                     class="compulsory-count-header">End Date
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let row" > <span
-                                                        class="mobile-label">End date:</span><span>{{row.sessionEndDate
+                                                        class="mobile-label">End Date:</span><span>{{row.sessionEndDate
                                                         | date}}</span>
                                                 </mat-cell>
                                             </ng-container>

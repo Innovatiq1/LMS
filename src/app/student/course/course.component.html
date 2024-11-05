@@ -38,7 +38,7 @@
                     #filter
                     class="browser-default search-field text"
                     aria-label="Search box"
-                    [(ngModel)]="filterRegistered"
+                    [(ngModel)]="filterName"
                     (input)="performSearch()"
                   />
                   <input
@@ -48,7 +48,7 @@
                     #filter
                     class="browser-default search-field text"
                     aria-label="Search box"
-                    [(ngModel)]="filterApproved"
+                    [(ngModel)]="filterName"
                     (input)="performSearch()"
                   />
                   <input
@@ -58,9 +58,19 @@
                     #filter
                     class="browser-default search-field text"
                     aria-label="Search box"
-                    [(ngModel)]="filterCompleted"
+                    [(ngModel)]="filterName"
                     (input)="performSearch()"
                   />
+                  <input
+                  *ngIf="tab == 4"
+                  placeholder="Search"
+                  type="text"
+                  #filter
+                  class="browser-default search-field text"
+                  aria-label="Search box"
+                  [(ngModel)]="filterName"
+                  (input)="performSearch()"
+                />
                 </li>
               </ul>
             </li>
@@ -69,10 +79,78 @@
           </div>
 
           <mat-tab-group (selectedTabChange)="tabChanged($event)">
-
-            <mat-tab *ngIf="allCourses">
+            <mat-tab  *ngIf="allCourses">
               <ng-template mat-tab-label>
-                <div class="course mx-4">Total Courses</div>
+            <div class="course mx-4">All Courses</div>
+              </ng-template>
+              <div class="body">
+                <div *ngIf="totalCourseItems > 0" class="row">
+                  <div class="col-md-3" *ngFor="let data of activeCourses">
+                    <div class="course-card course-card-blog">
+                      <div
+                        class="course-card-image"
+                      >
+                      <div class="feeType-ribbon">
+                        <h6 class="feeType">{{ data?.feeType | titlecase }}</h6>
+                      </div>
+                        <img
+                          class="img"
+                          [src]="
+                            data?.image_link ||
+                            '../../../assets/noimage.jpg'
+                          "
+                          alt="Image"
+                        />
+                      </div>
+                      <div class="blog-table">
+                        <div class="post-user mt-3">
+                          <h6 class="mb-xs mt-xs title">
+                            {{ data?.title}}
+                          </h6>
+                          <p class="text-muted">
+                            <time
+                              >{{ data?.department }} Department</time
+                            >
+                          </p>
+                        </div>
+                        <!-- <p class="text-default">
+                          {{ data?.course_detailed_description | truncate: 40 }}
+                        </p> -->
+                        
+                        <p class="text-size">
+                          {{ data?.sessionStartDate | date: 'MMM dd, yyyy' }} - {{ data?.sessionEndDate | date: 'MMM dd, yyyy' }}
+                        </p>
+                        <!-- <p class="text-default" [innerHTML]="(data?.courseId?.course_detailed_description | truncate: 40)"></p> -->
+                        <!-- <div class="text-center mb-3">
+                         
+                        </div> -->
+                        <button id="submit" class="btn btn-primary show-interest-button" color="primary" (click)="showIntresr(data)">
+                        Send Enquiry
+                      </button>
+                      </div>
+                    </div>
+                   
+                  </div>
+                  
+                </div>
+                <div *ngIf="totalCourseItems == 0">
+                  No Courses related to your department
+                </div>
+              </div>
+              <mat-paginator
+                class="paginator rounded-5"
+                #paginator
+                [length]="totalCourseItems"
+                (page)="activePageSizeChange($event)"
+                [pageSizeOptions]="pageSizeArr"
+                aria-label="select pagination option"
+              >
+              </mat-paginator>
+            </mat-tab>
+
+            <mat-tab *ngIf="allBatches">
+              <ng-template mat-tab-label>
+                <div class="course mx-4">All Batches</div>
               </ng-template>
               <div class="body">
                 <div *ngIf="totalItems > 0" class="row">
@@ -132,7 +210,7 @@
             </mat-tab>
             <mat-tab *ngIf="register">
               <ng-template mat-tab-label>
-                Registered Courses
+                Registered
               </ng-template>
               <div class="body">
                 <div class="row">
@@ -199,7 +277,7 @@
             </mat-tab>
             <mat-tab *ngIf="approve">
               <ng-template mat-tab-label>
-                Approved Courses
+                Approved
               </ng-template>
               <div class="body">
                 <div class="row">
@@ -267,7 +345,7 @@
             </mat-tab>
             <mat-tab *ngIf="complete">
               <ng-template mat-tab-label>
-                Completed Courses
+                Completed
               </ng-template>
               <div class="body">
                 <div class="row">

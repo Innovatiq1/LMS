@@ -63,10 +63,10 @@
                   <mat-header-cell *matHeaderCellDef 
                     >{{commonRoles.STUDENT_ROLE}}</mat-header-cell
                   >
-                  <mat-cell *matCellDef="let row" class="name">
+                  <mat-cell *matCellDef="let row">
                     <span class="mobile-label">{{commonRoles.STUDENT_ROLE}}:</span
-                    >{{ row?.studentId.name | capitalizeFirstLetter }}
-                    {{ row?.studentId?.last_name | capitalizeFirstLetter }}
+                    > <span class="name" >{{ row?.studentId.name | capitalizeFirstLetter }}
+                    {{ row?.studentId?.last_name | capitalizeFirstLetter }}</span>
                   </mat-cell>
                 </ng-container>
 
@@ -125,7 +125,7 @@
                     Exam Score
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row" [routerLink]="row?.examAssessmentAnswer?._id ? ['/student/test/preview', row.examAssessmentAnswer?._id, 'student', row.studentId._id] : null" [queryParams]="{ assessmentType: 'exam' }">
-                    <span class="mobile-label">Exam Assessment Score:</span>
+                    <span class="mobile-label">Exam Score:</span>
                     <span *ngIf="row?.examAssessmentAnswer?.score != null && row?.examAssessmentAnswer?.totalScore != null; else noExamScore">
                       {{ row.examAssessmentAnswer.score }} / {{ row.examAssessmentAnswer.totalScore }}
                     </span>
@@ -135,9 +135,10 @@
 
                 <ng-container matColumnDef="Action">
                   <mat-header-cell *matHeaderCellDef 
-                    >Action
+                    >Actions
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row">
+                    <span class="mobile-label">Actions:</span>
                     <div *ngIf="!row?.examAssessmentAnswer?.studentView && row?.examAssessmentAnswer?.score != null">
                       <button class="student-view" mat-flat-button color="primary" id="submit" (click)="enableStudentView(row)">
                         <span>Enable Student View</span>
@@ -156,14 +157,10 @@
                 >
                 </mat-row>
               </table>
-              <mat-paginator
-                #paginator
-                [length]="totalItems"
-                (page)="pageSizeChange($event)"
-                [pageSizeOptions]="pageSizeArr"
-                aria-label="select pagination option"
-              >
-              </mat-paginator>
+              <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems"
+                          (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr"
+                          aria-label="select pagination option">
+                        </mat-paginator>
             </div>
           </div>
         </div>

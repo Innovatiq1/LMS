@@ -56,7 +56,7 @@ export class HeaderComponent
   countryName: string | string[] = [];
   langStoreValue?: string;
   defaultFlag?: string;
-  isOpenSidebar?: boolean;
+  isOpenSidebar?: boolean = true;
   docElement?: HTMLElement;
   isFullScreen = false;
   userFullName: any;
@@ -275,10 +275,12 @@ export class HeaderComponent
       this.renderer.removeClass(this.document.body, 'side-closed');
       this.renderer.removeClass(this.document.body, 'submenu-closed');
       localStorage.setItem('collapsed_menu', 'false');
+      this.isOpenSidebar = true; // Sidebar is open
     } else {
       this.renderer.addClass(this.document.body, 'side-closed');
       this.renderer.addClass(this.document.body, 'submenu-closed');
       localStorage.setItem('collapsed_menu', 'true');
+      this.isOpenSidebar = false; // Sidebar is closed
     }
   }
   logout() {

@@ -82,11 +82,10 @@
                   >
                   <mat-cell
                     *matCellDef="let row"
-                    class="name"
                     [routerLink]="isView ? ['/timetable/schedule-class/view-schedule-class', row.id] : null"
                   >
                     <span class="mobile-label">Program:</span>
-                    {{ row.courseId?.title }}</mat-cell
+                    <span class="name" >{{ row.courseId?.title }}</span></mat-cell
                   >
                 </ng-container>
                 <ng-container matColumnDef="courseName" *ngIf="isInstructor">
@@ -95,11 +94,10 @@
                   >
                   <mat-cell
                     *matCellDef="let row"
-                    class="name"
                     [routerLink]="isView ? ['/timetable/schedule-class/view-schedule-class', row.id] : null"
                   >
-                    <span class="mobile-label">Program:</span>
-                    {{ row.programName }}</mat-cell
+                    <span class="mobile-label">Program:</span> <span class="name" >
+                    {{ row.programName }} </span></mat-cell
                   >
                 </ng-container>
                 <ng-container matColumnDef="Code" *ngIf="isAdmin">
@@ -126,7 +124,7 @@
                     {{ row.sessions[0]?.courseCode }}</mat-cell
                   >
                 </ng-container>
-                <ng-container matColumnDef="Price">
+                <!-- <ng-container matColumnDef="Price">
                   <mat-header-cell *matHeaderCellDef 
                    class="amount3" >Trainer Fee</mat-header-cell
                   >
@@ -136,7 +134,7 @@
                   >
                     <span class="mobile-label">Trainer Fee:</span><span>$</span> {{ row.instructorCost||0 }}.00</mat-cell
                   >
-                </ng-container>
+                </ng-container> -->
                 <ng-container matColumnDef="Department">
                   <mat-header-cell *matHeaderCellDef 
                     >Department</mat-header-cell

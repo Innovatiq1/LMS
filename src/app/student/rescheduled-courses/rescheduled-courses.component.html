@@ -29,14 +29,14 @@
                         <div class="row">
                             <div class="col-md-3" *ngFor="let data of studentApprovedClasses">
                                 <div class="course-card course-card-blog">
-                                    <div *ngIf="data.courseId.feeType == 'paid'" class="course-card-image"
+                                    <div class="course-card-image"
                                         style="cursor: pointer" [routerLink]="['/student/view-course/', data.classId.id ]">
                                         <img class="img" [src]="  data?.courseId?.image_link || '../../../assets/noimage.jpg'" alt="Image" />
                                     </div>
-                                    <div *ngIf="data.courseId.feeType == 'free'" class="course-card-image"
+                                    <!-- <div *ngIf="data.courseId.feeType == 'free'" class="course-card-image"
                                         style="cursor: pointer" [routerLink]="['/student/view-freecourse/',data.courseId.id]">
                                         <img class="img" [src]=" data?.courseId?.image_link ||'../../../assets/noimage.jpg' " alt="Image" />
-                                    </div>
+                                    </div> -->
 
                                     <div class="blog-table">
                                         <div class="post-user mt-3">
@@ -48,7 +48,7 @@
                                                 <time>{{ data?.courseId?.courseCode }} </time>
                                             </p>
                                         </div>
-                                        <h6>{{ data?.courseId?.training_hours }}Hours</h6>
+                                        <h6>{{ data?.courseId?.department }}Department</h6>
                                         <p class="course-card-description" [innerHTML]=" data?.courseId?.course_detailed_description  | bulletPoints | truncate : 40 "></p>
                                         <div class="text-center mb-3">
 

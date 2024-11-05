@@ -53,6 +53,9 @@
                                 <td colspan="4" *ngIf="data.discountType == 'percentage'" class="price">
                                     - ${{(data.courseFee * data.discountValue / 100) | number : '1.2-2'}}
                                 </td>
+                                <td colspan="4" *ngIf=!data.discountType class="price">
+                                    - ${{0 | number : '1.2-2'}}
+                                </td>
 
                             </tr>
                             <tr>
@@ -64,6 +67,9 @@
                                 </td>
                                 <td colspan="4" *ngIf="data.discountType == 'percentage'" class="price">
                                     ${{data.courseFee - (data.courseFee * data.discountValue / 100) | number : '1.2-2'}}
+                                </td>
+                                <td colspan="4" *ngIf=!data.discountType class="price">
+                                    ${{data.courseFee| number : '1.2-2'}}
                                 </td>
                             </tr>
                         </tbody>

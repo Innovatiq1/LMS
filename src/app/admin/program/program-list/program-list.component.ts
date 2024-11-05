@@ -50,8 +50,7 @@ export class ProgramListComponent {
     
   ];
   isLoading = false;
-  isNoMoreData = false;
-  programData: any = [];
+  programData: any[] = [];
   programCourse!: ProgramCourse;
   pageSizeArr = this.utils.pageSizeArr;
   coursePaginationModel!: Partial<CoursePaginationModel>;
@@ -102,7 +101,7 @@ row: any;
     private dialog: MatDialog,
     private fb: FormBuilder,
     private userService: UserService,
-    private authenService: AuthenService
+    private authenService: AuthenService,
   ) { this.coursePaginationModel = {};
   let urlPath = this.route.url.split('/')
   this.path = urlPath[urlPath.length - 1];
@@ -115,7 +114,7 @@ row: any;
 
   })
 
-  if (this.path == 'program'){
+  if (this.path == 'program-name'){
     this.isProgram = true;
     this.displayedColumns = [
       'program',
@@ -163,6 +162,38 @@ row: any;
     ];
   }
  }
+
+ 
+ ngOnInit(): void {
+  const roleDetails =this.authenService.getRoleDetails()[0].menuItems
+  let urlPath = this.route.url.split('/');
+  const parentId = `${urlPath[1]}/${urlPath[2]}`;
+  const childId =  urlPath[urlPath.length - 2];
+  const subChildId =  urlPath[urlPath.length - 1];
+  let parentData = roleDetails.filter((item: any) => item.id == parentId);
+  let childData = parentData[0].children.filter((item: any) => item.id == childId);
+  let subChildData = childData[0].children.filter((item: any) => item.id == subChildId);
+  let actions = subChildData[0].actions
+  let createAction = actions.filter((item:any) => item.title == 'Create')
+  let viewAction = actions.filter((item:any) => item.title == 'View')
+
+  if(createAction.length > 0){
+    this.create = true
+  }
+  if(viewAction.length >0){
+    this.view = true;
+  }
+  this.getProgramList();
+  // this.getFilterData();
+  this.getAllVendorsAndUsers();
+  let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+  forkJoin({
+    courses: this.courseService.getAllProgramsWithoutPagination({ ...this.coursePaginationModel,},userId),
+  }).subscribe((response) => {
+    this.programList = response.courses;
+  });
+
+}
  openFilterCard(){
 this.isFilter = !this.isFilter;
  }
@@ -235,6 +266,7 @@ applyFilter() {
   this.paginator.pageIndex = 0;
   this.courseService.getFilteredProgramData(this.filterBody, { ...this.coursePaginationModel }).subscribe((response) => {
     this.programData = response.data.docs;
+    
     this.totalItems = response.data.totalDocs;
     this.isFiltered = true;
     this.coursePaginationModel.docs = response.data.docs;
@@ -264,7 +296,6 @@ getFilterData(filters?: any) {
 
   getProgramList(filters?: any) {
     this.isLoading = true;
-    this.isNoMoreData = false;
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
 
     let filterProgram = this.filterName;
@@ -282,6 +313,7 @@ getFilterData(filters?: any) {
         this.coursePaginationModel.page = response.page;
         this.coursePaginationModel.limit = response.limit;
         this.coursePaginationModel.totalDocs = response.totalDocs;
+        this.ref.detectChanges();
       },
       (error) => {
         this.isLoading = false;
@@ -355,36 +387,6 @@ getFilterData(filters?: any) {
     }
   }
   
-  ngOnInit(): void {
-    const roleDetails =this.authenService.getRoleDetails()[0].menuItems
-    let urlPath = this.route.url.split('/');
-    const parentId = `${urlPath[1]}/${urlPath[2]}`;
-    const childId =  urlPath[urlPath.length - 2];
-    const subChildId =  urlPath[urlPath.length - 1];
-    let parentData = roleDetails.filter((item: any) => item.id == parentId);
-    let childData = parentData[0].children.filter((item: any) => item.id == childId);
-    let subChildData = childData[0].children.filter((item: any) => item.id == subChildId);
-    let actions = subChildData[0].actions
-    let createAction = actions.filter((item:any) => item.title == 'Create')
-    let viewAction = actions.filter((item:any) => item.title == 'View')
-
-    if(createAction.length > 0){
-      this.create = true
-    }
-    if(viewAction.length >0){
-      this.view = true;
-    }
-    this.getProgramList();
-    this.getFilterData();
-    this.getAllVendorsAndUsers();
-    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-    forkJoin({
-      courses: this.courseService.getAllProgramsWithoutPagination({ ...this.coursePaginationModel,},userId),
-    }).subscribe((response) => {
-      this.programList = response.courses;
-    });
-
-  }
 
   // getAllVendorsAndUsers() {
   //   this.courseService.getVendor().subscribe((response: any) => {
@@ -511,49 +513,49 @@ viewActiveProgram(id:string, status: string):void {
 
 
   }
-  private refreshTable() {
-    this.paginator._changePageSize(this.paginator.pageSize);
-  }
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.programData.renderedData.length;
-    return numSelected === numRows;
-  }
-  masterToggle() {
-    this.isAllSelected()
-      ? this.selection.clear()
-      : this.programData.renderedData.forEach((row: ProgramCourse) =>
-          this.selection.select(row)
-        );
-  }
-  removeSelectedRows() {
-    const totalSelect = this.selection.selected.length;
+  // private refreshTable() {
+  //   this.paginator._changePageSize(this.paginator.pageSize);
+  // }
+  // isAllSelected() {
+  //   const numSelected = this.selection.selected.length;
+  //   const numRows = this.programData.renderedData.length;
+  //   return numSelected === numRows;
+  // }
+  // masterToggle() {
+  //   this.isAllSelected()
+  //     ? this.selection.clear()
+  //     : this.programData.renderedData.forEach((row: ProgramCourse) =>
+  //         this.selection.select(row)
+  //       );
+  // }
+  // removeSelectedRows() {
+  //   const totalSelect = this.selection.selected.length;
 
-    Swal.fire({
-      title: "Confirm Deletion",
-      text: "Are you sure you want to delete?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-      confirmButtonText: "Delete",
-      cancelButtonText: "Cancel",
-    }).then((result) => {
-      if (result.isConfirmed){
-        this.selection.selected.forEach((item) => {
-          const index: number = this.programData.renderedData.findIndex(
-            (d: ProgramCourse) => d === item
-          );
+  //   Swal.fire({
+  //     title: "Confirm Deletion",
+  //     text: "Are you sure you want to delete?",
+  //     icon: "warning",
+  //     showCancelButton: true,
+  //     confirmButtonColor: "#d33",
+  //     cancelButtonColor: "#3085d6",
+  //     confirmButtonText: "Delete",
+  //     cancelButtonText: "Cancel",
+  //   }).then((result) => {
+  //     if (result.isConfirmed){
+  //       this.selection.selected.forEach((item) => {
+  //         const index: number = this.programData.renderedData.findIndex(
+  //           (d: ProgramCourse) => d === item
+  //         );
           
-          this.refreshTable();
-          this.selection = new SelectionModel<ProgramCourse>(true, []);
-        });
-        Swal.fire({
-          title: 'Success',
-          text: 'Record Deleted Successfully...!!!',
-          icon: 'success',
-        });
-      }
-    });
-  }
+  //         // this.refreshTable();
+  //         this.selection = new SelectionModel<ProgramCourse>(true, []);
+  //       });
+  //       Swal.fire({
+  //         title: 'Success',
+  //         text: 'Record Deleted Successfully...!!!',
+  //         icon: 'success',
+  //       });
+  //     }
+  //   });
+  // }
 }

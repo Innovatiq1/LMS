@@ -70,7 +70,7 @@
                       </div>
                     </li>
                     <li>
-                      <div class="export-button m-l-10" matTooltip="PDF">
+                      <div class="export-button m-l-10 m-x" matTooltip="PDF">
                         <img
                           src="assets/pdf (1).svg"
                           alt=""
@@ -115,7 +115,7 @@
                   </mat-header-cell>
                   <mat-cell
                     *matCellDef="let row"
-                    class="name"
+                   
                     [routerLink]="
                       view
                         ? [
@@ -125,8 +125,8 @@
                         : null
                     "
                   >
-                    <span class="mobile-label">Student Name:</span
-                    >{{ row.student_name | capitalizeFirstLetter }}
+                    <span class="mobile-label">{{ commonRoles.STUDENT_ROLE }}:</span
+                    > <span class="name">{{ row.student_name | capitalizeFirstLetter }} </span>
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="Program Name">
@@ -142,7 +142,7 @@
                         : null
                     "
                   >
-                    <span class="mobile-label">Program Name:</span>
+                    <span class="mobile-label">Program:</span>
                     {{ row.programTitle | capitalizeFirstLetter }}</mat-cell
                   >
                 </ng-container>
@@ -168,7 +168,7 @@
                     {{ row.classId.courseId.courseFee || 0 }}.00</mat-cell
                   >
                 </ng-container>
-                <ng-container matColumnDef="Instructor-Fee">
+                <!-- <ng-container matColumnDef="Instructor-Fee">
                   <mat-header-cell *matHeaderCellDef
                     >{{ commonRoles?.INSTRUCTOR_ROLE }} Fee</mat-header-cell
                   >
@@ -188,7 +188,7 @@
                     ><span>$</span>
                     {{ row.classId.instructorCost || 0 }}.00</mat-cell
                   >
-                </ng-container>
+                </ng-container> -->
                 <!-- Class Start Date -->
                 <ng-container matColumnDef="Class Start Date">
                   <mat-header-cell *matHeaderCellDef
@@ -205,7 +205,7 @@
                         : null
                     "
                   >
-                    <span class="mobile-label">Class Start Date:</span
+                    <span class="mobile-label">Start Date:</span
                     >{{
                       row?.classId?.sessions[0]?.sessionStartDate | date
                     }}</mat-cell
@@ -225,7 +225,7 @@
                         : null
                     "
                   >
-                    <span class="mobile-label">Class End Date:</span
+                    <span class="mobile-label">End Date:</span
                     >{{
                       row?.classId?.sessions[0]?.sessionEndDate | date
                     }}</mat-cell
@@ -247,7 +247,7 @@
                         : null
                     "
                   >
-                    <span class="mobile-label">Fees:</span
+                    <span class="mobile-label">Registered Date:</span
                     >{{ row.registeredOn | date }}</mat-cell
                   >
                 </ng-container>
@@ -267,6 +267,7 @@
                         : null
                     "
                   >
+                  <span class="mobile-label">Status:</span>
                     <span
                       [class]="
                         row?.status === 'approved'

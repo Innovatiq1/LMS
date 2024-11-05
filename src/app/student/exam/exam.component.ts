@@ -88,6 +88,7 @@ retakeRequestData:any;
   this.getAllAnswers();
   }
   onTabChange(event: MatTabChangeEvent) {
+    this.assessmentPaginationModel.page = 1;
     this.tab = event.index;
     this.getAllAnswers();
   }
@@ -99,6 +100,7 @@ retakeRequestData:any;
         .getExamQuestionJsonV2({ ...this.assessmentPaginationModel, studentId })
         .subscribe((res) => {
           this.dataSource = res.data.docs;
+          // console.log("tutorialDataSourse==",this.dataSource);
           this.totalItems = res.data.totalDocs;
           this.assessmentPaginationModel.docs = res.data.docs;
           this.assessmentPaginationModel.page = res.data.page;
@@ -120,10 +122,13 @@ retakeRequestData:any;
       
 
     } else if (this.tab === 1 && this.isTutorial) { 
+      
       this.assessmentService
         .getTutorialQuestionJsonV2({ ...this.assessmentPaginationModel, studentId })
         .subscribe((res) => {
+
           this.dataSource = res.data.docs;
+          // console.log("getTutorial",this.dataSource)
           this.totalItems = res.data.totalDocs;
           this.assessmentPaginationModel.docs = res.data.docs;
           this.assessmentPaginationModel.page = res.data.page;
@@ -248,6 +253,7 @@ retakeRequestData:any;
               'The tutorial has been deleted successfully.',
               'success'
             );
+            this.assessmentPaginationModel.page = 1
             this.getAllAnswers();
           },
           (error: any) => {

@@ -28,7 +28,7 @@
                         <button  mat-raised-button id="submit" (click)="enableMultipleCertificates()" [disabled]="isGeneratingCertificates" ><span class="custom-button-padding">Generate Certificate</span></button>
                       </div>
                     </li>
-                    <li>
+                    <li class="m3">
                       <span style="font-weight: bold;">Export as</span>
                     </li>
                     <li>
@@ -67,8 +67,8 @@
                 <ng-container matColumnDef="Student Name">
                   <mat-header-cell *matHeaderCellDef >{{commonRoles.STUDENT_ROLE}}
                   </mat-header-cell>
-                  <mat-cell *matCellDef="let row" class="name" [routerLink]="view ? ['/admin/program/view-completion-list/',row.id] : null">
-                    <span class="mobile-label">Student Name:</span> {{row.student_name | capitalizeFirstLetter}}</mat-cell>
+                  <mat-cell *matCellDef="let row"  [routerLink]="view ? ['/admin/program/view-completion-list/',row.id] : null">
+                    <span class="mobile-label">{{commonRoles.STUDENT_ROLE}}:</span> <span class="name">{{row.student_name | capitalizeFirstLetter}}</span></mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="email">
                   <mat-header-cell *matHeaderCellDef >Email</mat-header-cell>
@@ -81,7 +81,7 @@
                 <ng-container matColumnDef="Program Name">
                   <mat-header-cell *matHeaderCellDef >Program</mat-header-cell>
                   <mat-cell *matCellDef="let row" [routerLink]="view ? ['/admin/program/view-completion-list/',row.id] : null">
-                    <span class="mobile-label">Program Name:</span>{{row.programTitle | capitalizeFirstLetter}} </mat-cell>
+                    <span class="mobile-label">Program:</span>{{row.programTitle | capitalizeFirstLetter}} </mat-cell>
                 </ng-container>
                  <!-- Student Name -->
                 
@@ -90,7 +90,7 @@
                   <mat-header-cell *matHeaderCellDef >Start Date
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row" [routerLink]="view ? ['/admin/program/view-completion-list/',row.id] : null">
-                    <span class="mobile-label">Class Start Date:</span>{{row?.classId?.sessions[0]?.sessionStartDate |date}} </mat-cell>
+                    <span class="mobile-label">Start Date:</span>{{row?.classId?.sessions[0]?.sessionStartDate |date}} </mat-cell>
                 </ng-container>
 
                 <!-- Enddate -->
@@ -98,7 +98,7 @@
                   <mat-header-cell *matHeaderCellDef >End Date
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row" [routerLink]="view ? ['/admin/program/view-completion-list/',row.id] : null">
-                    <span class="mobile-label">Class End Date:</span>{{row?.classId?.sessions[0]?.sessionEndDate |date}} </mat-cell>
+                    <span class="mobile-label">End Date:</span>{{row?.classId?.sessions[0]?.sessionEndDate |date}} </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="Registered Date">

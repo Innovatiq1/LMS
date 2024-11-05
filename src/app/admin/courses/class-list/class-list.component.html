@@ -161,7 +161,6 @@
                   </mat-header-cell>
                   <mat-cell
                     *matCellDef="let row"
-                    class="name"
                     [routerLink]="isView ? ['/admin/courses/class-list/view-class/', row.id] : null"
                   >
                     <span class="mobile-label">Course:</span>
@@ -192,7 +191,7 @@
                     {{ row?.courseCode }}</mat-cell
                   >
                 </ng-container>
-                <ng-container matColumnDef="Price">
+                <!-- <ng-container matColumnDef="Price">
                   <mat-header-cell *matHeaderCellDef 
                     class="amount">Trainer Fee</mat-header-cell
                   >
@@ -203,7 +202,7 @@
                     <span class="mobile-label">Amount:</span><span>$</span>
                     {{ row.instructorCost||0 }}.00</mat-cell
                   >
-                </ng-container>
+                </ng-container> -->
                 <ng-container matColumnDef="Department">
                   <mat-header-cell *matHeaderCellDef 
                     >Department</mat-header-cell

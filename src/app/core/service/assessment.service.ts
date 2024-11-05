@@ -144,6 +144,7 @@ import { ApiResponse } from '@core/models/general.response';
     }
 
     getExamAnswersV2( filter?: Partial<AssessmentQuestionsPaginationModel>): Observable<ApiResponse> {
+      console.log("filtere",filter)
       const apiUrl = `${this.defaultUrl}admin/exam-assesment-answers/v2`;
       return this.http.get<any>(apiUrl, {
         params: this.buildParams(filter),

@@ -111,7 +111,7 @@ export class CreateClassComponent {
       this.dataSourceArray.push({
         start: moment().set({ hour: 8, minute: 0 }).format('YYYY-MM-DD HH:mm'),
         end: moment().set({ hour: 8, minute: 0 }).format('YYYY-MM-DD HH:mm'),
-        instructor: '0',
+        instructor: 'date',
       });
       this.dataSource = this.dataSourceArray;
     }

@@ -76,8 +76,8 @@
                         <ng-container matColumnDef="name">
                           <mat-header-cell *matHeaderCellDef >Name
                           </mat-header-cell>
-                          <mat-cell *matCellDef="let row" class="name"(click)="isView ? aboutInstructor(row.id) : null" (contextmenu)="onContextMenu($event, row)"><span
-                              class="mobile-label">Name:</span> {{row.name}}
+                          <mat-cell *matCellDef="let row" (click)="isView ? aboutInstructor(row.id) : null" (contextmenu)="onContextMenu($event, row)"><span
+                              class="mobile-label">Name:</span><span class="name" > {{row.name}}</span>
                           </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="department">
@@ -210,7 +210,7 @@
               Grid View
             </ng-template>
             <div class="row mt-4 ml-0 mr-0">
-              <div class="col-md-3"  *ngFor="let row of dataSource">
+              <div class="col-md-3"  *ngFor="let row of dataSourceGrid">
                 <div class="card border-apply" style="height: 220px; margin-top: 20px;cursor: pointer;" (click)="aboutInstructor(row.id)">
                     <div class="contact-grid">
                       <div class="row">
@@ -255,7 +255,7 @@
               </div>
             </div>
             <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems"
-            (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr"
+            (page)="GirdpageSizeChange($event)" [pageSizeOptions]="pageSizeArr"
             aria-label="select pagination option">
           </mat-paginator>
           </mat-tab>

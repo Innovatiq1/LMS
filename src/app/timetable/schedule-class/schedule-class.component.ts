@@ -65,7 +65,7 @@ export class ScheduleClassComponent {
     'Class',
     'Minimum Students',
     'Maximum Students',
-    'Price',
+    // 'Price',
   ];
 
 

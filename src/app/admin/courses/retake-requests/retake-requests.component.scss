@@ -14,15 +14,8 @@ mat-cell {
     }
   }
 }
-.materialTableHeader {
-  display: flex;
-  justify-content: flex-end;
-}
-.approveBtn{
-  float: right;
-  margin-right: 10%;
-  margin-top: 8px;
-}
+
+
 .btn1{
   min-width: 75px!important;
 }
@@ -52,3 +45,11 @@ mat-cell {
   position: relative;
   margin-left: 550px!important;
 }
+mat-cell:first-of-type, mat-header-cell:first-of-type, mat-footer-cell:first-of-type {
+  padding-left: 24px; 
+ }
+ @media (max-width: 600px) {
+   mat-cell:first-of-type, mat-header-cell:first-of-type, mat-footer-cell:first-of-type {
+     padding-left: 15px;
+   }
+   }

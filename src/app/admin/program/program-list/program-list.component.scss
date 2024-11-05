@@ -28,7 +28,10 @@ svg{
 .mail{
     margin-left: 40px;
 }
-
+.name {
+  color: deepskyblue;
+  font-weight: 500;
+}
 .bg {
     fill: #000;
     background-color: #d3cdcd;
@@ -40,6 +43,17 @@ svg{
   .img-w{
   width: 16%;
   }
+
+  .image-w{
+    height: 200px;
+    width: 370px;
+  }
+
+  @media (max-width: 767px) {
+    .image-w {
+        width: 230px;
+    }
+}
 
 @media (min-width: 768px) {
     .col-md-3 {
@@ -54,7 +68,7 @@ svg{
     border-radius: 0 15px 15px 0;
     padding: 1px 13px;
     font-size: 14px;
-    margin-left: 10px;
+    // margin-left: 10px;
 }
 
 .ecount {
@@ -70,15 +84,27 @@ svg{
     border-left: 1px solid #7A7A7A;
     // height: 240px;
 }
+@media (max-width: 768px) {
+  .count {
+      border: 0px;
+  }
+ 
+}
+@media (max-width: 768px) {
+  .m3 {
+      margin: 14px;
+  }
+ 
+}
 
 .title {
     text-align: right;
     margin-top: -120px;
 }
-.text {
-    padding-left:50px;
-    padding-top: 20px;
-  }
+// .text {
+//     padding-left:50px;
+//     padding-top: 20px;
+//   }
   .cards img{
     border-radius: 6px;
     box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56),
@@ -212,3 +238,18 @@ svg{
   display: flex;
   align-items: center;
 }
+
+@media (max-width: 768px) {
+  .materialTableHeader .right {
+      height: 129px;
+  }
+ 
+}
+mat-cell:first-of-type, mat-header-cell:first-of-type, mat-footer-cell:first-of-type {
+  padding-left: 24px; 
+ }
+ @media (max-width: 600px) {
+   mat-cell:first-of-type, mat-header-cell:first-of-type, mat-footer-cell:first-of-type {
+     padding-left: 15px;
+   }
+   }

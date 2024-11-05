@@ -73,6 +73,7 @@ export class AllStudentsComponent
   totalItems:any;
   pageSizeArr = this.utils.pageSizeArr;
   filterName: any;
+  dataSourceGrid: any;
 
   constructor(
     public httpClient: HttpClient,
@@ -118,9 +119,11 @@ export class AllStudentsComponent
       this.isView = true;
     }
     this.loadData();
+    this.loadDataGridData();
   }
   refresh() {
     this.loadData();
+    this.loadDataGridData();
   }
   addNew() {
     this.router.navigate(['/student/settings/add-student']);
@@ -248,6 +251,25 @@ export class AllStudentsComponent
     this.usersPaginationModel.page = $event?.pageIndex + 1;
     this.usersPaginationModel.limit = $event?.pageSize;
     this.loadData()
+  
+  }
+  public loadDataGridData() {
+    const type = AppConstants.STUDENT_ROLE;
+    let filterProgram = this.filterName;
+    const payload = { ...this.usersPaginationModel,title:filterProgram };
+      this.studentsService.getAllStudentss(payload,type).subscribe((result) => {
+        this.isTblLoading = false;
+        this.dataSourceGrid = result.data.docs;
+        this.totalItems = result.data.totalDocs;
+        this.usersPaginationModel.docs = result.data.docs;
+        this.usersPaginationModel.page = result.data.page;
+        this.usersPaginationModel.limit = result.data.limit;
+      });
+    }
+  gridpageSizeChange($event: any) {
+    this.usersPaginationModel.page = $event?.pageIndex + 1;
+    this.usersPaginationModel.limit = $event?.pageSize;
+    this.loadDataGridData()
   
   }
   

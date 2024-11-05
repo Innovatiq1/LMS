@@ -125,9 +125,18 @@ export class ExamTestListComponent {
   getLabel(data:any):string{
     const course = data.courseId;
     const isApproved = data.studentClassId?.some((v:any)=>v.status == 'approved');
-    if(course.feeType == 'free' || isApproved){
+    const isRegistered = data.studentClassId?.some((v:any)=>v.status == 'registered');
+
+    if(course.feeType == 'free' && course.approval == 'no' || isApproved){
       return 'Take Exam'
     }
+    if(course.feeType == 'free' && course.approval == 'yes'  && isRegistered ){
+      return 'Approval Pending'
+    }
+    if(course.feeType == 'free' && course.approval == 'yes'  && !isRegistered ){
+      return 'Take Exam'
+    }
+  
     return data.studentClassId?.length ? 'Approval Pending' : 'Pay'
   }
 
@@ -158,12 +167,20 @@ export class ExamTestListComponent {
       playbackTime: 0,
     }));
     const studentClass =await firstValueFrom(this.registerClass(courseDetails, courseKit));
-    if(studentClass.success){
+    if(studentClass.success && courseDetails.approval == 'no'){
       this.studentClassId= studentClass?.data?.createdStudentClass?.id
       const courseDetailInfo = data.courseId;
       const studentId = localStorage.getItem('id');
       const examAssessment = data.courseId.exam_assessment._id;
       this.redirectToExam(courseDetailInfo, studentId, null)
+    } else {
+      Swal.fire({
+        title: 'Success',
+        text: 'Registered for the Exam successfully.Please wait for approval',
+        icon: 'success',
+      });
+      this.getEnabledExams();
+
     }
   }
 
@@ -365,7 +382,7 @@ export class ExamTestListComponent {
       verify:true,
       paid: courseFee ? false: true,
       companyId: companyId,
-      status:"approved",
+      status:courseDetails?.approval == "yes"? 'registered':'approved',
       courseType:"direct"
     };
     return this.courseService.saveRegisterClass(payload)

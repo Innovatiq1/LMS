@@ -242,15 +242,31 @@ export class ViewCompletionComponent implements OnInit {
     }
  
   }
-  Status(element: Student, status: string) {
-    const item: StudentApproval = {
-      approvedBy: this.getCurrentUserId(),
-      approvedOn: moment().format('YYYY-MM-DD'),
-      classId: element.classId._id,
-      status,
-      studentId: element.studentId.id,
-      session: this.getSessions(element),
-    };
+  Status(element: Student, status: string,action:string) {
+    let item = {}
+    if(action == 'discountVerification'){
+       item  = {
+        approvedBy: this.getCurrentUserId(),
+        approvedOn: moment().format('YYYY-MM-DD'),
+        classId: element.classId._id,
+        status,
+        studentId: element.studentId.id,
+        session: this.getSessions(element),
+        discountVerification :false
+  
+      };
+    } else if(action == 'approval'){
+      item  = {
+        approvedBy: this.getCurrentUserId(),
+        approvedOn: moment().format('YYYY-MM-DD'),
+        classId: element.classId._id,
+        status,
+        studentId: element.studentId.id,
+        session: this.getSessions(element),
+        approval: false
+      };
+    }
+ 
     Swal.fire({
       title: 'Are you sure?',
       text: 'Do you want to withdraw this course!',

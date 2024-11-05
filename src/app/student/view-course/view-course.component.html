@@ -1,619 +1,4 @@
-<section *ngIf="free" class="content">
-  <div class="content-block">
-    <div class="block-header" *ngFor="let breadscrum of breadscrums">
-      <app-breadcrumb
-        [title]="breadscrum.title"
-        [items]="breadscrum.items"
-        [active_item]="breadscrum.active"
-      >
-      </app-breadcrumb>
-    </div>
-    <div class="row clearfix mt-5">
-      <div class="col-lg-4 col-md-3" *ngIf="!isCompleted && !isApproved">
-        <div class="card">
-          <div class="m-b-20">
-            <div class="contact-grid">
-              <div class="profile-header bg-dark">
-                <div class="user-name">{{ courseDetails?.title }}</div>
-                <div class="name-center">
-                  {{ courseDetails?.courseCode }}
-                </div>
-              </div>
-              <img
-                src="{{ courseDetails?.image_link }}"
-                class="user-img"
-                alt=""
-              />
-              <p
-                [innerHTML]="getSafeHtml(courseDetails?.course_description)"
-              ></p>
 
-              <div class="row">
-                <!-- <div class="col-3">
-                  <span class="day_font">{{
-                    courseDetails?.course_duration_in_days
-                  }}</span>
-                  <span class="dis_font">Days</span>
-                </div> -->
-                <!-- <div class="col-4">
-                  <span class="day_font">{{
-                    courseDetails?.training_hours
-                  }}</span>
-                  <span class="dis_font">Hours</span>
-                </div> -->
-                <div style="padding-left: 20px;">
-                  <span class="day_font">${{ courseDetails?.fee || 0 }} </span>
-                  <span class="dis_font">Fee</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <mat-tab-group mat-align-tabs="start">
-            <mat-tab label="About">
-              <div class="p-4">
-                <ul class="list-group list-group-unbordered">
-                  <li class="list-group-item">
-                    <b>Category </b>
-                    <div class="profile-desc-item float-end">
-                      {{
-                        courseDetails?.main_category?.category_name | titlecase
-                      }}
-                    </div>
-                  </li>
-                  <li class="list-group-item">
-                    <b>Course Created </b>
-                    <div class="profile-desc-item float-end">
-                      {{ courseDetails?.updatedAt | date }}
-                    </div>
-                  </li>
-                  <li class="list-group-item">
-                    <b>Course Run </b>
-                    <div class="profile-desc-item float-end">
-                      {{
-                        classDetails?.isGuaranteedToRun == true ? "Yes" : "No"
-                      }}
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </mat-tab>
-          </mat-tab-group>
-        </div>
-      </div>
-
-      <div *ngIf="isApproved || isCompleted" class="col-lg-12 col-md-8">
-        <div class="row">
-          <div class="col-lg-9 col-md-9">
-            <div>
-              <div *ngIf="currentScormModule">
-                <iframe
-                  [src]="iframeUrl"
-                  width="100%"
-                  height="500"
-                  frameborder="0"
-                  allowfullscreen
-                ></iframe>
-              </div>
-              <div class="video-container" (click)="toggleVideoPlay()">
-                <video
-                  #videoPlayer
-                  width="100%"
-                  (timeupdate)="onTimeUpdate($event)"
-                  controls
-                  (pause)="destroyModal()"
-                  (play)="onPlay()"
-                  style="border-radius: 12px; box-shadow: rgb(23, 23, 24)"
-                >
-                  Your browser does not support the video tag.
-                </video>
-                <div *ngIf="!isPlaying" class="play-button"></div>
-              </div>
-              <div class="">
-                <h4 c>{{ header }}</h4>
-                <p>{{ sdiscrption }}</p>
-              </div>
-            </div>
-
-            <div class="card" *ngIf="isApproved || isCompleted">
-              <div class="card-header">
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                  <li class="nav-item" role="presentation">
-                    <button
-                      class="nav-link active"
-                      id="home-tab"
-                      data-bs-toggle="tab"
-                      data-bs-target="#home"
-                      type="button"
-                      role="tab"
-                      aria-controls="home"
-                      aria-selected="true"
-                    >
-                      Course Details
-                    </button>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                    <button
-                      class="nav-link"
-                      id="test-tab"
-                      data-bs-toggle="tab"
-                      data-bs-target="#test"
-                      type="button"
-                      role="tab"
-                      aria-controls="test"
-                      aria-selected="false"
-                    >
-                      Test
-                    </button>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                    <button
-                      class="nav-link"
-                      id="feedback-tab"
-                      data-bs-toggle="tab"
-                      data-bs-target="#feedback"
-                      type="button"
-                      role="tab"
-                      aria-controls="feedback"
-                      aria-selected="false"
-                    >
-                      Feedback
-                    </button>
-                  </li>
-                  <li class="nav-item" role="presentation" *ngIf="isCompleted">
-                    <button
-                      class="nav-link"
-                      id="contact-tab"
-                      data-bs-toggle="tab"
-                      data-bs-target="#contact"
-                      type="button"
-                      role="tab"
-                      aria-controls="contact"
-                      aria-selected="false"
-                    >
-                      Certificate
-                    </button>
-                  </li>
-                </ul>
-              </div>
-              <div class="card-body">
-                <div class="tab-content" id="myTabContent">
-                  <div
-                    class="tab-pane fade show active"
-                    id="home"
-                    role="tabpanel"
-                    aria-labelledby="home-tab"
-                  >
-                    <h5 class="bg-light p-2">
-                      Course Completed :
-                      <span
-                        [ngClass]="{
-                          'red-text': playBackTime < 50,
-                          'green-text': playBackTime >= 50
-                        }"
-                        >{{ playBackTime.toFixed(2) || 0 }}%</span
-                      >
-                    </h5>
-                    <span class="font-bold">Course Description:</span>
-                    <p
-                      [innerHTML]="
-                      getSafeHtml(courseDetails?.course_description)
-                      "
-                    ></p>
-                    <div class="row p-2 bg-light" style="border-radius: 5px">
-                      <div class="col-6">
-                        <span class="font-bold"
-                          >Title:
-                          <p class="font-">
-                            {{ courseDetails?.title }}
-                          </p></span
-                        >
-                        <span class="font-bold"
-                          >Course Code:
-                          <p>{{ courseDetails?.courseCode }}</p></span
-                        >
-                      </div>
-
-                      <div class="col-6">
-                        <label class="font-bold">About</label>
-                        <div
-                          class="d-flex justify-content-between shadow-lg rounded-3 p-2"
-                        >
-                          <!-- <div>
-                            <span class="day_font">{{
-                              courseDetails?.course_duration_in_days
-                            }}</span>
-                            <span class="dis_font">Days</span>
-                          </div>
-                          <div>
-                            <span class="day_font">{{
-                              courseDetails?.training_hours
-                            }}</span>
-                            <span class="dis_font">Hours</span>
-                          </div> -->
-                          <div>
-                            <span class="day_font"
-                              >${{ courseDetails?.fee || 0 }}</span
-                            >
-                            <span class="dis_font">Fee</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-6">
-                        <span class="font-bold"
-                          >Status:
-                          <button
-                          *ngIf="
-                            !isRegistered &&  
-                            !isStatus &&
-                            !isApproved &&
-                            !isCancelled &&
-                            !isCompleted
-                          "
-                          class="btn btn-primary"
-                          (click)="registerClass(courseDetails._id)"
-                        >
-                          Register
-                        </button>
-
-
-                          <span
-                            class="badge badge-solid-orange mx-2"
-                            *ngIf="isRegistered  || isStatus"
-                            >Registered</span
-                          >
-
-                          <span
-                            class="badge badge-solid-green mx-2"
-                            *ngIf="isApproved"
-                            >Approved</span
-                          >
-                          <span
-                            class="badge badge-solid-red mx-2"
-                            *ngIf="isCancelled"
-                            >Cancelled</span
-                          >
-                          <span
-                            class="badge badge-solid-green mx-2"
-                            *ngIf="isCompleted"
-                            >Completed</span
-                          >
-                        </span>
-                      </div>
-                    </div>
-
-                    <ul class="m-2 list-group-unbordered">
-                      <li class="list-group-item">
-                        <b>Course Created </b>
-                        <div class="profile-desc-item float-end">
-                          {{ courseDetails?.updatedAt | date }}
-                        </div>
-                      </li>
-                      <li class="list-group-item">
-                        <b>Course Run </b>
-                        <div class="profile-desc-item float-end">
-                          {{
-                            classDetails?.isGuaranteedToRun == true
-                              ? "Yes"
-                              : "No"
-                          }}
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                  <div
-                    class="tab-pane fade"
-                    id="des"
-                    role="tabpanel"
-                    aria-labelledby="des-tab"
-                  >
-                    {{ longDescription }}
-                  </div>
-
-                  <div
-                    class="tab-pane fade"
-                    id="profile"
-                    role="tabpanel"
-                    aria-labelledby="profile-tab"
-                  >
-                    <table mat-table [dataSource]="dataSource">
-                      <ng-container matColumnDef="position">
-                        <th mat-header-cell *matHeaderCellDef>{{commonRoles?.INSTRUCTOR_ROLE}}</th>
-                        <td mat-cell *matCellDef="let element">
-                          {{ element?.instructorId?.name }}
-                          {{
-                            element?.instructorId?.last_name
-                              ? element?.instructorId?.last_name
-                              : ""
-                          }}
-                        </td>
-                      </ng-container>
-
-                      <ng-container matColumnDef=" Class Start Date ">
-                        <th mat-header-cell *matHeaderCellDef>
-                          Class Start Date
-                        </th>
-                        <td mat-cell *matCellDef="let element">
-                          {{ element?.sessionStartDate | date }}
-                        </td>
-                      </ng-container>
-                      <ng-container matColumnDef=" Class End Date ">
-                        <th mat-header-cell *matHeaderCellDef>
-                          Class End Date
-                        </th>
-                        <td mat-cell *matCellDef="let element">
-                          {{ element?.sessionEndDate | date }}
-                        </td>
-                      </ng-container>
-
-                      <ng-container matColumnDef="action">
-                        <th mat-header-cell *matHeaderCellDef>Action</th>
-                        <td mat-cell *matCellDef="let element">
-                        <button
-                        *ngIf="
-                          !isRegistered &&  
-                          !isStatus &&
-                          !isApproved &&
-                          !isCancelled &&
-                          !isCompleted
-                        "
-                        class="btn btn-primary"
-                        (click)="registerClass(courseDetails._id)"
-                      >
-                        Register
-                      </button>
-
-                      <span
-                      class="badge badge-solid-orange mx-2"
-                      *ngIf="isRegistered || isStatus"
-                      >Registered</span
-                    >
-
-                          <span
-                            class="badge badge-solid-green mx-2"
-                            *ngIf="isApproved"
-                            >Approved</span
-                          >
-                          <span
-                            class="badge badge-solid-red mx-2"
-                            *ngIf="isCancelled"
-                            >Cancelled</span
-                          >
-                          <span
-                            class="badge badge-solid-green mx-2"
-                            *ngIf="isCompleted"
-                            >Completed</span
-                          >
-                        </td>
-                      </ng-container>
-
-                      <tr
-                        mat-header-row
-                        *matHeaderRowDef="displayedColumns"
-                      ></tr>
-                      <tr
-                        mat-row
-                        *matRowDef="let row; columns: displayedColumns"
-                      ></tr>
-                    </table>
-                  </div>
-                  <div
-                    class="tab-pane fade"
-                    id="contact"
-                    role="tabpanel"
-                    aria-labelledby="contact-tab"
-                  >
-                    <div *ngIf="!certificateIssued">
-                      <h5 class="bg-light p-2">
-                        Certificate:
-                        <span class="badge badge-solid-green">
-                          Certificate will be available</span
-                        >
-                      </h5>
-                    </div>
-
-                    <div *ngIf="certificateIssued">
-                      <div class="col-6">
-                        <h5 class="bg-light p-2">
-                          Certificate:
-
-                          <a
-                            href="{{ studentClassDetails?.certifiacteUrl }}"
-                            target="_blank"
-                          >
-                            <mat-icon>download</mat-icon></a
-                          >
-                        </h5>
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    class="tab-pane fade"
-                    id="test"
-                    role="tabpanel"
-                    aria-labelledby="test"
-                  >
-                    <app-questions
-                      *ngIf="questionList.length"
-                      [questionList]="questionList"
-                      [answersResult]="answersResult"
-                      [getAssessmentId]="getAssessmentId"
-                      [totalTime]="questionList.length * questionTimer"
-                      (submitAnswers)="submitAnswers($event)"
-                      [isAnswersSubmitted]="isAnswersSubmitted"
-                      [isCertificate] = "isCertificate"
-                    ></app-questions>
-                  </div>
-                  <div
-                    class="tab-pane fade"
-                    id="feedback"
-                    role="tabpanel"
-                    aria-labelledby="feedback"
-                  >
-                    <div>
-                      <app-feedbackcommon
-                        [feedbackInfo]="feedbackInfo"
-                        [isPreview]="false"
-                        (submitAnswers)="submitFeedback($event)"
-                      ></app-feedbackcommon>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-3" *ngIf="isApproved || isCompleted">
-            <div class="card">
-              <table mat-table [dataSource]="coursekitDetails">
-                <ng-container matColumnDef="video">
-                  <th mat-header-cell *matHeaderCellDef>
-                    <span class="kit">Course Kit</span>
-                  </th>
-                  <td mat-cell *matCellDef="let row; let i = index">
-                    <div
-                    *ngIf="row.kitType=='course'"
-                      class="pointer"
-                      (click)="
-                        playVideos({
-                          name: row.name,
-                          discription: row.shortDescription,
-                          id: row.videoId,
-                          playbackTime: row.playbackTime
-                        })
-                      "
-                    >
-                      <span class="font-bold top"
-                        >Section:{{ i + 1 }} &nbsp;&nbsp;{{ row.name }}
-                      </span>
-                      <div class="d-flex">
-                        <span class="d-flex align-items-start"
-                          ><i class="material-icons icon" color="warn"
-                            >ondemand_video</i
-                          > </span
-                        >&nbsp;<span
-                          class="duration"
-                          [ngClass]="{
-                            'red-text': row.playbackTime < 50,
-                            'green-text': row.playbackTime >= 50
-                          }"
-                          >{{ row.playbackTime | number : "1.2-2" }}%</span
-                        >
-                      </div>
-                      <div class="">
-                        <span class="d-flex align-items-start"
-                          ><i class="material-icons icon">article</i>&nbsp;
-                          <a
-                            href="{{ row.documentLink }}"
-                            href=""
-                            class="m-b-20 text-black"
-                            target="_blank"
-                          >
-                            <span class="duration">{{
-                              row.filename | truncate : 20
-                            }}</span></a
-                          >
-                        </span>
-                      </div>
-                    </div>
-                  </td>
-                </ng-container>
-
-                <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
-                <tr
-                  mat-row
-                  *matRowDef="let row; columns: displayedColumns1"
-                ></tr>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-8 col-md-8" *ngIf="!isCompleted && !isApproved">
-        <div class="card">
-          <mat-tab-group>
-            <mat-tab>
-              <ng-template mat-tab-label>
-                Enrollment
-              </ng-template>
-              <div class="col-lg-12 col-md-12 col-sm-12">
-                <div class="project_widget">
-                  <div class="body">
-                    <p
-                      class="m-t-30"
-                      [innerHTML]="
-                      getSafeHtml(courseDetails?.course_detailed_description)
-                      "
-                    >
-                      <br />
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div class="p-4">
-                <ul class="list-group list-group-unbordered">
-                  <li class="list-group-item">
-                    <b>Vendor </b>
-                    <div class="profile-desc-item float-end">
-                      {{ courseDetails?.vendor }}
-                    </div>
-                  </li>
-                  <li class="list-group-item">
-                    <b>Website </b>
-                    <div class="profile-desc-item float-end">
-                      {{ courseDetails?.website_link }}
-                    </div>
-                  </li>
-                  <li class="list-group-item">
-                    <b>Registration </b>
-                    <div class="profile-desc-item float-end">
-                      <button
-                      *ngIf="
-                        !isRegistered && 
-                        !isStatus &&
-                        !isApproved &&
-                        !isCancelled &&
-                        !isCompleted 
-                      "
-                      class="btn btn-primary"
-                      (click)="registerClass(courseDetails._id)"
-                    >
-                      Register
-                    </button>
-                  <span
-                  class="badge badge-solid-orange mx-2"
-                  *ngIf="isRegistered || isStatus"
-                  >Registered</span
-                >
-
-                      <span
-                        class="badge badge-solid-green mx-2"
-                        *ngIf="isApproved"
-                        >Approved</span
-                      >
-                      <span
-                        class="badge badge-solid-red mx-2"
-                        *ngIf="isCancelled"
-                        >Cancelled</span
-                      >
-                      <span
-                        class="badge badge-solid-green mx-2"
-                        *ngIf="isCompleted"
-                        >Completed</span
-                      >
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </mat-tab>
-          </mat-tab-group>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 <section *ngIf="paid || program" class="content">
   <div class="content-block">
     <div class="block-header" *ngFor="let breadscrum of breadscrums">
@@ -664,8 +49,10 @@
                     >{{ classDetails?.courseId?.fee }}$</span
                   >
                   <span class="dis_font">Fee</span> -->
-                  <span class="day_font">${{ classDetails?.courseId?.fee || 0 }} </span>
-                  <span class="dis_font">Fee</span>
+                  <span class="day_font">
+                    ${{ (classDetails?.courseId?.fee || 0) + (classDetails?.instructorCost || 0) }}
+                </span>
+                                  <span class="dis_font">Fee</span>
                 </div>
               </div>
             </div>
@@ -701,14 +88,14 @@
                       {{ classDetails?.createdAt | date }}
                     </div>
                   </li>
-                  <li class="list-group-item">
+                  <!-- <li class="list-group-item">
                     <b>Course Run </b>
                     <div class="profile-desc-item float-end">
                       {{
                         classDetails?.isGuaranteedToRun == true ? "Yes" : "No"
                       }}
                     </div>
-                  </li>
+                  </li> -->
                 </ul>
               </div>
             </mat-tab>
@@ -902,7 +289,7 @@
                           </div> -->
                           <div>
                             <span class="day_font"
-                              >{{ classDetails?.courseId?.fee }}$</span
+                              >${{ classDetails?.courseId?.feeType == 'paid'? (classDetails?.courseId?.fee+ classDetails?.instructorCost):'0' }}.00</span
                             >
                             <span class="dis_font">Fee</span>
                           </div>
@@ -962,7 +349,7 @@
                       <ng-container matColumnDef="position">
                         <th mat-header-cell *matHeaderCellDef>{{commonRoles?.INSTRUCTOR_ROLE}}</th>
                         <td mat-cell *matCellDef="let element">
-                          {{ element?.instructorId?.name }}
+                          {{ element?.instructorId?.name || 'No ' + commonRoles?.INSTRUCTOR_ROLE }}
                           {{
                             element?.instructorId?.last_name
                               ? element?.instructorId?.last_name
@@ -1085,7 +472,7 @@
                       <ng-container matColumnDef="position">
                         <th mat-header-cell *matHeaderCellDef>{{commonRoles?.INSTRUCTOR_ROLE}}</th>
                         <td mat-cell *matCellDef="let element">
-                          {{ element?.instructorId?.name }}
+                          {{ element?.instructorId?.name || 'No ' + commonRoles?.INSTRUCTOR_ROLE }}
                           {{
                             element?.instructorId?.last_name
                               ? element?.instructorId?.last_name
@@ -1159,6 +546,7 @@
                     >
                       Max No. of Retake Reached
                     </p>
+              
                     <ng-container
                       *ngIf="isShowAssessmentQuestions"
                     >
@@ -1327,7 +715,7 @@
                       <ng-container matColumnDef="position">
                         <th mat-header-cell *matHeaderCellDef>{{commonRoles?.INSTRUCTOR_ROLE}}</th>
                         <td mat-cell *matCellDef="let element">
-                          {{ element?.instructorId?.name }}
+                          {{ element?.instructorId?.name || 'No ' + commonRoles?.INSTRUCTOR_ROLE }}
                           {{
                             element?.instructorId?.last_name
                               ? element?.instructorId?.last_name
@@ -1401,9 +789,28 @@
                           >
                           <span
                             class="badge badge-solid-red mx-2"
-                            *ngIf="isCancelled"
-                            >Cancelled</span
+                            *ngIf="isCancelled && isDiscountVerification"
+                            >Cancelled   </span
                           >
+                          <button  *ngIf="isCancelled && isDiscountVerification"
+                           
+                        class="btn btn-primary"
+                        (click)="submitForVerification(courseDetails._id,'verification')"
+                      >
+                        Register
+                      </button>
+                          <span
+                          class="badge badge-solid-red mx-2"
+                          *ngIf="isCancelled && isApproval"
+                          >Cancelled</span
+                        >
+                        <button  *ngIf="isCancelled && isApproval"
+                           
+                        class="btn btn-primary"
+                        (click)="reRegister()"
+                      >
+                        Register
+                      </button>
                           <span
                             class="badge badge-solid-green mx-2"
                             *ngIf="isCompleted"
@@ -1435,12 +842,12 @@
               </div>
               <div class="p-4">
                 <ul class="list-group list-group-unbordered">
-                  <li class="list-group-item">
+                  <!-- <li class="list-group-item">
                     <b>Skill Connect Code </b>
                     <div class="profile-desc-item float-end">
                       {{ classDetails?.courseId?.skill_connect_code }}
                     </div>
-                  </li>
+                  </li> -->
                   <li class="list-group-item">
                     <b>Minimum Enrollment </b>
                     <div class="profile-desc-item float-end">
@@ -1567,16 +974,14 @@
   <mat-form-field>
     <mat-label>Discount</mat-label>
     <mat-select [(ngModel)]="selectedDiscount">
-      <mat-option *ngFor="let discount of allDiscounts" [value]="discount.id">{{
-        discount.discountTitle
-      }}</mat-option>
+      <mat-option *ngFor="let discount of allDiscounts" [value]="discount">
+        {{ discount.discountTitle }}
+      </mat-option>
     </mat-select>
   </mat-form-field>
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="dialogRef.close()">Cancel</button>
-  <button mat-button (click)="submitDiscount(dialogRef)">
-    Submit
-  </button>
+  <button mat-button (click)="submitDiscount(dialogRef)">Submit</button>
 </div>
 </ng-template>

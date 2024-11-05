@@ -63,7 +63,7 @@ export class CourseViewComponent {
       this.breadcrumbs = [
         {
           title: 'Blank',
-          items: ['Pending Course'],
+          items: ['Pending'],
           active: 'View Pending Course',
         },
       ];
@@ -71,7 +71,7 @@ export class CourseViewComponent {
       this.breadcrumbs = [
         {
           title: 'Blank',
-          items: ['Rejected Course'],
+          items: ['Rejected'],
           active: 'View Rejected Course',
         },
       ];
@@ -234,7 +234,10 @@ back() {
             icon: 'success',
           });
           this.getAllCourse();
-          window.history.back();
+          // window.history.back();
+          this.router.navigate([
+            '/admin/courses/course-name',
+          ]);
         }, (error) => {
           Swal.fire({
             title: 'Error',

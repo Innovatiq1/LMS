@@ -86,6 +86,10 @@ FORMCREATION_LIST =[
       {
         "name": "Assign Tutorial",
         "checked": true
+      },
+      {
+        "name": "Funding/Grant",
+        "checked": true
       }
     ],
     "checked": false,
@@ -108,6 +112,10 @@ FORMCREATION_LIST =[
       },
       {
         "name": "Select Currency Type",
+        "checked": true
+      },
+      {
+        "name": "Select Trainer",
         "checked": true
       }
     ],
@@ -146,7 +154,7 @@ FORMCREATION_LIST =[
       },
       {
         "name": "Head",
-        "checked": "true"
+        "checked": true
       }
     ],
     "checked": false,
@@ -219,7 +227,7 @@ FORMCREATION_LIST =[
     "labels": [
       {
         "name": "Class Type",
-        "checked": "true"
+        "checked": true
       },
       {
         "name": "Is Guaranteed To Run",
@@ -231,10 +239,14 @@ FORMCREATION_LIST =[
       },
       {
         "name": "Select Currency Type",
-        "checked": "true"
+        "checked": true
+      },
+      {
+        "name": "Select Trainer",
+        "checked": true
       }
     ],
-    "checked": "false",
+    "checked": false,
     "name": "Program Class Creation Form",
   },
 {

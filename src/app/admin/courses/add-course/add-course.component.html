@@ -9,6 +9,9 @@
     >
     </app-static-breadcrumb>
     </div>
+    <!-- <div>
+      <app-create-course-kit></app-create-course-kit>
+    </div> -->
     <div class="row clearfix">
       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
         <div class="card">
@@ -20,16 +23,16 @@
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <label>Course<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <input matInput formControlName="title" placeholder="Enter Course Name"
+                    <input matInput formControlName="title" placeholder="Enter Course"
                       [readonly]="isInputReadonly()" required />
                     <mat-error *ngIf="firstFormGroup.get('title')?.hasError('required')">
-                      Enter Course Name
+                      Enter Course
                     </mat-error>
                     <mat-error *ngIf="
                         firstFormGroup.get('title')?.hasError('pattern') &&
                         firstFormGroup.get('title')?.touched
                       ">
-                      Enter a valid Course name
+                      Enter a valid Course
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -52,36 +55,36 @@
                   </mat-form-field>
                 </div>
                 
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('Funding/Grant')">
                   <div class="label-container">
-                    <label>Funding/Grant <span class="mandatory">&nbsp;*</span></label>
+                    <label>Funding/Grant </label>
                     <button class="btn" [routerLink]="['/student/settings/configuration/funding-grant']">
                       <img src="/assets/Close.svg" alt="plus" />
                     </button>
                   </div>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <mat-select formControlName="funding_grant" required>
+                    <mat-select formControlName="funding_grant">
                       <mat-option *ngFor="let item of fundingGrants" [value]="item.id" [disabled]="viewUrl == true">
                         {{ item.grant_type }}
                       </mat-option>
                     </mat-select>
-                    <mat-error *ngIf="
+                    <!-- <mat-error *ngIf="
                         firstFormGroup
                           .get('funding_grant')
                           ?.hasError('required') ||
                         firstFormGroup.get('funding_grant')?.touched
                       ">
                       Select Funding/Grant
-                    </mat-error>
+                    </mat-error> -->
                   </mat-form-field>
                 </div>
               
               </div>
               <div class="row">
              
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                <!-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <label>Issue Certificate
-                    <span class="mandatory">&nbsp;*</span></label>
+                    </label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <mat-select formControlName="issueCertificate" (selectionChange)="onTestSelect($event)">
                       <mat-option *ngFor="let item of CertificateIssue" [value]="item.code">
@@ -91,14 +94,14 @@
                     <mat-error *ngIf="
                         firstFormGroup
                           .get('issueCertificate')
-                          ?.hasError('maxLength') ||
+                          ?.hasError('required') ||
                         firstFormGroup.get('issueCertificate')?.touched
                       ">
-                      Select Issue Certificate Type
+                      Select Certificate
                     </mat-error>
                   </mat-form-field>
-                </div>
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="isTestIssueCertificate">
+                </div> -->
+                <!-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="isTestIssueCertificate">
                   <label>Exam Type
                     <span class="mandatory">&nbsp;*</span>
                   </label>
@@ -111,15 +114,15 @@
                     <mat-error *ngIf="
                         firstFormGroup
                           .get('examType')
-                          ?.hasError('maxLength') ||
+                          ?.hasError('required') ||
                         firstFormGroup.get('examType')?.touched
                       ">
                       Select Exam Type
                     </mat-error>
                   </mat-form-field>
-                </div>
+                </div> -->
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
-                  *ngIf="labelStatusCheck('Assign Exam Assessment') && isTestIssueCertificate && (isExamTypeCertificate || isAfterExamType)">
+                  *ngIf="labelStatusCheck('Assign Exam Assessment') && isTestIssueCertificate  && (isExamTypeCertificate || isAfterExamType)">
                   <div class="label-container">
                     <label>Assign Exam<span class="mandatory">&nbsp;*</span></label>
                     <button class="btn" [routerLink]="['/student/settings/add-questions']">
@@ -133,9 +136,11 @@
                       </mat-option>
                     </mat-select>
                     <mat-error *ngIf="
-                        firstFormGroup.get('exam_assessment')?.invalid &&
-                        firstFormGroup.get('exam_assessment')?.touched
-                      ">
+                    firstFormGroup
+                      .get('exam_assessment')
+                      ?.hasError('required') ||
+                    firstFormGroup.get('funding_grant')?.touched
+                  ">
                       Select Exam 
                       <!-- {{
                       utils.getErrorMessage1(
@@ -161,9 +166,11 @@
                       </mat-option>
                     </mat-select>
                     <mat-error *ngIf="
-                      firstFormGroup.get('assessment')?.invalid &&
-                      firstFormGroup.get('assessment')?.touched
-                    ">
+                    firstFormGroup
+                      .get('assessment')
+                      ?.hasError('required') ||
+                    firstFormGroup.get('funding_grant')?.touched
+                  ">
                     Select Assessment
                       <!-- {{
                       utils.getErrorMessage1(
@@ -175,7 +182,7 @@
                   </mat-form-field>
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
-                  *ngIf="labelStatusCheck('Assign Tutorial') && isTestIssueCertificate && isAfterExamType">
+                  *ngIf="(labelStatusCheck('Assign Tutorial') && isTestIssueCertificate && isAfterExamType&&isLearningAndTutorial)||isLearningAndTutorial">
                   <div class="label-container">
                     <label>Assign Tutorial <span class="mandatory">&nbsp;*</span></label>
                     <button class="btn" [routerLink]="['/student/settings/add-questions']">
@@ -189,9 +196,11 @@
                       </mat-option>
                     </mat-select>
                     <mat-error *ngIf="
-                      firstFormGroup.get('tutorial')?.invalid &&
-                      firstFormGroup.get('tutorial')?.touched
-                    ">
+                    firstFormGroup
+                      .get('tutorial')
+                      ?.hasError('required') ||
+                    firstFormGroup.get('funding_grant')?.touched
+                  ">
                     Select Tutorial
                       <!-- {{
                       utils.getErrorMessage1(
@@ -209,6 +218,9 @@
                     <button class="btn" [routerLink]="['/admin/courses/create-course-kit']">
                       <img src="/assets/Close.svg" alt="plus" />
                     </button>
+                    <!-- <button class="btn" (click)="openCreateCourseKitDialog()">
+                      <img src="/assets/Close.svg" alt="plus" />
+                    </button> -->
                   </div>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <mat-select formControlName="course_kit" multiple>
@@ -223,6 +235,21 @@
                       firstFormGroup.get('course_kit')?.touched
                     ">
                     Select Coursekit 
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2">
+                  <label>Approval Required<span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-select formControlName="approval">
+                      <mat-option value="yes" [disabled]="viewUrl == true">Yes</mat-option>
+                      <mat-option value="no" [disabled]="viewUrl == true">No</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="
+                    firstFormGroup.get('approval')?.hasError('required') ||
+                    firstFormGroup.get('approval')?.touched
+                  ">
+                  Select Approval Required 
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -262,10 +289,10 @@
                     <mat-error *ngIf="
                         firstFormGroup
                           .get('isFeedbackRequired')
-                          ?.hasError('maxLength') ||
+                          ?.hasError('required') ||
                         firstFormGroup.get('isFeedbackRequired')?.touched
                       ">
-                      Select Feedback Mandatory or not 
+                      Select feedback mandatory or not 
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -285,7 +312,7 @@
                     <mat-error *ngIf="
                         firstFormGroup
                           .get('certificate_temp')
-                          ?.hasError('maxLength') ||
+                          ?.hasError('required') ||
                         firstFormGroup.get('certificate_temp')?.touched
                       ">
                       Select Certificate Template
@@ -297,7 +324,7 @@
                 <!-- </div> -->
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('Vendor')">
                   <div class="label-container">
-                    <label>Vendor <span class="mandatory">&nbsp;*</span></label>
+                    <label>Vendor </label>
                     <button class="btn" [routerLink]="['/student/settings/configuration/vendor']">
                       <img src="/assets/Close.svg" alt="plus" />
                     </button>
@@ -308,12 +335,12 @@
                         {{ item.vendor }}
                       </mat-option>
                     </mat-select>
-                    <mat-error *ngIf="
+                    <!-- <mat-error *ngIf="
                     firstFormGroup.get('vendor')?.hasError('maxLength') ||
                     firstFormGroup.get('vendor')?.touched
                   ">
                   Select Vendor
-                    </mat-error>
+                    </mat-error> -->
                   </mat-form-field>
                 </div>
 
@@ -388,7 +415,7 @@
                     </mat-error>
                   </mat-form-field>
                 </div> -->
-                <!-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <div class="button-container">
                     <label>Select Department <span class="mandatory">&nbsp;*</span></label>
                   </div>
@@ -406,7 +433,7 @@
                       Select Any Department
                     </mat-error>
                   </mat-form-field>
-                </div> -->
+                </div>
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('Start Date')">
                   <label>Start Date</label>
                   <input type="date" formControlName="sessionStartDate" id="date" class="form-control" />
@@ -545,15 +572,13 @@
             <div class="row">
               <div class="col-md-9">
               </div>
-              <div class="col-md-3 mb-5">
-                <div class="d-grid d-md-flex">
-                  <div style="margin-left: -44.5rem; margin-right: 43.5rem">
+              <div class="col-md-12 mb-5">
+                <div class="d-flex flex-wrap justify-content-between m-2">
                     <button mat-raised-button class="btn-space" *ngIf="editUrl || viewUrl" type="button" id="back"
                       (click)="cancel()">
                       Back
                     </button>
-                  </div>
-                  <div>
+                  
                     <button mat-raised-button (click)="submit()" *ngIf="!editUrl && !viewUrl" id="submit"
                       [attr.data-bs-toggle]="
                         firstFormGroup.valid ? 'modal' : null
@@ -571,7 +596,6 @@
                       " (click)="save()">
                       Submit
                     </button>
-                  </div>
                 </div>
               </div>
             </div>

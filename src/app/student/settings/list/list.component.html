@@ -69,14 +69,15 @@
                 <!-- Course Name -->
                 <ng-container matColumnDef="Title">
                   <mat-header-cell *matHeaderCellDef >Title</mat-header-cell>
-                  <mat-cell *matCellDef="let row" class="name" [routerLink]="isView ? ['/student/settings/automation/announcement/view-announcement',row.id] : null">
-                    <span class="mobile-label">Title:</span>{{row.subject}}</mat-cell>
+                  <mat-cell *matCellDef="let row" [routerLink]="isView ? ['/student/settings/automation/announcement/view-announcement',row.id] : null">
+                    <span class="mobile-label">Title:</span> <span class="name" >{{row.subject}}</span></mat-cell>
                 </ng-container>
                 <!-- Course Code -->
                 <ng-container matColumnDef="Decription">
-                  <mat-header-cell *matHeaderCellDef >Decription
+                  <mat-header-cell *matHeaderCellDef >Description
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row" class="mt-3" [routerLink]="isView ? ['/student/settings/automation/announcement/view-announcement',row.id] : null">
+                    <span class="mobile-label">Description:</span>
                     <p [innerHTML]="row.details | bulletPoints | truncate:30"></p>
                   </mat-cell>
                 </ng-container>
@@ -84,6 +85,7 @@
                   <mat-header-cell *matHeaderCellDef >Role
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row" [routerLink]="isView ? ['/student/settings/automation/announcement/view-announcement',row.id] : null">
+                    <span class="mobile-label">Role:</span>
                     <p [innerHTML]="row.announcementFor | bulletPoints"></p>
                   </mat-cell>
 

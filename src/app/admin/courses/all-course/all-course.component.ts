@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { CourseService } from '@core/service/course.service';
 import {
   CoursePaginationModel,
@@ -23,12 +23,19 @@ import * as XLSX from 'xlsx';
 
 import * as JSZip from 'jszip';
 import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf';
+import { MatDialog } from '@angular/material/dialog';
+
+interface Course {
+  title: string;
+  _id: string;
+}
 @Component({
   selector: 'app-all-course',
   templateUrl: './all-course.component.html',
   styleUrls: ['./all-course.component.scss'],
 })
 export class AllCourseComponent {
+  @ViewChild('courseScenariosDialog') courseScenariosDialog!: TemplateRef<any>;
   breadscrums = [
     {
       title: 'Course List',
@@ -36,12 +43,14 @@ export class AllCourseComponent {
       active: 'Course List',
     },
   ];
+  selectedScenario: string = '';
+
   displayedColumns = [
     'name',
     'status',
     'code',
     'creator',
-    'Fees',
+    // 'Fees',
     // 'Days',
     // 'Training Hours',
     'Fee Type',
@@ -49,7 +58,7 @@ export class AllCourseComponent {
     'endDate',
     'Vendor',
     // 'Users',
-    // 'Fees',
+    'Fees',
     'Users',
   ];
   coursePaginationModel: Partial<CoursePaginationModel>;
@@ -92,6 +101,8 @@ export class AllCourseComponent {
   filterName: string = "";
   userGroupIds: string = "";
   filterBody: any = {};
+  showRadio: boolean = false; 
+  selectedOption?: string;
   constructor(
     public _courseService: CourseService,
     private route: Router,
@@ -100,6 +111,8 @@ export class AllCourseComponent {
     private fb: FormBuilder,
     private authenService: AuthenService,
     private courseService: CourseService,
+    public dialog: MatDialog,
+
   ) {
     // constructor
     this.coursePaginationModel = {
@@ -181,6 +194,29 @@ export class AllCourseComponent {
     this.commonRoles = AppConstants;
     
   }
+
+  openCourseDialog(){
+    this.openDialog(this.courseScenariosDialog)
+
+  }
+  selectScenario(scenario:string){
+    this.selectedScenario = scenario;
+
+  }
+  openDialog(templateRef: any): void {
+    const dialogRef = this.dialog.open(templateRef, {
+      width: '1000px',
+      height:'300px',
+      data: {     },
+    });    
+}
+  navigateToCreate(dialogRef:any) {
+    if (this.selectedScenario) {
+      dialogRef.close()
+      this.route.navigate(['/admin/courses/add-course'], { queryParams: { option: this.selectedScenario } });
+    }
+  }
+
 
 isLoading:boolean=false;
 getAllTpCourses() {

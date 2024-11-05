@@ -24,7 +24,9 @@ import { StudentsService } from 'app/admin/students/students.service';
 import { UtilsService } from '@core/service/utils.service';
 import { CommonService } from '@core/service/common.service';
 import { UserService } from '@core/service/user.service';
-
+import { MatDialog } from '@angular/material/dialog';
+import { CreateCourseKitComponent } from '../course-kit/create-course-kit/create-course-kit.component';
+import { CourseKitModel, CourseModel, CoursePaginationModel } from '@core/models/course.model';
 @Component({
   selector: 'app-add-course',
   templateUrl: './add-course.component.html',
@@ -96,6 +98,8 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   isDocumentIssueCertificate: boolean = false;
   isExamTypeCertificate: boolean = false;
   isAfterExamType: boolean = false;
+  isLearningAndTutorial:boolean=false;
+  isOnlyExam:boolean=false;
   draftId!: string;
   breadcrumbs:any[] = []
   config: AngularEditorConfig = {
@@ -129,6 +133,8 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   certificates: any;
   dept: any;
   storedItems: string | null;
+  optionValue?:string;
+  isVideo:boolean=false;
 
   constructor(
     private router: Router,
@@ -145,7 +151,8 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     private studentsService: StudentsService,
     public utils: UtilsService,
     private commonService: CommonService,
-    private userService:UserService
+    private userService:UserService,
+    private dialog: MatDialog
   ) {
 
     this.storedItems = localStorage.getItem('activeBreadcrumb');
@@ -160,6 +167,8 @@ export class AddCourseComponent implements OnInit, OnDestroy {
      ];
    }
     let urlPath = this.router.url.split('/');
+    // console.log("urlPath==",this.router.url);
+    // console.log('Option value from URL:', this.optionValue);
     this.editUrl = urlPath.includes('edit-course');
     this.viewUrl = urlPath.includes('view-course');
 
@@ -197,7 +206,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       training_hours: new FormControl('', [
         Validators.pattern(/^\d+(\.\d+)?$/),
       ]),
-      department:['',[]],
+      department:['',[Validators.required]],
       skill_connect_code: new FormControl('', [
         Validators.pattern(/^[a-zA-Z0-9]/),
       ]),
@@ -218,7 +227,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
           /^(https?:\/\/)?(www\.)?[a-zA-Z0-9]+\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})?$/
         ),
       ]),
-      funding_grant: new FormControl('', [Validators.required]),
+      funding_grant: new FormControl(null,[]),
       id: new FormControl(''),
       feeType: new FormControl('', [Validators.required]),
       assessment: new FormControl(null, [
@@ -238,11 +247,13 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       ]),
       survey: new FormControl(null, [Validators.required]),
       course_kit: new FormControl('', [Validators.required]),
-      vendor: new FormControl('',[Validators.required, Validators.maxLength(100)]),
+      // vendor: new FormControl('',[Validators.required, Validators.maxLength(100)]),
+      vendor: new FormControl(''),
       isFeedbackRequired: new FormControl(null, [Validators.required]),
-      examType: new FormControl('', [Validators.required]),
-      issueCertificate: new FormControl('', [Validators.required]),
+      examType: new FormControl(''),
+      issueCertificate: new FormControl(''),
       certificate_temp: new FormControl(null, [Validators.required]),
+      approval: new FormControl('', [Validators.required]),
     });
     this.subscribeParams = this.activatedRoute.params.subscribe(
       (params: any) => {
@@ -260,6 +271,20 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.optionValue = params['option'] || null;
+      // console.log('Option value from URL:', this.optionValue);
+    });
+    if(this.optionValue=='OnlyLearning'||this.optionValue=='LearningAndTutorial')
+      {
+        this.isLearningAndTutorial=this.optionValue=='LearningAndTutorial'?true:false;
+       this.onTestSelect("video")
+    }
+    else{
+      // this.onTestSelect("test")
+      
+      this.onExamTypeSelect("test")
+    }
     if (!this.editUrl) {
       this.draftId = this.commonService.generate4DigitId();
     }
@@ -307,6 +332,46 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       this.startAutoSave();
     }, 30000);
   }
+
+  openCreateCourseKitDialog(): void {
+    const dialogRef = this.dialog.open(CreateCourseKitComponent, {
+      width: '80%',
+      height:'70%', 
+      disableClose: false, 
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
+
+  // openCreateCourseKitDialog(): void {
+  //   const dialogRef = this.dialog.open(CreateCourseKitComponent, {
+  //     width: '80%',
+  //     height: '70%',
+  //     disableClose: false,
+  //   });
+  
+  //   dialogRef.afterClosed().subscribe((result) => {
+  //     if (result) {
+  //       // Refresh the course kits list after a new kit is created
+  //       this.loadCourseKits();  // Assuming you have a method to load the course kits
+  //     }
+  //   });
+  // }
+  
+  // loadCourseKits() {
+  //   // Logic to fetch the course kits and update `courseKits`
+  //   const filter = { 
+  //     ...this.courseKitModel,
+  //     title: this.searchTerm 
+  //   };
+  //   this.courseService.getCourseKit(filter).subscribe((data) => {
+  //     this.courseKits = data;
+  //   });
+  // }
+  
   getDepartments() {
     this.studentsService.getAllDepartments().subscribe((response: any) => {
       this.dept = response.data.docs;
@@ -390,6 +455,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       certificate_template: courseData?.certificate_temp,
       companyId: userId,
       courses: courses,
+      approval: courseData?.approval,
       status: 'draft',
     };
     this.courseService.saveCourse(payload).subscribe(
@@ -631,6 +697,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         training_hours: courseData?.training_hours,
         department: courseData?.department,
         fee: courseData?.fee,
+        approval: courseData?.approval,
         currency_code: courseData?.currency_code,
         skill_connect_code: courseData?.skill_connect_code,
         course_description: courseData?.course_description,
@@ -708,11 +775,13 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     }
   }
 
-  onTestSelect(event: any) {
-    const selectedValue = event.value;
-    this.isTestIssueCertificate = selectedValue === 'test';
+  onTestSelect(str: any) {
+    // const selectedValue = event.value;
+    const selectedValue = str;
+   
     this.isVideoIssueCertificate = selectedValue === 'video';
   this.isDocumentIssueCertificate= selectedValue === 'document';
+  // console.log("heleo onTestSelect",this.isVideoIssueCertificate)
     if (this.isVideoIssueCertificate||this.isDocumentIssueCertificate) {
         this.firstFormGroup.get('examType')?.reset();
         this.isExamTypeCertificate = false;
@@ -720,10 +789,23 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     }
 }
   
-  onExamTypeSelect(event: any) {
-    const selectedValue = event.value;
-    this.isExamTypeCertificate = selectedValue === 'direct';
-    this.isAfterExamType = selectedValue === 'after';
+  onExamTypeSelect(str: any) {
+    const selectedValue = str;
+    this.isTestIssueCertificate = selectedValue === 'test';
+    // this.isExamTypeCertificate = selectedValue === 'direct';
+    // this.isAfterExamType = selectedValue === 'after';
+    this.isOnlyExam=this.optionValue=='OnlyExam'?true:false;
+    if(this.isOnlyExam && this.isTestIssueCertificate)
+    {
+      this.isExamTypeCertificate=true;
+      this.isAfterExamType=false;
+    }
+    else{
+      this.isExamTypeCertificate=true;
+      this.isAfterExamType=true;
+
+    }
+    
   }
   setup() {
     var userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
@@ -779,7 +861,30 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     );
     // console.log("form",this.firstFormGroup)
     // if (this.firstFormGroup.valid) {
-      const courseData = this.firstFormGroup.value;
+      let courseData = this.firstFormGroup.value;
+      if(this.optionValue=='OnlyLearning'||this.optionValue=='LearningAndTutorial')
+        {
+          courseData.issueCertificate="video";
+      }
+      else{
+        courseData.issueCertificate="test";
+        if(this.isOnlyExam)
+        {
+          courseData.examType="direct"
+        }
+        else
+        {
+          courseData.examType="after"
+        }
+
+      }
+      if(this.optionValue=='LearningAndTutorial'){
+        courseData.learningTutorial=true;
+      }
+      else{
+        courseData.learningTutorial=false;
+      }
+      // console.log("courseData",courseData.issueCertificate)
       let creator = JSON.parse(localStorage.getItem('user_data')!).user.name;
       let domain = localStorage.getItem('subdomain')
       if(domain){
@@ -796,6 +901,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         training_hours: courseData?.training_hours,
         department: courseData?.department,
         fee: courseData?.fee,
+        approval: courseData?.approval,
         currency_code: courseData?.currency_code,
         skill_connect_code: courseData?.skill_connect_code,
         course_description: courseData?.course_description,
@@ -831,8 +937,10 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         certificate_template_id: certicate_temp_id[0].id,
         companyId: userId,
         courses: courses,
-      };
+        learningTutorial:courseData.learningTutorial
 
+      };
+// console.log("payload--",payload)
       Swal.fire({
         title: 'Are you sure?',
         text: 'You want to create a course!',
@@ -881,7 +989,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       exam_assessment: this.questionService.getExamQuestionJson({ status: 'approved' }),
     }).subscribe((response: any) => {
       this.fundingGrants = response.fundingGrant;
-      
+      // console.log("newRes===",response)
        this.courseKits = response.courseKit?.docs;
         this.assessments = response.assessment?.data?.docs;
       this.exam_assessments = response.exam_assessment.data.docs;
@@ -907,6 +1015,18 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       if (this.course?.issueCertificate == 'test') {
         this.isTestIssueCertificate = true;
       }
+      if(this.course?.issueCertificate == 'video'){
+        // this.isVideo=true;
+         this.isTestIssueCertificate = false;
+        //  this.isLearningAndTutorial=true;
+
+      }
+      if(this.course?.issueCertificate == 'video'&& this.course?.learningTutorial){
+        // this.isVideo=true;
+         this.isTestIssueCertificate = false;
+         this.isLearningAndTutorial=true;
+
+      }
       this.firstFormGroup.patchValue({
         
         currency_code: this.course.currency_code
@@ -921,6 +1041,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         course_detailed_description: this.course?.course_detailed_description,
         skill_connect_code: this.course?.skill_connect_code,
         fee: this.course?.fee?.toString(),
+        approval: this.course?.approval,
         sessionStartDate: `${moment(this.course?.sessionStartDate).format(
           'YYYY-MM-DD'
         )}`,
@@ -950,6 +1071,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         certificate_temp: this.course?.certificate_template,
       });
       if (this.course?.issueCertificate === 'test') {
+
         this.isTestIssueCertificate = true;
         if (this.course?.examType === 'direct') {
           this.isExamTypeCertificate = true;

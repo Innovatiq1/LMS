@@ -38,7 +38,7 @@
                               mat-icon-button
                               matTooltip="Withdraw"
                               class="tbl-action-btn"
-                              (click)="Status(response, 'cancel')"
+                              (click)="Status(response, 'cancel','approval')"
                             >
                               <img
                                 class="img-w"
@@ -64,7 +64,7 @@
                             mat-icon-button
                             matTooltip="Withdraw"
                             class="tbl-action-btn"
-                            (click)="Status(response, 'cancel')"
+                            (click)="Status(response, 'cancel','discountVerification')"
                           >
                             <img
                               class="img-w"
@@ -76,13 +76,13 @@
                         </div>
                         <div class="body">
                           <div class="row">
-                            <div class="col-6">
+                            <div class="col-xl-6 col-md-12">
                               <div class="px-2">
                                 <div class="row">
-                                  <div class="col-6">
+                                  <div class="col-xl-6 col-md-12">
                                     <h6>{{commonRoles.STUDENT_ROLE}}</h6>
                                   </div>
-                                  <div class="col-6">
+                                  <div class="col-xl-6 col-md-12">
                                     <p>
                                       {{ response.studentId?.name | titlecase }}
                                     </p>
@@ -90,10 +90,10 @@
                                 </div>
                               </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-xl-6 col-md-12">
                               <div class="px-2">
                                 <div class="row">
-                                  <div class="col-5">
+                                  <div class="col-xl-5 col-md-12">
                                     <h6>Gender</h6>
                                   </div>
                                   <div class="col-7">
@@ -108,25 +108,25 @@
                             </div>
                           </div>
                           <div class="row">
-                            <div class="col-6">
+                            <div class="col-xl-6 col-md-12">
                               <div class="px-2">
                                 <div class="row">
-                                  <div class="col-6">
+                                  <div class="col-xl-6 col-md-12">
                                     <h6>Mobile</h6>
                                   </div>
-                                  <div class="col-6">
+                                  <div class="col-xl-6 col-md-12">
                                     <p>{{ response?.studentId?.mobile }}</p>
                                   </div>
                                 </div>
                               </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-xl-6 col-md-12">
                               <div class="px-2">
                                 <div class="row">
-                                  <div class="col-5">
+                                  <div class="col-xl-5 col-md-12">
                                     <h6>Email</h6>
                                   </div>
-                                  <div class="col-7">
+                                  <div class="col-xl-7 col-md-12">
                                     <p>{{ response.studentId?.email }}</p>
                                   </div>
                                 </div>
@@ -134,13 +134,13 @@
                             </div>
                           </div>
                           <div class="row">
-                            <div class="col-6">
+                            <div class="col-xl-6 col-md-12">
                               <div class="px-2">
                                 <div class="row">
-                                  <div class="col-6">
+                                  <div class="col-xl-6 col-md-12">
                                     <h6>DOB</h6>
                                   </div>
-                                  <div class="col-6">
+                                  <div class="col-xl-6 col-md-12">
                                     <p>
                                       {{
                                         response.studentId?.dob 
@@ -151,10 +151,10 @@
                                 </div>
                               </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-xl-6 col-md-12">
                               <div class="px-2">
                                 <div class="row">
-                                  <div class="col-5">
+                                  <div class="col-xl-5 col-md-12">
                                     <h6>Country</h6>
                                   </div>
                                   <div class="col-7">
@@ -170,13 +170,13 @@
                             </div>
                           </div>
                           <div class="row">
-                            <div class="col-6">
+                            <div class="col-xl-6 col-md-12">
                               <div class="px-2">
                                 <div class="row">
-                                  <div class="col-6">
+                                  <div class="col-xl-6 col-md-12">
                                     <h6>Qualification</h6>
                                   </div>
-                                  <div class="col-6">
+                                  <div class="col-xl-6 col-md-12">
                                     <p>
                                       {{ response.studentId?.qualification }}
                                     </p>
@@ -184,7 +184,7 @@
                                 </div>
                               </div>
                             </div>
-                            <!-- <div class="col-6">
+                            <!-- <div class="col-xl-6 col-md-12">
                               <div class="px-2">
                                 <div class="row">
                                   <div class="col-5">
@@ -208,25 +208,25 @@
                         </div>
                         <div *ngIf="!isDiscount"  class="body">
                           <div class="row">
-                            <div class="col-6">
+                            <div class="col-xl-6 col-md-12">
                               <div class="px-2">
                                 <div class="row">
-                                  <div class="col-6">
+                                  <div class="col-xl-6 col-md-12">
                                     <h6>Course</h6>
                                   </div>
-                                  <div class="col-6">
+                                  <div class="col-xl-6 col-md-12">
                                     <p>{{ response.title | titlecase }}</p>
                                   </div>
                                 </div>
                               </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-xl-6 col-md-12">
                               <div class="px-2">
                                 <div class="row">
-                                  <div class="col-6">
+                                  <div class="col-xl-6 col-md-12">
                                     <h6>Course Code</h6>
                                   </div>
-                                  <div class="col-5">
+                                  <div class="col-xl-5 col-md-12">
                                     <p>{{ response.courseId?.courseCode }}</p>
                                   </div>
                                 </div>
@@ -234,13 +234,13 @@
                             </div>
                           </div>
                           <div class="row">
-                            <!-- <div class="col-6">
+                            <!-- <div class="col-xl-6 col-md-12">
                               <div class="px-2">
                                 <div class="row">
-                                  <div class="col-6">
+                                  <div class="col-xl-6 col-md-12">
                                     <h6>Duration</h6>
                                   </div>
-                                  <div class="col-6">
+                                  <div class="col-xl-6 col-md-12">
                                     <p>
                                       {{
                                         response.courseId
@@ -252,13 +252,13 @@
                                 </div>
                               </div>
                             </div> -->
-                            <div class="col-6">
+                            <div class="col-xl-6 col-md-12">
                               <div class="px-2">
                                 <div class="row">
-                                  <div class="col-6">
+                                  <div class="col-xl-6 col-md-12">
                                     <h6>Course Fee</h6>
                                   </div>
-                                  <div class="col-5">
+                                  <div class="col-xl-5 col-md-12">
                                     <p>
                                       $ {{ response.courseId?.fee || 0 }}.00
                                     </p>
@@ -269,10 +269,10 @@
                             <div class="col-xl-6 col-md-12 col-sm-12">
                               <div class="px-2">
                                 <div class="row">
-                                  <div class="col-6">
+                                  <div class="col-xl-6 col-md-12">
                                     <h6>Registered</h6>
                                   </div>
-                                  <div class="col-5">
+                                  <div class="col-xl-5 col-md-12">
                                     <p>{{ response.registeredOn | date }}</p>
                                   </div>
                                 </div>
@@ -283,7 +283,7 @@
                        
                           <div class="row">
                             <div
-                              class="col-6"
+                              class="col-xl-6 col-md-12"
                               *ngIf="
                                 !(paramStatus === 'approved') &&
                                 !(paramStatus === 'pending')
@@ -291,10 +291,10 @@
                             >
                               <div class="px-2">
                                 <div class="row">
-                                  <div class="col-6">
+                                  <div class="col-xl-6 col-md-12">
                                     <h6>Completed</h6>
                                   </div>
-                                  <div class="col-5">
+                                  <div class="col-xl-5 col-md-12">
                                     <p>{{ response.updatedAt | date }}</p>
                                   </div>
                                 </div>
@@ -316,25 +316,25 @@
                         </div>
                         <div *ngIf="isDiscount" class="body">
                           <div class="row">
-                            <div class="col-6">
+                            <div class="col-xl-6 col-md-12">
                               <div class="px-2">
                                 <div class="row">
-                                  <div class="col-6">
+                                  <div class="col-xl-6 col-md-12">
                                     <h6>Discount</h6>
                                   </div>
-                                  <div class="col-6">
+                                  <div class="col-xl-6 col-md-12">
                                     <p>{{ discountDetails?.discountTitle }}</p>
                                   </div>
                                 </div>
                               </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-xl-6 col-md-12">
                               <div class="px-2">
                                 <div class="row">
-                                  <div class="col-6">
+                                  <div class="col-xl-6 col-md-12">
                                     <h6>Discount value</h6>
                                   </div>
-                                  <div class="col-6">
+                                  <div class="col-xl-6 col-md-12">
                                     <p>
                                       {{discountDetails.value}}{{discountDetails.discountType =='percentage'? '%':''}}
                                     </p>
@@ -360,18 +360,18 @@
                                           </thead>
                                           <tbody>
                                               <tr style="cursor: pointer">
-                                                  <td style="width: 45%;">{{response.title | titlecase}}</td>
+                                                  <td style="width: 45%;">{{response.title ||response.courseId.title  | titlecase}}</td>
                                                   <td style="text-align: center;">1</td>
-                                                  <td>${{ response.courseId?.fee}}.00</td>
-                                                  <td>${{ response.courseId?.fee}}.00</td>
-                                              </tr>
+                                                  <td>${{ (response.courseId?.fee || 0) + (response.classId.instructorCost || 0) }}.00</td>
+                                                  <td>${{ (response.courseId?.fee || 0) + (response.classId.instructorCost || 0) }}.00</td>
+                                                </tr>
                                               <tr></tr>
                                               <tr>
                                                   <td>
                                                       <h6>Subtotal</h6>
                                                   </td>
                                                   <td colspan="4" class="price">
-                                                      ${{ response.courseId?.fee}}.00
+                                                    ${{ (response.courseId?.fee || 0) + (response.classId.instructorCost || 0) }}.00
                                                   </td>
                                               </tr>
                                               <tr>
@@ -382,7 +382,7 @@
                                                       - ${{(discountDetails.value) | number : '1.2-2'}}
                                                   </td>
                                                   <td colspan="4" *ngIf="discountDetails.discountType == 'percentage'" class="price">
-                                                      - ${{( response.courseId?.fee * discountDetails.value / 100) | number : '1.2-2'}}
+                                                      - ${{( (response.courseId?.fee +  response.classId?.instructorCost||0) * discountDetails.value / 100) | number : '1.2-2'}}
                                                   </td>
                   
                                               </tr>
@@ -391,10 +391,10 @@
                                                       <h6>Total</h6>
                                                   </td>
                                                   <td colspan="4" *ngIf="discountDetails.discountType == 'fixed'"  class="price">
-                                                      ${{ response.courseId?.fee - discountDetails.value | number : '1.2-2'}}
+                                                      ${{ (response.courseId?.fee + response?.classId?.instructorCost || 0)- discountDetails.value | number : '1.2-2'}}
                                                   </td>
                                                   <td colspan="4" *ngIf="discountDetails.discountType == 'percentage'" class="price">
-                                                      ${{ response.courseId?.fee- ( response.courseId?.fee* discountDetails.value / 100) | number : '1.2-2'}}
+                                                      ${{ (response.courseId?.fee + response?.classId?.instructorCost || 0)- ( response.courseId?.fee* discountDetails.value / 100) | number : '1.2-2'}}
                                                   </td>
                                               </tr>
                                           </tbody>
@@ -417,26 +417,26 @@
                         </div>
                         <div class="body">
                           <div class="row">
-                            <div class="col-6">
+                            <div class="col-xl-6 col-md-12">
                               <div class="px-2">
                                 <div class="row">
-                                  <div class="col-6">
+                                  <div class="col-xl-6 col-md-12">
                                     <h6>Score</h6>
                                   </div>
-                                  <div class="col-6">
+                                  <div class="col-xl-6 col-md-12">
                                     <p *ngIf="response?.assessmentAnswer">{{response?.assessmentAnswer?.score}} / {{response?.assessmentAnswer?.totalScore}}</p>
                                     <p *ngIf="!response?.assessmentAnswer">--</p>
                                   </div>
                                 </div>
                               </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-xl-6 col-md-12">
                               <div class="px-2">
                                 <div class="row">
-                                  <div class="col-6">
+                                  <div class="col-xl-6 col-md-12">
                                     <h6>Submitted at</h6>
                                   </div>
-                                  <div class="col-6">
+                                  <div class="col-xl-6 col-md-12">
                                     <p>{{response?.assessmentAnswer?.submittedAt  | date: 'MM/dd/yyyy'}}</p>
                                   </div>
                                 </div>
@@ -449,26 +449,26 @@
                         </div>
                         <div class="body">
                           <div class="row">
-                            <div class="col-6">
+                            <div class="col-xl-6 col-md-12">
                               <div class="px-2">
                                 <div class="row">
-                                  <div class="col-6">
+                                  <div class="col-xl-6 col-md-12">
                                     <h6>Score</h6>
                                   </div>
-                                  <div class="col-6">
+                                  <div class="col-xl-6 col-md-12">
                                     <p *ngIf="response?.examAssessmentAnswer">{{response?.examAssessmentAnswer?.score}} / {{response?.examAssessmentAnswer?.totalScore}}</p>
                                     <p *ngIf="!response?.examAssessmentAnswer">--</p>
                                   </div>
                                 </div>
                               </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-xl-6 col-md-12">
                               <div class="px-2">
                                 <div class="row">
-                                  <div class="col-6">
+                                  <div class="col-xl-6 col-md-12">
                                     <h6>Submitted at</h6>
                                   </div>
-                                  <div class="col-6">
+                                  <div class="col-xl-6 col-md-12">
                                     <p>{{response?.examAssessmentAnswer?.submittedAt  | date: 'MM/dd/yyyy'}}</p>
                                   </div>
                                 </div>

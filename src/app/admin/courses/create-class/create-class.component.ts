@@ -103,7 +103,7 @@ export class CreateClassComponent {
       this.dataSourceArray.push({
         start: moment().set({ hour: 8, minute: 0 }).format('YYYY-MM-DD HH:mm'),
         end: moment().set({ hour: 8, minute: 0 }).format('YYYY-MM-DD HH:mm'),
-        instructor: '0',
+        instructor: 'date',
       });
       this.dataSource = this.dataSourceArray;
     }
@@ -469,7 +469,7 @@ loadForm() {
         this.classForm.value.courseName = this.courseTitle;
         Swal.fire({
           title: 'Are you sure?',
-          text: 'Do you want to update this class!',
+          text: 'Do you want to update this batch!',
           icon: 'warning',
           confirmButtonText: 'Yes',
           showCancelButton: true,
@@ -530,7 +530,7 @@ loadForm() {
         }
               Swal.fire({
           title: 'Are you sure?',
-          text: 'Do you want to schedule a class!',
+          text: 'Do you want to create a batch!',
           icon: 'warning',
           confirmButtonText: 'Yes',
           showCancelButton: true,
@@ -549,7 +549,7 @@ loadForm() {
               (response) => {
                 Swal.fire({
                   title: 'Success',
-                  text: 'Class Created Successfully.',
+                  text: 'Batch Created Successfully.',
                   icon: 'success',
                 });
               })
