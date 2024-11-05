@@ -70,15 +70,24 @@
                 </mat-form-field>
               </div>
 
-             
               <div class="form-group">
+                <label>Font Style</label>
+                <mat-form-field appearance="outline" style="flex: 1;">
+                  <mat-select [(ngModel)]="currentElement.fontStyle" (selectionChange)="updateElementStyle()">
+                    <mat-option *ngFor="let font of fontStyles" [value]="font">{{ font }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+             
+              <!-- <div class="form-group">
                 <label>Alignment</label>
                 <mat-radio-group [(ngModel)]="currentElement.alignment" (ngModelChange)="updateElementStyle()">
                   <mat-radio-button value="left">Left</mat-radio-button>
                   <mat-radio-button value="center">Center</mat-radio-button>
                   <mat-radio-button value="right">Right</mat-radio-button>
                 </mat-radio-group>
-              </div>
+              </div> -->
 
               <div class="form-group font-color-insert-group">
                 <label>Font Color</label>
@@ -177,7 +186,8 @@
                       [attr.contenteditable]="element.editable"
                       [ngStyle]="{
                         'font-size': element.fontSize + 'px',
-                        'color': element.color
+                        'color': element.color,
+                        'font-family': element.fontStyle
                       }"
                       (input)="updateElementContent($event, element)"
                       (click)="selectElement(i)"

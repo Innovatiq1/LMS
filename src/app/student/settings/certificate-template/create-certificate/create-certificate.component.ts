@@ -24,6 +24,7 @@ import SignaturePad from 'signature_pad';
 export class CreateCertificateComponent implements OnInit {
   breadcrumbs:any[] = []
   @ViewChild('backgroundTable') backgroundTable!: ElementRef;
+  fontStyles = ['Arial', 'Courier New', 'Georgia', 'Times New Roman', 'Verdana'];
 
   isDrawing = false;
   context: CanvasRenderingContext2D | null = null;
@@ -88,6 +89,7 @@ export class CreateCertificateComponent implements OnInit {
     fontSize: 16,
     color: '#000',
     alignment: 'left',
+    fontStyle: 'Arial',
   };
   storedItems: string | null;
 
@@ -262,6 +264,7 @@ export class CreateCertificateComponent implements OnInit {
         fontSize: this.currentElement.fontSize || 16,
         color: this.currentElement.color || '#000',
         alignment: this.currentElement.alignment || 'left',
+        fontStyle: this.currentElement.fontStyle || 'Arial',
       };
       this.elements.push(newElement);
     }
@@ -293,6 +296,14 @@ export class CreateCertificateComponent implements OnInit {
   }
 
   updateElementStyle() {
+    // const selectedElement = this.elements[this.editingElementIndex];
+    // if (selectedElement) {
+    //   selectedElement.fontSize = this.currentElement.fontSize;
+    //   selectedElement.color = this.currentElement.color;
+    //   selectedElement.fontStyle = this.currentElement.fontStyle; // Apply font style
+    //   selectedElement.alignment = this.currentElement.alignment;
+    // }
+    // this is the code i made comment 
     const container = document.querySelector(
       '.certificate-canvas'
     ) as HTMLElement;
@@ -304,7 +315,7 @@ export class CreateCertificateComponent implements OnInit {
     } else if (this.currentElement.alignment === 'right') {
       container.style.justifyContent = 'flex-end';
     }
-
+//this is previous code old code commented previously
     // this.elements = this.elements.map((element) => {
     //   if (element === this.elements[this.editingElementIndex]) {
     //     return {
@@ -478,10 +489,15 @@ export class CreateCertificateComponent implements OnInit {
     if (this.isEdit) {
       this.editingElementIndex = index;
       const selectedElement = this.elements[index];
+      console.log("selectedElement",selectedElement)
       this.currentElement = {
         fontSize: selectedElement.fontSize || 16,
         color: selectedElement.color || '#000',
         alignment: selectedElement.alignment || 'left',
+        fontStyle: selectedElement.fontStyle || 'Arial' 
+
+        //  fontStyles:selectedElement.fontStyles || 'Arial',
+        // selectedElement.fontStyle = this.currentElement.fontStyle
       };
 
       this.updateElementStyle(); // Update alignment when an element is selected
@@ -596,6 +612,7 @@ export class CreateCertificateComponent implements OnInit {
   saveCertificate() {
     if (this.certificateForm.valid) {
       const formData = this.collectFormData();
+      console.log("form data==",formData)
       if (!this.editUrl) {
         let userId = JSON.parse(localStorage.getItem('user_data')!).user
           .companyId;
