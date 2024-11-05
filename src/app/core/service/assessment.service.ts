@@ -216,6 +216,12 @@ import { ApiResponse } from '@core/models/general.response';
       return this.http.delete<void>(url);
     }
 
+    startProctoringAI(id:any) : Observable<any> {
+      const apiUrl = `${this.defaultUrl}admin/exam-assesment-answers/zoom-meeting/${id}`;
+      console.log(apiUrl);
+     return this.http.post(apiUrl,{});
+    }
+
 
   }
   

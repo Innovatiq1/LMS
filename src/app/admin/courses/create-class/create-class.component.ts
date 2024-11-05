@@ -95,6 +95,7 @@ export class CreateClassComponent {
   codeExists: boolean = false;
   code: string | null = null;
   minDates: Date = new Date();
+  zoomSessionCreated: boolean = false;
   addNewRow() {
     if (this.isInstructorFailed != 1) {
       this.isInstructorFailed = 0;
@@ -146,9 +147,10 @@ export class CreateClassComponent {
   ngOnInit(): void {
     this._activeRoute.queryParams.subscribe(params => {
       this.code = params['code'] || null;
-      this.codeExists = !!params['code']; // Assuming 'code' is the parameter name
+      this.codeExists = !!params['code'];
   });
-
+  const storedZoomSessionCreated = localStorage.getItem('zoomSessionCreated');
+  this.zoomSessionCreated = storedZoomSessionCreated === 'true';
     this.loadSavedFormData();
 
     this.commonRoles = AppConstants
@@ -158,7 +160,6 @@ export class CreateClassComponent {
     if(this.classId == undefined){
       this.addNewRow();
     }
-    // this.loadForm();
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
         let payload = {
       type: AppConstants.INSTRUCTOR_ROLE,
@@ -221,21 +222,21 @@ export class CreateClassComponent {
       const parsedFormData = JSON.parse(savedFormData);
       this.classForm.patchValue({
         courseId: parsedFormData.courseId,
-        classType: parsedFormData.classType, // Make sure this key exists in parsedFormData
-        classDeliveryType: parsedFormData.classDeliveryType, // Match with your form control
+        classType: parsedFormData.classType, 
+        classDeliveryType: parsedFormData.classDeliveryType,
         instructorCost: parsedFormData.instructorCost,
-        instructorCostCurrency: parsedFormData.instructorCostCurrency || 'USD', // Use default if not provided
-        department: parsedFormData.department, // Ensure this exists in parsedFormData
-        currency: parsedFormData.currency || '', // Default if not provided
-        isGuaranteedToRun: parsedFormData.isGuaranteedToRun || false, // Default to false if not provided
-        externalRoom: parsedFormData.externalRoom || false, // Default to false if not provided
+        instructorCostCurrency: parsedFormData.instructorCostCurrency || 'USD',
+        department: parsedFormData.department, 
+        currency: parsedFormData.currency || '',
+        isGuaranteedToRun: parsedFormData.isGuaranteedToRun || false, 
+        externalRoom: parsedFormData.externalRoom || false, 
         minimumEnrollment: parsedFormData.minimumEnrollment,
         maximumEnrollment: parsedFormData.maximumEnrollment,
-        meetingPlatform: parsedFormData.meetingPlatform || '', // Default if not provided
-        classStartDate: parsedFormData.classStartDate || '2023-05-20', // Default date
-        classEndDate: parsedFormData.classEndDate || '2023-06-10', // Default date
-        userGroupId: parsedFormData.userGroupId || null, // Default to null if not provided
-        duration: parsedFormData.duration || null // Default to null if not provided
+        meetingPlatform: parsedFormData.meetingPlatform || '', 
+        classStartDate: parsedFormData.classStartDate || '2023-05-20', 
+        classEndDate: parsedFormData.classEndDate || '2023-06-10', 
+        userGroupId: parsedFormData.userGroupId || null, 
+        duration: parsedFormData.duration || null 
       });      
     }
   }
@@ -261,32 +262,45 @@ export class CreateClassComponent {
     })
 }
 
-  loadForm() {
-    this.classForm = this._fb.group({
-      courseId: ['', [Validators.required]],
-      classType: ['public'],
-      classDeliveryType: ['', Validators.required],
-      instructorCost: ['', Validators.required],
-      instructorCostCurrency: ['USD'],
-      department:['',Validators.required],
-      userGroupId: ['', [Validators.required]],
-      currency: [''],
-      isGuaranteedToRun: [false, Validators.required],
-      externalRoom: [false],
-      minimumEnrollment: ['', Validators.required],
-      maximumEnrollment: ['', Validators.required],
-      meetingPlatform:[''],
-      classStartDate: [''],
-      classEndDate: [''],
-      // userGroupId: [null],
-      duration:[''],
-      code: ''
-    });
-    this.secondFormGroup = this._fb.group({
-      sessions: ['', Validators.required],
-      
-    })
-  }
+loadForm() {
+  this.classForm = this._fb.group({
+    courseId: ['', [Validators.required]],
+    classType: ['public'],
+    classDeliveryType: ['', Validators.required],
+    instructorCost: ['', Validators.required],
+    instructorCostCurrency: ['USD'],
+    department: ['', Validators.required],
+    userGroupId: ['', [Validators.required]],
+    currency: [''],
+    isGuaranteedToRun: [false, Validators.required],
+    externalRoom: [false],
+    minimumEnrollment: ['', Validators.required],
+    maximumEnrollment: ['', Validators.required],
+    meetingPlatform: ['', Validators.required], 
+    classStartDate: [''],
+    classEndDate: [''],
+    duration: ['', Validators.required], 
+    code: ''
+  });
+
+  this.secondFormGroup = this._fb.group({
+    sessions: ['', Validators.required],
+  });
+  this.classForm.get('classDeliveryType')!.valueChanges.subscribe((deliveryType) => {
+    const meetingPlatformControl = this.classForm.get('meetingPlatform')!;
+    const durationControl = this.classForm.get('duration')!;
+    if (deliveryType === 'online') {
+      meetingPlatformControl.setValidators([Validators.required]);
+      durationControl.setValidators([Validators.required]);
+    } else {
+      meetingPlatformControl.clearValidators();
+      durationControl.clearValidators();
+    }
+    meetingPlatformControl.updateValueAndValidity();
+    durationControl.updateValueAndValidity();
+  });
+}
+
   getDepartments() {
     this.studentsService.getAllDepartments().subscribe((response: any) => {
       this.dept = response.data.docs;
@@ -440,14 +454,19 @@ export class CreateClassComponent {
   }
 
   submit() {
+    const deliveryType = this.classForm.get('classDeliveryType')?.value;
+    const meetingPlatform = this.classForm.get('meetingPlatform')?.value;
+    if (deliveryType === 'online' && meetingPlatform === 'zoom' && !this.zoomSessionCreated && !this.classId) {
+      alert('Please create the Zoom session before submitting the form.');
+      return;
+    }
     if(this.classForm.valid){
     const sessions = this.getSession();
     if (this.classId) {
       this.sessions = this.getSession();
       if (this.sessions) {
-        this.classForm.value.sessions = sessions;
-        this.classForm.value.courseName = this.courseTitle
-
+        this.classForm.value.sessions = this.sessions;
+        this.classForm.value.courseName = this.courseTitle;
         Swal.fire({
           title: 'Are you sure?',
           text: 'Do you want to update this class!',
@@ -456,24 +475,39 @@ export class CreateClassComponent {
           showCancelButton: true,
           cancelButtonColor: '#d33',
         }).then((result) => {
-          if (result.isConfirmed){
-            this._classService
-            .updateClass(this.classId, this.classForm.value)
-            .subscribe((response) => {
-              if (response) {
-                Swal.fire({
-                  title: 'Success',
-                  text: 'Class Updated Successfully.',
-                  icon: 'success',
-                });
-                window.history.back();
-              }
+          if (result.isConfirmed) {
+            Swal.fire({
+              title: 'Please wait',
+              text: 'Updating the class...',
+              allowOutsideClick: false,
+              showConfirmButton: false,
+              didOpen: () => {
+                Swal.showLoading(); 
+              },
             });
+    
+            this._classService.updateClass(this.classId, this.classForm.value)
+              .subscribe((response) => {
+                if (response) {
+                  Swal.fire({
+                    title: 'Success',
+                    text: 'Class Updated Successfully.',
+                    icon: 'success',
+                  });
+                  window.history.back();
+                }
+              }, (error) => {
+                Swal.fire({
+                  title: 'Error',
+                  text: 'Something went wrong. Please try again.',
+                  icon: 'error',
+                });
+              });
           }
         });
-
       }
     }
+    
      else {
       if (sessions) {
         this.classForm.value.sessions = sessions;
@@ -511,26 +545,21 @@ export class CreateClassComponent {
                 Swal.showLoading();
               },
             });
-      
-            // Call the save class service
             this._classService.saveClass(this.classForm.value).subscribe(
               (response) => {
-                // On success, show a success message
                 Swal.fire({
                   title: 'Success',
                   text: 'Class Created Successfully.',
                   icon: 'success',
                 });
               })
-              window.history.back();
+              localStorage.removeItem('zoomSessionCreated');
+              localStorage.removeItem('classFormData');
+              this.zoomSessionCreated = false;
+               window.history.back();
+             // this.router.navigate(['/admin/courses/class-list']);
             }});
-          
-          
-      
-      
-      
-    
-    
+
   }else{
     this.classForm.markAllAsTouched();
   }
@@ -641,14 +670,15 @@ export class CreateClassComponent {
     }
     return false;
   }
-  scheduleMeet(){
+  scheduleMeet() {
     const formData = this.classForm.value;
-  localStorage.setItem('classFormData', JSON.stringify(formData));
-  if(this.classForm.get('meetingPlatform')?.value=='zoom'){
-    const zoomAuthUrl = environment.ZoomUrl;
-    window.location.href = zoomAuthUrl;
-
+    localStorage.setItem('classFormData', JSON.stringify(formData));
+  
+    if (this.classForm.get('meetingPlatform')?.value === 'zoom') {
+      const zoomAuthUrl = environment.ZoomUrl;
+      localStorage.setItem('zoomSessionCreated', 'true');
+      window.location.href = zoomAuthUrl;
+    }
   }
-     
-  }
+  
 }
