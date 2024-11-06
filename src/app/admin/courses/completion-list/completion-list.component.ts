@@ -724,6 +724,13 @@ export class CompletionListComponent {
     if (this.selectedRows.length === 0) {
       return;
     }
+    Swal.fire({
+      title: 'Certificate Generating...',
+      text: 'Please wait...',
+      allowOutsideClick: false,
+      timer: 24000,
+      timerProgressBar: true,
+    });
     this.isGeneratingCertificates = true;
     let alreadyIssuedCount = 0;
     let successfulCount = 0;

@@ -530,6 +530,7 @@ export class ViewCourseComponent implements OnDestroy {
   }
 
   getDiscounts(id:any){
+    debugger
     this.courseService.getDiscount(id).subscribe((response) => {
       this.discounts = response.filter(item => !item.discountTitle.includes('&'));
       this.allDiscounts = response;
@@ -558,7 +559,7 @@ export class ViewCourseComponent implements OnDestroy {
       companyId:userdata.user.companyId,
       department:userdata.user.department,
       courseTitle: this.classDetails?.courseId?.title,
-      courseFee: this.classDetails?.courseId?.fee,
+      courseFee: this.classDetails?.courseId?.fee+this.classDetails?.instructorCost,
       studentId: studentId,
       classId: this.classId,
       title: this.title,
@@ -610,7 +611,7 @@ reRegister(){
       email: userdata.user.email,
       name: userdata.user.name,
       courseTitle: this.courseDetails?.title,
-      courseFee: this.courseDetails?.fee || 0,
+      courseFee: this.classDetails?.courseId?.fee+this.classDetails?.instructorCost || 0,
       courseId: this.courseDetails.id,
       companyId:userdata.user.companyId,
       verify:true,
@@ -637,7 +638,7 @@ reRegister(){
       email: userdata.user.email,
       name: userdata.user.name,
       courseTitle: this.courseDetails?.title,
-      courseFee: this.courseDetails?.fee || 0,
+      courseFee: this.classDetails?.courseId?.fee+this.classDetails?.instructorCost|| 0,
       courseId: this.courseDetails.id,
       companyId:userdata.user.companyId,
       verify:true,
@@ -656,6 +657,7 @@ reRegister(){
 
 }
   submitForVerification(classId: string,action?:string) {
+    debugger
     var userdata = JSON.parse(localStorage.getItem('currentUser')!);
     let department= JSON.parse(localStorage.getItem('user_data')!).user.department;
     var studentId = localStorage.getItem('id');
@@ -740,7 +742,8 @@ if(this.feeType=="paid" && this.approval == 'yes')
     email: userdata.user.email,
     name: userdata.user.name,
     courseTitle: this.classDetails?.courseId?.title,
-    courseFee: this.classDetails?.courseId?.fee,
+    courseFee: this.classDetails?.courseId?.fee+this.classDetails?.instructorCost,
+    instructorCost: this.classDetails?.instructorCost,
     studentId: studentId,
     classId: this.classId,
     title: this.title,
@@ -850,8 +853,8 @@ if(this.feeType=="paid" && this.approval == 'yes')
                                 let body = {
                                   courseTitle:
                                     this.classDetails?.courseId?.title,
-                                  courseFee:
-                                  this.classDetails?.courseId?.fee
+                                  courseFee: this.classDetails?.courseId?.fee+this.classDetails?.instructorCost,
+
                                 };
                                 this.generateInvoice(body);
                                 setTimeout(() => {
@@ -932,14 +935,16 @@ if(this.feeType=="paid" && this.approval == 'yes')
     email: userdata.user.email,
     name: userdata.user.name,
     courseTitle: this.classDetails?.courseId?.title,
-    courseFee: this.classDetails?.courseId?.fee,
+    courseFee: this.classDetails?.courseId?.fee+this.classDetails?.instructorCost,
+    instructorCost: this.classDetails?.instructorCost,
     studentId: studentId,
     classId: this.classId,
     title: this.title,
     coursekit: this.courseKit,
     date: date,
-    discountType:this.discountType? this.discountType:'',
-    discountValue:this.discountValue?this.discountValue: 0,
+    discountType: this.discountType ? this.discountType : this.selectedDiscount ? this.selectedDiscount.discountType : '',
+    discountValue: this.discountValue ? this.discountValue : this.selectedDiscount ? this.selectedDiscount.value : 0,
+
     courseStartDate:this.classDetails?.courseId?.sessionStartDate,
     courseEndDate:this.classDetails?.courseId?.sessionEndDate
   };
@@ -1045,8 +1050,8 @@ if(this.feeType=="paid" && this.approval == 'yes')
                                 let body = {
                                   courseTitle:
                                     this.classDetails?.courseId?.title,
-                                  courseFee:
-                                  this.classDetails?.courseId?.fee
+                                    courseFee: this.classDetails?.courseId?.fee+this.classDetails?.instructorCost,
+
                                 };
                                 this.generateInvoice(body);
                                 setTimeout(() => {
@@ -1421,6 +1426,7 @@ if(this.feeType=="paid" && this.approval == 'yes')
         // this.assessmentTaken = response['count']-this.RetakeRequestCount;
         this.assessmentTaken = response['count'];
         // const retakeRequestCount=this.getRetakeRequests(studentId,courseId);
+        console.log("assessmentTake=",this.assessmentTaken)
         if(this.RetakeRequestCount==1)
           {
             this.updateRetakeRequest(courseId)
@@ -1455,7 +1461,6 @@ if(this.feeType=="paid" && this.approval == 'yes')
     //  this.updateRetakeRequest(courseId)
   }
   
-
   updateShowAssessmentQuestions(){
     if(this.assessmentTempInfo && !this.assessmentInfo.resultAfterFeedback && this.isFeedBackSubmitted){
       this.assessmentTempInfo = null;
@@ -1467,7 +1472,13 @@ if(this.feeType=="paid" && this.approval == 'yes')
     {
       this.assessmentTaken=1;
     }
-    if(this.assessmentTaken < this.assessmentInfo.retake){
+     console.log("this.assessmentTaken",this.assessmentTaken);
+    console.log("this.assessmentInfo.retake",this.assessmentInfo.retake)
+    // if(this.assessmentTaken == this.assessmentInfo.retake){
+    //   // this.isShowAssessmentQuestions =  false;
+    //   this.isRetakeOver=false;
+    // }
+    if(this.assessmentTaken <= this.assessmentInfo.retake){
       if(this.assessmentTempInfo == null || (this.isAnswersSubmitted && !this.isFeedBackSubmitted)){
         if(this.assessmentInfo.resultAfterFeedback && this.isAnswersSubmitted && !this.isFeedBackSubmitted){
           this.isShowAssessmentQuestions =  false;
@@ -1605,7 +1616,7 @@ console.log('lastButOneValue',lastButOneValue)
             this.courseService
               .getStudentClass(studentId, classId)
               .subscribe((response) => {
-                debugger
+                // debugger
                 this.studentClassDetails = response.data.docs[0];
                 this.coursekitDetails = response.data.docs[0].coursekit;
                 let totalPlaybackTime = 0;

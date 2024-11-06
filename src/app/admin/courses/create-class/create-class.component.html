@@ -179,7 +179,7 @@
                <!-- Schedule Meet Button -->
                               <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mt-3" *ngIf="classForm.get('classDeliveryType')?.value === 'online' && 
                       classForm.get('meetingPlatform')?.value ==='zoom' && 
-                      !codeExists">
+                      !codeExists && !classId">
                                   <button mat-raised-button color="primary" (click)="scheduleMeet()">Create Zoom Session</button>
                               </div>
                               <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mt-3" *ngIf="labelStatusCheck('External Room')">

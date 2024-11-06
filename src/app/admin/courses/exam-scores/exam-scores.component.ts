@@ -114,6 +114,7 @@ export class ExamScoresComponent {
 
   enableStudentView(data: any){
     if(data.examAssessmentAnswer){
+      this.assessmentPaginationModel.page =1;
       const payload = {id: data.examAssessmentAnswer._id, studentView: true}
       this.assessmentService.updateAssessmentStudentView(payload).subscribe(res=> {
         this.getAllAnswers();

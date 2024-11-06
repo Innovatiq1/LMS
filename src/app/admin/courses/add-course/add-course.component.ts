@@ -24,7 +24,9 @@ import { StudentsService } from 'app/admin/students/students.service';
 import { UtilsService } from '@core/service/utils.service';
 import { CommonService } from '@core/service/common.service';
 import { UserService } from '@core/service/user.service';
-
+import { MatDialog } from '@angular/material/dialog';
+import { CreateCourseKitComponent } from '../course-kit/create-course-kit/create-course-kit.component';
+import { CourseKitModel, CourseModel, CoursePaginationModel } from '@core/models/course.model';
 @Component({
   selector: 'app-add-course',
   templateUrl: './add-course.component.html',
@@ -149,7 +151,8 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     private studentsService: StudentsService,
     public utils: UtilsService,
     private commonService: CommonService,
-    private userService:UserService
+    private userService:UserService,
+    private dialog: MatDialog
   ) {
 
     this.storedItems = localStorage.getItem('activeBreadcrumb');
@@ -329,6 +332,46 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       this.startAutoSave();
     }, 30000);
   }
+
+  openCreateCourseKitDialog(): void {
+    const dialogRef = this.dialog.open(CreateCourseKitComponent, {
+      width: '80%',
+      height:'70%', 
+      disableClose: false, 
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
+
+  // openCreateCourseKitDialog(): void {
+  //   const dialogRef = this.dialog.open(CreateCourseKitComponent, {
+  //     width: '80%',
+  //     height: '70%',
+  //     disableClose: false,
+  //   });
+  
+  //   dialogRef.afterClosed().subscribe((result) => {
+  //     if (result) {
+  //       // Refresh the course kits list after a new kit is created
+  //       this.loadCourseKits();  // Assuming you have a method to load the course kits
+  //     }
+  //   });
+  // }
+  
+  // loadCourseKits() {
+  //   // Logic to fetch the course kits and update `courseKits`
+  //   const filter = { 
+  //     ...this.courseKitModel,
+  //     title: this.searchTerm 
+  //   };
+  //   this.courseService.getCourseKit(filter).subscribe((data) => {
+  //     this.courseKits = data;
+  //   });
+  // }
+  
   getDepartments() {
     this.studentsService.getAllDepartments().subscribe((response: any) => {
       this.dept = response.data.docs;

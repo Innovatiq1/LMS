@@ -105,23 +105,17 @@ export class ExamTestListComponent {
       cancelButtonText: 'Cancel',
     }).then((result) => {
       if (result.isConfirmed) {
-        // Proceed with existing logic if user confirms
         const studentClasses = data.studentClassId || [];
-        
         if (studentClasses.length && studentClasses.some((v: any) => v.status == 'approved')) {
           const courseDetails = data.courseId;
           const studentId = localStorage.getItem('id');
           this.studentClassId = studentClasses[0]?._id;
           const examAssessment = data.courseId.exam_assessment._id;
-  
-          // Call redirectToExam if all conditions are met
           this.redirectToExam(courseDetails, studentId, null);
         } else {
-          // Call paidDirectExamFlow if conditions are not met
           this.paidDirectExamFlow(data);
         }
       } else {
-        // If canceled, you can optionally show a message or take other actions here.
         console.log('Exam start was canceled by the user.');
       }
     });

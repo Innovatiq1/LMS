@@ -293,16 +293,12 @@ zoomRecordings:string=''
 getRecordedVideoLink(): void {
   this._classService.getClassRecordings(this.classDataById).subscribe({
     next: (response) => {
-      // Filter only video recordings (e.g., MP4)
       const videoRecordings = response.recordingLinks.filter((link: any) => link.file_type === 'MP4');
-
-      // Sort video recordings by recording_start date in descending order
       videoRecordings.sort((a: any, b: any) => {
         return new Date(b.recording_start).getTime() - new Date(a.recording_start).getTime();
       });
 
       if (videoRecordings.length > 0) {
-        // Format and display video links with recording dates
         const linksHtml = videoRecordings.map((link: any) => {
           const date = new Date(link.recording_start).toLocaleDateString(); // Format the recording date
           return `<li><a href="${link.play_url}" target="_blank" style="color: #28a745;">Video Recording</a> - Recorded on ${date}</li>`;
@@ -316,7 +312,6 @@ getRecordedVideoLink(): void {
           confirmButtonText: 'Close'
         });
       } else {
-        // Display a message when no video recordings are found
         Swal.fire({
           title: 'No Video Recordings Available',
           text: 'There are no video recordings for this class at the moment.',
@@ -343,6 +338,15 @@ hideDurationField: boolean = false;
 toggleZoomMeetingFormDelete() {
   this.isZoomMeetingFormVisible = !this.isZoomMeetingFormVisible;
     this.hideDurationField = true;
+}
+
+isDateExpired(sessionEndDate: string): boolean {
+  if (!sessionEndDate) {
+      return true; // Disable link if no end date is provided
+  }
+  const endDate = new Date(sessionEndDate);
+  const today = new Date();
+  return endDate < today; // Returns true if end date has passed
 }
 
 

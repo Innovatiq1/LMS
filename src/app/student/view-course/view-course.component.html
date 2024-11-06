@@ -49,8 +49,10 @@
                     >{{ classDetails?.courseId?.fee }}$</span
                   >
                   <span class="dis_font">Fee</span> -->
-                  <span class="day_font">${{ classDetails?.courseId?.fee || 0 }} </span>
-                  <span class="dis_font">Fee</span>
+                  <span class="day_font">
+                    ${{ (classDetails?.courseId?.fee || 0) + (classDetails?.instructorCost || 0) }}
+                </span>
+                                  <span class="dis_font">Fee</span>
                 </div>
               </div>
             </div>
@@ -86,14 +88,14 @@
                       {{ classDetails?.createdAt | date }}
                     </div>
                   </li>
-                  <li class="list-group-item">
+                  <!-- <li class="list-group-item">
                     <b>Course Run </b>
                     <div class="profile-desc-item float-end">
                       {{
                         classDetails?.isGuaranteedToRun == true ? "Yes" : "No"
                       }}
                     </div>
-                  </li>
+                  </li> -->
                 </ul>
               </div>
             </mat-tab>
@@ -287,7 +289,7 @@
                           </div> -->
                           <div>
                             <span class="day_font"
-                              >${{ classDetails?.courseId?.feeType == 'paid'? classDetails?.courseId?.fee:'0' }}.00</span
+                              >${{ classDetails?.courseId?.feeType == 'paid'? (classDetails?.courseId?.fee+ classDetails?.instructorCost):'0' }}.00</span
                             >
                             <span class="dis_font">Fee</span>
                           </div>
@@ -544,6 +546,7 @@
                     >
                       Max No. of Retake Reached
                     </p>
+              
                     <ng-container
                       *ngIf="isShowAssessmentQuestions"
                     >
@@ -839,12 +842,12 @@
               </div>
               <div class="p-4">
                 <ul class="list-group list-group-unbordered">
-                  <li class="list-group-item">
+                  <!-- <li class="list-group-item">
                     <b>Skill Connect Code </b>
                     <div class="profile-desc-item float-end">
                       {{ classDetails?.courseId?.skill_connect_code }}
                     </div>
-                  </li>
+                  </li> -->
                   <li class="list-group-item">
                     <b>Minimum Enrollment </b>
                     <div class="profile-desc-item float-end">

@@ -54,7 +54,7 @@ const routes: Routes = [
     component: ClassListComponent,
   },
   {
-    path: 'enquiry-list',
+    path: 'student-courses/enquiry-list',
     component: EnquiryListComponent,
   },
   {
