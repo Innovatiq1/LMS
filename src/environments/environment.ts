@@ -57,7 +57,7 @@ export const environment = {
 
   /* zoom api url to generating token,for testing*/
  // ZoomUrl:'https://zoom.us/oauth/authorize?client_id=H65uMhcET8KNpbQ8RWvw&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A4200%2Fadmin%2Fcourses%2Fcreate-class'
-  ZoomUrl:'https://zoom.us/oauth/authorize?client_id=LiiBCSVsQzi2MPZIsglZYg&response_type=code&redirect_uri=http%3A%2F%2F192.168.1.190%3A4500%2Fadmin%2Fcourses%2Fcreate-class'
+  ZoomUrl: 'https://zoom.us/oauth/authorize?client_id=LiiBCSVsQzi2MPZIsglZYg&response_type=code&redirect_uri=http%3A%2F%2F192.168.1.190%3A4500%2Fadmin%2Fcourses%2Fcreate-class'
 
 };
 
