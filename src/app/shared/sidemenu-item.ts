@@ -382,12 +382,6 @@ SIDEMENU_LIST =[
                 "id": "retake-requests",
                 "actions": [],
                 "class":"ml-menu2"
-              },
-              {
-                "title": "Enquiry List",
-                "id": "enquiry-list",
-                "actions": [],
-                "class":"ml-menu2"
               }
             ]
           },
