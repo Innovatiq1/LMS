@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component,Input, OnDestroy, OnInit,Inject,Optional } from '@angular/core';
 import { FormBuilder, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenService } from '@core/service/authen.service';
 import { CourseService } from '@core/service/course.service';
 import { UtilsService } from '@core/service/utils.service';
+import { MatDialog,MAT_DIALOG_DATA,MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -11,7 +12,7 @@ import Swal from 'sweetalert2';
   templateUrl: './funding.component.html',
   styleUrls: ['./funding.component.scss']
 })
-export class FundingComponent {
+export class FundingComponent implements OnInit {
   fundingForm!: UntypedFormGroup;
   breadscrums = [
     {
@@ -23,10 +24,18 @@ export class FundingComponent {
   dataSource :any;
   isCreate = false;
   isEdit = false;
+  dialogStatus:boolean=false;
 
-  constructor(private fb: FormBuilder,private router:Router,
+  constructor(
+    @Optional() @Inject(MAT_DIALOG_DATA) public data11: any,
+    private fb: FormBuilder,private router:Router,
     private activatedRoute:ActivatedRoute,private courseService:CourseService,public utils:UtilsService,
-    private authenService: AuthenService) {
+    private authenService: AuthenService,@Optional() private dialogRef: MatDialogRef<FundingComponent> 
+  ) {
+      if (data11) {
+        this.dialogStatus=true;
+        console.log("Received variable:", data11.variable);
+      }
       this.fundingForm = this.fb.group({
         grant_type: ['', [Validators.required,...this.utils.validators.name,...this.utils.validators.noLeadingSpace]],
         description: ['', [Validators.required,...this.utils.validators.name, ...this.utils.validators.noLeadingSpace]]
@@ -104,5 +113,11 @@ update(data: any) {
       id: data.id
     }
   });
+}
+
+closeDialog(): void {
+  if (this.dialogRef) {
+    this.dialogRef.close();
+  }
 }
 }

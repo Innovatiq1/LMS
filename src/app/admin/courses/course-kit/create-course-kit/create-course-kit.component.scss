@@ -94,6 +94,14 @@ label {
     transform: translate(-50%, -50%);
     color: #2c218f; 
   }
-  
+  .dialog-header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 8px;
+  }
  
-  
+  .full-width {
+    margin: 0;
+    padding: 0;
+    width: 96%;
+  }

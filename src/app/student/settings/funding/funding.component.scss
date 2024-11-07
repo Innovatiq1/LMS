@@ -20,3 +20,26 @@
     display: inline-block;
     margin-right: 5px; // Space between dot and text
   }
+
+  .dialog-header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 8px;
+  }
+//here is code for openDiallog
+  .full-width {
+    margin: 0;
+    padding: 0;
+    width: 96%;
+  }
+  
+  // .content-block1 {
+  //   margin: 0 20px; /* Or adjust as needed */
+  //   padding: 0;
+  // }
+  
+  // .table-wrapper1 {
+  //   overflow-y: auto;
+  //   margin: 0 20px; /* Remove left margin to align with full-width layout */
+  //   padding: 0;
+  // }

@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit ,Inject,Optional} from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -13,7 +13,7 @@ import { Subscription, timer } from 'rxjs';
 import * as XLSX from 'xlsx';
 import { StudentsService } from 'app/admin/students/students.service';
 import { SettingsService } from '@core/service/settings.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog,MAT_DIALOG_DATA,MatDialogRef } from '@angular/material/dialog';
 import { TestPreviewComponent } from '@shared/components/test-preview/test-preview.component';
 import { CommonService } from '@core/service/common.service';
 
@@ -54,9 +54,10 @@ export class AddExamQuestionsComponent implements OnInit, OnDestroy{
   scoreAlgo:any;
   timerValues:any;
   draftId!: string;
-
+  dialogStatus:boolean=false;
 
   constructor(
+    @Optional() @Inject(MAT_DIALOG_DATA) public data11: any,
     private formBuilder: FormBuilder,
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -64,8 +65,13 @@ export class AddExamQuestionsComponent implements OnInit, OnDestroy{
     private studentsService: StudentsService,
     private SettingsService:SettingsService,
     private dialog: MatDialog,
-    private commonService: CommonService
+    private commonService: CommonService,
+    @Optional() private dialogRef: MatDialogRef<AddExamQuestionsComponent>
   ) {
+    if (data11) {
+      this.dialogStatus=true;
+      console.log("Received variable:", data11.variable);
+    }
     let urlPath = this.router.url.split('/');
     this.editUrl = urlPath.includes('edit-questions');
 
@@ -119,7 +125,11 @@ export class AddExamQuestionsComponent implements OnInit, OnDestroy{
       }
     }, 30000); 
   }
-
+  closeDialog(): void {
+    if (this.dialogRef) {
+      this.dialogRef.close();
+    }
+  }
   ngOnDestroy() {
     if (this.draftSubscription) {
       this.draftSubscription.unsubscribe(); // Unsubscribe to stop auto-save
@@ -387,7 +397,7 @@ saveDraft(data?: string) {
         retake: this.questionFormTab2.value.retake,
         passingCriteria:this.questionFormTab2.value.passingCriteria,
         scoreAlgorithm: this.questionFormTab2.value.scoreAlgorithm,
-        status: 'open',
+        status:this.dialogStatus?'approved':'open',
         companyId:userId,
         questions: this.questionFormTab2.value.questions.map((v: any) => ({
           options: v.options,
@@ -465,7 +475,9 @@ saveDraft(data?: string) {
           text: 'Question created successfully',
           icon: 'success',
         });
-        window.history.back();
+        if(!this.dialogStatus){
+          window.history.back();
+        }
       },
       (err: any) => {
         Swal.fire('Failed to create Question', 'error');
