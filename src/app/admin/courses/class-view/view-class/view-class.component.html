@@ -163,7 +163,8 @@
                         <p style="margin-bottom: 0">
                           <!-- Remove bottom margin for better alignment -->
                           <!-- Start Meeting Button -->
-                          <a
+                          <ng-container *ngIf="!isDateExpired(response.sessions[0]?.sessionEndDate); else expiredMessage">
+                            <a
                             href="{{ response?.meetingUrl }}"
                             target="_blank"
                             rel="noopener noreferrer"
@@ -238,6 +239,10 @@
                           >
                             <i class="fas fa-trash"></i>
                           </button>
+                        </ng-container>
+                        <ng-template #expiredMessage>
+                            <span>Link Expired</span>
+                          </ng-template>
                         </p>
                       </div>
                     </div>
@@ -317,25 +322,18 @@
                         </button>
                       </div>
                     </div>
-                    <div
-                      class="col-12"
-                      *ngIf="
-                        isZoomMeetingFormVisible &&
-                        response?.meetingPlatform === 'zoom'
-                      "
-                    >
+                    <div class="col-12" *ngIf="isZoomMeetingFormVisible && response?.meetingPlatform === 'zoom'">
                       <div class="zoom-meeting-box p-3">
-                        <!-- Add a class and padding -->
-                        <h6>Update Zoom Link</h6>
-
+                        <!-- Show Update or Delete Title Based on Mode -->
+                        <h6>{{ isUpdateMode ? 'Update Zoom Link' : 'Delete Zoom Link' }}</h6>
+                    
+                        <!-- Date selection and duration field (only shown if isUpdateMode is true) -->
                         <div class="row mb-3">
                           <div class="col-6">
+                            <!-- Date Field -->
                             <div class="form-group">
                               <label for="start-date">Choose a date</label>
-                              <mat-form-field
-                                class="example-full-width"
-                                appearance="outline"
-                              >
+                              <mat-form-field class="example-full-width" appearance="outline">
                                 <mat-label>Choose a date</mat-label>
                                 <input
                                   matInput
@@ -344,34 +342,21 @@
                                   name="start"
                                   id="start-date"
                                   #startDate
-                                  [min]="
-                                    response.sessions[0]?.sessionStartDate
-                                      | date : 'yyyy-MM-dd'
-                                  "
-                                  [max]="
-                                    response.sessions[0]?.sessionEndDate
-                                      | date : 'yyyy-MM-dd'
-                                  "
+                                  [min]="response.sessions[0]?.sessionStartDate | date : 'yyyy-MM-dd'"
+                                  [max]="response.sessions[0]?.sessionEndDate | date : 'yyyy-MM-dd'"
                                 />
-                                <mat-icon
-                                  matSuffix
-                                  [owlDateTimeTrigger]="date"
-                                  class="date-icon"
-                                  >today</mat-icon
-                                >
+                                <mat-icon matSuffix [owlDateTimeTrigger]="date" class="date-icon">today</mat-icon>
                                 <owl-date-time #date></owl-date-time>
                                 <mat-error>Enter a valid date</mat-error>
                               </mat-form-field>
                             </div>
                           </div>
-
-                          <div class="col-6" *ngIf="!hideDurationField">
+                    
+                          <!-- Duration Field, only shown if isUpdateMode is true -->
+                          <div class="col-6" *ngIf="isUpdateMode">
                             <div class="form-group">
                               <label for="duration">Duration</label>
-                              <mat-form-field
-                                class="example-full-width"
-                                appearance="outline"
-                              >
+                              <mat-form-field class="example-full-width" appearance="outline">
                                 <input
                                   matInput
                                   type="time"
@@ -381,19 +366,19 @@
                                   min="1"
                                   #durationInput
                                 />
-                                <mat-error *ngIf="durationInput.oninvalid"
-                                  >Enter a valid duration</mat-error
-                                >
+                                <mat-error *ngIf="durationInput.oninvalid">Enter a valid duration</mat-error>
                               </mat-form-field>
                             </div>
                           </div>
                         </div>
-
-                        <!-- Buttons for update and delete -->
+                    
+                        <!-- Update and Delete Buttons -->
                         <div class="d-flex justify-content-end mt-3">
+                          <!-- Show Update button only if isUpdateMode is true -->
                           <button
-                            *ngIf="!hideDurationField"
+                            *ngIf="isUpdateMode"
                             type="button"
+                            (click)="updateDateTime(startDate.value, duration)"
                             style="
                               display: inline-block;
                               background-color: white;
@@ -403,36 +388,33 @@
                               border: 0.5px solid #28a745;
                               border-radius: 5px;
                               font-size: 14px;
-                            "
-                            (click)="
-                              updateDateTime(
-                                startDate.value,
-                                hideDurationField ? '' : duration
-                              )
                             "
                           >
                             Update
                           </button>
+                    
+                          <!-- Show Delete button only if isDeleteMode is true -->
                           <button
-                            *ngIf="isUpdated"
+                            *ngIf="isDeleteMode"
                             type="button"
+                            (click)="deleteDateTime(startDate.value)"
                             style="
                               display: inline-block;
                               background-color: white;
-                              color: #28a745;
+                              color: #dc3545;
                               padding: 5px 10px;
                               text-align: center;
-                              border: 0.5px solid #28a745;
+                              border: 0.5px solid #dc3545;
                               border-radius: 5px;
                               font-size: 14px;
                             "
-                            (click)="deleteDateTime(startDate.value)"
                           >
                             Delete
                           </button>
                         </div>
                       </div>
                     </div>
+                    
                   </div>
                 </div>
               </div>

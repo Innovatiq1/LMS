@@ -1891,4 +1891,11 @@ console.log('lastButOneValue',lastButOneValue)
     this.currentScormModule = {...module, launchUrl: scormKit.path+'/'+module.launch};
     this.initScorm2004(this.currentScormModule.launchUrl);
   }
+
+  hasSessionEnded(): boolean {
+    if (! this.classDetails?.sessions?.[0]?.sessionEndDate ) return true;
+    const sessionEndDate = new Date(this.classDetails?.sessions?.[0]?.sessionEndDate);
+    const today = new Date();
+    return sessionEndDate < today;
+  }
 }
