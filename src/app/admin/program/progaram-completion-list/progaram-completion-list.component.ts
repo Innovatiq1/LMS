@@ -344,7 +344,7 @@ generateCertificatePDF(): void {
     
     pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
 
-    pdf.save('certificate.pdf');
+    // pdf.save('certificate.pdf');
       const pdfBlob = pdf.output('blob');
 
       this.update(pdfBlob);
@@ -352,23 +352,60 @@ generateCertificatePDF(): void {
 }
 
 
+// update(pdfBlob: Blob) {
+//   Swal.fire({
+//     title: 'Certificate Generating...',
+//     text: 'Please wait...',
+//     allowOutsideClick: false,
+//     timer: 24000,
+//     timerProgressBar: true,
+//   });
+
+//   this.dafaultGenratepdf = true;
+//   this.copyPreviewToContentToConvert();
+
+//   var convertIdDynamic = 'contentToConvert';
+//   this.genratePdf3(convertIdDynamic, this.studentData?.studentId._id, this.studentData?.programId._id, pdfBlob);
+//   this.dialogRef.close();
+// }
 update(pdfBlob: Blob) {
+  let countdown = 10; // Countdown time in seconds
+
   Swal.fire({
     title: 'Certificate Generating...',
-    text: 'Please wait...',
+    html: `<p>Please wait...<br>Time remaining: <strong>${countdown}</strong> seconds</p>`,
     allowOutsideClick: false,
-    timer: 24000,
+    timer: countdown * 1000,
     timerProgressBar: true,
+    didOpen: () => {
+      const content = Swal.getHtmlContainer();
+      const countdownElement = content?.querySelector('strong');
+
+      // Update countdown every second
+      const interval = setInterval(() => {
+        countdown--;
+        if (countdownElement) {
+          countdownElement.textContent = `${countdown}`;
+        }
+        if (countdown <= 0) {
+          clearInterval(interval);
+        }
+      }, 1000);
+    },
   });
 
   this.dafaultGenratepdf = true;
   this.copyPreviewToContentToConvert();
 
-  var convertIdDynamic = 'contentToConvert';
-  this.genratePdf3(convertIdDynamic, this.studentData?.studentId._id, this.studentData?.programId._id, pdfBlob);
+  const convertIdDynamic = 'contentToConvert';
+  this.genratePdf3(
+    convertIdDynamic,
+    this.studentData?.studentId._id,
+    this.studentData?.programId._id,
+    pdfBlob
+  );
   this.dialogRef.close();
 }
-
 genratePdf3(convertIdDynamic: any, memberId: any, memberProgrmId: any, pdfBlob: Blob) {
   // console.log('convertIdDynamic - ', convertIdDynamic, 'memberId -', memberId, 'memberProgrmId', memberProgrmId);
   setTimeout(() => {
@@ -483,10 +520,86 @@ toggleRowSelection(row: any): void  {
 isAnyRowSelected(): boolean {
   return this.selection.hasValue();
 }
+// enableMultipleCertificates() {
+//   if (this.selectedRows.length === 0) {
+//     return;
+//   }
+//   Swal.fire({
+//     title: 'Certificate Generating...',
+//     text: 'Please wait...',
+//     allowOutsideClick: false,
+//     timer: 24000,
+//     timerProgressBar: true,
+//   });
+//   this.isGeneratingCertificates = true;
+//   let alreadyIssuedCount = 0;
+//   let successfulCount = 0;
+
+//   const promises = this.selectedRows.map((row: any) => {
+//     if (!row.certificate) {
+//       return this.generateCertificateForRow(row)
+//         .then(() => {
+//           successfulCount++;
+//         })
+//         .catch(() => {
+//           console.log(`Failed to generate certificate for student ID: ${row.studentId._id}`);
+//         });
+//     } else {
+//       alreadyIssuedCount++;
+//       console.log(`Certificate already issued for student ID: ${row.studentId._id}`);
+//       return Promise.resolve();
+//     }
+//   });
+
+  
+//   Promise.all(promises).then(() => {
+//     this.isGeneratingCertificates = false;
+//     let message = `${successfulCount} certificates generated successfully!`;
+//     if (alreadyIssuedCount > 0) {
+//       message += ` ${alreadyIssuedCount} certificates were already issued and skipped.`;
+//     }
+
+//     Swal.fire({
+//       title: 'Certificate Generation',
+//       text: message,
+//       icon: successfulCount > 0 ? 'success' : 'warning',
+//     }).then(() => {
+//       this.clearSelection();
+//       // this.getCompletedList();
+//     });
+
+//   }).catch(() => {
+//     this.isGeneratingCertificates = false; // Stop the spinner even if there's an error
+//   });
+// }
 enableMultipleCertificates() {
   if (this.selectedRows.length === 0) {
     return;
   }
+
+  let countdown = 10; 
+  Swal.fire({
+    title: 'Certificate Generating...',
+    html: `<p>Please wait...<br>Time remaining: <strong>${countdown}</strong> seconds</p>`,
+    allowOutsideClick: false,
+    timer: countdown * 1000,
+    timerProgressBar: true,
+    didOpen: () => {
+      const content = Swal.getHtmlContainer();
+      const countdownElement = content?.querySelector('strong');
+
+      const interval = setInterval(() => {
+        countdown--;
+        if (countdownElement) {
+          countdownElement.textContent = `${countdown}`;
+        }
+        if (countdown <= 0) {
+          clearInterval(interval);
+        }
+      }, 1000);
+    },
+  });
+
   this.isGeneratingCertificates = true;
   let alreadyIssuedCount = 0;
   let successfulCount = 0;
@@ -507,26 +620,31 @@ enableMultipleCertificates() {
     }
   });
 
-  
-  Promise.all(promises).then(() => {
-    this.isGeneratingCertificates = false;
-    let message = `${successfulCount} certificates generated successfully!`;
-    if (alreadyIssuedCount > 0) {
-      message += ` ${alreadyIssuedCount} certificates were already issued and skipped.`;
-    }
+  Promise.all(promises)
+    .then(() => {
+      this.isGeneratingCertificates = false;
+      let message = `${successfulCount} certificates generated successfully!`;
+      if (alreadyIssuedCount > 0) {
+        message += ` ${alreadyIssuedCount} certificates were already issued and skipped.`;
+      }
 
-    Swal.fire({
-      title: 'Certificate Generation',
-      text: message,
-      icon: successfulCount > 0 ? 'success' : 'warning',
-    }).then(() => {
-      this.clearSelection();
-      // this.getCompletedList();
+      Swal.fire({
+        title: 'Certificate Generation',
+        text: message,
+        icon: successfulCount > 0 ? 'success' : 'warning',
+      }).then(() => {
+        this.clearSelection();
+        // this.getCompletedList(); // Uncomment if needed
+      });
+    })
+    .catch(() => {
+      this.isGeneratingCertificates = false;
+      Swal.fire({
+        title: 'Error',
+        text: 'An error occurred while generating certificates.',
+        icon: 'error',
+      });
     });
-
-  }).catch(() => {
-    this.isGeneratingCertificates = false; // Stop the spinner even if there's an error
-  });
 }
 
 getCertificateTemplatesResponse(id: any): Promise<any> {
@@ -622,7 +740,9 @@ renderHiddenCertificatePreview(uniqueContainerId: string) {
                  justify-content: ${element.alignment}; 
                  position: absolute; 
                  top: ${element.top}px; 
-                 left: ${element.left}px;"
+                 left: ${element.left+10}px;
+                 font-family: ${element.fontStyle}
+                 "
         >
           <div style="font-size: ${element.fontSize}px; color: ${element.color};">
             ${element.type === 'Logo' ? `<img src="${element.imageUrl}" style="width: ${element.width}px; height: ${element.height}px;">` : ''}
@@ -630,7 +750,7 @@ renderHiddenCertificatePreview(uniqueContainerId: string) {
           </div>
           <div style="font-size: ${element.fontSize}px; color: ${element.color};">
              
-            ${element.type === 'Signature' ? `<img src="${element.imageUrl}" style="max-width: 100%; height: auto;">` : element.content}
+            ${element.type === 'Signature' ? `<img src="${element.imageUrl}" style="max-width:${element.width}px; height: auto;">` : element.content}
           </div>
         </div>
       `).join('')}

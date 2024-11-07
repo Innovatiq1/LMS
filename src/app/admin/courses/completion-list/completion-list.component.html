@@ -267,7 +267,8 @@
                               'justify-content': element.alignment,
                               'position': 'absolute',
                               'top': element.top + 'px',
-                              'left': element.left + 'px'
+                              'left': (element.left+10) + 'px',
+                              
                             }"
                            
                           >
@@ -279,7 +280,8 @@
                                 [attr.contenteditable]="element.editable"
                                 [ngStyle]="{
                                   'font-size': element.fontSize + 'px',
-                                  'color': element.color
+                                  'color': element.color,
+                                  'font-family': element.fontStyle
                                 }"
                                 
                                 class="certificate-element-content"
@@ -290,7 +292,7 @@
                                     class="resizable-logo"
                                     [ngStyle]="{
                                       width: element.width + 'px',
-                                      height: element.height + 'px'
+                                      height: element.height + 'px',
                                     }"
                                     
                                   >
