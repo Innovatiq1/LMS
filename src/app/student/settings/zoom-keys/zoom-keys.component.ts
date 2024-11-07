@@ -47,40 +47,6 @@ export class ZoomKeysComponent {
   ngOnInit(): void {
     this.getData();
   }
-
-  // updateGmailKeys() {
-  //   if (this.gmailForm.valid) {
-  //     const companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-  //     let payload = {
-  //       companyId: companyId,
-  //       clientId:this.gmailForm.value.clientId,
-  //       type: 'google',
-  //     };
-
-  //     Swal.fire({
-  //       title: 'Are you sure?',
-  //       text: 'You want to update Gmail key!',
-  //       icon: 'warning',
-  //       confirmButtonText: 'Yes',
-  //       showCancelButton: true,
-  //       cancelButtonColor: '#d33',
-  //     }).then((result) => {
-  //       if (result.isConfirmed) {
-  //         this.settingsService
-  //           .updateKey( payload)
-  //           .subscribe((response: any) => {
-  //             Swal.fire({
-  //               title: 'Successful',
-  //               text: 'Gmail key saved successfully',
-  //               icon: 'success',
-  //             });
-  //             this.getData();
-  //           });
-  //       }
-  //     });
-  //   }
-  // }
-
   updatezoomKeys() {
     if (this.zoomForm.valid) {
       const companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
@@ -129,17 +95,7 @@ console.log('data',this.zoom)
       })
     })
   }
-  // getRazorData(){
-  //   this.settingsService.getPayment().subscribe((response: any) => {
-  //     this.payment = response.data.docs[0];
-  //     this.razorpayId = response.data.docs[0]._id;
-  //     this.linkedinForm.patchValue({
-  //       company: this.payment?.company,
-  //       public: this.payment?.keyId,
-  //       secret: this.payment?.secretkey,
-  //     });
-  //   });
-  // }
+
   cancel() {
     window.history.back();
   }

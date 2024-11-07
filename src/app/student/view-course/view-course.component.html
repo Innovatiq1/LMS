@@ -449,17 +449,18 @@
                   <!-- Zoom Link Content -->
                   <div class="p-3">
                     <h5>Meeting Link</h5>
-                    <p>
-                      Here is the Meeting link: 
-                      <a [href]="classDetails?.
-                      meetingUrl
-                      " target="_blank">
+                    <p *ngIf="!hasSessionEnded()">
+                      Here is the Meeting link:
+                      <a [href]="classDetails?.meetingUrl" target="_blank">
                         Click here
                       </a>
                     </p>
+                    <p *ngIf="hasSessionEnded()">
+                      The session has ended, and the meeting link is no longer available.
+                    </p>
                   </div>
-                  
                 </div>
+                
                   <div
                     class="tab-pane fade"
                     id="contact"
