@@ -564,6 +564,8 @@ loadForm() {
     this.classForm.markAllAsTouched();
   }
   }
+} else{
+  this.classForm.markAllAsTouched();
 }
   }
   startDateChange(element: { end: any; start: any }) {
