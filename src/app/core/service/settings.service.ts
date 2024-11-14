@@ -54,7 +54,7 @@ export class SettingsService {
 
 
   getRetakeRequest(filter?: Partial<CoursePaginationModel>): Observable<ApiResponse> {
-    console.log("retakeRequest",filter)
+    // console.log("retakeRequest",filter)
 
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     const apiUrl = `${this.defaultUrl}admin/retakeRequest?companyId=${userId}`;
@@ -75,6 +75,22 @@ export class SettingsService {
     return this._Http.get<ApiResponse>(apiUrl);
   }
 
+  saveNotifications(data: any) {
+    const apiUrl = `${this.prefix}admin/notifications`;
+    return this._Http
+      .post<ApiResponse>(apiUrl, data)
+      .pipe(map((response) => {}));
+  }
+  getNotifications(filter?: Partial<CoursePaginationModel>): Observable<ApiResponse> {
+    // console.log('companyId',filter)
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    const apiUrl = this.defaultUrl + `admin/notifications?companyId=${userId}`;
+    return this._Http.get<ApiResponse>(apiUrl, {
+      params: this.buildParams(filter),
+    });
+  }
+
+
   saveSmtp(smtp: any) {
     const apiUrl = `${this.prefix}admin/smtp`;
     return this._Http
@@ -83,7 +99,7 @@ export class SettingsService {
   }
 
   getSmtp(filter?: Partial<CoursePaginationModel>): Observable<ApiResponse> {
-    console.log('companyId',filter)
+    // console.log('companyId',filter)
     const apiUrl = this.defaultUrl + 'admin/smtp';
     return this._Http.get<ApiResponse>(apiUrl, {
       params: this.buildParams(filter),
