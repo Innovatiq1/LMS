@@ -357,7 +357,7 @@
                             <div class="form-group">
                               <label for="duration">Duration</label>
                               <mat-form-field class="example-full-width" appearance="outline">
-                                <input
+                                <!-- <input
                                   matInput
                                   type="time"
                                   id="duration"
@@ -365,7 +365,10 @@
                                   [(ngModel)]="duration"
                                   min="1"
                                   #durationInput
-                                />
+                                /> -->
+
+                                <input id="duration" #durationInput matInput [(ngModel)]="duration" (input)="formatDuration()" maxlength="5"  placeholder="HH:MM" />
+
                                 <mat-error *ngIf="durationInput.oninvalid">Enter a valid duration</mat-error>
                               </mat-form-field>
                             </div>
