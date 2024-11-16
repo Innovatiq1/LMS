@@ -598,19 +598,60 @@ export class CompletionListComponent {
     });
   }
 
+  // update(pdfBlob: Blob) {
+  //   Swal.fire({
+  //     title: 'Certificate Generating...',
+  //     text: 'Please wait...',
+  //     allowOutsideClick: false,
+  //     timer: 24000,
+  //     timerProgressBar: true,
+  //   });
+
+  //   this.dafaultGenratepdf = true;
+  //   this.copyPreviewToContentToConvert();
+
+  //   var convertIdDynamic = 'contentToConvert';
+  //   this.genratePdf3(
+  //     convertIdDynamic,
+  //     this.studentData?.studentId._id,
+  //     this.studentData?.courseId._id,
+  //     pdfBlob
+  //   );
+
+  //   this.dialogRef.close();
+  // }
+
   update(pdfBlob: Blob) {
+    let countdown = 10; // Countdown time in seconds
+
     Swal.fire({
       title: 'Certificate Generating...',
-      text: 'Please wait...',
+      html: `<p>Please wait...<br>Time remaining: <strong>${countdown}</strong> seconds</p>`,
       allowOutsideClick: false,
-      timer: 24000,
+      timer: countdown * 1000,
       timerProgressBar: true,
+      didOpen: () => {
+        const content = Swal.getHtmlContainer();
+        const countdownElement = content?.querySelector('strong');
+
+        // Update countdown every second
+        const interval = setInterval(() => {
+          countdown--;
+          if (countdownElement) {
+            countdownElement.textContent = `${countdown}`;
+          }
+          // Stop interval when countdown reaches zero
+          if (countdown <= 0) {
+            clearInterval(interval);
+          }
+        }, 1000);
+      },
     });
 
     this.dafaultGenratepdf = true;
     this.copyPreviewToContentToConvert();
 
-    var convertIdDynamic = 'contentToConvert';
+    const convertIdDynamic = 'contentToConvert';
     this.genratePdf3(
       convertIdDynamic,
       this.studentData?.studentId._id,
@@ -720,17 +761,102 @@ export class CompletionListComponent {
     return this.selection.hasValue();
   }
 
+  // enableMultipleCertificates() {
+  //   if (this.selectedRows.length === 0) {
+  //     return;
+  //   }
+  //   Swal.fire({
+  //     title: 'Certificate Generating...',
+  //     text: 'Please wait...',
+  //     allowOutsideClick: false,
+  //     timer: 24000,
+  //     timerProgressBar: true,
+  //   });
+  //   this.isGeneratingCertificates = true;
+  //   let alreadyIssuedCount = 0;
+  //   let successfulCount = 0;
+
+  //   const promises = this.selectedRows.map((row: any) => {
+  //     if (!row.certificate) {
+  //       return this.generateCertificateForRow(row)
+  //         .then(() => {
+  //           successfulCount++;
+  //         })
+  //         .catch(() => {
+  //           console.log(
+  //             `Failed to generate certificate for student ID: ${row.studentId._id}`
+  //           );
+  //         });
+  //     } else {
+  //       alreadyIssuedCount++;
+  //       console.log(
+  //         `Certificate already issued for student ID: ${row.studentId._id}`
+  //       );
+  //       return Promise.resolve();
+  //     }
+  //   });
+
+  //   Promise.all(promises)
+  //     .then(() => {
+  //       this.isGeneratingCertificates = false;
+  //       const certificate =
+  //         successfulCount > 1 ? 'certificates' : 'certificate';
+  //       let message = '';
+  //       if (successfulCount > 0) {
+  //         message = `${successfulCount} ${certificate} generated successfully!`;
+  //       }
+
+  //       if (alreadyIssuedCount > 0) {
+  //         const alreadyCount =
+  //           alreadyIssuedCount > 1 ? 'certificates are ' : 'certificate is';
+  //         const text = successfulCount > 0 ? 'For other' : '';
+  //         // message += ` ${alreadyIssuedCount} selected ${alreadyCount} already issued.`;
+  //         message += ` ${text} selected course ${alreadyCount} already Issued`;
+  //       }
+
+  //       Swal.fire({
+  //         title: 'Certificate Generation',
+  //         text: message,
+  //         icon: successfulCount > 0 ? 'success' : 'warning',
+  //       }).then(() => {
+  //         this.clearSelection();
+  //         this.getCompletedList();
+  //       });
+  //     })
+  //     .catch(() => {
+  //       this.isGeneratingCertificates = false; // Stop the spinner even if there's an error
+  //     });
+  // }
   enableMultipleCertificates() {
     if (this.selectedRows.length === 0) {
       return;
     }
+
+    let countdown = 10; 
+
     Swal.fire({
       title: 'Certificate Generating...',
-      text: 'Please wait...',
+      html: `<p>Please wait...<br>Time remaining: <strong>${countdown}</strong> seconds</p>`,
       allowOutsideClick: false,
-      timer: 24000,
+      timer: countdown * 1000,
       timerProgressBar: true,
+      didOpen: () => {
+        const content = Swal.getHtmlContainer();
+        const countdownElement = content?.querySelector('strong');
+
+        
+        const interval = setInterval(() => {
+          countdown--;
+          if (countdownElement) {
+            countdownElement.textContent = `${countdown}`;
+          }
+          if (countdown <= 0) {
+            clearInterval(interval);
+          }
+        }, 1000);
+      }
     });
+
     this.isGeneratingCertificates = true;
     let alreadyIssuedCount = 0;
     let successfulCount = 0;
@@ -742,15 +868,11 @@ export class CompletionListComponent {
             successfulCount++;
           })
           .catch(() => {
-            console.log(
-              `Failed to generate certificate for student ID: ${row.studentId._id}`
-            );
+            console.log(`Failed to generate certificate for student ID: ${row.studentId._id}`);
           });
       } else {
         alreadyIssuedCount++;
-        console.log(
-          `Certificate already issued for student ID: ${row.studentId._id}`
-        );
+        console.log(`Certificate already issued for student ID: ${row.studentId._id}`);
         return Promise.resolve();
       }
     });
@@ -758,18 +880,15 @@ export class CompletionListComponent {
     Promise.all(promises)
       .then(() => {
         this.isGeneratingCertificates = false;
-        const certificate =
-          successfulCount > 1 ? 'certificates' : 'certificate';
+        const certificate = successfulCount > 1 ? 'certificates' : 'certificate';
         let message = '';
         if (successfulCount > 0) {
           message = `${successfulCount} ${certificate} generated successfully!`;
         }
 
         if (alreadyIssuedCount > 0) {
-          const alreadyCount =
-            alreadyIssuedCount > 1 ? 'certificates are ' : 'certificate is';
+          const alreadyCount = alreadyIssuedCount > 1 ? 'certificates are ' : 'certificate is';
           const text = successfulCount > 0 ? 'For other' : '';
-          // message += ` ${alreadyIssuedCount} selected ${alreadyCount} already issued.`;
           message += ` ${text} selected course ${alreadyCount} already Issued`;
         }
 
@@ -865,14 +984,16 @@ export class CompletionListComponent {
                  justify-content: ${element.alignment}; 
                  position: absolute; 
                  top: ${element.top}px; 
-                 left: ${element.left}px;"
+                 left: ${element.left+15}px;
+                 font-family: ${element.fontStyle}
+                 "
         >
           <div style="font-size: ${element.fontSize}px; color: ${
             element.color
           };">
             ${
               element.type === 'Logo'
-                ? `<img src="${element.imageUrl}" style="width: ${element.width}px; height: ${element.height}px;">`
+                ? `<img src="${element.imageUrl}" style="max-width: ${element.width}px; height: ${element.height}px;">`
                 : ''
             }
            
@@ -883,7 +1004,7 @@ export class CompletionListComponent {
              
             ${
               element.type === 'Signature'
-                ? `<img src="${element.imageUrl}" style="max-width: 100%; height: auto;">`
+                ? `<img src="${element.imageUrl}" style="max-width: ${element.width}px; height: auto">`
                 : element.content
             }
           </div>

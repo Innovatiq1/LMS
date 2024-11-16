@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit,EventEmitter, Output, ViewChild,Inject,Optional } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -16,7 +16,8 @@ import Swal from 'sweetalert2';
 import * as moment from 'moment';
 import { CertificateService } from '@core/service/certificate.service';
 import { FormService } from '@core/service/customization.service';
-
+// import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog,MAT_DIALOG_DATA,MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-create-course-kit',
   templateUrl: './create-course-kit.component.html',
@@ -31,6 +32,8 @@ export class CreateCourseKitComponent implements OnInit {
     },
   ];
   @ViewChild('fileDropRef', { static: false })
+  // @Output() courseKitCreated = new EventEmitter<CourseKit>();
+  @Output() courseKitCreated = new EventEmitter<any>();
   currentVideoIds: string[] = [];
   fileDropEl!: ElementRef;
   courseKitModel!: Partial<CourseKitModel>;
@@ -68,6 +71,7 @@ export class CreateCourseKitComponent implements OnInit {
   videoLink: any;
   videoSrc: any;
   forms!: any[];
+  dialogStatus:boolean=false;
   kitType: any[] = [
     { code: 'course', label: 'Course' },
     { code: 'scorm', label: 'Scorm' },
@@ -75,6 +79,7 @@ export class CreateCourseKitComponent implements OnInit {
   isScormKit: boolean = false;
 
   constructor(
+    @Optional() @Inject(MAT_DIALOG_DATA) public data11: any,
     private router: Router,
 
     private formBuilder: FormBuilder,
@@ -84,8 +89,14 @@ export class CreateCourseKitComponent implements OnInit {
     private commonService: CommonService,
     private activatedRoute: ActivatedRoute,
     private certificateService: CertificateService,
-    private formService: FormService
+    private formService: FormService,
+    @Optional() private dialogRef: MatDialogRef<CreateCourseKitComponent>
+    
   ) {
+    if (data11) {
+      this.dialogStatus=true;
+      console.log("Received variable:", data11.variable);
+    }
     this.currentDate = new Date();
     this.courseKitModel = {};
 
@@ -158,6 +169,7 @@ export class CreateCourseKitComponent implements OnInit {
     this.getForms();
     this.courseService.getAllCourseKit().subscribe((data) => {});
   }
+  
   submitCourseKit1() {
     if (this.courseKitForm.valid) {
       const formdata = new FormData();
@@ -205,6 +217,47 @@ export class CreateCourseKitComponent implements OnInit {
     } else {
       this.courseKitForm.markAllAsTouched();
     }
+  
+   
+    
+  }
+  // private createCourseKit(courseKitData: CourseKit): void {
+  //   let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+  //       Swal.fire({
+  //     title: 'Are you sure?',
+  //     text: 'You want to create a course kit!',
+  //     icon: 'warning',
+  //     confirmButtonText: 'Yes',
+  //     showCancelButton: true,
+  //     cancelButtonColor: '#d33',
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //        courseKitData.companyId=userId;
+  //       this.courseService.createCourseKit(courseKitData).subscribe(
+  //         (res) => {
+  //           Swal.fire({
+  //             title: 'Successful',
+  //             text: 'Course Kit created successfully',
+  //             icon: 'success',
+  //           });
+  //           this.courseKitForm.reset();
+  //           this.router.navigateByUrl('/admin/courses/course-kit');
+  //         },
+  //         (error) => {
+  //           Swal.fire(
+  //             'Failed to create course kit',
+  //             error.message || error.error,
+  //             'error'
+  //           );
+  //         }
+  //       );
+  //     }
+  //   });
+  // }
+  closeDialog(): void {
+    if (this.dialogRef) {
+      this.dialogRef.close();
+    }
   }
   private createCourseKit(courseKitData: CourseKit): void {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
@@ -226,7 +279,11 @@ export class CreateCourseKitComponent implements OnInit {
               icon: 'success',
             });
             this.courseKitForm.reset();
-            this.router.navigateByUrl('/admin/courses/course-kit');
+            if(!this.dialogStatus)
+            {
+              this.router.navigateByUrl('/admin/courses/course-kit');
+            }
+            
           },
           (error) => {
             Swal.fire(

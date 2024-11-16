@@ -58,7 +58,10 @@
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('Funding/Grant')">
                   <div class="label-container">
                     <label>Funding/Grant </label>
-                    <button class="btn" [routerLink]="['/student/settings/configuration/funding-grant']">
+                    <!-- <button class="btn" [routerLink]="['/student/settings/configuration/funding-grant']">
+                      <img src="/assets/Close.svg" alt="plus" />
+                    </button> -->
+                    <button class="btn" (click)="openFundingComponent()">
                       <img src="/assets/Close.svg" alt="plus" />
                     </button>
                   </div>
@@ -121,11 +124,15 @@
                     </mat-error>
                   </mat-form-field>
                 </div> -->
+                <!-- <div  *ngIf="labelStatusCheck('Assign Exam Assessment') && isTestIssueCertificate  && (isExamTypeCertificate || isAfterExamType)"></div> -->
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
-                  *ngIf="labelStatusCheck('Assign Exam Assessment') && isTestIssueCertificate  && (isExamTypeCertificate || isAfterExamType)">
+                  *ngIf="isTestIssueCertificate  && (isExamTypeCertificate || isAfterExamType)">
                   <div class="label-container">
                     <label>Assign Exam<span class="mandatory">&nbsp;*</span></label>
-                    <button class="btn" [routerLink]="['/student/settings/add-questions']">
+                    <!-- <button class="btn" [routerLink]="['/student/settings/add-questions']">
+                      <img src="/assets/Close.svg" alt="plus" />
+                    </button> -->
+                    <button class="btn" (click)="openExamComponent()">
                       <img src="/assets/Close.svg" alt="plus" />
                     </button>
                   </div>
@@ -151,11 +158,16 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
+                <!-- <div *ngIf="labelStatusCheck('Assign Exam Assessment') &&isTestIssueCertificate && isAfterExamType">if needed push this condition</div> -->
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
-                  *ngIf="labelStatusCheck('Assign Exam Assessment') && isTestIssueCertificate && isAfterExamType">
+                  *ngIf="isTestIssueCertificate && isAfterExamType"
+                  >
                   <div class="label-container">
                     <label>Assign Assessment <span class="mandatory">&nbsp;*</span></label>
-                    <button class="btn" [routerLink]="['/student/settings/add-questions']">
+                    <!-- <button class="btn" [routerLink]="['/student/settings/add-questions']">
+                      <img src="/assets/Close.svg" alt="plus" />
+                    </button> -->
+                    <button class="btn" (click)="openAssessmentComponent()">
                       <img src="/assets/Close.svg" alt="plus" />
                     </button>
                   </div>
@@ -185,7 +197,10 @@
                   *ngIf="(labelStatusCheck('Assign Tutorial') && isTestIssueCertificate && isAfterExamType&&isLearningAndTutorial)||isLearningAndTutorial">
                   <div class="label-container">
                     <label>Assign Tutorial <span class="mandatory">&nbsp;*</span></label>
-                    <button class="btn" [routerLink]="['/student/settings/add-questions']">
+                    <!-- <button class="btn" [routerLink]="['/student/settings/add-questions']">
+                      <img src="/assets/Close.svg" alt="plus" />
+                    </button> -->
+                    <button class="btn" (click)="openTutorialComponent()">
                       <img src="/assets/Close.svg" alt="plus" />
                     </button>
                   </div>
@@ -215,12 +230,12 @@
                   *ngIf="(labelStatusCheck('Assign Coursekit') && isTestIssueCertificate && isAfterExamType) || isVideoIssueCertificate||isDocumentIssueCertificate">
                   <div class="label-container">
                     <label>Assign Coursekit <span class="mandatory">&nbsp;*</span></label>
-                    <button class="btn" [routerLink]="['/admin/courses/create-course-kit']">
-                      <img src="/assets/Close.svg" alt="plus" />
-                    </button>
-                    <!-- <button class="btn" (click)="openCreateCourseKitDialog()">
+                    <!-- <button class="btn" [routerLink]="['/admin/courses/create-course-kit']">
                       <img src="/assets/Close.svg" alt="plus" />
                     </button> -->
+                    <button class="btn" (click)="openCreateCourseKitDialog()">
+                      <img src="/assets/Close.svg" alt="plus" />
+                    </button>
                   </div>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <mat-select formControlName="course_kit" multiple>
@@ -257,7 +272,10 @@
                   *ngIf="labelStatusCheck('Assign Feedback Questionnaire')">
                   <div class="label-container">
                     <label>Assign Feedback Questionnaire <span class="mandatory">&nbsp;*</span></label>
-                    <button class="btn" [routerLink]="['/student/settings/customize/create-feedback']">
+                    <!-- <button class="btn" [routerLink]="['/student/settings/customize/create-feedback']">
+                      <img src="/assets/Close.svg" alt="plus" />
+                    </button> -->
+                    <button class="btn" (click)="openCreateFeedbackComponent()">
                       <img src="/assets/Close.svg" alt="plus" />
                     </button>
                   </div>
@@ -299,9 +317,12 @@
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <div class="label-container">
                     <label>Certificate Template <span class="mandatory">&nbsp;*</span></label>
-                    <button class="btn" [routerLink]="['/student/settings/customize/certificate/template/create']">
+                    <!-- <button class="btn" [routerLink]="['/student/settings/customize/certificate/template/create']">
                       <img src="/assets/Close.svg" alt="plus" />
-                    </button>
+                    </button> -->
+                    <!-- <button class="btn" (click)="openCertificateComponent()">
+                      <img src="/assets/Close.svg" alt="plus" />
+                    </button> -->
                   </div>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <mat-select formControlName="certificate_temp">
@@ -325,9 +346,13 @@
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('Vendor')">
                   <div class="label-container">
                     <label>Vendor </label>
-                    <button class="btn" [routerLink]="['/student/settings/configuration/vendor']">
+                    <!-- <button class="btn" [routerLink]="['/student/settings/configuration/vendor']">
+                      <img src="/assets/Close.svg" alt="plus" />
+                    </button> -->
+                    <button class="btn" (click)="openVendorComponent()">
                       <img src="/assets/Close.svg" alt="plus" />
                     </button>
+
                   </div>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <mat-select formControlName="vendor">

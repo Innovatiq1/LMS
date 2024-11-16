@@ -1,5 +1,12 @@
-<section class="content">
+<section [ngClass]="{'full-width': dialogStatus, 'content': true}">
+  <div *ngIf="dialogStatus" class="dialog-header" >
+    <!-- <button mat-icon-button  color="warn" (click)="closeDialog()">
+      <mat-icon>close</mat-icon>
+    </button> -->
+    <button mat-raised-button color="warn" (click)="closeDialog()">Cancel</button>
+  </div>  
   <div class="content-block">
+    <ng-container *ngIf="!dialogStatus">
     <div class="block-header" *ngFor="let breadscrum of breadcrumbs">
       <!-- breadcrumb -->
       <app-static-breadcrumb  [title]="breadscrum.title"
@@ -7,6 +14,7 @@
       [active_item]="breadscrum.active">
       </app-static-breadcrumb>
     </div>
+  </ng-container>
     <div class="row clearfix">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <div class="card" style="height: 120%;">

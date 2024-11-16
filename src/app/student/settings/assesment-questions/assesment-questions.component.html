@@ -1,4 +1,7 @@
 <div class="row clearfix">
+  <div *ngIf="dialogStatus" class="dialog-header">
+    <button mat-raised-button color="warn" (click)="closeDialog()">Cancel</button>
+  </div>
   <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
     <div class="card mt-4">
       <div class="p-3">
@@ -213,8 +216,8 @@
         </form>
       </div>
       <div class="row body">
-        <div class="col-md-6">
-          <button
+        <div  class="col-md-6">
+          <button *ngIf="!dialogStatus"
             mat-raised-button
             id="back"
             [routerLink]="['/student/settings/configuration/all-questions']"
