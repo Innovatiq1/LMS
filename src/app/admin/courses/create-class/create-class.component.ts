@@ -96,6 +96,8 @@ export class CreateClassComponent {
   code: string | null = null;
   minDates: Date = new Date();
   zoomSessionCreated: boolean = false;
+  isValidDuration: boolean = true;
+  totalMinutes: number | null = null;
   addNewRow() {
     if (this.isInstructorFailed != 1) {
       this.isInstructorFailed = 0;
@@ -279,7 +281,7 @@ loadForm() {
     meetingPlatform: ['', Validators.required], 
     classStartDate: [''],
     classEndDate: [''],
-    duration: ['', Validators.required], 
+    duration: ['', [Validators.required,Validators.pattern('^[0-9]{1,2}[:][0-9]{1,2}$')]], 
     code: ''
   });
 
@@ -299,6 +301,9 @@ loadForm() {
     meetingPlatformControl.updateValueAndValidity();
     durationControl.updateValueAndValidity();
   });
+  this.classForm.get('duration')!.valueChanges.subscribe(()=>{
+    this.onDurationChange();
+  })
 }
 
   getDepartments() {
@@ -564,6 +569,8 @@ loadForm() {
     this.classForm.markAllAsTouched();
   }
   }
+} else{
+  this.classForm.markAllAsTouched();
 }
   }
   startDateChange(element: { end: any; start: any }) {
@@ -678,6 +685,37 @@ loadForm() {
       const zoomAuthUrl = environment.ZoomUrl;
       localStorage.setItem('zoomSessionCreated', 'true');
       window.location.href = zoomAuthUrl;
+    }
+  }
+
+  onDurationChange() {
+    const duration = this.classForm.get('duration')?.value;
+    if (duration && duration.length === 5) {
+      const [hours, minutes] = duration.split(':').map(Number);
+
+      if (!isNaN(hours) && !isNaN(minutes) && hours >= 0 && hours <= 23 && minutes >= 0 && minutes <= 59) {
+        this.totalMinutes = hours * 60 + minutes;
+      } else {
+        this.totalMinutes = null;
+      }
+    } else {
+      this.totalMinutes = null;
+    }
+  }
+
+  formatDuration() {
+    let value = this.classForm.get('duration')?.value || '';
+    
+    // Remove all non-numeric characters
+    const cleaned = value.replace(/[^0-9]/g, '');
+
+    // Format it to HH:mm format (2 digits for hours, 2 for minutes)
+    if (cleaned.length <= 2) {
+      this.classForm.get('duration')?.setValue(cleaned);
+    } else {
+      const hours = cleaned.slice(0, 2);
+      const minutes = cleaned.slice(2, 4);
+      this.classForm.get('duration')?.setValue(`${hours}:${minutes}`);
     }
   }
   

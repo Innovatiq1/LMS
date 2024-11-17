@@ -5,7 +5,7 @@ import { AuthenService } from '@core/service/authen.service';
 import { AppConstants } from '@shared/constants/app.constants';
 import { ClassService } from 'app/admin/schedule-class/class.service';
 import Swal from 'sweetalert2';
-
+import { Clipboard } from '@angular/cdk/clipboard';
 @Component({
   selector: 'app-view-class',
   templateUrl: './view-class.component.html',
@@ -25,8 +25,9 @@ export class ViewClassComponent {
   isDelete = false;
   isZoomMeetingFormVisible: boolean = false;
   duration: string = '';
-  storedItems: string | null;
-  constructor(public _classService: ClassService,private _router: Router, private activatedRoute: ActivatedRoute,private authenService: AuthenService) {
+  storedItems: string | null;  
+  totalMinutes: number | null = null;
+  constructor(public _classService: ClassService,private _router: Router, private activatedRoute: ActivatedRoute,private authenService: AuthenService, private clipboard: Clipboard) {
     this.storedItems = localStorage.getItem('activeBreadcrumb');
     if (this.storedItems) {
      this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
@@ -168,15 +169,14 @@ export class ViewClassComponent {
 
   copyToClipboard(text: string): void {
     if (text) {
-      navigator.clipboard.writeText(text).then(() => {
+      this.clipboard.copy(text);
+      setTimeout(() => {
         Swal.fire({
           title: 'Success',
           text: 'Meeting URL copied to clipboard!',
           icon: 'success',
         });
-      }).catch(err => {
-        console.error('Error copying text: ', err);
-      });
+      }, 2000);
     } else {
       alert('No URL to copy!');
     }
@@ -388,6 +388,38 @@ isDateExpired(sessionEndDate: string): boolean {
   const today = new Date();
   return endDate < today;
 }
+
+onDurationChange() {
+  const duration = this.duration;
+  if (duration && duration.length === 5) {
+    const [hours, minutes] = duration.split(':').map(Number);
+
+    if (!isNaN(hours) && !isNaN(minutes) && hours >= 0 && hours <= 23 && minutes >= 0 && minutes <= 59) {
+      this.totalMinutes = hours * 60 + minutes;
+    } else {
+      this.totalMinutes = null;
+    }
+  } else {
+    this.totalMinutes = null;
+  }
+}
+
+formatDuration() {
+  let value = this.duration || '';
+  
+  // Remove all non-numeric characters
+  const cleaned = value.replace(/[^0-9]/g, '');
+
+  // Format it to HH:mm format (2 digits for hours, 2 for minutes)
+  if (cleaned.length <= 2) {
+    this.duration = cleaned;
+  } else {
+    const hours = cleaned.slice(0, 2);
+    const minutes = cleaned.slice(2, 4);
+    this.duration =`${hours}:${minutes}`;
+  }
+}
+
 
 
 }
