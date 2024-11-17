@@ -30,7 +30,8 @@ export class CreateCertificateComponent implements OnInit {
     },
   ];
   @ViewChild('backgroundTable') backgroundTable!: ElementRef;
- 
+  fontStyles = ['Arial', 'Courier New', 'Georgia', 'Times New Roman', 'Verdana'];
+
   isDrawing = false;
   context: CanvasRenderingContext2D | null = null;
   isInserted=false;
@@ -83,7 +84,8 @@ export class CreateCertificateComponent implements OnInit {
   currentElement: any = {
     fontSize: 16,
     color: '#000',
-    alignment: 'left'
+    alignment: 'left',
+    fontStyle: 'Arial',
   };
   
   constructor(
@@ -237,7 +239,8 @@ stopResizing() {
         editable: true,
         fontSize: this.currentElement.fontSize || 16,
         color: this.currentElement.color || '#000',
-        alignment: this.currentElement.alignment || 'left'
+        alignment: this.currentElement.alignment || 'left',
+        fontStyle: this.currentElement.fontStyle || 'Arial',
       };
       this.elements.push(newElement);
     }
@@ -269,8 +272,18 @@ stopResizing() {
   }
 
   updateElementStyle() {
-    const container = document.querySelector('.certificate-canvas') as HTMLElement;
-    
+    // const selectedElement = this.elements[this.editingElementIndex];
+    // if (selectedElement) {
+    //   selectedElement.fontSize = this.currentElement.fontSize;
+    //   selectedElement.color = this.currentElement.color;
+    //   selectedElement.fontStyle = this.currentElement.fontStyle; // Apply font style
+    //   selectedElement.alignment = this.currentElement.alignment;
+    // }
+    // this is the code i made comment 
+    const container = document.querySelector(
+      '.certificate-canvas'
+    ) as HTMLElement;
+
     if (this.currentElement.alignment === 'left') {
       container.style.justifyContent = 'flex-start';
     } else if (this.currentElement.alignment === 'center') {
@@ -278,7 +291,7 @@ stopResizing() {
     } else if (this.currentElement.alignment === 'right') {
       container.style.justifyContent = 'flex-end';
     }
-    
+//this is previous code old code commented previously
     // this.elements = this.elements.map((element) => {
     //   if (element === this.elements[this.editingElementIndex]) {
     //     return {
@@ -439,10 +452,15 @@ stopResizing() {
     if (this.isEdit) {
       this.editingElementIndex = index;
       const selectedElement = this.elements[index];
+      console.log("selectedElement",selectedElement)
       this.currentElement = {
         fontSize: selectedElement.fontSize || 16,
         color: selectedElement.color || '#000',
-        alignment: selectedElement.alignment || 'left'
+        alignment: selectedElement.alignment || 'left',
+        fontStyle: selectedElement.fontStyle || 'Arial' 
+
+        //  fontStyles:selectedElement.fontStyles || 'Arial',
+        // selectedElement.fontStyle = this.currentElement.fontStyle
       };
       
       this.updateElementStyle(); // Update alignment when an element is selected
@@ -556,6 +574,7 @@ stopResizing() {
   saveCertificate() {
     if (this.certificateForm.valid) {
       const formData = this.collectFormData();
+      console.log("form data==",formData)
       if (!this.editUrl) {
         let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
         

@@ -30,7 +30,8 @@ import { AppConstants } from '@shared/constants/app.constants';
 import { AnyComponent } from '@fullcalendar/core/preact';
 import { AdminService } from '@core/service/admin.service';
 import { CommonService } from '@core/service/common.service';
-
+import { SettingsService } from '@core/service/settings.service';
+import { forkJoin } from 'rxjs';
 interface Notifications {
   message: string;
   time: string;
@@ -77,6 +78,7 @@ export class HeaderComponent
   settingsItems: any;
   isTwoFactor: boolean = true;
   notificationCount = 0;
+  getNotificationList:any;
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private renderer: Renderer2,
@@ -95,7 +97,8 @@ export class HeaderComponent
     private announcementService: AnnouncementService,
     private dialogModel: MatDialog,
 
-    private studentService: StudentsService
+    private studentService: StudentsService,
+    private settingService:SettingsService
   ) {
     super();
     this.role = localStorage.getItem('user_type');
@@ -171,7 +174,24 @@ export class HeaderComponent
     } else {
       this.flagvalue = val.map((element) => element.flag);
     }
-    this.getAnnouncementForStudents();
+    // this.getAnnouncementForStudents();
+    // this.getAllNotifications();
+    let role = JSON.parse(localStorage.getItem('user_data')!).user.role;
+    let email=JSON.parse(localStorage.getItem('user_data')!).user.adminEmail;
+    forkJoin({
+      notifications: this.settingService.getNotifications(),
+      announcements: this.announcementService.getAnnouncementList({ announcementFor: role })
+    }).subscribe(({ notifications, announcements }) => {
+      this.getNotificationList = notifications.data.docs.filter(
+              (notification: any) => notification.role === role && notification.email==email
+           );
+      // this.getNotificationList = notifications.data.docs;
+      const announcementsData: any = announcements.results;
+      this.announcements = announcementsData.reverse();
+      this.notificationCount = this.announcements.length;
+      this.calculateNotification();
+    });
+    
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.isTwoFactor = this.router.url.includes('two-factor-auth');
@@ -203,20 +223,42 @@ export class HeaderComponent
     this.router.navigate(['/student/settings/config']);
   }
 
-  getAnnouncementForStudents(filter?: any) {
-    let role = JSON.parse(localStorage.getItem('user_data')!).user.role;
+  
 
-    let payload = {
-      announcementFor:role,
-    };
-    this.announcementService
-      .getAnnouncementList(payload)
-      .subscribe((res: { data: { data: any[] }; totalRecords: number }) => {
-        const announcementsData: any = res.data.data;
-        console.log("announcementsData",announcementsData)
-        this.announcements = announcementsData.reverse();
-      });
+  // getAnnouncementForStudents(filter?: any) {
+  //   let role = JSON.parse(localStorage.getItem('user_data')!).user.role;
+
+  //   let payload = {
+  //     announcementFor:role,
+  //   };
+  //   this.announcementService
+  //     .getAnnouncementList(payload)
+  //     .subscribe((res: { results: { data: any[] }; totalRecords: number }) => {
+  //       console.log("res.results==",res.results)
+  //       const announcementsData: any = res.results;
+  //       this.announcements = announcementsData.reverse();
+  //       this.notificationCount = this.announcements.length;
+  //       this.calculateNotification();
+  //     });
+  // }
+
+  
+  calculateNotification() {
+    const filteredNotifications = this.announcements.filter((announcement: any) => {
+      const announcementRoles = announcement.announcementFor.split('/');
+      return !this.getNotificationList.some((notification: any) =>
+        announcementRoles.includes(notification.role) &&
+        notification.announcementId === announcement.id &&
+        notification.notificationMark === "closed"
+      );
+    });
+  
+    // console.log("Filtered Notifications:", filteredNotifications);
+  
+    this.announcements = filteredNotifications;
+    this.notificationCount = filteredNotifications.length;
   }
+  
   showCustomHtml(data: any) {
     Swal.fire({
       position: 'top-end',
@@ -230,8 +272,21 @@ export class HeaderComponent
     });
     this.cancel(data.id)
   }
-
+ 
+  
   cancel(id: any) {
+    // console.log("cancle notification")
+    const payload={
+      role:JSON.parse(localStorage.getItem('user_data')!).user.role,
+      userName:JSON.parse(localStorage.getItem('user_data')!).user.adminName,
+      email:JSON.parse(localStorage.getItem('user_data')!).user.adminEmail,
+      announcementId:id,
+      notificationMark:"closed",
+      companyId:JSON.parse(localStorage.getItem('user_data')!).user.companyId
+    }
+    this.settingService.saveNotifications(payload).subscribe((res:any)=>{
+      // console.log("helo")
+    })
     this.announcements = this.announcements.filter(
       (res: { id: any }) => res.id !== id
     );

@@ -72,18 +72,13 @@ export class SupportComponent implements OnInit {
     });
   }
 
-  getfilterd(status:string) {
-    
-
-    if (status === 'open') {
-      this.openData = this.dataSource.filter((data: { status: string; }) => data.status === 'open')
+  getfilterd(status: string) {
+    if (status === 'all') {
+      this.dataSource = this.coursePaginationModel.docs ?? [];
+    } else {
+      this.dataSource = this.coursePaginationModel.docs?.filter((data: { status: string }) => data.status === status) ?? [];
     }
-    if (status === 'closed') {
-      this.openData = this.dataSource.filter((data: { status: string; }) => data.status === 'closed')
-    }
-    this.router.navigate(['apps/list-of-tickets'],{queryParams:{data:JSON.stringify(this.openData)}})
   }
-
   view(id: any) {
     this.router.navigate(['apps/inbox'],{queryParams:{id:id}});
   }

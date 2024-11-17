@@ -165,7 +165,8 @@ cancel(){
                 let payload = {
           subject: formData?.subject,
           details: formData?.details.replace(/<\/?span[^>]*>/g, ""),
-          announcementFor: formData?.announcementFor.toString().replace(',',' / '),
+          // announcementFor: formData?.announcementFor.toString().replace(',',' / '),
+          announcementFor: formData?.announcementFor.join("/"),
           isActive: formData?.isActive,
           companyId:userId
         }
@@ -211,7 +212,8 @@ cancel(){
         let payload = {
           subject: this.announcementForm.value?.subject,
           details: this.announcementForm.value?.details.replace(/<\/?span[^>]*>/g, ""),
-          announcementFor: this.announcementForm.value?.announcementFor.toString().replace(',',' / '),
+          // announcementFor: this.announcementForm.value?.announcementFor.toString().replace(',',' / '),
+          announcementFor: this.announcementForm.value?.announcementFor.join("/"),
           isActive: this.announcementForm.value?.isActive,
         }
 

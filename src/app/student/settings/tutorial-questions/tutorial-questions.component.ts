@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit,Inject,Optional } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -15,7 +15,7 @@ import { StudentsService } from 'app/admin/students/students.service';
 import { SettingsService } from '@core/service/settings.service';
 import * as XLSX from 'xlsx';
 import { TestPreviewComponent } from '@shared/components/test-preview/test-preview.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog,MAT_DIALOG_DATA,MatDialogRef } from '@angular/material/dialog';
 import { CommonService } from '@core/service/common.service';
 @Component({
   selector: 'app-tutorial-questions',
@@ -50,8 +50,9 @@ export class TutorialQuestionsComponent implements OnInit, OnDestroy {
   timerValues:any;
 scoreDataAlgo:any;
 draftId!: string;
-
+dialogStatus:boolean=false;
   constructor(
+    @Optional() @Inject(MAT_DIALOG_DATA) public data11: any,
     private formBuilder: FormBuilder,
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -59,8 +60,14 @@ draftId!: string;
     private studentsService: StudentsService,
     private SettingsService:SettingsService,
     private dialog: MatDialog,
-    private commonService: CommonService
+    private commonService: CommonService,
+    @Optional() private dialogRef: MatDialogRef<TutorialQuestionsComponent> 
   ) {
+    if (data11) {
+      this.dialogStatus=true;
+      console.log("Received variable:", data11.variable);
+    }
+    
     let urlPath = this.router.url.split('/');
     this.editUrl = urlPath.includes('edit-questions');
 
@@ -98,6 +105,11 @@ draftId!: string;
     }
     if (!this.editUrl) {
       this.draftId = this.commonService.generate4DigitId();
+    }
+  }
+  closeDialog(): void {
+    if (this.dialogRef) {
+      this.dialogRef.close();
     }
   }
   startAutoSave() {
@@ -372,7 +384,7 @@ saveDraft(data?: string) {
         name: this.questionFormTab3.value.name,
         timer: this.questionFormTab3.value.timer,
         scoreAlgorithm: this.questionFormTab3.value.scoreAlgorithm,
-        status: 'open',
+        status: this.dialogStatus?'approved':'open',
         companyId:userId,
         questions: this.questionFormTab3.value.questions.map((v: any) => ({
           options: v.options,
@@ -475,7 +487,9 @@ saveDraft(data?: string) {
           text: 'Question created successfully',
           icon: 'success',
         });
-        window.history.back();
+        if(!this.dialogStatus){
+          window.history.back();
+        }
       },
       (err: any) => {
         Swal.fire('Failed to create Question', 'error');
