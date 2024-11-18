@@ -27,6 +27,9 @@ export class ViewClassComponent {
   duration: string = '';
   storedItems: string | null;  
   totalMinutes: number | null = null;
+  initialDateTime: Date | null = null;
+  minDate: Date | null = null;
+  maxDate: Date | null = null;
   constructor(public _classService: ClassService,private _router: Router, private activatedRoute: ActivatedRoute,private authenService: AuthenService, private clipboard: Clipboard) {
     this.storedItems = localStorage.getItem('activeBreadcrumb');
     if (this.storedItems) {
@@ -112,13 +115,95 @@ export class ViewClassComponent {
     
     this.getCategoryByID(id);
   }
-  getCategoryByID(id: string) {
-     this._classService.getClassById(id).subscribe((response: any) => {
-      this.classDataById = response?._id;
+  // Function to fetch class data based on courseId
+  getCategoryByID(id: string): void {
+    this._classService.getClassById(id).subscribe((response: any) => {
       this.response = response;
-      console.log("data",this.response);
+      this.classDataById = response?._id;
+      console.log('Fetched data:', this.response);
+  
+      if (this.response && this.response.sessions && this.response.sessions.length > 0) {
+        const session = this.response.sessions[0]; // Assuming you're using the first session
+  
+        console.log('Session:', session);
+        console.log('sessionStartDate:', session.sessionStartDate);  // Check the date format
+        console.log('sessionStartTime:', session.sessionStartTime);  // Check the time format
+  
+        // Handle sessionStartDate and sessionStartTime
+        if (session.sessionStartDate && session.sessionStartTime) {
+          const [hours, minutes] = session.sessionStartTime.split(':').map(Number);
+  
+          // Ensure sessionStartDate is in the correct format (YYYY-MM-DD)
+          const sessionDate = new Date(session.sessionStartDate);  // Convert sessionStartDate to a Date object
+  
+          if (!isNaN(sessionDate.getTime())) {
+            // Combine sessionStartDate and sessionStartTime into one Date object
+            sessionDate.setHours(hours);
+            sessionDate.setMinutes(minutes);
+            sessionDate.setSeconds(0); // Reset seconds to 0
+            sessionDate.setMilliseconds(0); // Reset milliseconds to 0
+  
+            // Now, assign this Date object directly to initialDateTime
+            this.initialDateTime = sessionDate; // Set Date object with both date and time
+            console.log('Initialized Date object with both date and time:', this.initialDateTime);
+            this.minDate = sessionDate;
+          } else {
+            console.error('Invalid sessionStartDate format.');
+          }
+        } else {
+          console.error('sessionStartDate or sessionStartTime not found.');
+        }
+  
+        // For sessionEndDate and sessionEndTime (last date and time handling):
+        const sessionEndDate = session.sessionEndDate;
+        const sessionEndTime = session.sessionEndTime;  // Get session end time
+  
+        if (sessionEndDate && sessionEndTime) {
+          // Convert sessionEndDate to Date object
+          const lastSessionDate = new Date(sessionEndDate);
+  
+          // Parse the sessionEndTime (assumes format HH:MM)
+          const [endHours, endMinutes] = sessionEndTime.split(':').map(Number);
+  
+          // Check if the sessionEndDate is valid
+          if (!isNaN(lastSessionDate.getTime())) {
+            // Combine sessionEndDate and sessionEndTime into one Date object
+            lastSessionDate.setHours(endHours);
+            lastSessionDate.setMinutes(endMinutes);
+            lastSessionDate.setSeconds(0); // Reset seconds
+            lastSessionDate.setMilliseconds(0); // Reset milliseconds
+  
+            // Set the maxDate to the combined end date and time
+            this.maxDate = lastSessionDate;
+            console.log('Adjusted sessionEndDate and sessionEndTime to:', this.maxDate);
+  
+            // Ensure the default time is set correctly when selecting the last date
+            if (this.initialDateTime && this.initialDateTime.toDateString() === lastSessionDate.toDateString()) {
+              // If the last session date is selected, ensure the time matches sessionEndTime
+              this.initialDateTime.setHours(endHours);
+              this.initialDateTime.setMinutes(endMinutes);
+              this.initialDateTime.setSeconds(0);
+              this.initialDateTime.setMilliseconds(0);
+              console.log('Corrected the selected time for the last day:', this.initialDateTime);
+            }
+          } else {
+            console.error('Invalid sessionEndDate format.');
+          }
+        } else {
+          console.warn('sessionEndDate or sessionEndTime not found.');
+        }
+      } else {
+        console.warn('Session data is not available.');
+      }
     });
   }
+  
+  
+  
+  
+  
+  
+  
   editClass(id:string){
     this._router.navigate([`admin/courses/create-class`], { queryParams: {id: id}});
   }

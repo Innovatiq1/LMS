@@ -255,7 +255,7 @@
                         <h6>Duration</h6>
                       </div>
                       <div class="col-6">
-                        <p>{{ response?.duration }} hours</p>
+                        <p>{{ response?.duration | divideBy60 }}</p>
                       </div>
                     </div>
                   </div>
@@ -330,11 +330,10 @@
                         <!-- Date selection and duration field (only shown if isUpdateMode is true) -->
                         <div class="row mb-3">
                           <div class="col-6">
-                            <!-- Date Field -->
+                            <!-- Date and Time Field -->
                             <div class="form-group">
-                              <label for="start-date">Choose a date</label>
+                              <label for="start-date">Choose a date and time</label>
                               <mat-form-field class="example-full-width" appearance="outline">
-                                <mat-label>Choose a date</mat-label>
                                 <input
                                   matInput
                                   [owlDateTimeTrigger]="date"
@@ -342,16 +341,15 @@
                                   name="start"
                                   id="start-date"
                                   #startDate
+                                  [(ngModel)]="initialDateTime"
                                   [min]="response.sessions[0]?.sessionStartDate | date : 'yyyy-MM-dd'"
-                                  [max]="response.sessions[0]?.sessionEndDate | date : 'yyyy-MM-dd'"
-                                />
+                                  [max]="maxDate"                                />
                                 <mat-icon matSuffix [owlDateTimeTrigger]="date" class="date-icon">today</mat-icon>
                                 <owl-date-time #date></owl-date-time>
-                                <mat-error>Enter a valid date</mat-error>
+                                <mat-error>Enter a valid date and time</mat-error>
                               </mat-form-field>
                             </div>
                           </div>
-                    
                           <!-- Duration Field, only shown if isUpdateMode is true -->
                           <div class="col-6" *ngIf="isUpdateMode">
                             <div class="form-group">
