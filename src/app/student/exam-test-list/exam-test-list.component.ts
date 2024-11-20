@@ -46,6 +46,7 @@ export class ExamTestListComponent {
   discountValue: any;
   discountType: string = 'percentage';
   studentClassId:any;
+  analyzerSessionId: string = '';
 
   constructor(
     public utils: UtilsService,
@@ -96,9 +97,40 @@ export class ExamTestListComponent {
   }
 
   navToExam(data: any) {
+    if(!data.examAssessmentId.videoAnalyzerReq){
+      this.navToExamSub(data);
+      return;
+    }
+    const studentId = localStorage.getItem('id')||'';
+    this.assessmentService.getRecentAnalyzer(studentId).subscribe((res)=>{
+      if(res.success && res.data) {
+        this.analyzerSessionId = res.data._id;
+        this.navToExamSub(data);
+      }else if(res.data==null){
+        Swal.fire({
+          title: 'Open Video Analyzer?',
+          text: 'Please open Video Analyzer application',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Okay',
+          cancelButtonText: 'Cancel',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            
+          }else {
+            console.log('Exam start was canceled by the user.');
+          }
+        });
+      }
+    })
+    
+  }
+
+  navToExamSub(data:any){
+    const studentId = localStorage.getItem('id')||'';
     Swal.fire({
       title: 'Are you sure?',
-      text: 'Please ensure to allow your camera and microphone while taking the exam. If permissions are not granted, the exam may be canceled.',
+      text: 'Please ensure to allow your camera and microphone while taking the exam.',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, Start Exam!',
@@ -108,7 +140,6 @@ export class ExamTestListComponent {
         const studentClasses = data.studentClassId || [];
         if (studentClasses.length && studentClasses.some((v: any) => v.status == 'approved')) {
           const courseDetails = data.courseId;
-          const studentId = localStorage.getItem('id');
           this.studentClassId = studentClasses[0]?._id;
           const examAssessment = data.courseId.exam_assessment._id;
           this.redirectToExam(courseDetails, studentId, null);
@@ -514,6 +545,10 @@ export class ExamTestListComponent {
   ) {
     const courseId = courseDetails._id ||courseDetails.id;
     const examAssessmentId = courseDetails.exam_assessment?._id || courseDetails.exam_assessment;
+    const queryParams:any = { retake: false, submitted: true};
+    if(this.analyzerSessionId && courseDetails.exam_assessment?.videoAnalyzerReq){
+      queryParams.analyzerId = this.analyzerSessionId
+    }
     this.router.navigate(
       [
         '/student/exam-questions/',
@@ -523,7 +558,7 @@ export class ExamTestListComponent {
         courseId,
         examAssessmentId,
       ],
-      { queryParams: { retake: false, submitted: true } }
+      { queryParams }
     );
   }
 
@@ -537,6 +572,11 @@ export class ExamTestListComponent {
       cancelButtonText: 'Cancel',
     }).then((result) => {
       if (result.isConfirmed) {
+      const queryParams:any = { retake: true, submitted: false };
+      if(this.analyzerSessionId && row.courseId.exam_assessment?.videoAnalyzerReq){
+      queryParams.analyzerId = this.analyzerSessionId
+    }
+
         // Navigate to the exam route programmatically if confirmed
         this.router.navigate(
           [
@@ -547,7 +587,7 @@ export class ExamTestListComponent {
             row?.courseId?._id,
             row?.examAssessmentId?._id,
           ],
-          { queryParams: { retake: true, submitted: false } }
+          { queryParams }
         );
       }
     });
