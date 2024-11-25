@@ -419,7 +419,6 @@ export class ExamQuestionsComponent {
                     this.showWarning(warning.warning_type);
                   });
                 }
-
                 this.lastWarningIndex = res.data.warnings.length-1;
               }
             })
