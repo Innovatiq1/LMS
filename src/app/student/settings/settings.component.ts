@@ -618,6 +618,14 @@ export class SettingsComponent {
 
       address: ['', [Validators.required, ...this.utils.validators.address]],
       avatar: [''],
+      qualifications: ['', [Validators.required,...this.utils.validators.designation]],
+      domainAreaOfPractice: ['', [Validators.required]],
+      idType: ['', [Validators.required]],
+      idNumber: ['', [Validators.required]],
+      code: ['', [Validators.required]],
+      linkedInURL: ['',],
+      experience: ['',],
+      dob: ['', [Validators.required]],
     });
 
     this.roleForm = this.fb.group({
@@ -963,6 +971,14 @@ export class SettingsComponent {
 
         address: this.editData.address,
         uploadedImage: this.editData.avatar,
+        qualifications: this.editData?.qualifications?.description,
+        domainAreaOfPractice: this.editData?.domainAreaOfPractice,
+        experience: this.editData?.experience,
+        idNumber: this.editData?.idNumber,
+        idType: this.editData?.idType?.description,
+        code: this.editData?.idType?.code,
+        linkedInURL: this.editData?.linkedInURL,
+        dob: this.editData?.dob,
       });
       this.selectedCurrency = selectedCurrency;
       this.selectedTimer = selectedTimer;
@@ -1052,16 +1068,48 @@ export class SettingsComponent {
   }
   onSubmit1() {
     if (this.stdForm1.valid) {
-      const userData: any = this.stdForm1.value;
-      userData.avatar = this.avatar;
-      userData.type = this.editData.type;
-      userData.role = this.editData.role;
-      userData.ro = this.ro;
-      userData.roName = this.roName;
-      userData.director = this.director;
-      userData.directorName = this.directorName;
-      userData.trainingAdmin = this.trainingAdmin;
-      userData.trainingAdminName = this.trainingAdminName;
+      // const userData: any = this.stdForm1.value;
+      // userData.avatar = this.avatar;
+      // userData.type = this.editData.type;
+      // userData.role = this.editData.role;
+      // userData.ro = this.ro;
+      // userData.roName = this.roName;
+      // userData.director = this.director;
+      // userData.directorName = this.directorName;
+      // userData.trainingAdmin = this.trainingAdmin;
+      // userData.trainingAdminName = this.trainingAdminName;
+      let idType = {
+        code: this.stdForm1.value.code,
+        description: this.stdForm1.value.idType,
+      }
+      let qualifications = [{
+        description: this.stdForm1.value.qualifications,
+        level: {
+          code: "",
+        }
+      }]
+      const payload: any = {
+         name: this.stdForm1.value.name,
+         gender: this.stdForm1.value.gender,
+         domainAreaOfPractice: this.stdForm1.value.domainAreaOfPractice,
+         email: this.stdForm1.value.email,
+         experience: this.stdForm1.value.experience,
+         idNumber: this.stdForm1.value.idNumber,
+         idType: idType,
+         isLogin : true,
+         joiningDate: this.stdForm1.value.joiningDate,
+         linkedInURL: this.stdForm1.value.linkedInURL,
+         mobile: this.stdForm1.value.mobile,
+         password: this.stdForm1.value.password,
+         salutationId: 1,
+         qualifications: qualifications,
+         address: this.stdForm1.value.address,
+         department: this.stdForm1.value.department,
+         dob: this.stdForm1.value?.dob,
+         avatar: this.avatar,
+         type: this.editData.type,
+         role: this.editData.role,
+      };
       Swal.fire({
         title: 'Are you sure?',
         text: 'Do you want to update!',
@@ -1071,7 +1119,7 @@ export class SettingsComponent {
         cancelButtonColor: '#d33',
       }).then((result) => {
         if (result.isConfirmed) {
-          this.updateInstructor(userData);
+          this.updateInstructor(payload);
           Swal.close();
         }
       });
