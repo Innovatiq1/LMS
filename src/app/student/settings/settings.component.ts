@@ -1088,6 +1088,8 @@ export class SettingsComponent {
           code: "",
         }
       }]
+      let role = JSON.parse(localStorage.getItem('user_data')!).user.role;
+      let type = JSON.parse(localStorage.getItem('user_data')!).user.type;
       const payload: any = {
          name: this.stdForm1.value.name,
          gender: this.stdForm1.value.gender,
@@ -1107,8 +1109,8 @@ export class SettingsComponent {
          department: this.stdForm1.value.department,
          dob: this.stdForm1.value?.dob,
          avatar: this.avatar,
-         type: this.editData.type,
-         role: this.editData.role,
+         type: type,
+         role: role,
       };
       Swal.fire({
         title: 'Are you sure?',
