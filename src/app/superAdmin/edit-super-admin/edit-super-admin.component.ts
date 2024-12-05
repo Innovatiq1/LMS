@@ -63,6 +63,7 @@ export class EditSuperAdminComponent {
       trainer: new FormControl('', []),
       users: new FormControl('', []),
       courses: new FormControl('', []),
+      uen: new FormControl('', [Validators.required]),
       email: new FormControl('', [
         Validators.required,
         Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/),
@@ -246,7 +247,8 @@ export class EditSuperAdminComponent {
             learner:this.userForm.value.learner,
             trainer:this.userForm.value.trainer,
             users:this.userForm.value.users,
-            courses:this.userForm.value.courses
+            courses:this.userForm.value.courses,
+            uen: this.userForm.value.uen,
 
           }
           this.userService.updateCompany(payload, this.companyDataId).subscribe(
@@ -298,7 +300,8 @@ export class EditSuperAdminComponent {
             learner:res[0]?.learner,
             trainer:res[0]?.trainer,
             courses:res[0]?.courses,
-            users:res[0]?.users
+            users:res[0]?.users,
+            uen: res[0]?.uen,
 
           });
         }
