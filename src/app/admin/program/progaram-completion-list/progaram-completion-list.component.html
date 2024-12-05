@@ -164,9 +164,9 @@
   </div>
 </section>
 
-<div *ngIf="isGeneratingCertificates" class="overlay">
+<!-- <div *ngIf="isGeneratingCertificates" class="overlay">
   <mat-spinner class="centered-spinner" diameter="50"></mat-spinner>
-</div>
+</div> -->
 <ng-template #certificateDialog let-dialogRef="dialogRef" let-data>
   <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12" style="max-height: 600px;width: 100%; overflow-y: auto;">
     <section class="content">
@@ -196,7 +196,7 @@
               'justify-content': element.alignment,
               'position': 'absolute',
               'top': element.top + 'px',
-              'left': element.left + 'px'
+              'left': (element.left+10) + 'px'
             }"
            
           >
@@ -208,7 +208,8 @@
                 [attr.contenteditable]="element.editable"
                 [ngStyle]="{
                   'font-size': element.fontSize + 'px',
-                  'color': element.color
+                  'color': element.color,
+                  'font-family': element.fontStyle
                 }"
                 
                 class="certificate-element-content"
@@ -228,7 +229,17 @@
                   </div>
                 </ng-container>
                 <ng-container *ngIf="element.type === 'Signature';">
+                  <div
+                    class="resizable-logo"
+                    [ngStyle]="{
+                      width: element.width + 'px',
+                      height: element.height + 'px'
+                    }"
+                    
+                  >
                   <img [src]="element.imageUrl" alt="Signature" style="max-width: 100%; height: auto;">
+                  <div class="resizer"></div>
+                </div>
                 </ng-container>
 
                 <ng-template #textElement>

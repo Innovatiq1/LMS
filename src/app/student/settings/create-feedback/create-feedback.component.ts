@@ -1,9 +1,10 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges,Inject,Optional} from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatChipEditedEvent, MatChipInputEvent } from '@angular/material/chips';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SurveyService } from 'app/admin/survey/survey.service';
+import { MatDialog,MAT_DIALOG_DATA,MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -46,13 +47,20 @@ export class CreateFeedbackComponent  {
   editUrl: boolean = false;
   surveyId!: string;
   questionsList: any = [];
+  dialogStatus:boolean=false;
 
   constructor(
+    @Optional() @Inject(MAT_DIALOG_DATA) public data11: any,
     private formBuilder: FormBuilder,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private surveyService: SurveyService
+    private surveyService: SurveyService,
+    @Optional() private dialogRef: MatDialogRef<CreateFeedbackComponent>
   ) {
+    if (data11) {
+      this.dialogStatus=true;
+      console.log("Received variable:", data11.variable);
+    }
 
     this.storedItems = localStorage.getItem('activeBreadcrumb');
     if (this.storedItems) {
@@ -98,7 +106,11 @@ export class CreateFeedbackComponent  {
     })
   }
 
-
+  closeDialog(): void {
+    if (this.dialogRef) {
+      this.dialogRef.close();
+    }
+  }
   addQuestion() {
     const questionGroup = this.formBuilder.group({
       type: [null, Validators.required],
@@ -277,7 +289,10 @@ export class CreateFeedbackComponent  {
           text: 'Feedback Question created successfully',
           icon: 'success',
         });
-        this.router.navigate(['/admin/survey/survey-list']);
+        if(!this.dialogStatus)
+        {
+         this.router.navigate(['/admin/survey/survey-list']);
+        }
       },
       (err: any) => {
         Swal.fire({

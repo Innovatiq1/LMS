@@ -121,6 +121,24 @@
                 [class]="'tbl-fav-delete'"
               ></app-feather-icons>
             </button>
+            <div *ngIf="!aboutData?.isLogin">
+              <button
+                mat-menu-item
+                (click)="confirmItem(aboutData)"
+                class="align-items-center"
+              >
+                <img class="img-w" src="/assets/approve.svg" alt="approve" />
+              </button>
+            </div>
+            <div class="mt-1" *ngIf="aboutData?.isLogin">
+              <button
+                mat-menu-item
+                (click)="deactiveconfirmItem(aboutData)"
+                class="align-items-center"
+              >
+                <img class="img-w" src="/assets/deactivate.png" alt="deactivate"/>
+              </button>
+            </div>
           </div>
           <mat-tab-group>
             <mat-tab>

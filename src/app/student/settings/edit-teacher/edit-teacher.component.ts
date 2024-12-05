@@ -72,25 +72,71 @@ export class EditTeacherComponent {
         [Validators.required, Validators.email, Validators.minLength(5), ...this.utils.validators.email],
       ],
       dob: ['', [Validators.required]],
-      education: [''],
       joiningDate: ['', [Validators.required]],
-
       avatar: [''],
       attemptBlock: [''],
+      qualifications: ['',[Validators.required]],
+      domainAreaOfPractice: ['', [Validators.required]],
+      idType: ['', [Validators.required]],
+      idNumber: ['', [Validators.required]],
+      code: ['', [Validators.required]],
+      linkedInURL: ['',],
+      experience: ['',],
     });
   }
   onSubmit() {
     let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     if (this.proForm.valid) {
-      const userData: Users = this.proForm.value;
-      userData.avatar = this.avatar;
-      userData.type = AppConstants.INSTRUCTOR_ROLE;
-      userData.role = AppConstants.INSTRUCTOR_ROLE;
-      userData.adminId = user.user.id;
-      userData.adminEmail = user.user.email;
-      userData.adminName = user.user.name;
-      userData.companyId = user.user.companyId; 
-      userData.attemptCalculation = 1;
+      let idType = {
+        code: this.proForm.value.code,
+        description: this.proForm.value.idType,
+      }
+      let roles = [
+        {
+          role: {
+            id: 1,
+            description: "Trainer",
+          },
+        },
+      ]
+      let qualifications = [{
+        description: this.proForm.value.qualifications,
+        level: {
+          code: "",
+        }
+      }]
+      const payload: any = {
+         name: this.proForm.value.name,
+         gender: this.proForm.value.gender,
+         domainAreaOfPractice: this.proForm.value.domainAreaOfPractice,
+         email: this.proForm.value.email,
+         experience: this.proForm.value.experience,
+         idNumber: this.proForm.value.idNumber,
+         idType: idType,
+         isLogin : true,
+         joiningDate: this.proForm.value.joiningDate,
+         linkedInURL: this.proForm.value.linkedInURL,
+         mobile: this.proForm.value.mobile,
+         password: this.proForm.value.password,
+         salutationId: 1,
+         qualifications: qualifications,
+         roles: roles,
+         address: this.proForm.value.address,
+         adminEmail: this.proForm.value.adminEmail,
+         adminId: this.proForm.value.adminId,
+         adminName: this.proForm.value.adminName,
+         attemptBlock: false,
+         company: user.user.company,
+         companyId: user.user.companyId,
+         department: this.proForm.value.department,
+         dob: this.proForm.value.dob,
+         domain: user.user.domain,
+         type: AppConstants.INSTRUCTOR_ROLE,
+         role: AppConstants.INSTRUCTOR_ROLE,
+         avatar: this.avatar,
+         attemptCalculation: 1,
+         action: "update",
+      };
       Swal.fire({
         title: 'Are you sure?',
         text: 'Do You want to update this Trainer',
@@ -100,7 +146,7 @@ export class EditTeacherComponent {
         cancelButtonColor: '#d33',
       }).then((result) => {
         if (result.isConfirmed) {
-          this.updateInstructor(userData);
+          this.updateInstructor(payload);
           Swal.close();
         }
       });
@@ -150,13 +196,20 @@ export class EditTeacherComponent {
           password: response?.course?.password,
           conformPassword: response?.course?.password,
           email: response?.course?.email,
-          qualification: response?.course?.education,
+          qualifications: response?.course?.qualifications?.description,
           dob: response?.course?.dob,
           address: response?.course?.address,
           department: response?.course?.department,
           joiningDate: response?.course?.joiningDate,
           fileName: this.fileName,
-          attemptBlock: response?.course?.attemptBlock 
+          attemptBlock: response?.course?.attemptBlock,
+          domainAreaOfPractice: response?.course?.domainAreaOfPractice,
+          experience: response?.course?.experience,
+          idNumber: response?.course?.idNumber,
+          idType: response?.course?.idType?.description,
+          code: response?.course?.idType?.code,
+          linkedInURL: response?.course?.linkedInURL,
+
         });
       }
     });

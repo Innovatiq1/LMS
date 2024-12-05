@@ -149,6 +149,7 @@ export class ListComponent {
     this.announcementService.getAnnouncementList(payload).subscribe((res:any) => {
       this.isLoading = false;
       this.dataSource = res.data.data.docs;
+      // console.log("getAnnouncements ==",res.data.data)
        this.totalItems = res.data.data.totalDocs;
           this.coursePaginationModel.docs = res.data.data.docs;
           this.coursePaginationModel.page = res.data.data.page;

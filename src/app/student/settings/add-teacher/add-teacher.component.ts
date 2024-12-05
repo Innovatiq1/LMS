@@ -66,8 +66,14 @@ export class AddTeacherComponent {
       ],
       dob: ['', [Validators.required]],
       joiningDate:['', [Validators.required]],
-      education: ['', [Validators.required,...this.utils.validators.designation]],
+      qualifications: ['', [Validators.required,...this.utils.validators.designation]],
       avatar: ['',],
+      domainAreaOfPractice: ['', [Validators.required]],
+      idType: ['', [Validators.required]],
+      idNumber: ['', [Validators.required]],
+      code: ['', [Validators.required]],
+      linkedInURL: ['',],
+      experience: ['',],
     },{
     });
   }
@@ -108,25 +114,57 @@ export class AddTeacherComponent {
       (res: any) => {
 
     if (!this.proForm.invalid) {
-        const userData: any = this.proForm.value;
-        userData.avatar = this.avatar;
-        
-        userData.type = AppConstants.INSTRUCTOR_ROLE;
-        userData.role = AppConstants.INSTRUCTOR_ROLE;
-        userData.isLogin = true;
-        userData.adminId = user.user.id;
-        userData.adminEmail = user.user.email;
-        userData.adminName = user.user.name;
-        userData.companyId = user.user.companyId;
-        userData.users = res[0]?.users;
-        userData.courses = res[0]?.courses;
-        userData.attemptBlock =  false;
-        userData.company = user.user.company;
-        userData.domain = user.user.domain;
-
-
-
-        this.createInstructor(userData);
+      let idType = {
+        code: this.proForm.value.code,
+        description: this.proForm.value.idType,
+      }
+      let roles = [
+        {
+          role: {
+            id: 1,
+            description: "Trainer",
+          },
+        },
+      ]
+      let qualifications = [{
+        description: this.proForm.value.qualifications,
+        level: {
+          code: "",
+        }
+      }]
+      const payload: any = {
+         name: this.proForm.value.name,
+         gender: this.proForm.value.gender,
+         domainAreaOfPractice: this.proForm.value.domainAreaOfPractice,
+         email: this.proForm.value.email,
+         experience: this.proForm.value.experience,
+         idNumber: this.proForm.value.idNumber,
+         idType: idType,
+         isLogin : true,
+         joiningDate: this.proForm.value.joiningDate,
+         linkedInURL: this.proForm.value.linkedInURL,
+         mobile: this.proForm.value.mobile,
+         password: this.proForm.value.password,
+         salutationId: 1,
+         qualifications: qualifications,
+         roles: roles,
+         address: this.proForm.value.address,
+         adminEmail: this.proForm.value.adminEmail,
+         adminId: this.proForm.value.adminId,
+         adminName: this.proForm.value.adminName,
+         attemptBlock: false,
+         company: user.user.company,
+         companyId: user.user.companyId,
+         courses: res[0]?.courses,
+         department: this.proForm.value.department,
+         dob: this.proForm.value.dob,
+         domain: user.user.domain,
+         type: AppConstants.INSTRUCTOR_ROLE,
+         role: AppConstants.INSTRUCTOR_ROLE,
+         avatar: this.avatar,
+         users: res[0]?.users
+      };
+        this.createInstructor(payload);
     }else{
       this.proForm.markAllAsTouched(); 
       this.submitClicked = true;

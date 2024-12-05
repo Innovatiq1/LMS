@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component,OnInit,Inject,Optional } from '@angular/core';
 import { FormBuilder, FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenService } from '@core/service/authen.service';
 import { CourseService } from '@core/service/course.service';
 import { UtilsService } from '@core/service/utils.service';
+import { MatDialog,MAT_DIALOG_DATA,MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -23,10 +24,17 @@ export class VendorComponent {
   dataSource :any;
   isCreate = false;
   isEdit = false;
-
-  constructor(private fb: FormBuilder,private router:Router,
+  dialogStatus:boolean=false;
+  constructor(
+    @Optional() @Inject(MAT_DIALOG_DATA) public data11: any,
+    private fb: FormBuilder,private router:Router,
     private activatedRoute:ActivatedRoute,private courseService:CourseService,public utils:UtilsService,
-    private authenService: AuthenService) {
+    private authenService: AuthenService,
+    @Optional() private dialogRef: MatDialogRef<VendorComponent>) {
+      if (data11) {
+        this.dialogStatus=true;
+        console.log("Received variable:", data11.variable);
+      }
       this.vendorForm = this.fb.group({
         vendor: ['', [Validators.required,...this.utils.validators.noLeadingSpace,...this.utils.validators.name]],
         description: ['', [Validators.required,...this.utils.validators.noLeadingSpace,...this.utils.validators.name]]
@@ -101,5 +109,10 @@ update(id: string){
       id: id
     }
   });
+}
+closeDialog(): void {
+  if (this.dialogRef) {
+    this.dialogRef.close();
+  }
 }
 }

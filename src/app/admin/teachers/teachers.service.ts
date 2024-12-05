@@ -95,4 +95,22 @@ export class TeachersService extends UnsubscribeOnDestroyAdapter {
         })
       );
   }
+
+  confrim(userId: string, type?: string): Observable<ApiResponse> {
+    let user = {
+      isLogin: true,
+      type: type,
+    };
+    const apiUrl = `${this.prefix}auth/instructorConfirm/${userId}`;
+    return this.httpClient.put<ApiResponse>(apiUrl, user);
+  }
+  deActiveconfrim(userId: string, type?: string): Observable<ApiResponse> {
+    let user = {
+      isLogin: false,
+      type: type,
+    };
+    const apiUrl = `${this.prefix}auth/instructorConfirm/${userId}`;
+    return this.httpClient.put<ApiResponse>(apiUrl, user);
+  }
 }
+
