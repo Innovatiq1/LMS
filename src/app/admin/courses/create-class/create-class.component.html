@@ -281,6 +281,7 @@
             [owlDateTimeTrigger]="date2"
             [owlDateTime]="date2"
             [(ngModel)]="element.end"
+            [min]="element.start"
             name="end"
             #endInput="ngModel"
             required
