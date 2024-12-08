@@ -557,12 +557,13 @@ loadForm() {
                   text: 'Batch Created Successfully.',
                   icon: 'success',
                 });
+                localStorage.removeItem('zoomSessionCreated');
+                localStorage.removeItem('classFormData');
+                this.zoomSessionCreated = false;
+                this.router.navigate(['/admin/courses/class-list'], {
+                  state: { newClass: response },
+                });
               })
-              localStorage.removeItem('zoomSessionCreated');
-              localStorage.removeItem('classFormData');
-              this.zoomSessionCreated = false;
-               window.history.back();
-             // this.router.navigate(['/admin/courses/class-list']);
             }});
 
   }else{
