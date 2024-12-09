@@ -102,7 +102,7 @@ export class EditTeacherComponent {
       let qualifications = [{
         description: this.proForm.value.qualifications,
         level: {
-          code: "",
+          code: "21",
         }
       }]
       const payload: any = {
