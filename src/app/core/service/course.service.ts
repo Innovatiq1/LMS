@@ -744,7 +744,8 @@ uploadFile(file: File): Observable<any> {
 getRetreiveTPCourses(
   filter?: Partial<any>
 ): Observable<ApiResponse> {
-  const apiUrl = `${this.tpUrl}getCoursesByTPUEN`;
+  let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId
+  const apiUrl = `${this.tpUrl}getCoursesByTPUEN?companyId=${userId}`;
   return this._Http.get<ApiResponse>(apiUrl, {
     params: this.buildParams(filter),
   });
