@@ -41,6 +41,7 @@ export class EditTeacherComponent {
   uploaded: any;
   thumbnail: any;
   commonRoles: any;
+  trainerId:any;
   constructor(
     private fb: UntypedFormBuilder,
     private courseService: CourseService,
@@ -136,7 +137,9 @@ export class EditTeacherComponent {
          avatar: this.avatar,
          attemptCalculation: 1,
          action: "update",
+         trainerId:this.trainerId,
       };
+      // console.log("payLoad",payload)
       Swal.fire({
         title: 'Are you sure?',
         text: 'Do You want to update this Trainer',
@@ -182,6 +185,9 @@ export class EditTeacherComponent {
       course: this.teachersService.getUserById(this.userId),
     }).subscribe((response: any) => {
       if (response) {
+
+        // console.log("helo res",response.course)
+        this.trainerId=response.course.trainerId;
         this.avatar = response.course?.avatar;
         this.uploaded = this.avatar?.split('/');
         let image = this.uploaded?.pop();
@@ -196,7 +202,7 @@ export class EditTeacherComponent {
           password: response?.course?.password,
           conformPassword: response?.course?.password,
           email: response?.course?.email,
-          qualifications: response?.course?.qualifications?.description,
+          qualifications: response?.course?.qualifications[0]?.description,
           dob: response?.course?.dob,
           address: response?.course?.address,
           department: response?.course?.department,
