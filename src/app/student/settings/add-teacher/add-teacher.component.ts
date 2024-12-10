@@ -134,6 +134,7 @@ export class AddTeacherComponent {
       }]
       const payload: any = {
          name: this.proForm.value.name,
+         last_name:this.proForm.value.last_name,
          gender: this.proForm.value.gender,
          domainAreaOfPractice: this.proForm.value.domainAreaOfPractice,
          email: this.proForm.value.email,
