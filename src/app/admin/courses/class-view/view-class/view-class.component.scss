@@ -88,4 +88,18 @@
   border-radius: 0.5rem; /* Rounded corners */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
   margin-bottom: 20px; /* Space below the box */
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.close-btn mat-icon {
+  font-size: 24px; /* You can adjust the size of the close icon */
 }

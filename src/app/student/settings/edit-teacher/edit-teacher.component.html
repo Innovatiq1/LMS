@@ -16,11 +16,11 @@
             <form class="m-4" [formGroup]="proForm" (ngSubmit)="onSubmit()">
               <div class="row">
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                  <label>First Name<span class="mandatory">&nbsp;*</span></label>
+                  <label>Name<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <input matInput formControlName="name" required>
                     <mat-error *ngIf="proForm.get('name')?.hasError('required')">
-                      Enter First Name
+                      Enter Name
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -31,9 +31,55 @@
                   </mat-form-field>
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                  <label>Education<span class="mandatory">&nbsp;*</span></label>
+                  <label>Qualification<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <input matInput formControlName="education">
+                    <input matInput formControlName="qualifications">
+                    <mat-error
+                    *ngIf="
+                      proForm.get('qualifications')?.invalid &&
+                      proForm.get('qualifications')?.touched
+                    "
+                  >
+                    {{
+                      utils.getErrorMessage1(proForm.get("qualifications"), "qualification")
+                    }}
+                  </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                  <label>ID Number<span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <input matInput formControlName="idNumber">
+                    <mat-error *ngIf="proForm.get('idNumber')?.hasError('required')">
+                      Enter ID Number 
+                     </mat-error>
+                  </mat-form-field>
+                </div> 
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                  <label>ID Type<span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <input matInput formControlName="idType">
+                    <mat-error *ngIf="proForm.get('idType')?.hasError('required')">
+                      Enter ID Type 
+                     </mat-error>
+                  </mat-form-field>
+                </div> 
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                  <label>ID Code<span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <input matInput formControlName="code">
+                    <mat-error *ngIf="proForm.get('code')?.hasError('required')">
+                      Enter ID Code 
+                     </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                  <label>Area of Practice<span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <input matInput formControlName="domainAreaOfPractice">
+                    <mat-error *ngIf="proForm.get('domainAreaOfPractice')?.hasError('required')">
+                      Enter Area of Practice 
+                     </mat-error>
                   </mat-form-field>
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
@@ -50,6 +96,15 @@
                       utils.getErrorMessage1(proForm.get("email"), "email")
                     }}
                   </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                  <label>Password<span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <input matInput formControlName="password" type="password" required>
+                    <mat-error *ngIf="proForm.get('password')?.hasError('required')">
+                      Enter Password 
+                    </mat-error>
                   </mat-form-field>
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
@@ -72,12 +127,6 @@
                   </mat-form-field>
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                  <label>Mobile<span class="mandatory">&nbsp;*</span></label>
-                  <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <input matInput formControlName="mobile" type="number" required>
-                  </mat-form-field>
-                </div>
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <label>Department <span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field
                     class="example-full-width mb-3"
@@ -89,6 +138,23 @@
                     </mat-select>
                     <mat-error *ngIf="proForm.get('department')?.hasError('required')">
                       Select Department
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                  <label>Mobile<span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <input matInput formControlName="mobile" type="number" required>
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                  <label>Date of Birth<span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <input matInput [matDatepicker]="picker" formControlName="dob" required>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-error *ngIf="proForm.get('dob')?.hasError('required')">
+                      Select date
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -105,23 +171,15 @@
                   </mat-form-field>
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                  <label>Date of Birth<span class="mandatory">&nbsp;*</span></label>
+                  <label>Experience</label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <input matInput [matDatepicker]="picker" formControlName="dob" required>
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                    <mat-error *ngIf="proForm.get('dob')?.hasError('required')">
-                      Select date
-                    </mat-error>
+                    <input matInput formControlName="experience">
                   </mat-form-field>
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                  <label>Password<span class="mandatory">&nbsp;*</span></label>
+                  <label>LinkedIn URL</label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <input matInput formControlName="password" type="password" required>
-                    <mat-error *ngIf="proForm.get('password')?.hasError('required')">
-                      Enter Password
-                    </mat-error>
+                    <input matInput formControlName="linkedInURL">
                   </mat-form-field>
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">

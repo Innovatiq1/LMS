@@ -324,6 +324,14 @@
                     </div>
                     <div class="col-12" *ngIf="isZoomMeetingFormVisible && response?.meetingPlatform === 'zoom'">
                       <div class="zoom-meeting-box p-3">
+                        <button
+                        mat-icon-button
+                        (click)="closeZoomMeetingForm()"
+                        class="close-btn"
+                        aria-label="Close"
+                      >
+                        <mat-icon>close</mat-icon>
+                      </button>
                         <!-- Show Update or Delete Title Based on Mode -->
                         <h6>{{ isUpdateMode ? 'Update Zoom Link' : 'Delete Zoom Link' }}</h6>
                     

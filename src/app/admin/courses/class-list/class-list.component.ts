@@ -110,6 +110,8 @@ export class ClassListComponent extends UnsubscribeOnDestroyAdapter implements O
   }
 
   getClassList() {
+    localStorage.removeItem('zoomSessionCreated');
+    localStorage.removeItem('classFormData');
     let filterClass = this.filterName;
     const payload = { ...this.coursePaginationModel,courseName:filterClass };
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
