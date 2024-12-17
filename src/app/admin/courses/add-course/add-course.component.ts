@@ -344,7 +344,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
 
     this.loadData();
     setInterval(() => {
-      this.startAutoSave();
+       this.startAutoSave();
     }, 30000);
   }
 
@@ -1151,7 +1151,8 @@ this.exam_assessments=res?.data.reverse();
         certificate_template_id: certicate_temp_id[0].id,
         companyId: userId,
         courses: courses,
-        learningTutorial:courseData.learningTutorial
+        learningTutorial:courseData.learningTutorial,
+        selectedOptionValue:this.optionValue
 
       };
 // console.log("payload--",payload)
@@ -1203,7 +1204,8 @@ this.exam_assessments=res?.data.reverse();
       exam_assessment: this.questionService.getExamQuestionJson({ status: 'approved' }),
     }).subscribe((response: any) => {
       this.fundingGrants = response.fundingGrant;
-      // console.log("newRes===",response)
+       console.log("newRes===",response)
+       this.optionValue=response.course.selectedOptionValue;
        this.courseKits = response.courseKit?.docs;
         this.assessments = response.assessment?.data?.docs;
       this.exam_assessments = response.exam_assessment.data.docs;
