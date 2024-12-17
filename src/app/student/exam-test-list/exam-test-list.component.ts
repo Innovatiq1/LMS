@@ -120,9 +120,9 @@ export class ExamTestListComponent {
           title: 'Open Video Analyzer?',
           text: 'Please open Video Analyzer application',
           icon: 'warning',
-          showCancelButton: true,
+          showCancelButton: false,
           confirmButtonText: 'Okay',
-          cancelButtonText: 'Cancel',
+          
         }).then((result) => {
           if (result.isConfirmed) {
           } else {
