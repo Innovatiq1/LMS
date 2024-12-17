@@ -8,6 +8,7 @@ import { CourseService } from '@core/service/course.service';
 import { ClassService } from 'app/admin/schedule-class/class.service';
 import { Location } from '@angular/common';
 import { Subscription, timer } from 'rxjs';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-exam-questions',
@@ -58,6 +59,10 @@ export class ExamQuestionsComponent {
   offsetX: number = 0;
   offsetY: number = 0;
   isRecording: boolean = false;
+  analyzerSessionId: string ='';
+  analyzerInterval: any;
+  analyzerData: any;
+  lastWarningIndex: number = 0;
 
   @ViewChild('proctoringDiv', { static: true }) proctoringDiv!: ElementRef;
   @ViewChild('videoElement') videoElement!: ElementRef;
@@ -77,7 +82,8 @@ export class ExamQuestionsComponent {
     private studentService : StudentsService,
     private courseService:CourseService,
     private classService: ClassService,
-    private location: Location
+    private location: Location,
+    private snackBar: MatSnackBar,
       ) { }
 
       ngOnInit(): void {
@@ -87,11 +93,16 @@ export class ExamQuestionsComponent {
           this.student();
           this.route.queryParams.subscribe(params => {
             this.retake = params['retake'] === 'true'; 
+            this.analyzerSessionId = params['analyzerId'];
+            if(this.analyzerSessionId){
+              this.startAnalyzer();
+              this.fetchAnalyzerWarnings();
+            }
           });    
           this.applyBlurEffect(); 
-          this.startVideoSession(); 
+          //this.startVideoSession(); 
           this.startMonitoringTabSwitch();   
-          this.startTimer();  
+          this.startTimer();
           this.routerSubscription = this.router.events.subscribe((event) => {
             if (event instanceof NavigationStart) {
               // Stop recording when navigation occurs
@@ -100,6 +111,13 @@ export class ExamQuestionsComponent {
               }
             }
           });                 
+      }
+
+      startAnalyzer(){
+        console.log("updating...")
+        this.assessmentService.updateAnalyzer(this.analyzerSessionId, {status: "connected"}).subscribe(res=>{
+          console.log(res)
+        })
       }
 
       getClassDetails():void{
@@ -224,9 +242,10 @@ export class ExamQuestionsComponent {
           this.stopRecording();
           if (this.retake && result.isConfirmed) {
             this.updateAnswers();
-        } else if (result.isConfirmed) {
-            this.submitAnswers();
-        }
+          } else if (result.isConfirmed) {
+              this.submitAnswers();
+          }
+          clearInterval(this.analyzerInterval);
         });
       }
 
@@ -252,8 +271,14 @@ export class ExamQuestionsComponent {
             if (!this.retake) {
               this.updateExamStatus();
             }
-          this.answerId = response.response;
-          this.submitFeedback(response.response);
+            this.answerId = response.response;
+            if(this.analyzerSessionId){
+              this.assessmentService.updateAnalyzer(this.analyzerSessionId, {examAnswerId: this.answerId, status:"closed"}).subscribe((res)=>{
+                this.submitFeedback(response.response);
+              })
+            }else{
+              this.submitFeedback(response.response);
+            }
           },
           (error: any) => {
             console.error('Error:', error);
@@ -382,9 +407,27 @@ export class ExamQuestionsComponent {
             }
           }, 1000);
         }
+
+        fetchAnalyzerWarnings() {
+          this.analyzerInterval = setInterval(()=> {
+            this.assessmentService.getAnalyzerById(this.analyzerSessionId).subscribe((res:any)=> {
+              if(res.data){
+                this.analyzerData = res.data;
+                if(this.analyzerData.warnings.length>(this.lastWarningIndex+1)){
+                  const warnings = this.analyzerData.warnings.slice(this.lastWarningIndex);
+                  warnings.forEach((warning:any) => {
+                    this.showWarning(warning.warning_type);
+                  });
+                }
+                this.lastWarningIndex = res.data.warnings.length-1;
+              }
+            })
+          }, 10*1000)
+        }
       
         ngOnDestroy() {
           clearInterval(this.interval);
+          clearInterval(this.analyzerInterval);
           if (this.timerSubscription) {
             this.timerSubscription.unsubscribe();
           }
@@ -554,6 +597,20 @@ export class ExamQuestionsComponent {
       document.removeEventListener('visibilitychange', this.visibilityChangeListener);
       this.visibilityChangeListener = null;
     }
+  }
+
+  showNotification(
+    colorName: string,
+    text: string,
+    placementFrom: MatSnackBarVerticalPosition,
+    placementAlign: MatSnackBarHorizontalPosition
+  ) {
+    this.snackBar.open(text, '', {
+      duration: 6000,
+      verticalPosition: placementFrom,
+      horizontalPosition: placementAlign,
+      panelClass: colorName,
+    });
   }
 
   showWarning(message: string) {

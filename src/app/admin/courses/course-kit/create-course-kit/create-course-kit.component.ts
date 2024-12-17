@@ -421,9 +421,9 @@ export class CreateCourseKitComponent implements OnInit {
   //     }
   //   }
   // }
-  onFileUpload(event: any) {
+  onFileUpload(event: any, isScormKit:boolean=false) {
     const file = event.target.files[0];
-    const allowedFileTypes = [
+    let allowedFileTypes = [
       'application/pdf',
       'application/vnd.ms-powerpoint',
       'application/vnd.openxmlformats-officedocument.presentationml.presentation', 
@@ -433,7 +433,11 @@ export class CreateCourseKitComponent implements OnInit {
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 
       'text/plain' 
     ];
-  
+    
+    if(isScormKit){
+      allowedFileTypes.push('application/x-zip-compressed')
+    }
+    
     if (file) {
       if (allowedFileTypes.includes(file.type)) {
         

@@ -1888,6 +1888,7 @@ console.log('lastButOneValue',lastButOneValue)
   }
 
   openScormModule(module:any, scormKit:any){
+    console.log(scormKit);
     this.currentScormModule = {...module, launchUrl: scormKit.path+'/'+module.launch};
     this.initScorm2004(this.currentScormModule.launchUrl);
   }

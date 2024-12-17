@@ -3,7 +3,7 @@ import { StudentPaginationModel } from 'app/admin/schedule-class/class.model';
 import { ClassService } from 'app/admin/schedule-class/class.service';
 import { UtilsService } from '@core/service/utils.service';
 import { MatSort } from '@angular/material/sort';
-import { Router ,ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AssessmentService } from '@core/service/assessment.service';
 import { AssessmentQuestionsPaginationModel } from '@core/models/assessment-answer.model';
 import { CourseService } from '@core/service/course.service';
@@ -31,7 +31,12 @@ export class ExamTestListComponent {
       active: 'Exam',
     },
   ];
-  displayedColumns: string[] = ['Course Title', 'Exam Name', 'Exam', 'Download'];
+  displayedColumns: string[] = [
+    'Course Title',
+    'Exam Name',
+    'Exam',
+    'Download',
+  ];
   dataSource: any;
   assessmentPaginationModel!: Partial<AssessmentQuestionsPaginationModel>;
   totalItems: any;
@@ -45,7 +50,8 @@ export class ExamTestListComponent {
   invoiceUrl: any;
   discountValue: any;
   discountType: string = 'percentage';
-  studentClassId:any;
+  studentClassId: any;
+  analyzerSessionId: string = '';
 
   constructor(
     public utils: UtilsService,
@@ -72,7 +78,11 @@ export class ExamTestListComponent {
     let studentId = localStorage.getItem('id') || '';
     let company = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     this.assessmentService
-      .getAssignedExamAnswers({ ...this.assessmentPaginationModel, studentId,company })
+      .getAssignedExamAnswers({
+        ...this.assessmentPaginationModel,
+        studentId,
+        company,
+      })
       .subscribe((res) => {
         this.isLoading = false;
         this.dataSource = res.data.docs;
@@ -96,9 +106,38 @@ export class ExamTestListComponent {
   }
 
   navToExam(data: any) {
+    if (!data.examAssessmentId.videoAnalyzerReq) {
+      this.navToExamSub(data);
+      return;
+    }
+    const studentId = localStorage.getItem('id') || '';
+    this.assessmentService.getRecentAnalyzer(studentId).subscribe((res) => {
+      if (res.success && res.data) {
+        this.analyzerSessionId = res.data._id;
+        this.navToExamSub(data);
+      } else if (res.data == null) {
+        Swal.fire({
+          title: 'Open Video Analyzer?',
+          text: 'Please open Video Analyzer application',
+          icon: 'warning',
+          showCancelButton: false,
+          confirmButtonText: 'Okay',
+          
+        }).then((result) => {
+          if (result.isConfirmed) {
+          } else {
+            console.log('Exam start was canceled by the user.');
+          }
+        });
+      }
+    });
+  }
+
+  navToExamSub(data: any) {
+    const studentId = localStorage.getItem('id') || '';
     Swal.fire({
       title: 'Are you sure?',
-      text: 'Please ensure to allow your camera and microphone while taking the exam. If permissions are not granted, the exam may be canceled.',
+      text: 'Please ensure to allow your camera and microphone while taking the exam.',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, Start Exam!',
@@ -106,9 +145,11 @@ export class ExamTestListComponent {
     }).then((result) => {
       if (result.isConfirmed) {
         const studentClasses = data.studentClassId || [];
-        if (studentClasses.length && studentClasses.some((v: any) => v.status == 'approved')) {
+        if (
+          studentClasses.length &&
+          studentClasses.some((v: any) => v.status == 'approved')
+        ) {
           const courseDetails = data.courseId;
-          const studentId = localStorage.getItem('id');
           this.studentClassId = studentClasses[0]?._id;
           const examAssessment = data.courseId.exam_assessment._id;
           this.redirectToExam(courseDetails, studentId, null);
@@ -120,24 +161,27 @@ export class ExamTestListComponent {
       }
     });
   }
-  
 
-  getLabel(data:any):string{
+  getLabel(data: any): string {
     const course = data.courseId;
-    const isApproved = data.studentClassId?.some((v:any)=>v.status == 'approved');
-    const isRegistered = data.studentClassId?.some((v:any)=>v.status == 'registered');
+    const isApproved = data.studentClassId?.some(
+      (v: any) => v.status == 'approved'
+    );
+    const isRegistered = data.studentClassId?.some(
+      (v: any) => v.status == 'registered'
+    );
 
-    if(course.feeType == 'free' && course.approval == 'no' || isApproved){
-      return 'Take Exam'
+    if ((course.feeType == 'free' && course.approval == 'no') || isApproved) {
+      return 'Take Exam';
     }
-    if(course.feeType == 'free' && course.approval == 'yes'  && isRegistered ){
-      return 'Approval Pending'
+    if (course.feeType == 'free' && course.approval == 'yes' && isRegistered) {
+      return 'Approval Pending';
     }
-    if(course.feeType == 'free' && course.approval == 'yes'  && !isRegistered ){
-      return 'Take Exam'
+    if (course.feeType == 'free' && course.approval == 'yes' && !isRegistered) {
+      return 'Take Exam';
     }
-  
-    return data.studentClassId?.length ? 'Approval Pending' : 'Pay'
+
+    return data.studentClassId?.length ? 'Approval Pending' : 'Pay';
   }
 
   paidDirectExamFlow(data: any) {
@@ -145,15 +189,15 @@ export class ExamTestListComponent {
     const isPaid = data.courseId?.feeType == 'paid';
     this.courseService.getCourseById(courseId).subscribe((response) => {
       const courseDetails = response;
-      if(isPaid){
+      if (isPaid) {
         this.paidDialogEvent(courseDetails, null, data);
-      }else {
-        this.freeExamFlow(courseDetails, data)
+      } else {
+        this.freeExamFlow(courseDetails, data);
       }
     });
   }
 
-  async freeExamFlow(courseDetails: any, data:any){
+  async freeExamFlow(courseDetails: any, data: any) {
     const courseKitDetails = courseDetails?.course_kit;
     const courseKit = courseKitDetails?.map((kit: any) => ({
       shortDescription: kit?.shortDescription,
@@ -166,13 +210,15 @@ export class ExamTestListComponent {
       url: kit?.videoLink[0]?.url,
       playbackTime: 0,
     }));
-    const studentClass =await firstValueFrom(this.registerClass(courseDetails, courseKit));
-    if(studentClass.success && courseDetails.approval == 'no'){
-      this.studentClassId= studentClass?.data?.createdStudentClass?.id
+    const studentClass = await firstValueFrom(
+      this.registerClass(courseDetails, courseKit)
+    );
+    if (studentClass.success && courseDetails.approval == 'no') {
+      this.studentClassId = studentClass?.data?.createdStudentClass?.id;
       const courseDetailInfo = data.courseId;
       const studentId = localStorage.getItem('id');
       const examAssessment = data.courseId.exam_assessment._id;
-      this.redirectToExam(courseDetailInfo, studentId, null)
+      this.redirectToExam(courseDetailInfo, studentId, null);
     } else {
       Swal.fire({
         title: 'Success',
@@ -180,7 +226,6 @@ export class ExamTestListComponent {
         icon: 'success',
       });
       this.getEnabledExams();
-
     }
   }
 
@@ -210,10 +255,10 @@ export class ExamTestListComponent {
       studentId: studentId,
       classId: null,
       title: courseDetails.title,
-      coursekit: courseKit?courseKit:null,
+      coursekit: courseKit ? courseKit : null,
       date: date,
-      discountType:'percentage',
-      discountValue:0
+      discountType: 'percentage',
+      discountValue: 0,
     };
     const invoiceDialogRef = this.dialog.open(InvoiceComponent, {
       width: '1000px',
@@ -229,9 +274,12 @@ export class ExamTestListComponent {
         });
         dialogRef.afterClosed().subscribe(async (result) => {
           if (result) {
-            const studentClass =await firstValueFrom(this.registerClass(courseDetails, courseKit, res.totalValue));
-            if(studentClass.success){
-              const registeredClassId = studentClass.data.createdStudentClass._id;
+            const studentClass = await firstValueFrom(
+              this.registerClass(courseDetails, courseKit, res.totalValue)
+            );
+            if (studentClass.success) {
+              const registeredClassId =
+                studentClass.data.createdStudentClass._id;
               if (result.payment === 'card') {
                 this.generateInvoice(body);
                 setTimeout(() => {
@@ -239,31 +287,31 @@ export class ExamTestListComponent {
                     email: userdata.user.email,
                     name: userdata.user.name,
                     courseTitle: courseDetails?.title,
-                    courseFee:res.totalValue,
+                    courseFee: res.totalValue,
                     studentId: studentId,
                     classId: null,
                     title: courseDetails?.title,
                     coursekit: courseKit,
                     paid: true,
-                    stripe:true,
-                    adminEmail:userdata.user.adminEmail,
-                    adminName:userdata.user.adminName,
-                    companyId:userdata.user.companyId,
-                    invoiceUrl:this.invoiceUrl,
-                    courseStartDate:courseDetails?.sessionStartDate,
-                    courseEndDate:courseDetails?.sessionEndDate,
+                    stripe: true,
+                    adminEmail: userdata.user.adminEmail,
+                    adminName: userdata.user.adminName,
+                    companyId: userdata.user.companyId,
+                    invoiceUrl: this.invoiceUrl,
+                    courseStartDate: courseDetails?.sessionStartDate,
+                    courseEndDate: courseDetails?.sessionEndDate,
                     courseId: courseDetails.id,
                     successURL: this.getCurrentUrl(),
                     failURL: this.getCurrentUrl(),
                     isDirectExam: true,
-                  }
-  
+                  };
+
                   this.classService
-                  .saveApprovedClasses(registeredClassId,payload).subscribe((response) => {
+                    .saveApprovedClasses(registeredClassId, payload)
+                    .subscribe((response) => {
                       this.document.location.href = response.data.session.url;
-                    }); 
-                },5000)
-                
+                    });
+                }, 5000);
               } else if (result.payment === 'other') {
                 let payload = {
                   email: userdata.user.email,
@@ -275,99 +323,111 @@ export class ExamTestListComponent {
                   title: courseDetails?.title,
                   coursekit: courseKit,
                 };
-  
-                this.courseService.createOrder(payload).subscribe((response) => {
-                  if (response.status == 200) {
-                    this.settingsService.getPayment().subscribe((res: any) => {
-                      this.razorPayKey = res.data.docs[0].keyId;
-                      const paymentOrderId = response.data.id;
-                      const options: any = {
-                        key: this.razorPayKey,
-                        amount: courseDetails?.fee,
-                        currency: 'INR',
-                        name: userdata.user.email,
-                        description: courseDetails?.title,
-                        order_id: paymentOrderId,
-                        modal: {
-                          escape: false,
-                        },
-                        notes: {},
-                        theme: {
-                          color: '#ddcbff',
-                        },
-                      };
-                      setTimeout(() => {
-                        options.handler = (response: any, error: any) => {
-                          options.response = response;
-                          if (error) {
-                            Swal.fire({
-                              title: 'Error',
-                              text: 'Failed to payment. Please try again.',
-                              icon: 'error',
-                            });
-                          } else {
-                            this.courseService
-                              .verifyPaymentSignature(response, paymentOrderId)
-                              .subscribe((response: any) => {
-                                let body = {
-                                  courseTitle: courseDetails?.title,
-                                  courseFee: courseDetails?.fee,
-                                };
-                                this.generateInvoice(body);
-                                setTimeout(() => {
-                                  let payload = {
-                                    email: userdata.user.email,
-                                    name: userdata.user.name,
-                                    courseTitle: courseDetails?.title,
-                                    courseFee: courseDetails?.fee,
-                                    studentId: studentId,
-                                    classId: null,
-                                    title: courseDetails?.title,
-                                    coursekit: courseKit,
-                                    orderId:
-                                      response?.data?.payment?.original_order_id,
-                                    paymentId:
-                                      response?.data?.payment
-                                        ?.razorpay_payment_id,
-                                    razorpay: true,
-                                    invoiceUrl: this.invoiceUrl,
-                                  };
-                                  //redirect to exam
-                                  this.redirectToExam(
-                                    courseDetails,
-                                    studentId, null
-                                  );
-                                }, 5000);
-                              });
-                          }
-                        };
-                        options.modal.ondismiss = () => {
-                          alert('Transaction has been cancelled.');
-                          this.router.navigate(['/student/enrollment/exam']);
-                        };
-                        const rzp = new this.courseService.nativeWindow.Razorpay(
-                          options
-                        );
-                        rzp.open();
-                      }, 100);
-                    });
-                  } else {
-                    alert('Server side error');
-                  }
-                });
+
+                this.courseService
+                  .createOrder(payload)
+                  .subscribe((response) => {
+                    if (response.status == 200) {
+                      this.settingsService
+                        .getPayment()
+                        .subscribe((res: any) => {
+                          this.razorPayKey = res.data.docs[0].keyId;
+                          const paymentOrderId = response.data.id;
+                          const options: any = {
+                            key: this.razorPayKey,
+                            amount: courseDetails?.fee,
+                            currency: 'INR',
+                            name: userdata.user.email,
+                            description: courseDetails?.title,
+                            order_id: paymentOrderId,
+                            modal: {
+                              escape: false,
+                            },
+                            notes: {},
+                            theme: {
+                              color: '#ddcbff',
+                            },
+                          };
+                          setTimeout(() => {
+                            options.handler = (response: any, error: any) => {
+                              options.response = response;
+                              if (error) {
+                                Swal.fire({
+                                  title: 'Error',
+                                  text: 'Failed to payment. Please try again.',
+                                  icon: 'error',
+                                });
+                              } else {
+                                this.courseService
+                                  .verifyPaymentSignature(
+                                    response,
+                                    paymentOrderId
+                                  )
+                                  .subscribe((response: any) => {
+                                    let body = {
+                                      courseTitle: courseDetails?.title,
+                                      courseFee: courseDetails?.fee,
+                                    };
+                                    this.generateInvoice(body);
+                                    setTimeout(() => {
+                                      let payload = {
+                                        email: userdata.user.email,
+                                        name: userdata.user.name,
+                                        courseTitle: courseDetails?.title,
+                                        courseFee: courseDetails?.fee,
+                                        studentId: studentId,
+                                        classId: null,
+                                        title: courseDetails?.title,
+                                        coursekit: courseKit,
+                                        orderId:
+                                          response?.data?.payment
+                                            ?.original_order_id,
+                                        paymentId:
+                                          response?.data?.payment
+                                            ?.razorpay_payment_id,
+                                        razorpay: true,
+                                        invoiceUrl: this.invoiceUrl,
+                                      };
+                                      //redirect to exam
+                                      this.redirectToExam(
+                                        courseDetails,
+                                        studentId,
+                                        null
+                                      );
+                                    }, 5000);
+                                  });
+                              }
+                            };
+                            options.modal.ondismiss = () => {
+                              alert('Transaction has been cancelled.');
+                              this.router.navigate([
+                                '/student/enrollment/exam',
+                              ]);
+                            };
+                            const rzp =
+                              new this.courseService.nativeWindow.Razorpay(
+                                options
+                              );
+                            rzp.open();
+                          }, 100);
+                        });
+                    } else {
+                      alert('Server side error');
+                    }
+                  });
               }
             }
-  
           }
         });
       }
     });
   }
 
-  registerClass(courseDetails:any, courseKit:any, courseFee:number=0){
+  registerClass(courseDetails: any, courseKit: any, courseFee: number = 0) {
     let userdata = JSON.parse(localStorage.getItem('currentUser')!);
     let studentId = localStorage.getItem('id');
-    const companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    const companyId = JSON.parse(localStorage.getItem('user_data')!).user
+      .companyId;
     let payload = {
       email: userdata.user.email,
       name: userdata.user.name,
@@ -377,15 +437,15 @@ export class ExamTestListComponent {
       classId: null,
       title: courseDetails.title,
       coursekit: courseKit,
-      feeType: courseFee ? 'paid':'free',
+      feeType: courseFee ? 'paid' : 'free',
       courseId: courseDetails.id,
-      verify:true,
-      paid: courseFee ? false: true,
+      verify: true,
+      paid: courseFee ? false : true,
       companyId: companyId,
-      status:courseDetails?.approval == "yes"? 'registered':'approved',
-      courseType:"direct"
+      status: courseDetails?.approval == 'yes' ? 'registered' : 'approved',
+      courseType: 'direct',
     };
-    return this.courseService.saveRegisterClass(payload)
+    return this.courseService.saveRegisterClass(payload);
   }
 
   generateInvoice(element: any) {
@@ -490,15 +550,18 @@ export class ExamTestListComponent {
     });
   }
 
-  getRedirectURL( courseDetails: any,
+  getRedirectURL(
+    courseDetails: any,
     studentId: any,
-    examAssessmentAnswer: any):string{
-      const courseId = courseDetails._id ||courseDetails.id;
-      const examAssessmentId = courseDetails.exam_assessment?._id || courseDetails.exam_assessment;
+    examAssessmentAnswer: any
+  ): string {
+    const courseId = courseDetails._id || courseDetails.id;
+    const examAssessmentId =
+      courseDetails.exam_assessment?._id || courseDetails.exam_assessment;
 
     const baseUrl = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
-    const redirectUrl = `${baseUrl}/student/exam-questions/${examAssessmentId}/${studentId}/${courseId}/${examAssessmentId}?retake=false&submitted=true`; 
-    return redirectUrl
+    const redirectUrl = `${baseUrl}/student/exam-questions/${examAssessmentId}/${studentId}/${courseId}/${examAssessmentId}?retake=false&submitted=true`;
+    return redirectUrl;
   }
 
   getCurrentUrl(): string {
@@ -512,8 +575,16 @@ export class ExamTestListComponent {
     studentId: any,
     examAssessmentAnswer: any
   ) {
-    const courseId = courseDetails._id ||courseDetails.id;
-    const examAssessmentId = courseDetails.exam_assessment?._id || courseDetails.exam_assessment;
+    const courseId = courseDetails._id || courseDetails.id;
+    const examAssessmentId =
+      courseDetails.exam_assessment?._id || courseDetails.exam_assessment;
+    const queryParams: any = { retake: false, submitted: true };
+    if (
+      this.analyzerSessionId &&
+      courseDetails.exam_assessment?.videoAnalyzerReq
+    ) {
+      queryParams.analyzerId = this.analyzerSessionId;
+    }
     this.router.navigate(
       [
         '/student/exam-questions/',
@@ -523,7 +594,13 @@ export class ExamTestListComponent {
         courseId,
         examAssessmentId,
       ],
-      { queryParams: { retake: false, submitted: true } }
+      {
+        queryParams: {
+          retake: false,
+          submitted: true,
+          analyzerId: this.analyzerSessionId,
+        },
+      }
     );
   }
 
@@ -537,6 +614,14 @@ export class ExamTestListComponent {
       cancelButtonText: 'Cancel',
     }).then((result) => {
       if (result.isConfirmed) {
+        const queryParams: any = { retake: true, submitted: false };
+        if (
+          this.analyzerSessionId &&
+          row.courseId.exam_assessment?.videoAnalyzerReq
+        ) {
+          queryParams.analyzerId = this.analyzerSessionId;
+        }
+
         // Navigate to the exam route programmatically if confirmed
         this.router.navigate(
           [
@@ -547,10 +632,15 @@ export class ExamTestListComponent {
             row?.courseId?._id,
             row?.examAssessmentId?._id,
           ],
-          { queryParams: { retake: true, submitted: false } }
+          {
+            queryParams: {
+              retake: true,
+              submitted: false,
+              analyzerId: this.analyzerSessionId,
+            },
+          }
         );
       }
     });
   }
-  
 }
