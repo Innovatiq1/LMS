@@ -87,6 +87,7 @@ export class EditTeacherComponent {
   }
   onSubmit() {
     let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    let uen =localStorage.getItem('uen') || '';
     if (this.proForm.valid) {
       let idType = {
         code: this.proForm.value.code,
@@ -138,6 +139,7 @@ export class EditTeacherComponent {
          attemptCalculation: 1,
          action: "update",
          trainerId:this.trainerId,
+         uen: uen,
       };
       // console.log("payLoad",payload)
       Swal.fire({

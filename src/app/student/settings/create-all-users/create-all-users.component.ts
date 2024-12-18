@@ -113,6 +113,7 @@ export class CreateAllUsersComponent {
   addBlog(formObj: any) {
    
     let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    let uen =localStorage.getItem('uen') || '';
     let subdomain =localStorage.getItem('subdomain') || '';
     this.userService.getCompanyByIdentifierWithoutToken(subdomain).subscribe(
       (res: any) => {
@@ -159,7 +160,7 @@ export class CreateAllUsersComponent {
          avatar: this.avatar,
          users: res[0]?.users,
          rollNo: this.userForm.value.rollNo,
-         uen: this.userForm.value.uen,
+         uen: uen,
       };
       this.createUser(payload);
     }
@@ -187,6 +188,7 @@ export class CreateAllUsersComponent {
   }
   onSubmit() {
     let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    let uen =localStorage.getItem('uen') || '';
     let subdomain =localStorage.getItem('subdomain') || '';
     this.userService.getCompanyByIdentifierWithoutToken(subdomain).subscribe(
       (res: any) => {
@@ -242,7 +244,7 @@ export class CreateAllUsersComponent {
          avatar: this.avatar,
          users: res[0]?.users,
          rollNo: this.userForm.value.rollNo,
-         uen: this.userForm.value.uen,
+         uen: uen,
       };
         this.createInstructor(payload);
     }else{
@@ -297,6 +299,7 @@ private createInstructor(userData: Users): void {
   }
   updateBlog(formObj: any) {
     let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    let uen =localStorage.getItem('uen') || '';
     if (!formObj.invalid) {
       let idType = {
         code: this.userForm.value.code,
@@ -346,7 +349,7 @@ private createInstructor(userData: Users): void {
         role: formObj.type,
         avatar: this.avatar,
         rollNo: this.userForm.value.rollNo,
-        uen: this.userForm.value.uen,
+        uen: uen,
         attemptCalculation: 1,
         action: "update",
       };
@@ -417,7 +420,7 @@ private createInstructor(userData: Users): void {
     if (this.editUrl) {
       this.getBlogsList();
     }
-
+    const uen = localStorage.getItem('uen') || '';
     this.userForm = this.fb.group({
       name: new FormControl('', [Validators.required, Validators.pattern(/[a-zA-Z0-9]+/),...this.utils.validators.noLeadingSpace]),
       last_name: new FormControl('', []),
@@ -454,7 +457,7 @@ private createInstructor(userData: Users): void {
       idType: ['',  [Validators.required]],
       idNumber: ['',  [Validators.required]],
       code: ['',  [Validators.required]],
-      uen: ['',  [Validators.required]],
+      uen: [uen,  [Validators.required]],
       linkedInURL: ['',],
       experience: ['',],
     });
@@ -531,6 +534,7 @@ private createInstructor(userData: Users): void {
   }
 
   getBlogsList(filters?: any) {
+    let uen = localStorage.getItem('uen') || '';
     this.userService.getUserById(this.currentId).subscribe(
       (response: any) => {
         this.data = response.data.data;
@@ -566,7 +570,7 @@ private createInstructor(userData: Users): void {
             idType: this.data?.idType?.description,
             code: this.data?.idType?.code,
             linkedInURL: this.data?.linkedInURL,
-            uen: this.data?.uen,
+            uen: uen,
             qualifications: this.data?.qualifications[0]?.description,
           });
         }

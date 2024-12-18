@@ -110,6 +110,7 @@ export class AddTeacherComponent {
   onSubmit() {
     let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     let subdomain =localStorage.getItem('subdomain') || '';
+    let uen =localStorage.getItem('uen') || '';
     this.userService.getCompanyByIdentifierWithoutToken(subdomain).subscribe(
       (res: any) => {
 
@@ -163,7 +164,8 @@ export class AddTeacherComponent {
          type: AppConstants.INSTRUCTOR_ROLE,
          role: AppConstants.INSTRUCTOR_ROLE,
          avatar: this.avatar,
-         users: res[0]?.users
+         users: res[0]?.users,
+         uen: uen
       };
         this.createInstructor(payload);
     }else{

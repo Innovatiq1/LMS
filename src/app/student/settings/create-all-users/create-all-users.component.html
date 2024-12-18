@@ -80,11 +80,11 @@
                                   </mat-form-field>
                                 </div>
                                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                                  <label>UEN<span class="mandatory">&nbsp;*</span></label>
+                                  <label>Training Provider UEN<span class="mandatory">&nbsp;*</span></label>
                                   <mat-form-field class="example-full-width mb-3" appearance="outline">
-                                    <input matInput formControlName="uen">
+                                    <input matInput formControlName="uen" [readonly]="true">
                                     <mat-error *ngIf="userForm.get('uen')?.hasError('required')">
-                                      Enter UEN 
+                                      Enter Training Provider UEN 
                                      </mat-error>
                                   </mat-form-field>
                                 </div>

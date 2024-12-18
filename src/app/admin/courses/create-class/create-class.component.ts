@@ -398,6 +398,7 @@ export class CreateClassComponent {
   }
 
 getTPCourse(classForm:any){
+  let uen =localStorage.getItem('uen') || '';
   // console.log("classForm",classForm.value)
   // console.log("classForm",JSON.parse(localStorage.getItem('user_data')!).user.adminEmail)
   // console.log("classForm",classForm.value.registrationEndDate)
@@ -408,7 +409,7 @@ getTPCourse(classForm:any){
   let course={
         "courseReferenceNumber": classForm.value.courseReferenceNumber||this.courseReferenceNumber,
         "trainingProvider": {
-            "uen": "201003953Z"
+            "uen": uen
         },
         "runs": [
             {
