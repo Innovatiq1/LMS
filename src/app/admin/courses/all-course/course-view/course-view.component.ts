@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseModel, CoursePaginationModel } from '@core/models/course.model';
 import { CourseService } from '@core/service/course.service';
@@ -8,14 +8,14 @@ import { BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import Swal from 'sweetalert2';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { AuthenService } from '@core/service/authen.service';
-
+import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-course-view',
   templateUrl: './course-view.component.html',
   styleUrls: ['./course-view.component.scss'],
 })
 export class CourseViewComponent {
-
+  @ViewChild('courseScenariosDialog') courseScenariosDialog!: TemplateRef<any>;
   breadcrumbs: any[] = [];
   displayedColumns1: string[] = ['video'];
   coursePaginationModel: Partial<CoursePaginationModel>;
@@ -30,7 +30,8 @@ export class CourseViewComponent {
   edit = false;
   isDelete = false;
   storedItems: string | null;
-
+  selectedScenario: string = '';
+  selectedOptionValue:any;
   constructor(
     public _courseService: CourseService,
     private classService: ClassService,
@@ -38,7 +39,8 @@ export class CourseViewComponent {
     private modalServices: BsModalService,
     private sanitizer: DomSanitizer,
     private router: Router,
-    private authenService: AuthenService
+    private authenService: AuthenService,
+    public dialog: MatDialog,
   ) {
     // constructor
      this.storedItems = localStorage.getItem('activeBreadcrumb');
@@ -105,6 +107,39 @@ export class CourseViewComponent {
     }
 
   }
+  openCourseDialog(){
+    // this.selectedOptionValue='';
+    if(this.selectedOptionValue){
+      this.router.navigate([`/admin/courses/edit-course/${this.sourceData.id}`])
+
+    }
+    else{
+    this.openDialog(this.courseScenariosDialog)
+    }
+
+  }
+  selectScenario(scenario:string){
+    this.selectedScenario = scenario;
+
+  }
+  openDialog(templateRef: any): void {
+    const dialogRef = this.dialog.open(templateRef, {
+      width: '1000px',
+      height:'300px',
+      data: {     },
+    }); 
+
+}
+navigateToCreate(dialogRef:any) {
+  if (this.selectedScenario) {
+    dialogRef.close()
+    // [routerLink]="[
+    //   '/admin/courses/edit-course/',
+    //   sourceData.id
+    // ]"
+    this.router.navigate([`/admin/courses/edit-course/${this.sourceData.id}`], { queryParams: { option: this.selectedScenario } });
+  }
+}
   getSafeHtml(html: string): SafeHtml {
     return this.sanitizer.bypassSecurityTrustHtml(html);
   }
@@ -138,10 +173,12 @@ back() {
 
   getCourseByCourseId(id: string) {
     this._courseService.getCourseById(id).subscribe((data) => {
+      // console.log("response",data)
       if (data) {
         this.sourceData = data;
         this.coursekitData = data.course_kit;
         this.checkId = this.sourceData.id;
+        this.selectedOptionValue=data.selectedOptionValue;
       }
     });
   }
