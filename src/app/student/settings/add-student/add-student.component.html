@@ -16,11 +16,11 @@
             <form class="m-4" [formGroup]="stdForm">
               <div class="row">
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                  <label>First name <span class="mandatory">&nbsp;*</span></label>
+                  <label>Name <span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <input matInput formControlName="name" required />
                     <mat-error *ngIf="stdForm.get('name')?.hasError('required')">
-                      Enter First Name
+                      Enter Name
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -28,6 +28,51 @@
                   <label>Last name </label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <input matInput formControlName="last_name" />
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                  <label>Qualification<span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <input matInput formControlName="qualifications">
+                    <mat-error *ngIf="stdForm.get('qualifications')?.hasError('required')">
+                      Enter Qualification
+                     </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                  <label>ID Number<span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <input matInput formControlName="idNumber">
+                    <mat-error *ngIf="stdForm.get('idNumber')?.hasError('required')">
+                      Enter ID Number 
+                     </mat-error>
+                  </mat-form-field>
+                </div> 
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                  <label>ID Type<span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <input matInput formControlName="idType">
+                    <mat-error *ngIf="stdForm.get('idType')?.hasError('required')">
+                      Enter ID Type 
+                     </mat-error>
+                  </mat-form-field>
+                </div> 
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                  <label>ID Code<span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <input matInput formControlName="code">
+                    <mat-error *ngIf="stdForm.get('code')?.hasError('required')">
+                      Enter ID Code 
+                     </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                  <label>Area of Practice<span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <input matInput formControlName="domainAreaOfPractice">
+                    <mat-error *ngIf="stdForm.get('domainAreaOfPractice')?.hasError('required')">
+                      Enter Area of Practice 
+                     </mat-error>
                   </mat-form-field>
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
@@ -41,6 +86,20 @@
                       {{
                       utils.getErrorMessage1(stdForm.get("rollNo"), "roll_no")
                       }}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                  <label>Gender<span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-select formControlName="gender" required>
+                      <mat-option [value]="'male'"> Male </mat-option>
+                      <mat-option [value]="'female'"> Female </mat-option>
+                      <mat-option [value]="'other'"> Other </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="stdForm.get('gender')?.hasError('required')">
+                      Select Gender
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -87,20 +146,6 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
-
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                  <label>Gender<span class="mandatory">&nbsp;*</span></label>
-                  <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <mat-select formControlName="gender" required>
-                      <mat-option [value]="'male'"> Male </mat-option>
-                      <mat-option [value]="'female'"> Female </mat-option>
-                      <mat-option [value]="'other'"> Other </mat-option>
-                    </mat-select>
-                    <mat-error *ngIf="stdForm.get('gender')?.hasError('required')">
-                      Select Gender
-                    </mat-error>
-                  </mat-form-field>
-                </div>
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <label>Mobile<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
@@ -115,7 +160,7 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                <!-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <label>Education <span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <input matInput formControlName="education" required />
@@ -126,6 +171,21 @@
                       {{
                       utils.getErrorMessage1(stdForm.get("education"), "edu")
                       }}
+                    </mat-error>
+                  </mat-form-field>
+                </div> -->
+                
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                  <label>Department
+                    <span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-select formControlName="department" required>
+                      <mat-option [value]="dept.department" *ngFor="let dept of dept">
+                        {{ dept.department }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="stdForm.get('department')?.hasError('required')">
+                      Select Department
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -155,17 +215,15 @@
                   </mat-form-field>
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                  <label>Department
-                    <span class="mandatory">&nbsp;*</span></label>
+                  <label>Experience</label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <mat-select formControlName="department" required>
-                      <mat-option [value]="dept.department" *ngFor="let dept of dept">
-                        {{ dept.department }}
-                      </mat-option>
-                    </mat-select>
-                    <mat-error *ngIf="stdForm.get('department')?.hasError('required')">
-                      Select Department
-                    </mat-error>
+                    <input matInput formControlName="experience">
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                  <label>LinkedIn URL</label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <input matInput formControlName="linkedInURL">
                   </mat-form-field>
                 </div>
                   
