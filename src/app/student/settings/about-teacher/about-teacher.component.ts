@@ -112,7 +112,14 @@ export class AboutTeacherComponent {
   
 }
 deleteItem(row: any) {
+  console.log("rowdata",row)
+  console.log("rowdata",row.trainerId)
   // this.id = row.id;
+  const payLoad:any ={
+    userId:row.id,
+    trainerId:row.trainerId,
+    action:"delete"
+  }
    Swal.fire({
      title: "Confirm Deletion",
      text: `Are you sure you want to delete this ${row.role}?`,
@@ -124,7 +131,7 @@ deleteItem(row: any) {
      cancelButtonText: "Cancel",
    }).then((result) => {
      if (result.isConfirmed) {
-       this.teachersService.deleteUser(row.id).subscribe(
+       this.teachersService.deleteUser(row.id,payLoad).subscribe(
          () => {
            Swal.fire({
              title: "Deleted",

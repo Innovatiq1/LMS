@@ -17,10 +17,8 @@
                       <button
                         alt="Edit" *ngIf="edit"
                         mat-menu-item
-                        [routerLink]="[
-                          '/admin/courses/edit-course/',
-                          sourceData.id
-                        ]"
+                        
+                        (click)="openCourseDialog()"
                       >
                         <app-feather-icons 
                           [icon]="'edit'"
@@ -244,3 +242,44 @@
     </div>
   </div>
 </section>
+<ng-template #courseScenariosDialog let-dialogRef="dialogRef" let-data>
+  <div class="row mt-5 mx-3 my-3">
+    <div class="col-4">
+        <div class="card login" [class.selected]="selectedScenario === 'LearningAndTutorial'"
+            (click)="selectScenario('LearningAndTutorial')">
+            <h5 class="mt-3" style="text-align: center;">Learning & Tutorial</h5>
+            <p class="p-3">Enables  to read and understand course content, complete tutorials, and get the certifications.</p>
+            <div class="selected-overlay">
+                <i class="fas fa-check"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="card login" [class.selected]="selectedScenario === 'OnlyExam'"
+            (click)="selectScenario('OnlyExam')">
+            <h5 class="mt-3" style="text-align: center;">Only Exam</h5>
+            <p class="p-3">Allows  to take the exam directly and receive a certificate without going through the learning materials.</p>
+
+            <div class="selected-overlay">
+                <i class="fas fa-check"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+      <div class="card login" [class.selected]="selectedScenario === 'AssessmentAndExam'"
+          (click)="selectScenario('AssessmentAndExam')">
+         <h5 class="mt-3" style="text-align: center; ">Assessment & Exam</h5>
+         <p class="p-3">Enables  to study all course materials, complete multiple assessments (practical tests), and take a final exam to get a certificate.</p>
+          <div class="selected-overlay">
+              <i class="fas fa-check"></i>
+          </div>
+      </div>
+  </div>
+</div>
+ 
+  <div mat-dialog-actions style="float:right">
+    <button mat-raised-button color="warn" (click)="dialogRef.close()">Cancel</button>
+    <button mat-raised-button id="submit"(click)="navigateToCreate(dialogRef)">Edit</button>
+
+  </div>
+  </ng-template>

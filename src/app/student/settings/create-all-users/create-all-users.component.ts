@@ -25,6 +25,8 @@ import { LogoService } from 'app/student/settings/logo.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { DepartmentModalComponent } from '../../../admin/departments/department-modal/department-modal.component';
 import { FormService } from '@core/service/customization.service';
+import { AppConstants } from '@shared/constants/app.constants';
+import { InstructorService } from '@core/service/instructor.service';
 
 @Component({
   selector: 'app-create-all-users',
@@ -93,7 +95,12 @@ export class CreateAllUsersComponent {
           cancelButtonColor: '#d33',
         }).then((result) => {
           if (result.isConfirmed) {
-            this.addBlog(this.userForm.value);
+            const role = this.userForm.value.type
+            if(role == 'Instructor' || role == 'Trainer'){
+              this.onSubmit();
+            } else{
+              this.addBlog(this.userForm.value);
+            }
           }
         });
         
@@ -106,27 +113,56 @@ export class CreateAllUsersComponent {
   addBlog(formObj: any) {
    
     let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    let uen =localStorage.getItem('uen') || '';
     let subdomain =localStorage.getItem('subdomain') || '';
     this.userService.getCompanyByIdentifierWithoutToken(subdomain).subscribe(
       (res: any) => {
     if (!formObj.invalid) {
-      formObj['Active'] = this.status;
-      formObj['type'] = formObj.type;
-      formObj['role'] = formObj.type;
-      formObj['isLogin'] = true;
-      formObj['adminId'] = user.user.id;
-      formObj['adminEmail'] = user.user.email;
-      formObj['adminName'] = user.user.name;
-      formObj['companyId'] = user.user.companyId;
-      formObj['users'] = res[0]?.users;
-      formObj['courses'] = res[0]?.courses;
-      formObj['attemptBlock'] = false;
-      formObj['company'] = user.user.company;
-      formObj['domain'] = user.user.domain;
-
-      const userData: Users = formObj;
-      userData.avatar = this.avatar;
-      this.createUser(userData);
+      let idType = {
+        code: this.userForm.value.code,
+        description: this.userForm.value.idType,
+      }
+      let qualifications = [{
+        description: this.userForm.value.qualifications,
+        level: {
+          code: "",
+        }
+      }]
+      const payload: any = {
+         name: this.userForm.value.name,
+         gender: this.userForm.value.gender,
+         domainAreaOfPractice: this.userForm.value.domainAreaOfPractice,
+         email: this.userForm.value.email,
+         experience: this.userForm.value.experience,
+         idNumber: this.userForm.value.idNumber,
+         idType: idType,
+         isLogin : true,
+         joiningDate: this.userForm.value.joiningDate,
+         linkedInURL: this.userForm.value.linkedInURL,
+         mobile: this.userForm.value.mobile,
+         password: this.userForm.value.password,
+         salutationId: 1,
+         qualifications: qualifications,
+         Active: this.status,
+         address: this.userForm.value.address,
+         adminEmail: user.user.email,
+         adminId: user.user.id,
+         adminName:  user.user.name,
+         attemptBlock: false,
+         company: user.user.company,
+         companyId: user.user.companyId,
+         courses: res[0]?.courses,
+         department: this.userForm.value.department,
+         dob: this.userForm.value.dob,
+         domain: user.user.domain,
+         type: formObj.type,
+         role: formObj.type,
+         avatar: this.avatar,
+         users: res[0]?.users,
+         rollNo: this.userForm.value.rollNo,
+         uen: uen,
+      };
+      this.createUser(payload);
     }
   })
   }
@@ -150,6 +186,93 @@ export class CreateAllUsersComponent {
       }
     );
   }
+  onSubmit() {
+    let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    let uen =localStorage.getItem('uen') || '';
+    let subdomain =localStorage.getItem('subdomain') || '';
+    this.userService.getCompanyByIdentifierWithoutToken(subdomain).subscribe(
+      (res: any) => {
+
+    if (!this.userForm.invalid) {
+      let idType = {
+        code: this.userForm.value.code,
+        description: this.userForm.value.idType,
+      }
+      let roles = [
+        {
+          role: {
+            id: 1,
+            description: "Trainer",
+          },
+        },
+      ]
+      let qualifications = [{
+        description: this.userForm.value.qualifications,
+        level: {
+          code: "21",
+        }
+      }]
+      const payload: any = {
+         name: this.userForm.value.name,
+         gender: this.userForm.value.gender,
+         domainAreaOfPractice: this.userForm.value.domainAreaOfPractice,
+         email: this.userForm.value.email,
+         experience: this.userForm.value.experience,
+         idNumber: this.userForm.value.idNumber,
+         idType: idType,
+         isLogin : true,
+         joiningDate: this.userForm.value.joiningDate,
+         linkedInURL: this.userForm.value.linkedInURL,
+         mobile: this.userForm.value.mobile,
+         password: this.userForm.value.password,
+         salutationId: 1,
+         qualifications: qualifications,
+         roles: roles,
+         address: this.userForm.value.address,
+         adminEmail: this.userForm.value.adminEmail,
+         adminId: this.userForm.value.adminId,
+         adminName: this.userForm.value.adminName,
+         attemptBlock: false,
+         company: user.user.company,
+         companyId: user.user.companyId,
+         courses: res[0]?.courses,
+         department: this.userForm.value.department,
+         dob: this.userForm.value.dob,
+         domain: user.user.domain,
+         type: AppConstants.INSTRUCTOR_ROLE,
+         role: AppConstants.INSTRUCTOR_ROLE,
+         avatar: this.avatar,
+         users: res[0]?.users,
+         rollNo: this.userForm.value.rollNo,
+         uen: uen,
+      };
+        this.createInstructor(payload);
+    }else{
+      this.userForm.markAllAsTouched(); 
+    }
+  })
+}
+private createInstructor(userData: Users): void {
+  this.instructorService.CreateUser(userData).subscribe(
+    () => {
+      Swal.fire({
+        title: 'Successful',
+        text: 'Users created successfully',
+        icon: 'success',
+      });
+      this.userForm.reset();
+      this.router.navigateByUrl('/student/settings/all-user/all-users');
+    },
+    (error) => {
+      Swal.fire(
+        error,
+        error.message || error.error,
+        'error'
+      );
+    }
+  )
+  }
+
   onFileUpload(event: any) {
     const file = event.target.files[0];
     const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/jfif'];
@@ -176,18 +299,62 @@ export class CreateAllUsersComponent {
   }
   updateBlog(formObj: any) {
     let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    let uen =localStorage.getItem('uen') || '';
     if (!formObj.invalid) {
-      formObj['Active'] = this.status;
-      formObj['type'] = formObj.type;
-      formObj['isLogin'] = true;
-      formObj['adminId'] = user.user.id;
-      formObj['adminEmail'] = user.user.email;
-      formObj['adminName'] = user.user.name;
-      formObj['attemptCalculation'] = 1;
-      const userData: Users = formObj;
-      userData.avatar = this.avatar; 
+      let idType = {
+        code: this.userForm.value.code,
+        description: this.userForm.value.idType,
+      }
+      let roles = [
+        {
+          role: {
+            id: 1,
+            description: "Trainer",
+          },
+        },
+      ]
+      let qualifications = [{
+        description: this.userForm.value.qualifications,
+        level: {
+          code: "21",
+        }
+      }]
+      const payload: any = {
+        name: this.userForm.value.name,
+        gender: this.userForm.value.gender,
+        domainAreaOfPractice: this.userForm.value.domainAreaOfPractice,
+        email: this.userForm.value.email,
+        experience: this.userForm.value.experience,
+        idNumber: this.userForm.value.idNumber,
+        idType: idType,
+        isLogin : true,
+        joiningDate: this.userForm.value.joiningDate,
+        linkedInURL: this.userForm.value.linkedInURL,
+        mobile: this.userForm.value.mobile,
+        password: this.userForm.value.password,
+        salutationId: 1,
+        qualifications: qualifications,
+        roles: roles,
+        Active: this.status,
+        address: this.userForm.value.address,
+        adminEmail: user.user.email,
+        adminId: user.user.id,
+        adminName:  user.user.name,
+        company: user.user.company,
+        companyId: user.user.companyId,
+        department: this.userForm.value.department,
+        dob: this.userForm.value.dob,
+        domain: user.user.domain,
+        type: formObj.type,
+        role: formObj.type,
+        avatar: this.avatar,
+        rollNo: this.userForm.value.rollNo,
+        uen: uen,
+        attemptCalculation: 1,
+        action: "update",
+      };
      
-          this.updateUser(userData);
+          this.updateUser(payload);
           
         window.history.back();
         }
@@ -232,6 +399,7 @@ export class CreateAllUsersComponent {
     public dialog: MatDialog,
     private logoService: LogoService,
     private formService: FormService,
+    private instructorService: InstructorService,
     
   ) {
     let urlPath = this.router.url.split('/');
@@ -252,14 +420,13 @@ export class CreateAllUsersComponent {
     if (this.editUrl) {
       this.getBlogsList();
     }
-
+    const uen = localStorage.getItem('uen') || '';
     this.userForm = this.fb.group({
       name: new FormControl('', [Validators.required, Validators.pattern(/[a-zA-Z0-9]+/),...this.utils.validators.noLeadingSpace]),
       last_name: new FormControl('', []),
       rollNo: new FormControl('', [Validators.required, ...this.utils.validators.noLeadingSpace,...this.utils.validators.roll_no]),
       gender: new FormControl('', [Validators.required]),
       mobile: new FormControl('', [Validators.required,...this.utils.validators.mobile]),
-      qualification: new FormControl('', []),
       department: new FormControl('', []),
       address: new FormControl('', []),
       attemptBlock: new FormControl('', []),
@@ -269,10 +436,10 @@ export class CreateAllUsersComponent {
       ]),
       password: new FormControl('', [Validators.required]),
       re_passwords: new FormControl('', []),
-      education: new FormControl('', [
-        Validators.required,
-        Validators.minLength(2),
-      ]),
+      // education: new FormControl('', [
+      //   Validators.required,
+      //   Validators.minLength(2),
+      // ]),
       type: new FormControl('', [Validators.required]),
       parentsName: new FormControl('', []),
       parentsPhone: new FormControl('', []),
@@ -285,8 +452,15 @@ export class CreateAllUsersComponent {
           ? (this.user.Active = this.user.Active === true ? true : false)
           : null,
       ],
+      qualifications: ['', [Validators.required]],
+      domainAreaOfPractice: ['', [Validators.required]],
+      idType: ['',  [Validators.required]],
+      idNumber: ['',  [Validators.required]],
+      code: ['',  [Validators.required]],
+      uen: [uen,  [Validators.required]],
+      linkedInURL: ['',],
+      experience: ['',],
     });
-
     this.activeRoute.queryParams.subscribe((params) => {
     });
   }
@@ -360,6 +534,7 @@ export class CreateAllUsersComponent {
   }
 
   getBlogsList(filters?: any) {
+    let uen = localStorage.getItem('uen') || '';
     this.userService.getUserById(this.currentId).subscribe(
       (response: any) => {
         this.data = response.data.data;
@@ -374,7 +549,7 @@ export class CreateAllUsersComponent {
             email: this.data?.email,
             password: this.data?.password,
             re_passwords: this.data.conformPassword,
-            education: this.data?.education,
+            // education: this.data?.education,
             type: this.data?.type,
             fileName: this.data?.avatar,
             last_name: this.data?.last_name,
@@ -388,7 +563,15 @@ export class CreateAllUsersComponent {
             joiningDate: this.data?.joiningDate,
             blood_group: this.data?.blood_group,
             address: this.data?.address,
-            attemptBlock: this.data?.attemptBlock 
+            attemptBlock: this.data?.attemptBlock,
+            domainAreaOfPractice: this.data?.domainAreaOfPractice,
+            experience: this.data?.experience,
+            idNumber: this.data?.idNumber,
+            idType: this.data?.idType?.description,
+            code: this.data?.idType?.code,
+            linkedInURL: this.data?.linkedInURL,
+            uen: uen,
+            qualifications: this.data?.qualifications[0]?.description,
           });
         }
       },

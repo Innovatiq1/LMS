@@ -41,6 +41,8 @@ export class CreateClassComponent {
   @ViewChild('allSelected') private allSelected!: MatOption;
   commonRoles: any;
   breadscrums: any;
+  trainerId:any;
+  idNumber:any;
   @HostListener('document:keypress', ['$event'])
   keyPressNumbers(event: KeyboardEvent) {
     const charCode = event.which ? event.which : event.keyCode;
@@ -91,7 +93,8 @@ export class CreateClassComponent {
   configurationSubscription!: Subscription;
   defaultCurrency: string = '';
   userGroups!: any[];
-  instructorCost:string='';
+  courseTPRunId!:any;
+  courseReferenceNumber!:any;  instructorCost:string='';
   codeExists: boolean = false;
   code: string | null = null;
   minDates: Date = new Date();
@@ -281,6 +284,8 @@ loadForm() {
     meetingPlatform: ['', Validators.required], 
     classStartDate: [''],
     classEndDate: [''],
+      registrationStartDate: ['', Validators.required], // New field
+      registrationEndDate: ['', Validators.required],   // New field
     duration: ['', [Validators.required,Validators.pattern('^[0-9]{1,2}[:][0-9]{1,2}$')]], 
     code: ''
   });
@@ -316,6 +321,13 @@ loadForm() {
   loadClassList(id: string) {
     this._classService.getClassById(id).subscribe((response) => {
       const item = response;
+      this.courseTPRunId=item?.courseTPRunId;
+      this.courseReferenceNumber=item?.courseReferenceNumber;
+      this.idNumber=item?.course.runs[0].linkCourseRunTrainer[0].trainer.idNumber;
+      this.trainerId=item?.course.runs[0].linkCourseRunTrainer[0].trainer.id;
+      this.courseTitle=item?.courseName;
+      this.courseCode=item?.courseReferenceNumber;
+      // console.log("getrrr",response);
       this.classForm.patchValue({
         courseId: item?.courseId?.id,
         classType: item?.classType,
@@ -332,6 +344,10 @@ loadForm() {
         userGroupId: item?.userGroupId,
         duration: item?.duration,
         meetingPlatform: item?.meetingPlatform,
+        registrationStartDate:item.registrationStartDate,
+        registrationEndDate:item.registrationEndDate,
+        // courseReferenceNumber:item.courseReferenceNumber,
+        // courseTPRunId:item.courseTPRunId
       });
       
       item.sessions.forEach((item: any) => {
@@ -450,10 +466,105 @@ loadForm() {
   onSelectChange1(event :any,element:any) {
     const filteredData = this.instructorList.filter((item: { id: string; }) => item.id === element.instructor);
      this.user_id = filteredData[0].id;
+     this.trainerId=filteredData[0].trainerId;
+     this.idNumber=filteredData[0].idNumber;
+
 
   }
 
+getTPCourse(classForm:any){
+  let uen =localStorage.getItem('uen') || '';
+  // console.log("classForm",classForm.value)
+  // console.log("classForm",JSON.parse(localStorage.getItem('user_data')!).user.adminEmail)
+  // console.log("classForm",classForm.value.registrationEndDate)
+  // console.log("classForm this.trainerId",this.trainerId)
+  // console.log("classForm this.trainerId",this.idNumber)
+  // console.log("classForm ssd",classForm.value.sessions[0].sessionStartDate.replace(/-/g, ''));
+  // console.log("moment(date).format('YYYYMMDD')",moment(classForm.value.registrationEndDate).format('YYYYMMDD'))
+  let course={
+        "courseReferenceNumber": classForm.value.courseReferenceNumber||this.courseReferenceNumber,
+        "trainingProvider": {
+            "uen": uen
+        },
+        "runs": [
+            {
+                "sequenceNumber": 0,
+                "registrationDates": {
+                    "opening": moment(classForm.value.registrationStartDate).format('YYYYMMDD'),
+                    "closing": moment(classForm.value.registrationEndDate).format('YYYYMMDD')
+                },
+                "courseDates": {
+                    "start": classForm.value.sessions[0].sessionStartDate.replace(/-/g, ''),
+                    "end": classForm.value.sessions[0].sessionEndDate.replace(/-/g, '')
+                },
+                "scheduleInfoType": {
+                    "code": "01",
+                    "description": "Description"
+                },
+                "scheduleInfo": "Sat / 5 Sats / 9am - 6pm",
+               
+                "intakeSize": classForm.value.maximumEnrollment,
+                "modeOfTraining": "2",
+                "courseAdminEmail": JSON.parse(localStorage.getItem('user_data')!).user.email,
+                "courseVacancy": {
+                    "code": "L",
+                    "description": "Limited Vacancy"
+                },
+               
+                "sessions": [
+                    {
+                        "startDate": classForm.value.sessions[0].sessionStartDate.replace(/-/g, ''),
+                        "endDate": classForm.value.sessions[0].sessionEndDate.replace(/-/g, ''),
+                        "startTime": classForm.value.sessions[0].sessionStartTime,
+                        "endTime": classForm.value.sessions[0].sessionEndTime,
+                        "modeOfTraining": "2"
+                       
+                    }
+                ],
+                "linkCourseRunTrainer": [
+                    {
+                        "trainer": {
+                            "indexNumber": 0,
+                            "id": this.trainerId,
+                            "name": "",
+                            "inTrainingProviderProfile": true,
+                            "domainAreaOfPractice": "",
+                            "experience": "",
+                            "linkedInURL": "",
+                            "salutationId": "",
+                            "photo": {
+                                "name": "",
+                                "content": ""
+                            },
+                            "email": "",
+                            "trainerType": {
+                                "code": "1",
+                                "description": "Existing"
+                            },
+                           
+                            "idNumber": this.idNumber,
+                            "idType": {
+                                "code": "",
+                                "description": ""
+                            },
+                            "roles": [
+                                {
+                                    "role": {
+                                        "id": 1,
+                                        "description": "Trainer"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    return course;
+// console.log("course",course)
 
+}
 
   data() {
   }
@@ -466,12 +577,17 @@ loadForm() {
       return;
     }
     if(this.classForm.valid){
+      
     const sessions = this.getSession();
     if (this.classId) {
       this.sessions = this.getSession();
       if (this.sessions) {
-        this.classForm.value.sessions = this.sessions;
-        this.classForm.value.courseName = this.courseTitle;
+        this.classForm.value.sessions = sessions;
+        this.classForm.value.courseName = this.courseTitle
+        this.classForm.value.course= this.getTPCourse(this.classForm);
+        this.classForm.value.courseTPRunId=this.courseTPRunId;
+        this.classForm.value.courseReferenceNumber=this.courseReferenceNumber;
+
         Swal.fire({
           title: 'Are you sure?',
           text: 'Do you want to update this batch!',

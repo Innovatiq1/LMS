@@ -63,7 +63,6 @@ export class AddStudentComponent {
       gender: ['', [Validators.required]],
       mobile: ['', [Validators.required,...this.utils.validators.mobile]],
       password: [''],
-      qualification: [''],
       department: [''],
       address: [''],
       email: [
@@ -74,11 +73,17 @@ export class AddStudentComponent {
       parentsPhone: [''],
       dob: ['', [Validators.required,...this.utils.validators.dob]],
       joiningDate: ['', [Validators.required]],
-      education: ['',[Validators.required, ...this.utils.validators.noLeadingSpace,...this.utils.validators.edu]],
       avatar: [''],
       blood_group: [''],
       conformPassword: ['', []],
       attemptBlock: ['', []],
+      qualifications: ['', [Validators.required]],
+      domainAreaOfPractice: ['', [Validators.required]],
+      idType: ['', [Validators.required]],
+      idNumber: ['', [Validators.required]],
+      code: ['', [Validators.required]],
+      linkedInURL: ['',],
+      experience: ['',],
 
     },{
     });
@@ -139,28 +144,78 @@ export class AddStudentComponent {
   onSubmit() {
     let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     let subdomain =localStorage.getItem('subdomain') || '';
+    let uen =localStorage.getItem('uen') || '';
     this.userService.getCompanyByIdentifierWithoutToken(subdomain).subscribe(
       (res: any) => {
 
     if (!this.stdForm.invalid) {
-        const userData: any = this.stdForm.value;
-        userData.avatar = this.avatar;
+        // const userData: any = this.stdForm.value;
+        // userData.avatar = this.avatar;
         
-        userData.type = AppConstants.STUDENT_ROLE;
-        userData.role = AppConstants.STUDENT_ROLE;
-        userData.isLogin = true;
-        userData.adminId = user.user.id;
-        userData.adminEmail = user.user.email;
-        userData.adminName = user.user.name;
-        userData.companyId = user.user.companyId;
-        userData.users = res[0]?.users;
-        userData.courses = res[0]?.courses;
-        userData.attemptBlock = false;
-        userData.company = user.user.company;
-        userData.domain = user.user.domain;
-  
-
-
+        // userData.type = AppConstants.STUDENT_ROLE;
+        // userData.role = AppConstants.STUDENT_ROLE;
+        // userData.isLogin = true;
+        // userData.adminId = user.user.id;
+        // userData.adminEmail = user.user.email;
+        // userData.adminName = user.user.name;
+        // userData.companyId = user.user.companyId;
+        // userData.users = res[0]?.users;
+        // userData.courses = res[0]?.courses;
+        // userData.attemptBlock = false;
+        // userData.company = user.user.company;
+        // userData.domain = user.user.domain;
+        let idType = {
+          code: this.stdForm.value.code,
+          description: this.stdForm.value.idType,
+        }
+        // let roles = [
+        //   {
+        //     role: {
+        //       id: 1,
+        //       description: "Trainee",
+        //     },
+        //   },
+        // ]
+        let qualifications = [{
+          description: this.stdForm.value.qualifications,
+          level: {
+            code: "21",
+          }
+        }]
+        const payload: any = {
+           name: this.stdForm.value.name,
+           last_name:this.stdForm.value.last_name,
+           gender: this.stdForm.value.gender,
+           domainAreaOfPractice: this.stdForm.value.domainAreaOfPractice,
+           email: this.stdForm.value.email,
+           experience: this.stdForm.value.experience,
+           idNumber: this.stdForm.value.idNumber,
+           idType: idType,
+           isLogin : true,
+           joiningDate: this.stdForm.value.joiningDate,
+           linkedInURL: this.stdForm.value.linkedInURL,
+           mobile: this.stdForm.value.mobile,
+           password: this.stdForm.value.password,
+           salutationId: 1,
+           qualifications: qualifications,
+           address: this.stdForm.value.address,
+           adminEmail: user.user.email,
+           adminId:  user.user.id,
+           adminName:  user.user.name,
+           attemptBlock: false,
+           company: user.user.company,
+           companyId: user.user.companyId,
+           courses: res[0]?.courses,
+           department: this.stdForm.value.department,
+           dob: this.stdForm.value.dob,
+           domain: user.user.domain,
+           type: AppConstants.STUDENT_ROLE,
+           role: AppConstants.STUDENT_ROLE,
+           avatar: this.avatar,
+           users: res[0]?.users,
+           uen: uen,
+        rollNo: this.stdForm.value.rollNo,
+        };
         Swal.fire({
           title: 'Are you sure?',
           text: 'Do You want to create a trainee profile!',
@@ -170,7 +225,7 @@ export class AddStudentComponent {
           cancelButtonColor: '#d33',
         }).then((result) => {
           if (result.isConfirmed){
-            this.createInstructor(userData);
+            this.createInstructor(payload);
           }
         });
         
@@ -182,11 +237,11 @@ export class AddStudentComponent {
 }
 
 
-  private createInstructor(userData: Student): void {
-    this.StudentService.CreateStudent(userData).subscribe(
+  private createInstructor(userData: Users): void {
+    this.userService.saveUsers(userData).subscribe(
       (res:any) => {
         console.log('res',res)
-        if(res.status === 'success' && !res.data.status ){
+        // if(res.status === 'success' && !res.data.status ){
 
         Swal.fire({
           title: 'Successful',
@@ -195,13 +250,14 @@ export class AddStudentComponent {
         });
         this.stdForm.reset();
         this.router.navigateByUrl('/student/settings/all-user/all-students');
-      } else {
-        Swal.fire({
-          title: 'Error',
-          text: "You have exceeded your limit, please contact Admin to upgrade",
-          icon: 'error',
-        });
-      }
+      // } 
+      // else {
+        // Swal.fire({
+        //   title: 'Error',
+        //   text: "You have exceeded your limit, please contact Admin to upgrade",
+        //   icon: 'error',
+        // });
+      // }
       },
       (error) => {
         Swal.fire(
@@ -248,7 +304,14 @@ getDepartment(){
           blood_group: this.editData.blood_group,
           address: this.editData.address,
           fileName: this.fileName,
-          attemptBlock: this.editData?.attemptBlock 
+          attemptBlock: this.editData?.attemptBlock ,
+          domainAreaOfPractice: this.editData?.domainAreaOfPractice,
+          experience: this.editData?.experience,
+          idNumber: this.editData?.idNumber,
+          idType: this.editData?.idType?.description,
+          code: this.editData?.idType?.code,
+          linkedInURL: this.editData?.linkedInURL,
+          qualifications: this.editData?.qualifications[0]?.description,
         },
         );
       });
@@ -260,17 +323,70 @@ getDepartment(){
   }
   update() {
     let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    let uen =localStorage.getItem('uen') || '';
     if (this.stdForm.valid) {
-      const userData: Student = this.stdForm.value;
-      userData.avatar = this.avatar;
+      // const userData: Student = this.stdForm.value;
+      // userData.avatar = this.avatar;
 
-      userData.type = AppConstants.STUDENT_ROLE;
-      userData.role = AppConstants.STUDENT_ROLE;
-      userData.adminId = user.user.id;
-        userData.adminEmail = user.user.email;
-        userData.adminName = user.user.name;
-        userData.companyId = user.user.companyId;
-        userData.attemptCalculation = 1;
+      // userData.type = AppConstants.STUDENT_ROLE;
+      // userData.role = AppConstants.STUDENT_ROLE;
+      // userData.adminId = user.user.id;
+      //   userData.adminEmail = user.user.email;
+      //   userData.adminName = user.user.name;
+      //   userData.companyId = user.user.companyId;
+      //   userData.attemptCalculation = 1;
+      let idType = {
+        code: this.stdForm.value.code,
+        description: this.stdForm.value.idType,
+      }
+      // let roles = [
+      //   {
+      //     role: {
+      //       id: 1,
+      //       description: "Trainee",
+      //     },
+      //   },
+      // ]
+      let qualifications = [{
+        description: this.stdForm.value.qualifications,
+        level: {
+          code: "21",
+        }
+      }]
+      const payload: any = {
+         name: this.stdForm.value.name,
+         gender: this.stdForm.value.gender,
+         domainAreaOfPractice: this.stdForm.value.domainAreaOfPractice,
+         email: this.stdForm.value.email,
+         experience: this.stdForm.value.experience,
+         idNumber: this.stdForm.value.idNumber,
+         idType: idType,
+         isLogin : true,
+         joiningDate: this.stdForm.value.joiningDate,
+         linkedInURL: this.stdForm.value.linkedInURL,
+         mobile: this.stdForm.value.mobile,
+         password: this.stdForm.value.password,
+         salutationId: 1,
+         qualifications: qualifications,
+        //  roles: roles,
+         address: this.stdForm.value.address,
+         adminEmail: user.user.email,
+         adminId:  user.user.id,
+         adminName:  user.user.name,
+         attemptBlock: false,
+         company: user.user.company,
+         companyId: user.user.companyId,
+         department: this.stdForm.value.department,
+         dob: this.stdForm.value.dob,
+         domain: user.user.domain,
+         type: AppConstants.STUDENT_ROLE,
+         role: AppConstants.STUDENT_ROLE,
+         avatar: this.avatar,
+         attemptCalculation: 1,
+         action: "update",
+         rollNo: this.stdForm.value.rollNo,
+         uen: uen,
+      };
 
       Swal.fire({
         title: 'Are you sure?',
@@ -281,7 +397,7 @@ getDepartment(){
         cancelButtonColor: '#d33',
       }).then((result) => {
         if (result.isConfirmed){
-          this.updateInstructor(userData);
+          this.updateInstructor(payload);
           Swal.close();
         }
       });

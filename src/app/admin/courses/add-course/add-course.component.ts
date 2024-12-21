@@ -143,6 +143,10 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   storedItems: string | null;
   optionValue?:string;
   isVideo:boolean=false;
+  editTPUrl:boolean=false;
+  TPLearningAndTutorial:boolean=false;
+  TPonlyExam:boolean=false;
+  TPAssessmentAndExam:boolean=false;
 
   constructor(
     private router: Router,
@@ -179,6 +183,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     // console.log('Option value from URL:', this.optionValue);
     this.editUrl = urlPath.includes('edit-course');
     this.viewUrl = urlPath.includes('view-course');
+    this.editTPUrl=urlPath.includes('edit-course');
 
     if (this.editUrl === true) {
       this.breadcrumbs = [
@@ -197,6 +202,8 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         },
       ];
     }
+
+    
 
     this.firstFormGroup = this._formBuilder.group({
       title: ['', [Validators.required, Validators.pattern(/^[a-zA-Z ]/)]],
@@ -281,7 +288,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.optionValue = params['option'] || null;
-      // console.log('Option value from URL:', this.optionValue);
+      //  console.log('Option value from URL:', this.optionValue);
     });
     this.getCourseKitsnew()
     this.getFundingGrantNew();
@@ -343,11 +350,23 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     }
 
     this.loadData();
+    // this.checkForEditTPCourse();
     setInterval(() => {
-      this.startAutoSave();
+       this.startAutoSave();
     }, 30000);
   }
+  
+// checkForEditTPCourse(){
+//   if(this.editTPUrl && this.optionValue){
+//     this.TPLearningAndTutorial=this.optionValue=='LearningAndTutorial'?true:false;
+//     this.TPAssessmentAndExam=this.optionValue=='AssessmentAndExam'?true:false;
+//     this.TPonlyExam=this.optionValue=='AssessmentAndExam'?true:false;
+//   }
+//   console.log("this.TPLearningAndTutorial",this.TPLearningAndTutorial)
+//   console.log("this.TPAssessmentAndExam",this.TPAssessmentAndExam)
+//   console.log("this.TPonlyExam",this.TPonlyExam)
 
+// }
   // openCreateCourseKitDialog(): void {
   //   const dialogRef = this.dialog.open(CreateCourseKitComponent, {
   //     width: '80%',
@@ -383,6 +402,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   // }
 
   // trying new Ways
+  
    openCreateCourseKitDialog(): void {
     const someVariable = 'dialogApproved';
       const dialogRef = this.dialog.open(CreateCourseKitComponent, {
@@ -1151,7 +1171,8 @@ this.exam_assessments=res?.data.reverse();
         certificate_template_id: certicate_temp_id[0].id,
         companyId: userId,
         courses: courses,
-        learningTutorial:courseData.learningTutorial
+        learningTutorial:courseData.learningTutorial,
+        selectedOptionValue:this.optionValue
 
       };
 // console.log("payload--",payload)
@@ -1203,7 +1224,8 @@ this.exam_assessments=res?.data.reverse();
       exam_assessment: this.questionService.getExamQuestionJson({ status: 'approved' }),
     }).subscribe((response: any) => {
       this.fundingGrants = response.fundingGrant;
-      // console.log("newRes===",response)
+      //  console.log("newRes===",response)
+      //  this.optionValue=response.course.selectedOptionValue;
        this.courseKits = response.courseKit?.docs;
         this.assessments = response.assessment?.data?.docs;
       this.exam_assessments = response.exam_assessment.data.docs;
@@ -1314,6 +1336,28 @@ this.exam_assessments=res?.data.reverse();
          this.firstFormGroup.patchValue({
           course_kit: this.course?.course_kit?.map((item: { id: any }) => item?.id) || [],
         });
+      }
+
+      if(this.editTPUrl && this.optionValue){
+        // this.TPLearningAndTutorial=this.optionValue=='LearningAndTutorial'?true:false;
+        // this.TPAssessmentAndExam=this.optionValue=='AssessmentAndExam'?true:false;
+        // this.TPonlyExam=this.optionValue=='AssessmentAndExam'?true:false;
+        if(this.optionValue=='LearningAndTutorial')
+        {
+          // console.log("heloo",this.optionValue)
+          this.isTestIssueCertificate = false;
+          this.isLearningAndTutorial=true;
+        }
+        else if(this.optionValue=='AssessmentAndExam'){
+          this.isTestIssueCertificate = true;
+          this.isAfterExamType = true;
+          this.isLearningAndTutorial=false;
+        }
+        else if(this.optionValue=='OnlyExam'){
+          this.isExamTypeCertificate = true;
+          this.isAfterExamType = false;
+          this.isLearningAndTutorial=false;
+        }
       }
   
       this.cd.detectChanges();
