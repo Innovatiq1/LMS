@@ -54,7 +54,6 @@ import { TraineesDashboardComponent } from './student/settings/trainees-dashboar
 import { SuperAdminService } from './superAdmin/super-admin.service';
 import { CorporateDashboardComponent } from './student/settings/corporate-dashboard/corporate-dashboard.component';
 
-
 // import { ChangeBgDirective } from './change-bg.directive';
 
 export function createTranslateLoader(http: HttpClient) {

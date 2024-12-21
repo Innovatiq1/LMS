@@ -5,7 +5,7 @@ import { AuthenService } from '@core/service/authen.service';
 import { AppConstants } from '@shared/constants/app.constants';
 import { ClassService } from 'app/admin/schedule-class/class.service';
 import Swal from 'sweetalert2';
-
+import { Clipboard } from '@angular/cdk/clipboard';
 @Component({
   selector: 'app-view-class',
   templateUrl: './view-class.component.html',
@@ -23,9 +23,14 @@ export class ViewClassComponent {
   commonRoles: any;
   edit = false;
   isDelete = false;
-  storedItems: string | null;
-
-  constructor(public _classService: ClassService,private _router: Router, private activatedRoute: ActivatedRoute,private authenService: AuthenService) {
+  isZoomMeetingFormVisible: boolean = false;
+  duration: string = '';
+  storedItems: string | null;  
+  totalMinutes: number | null = null;
+  initialDateTime: Date | null = null;
+  minDate: Date | null = null;
+  maxDate: Date | null = null;
+  constructor(public _classService: ClassService,private _router: Router, private activatedRoute: ActivatedRoute,private authenService: AuthenService, private clipboard: Clipboard) {
     this.storedItems = localStorage.getItem('activeBreadcrumb');
     if (this.storedItems) {
      this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
@@ -41,6 +46,8 @@ export class ViewClassComponent {
     this.activatedRoute.params.subscribe((params: any) => {
       
       this.courseId = params.id;
+
+      
     });
   }
 
@@ -108,12 +115,76 @@ export class ViewClassComponent {
     
     this.getCategoryByID(id);
   }
-  getCategoryByID(id: string) {
-     this._classService.getClassById(id).subscribe((response: any) => {
-      this.classDataById = response?._id;
+  getCategoryByID(id: string): void {
+    this._classService.getClassById(id).subscribe((response: any) => {
       this.response = response;
+      this.classDataById = response?._id;
+      console.log('Fetched data:', this.response);
+  
+      if (this.response && this.response.sessions && this.response.sessions.length > 0) {
+        const session = this.response.sessions[0]; 
+  
+        if (session.sessionStartDate && session.sessionStartTime) {
+          const [hours, minutes] = session.sessionStartTime.split(':').map(Number);
+  
+          const sessionDate = new Date(session.sessionStartDate); 
+  
+          if (!isNaN(sessionDate.getTime())) {
+            sessionDate.setHours(hours);
+            sessionDate.setMinutes(minutes);
+            sessionDate.setSeconds(0); 
+            sessionDate.setMilliseconds(0);
+  
+            this.initialDateTime = sessionDate;
+            this.minDate = sessionDate;
+          } else {
+            console.error('Invalid sessionStartDate format.');
+          }
+        } else {
+          console.error('sessionStartDate or sessionStartTime not found.');
+        }
+  
+        const sessionEndDate = session.sessionEndDate;
+        const sessionEndTime = session.sessionEndTime;
+  
+        if (sessionEndDate && sessionEndTime) {
+          const lastSessionDate = new Date(sessionEndDate);
+  
+          const [endHours, endMinutes] = sessionEndTime.split(':').map(Number);
+  
+          if (!isNaN(lastSessionDate.getTime())) {
+            lastSessionDate.setHours(endHours);
+            lastSessionDate.setMinutes(endMinutes);
+            lastSessionDate.setSeconds(0);
+            lastSessionDate.setMilliseconds(0);
+  
+            this.maxDate = lastSessionDate;
+  
+            if (this.initialDateTime && this.initialDateTime.toDateString() === lastSessionDate.toDateString()) {
+              this.initialDateTime.setHours(endHours);
+              this.initialDateTime.setMinutes(endMinutes);
+              this.initialDateTime.setSeconds(0);
+              this.initialDateTime.setMilliseconds(0);
+              console.log('Corrected the selected time for the last day:', this.initialDateTime);
+            }
+          } else {
+            console.error('Invalid sessionEndDate format.');
+          }
+        } else {
+          console.warn('sessionEndDate or sessionEndTime not found.');
+        }
+      } else {
+        console.warn('Session data is not available.');
+      }
     });
   }
+  
+  
+  
+  
+  
+  
+  
   editClass(id:string){
     this._router.navigate([`admin/courses/create-class`], { queryParams: {id: id}});
   }
@@ -161,5 +232,262 @@ export class ViewClassComponent {
     window.history.back();
 
   }
+
+  copyToClipboard(text: string): void {
+    if (text) {
+      this.clipboard.copy(text);
+      setTimeout(() => {
+        Swal.fire({
+          title: 'Success',
+          text: 'Meeting URL copied to clipboard!',
+          icon: 'success',
+        });
+      }, 2000);
+    } else {
+      alert('No URL to copy!');
+    }
+  }
+
+  updateDateTime(date: string, duration: string): void {
+    if (!date || !duration) {
+      Swal.fire({
+        title: 'Validation Error',
+        text: 'Please choose both a date and a duration.',
+        icon: 'warning',
+        confirmButtonText: 'OK'
+      });
+      return;
+    }
+  
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to update the meeting with the new date and duration?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, update it!',
+      cancelButtonText: 'No, cancel',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Updating...',
+          text: 'Please wait while we update your meeting.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+  
+        this._classService.updateZoomMeetingForPurticularDays(date, this.classDataById, duration).subscribe({
+          next: (response) => {
+            Swal.close();
+            Swal.fire({
+              title: 'Success',
+              text: 'Meeting updated successfully.',
+              icon: 'success',
+              confirmButtonText: 'OK'
+            }).then(() => {
+              window.location.reload();
+            });
+          },
+          error: (err) => {
+            console.error(err);
+            Swal.close();
+              Swal.fire({
+              title: 'Error',
+              text: 'There was an error updating the meeting. Please try again.',
+              icon: 'error',
+              confirmButtonText: 'OK'
+            });
+          }
+        });
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire({
+          title: 'Cancelled',
+          text: 'Your meeting update has been cancelled.',
+          icon: 'info',
+          confirmButtonText: 'OK'
+        });
+      }
+    });
+  }
+  
+  
+  deleteDateTime(date: string): void {
+    if (!date) {
+      Swal.fire({
+        title: 'Validation Error',
+        text: 'Please choose a date.',
+        icon: 'warning',
+        confirmButtonText: 'OK'
+      });
+      return;
+    }
+  
+    const newDateTime = new Date(date);
+    const formattedDate = newDateTime.toISOString().substring(0, 10);
+  
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you really want to delete the meeting for the selected date: ${formattedDate}? This action cannot be undone.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, keep it',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Deleting...',
+          text: 'Please wait while we delete your meeting.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+  
+        this._classService.deleteZoomMeetingForPurticularDay(date, this.classDataById).subscribe({
+          next: (response) => {
+            Swal.close();
+              Swal.fire({
+              title: 'Success',
+              text: 'Meeting deleted successfully.',
+              icon: 'success',
+              confirmButtonText: 'OK'
+            }).then(() => {
+              window.location.reload();
+            });
+          },
+          error: (err) => {
+            console.error(err);
+            Swal.close();
+              Swal.fire({
+              title: 'Error',
+              text: 'There was an error deleting the meeting. Please try again.',
+              icon: 'error',
+              confirmButtonText: 'OK'
+            });
+          }
+        });
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire({
+          title: 'Cancelled',
+          text: 'Your meeting is safe.',
+          icon: 'info',
+          confirmButtonText: 'OK'
+        });
+      }
+    });
+  }
+  
+
+zoomRecordings:string=''
+getRecordedVideoLink(): void {
+  this._classService.getClassRecordings(this.classDataById).subscribe({
+    next: (response) => {
+      const videoRecordings = response.recordingLinks.filter((link: any) => link.file_type === 'MP4');
+      videoRecordings.sort((a: any, b: any) => {
+        return new Date(b.recording_start).getTime() - new Date(a.recording_start).getTime();
+      });
+
+      if (videoRecordings.length > 0) {
+        const linksHtml = videoRecordings.map((link: any) => {
+          const date = new Date(link.recording_start).toLocaleDateString();
+          return `<li><a href="${link.play_url}" target="_blank" style="color: #28a745;">Video Recording</a> - Recorded on ${date}</li>`;
+        }).join('');
+
+        Swal.fire({
+          title: 'Available Video Recordings',
+          html: `<ul style="list-style-type: none; padding-left: 0;">${linksHtml}</ul>`,
+          icon: 'info',
+          showCloseButton: true,
+          confirmButtonText: 'Close'
+        });
+      } else {
+        Swal.fire({
+          title: 'No Video Recordings Available',
+          text: 'There are no video recordings for this class at the moment.',
+          icon: 'info',
+          confirmButtonText: 'Close'
+        });
+      }
+    },
+    error: (err) => {
+      console.error('Error fetching recordings:', err);
+      Swal.fire({
+        title: 'Error',
+        text: 'Failed to retrieve the recordings. Please try again later.',
+        icon: 'error',
+        confirmButtonText: 'Close'
+      });
+    }
+  });
+}
+isUpdateMode: boolean = false;
+isDeleteMode: boolean = false;
+toggleZoomMeetingForm(): void {
+  if (this.isZoomMeetingFormVisible && this.isUpdateMode) {
+    this.isZoomMeetingFormVisible = false;
+    this.isUpdateMode = false;
+  } else {
+    this.isZoomMeetingFormVisible = true;
+    this.isUpdateMode = true;
+    this.isDeleteMode = false;
+  }
+}
+
+toggleZoomMeetingFormDelete(): void {
+  if (this.isZoomMeetingFormVisible && this.isDeleteMode) {
+    this.isZoomMeetingFormVisible = false;
+    this.isDeleteMode = false;
+  } else {
+    this.isZoomMeetingFormVisible = true;
+    this.isDeleteMode = true;
+    this.isUpdateMode = false;
+  }
+}
+isDateExpired(sessionEndDate: string): boolean {
+  if (!sessionEndDate) {
+      return true;
+  }
+  const endDate = new Date(sessionEndDate);
+  const today = new Date();
+  return endDate < today;
+}
+
+onDurationChange() {
+  const duration = this.duration;
+  if (duration && duration.length === 5) {
+    const [hours, minutes] = duration.split(':').map(Number);
+
+    if (!isNaN(hours) && !isNaN(minutes) && hours >= 0 && hours <= 23 && minutes >= 0 && minutes <= 59) {
+      this.totalMinutes = hours * 60 + minutes;
+    } else {
+      this.totalMinutes = null;
+    }
+  } else {
+    this.totalMinutes = null;
+  }
+}
+
+formatDuration() {
+  let value = this.duration || '';
+  
+  const cleaned = value.replace(/[^0-9]/g, '');
+
+  if (cleaned.length <= 2) {
+    this.duration = cleaned;
+  } else {
+    const hours = cleaned.slice(0, 2);
+    const minutes = cleaned.slice(2, 4);
+    this.duration =`${hours}:${minutes}`;
+  }
+}
+
+closeZoomMeetingForm() {
+  this.isZoomMeetingFormVisible = false;
+}
+
+
 
 }

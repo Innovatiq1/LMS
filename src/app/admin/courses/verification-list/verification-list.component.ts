@@ -42,7 +42,7 @@ export class VerificationListComponent {
     'coursename',
     'classstartDate',
     'classendDate',
-    'Registered Date',
+    'registeredDate',
     'programFee',
     // 'instructorFee',
   ];
