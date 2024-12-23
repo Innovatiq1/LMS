@@ -254,6 +254,8 @@ export class ViewCourseComponent implements OnDestroy {
   getClassDetails() {
     this.classService.getClassById(this.classId).subscribe((response) => {
       this.classDetails = response;
+      console.log("classRes",this.classDetails)
+      
   this.feeType=this.classDetails.courseId.feeType;
   this.approval=this.classDetails?.courseId?.approval;
 
@@ -265,6 +267,7 @@ export class ViewCourseComponent implements OnDestroy {
       this.getAssessmentAnswerCount(this.courseId);
       this.getRetakeRequests(this.courseId);
       this.getExamAssessmentAnswerCount(this.courseId);
+      this.getTPAssessmentData()
     });
   }
   
@@ -1223,6 +1226,7 @@ if(this.feeType=="paid" && this.approval == 'yes')
     this.courseService.getCourseById(id).subscribe((response) => {
       this.courseKitDetails = response?.course_kit;
       this.courseDetails = response;
+      console.log("this.courseDetails",this.courseDetails)
       this.courseKitDetails.map((item: any) => {
         this.url = item?.videoLink[0]?.video_url;
       });
@@ -1653,18 +1657,59 @@ console.log('lastButOneValue',lastButOneValue)
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+  getTPAssessmentData(){
+    // console.log("TpDetails", this.classDetails)
+    // console.log("this.courseDetails",this.courseDetails)
+    // console.log("this.courseDetails",this.courseDetails?.assessment?.passingCriteria)
+    let uen =localStorage.getItem('uen') || '';
+    const userData = JSON.parse(localStorage.getItem('user_data') || '');
+    // console.log("uen",uen)
+    // console.log("courseReferenceNumber",this.classDetails.course.courseReferenceNumber)
+    // console.log("courseTPRunId",this.classDetails.courseTPRunId);
+    // console.log("userNmae",userData.user.name)
+    // console.log("userNmae",userData.user.id)
+    const currentDate = new Date().toISOString().split('T')[0];
+   let TPAssessment= {
+      "assessment": {
+        "passingCriteria":this.courseDetails?.assessment?.passingCriteria||0,
+        "trainingPartner": {
+          "uen": uen
+        },
+        "course": {
+          "referenceNumber": this.classDetails.course.courseReferenceNumber,
+          "run": {
+            "id": this.classDetails.courseTPRunId,
+          }
+        },
+        "trainee": {
+          "idType": "NRIC",
+          "id": userData.user.id,
+          "fullName": userData.user.name
+        },
+        "result": "Pass",
+        "score": 80,
+        "grade": "B",
+        "assessmentDate": currentDate,
+          "skillCode": "ATP-SSM-3007-1.1"
+      }
+    }
+    return TPAssessment;
+  }
 
   submitAnswers(payload: any = []) {
     const studentId = localStorage.getItem('id');
     const assesmentId = this.assessmentInfo?.id;
+    let TpAassment1 =this.getTPAssessmentData();
     const requestBody = {
       studentId,
       assessmentId: assesmentId,
       courseId: payload.courseId,
       answers: payload.answers,
       is_tutorial: payload.is_tutorial,
+      tpAssessment: TpAassment1,
     };
-
+    
+console.log("helo",requestBody)
     this.studentService.submitAssessment(requestBody).subscribe(
       (response: any) => {
         Swal.fire({

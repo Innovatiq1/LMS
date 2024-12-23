@@ -352,7 +352,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     this.loadData();
     // this.checkForEditTPCourse();
     setInterval(() => {
-       this.startAutoSave();
+      //  this.startAutoSave();
     }, 30000);
   }
   
