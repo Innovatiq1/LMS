@@ -195,6 +195,29 @@
                         Room</span></mat-checkbox>
                   </section>
                 </div>
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-2">
+                  <label>Registration Start Date<span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <input matInput [matDatepicker]="startDatePicker" formControlName="registrationStartDate" />
+                    <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #startDatePicker></mat-datepicker>
+                    <mat-error *ngIf="classForm.get('registrationStartDate')?.hasError('required')">
+                      Registration Start Date is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-2">
+                  <label>Registration End Date<span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <input matInput [matDatepicker]="endDatePicker" formControlName="registrationEndDate" />
+                    <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #endDatePicker></mat-datepicker>
+                    <mat-error *ngIf="classForm.get('registrationEndDate')?.hasError('required')">
+                      Registration End Date is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
               </div>
             </div>
           </form>
