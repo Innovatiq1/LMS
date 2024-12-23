@@ -226,22 +226,24 @@ export class CreateClassComponent {
     if (savedFormData) {
       const parsedFormData = JSON.parse(savedFormData);
       this.classForm.patchValue({
-        courseId: parsedFormData.courseId,
-        classType: parsedFormData.classType, 
-        classDeliveryType: parsedFormData.classDeliveryType,
-        instructorCost: parsedFormData.instructorCost,
-        instructorCostCurrency: parsedFormData.instructorCostCurrency || 'USD',
-        department: parsedFormData.department, 
-        currency: parsedFormData.currency || '',
-        isGuaranteedToRun: parsedFormData.isGuaranteedToRun || false, 
-        externalRoom: parsedFormData.externalRoom || false, 
-        minimumEnrollment: parsedFormData.minimumEnrollment,
-        maximumEnrollment: parsedFormData.maximumEnrollment,
-        meetingPlatform: parsedFormData.meetingPlatform || '', 
-        classStartDate: parsedFormData.classStartDate || '2023-05-20', 
-        classEndDate: parsedFormData.classEndDate || '2023-06-10', 
-        userGroupId: parsedFormData.userGroupId || null, 
-        duration: parsedFormData.duration || null 
+        courseId: parsedFormData?.courseId,
+        classType: parsedFormData?.classType, 
+        classDeliveryType: parsedFormData?.classDeliveryType,
+        instructorCost: parsedFormData?.instructorCost,
+        instructorCostCurrency: parsedFormData?.instructorCostCurrency || 'USD',
+        department: parsedFormData?.department, 
+        currency: parsedFormData?.currency || '',
+        isGuaranteedToRun: parsedFormData?.isGuaranteedToRun || false, 
+        externalRoom: parsedFormData?.externalRoom || false, 
+        minimumEnrollment: parsedFormData?.minimumEnrollment,
+        maximumEnrollment: parsedFormData?.maximumEnrollment,
+        meetingPlatform: parsedFormData?.meetingPlatform || '', 
+        classStartDate: parsedFormData?.classStartDate || '2023-05-20', 
+        classEndDate: parsedFormData?.classEndDate || '2023-06-10', 
+        userGroupId: parsedFormData?.userGroupId || null, 
+        duration: parsedFormData?.duration || null ,
+        registrationStartDate: parsedFormData?.registrationStartDate,
+        registrationEndDate: parsedFormData?.registrationEndDate
       });      
     }
   }
@@ -323,8 +325,8 @@ loadForm() {
       const item = response;
       this.courseTPRunId=item?.courseTPRunId;
       this.courseReferenceNumber=item?.courseReferenceNumber;
-      this.idNumber=item?.course.runs[0].linkCourseRunTrainer[0].trainer.idNumber;
-      this.trainerId=item?.course.runs[0].linkCourseRunTrainer[0].trainer.id;
+      this.idNumber=item?.course?.runs[0]?.linkCourseRunTrainer[0]?.trainer?.idNumber;
+      this.trainerId=item?.course?.runs[0]?.linkCourseRunTrainer[0]?.trainer?.id;
       this.courseTitle=item?.courseName;
       this.courseCode=item?.courseReferenceNumber;
       // console.log("getrrr",response);
