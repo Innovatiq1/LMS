@@ -538,6 +538,13 @@ SETTING_SIDEMENU_LIST =[
             "class": "ml-menu",
             "actions": [],
             "children": []
+          },
+          {
+            "title": "Zoom Credentials",
+            "id": "zoom-credentials",
+            "class": "ml-menu",
+            "actions": [],
+            "children": []
           }
         ]
       },

@@ -92,6 +92,7 @@ export class StudentApprovalListComponent {
       .getApprovedProgramClasse(userId,payload)
       .subscribe((response: { data: CoursePaginationModel; }) => {
         this.isLoading = false;
+        // 
         this.coursePaginationModel = response.data;
       this.dataSource = response.data.docs;
       this.totalPages = response.data.totalDocs;

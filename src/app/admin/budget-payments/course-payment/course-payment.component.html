@@ -183,37 +183,37 @@
                           d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
                       </svg>
 
-                      </button>
+                    </button>
 
-                              <mat-menu #menu="matMenu" xPosition="before">
-                                <button mat-menu-item   (click)="view(row._id)">
-                                  <app-feather-icons [icon]="'eye'" [class]="'tbl-fav-view'"></app-feather-icons>
-                                  <span class="menu-text">View</span>
-                                </button>
-                              </mat-menu>
-                    </mat-cell>
-                  </ng-container> -->
-                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                  <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
-                  <mat-row *matRowDef="let row; columns: displayedColumns;"
-                    [style.cursor]="'pointer'" matRipple>
-                  </mat-row>
-                </table>
-                <!-- Loading spinner -->
-                <!-- <div  class="tbl-spinner">
-                  <mat-progress-spinner *ngIf="isLoading" color="primary" [diameter]="40" mode="indeterminate">
-                  </mat-progress-spinner>
-                </div> -->
+                            <mat-menu #menu="matMenu" xPosition="before">
+                              <button mat-menu-item   (click)="view(row._id)">
+                                <app-feather-icons [icon]="'eye'" [class]="'tbl-fav-view'"></app-feather-icons>
+                                <span class="menu-text">View</span>
+                              </button>
+                            </mat-menu>
+                  </mat-cell>
+                </ng-container> -->
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
+                <mat-row *matRowDef="let row; columns: displayedColumns;"
+                  [style.cursor]="'pointer'" matRipple>
+                </mat-row>
+              </table>
+              <!-- Loading spinner -->
+              <!-- <div  class="tbl-spinner">
+                <mat-progress-spinner *ngIf="isLoading" color="primary" [diameter]="40" mode="indeterminate">
+                </mat-progress-spinner>
+              </div> -->
 
-                <mat-paginator #paginator [length]="totalItems" (page)="pageSizeChange($event)"
-                [pageSizeOptions]="pageSizeArr" aria-label="select pagination option">
-            </mat-paginator>
+              <mat-paginator #paginator [length]="totalItems" (page)="pageSizeChange($event)"
+              [pageSizeOptions]="pageSizeArr" aria-label="select pagination option">
+          </mat-paginator>
 
-              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 

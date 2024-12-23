@@ -274,3 +274,10 @@ export interface AttendancaModel{
   students: StudentRegisteredClass[];
   classObj : ClassModel;
 }
+
+export interface searchData{
+  date:String,
+  time:String,
+  topic?:String,
+  duration?:String
+}

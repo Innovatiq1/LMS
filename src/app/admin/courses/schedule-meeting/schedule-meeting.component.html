@@ -1,0 +1,45 @@
+<section class="content">
+    <div class="content-block">
+<div class="container mt-5">
+    <div class="form-container">
+      <form [formGroup]="searchForm" (ngSubmit)="submitSearch()">
+        <div class="row">
+          <!-- Job title input -->
+          <div class="col-md-5 mb-3">
+            <mat-form-field class="full-width-form-field">
+              <mat-label>Date</mat-label>
+              <input matInput formControlName="date" type="date" />
+            </mat-form-field>
+          </div>
+          <!-- City, State input -->
+          <div class="col-md-5 mb-3">
+            <mat-form-field class="full-width-form-field">
+              <mat-label>Time</mat-label>
+              <input matInput formControlName="time" type="time" />
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-5 mb-3">
+            <mat-form-field class="full-width-form-field">
+              <mat-label>Title</mat-label>
+              <input matInput formControlName="topic" type="text" />
+            </mat-form-field>
+          </div>
+          <div class="col-md-5 mb-3">
+            <mat-form-field class="full-width-form-field">
+              <mat-label>Duration</mat-label>
+              <input matInput formControlName="duration" type="time" />
+            </mat-form-field>
+          </div>
+          <!-- Find jobs button -->
+          <div class="col-md-2 mb-3">
+            <button mat-stroked-button class="full-width-button" type="submit">
+              Submit
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+</div>
+</div>
+</section>

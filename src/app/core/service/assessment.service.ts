@@ -217,6 +217,24 @@ import { ApiResponse } from '@core/models/general.response';
       return this.http.delete<void>(url);
     }
 
+    startProctoringAI(id:any) : Observable<any> {
+      const apiUrl = `${this.defaultUrl}admin/exam-assesment-answers/zoom-meeting/${id}`;
+      console.log(apiUrl);
+     return this.http.post(apiUrl,{});
+    }
+
+    getRecentAnalyzer(studentId:string) : Observable<any> {
+      const apiUrl = `${this.defaultUrl}analyzer/recent/${studentId}`;
+      return this.http.get<any>(apiUrl).pipe(map((response) => response));
+    }
+
+    getAnalyzerById(analyzerId:string) :Observable<any> {
+      return this.http.get(`${this.defaultUrl}analyzer/${analyzerId}`).pipe(map((response)=>response));
+    }
+
+    updateAnalyzer(analyzerId:string, payload:any) : Observable<any> {
+      return this.http.put(`${this.defaultUrl}analyzer/${analyzerId}`,payload)
+    }
 
   }
   

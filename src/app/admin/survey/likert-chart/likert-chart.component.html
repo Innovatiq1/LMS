@@ -72,7 +72,7 @@
                 </ng-container>
                 <ng-container matColumnDef="Count">
                   <mat-header-cell *matHeaderCellDef >No.of Questions</mat-header-cell>
-                  <mat-cell *matCellDef="let row" [routerLink]="isView ? ['/admin/survey/survey-list/view-feedback',row.id] : null"> <span class="mobile-label">No.of Questions:</span>{{row.questions.length}}</mat-cell>
+                  <mat-cell *matCellDef="let row" [routerLink]="isView ? ['/admin/survey/survey-list/view-feedback',row.id] : null"> <span class="mobile-label">Count:</span>{{row.questions.length}}</mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="Created At">
                   <mat-header-cell *matHeaderCellDef >Created At</mat-header-cell>
