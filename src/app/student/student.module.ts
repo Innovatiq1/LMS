@@ -125,6 +125,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { SocialLoginComponent } from './settings/social-login/social-login.component';
 import { SafePipe } from './safe.pipe';
 import { ZoomKeysComponent } from './settings/zoom-keys/zoom-keys.component';
+import { ObjectDetectionComponent } from './object-detection/object-detection.component';
 
 
 @NgModule({
@@ -228,7 +229,7 @@ import { ZoomKeysComponent } from './settings/zoom-keys/zoom-keys.component';
     TutorialQuestionsComponent,
     DocumentViewComponent,
     SocialLoginComponent,    
-    SafePipe, ZoomKeysComponent,
+    SafePipe, ZoomKeysComponent, ObjectDetectionComponent,
    // SafeUrlPipe,
   ],
   imports: [

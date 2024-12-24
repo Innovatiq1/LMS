@@ -1,5 +1,5 @@
 <section class="content">
-    <div class="content-block">
+    <div class="content-block" #proctoringDiv>
         <div class="card border shadow card-height border-radius mb-5 mt-5">
             <ng-container *ngIf="!isQuizCompleted">
                 <div class="row p-3 d-flex justify-content-between">
@@ -15,14 +15,22 @@
                     </div>
                   
                     <!-- Center div for Proctoring System -->
-                    <div
+                    <div *ngIf="isEnableProtector"
+                    #draggable
                     id="proctoring-system"
+                    (mousedown)="onMouseDown($event, draggable)"
                     class="col-lg-4 col-md-12 col-sm-12 col-12 mt-3 text-center draggable-div"
-                    (mousedown)="onMouseDown($event)"
-                    style="position: fixed; bottom: 200px; right: 50px; width: 300px; z-index: 999;"
+                    style="position: fixed; top: 10%; right: 50px; width: 300px; z-index: 999;"
                   >
-                    <div class="video-container mb-3" [ngClass]="{'background-image': !isRecording}">
-                      <video #videoElement autoplay class="w-100 border rounded"></video>
+                    <div class="video-container mb-3" >
+
+                        <app-object-detection
+                        (MobilePhone)="handleMobilePhoneDetected()"
+                        (ProhibitedObject)="handleProhibitedObjectDetected()"
+                        (FaceNotVisible)="handleFaceNotVisible()"
+                        (MultipleFacesVisible)="handleMultipleFacesDetected()"
+                      ></app-object-detection>
+                      <!-- <video #videoElement autoplay class="w-100 border rounded"></video> -->
                     </div>
                     <div id="warnings" class="mt-3"></div>
                   </div>

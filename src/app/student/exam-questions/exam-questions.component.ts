@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild, HostListener, ElementRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, HostListener, ElementRef, OnDestroy, Renderer2 } from '@angular/core';
 import { ActivatedRoute, Router ,NavigationStart } from '@angular/router';
 import { AssessmentService } from '@core/service/assessment.service';
 import { StudentsService } from '../../admin/students/students.service';
@@ -59,10 +59,16 @@ export class ExamQuestionsComponent {
   offsetX: number = 0;
   offsetY: number = 0;
   isRecording: boolean = false;
-  analyzerSessionId: string ='';
-  analyzerInterval: any;
-  analyzerData: any;
-  lastWarningIndex: number = 0;
+  analyzerId:string = '';
+
+  tabChange: number = 0;
+  keyPress: number = 0;
+  mobilePhoneFound: boolean = false;
+  prohibitedObjectFound: boolean = false;
+  faceNotVisible: boolean = false;
+  multipleFacesVisible: boolean = false;
+  checkedPrevLogs: boolean = false;
+  isEnableProtector: boolean = false;
 
   @ViewChild('proctoringDiv', { static: true }) proctoringDiv!: ElementRef;
   @ViewChild('videoElement') videoElement!: ElementRef;
@@ -70,11 +76,57 @@ export class ExamQuestionsComponent {
   recordedChunks: any[] = [];
   mediaStream: MediaStream | null = null;
   visibilityChangeListener: (() => void) | null = null;
+  private visibilityChangeHandler!: () => void;
+  private keyPressHandler!: (event: KeyboardEvent) => void;
   violationCount: number = 0;
   maxViolations: number = 4;
-  totalTimes: number = 60; // Example: 60 seconds countdown
+  totalTimes: number = 60;
   timerSubscription!: Subscription;
-  private routerSubscription!: Subscription;
+
+  handleMobilePhoneDetected(): void {
+    Swal.fire('Cell Phone Detected', 'Action has been recorded', 'error');
+    this.sendWarning("Cell Phone Detected", this.analyzerId);
+  }
+
+  handleProhibitedObjectDetected(): void {
+    Swal.fire('Prohibited Object Detected', 'Action has been recorded', 'error');
+    this.sendWarning("Prohibited Object Detected", this.analyzerId);
+  }
+
+  handleFaceNotVisible(): void {
+    Swal.fire('Face Not Visible', 'Action has been recorded', 'error');
+    this.sendWarning("Face Not Visible", this.analyzerId);
+  }
+
+  handleMultipleFacesDetected(): void {
+    Swal.fire('Multiple Faces Detected', 'Action has been recorded', 'error');
+    this.sendWarning("Multiple Face Detected", this.analyzerId);
+  }
+
+  sendWarning(message:string, analyzerId:string) {
+    const payload = {
+      warning_type: message
+    }
+    this.assessmentService.addWarningById(analyzerId, payload).subscribe(res=>{
+      console.log("Uploaded warning=>", message);
+    });
+  }
+
+  startVideoAnalyzer() {
+    const studentId = localStorage.getItem('id') || '';
+    let payload = {
+      studentId,
+      status: "connected"
+    };
+    this.assessmentService.createAnalyzerId(payload).subscribe(res=> {
+      if(res?.response) {
+        this.analyzerId = res?.response.id;
+        this.isEnableProtector = true;
+        this.initializeEventListeners();
+      }
+    })
+  }
+
   constructor(
     private assessmentService: AssessmentService,
     private route: ActivatedRoute,
@@ -84,6 +136,7 @@ export class ExamQuestionsComponent {
     private classService: ClassService,
     private location: Location,
     private snackBar: MatSnackBar,
+    private renderer: Renderer2
       ) { }
 
       ngOnInit(): void {
@@ -93,31 +146,12 @@ export class ExamQuestionsComponent {
           this.student();
           this.route.queryParams.subscribe(params => {
             this.retake = params['retake'] === 'true'; 
-            this.analyzerSessionId = params['analyzerId'];
-            if(this.analyzerSessionId){
-              this.startAnalyzer();
-              this.fetchAnalyzerWarnings();
-            }
           });    
           this.applyBlurEffect(); 
-          //this.startVideoSession(); 
-          this.startMonitoringTabSwitch();   
+          // this.startVideoAnalyzer();
+          // this.startVideoSession(); 
+          // this.startMonitoringTabSwitch();   
           this.startTimer();
-          this.routerSubscription = this.router.events.subscribe((event) => {
-            if (event instanceof NavigationStart) {
-              // Stop recording when navigation occurs
-              if (this.isRecording) {
-                this.stopRecording();
-              }
-            }
-          });                 
-      }
-
-      startAnalyzer(){
-        console.log("updating...")
-        this.assessmentService.updateAnalyzer(this.analyzerSessionId, {status: "connected"}).subscribe(res=>{
-          console.log(res)
-        })
       }
 
       getClassDetails():void{
@@ -145,6 +179,10 @@ export class ExamQuestionsComponent {
 
         this.courseService.getCourseById(this.courseId).subscribe((response) => {          
           this.courseDetails = response;
+          const videoAnalyzerReq = response?.exam_assessment?.videoAnalyzerReq;
+          if(videoAnalyzerReq){
+            this.startVideoAnalyzer();
+          }
         });
       }
       
@@ -245,7 +283,6 @@ export class ExamQuestionsComponent {
           } else if (result.isConfirmed) {
               this.submitAnswers();
           }
-          clearInterval(this.analyzerInterval);
         });
       }
 
@@ -272,8 +309,8 @@ export class ExamQuestionsComponent {
               this.updateExamStatus();
             }
             this.answerId = response.response;
-            if(this.analyzerSessionId){
-              this.assessmentService.updateAnalyzer(this.analyzerSessionId, {examAnswerId: this.answerId, status:"closed"}).subscribe((res)=>{
+            if(this.analyzerId && this.isEnableProtector){
+              this.assessmentService.updateAnalyzer(this.analyzerId, {examAnswerId: this.answerId, status:"closed"}).subscribe((res)=>{
                 this.submitFeedback(response.response);
               })
             }else{
@@ -408,32 +445,14 @@ export class ExamQuestionsComponent {
           }, 1000);
         }
 
-        fetchAnalyzerWarnings() {
-          this.analyzerInterval = setInterval(()=> {
-            this.assessmentService.getAnalyzerById(this.analyzerSessionId).subscribe((res:any)=> {
-              if(res.data){
-                this.analyzerData = res.data;
-                if(this.analyzerData.warnings.length>(this.lastWarningIndex+1)){
-                  const warnings = this.analyzerData.warnings.slice(this.lastWarningIndex);
-                  warnings.forEach((warning:any) => {
-                    this.showWarning(warning.warning_type);
-                  });
-                }
-                this.lastWarningIndex = res.data.warnings.length-1;
-              }
-            })
-          }, 10*1000)
-        }
       
         ngOnDestroy() {
           clearInterval(this.interval);
-          clearInterval(this.analyzerInterval);
           if (this.timerSubscription) {
             this.timerSubscription.unsubscribe();
           }
-          if (this.routerSubscription) {
-            this.routerSubscription.unsubscribe();
-          }
+          document.removeEventListener('visibilitychange', this.visibilityChangeHandler);
+          document.removeEventListener('keydown', this.keyPressHandler);
         }
       
         navigate() {
@@ -484,26 +503,43 @@ export class ExamQuestionsComponent {
         }
        
 
-        //Proctoring video record
-  onMouseDown(event: MouseEvent) {
-    this.isDragging = true;
-    this.offsetX = event.clientX - this.proctoringDiv.nativeElement.offsetLeft;
-    this.offsetY = event.clientY - this.proctoringDiv.nativeElement.offsetTop;
-    document.addEventListener('mousemove', this.onMouseMove.bind(this));
-    document.addEventListener('mouseup', this.onMouseUp.bind(this));
-  }
+ // Handle mouse down
+ onMouseDown(event: MouseEvent, element: HTMLElement) {
+  this.isDragging = true;
+  this.offsetX = event.offsetX;
+  this.offsetY = event.offsetY;
 
-  onMouseMove(event: MouseEvent) {
+  this.renderer.listen('document', 'mousemove', (e: MouseEvent) =>
+    this.onMouseMove(e, element)
+  );
+  this.renderer.listen('document', 'mouseup', () => this.onMouseUp());
+}
+
+   // Handle mouse move
+   onMouseMove(event: MouseEvent, element: HTMLElement) {
     if (this.isDragging) {
-      this.proctoringDiv.nativeElement.style.left = event.clientX - this.offsetX + 'px';
-      this.proctoringDiv.nativeElement.style.top = event.clientY - this.offsetY + 'px';
+      const containerRect = this.proctoringDiv.nativeElement.getBoundingClientRect();
+
+      // Calculate new position
+      const left = event.clientX - this.offsetX;
+      const top = event.clientY - this.offsetY;
+
+      // Restrict movement within the container
+      if (
+        left >= containerRect.left &&
+        left + element.offsetWidth <= containerRect.right &&
+        top >= containerRect.top &&
+        top + element.offsetHeight <= containerRect.bottom
+      ) {
+        element.style.position = 'absolute';
+        element.style.left = `${left - containerRect.left}px`;
+        element.style.top = `${top - containerRect.top}px`;
+      }
     }
   }
 
   onMouseUp() {
     this.isDragging = false;
-    document.removeEventListener('mousemove', this.onMouseMove.bind(this));
-    document.removeEventListener('mouseup', this.onMouseUp.bind(this));
   }
 
   startVideoSession() {
@@ -580,6 +616,35 @@ export class ExamQuestionsComponent {
 
   removeBlurEffect() {
     document.body.classList.remove('blur-background');
+  }
+
+  initializeEventListeners(): void {
+    this.visibilityChangeHandler = this.handleVisibilityChange.bind(this);
+    this.keyPressHandler = this.handleKeyPress.bind(this);
+
+    document.addEventListener('visibilitychange', this.visibilityChangeHandler);
+    document.addEventListener('keydown', this.keyPressHandler);
+  }
+
+  sendLogsToServer(): void {
+  }
+
+  handleVisibilityChange(): void {
+    if (document.hidden) {
+      this.tabChange++;
+      Swal.fire('Changed Tab Detected', 'Action has been Recorded', 'error');
+    }
+  }
+
+  handleKeyPress(event: KeyboardEvent): void {
+    if (event.altKey || event.ctrlKey) {
+      this.keyPress++;
+      Swal.fire(
+        `${event.altKey ? 'Alt' : 'Ctrl'} Key Press Detected`,
+        'Action has been Recorded',
+        'error'
+      );
+    }
   }
 
   startMonitoringTabSwitch() {
