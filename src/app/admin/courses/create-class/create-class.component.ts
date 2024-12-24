@@ -157,6 +157,12 @@ export class CreateClassComponent {
   });
   const storedZoomSessionCreated = localStorage.getItem('zoomSessionCreated');
   this.zoomSessionCreated = storedZoomSessionCreated === 'true';
+  const savedCourseCode = localStorage.getItem('courseCode');
+  const savedCourseTitle = localStorage.getItem('courseTitle');
+  if (savedCourseCode && savedCourseTitle) {
+    this.courseCode = savedCourseCode;
+    this.courseTitle = savedCourseTitle;
+  }
     this.loadSavedFormData();
 
     this.commonRoles = AppConstants
@@ -647,11 +653,9 @@ getTPCourse(classForm:any){
           this.classForm.value.code = this.code;
         }
          this.classForm.value.courseReferenceNumber=this.courseCode;
-        // this.classForm.value.courseReferenceNumber= "TGS-2020002144";
                 this.classForm.value.trainingProvider = {
-                  uen: "201003953Z" 
+                  uen:localStorage.getItem('uen') || ''
                 };
-              //  this.classForm.value.course= this.getTPCourse(this.classForm);
         this.classForm.value.course= this.getTPCourse(this.classForm);
               if (!this.classForm.valid) {
           Swal.fire({
@@ -809,7 +813,8 @@ getTPCourse(classForm:any){
   scheduleMeet() {
     const formData = this.classForm.value;
     localStorage.setItem('classFormData', JSON.stringify(formData));
-  
+    localStorage.setItem('courseCode', this.courseCode);
+    localStorage.setItem('courseTitle', this.courseTitle);
     if (this.classForm.get('meetingPlatform')?.value === 'zoom') {
       const zoomAuthUrl = environment.ZoomUrl;
       localStorage.setItem('zoomSessionCreated', 'true');
