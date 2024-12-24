@@ -63,6 +63,7 @@ export class CreateClassComponent {
   courseTitle: any;
   user_id: any;
   courseCode: any;
+  courseCode1: any;
   classId!: string;
   forms!: any[];
   title: boolean = false;
@@ -156,6 +157,12 @@ export class CreateClassComponent {
   });
   const storedZoomSessionCreated = localStorage.getItem('zoomSessionCreated');
   this.zoomSessionCreated = storedZoomSessionCreated === 'true';
+  const savedCourseCode = localStorage.getItem('courseCode');
+  const savedCourseTitle = localStorage.getItem('courseTitle');
+  if (savedCourseCode && savedCourseTitle) {
+    this.courseCode = savedCourseCode;
+    this.courseTitle = savedCourseTitle;
+  }
     this.loadSavedFormData();
 
     this.commonRoles = AppConstants
@@ -437,6 +444,8 @@ loadForm() {
           instructorId: item.instructor ||'', // Allow null if instructor is not selected
           courseName: this.courseTitle,
           courseCode: this.courseCode,
+          // courseName:"TestTPnew123",
+          // courseCode:"TGS-2020002144",
           status: 'Pending',
           user_id: this.user_id,
         });
@@ -462,7 +471,6 @@ loadForm() {
     );
     this.courseTitle=filteredData[0].title
     this.courseCode=filteredData[0].courseCode
-
   }
 
   onSelectChange1(event :any,element:any) {
@@ -480,7 +488,7 @@ getTPCourse(classForm:any){
   // console.log("classForm",JSON.parse(localStorage.getItem('user_data')!).user.adminEmail)
   // console.log("classForm",classForm.value.registrationEndDate)
   // console.log("classForm this.trainerId",this.trainerId)
-  // console.log("classForm this.trainerId",this.idNumber)
+  // console.log("classForm this.idNumber",this.idNumber)
   // console.log("classForm ssd",classForm.value.sessions[0].sessionStartDate.replace(/-/g, ''));
   // console.log("moment(date).format('YYYYMMDD')",moment(classForm.value.registrationEndDate).format('YYYYMMDD'))
   let course={
@@ -634,7 +642,8 @@ getTPCourse(classForm:any){
      else {
       if (sessions) {
         this.classForm.value.sessions = sessions;
-        this.classForm.value.courseName = this.courseTitle;      
+         this.classForm.value.courseName = this.courseTitle;  
+        // this.classForm.value.courseName ="TestTPnew123" 
         const userData = localStorage.getItem('user_data');
         if (userData) {
           let userId = JSON.parse(userData).user.companyId;
@@ -643,6 +652,11 @@ getTPCourse(classForm:any){
               if (this.code) {
           this.classForm.value.code = this.code;
         }
+         this.classForm.value.courseReferenceNumber=this.courseCode;
+                this.classForm.value.trainingProvider = {
+                  uen:localStorage.getItem('uen') || ''
+                };
+        this.classForm.value.course= this.getTPCourse(this.classForm);
               if (!this.classForm.valid) {
           Swal.fire({
             title: 'Error',
@@ -799,7 +813,8 @@ getTPCourse(classForm:any){
   scheduleMeet() {
     const formData = this.classForm.value;
     localStorage.setItem('classFormData', JSON.stringify(formData));
-  
+    localStorage.setItem('courseCode', this.courseCode);
+    localStorage.setItem('courseTitle', this.courseTitle);
     if (this.classForm.get('meetingPlatform')?.value === 'zoom') {
       const zoomAuthUrl = environment.ZoomUrl;
       localStorage.setItem('zoomSessionCreated', 'true');
