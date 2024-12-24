@@ -288,7 +288,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.optionValue = params['option'] || null;
-      //  console.log('Option value from URL:', this.optionValue);
+        // console.log('Option value from URL:', this.optionValue);
     });
     this.getCourseKitsnew()
     this.getFundingGrantNew();
@@ -920,6 +920,32 @@ this.exam_assessments=res?.data.reverse();
     );
     // if (this.firstFormGroup.valid) {
       const courseData = this.firstFormGroup.value;
+     
+      if(this.editTPUrl && this.optionValue){
+        if(this.optionValue=='OnlyLearning'||this.optionValue=='LearningAndTutorial')
+          {
+            courseData.issueCertificate="video";
+        }
+        else{
+          courseData.issueCertificate="test";
+          if(this.isOnlyExam)
+          {
+            courseData.examType="direct"
+          }
+          else
+          {
+            courseData.examType="after"
+          }
+  
+        }
+        if(this.optionValue=='LearningAndTutorial'){
+          courseData.learningTutorial=true;
+        }
+        else{
+          courseData.learningTutorial=false;
+        }
+
+      }
       let creator = JSON.parse(localStorage.getItem('user_data')!).user.name;
       let payload = {
         title: courseData?.title,
@@ -960,6 +986,7 @@ this.exam_assessments=res?.data.reverse();
         isFeedbackRequired: courseData?.isFeedbackRequired,
         examType: courseData?.examType,
         issueCertificate: courseData?.issueCertificate,
+        learningTutorial:courseData?.learningTutorial,
         certificate_template: courseData?.certificate_temp,
         certificate_template_id: certicate_temp_id[0].id,
         status: 'inactive',
@@ -1226,6 +1253,7 @@ this.exam_assessments=res?.data.reverse();
       this.fundingGrants = response.fundingGrant;
       //  console.log("newRes===",response)
       //  this.optionValue=response.course.selectedOptionValue;
+      
        this.courseKits = response.courseKit?.docs;
         this.assessments = response.assessment?.data?.docs;
       this.exam_assessments = response.exam_assessment.data.docs;
@@ -1245,6 +1273,8 @@ this.exam_assessments=res?.data.reverse();
       let exam_assessmentId = this.course?.exam_assessment?.id;
       let tutorialId = this.course?.tutorial?.id;
       let feedbackId = this.course?.survey?.id;
+
+      
       if (this.course?.feeType == 'paid') {
         this.isPaid = true;
       }
