@@ -219,8 +219,7 @@ import { ApiResponse } from '@core/models/general.response';
 
     startProctoringAI(id:any) : Observable<any> {
       const apiUrl = `${this.defaultUrl}admin/exam-assesment-answers/zoom-meeting/${id}`;
-      console.log(apiUrl);
-     return this.http.post(apiUrl,{});
+      return this.http.post(apiUrl,{});
     }
 
     getRecentAnalyzer(studentId:string) : Observable<any> {
@@ -234,6 +233,14 @@ import { ApiResponse } from '@core/models/general.response';
 
     updateAnalyzer(analyzerId:string, payload:any) : Observable<any> {
       return this.http.put(`${this.defaultUrl}analyzer/${analyzerId}`,payload)
+    }
+
+    addWarningById(analyzerId:string, payload:any): Observable<any> {
+      return this.http.put(`${this.defaultUrl}analyzer/add-warning/${analyzerId}`, payload)
+    }
+
+    createAnalyzerId(payload:any): Observable<any> {
+      return this.http.post(`${this.defaultUrl}analyzer`, payload)
     }
 
   }

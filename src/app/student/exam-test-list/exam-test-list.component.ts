@@ -106,31 +106,7 @@ export class ExamTestListComponent {
   }
 
   navToExam(data: any) {
-    if (!data.examAssessmentId.videoAnalyzerReq) {
-      this.navToExamSub(data);
-      return;
-    }
-    const studentId = localStorage.getItem('id') || '';
-    this.assessmentService.getRecentAnalyzer(studentId).subscribe((res) => {
-      if (res.success && res.data) {
-        this.analyzerSessionId = res.data._id;
-        this.navToExamSub(data);
-      } else if (res.data == null) {
-        Swal.fire({
-          title: 'Open Video Analyzer?',
-          text: 'Please open Video Analyzer application',
-          icon: 'warning',
-          showCancelButton: false,
-          confirmButtonText: 'Okay',
-          
-        }).then((result) => {
-          if (result.isConfirmed) {
-          } else {
-            console.log('Exam start was canceled by the user.');
-          }
-        });
-      }
-    });
+    this.navToExamSub(data);
   }
 
   navToExamSub(data: any) {
@@ -597,8 +573,7 @@ export class ExamTestListComponent {
       {
         queryParams: {
           retake: false,
-          submitted: true,
-          analyzerId: this.analyzerSessionId,
+          submitted: true
         },
       }
     );
