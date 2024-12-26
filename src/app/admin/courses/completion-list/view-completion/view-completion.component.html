@@ -336,7 +336,7 @@
                                   </div>
                                   <div class="col-xl-6 col-md-12">
                                     <p>
-                                      {{discountDetails.value}}{{discountDetails.discountType =='percentage'? '%':''}}
+                                      {{discountDetails?.value}}{{discountDetails?.discountType =='percentage'? '%':''}}
                                     </p>
                                   </div>
                                 </div>
@@ -345,7 +345,7 @@
                           </div>
   
                         </div>
-                        <div *ngIf="isDiscount"  class="row">
+                        <div  *ngIf="isDiscount"  class="row">
                           <div class="col-10 mx-auto">
                               <div class="table-wrapper">
                                   <div class="table-responsive">
@@ -371,18 +371,18 @@
                                                       <h6>Subtotal</h6>
                                                   </td>
                                                   <td colspan="4" class="price">
-                                                    ${{ (response.courseId?.fee || 0) + (response.classId.instructorCost || 0) }}.00
+                                                    ${{ (response?.courseId?.fee || 0) + (response?.classId?.instructorCost || 0) }}.00
                                                   </td>
                                               </tr>
                                               <tr>
                                                   <td>
-                                                      <h6>Discount({{discountDetails.value}}{{discountDetails.discountType =='percentage'? '%':''}})</h6>
+                                                      <h6>Discount({{discountDetails?.value}}{{discountDetails?.discountType =='percentage'? '%':''}} )</h6>
                                                   </td>
-                                                  <td colspan="4" *ngIf="discountDetails.discountType == 'fixed'" class="price">
-                                                      - ${{(discountDetails.value) | number : '1.2-2'}}
+                                                  <td colspan="4" *ngIf="discountDetails?.discountType == 'fixed'" class="price">
+                                                      - ${{(discountDetails?.value) | number : '1.2-2'}}
                                                   </td>
-                                                  <td colspan="4" *ngIf="discountDetails.discountType == 'percentage'" class="price">
-                                                      - ${{( (response.courseId?.fee +  response.classId?.instructorCost||0) * discountDetails.value / 100) | number : '1.2-2'}}
+                                                  <td colspan="4" *ngIf="discountDetails?.discountType == 'percentage'" class="price">
+                                                      - ${{( (response.courseId?.fee +  response.classId?.instructorCost||0) * discountDetails?.value / 100) | number : '1.2-2'}}
                                                   </td>
                   
                                               </tr>
@@ -390,11 +390,11 @@
                                                   <td>
                                                       <h6>Total</h6>
                                                   </td>
-                                                  <td colspan="4" *ngIf="discountDetails.discountType == 'fixed'"  class="price">
-                                                      ${{ (response.courseId?.fee + response?.classId?.instructorCost || 0)- discountDetails.value | number : '1.2-2'}}
+                                                  <td colspan="4" *ngIf="discountDetails?.discountType == 'fixed'"  class="price">
+                                                      ${{ (response.courseId?.fee + response?.classId?.instructorCost || 0)- discountDetails?.value | number : '1.2-2'}}
                                                   </td>
-                                                  <td colspan="4" *ngIf="discountDetails.discountType == 'percentage'" class="price">
-                                                      ${{ (response.courseId?.fee + response?.classId?.instructorCost || 0)- ( response.courseId?.fee* discountDetails.value / 100) | number : '1.2-2'}}
+                                                  <td colspan="4" *ngIf="discountDetails?.discountType == 'percentage'" class="price">
+                                                      ${{ (response.courseId?.fee + response?.classId?.instructorCost || 0)- ( response.courseId?.fee* discountDetails?.value / 100) | number : '1.2-2'}}
                                                   </td>
                                               </tr>
                                           </tbody>
@@ -403,6 +403,61 @@
                               </div>
                           </div>
                       </div>
+
+
+                      <div *ngIf="isDiscountType"  class="row">
+                        <div class="col-10 mx-auto">
+                            <div class="table-wrapper">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Item</th>
+                                                <th style="text-align: center;">Quantity</th>
+                                                <th style="text-align: right;">Unit Price</th>
+                                                <th style="text-align: right;">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr style="cursor: pointer">
+                                                <td style="width: 45%;">{{response.title ||response.courseId.title  | titlecase}}</td>
+                                                <td style="text-align: center;">1</td>
+                                                <td>${{ (response.courseId?.fee || 0) + (response.classId.instructorCost || 0) }}.00</td>
+                                                <td>${{ (response.courseId?.fee || 0) + (response.classId.instructorCost || 0) }}.00</td>
+                                              </tr>
+                                            <tr></tr>
+                                            <tr>
+                                                <td>
+                                                    <h6>Subtotal</h6>
+                                                </td>
+                                                <td colspan="4" class="price">
+                                                  ${{ (response?.courseId?.fee || 0) + (response?.classId?.instructorCost || 0) }}.00
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <h6>Discount(${{discountType || 0}})</h6>
+                                                </td>
+                                                <td colspan="4"  class="price">
+                                                    - ${{discountType || 0}}.00
+                                                </td>
+                                              
+                
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <h6>Total</h6>
+                                                </td>
+                                                <td colspan="4"  class="price">
+                                                    ${{ (response.courseId?.fee + response?.classId?.instructorCost || 0) - discountType  }}.00
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                   
                       </div>
                     </div>

@@ -212,6 +212,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         [Validators.required, Validators.pattern(/^[a-zA-Z0-9]/)],
       ],
       fee: new FormControl('', [Validators.pattern(/^\d+(\.\d+)?$/)]),
+      discount_type: new FormControl('', [Validators.required]),
       currency_code: [''],
 
       course_duration_in_days: new FormControl('', [
@@ -928,6 +929,7 @@ this.exam_assessments=res?.data.reverse();
         training_hours: courseData?.training_hours,
         department: courseData?.department,
         fee: courseData?.fee,
+        discount_type:courseData?.discount_type,
         approval: courseData?.approval,
         currency_code: courseData?.currency_code,
         skill_connect_code: courseData?.skill_connect_code,
@@ -1135,6 +1137,7 @@ this.exam_assessments=res?.data.reverse();
         training_hours: courseData?.training_hours,
         department: courseData?.department,
         fee: courseData?.fee,
+        discount_type:courseData?.discount_type,
         approval: courseData?.approval,
         currency_code: courseData?.currency_code,
         skill_connect_code: courseData?.skill_connect_code,
@@ -1277,6 +1280,7 @@ this.exam_assessments=res?.data.reverse();
         course_detailed_description: this.course?.course_detailed_description,
         skill_connect_code: this.course?.skill_connect_code,
         fee: this.course?.fee?.toString(),
+        discount_type:this.course?.discount_type,
         approval: this.course?.approval,
         sessionStartDate: `${moment(this.course?.sessionStartDate).format(
           'YYYY-MM-DD'
