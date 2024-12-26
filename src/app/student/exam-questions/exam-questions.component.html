@@ -23,12 +23,16 @@
                     style="position: fixed; top: 10%; right: 50px; width: 300px; z-index: 999;"
                   >
                     <div class="video-container mb-3" >
-
                         <app-object-detection
+                        *ngIf="profilePicDesc"
                         (MobilePhone)="handleMobilePhoneDetected()"
                         (ProhibitedObject)="handleProhibitedObjectDetected()"
                         (FaceNotVisible)="handleFaceNotVisible()"
                         (MultipleFacesVisible)="handleMultipleFacesDetected()"
+                        (FaceMatchDetect)="handleFaceMatchDetected(true)"
+                        (FaceMisMatchDetect)="handleFaceMatchDetected(false)"
+                        [profilePic]="userProfilePic"
+                        [profilePicDesc]="profilePicDesc"
                       ></app-object-detection>
                       <!-- <video #videoElement autoplay class="w-100 border rounded"></video> -->
                     </div>
@@ -117,6 +121,12 @@
                     </div>
                 </div>
             </ng-container>
+
+            <div class="overlay" *ngIf="showOverlay">
+                <div class="overlay-content">
+                  <p class="h3">Waiting for Face Match...</p>
+                </div>
+              </div>
         </div>
     </div>
 </section>
