@@ -33,7 +33,8 @@ export class ViewCompletionComponent implements OnInit {
   edit = false;
   delete = false;
   storedItems: string | null;
-
+  isDiscountType:any;
+  discountType: any;
   constructor(private classService: ClassService,private courseService: CourseService,private _router: Router, private activatedRoute: ActivatedRoute,public _classService: ClassService, private assessmentService: AssessmentService, 
     private authenService: AuthenService, private sanitizer: DomSanitizer,) {
 
@@ -149,12 +150,19 @@ export class ViewCompletionComponent implements OnInit {
      this.courseService.getStudentClassById(id).subscribe((response: any) => {
       this.classDataById = response?._id;
       this.response = response;
+     
       if(response.discount){
         this.isDiscount = true;
         this.courseService.getDiscountById(response.discount).subscribe(discountResponse => {
           this.discountDetails = discountResponse;
         })
       }
+      else {
+        this.isDiscountType = true;
+        this.discountType = response.discount_type;
+      }
+
+
   
     });
   }
