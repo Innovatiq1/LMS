@@ -43,6 +43,8 @@ import { AssessmentService } from '@core/service/assessment.service';
 import { AppConstants } from '@shared/constants/app.constants';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { environment } from 'environments/environment';
+import { HttpClient } from '@angular/common/http';
+
 declare var Scorm2004API: any;
 export interface PeriodicElement {
   name: string;
@@ -78,8 +80,7 @@ export class ViewCourseComponent implements OnDestroy {
   questionForm!: FormGroup;
   isPlaying = false;
   lastPausedAt: number = 0;
-
-
+  courseReferenceNumber: string = '';
   courseKitModel!: Partial<CourseKitModel>;
   templates: any[] = [];
   currentDate!: Date;
@@ -100,12 +101,12 @@ export class ViewCourseComponent implements OnDestroy {
   studentClassDetails: any;
   isStatus = false;
   isApproved = false;
-  isTest:boolean=true;
-  isDocument:boolean=false;
+  isTest: boolean = true;
+  isDocument: boolean = false;
   isCancelled = false;
   isCompleted = false;
-  isDiscountVerification : boolean= false;
-  isApproval : boolean= false;
+  isDiscountVerification: boolean = false;
+  isApproval: boolean = false;
   documentLink: any;
   uploadedDoc: any;
   title!: string;
@@ -132,7 +133,7 @@ export class ViewCourseComponent implements OnDestroy {
   isFeedBackSubmitted: boolean = false;
   questionList: any = [];
   answersResult!: any;
-  getAssessmentId!:any;
+  getAssessmentId!: any;
   feedbackInfo!: any;
   freeCourse: boolean;
   paidCourse: boolean;
@@ -143,7 +144,7 @@ export class ViewCourseComponent implements OnDestroy {
   courseDetailsId: any;
   razorPayKey: any;
   isInvoice: boolean = false;
-  paidAmount:boolean = false;
+  paidAmount: boolean = false;
 
   pdfData: any = [];
   dafaultGenratepdf: boolean = false;
@@ -151,7 +152,8 @@ export class ViewCourseComponent implements OnDestroy {
   invoiceUrl: any;
   verify = false;
   payment = false;
-  selectedDiscount:any;
+  selectedDiscount: any;
+  selectedDiscountType:any;
 
   questionTimer: number = 60;
   defaultTab: string = 'home';
@@ -167,20 +169,22 @@ export class ViewCourseComponent implements OnDestroy {
   totalFee: any;
   isCertificate: string = '';
   paidProgram: boolean;
-  assessmentTempInfo: any= null;
+  assessmentTempInfo: any = null;
   isShowFeedback: boolean = false;
   isShowAssessmentQuestions: boolean = false;
-  feeType:string='';
+  feeType: string = '';
   isScormCourseKit: boolean = false;
   scormModules: any[] = [];
   iframeUrl: string = '';
   private prefix: string = environment.Url;
   currentScormModule: any;
-  lastcommit:any;
-  scormKit:any;
-  RetakeRequestCount=0;
-  retakeResponseData:any;
+  lastcommit: any;
+  scormKit: any;
+  RetakeRequestCount = 0;
+  retakeResponseData: any;
   approval: any;
+  discount_Type: any;
+  tpDiscountValue: any;
 
   constructor(
     private classService: ClassService,
@@ -198,6 +202,7 @@ export class ViewCourseComponent implements OnDestroy {
     private assessmentService: AssessmentService,
     private changeDetectorRef: ChangeDetectorRef,
     private sanitizer: DomSanitizer,
+    private http: HttpClient
   ) {
     let urlPath = this.router.url.split('/');
     this.paidCourse = urlPath.includes('view-course');
@@ -226,12 +231,11 @@ export class ViewCourseComponent implements OnDestroy {
           this.getRegisteredClassDetails();
         });
       this.getRegisteredClassDetails();
-    }  else if (this.paidProgram) {
+    } else if (this.paidProgram) {
       this.paid = true;
       this.subscribeParams = this.activatedRoute.params.subscribe((params) => {
         this.courseDetailsId = params['id'];
         this.getCourseKitDetails(this.courseDetailsId);
-        
       });
     }
   }
@@ -241,7 +245,7 @@ export class ViewCourseComponent implements OnDestroy {
         this.defaultTab = 'test';
       }
     });
-    this.commonRoles = AppConstants
+    this.commonRoles = AppConstants;
   }
   // openDocumentDialog(documentLink: string, filename: string): void {
   //   this.dialog.open(DocumentViewComponent, {
@@ -253,35 +257,35 @@ export class ViewCourseComponent implements OnDestroy {
   getSafeHtml(html: string): SafeHtml {
     return this.sanitizer.bypassSecurityTrustHtml(html);
   }
-  openDocumentDialog(url: string,filename: string): void {
-   // console.log("viewCourse page ==",url);
+  openDocumentDialog(url: string, filename: string): void {
+    // console.log("viewCourse page ==",url);
     this.dialog.open(DocumentViewComponent, {
       width: '100%',
       height: '100%',
-      data: { url }
+      data: { url },
     });
   }
   getClassDetails() {
     this.classService.getClassById(this.classId).subscribe((response) => {
       this.classDetails = response;
-      console.log("classRes",this.classDetails)
-      
-  this.feeType=this.classDetails.courseId.feeType;
-  this.approval=this.classDetails?.courseId?.approval;
+      console.log('classRes', this.classDetails);
+
+      this.feeType = this.classDetails.courseId.feeType;
+      this.approval = this.classDetails?.courseId?.approval;
+      this.courseReferenceNumber = this.classDetails?.courseReferenceNumber;
 
       this.courseId = this.classDetails.courseId.id;
       this.dataSource = this.classDetails.sessions;
-      if(!this.paidProgram){
-      this.getCourseKitDetails(this.courseId);
+      if (!this.paidProgram) {
+        this.getCourseKitDetails(this.courseId);
       }
       this.getAssessmentAnswerCount(this.courseId);
       this.getRetakeRequests(this.courseId);
       this.getExamAssessmentAnswerCount(this.courseId);
-      this.getTPAssessmentData()
+      this.getTPAssessmentData();
     });
   }
-  
- 
+
   onTimeUpdate(event: any) {
     let time = this.commonService.getPlayBackTime();
     this.videoPlayer.nativeElement.addEventListener('timeupdate', () => {
@@ -290,7 +294,7 @@ export class ViewCourseComponent implements OnDestroy {
           this.videoPlayer.nativeElement.duration) *
         100;
       this.array.push(progress);
-      
+
       this.commonService.setProgress(this.array);
     });
     this.videoPlayer.nativeElement.addEventListener('loadedmetadata', () => {
@@ -351,7 +355,7 @@ export class ViewCourseComponent implements OnDestroy {
 
   checkStudentClassRedirect() {
     let courseId = this.courseDetailsId;
-    let studentId:any = localStorage.getItem('id');
+    let studentId: any = localStorage.getItem('id');
     let classId = localStorage.getItem('classId');
     const videoDetails = this.commonService.getVideoDetails();
 
@@ -359,7 +363,7 @@ export class ViewCourseComponent implements OnDestroy {
       .getStudentClass(studentId, classId)
       .subscribe((response) => {
         this.studentClassDetails = response.data.docs[0].coursekit;
-        
+
         if (
           this.studentClassDetails.playbackTime !== 100 ||
           !this.studentClassDetails.playbackTime
@@ -370,7 +374,7 @@ export class ViewCourseComponent implements OnDestroy {
           const allUnmatchedCompleted = unmatchedDocuments.every(
             (doc: { playbackTime: number }) => doc.playbackTime === 100
           );
-         
+
           if (allUnmatchedCompleted) {
             this.courseService
               .getStudentClass(studentId, this.classId)
@@ -379,119 +383,128 @@ export class ViewCourseComponent implements OnDestroy {
                 // console.log("this.studentClassDetails",this.studentClassDetails)
                 // console.log("studentId",studentId)
                 // console.log("this.classId",this.classId)
-                const issueCertificate=this.studentClassDetails.classId.courseId.issueCertificate;
-                const learningTutorial=this.studentClassDetails.classId.courseId.learningTutorial;
-           const playBackTimes=this.studentClassDetails.playbackTime;
-           this.isTest = (issueCertificate === 'test' && playBackTimes === 100) ? true : false; 
-           this.isDocument=issueCertificate==='document'?false:true;          
+                const issueCertificate =
+                  this.studentClassDetails.classId.courseId.issueCertificate;
+                const learningTutorial =
+                  this.studentClassDetails.classId.courseId.learningTutorial;
+                const playBackTimes = this.studentClassDetails.playbackTime;
+                this.isTest =
+                  issueCertificate === 'test' && playBackTimes === 100
+                    ? true
+                    : false;
+                this.isDocument =
+                  issueCertificate === 'document' ? false : true;
                 if (this.studentClassDetails.status == 'approved') {
                   if (this.paid) {
                     const targetURL = `/student/questions/${classId}/${studentId}/${this.courseId}`;
-                    if(this.router.url!=targetURL){
-                      if(issueCertificate=='test'){
-                      if (this.classDetails.courseId.tutorial != null) {
-                        this.router.navigate([
-                          '/student/questions/',
-                          classId,
-                          studentId,
-                          this.courseId,
-                        ]);
-                      } else {
-                      }
-                      }
-                      else if(issueCertificate=='video' && learningTutorial){
+                    if (this.router.url != targetURL) {
+                      if (issueCertificate == 'test') {
                         if (this.classDetails.courseId.tutorial != null) {
                           this.router.navigate([
                             '/student/questions/',
                             classId,
                             studentId,
                             this.courseId,
-                          ],
-                          {
-                            queryParams: { learningTutorial: this.studentClassDetails.classId.courseId.learningTutorial }
-                          }
-                        );
+                          ]);
+                        } else {
                         }
-
-
-                      }
-                      else{
-                        let payload={
-                          classId:this.classId,
-                          playbackTime:100,
-                          status:'completed',
-                          studentId:studentId
-
-                        }
-                        this.classService.saveApprovedClasses(this.classId,payload).subscribe((response)=>{
-                         Swal.fire({
-                          title: 'Course Completed Successfully',
-                          text: 'Please Wait For the Certificate',
-                          icon: 'success',
-                        }).then((result) => {
-                          if (result.isConfirmed) {
-                            location.reload();
-                          }
-                        });
-
-                        })
-                      }
-                     
-                    }
-                  } else if (this.free) {
-                    const targetURL = `/student/questions/freecourse/${classId}/${studentId}/${this.courseId}`;
-                    if(this.router.url!=targetURL){
-                      if(issueCertificate=='test'){
-                          if (this.classDetails.courseId.tutorial != null) {
-                            this.router.navigate([
-                              '/student/questions/freecourse/',
+                      } else if (
+                        issueCertificate == 'video' &&
+                        learningTutorial
+                      ) {
+                        if (this.classDetails.courseId.tutorial != null) {
+                          this.router.navigate(
+                            [
+                              '/student/questions/',
                               classId,
                               studentId,
                               this.courseId,
-                            ]);
-                          } else {
-                          }
-                     
+                            ],
+                            {
+                              queryParams: {
+                                learningTutorial:
+                                  this.studentClassDetails.classId.courseId
+                                    .learningTutorial,
+                              },
+                            }
+                          );
+                        }
+                      } else {
+                        let payload = {
+                          classId: this.classId,
+                          playbackTime: 100,
+                          status: 'completed',
+                          studentId: studentId,
+                        };
+                        this.classService
+                          .saveApprovedClasses(this.classId, payload)
+                          .subscribe((response) => {
+                            Swal.fire({
+                              title: 'Course Completed Successfully',
+                              text: 'Please Wait For the Certificate',
+                              icon: 'success',
+                            }).then((result) => {
+                              if (result.isConfirmed) {
+                                location.reload();
+                              }
+                            });
+                          });
+                      }
                     }
-                    if(issueCertificate=='video' && learningTutorial){
-                      if (this.classDetails.courseId.tutorial != null) {
-                        this.router.navigate(
-                          [
+                  } else if (this.free) {
+                    const targetURL = `/student/questions/freecourse/${classId}/${studentId}/${this.courseId}`;
+                    if (this.router.url != targetURL) {
+                      if (issueCertificate == 'test') {
+                        if (this.classDetails.courseId.tutorial != null) {
+                          this.router.navigate([
                             '/student/questions/freecourse/',
                             classId,
                             studentId,
                             this.courseId,
-                          ],
-                          {
-                            queryParams: { learningTutorial: this.studentClassDetails.classId.courseId.learningTutorial }
-                          }
-                        );
-                      }
-
-                    }
-
-                    else{
-                      let payload={
-                        classId:this.classId,
-                        playbackTime:100,
-                        status:'completed',
-                        studentId:studentId
-
-                      }
-
-                      this.classService.saveApprovedClasses(this.classId,payload).subscribe((response)=>{
-                       Swal.fire({
-                        title: 'Course Completed Successfully',
-                        text: 'Please Wait For the Certificate',
-                        icon: 'success',
-                      }).then((result) => {
-                        if (result.isConfirmed) {
-                          location.reload();
+                          ]);
+                        } else {
                         }
-                      });
+                      }
+                      if (issueCertificate == 'video' && learningTutorial) {
+                        if (this.classDetails.courseId.tutorial != null) {
+                          this.router.navigate(
+                            [
+                              '/student/questions/freecourse/',
+                              classId,
+                              studentId,
+                              this.courseId,
+                            ],
+                            {
+                              queryParams: {
+                                learningTutorial:
+                                  this.studentClassDetails.classId.courseId
+                                    .learningTutorial,
+                              },
+                            }
+                          );
+                        }
+                      } else {
+                        let payload = {
+                          classId: this.classId,
+                          playbackTime: 100,
+                          status: 'completed',
+                          studentId: studentId,
+                        };
 
-                      })
-                    }
+                        this.classService
+                          .saveApprovedClasses(this.classId, payload)
+                          .subscribe((response) => {
+                            Swal.fire({
+                              title: 'Course Completed Successfully',
+                              text: 'Please Wait For the Certificate',
+                              icon: 'success',
+                            }).then((result) => {
+                              if (result.isConfirmed) {
+                                location.reload();
+                              }
+                            });
+                          });
+                      }
                     }
                   }
                 } else {
@@ -532,165 +545,215 @@ export class ViewCourseComponent implements OnDestroy {
     this.commonService.setVideoDetails(video);
   }
 
-  getDiscounts(id:any){
-    debugger
+  getDiscounts(id: any) {
+    // debugger
     this.courseService.getDiscount(id).subscribe((response) => {
-      this.discounts = response.filter(item => !item.discountTitle.includes('&'));
+      this.discounts = response.filter(
+        (item) => !item.discountTitle.includes('&')
+      );
       this.allDiscounts = response;
-      this.openDialog(this.discountDialog)
-    })
-
+      this.openDialog(this.discountDialog);
+    });
   }
-  submitDiscount(dialogRef?:any){
+  submitDiscount(dialogRef?: any) {
     var userdata = JSON.parse(localStorage.getItem('currentUser')!);
     // let department= JSON.parse(localStorage.getItem('user_data')!).user.department;
     var studentId = localStorage.getItem('id');
     const today = new Date();
     const date = today.toISOString().split('T')[0];
-    if(this.approval == 'no'){
-     
-      this.registerClass()
+    if (this.approval == 'no') {
+      this.registerClass();
       dialogRef.close();
-
-           
     } else {
-    let body = {
-      email: userdata.user.email,
-      name: userdata.user.name,
-      adminEmail:userdata.user.adminEmail,
-      adminName:userdata.user.adminName,
-      companyId:userdata.user.companyId,
-      department:userdata.user.department,
-      courseTitle: this.classDetails?.courseId?.title,
-      courseFee: this.classDetails?.courseId?.fee+this.classDetails?.instructorCost,
-      studentId: studentId,
-      classId: this.classId,
-      title: this.title,
-      coursekit: this.courseKit,
-      date: date,
-      verify:false,
-      discount:this.selectedDiscount?.id
-    };
-              this.courseService
-                .saveRegisterClass(body)
-                .subscribe((response) => {
-                  Swal.fire({
-                    title: 'Thank you',
-                    text: 'We will verify details & enable payment',
-                    icon: 'success',
-                  });
-                  dialogRef?.close();
-                  this.payment = false;
-                  this.isRegistered = true;
-                  this.getRegisteredClassDetails();
-                  if(this.isDiscountVerification == true){
-                    this.isDiscountVerification = false
-
-                  }
-                });
+      let body = {
+        email: userdata.user.email,
+        name: userdata.user.name,
+        adminEmail: userdata.user.adminEmail,
+        adminName: userdata.user.adminName,
+        companyId: userdata.user.companyId,
+        department: userdata.user.department,
+        courseTitle: this.classDetails?.courseId?.title,
+        courseFee:
+          this.classDetails?.courseId?.fee + this.classDetails?.instructorCost,
+        studentId: studentId,
+        classId: this.classId,
+        title: this.title,
+        coursekit: this.courseKit,
+        date: date,
+        verify: false,
+        discount_type:this.selectedDiscountType || 0,
+        discount: this.selectedDiscount?.id,
+      };
+      this.courseService.saveRegisterClass(body).subscribe((response) => {
+        Swal.fire({
+          title: 'Thank you',
+          text: 'We will verify details & enable payment',
+          icon: 'success',
+        });
+        dialogRef?.close();
+        this.payment = false;
+        this.isRegistered = true;
+        this.getRegisteredClassDetails();
+        if (this.isDiscountVerification == true) {
+          this.isDiscountVerification = false;
+        }
+      });
+    }
   }
-}
 
   openDialog(templateRef: any): void {
     const dialogRef = this.dialog.open(templateRef, {
       width: '1000px',
-      data: {   discounts:this.discounts    },
-    });    
-}
-
-reRegister(){
-  var userdata = JSON.parse(localStorage.getItem('currentUser')!);
-  let department= JSON.parse(localStorage.getItem('user_data')!).user.department;
-  var studentId = localStorage.getItem('id');
-  if(this.approval == "yes"){
-    let payload = {
-      studentId: studentId,
-      classId: this.classId,
-      title: this.title,
-      department:userdata.user.department,
-      coursekit: this.courseKit,
-      courseStartDate:this.classDetails?.courseId?.sessionStartDate,
-      courseEndDate:this.classDetails?.courseId?.sessionEndDate,
-      email: userdata.user.email,
-      name: userdata.user.name,
-      courseTitle: this.courseDetails?.title,
-      courseFee: this.classDetails?.courseId?.fee+this.classDetails?.instructorCost || 0,
-      courseId: this.courseDetails.id,
-      companyId:userdata.user.companyId,
-      verify:true,
-      paid:true
-    };
-    this.courseService.saveRegisterClass(payload).subscribe((response) => {
-      Swal.fire({
-        title: 'Thank you',
-        text: 'We will approve once verified',
-        icon: 'success',
-      });
-    this.getRegisteredClassDetails();
-    this.isApproval =false;
-    });
-  } else if(this.approval == "no"){
-    let payload = {
-      studentId: studentId,
-      classId: this.classId,
-      title: this.title,
-      department:userdata.user.department,
-      coursekit: this.courseKit,
-      courseStartDate:this.classDetails?.courseId?.sessionStartDate,
-      courseEndDate:this.classDetails?.courseId?.sessionEndDate,
-      email: userdata.user.email,
-      name: userdata.user.name,
-      courseTitle: this.courseDetails?.title,
-      courseFee: this.classDetails?.courseId?.fee+this.classDetails?.instructorCost|| 0,
-      courseId: this.courseDetails.id,
-      companyId:userdata.user.companyId,
-      verify:true,
-      paid:true,
-      status:'approved'
-    };
-    this.courseService.saveRegisterClass(payload).subscribe((response) => {
-      Swal.fire({
-        title: 'Thank you',
-        text: 'All the Best for learning!',
-        icon: 'success',
-      });
-     this.getRegisteredClassDetails();
+      data: { discounts: this.discounts },
     });
   }
 
-}
-  submitForVerification(classId: string,action?:string) {
-    debugger
+  reRegister() {
     var userdata = JSON.parse(localStorage.getItem('currentUser')!);
-    let department= JSON.parse(localStorage.getItem('user_data')!).user.department;
+    let department = JSON.parse(localStorage.getItem('user_data')!).user
+      .department;
     var studentId = localStorage.getItem('id');
-    if (this.paid && this.feeType=="paid" && this.approval == "yes") {
-      if(this.isDiscountVerification == true){
-        this.submitDiscount()
-      } else {
-        this.getDiscounts(userdata.user.companyId);
-      }
-   
-    } else if(this.paid && this.feeType=="paid"&& this.approval == "no"){
-      this.getDiscounts(userdata.user.companyId);
-    }
-    else if (this.paid && this.feeType=="free"&& this.approval == "yes") {
+    if (this.approval == 'yes') {
       let payload = {
         studentId: studentId,
         classId: this.classId,
         title: this.title,
-        department:userdata.user.department,
+        department: userdata.user.department,
         coursekit: this.courseKit,
-        courseStartDate:this.classDetails?.courseId?.sessionStartDate,
-        courseEndDate:this.classDetails?.courseId?.sessionEndDate,
+        courseStartDate: this.classDetails?.courseId?.sessionStartDate,
+        courseEndDate: this.classDetails?.courseId?.sessionEndDate,
+        email: userdata.user.email,
+        name: userdata.user.name,
+        courseTitle: this.courseDetails?.title,
+        courseFee:
+          this.classDetails?.courseId?.fee +
+            this.classDetails?.instructorCost || 0,
+        courseId: this.courseDetails.id,
+        companyId: userdata.user.companyId,
+        verify: true,
+        paid: true,
+      };
+      this.courseService.saveRegisterClass(payload).subscribe((response) => {
+        Swal.fire({
+          title: 'Thank you',
+          text: 'We will approve once verified',
+          icon: 'success',
+        });
+        this.getRegisteredClassDetails();
+        this.isApproval = false;
+      });
+    } else if (this.approval == 'no') {
+      let payload = {
+        studentId: studentId,
+        classId: this.classId,
+        title: this.title,
+        department: userdata.user.department,
+        coursekit: this.courseKit,
+        courseStartDate: this.classDetails?.courseId?.sessionStartDate,
+        courseEndDate: this.classDetails?.courseId?.sessionEndDate,
+        email: userdata.user.email,
+        name: userdata.user.name,
+        courseTitle: this.courseDetails?.title,
+        courseFee:
+          this.classDetails?.courseId?.fee +
+            this.classDetails?.instructorCost || 0,
+        courseId: this.courseDetails.id,
+        companyId: userdata.user.companyId,
+        verify: true,
+        paid: true,
+        status: 'approved',
+      };
+      this.courseService.saveRegisterClass(payload).subscribe((response) => {
+        Swal.fire({
+          title: 'Thank you',
+          text: 'All the Best for learning!',
+          icon: 'success',
+        });
+        this.getRegisteredClassDetails();
+      });
+    }
+  }
+  tpDiscount() {
+    const courseReferenceNumber = this.classDetails?.courseReferenceNumber || '';
+    const trainingPartnerUen = localStorage.getItem('uen') || '';
+  
+    const payload = {
+      courses: [
+        {
+          courseReferenceNumber: courseReferenceNumber,
+          trainingPartnerUen: 'S70SS0009L',
+        },
+      ],
+    };
+    console.log('Payload:', payload);
+  
+    this.http.post('http://localhost:3001/getGrantCalculations', payload).subscribe(
+      (response: any) => {
+        const course = response?.courses?.[0];
+        if (course?.funding?.eligibleGrants?.eligibleGrantDetails?.length > 0) {
+          this.tpDiscountValue = course.funding.eligibleGrants.eligibleGrantDetails;
+        } else {
+          console.log('No eligible grant details available.');
+        }
+      },
+      (error) => {
+        console.error('API Error:', error);
+      }
+    );
+  
+    this.openDialog(this.discountDialog);
+  }
+  
+  submitForVerification(classId: string, action?: string) {
+    // debugger
+    var userdata = JSON.parse(localStorage.getItem('currentUser')!);
+    let department = JSON.parse(localStorage.getItem('user_data')!).user
+      .department;
+    var studentId = localStorage.getItem('id');
+    // if (this.paid && this.feeType=="paid" && this.approval == "yes") {
+    //   if(this.isDiscountVerification == true){
+    //     this.submitDiscount()
+    //   } else {
+    //     this.getDiscounts(userdata.user.companyId);
+    //   }
+
+    // } else if(this.paid && this.feeType=="paid"&& this.approval == "no"){
+    //   this.getDiscounts(userdata.user.companyId);
+    // }
+    if (this.paid && this.feeType === 'paid' && this.approval === 'yes') {
+      if (this.discount_Type === 'application discount') {
+        if (this.isDiscountVerification === true) {
+          this.submitDiscount();
+        } else {
+          this.getDiscounts(userdata.user.companyId);
+        }
+      } else if (this.discount_Type === 'tp gateway discount') {
+        this.tpDiscount();
+      } else if (this.discount_Type === 'none'){
+        this.submitDiscount();
+      }
+
+    } else if (this.paid && this.feeType === 'paid' && this.approval === 'no') {
+      if (this.discount_Type === 'application discount' || this.discount_Type === 'tp gateway discount') {
+        this.getDiscounts(userdata.user.companyId);
+      } 
+    } else if (this.paid && this.feeType == 'free' && this.approval == 'yes') {
+      let payload = {
+        studentId: studentId,
+        classId: this.classId,
+        title: this.title,
+        department: userdata.user.department,
+        coursekit: this.courseKit,
+        courseStartDate: this.classDetails?.courseId?.sessionStartDate,
+        courseEndDate: this.classDetails?.courseId?.sessionEndDate,
         email: userdata.user.email,
         name: userdata.user.name,
         courseTitle: this.courseDetails?.title,
         courseFee: 0,
         courseId: this.courseDetails.id,
-        companyId:userdata.user.companyId,
-        verify:true,
-        paid:true
+        companyId: userdata.user.companyId,
+        verify: true,
+        paid: true,
       };
       this.courseService.saveRegisterClass(payload).subscribe((response) => {
         Swal.fire({
@@ -699,29 +762,28 @@ reRegister(){
           icon: 'success',
         });
         this.isRegistered = true;
-        this.payment=true;
-        this.verify=true;
-        this.paidAmount=true;
+        this.payment = true;
+        this.verify = true;
+        this.paidAmount = true;
       });
-    }
-    else if (this.paid && this.feeType=="free"&& this.approval == "no") {
+    } else if (this.paid && this.feeType == 'free' && this.approval == 'no') {
       let payload = {
         studentId: studentId,
         classId: this.classId,
         title: this.title,
-        department:userdata.user.department,
+        department: userdata.user.department,
         coursekit: this.courseKit,
-        courseStartDate:this.classDetails?.courseId?.sessionStartDate,
-        courseEndDate:this.classDetails?.courseId?.sessionEndDate,
+        courseStartDate: this.classDetails?.courseId?.sessionStartDate,
+        courseEndDate: this.classDetails?.courseId?.sessionEndDate,
         email: userdata.user.email,
         name: userdata.user.name,
         courseTitle: this.courseDetails?.title,
         courseFee: 0,
         courseId: this.courseDetails.id,
-        companyId:userdata.user.companyId,
-        verify:true,
-        paid:true,
-        status:'approved'
+        companyId: userdata.user.companyId,
+        verify: true,
+        paid: true,
+        status: 'approved',
       };
       this.courseService.saveRegisterClass(payload).subscribe((response) => {
         Swal.fire({
@@ -729,408 +791,436 @@ reRegister(){
           text: 'All the Best for learning!',
           icon: 'success',
         });
-       this.getRegisteredClassDetails();
+        this.getRegisteredClassDetails();
       });
     }
   }
   registerClass(classId?: string) {
+    console.log("regis",this.discountValue)
     var userdata = JSON.parse(localStorage.getItem('currentUser')!);
     var studentId = localStorage.getItem('id');
     if (this.paid) {
-if(this.feeType=="paid" && this.approval == 'yes')
-{
-  const today = new Date();
-  const date = today.toISOString().split('T')[0];
-  let body = {
-    email: userdata.user.email,
-    name: userdata.user.name,
-    courseTitle: this.classDetails?.courseId?.title,
-    courseFee: this.classDetails?.courseId?.fee+this.classDetails?.instructorCost,
-    instructorCost: this.classDetails?.instructorCost,
-    studentId: studentId,
-    classId: this.classId,
-    title: this.title,
-    coursekit: this.courseKit,
-    date: date,
-    discountType:this.discountType? this.discountType:'',
-    discountValue:this.discountValue?this.discountValue: 0,
-    courseStartDate:this.classDetails?.courseId?.sessionStartDate,
-    courseEndDate:this.classDetails?.courseId?.sessionEndDate
-  };
-  const invoiceDialogRef = this.dialog.open(InvoiceComponent, {
-    width: '1000px',
-    height: '600px',
-    data: body,
-  });
-  invoiceDialogRef.afterClosed().subscribe((res) => {
-    if (res) {
-    
-      this.totalFee=res.totalValue
-      const dialogRef = this.dialog.open(PaymentDailogComponent, {
-        width: '450px',
-        height: '300px',
-        data: { payment: '' },
-      });
-      dialogRef.afterClosed().subscribe((result) => {
-        if (result) {
-          if (result.payment === 'card') {
-            this.generateInvoice(body);
-            setTimeout(() => {
-            let payload = {
-              email: userdata.user.email,
-              name: userdata.user.name,
-              courseTitle: this.classDetails?.courseId?.title,
-              courseFee:res.totalValue?res.totalValue:res.courseFee,
-              studentId: studentId,
-              classId: this.classId,
-              title: this.title,
-              coursekit: this.courseKit,
-              paid:true,
-              stripe:true,
-              adminEmail:userdata.user.adminEmail,
-              adminName:userdata.user.adminName,
-              companyId:userdata.user.companyId,
-              invoiceUrl:this.invoiceUrl,
-              courseStartDate:this.classDetails?.courseId?.sessionStartDate,
-              courseEndDate:this.classDetails?.courseId?.sessionEndDate,
-              status: 'registered'
-            }
+      if (this.feeType == 'paid' && this.approval == 'yes') {
+        const today = new Date();
+        const date = today.toISOString().split('T')[0];
+        let body = {
+          email: userdata.user.email,
+          name: userdata.user.name,
+          courseTitle: this.classDetails?.courseId?.title,
+          courseFee:
+            this.classDetails?.courseId?.fee +
+            this.classDetails?.instructorCost,
+          instructorCost: this.classDetails?.instructorCost,
+          studentId: studentId,
+          classId: this.classId,
+          title: this.title,
+          coursekit: this.courseKit,
+          date: date,
+          discountType: this.discountType ? this.discountType : '',
+          discountValue: this.discountValue ? this.discountValue : 0,
+          courseStartDate: this.classDetails?.courseId?.sessionStartDate,
+          courseEndDate: this.classDetails?.courseId?.sessionEndDate,
+        };
+        const invoiceDialogRef = this.dialog.open(InvoiceComponent, {
+          width: '1000px',
+          height: '600px',
+          data: body,
+        });
+        invoiceDialogRef.afterClosed().subscribe((res) => {
+          if (res) {
+            this.totalFee = res.totalValue;
+            const dialogRef = this.dialog.open(PaymentDailogComponent, {
+              width: '450px',
+              height: '300px',
+              data: { payment: '' },
+            });
+            dialogRef.afterClosed().subscribe((result) => {
+              if (result) {
+                if (result.payment === 'card') {
+                  this.generateInvoice(body);
+                  setTimeout(() => {
+                    let payload = {
+                      email: userdata.user.email,
+                      name: userdata.user.name,
+                      courseTitle: this.classDetails?.courseId?.title,
+                      courseFee: res.totalValue
+                        ? res.totalValue
+                        : res.courseFee,
+                      studentId: studentId,
+                      classId: this.classId,
+                      title: this.title,
+                      coursekit: this.courseKit,
+                      paid: true,
+                      stripe: true,
+                      adminEmail: userdata.user.adminEmail,
+                      adminName: userdata.user.adminName,
+                      companyId: userdata.user.companyId,
+                      invoiceUrl: this.invoiceUrl,
+                      courseStartDate:
+                        this.classDetails?.courseId?.sessionStartDate,
+                      courseEndDate:
+                        this.classDetails?.courseId?.sessionEndDate,
+                      status: 'registered',
+                    };
 
-            this.classService
-            .saveApprovedClasses(this.registeredClassId,payload).subscribe((response) => {
-                this.document.location.href = response.data.session.url;
-                this.getClassDetails();
-              });                },5000)
+                    this.classService
+                      .saveApprovedClasses(this.registeredClassId, payload)
+                      .subscribe((response) => {
+                        this.document.location.href = response.data.session.url;
+                        this.getClassDetails();
+                      });
+                  }, 5000);
+                } else if (result.payment === 'other') {
+                  let payload = {
+                    email: userdata.user.email,
+                    name: userdata.user.name,
+                    courseTitle: this.classDetails?.courseId?.title,
+                    courseFee: res.totalValue,
+                    studentId: studentId,
+                    classId: this.classId,
+                    title: this.title,
+                    coursekit: this.courseKit,
+                  };
 
-          } else if (result.payment === 'other') {
-            let payload = {
-              email: userdata.user.email,
-              name: userdata.user.name,
-              courseTitle: this.classDetails?.courseId?.title,
-              courseFee: res.totalValue,
-              studentId: studentId,
-              classId: this.classId,
-              title: this.title,
-              coursekit: this.courseKit,
-            };
+                  this.courseService
+                    .createOrder(payload)
+                    .subscribe((response) => {
+                      if (response.status == 200) {
+                        this.settingsService
+                          .getPayment()
+                          .subscribe((res: any) => {
+                            this.razorPayKey = res.data.docs[0].keyId;
+                            const paymentOrderId = response.data.id;
+                            const options: any = {
+                              key: this.razorPayKey,
+                              amount: this.totalFee,
+                              currency: 'INR',
+                              name: userdata.user.email,
+                              description: this.classDetails?.courseId?.title,
+                              order_id: paymentOrderId,
+                              modal: {
+                                escape: false,
+                              },
+                              notes: {},
+                              theme: {
+                                color: '#ddcbff',
+                              },
+                            };
+                            setTimeout(() => {
+                              options.handler = (response: any, error: any) => {
+                                options.response = response;
+                                if (error) {
+                                  this.router.navigate([
+                                    '/student/fail-course/',
+                                    this.classId,
+                                  ]);
+                                } else {
+                                  this.courseService
+                                    .verifyPaymentSignature(
+                                      response,
+                                      paymentOrderId
+                                    )
+                                    .subscribe((response: any) => {
+                                      let body = {
+                                        courseTitle:
+                                          this.classDetails?.courseId?.title,
+                                        courseFee:
+                                          this.classDetails?.courseId?.fee +
+                                          this.classDetails?.instructorCost,
+                                      };
+                                      this.generateInvoice(body);
+                                      setTimeout(() => {
+                                        let payload = {
+                                          email: userdata.user.email,
+                                          name: userdata.user.name,
+                                          courseTitle:
+                                            this.classDetails?.courseId?.title,
+                                          courseFee: this.totalFee,
+                                          studentId: studentId,
+                                          classId: this.classId,
+                                          title: this.title,
+                                          coursekit: this.courseKit,
+                                          orderId:
+                                            response?.data?.payment
+                                              ?.original_order_id,
+                                          paymentId:
+                                            response?.data?.payment
+                                              ?.razorpay_payment_id,
+                                          razorpay: true,
+                                          invoiceUrl: this.invoiceUrl,
+                                          paid: true,
+                                          adminEmail: userdata.user.adminEmail,
+                                          adminName: userdata.user.adminName,
+                                          courseStartDate:
+                                            this.classDetails?.courseId
+                                              ?.sessionStartDate,
+                                          courseEndDate:
+                                            this.classDetails?.courseId
+                                              ?.sessionEndDate,
+                                        };
 
-            this.courseService
-              .createOrder(payload)
-              .subscribe((response) => {
-                if (response.status == 200) {
-                  this.settingsService
-                    .getPayment()
-                    .subscribe((res: any) => {
-                      this.razorPayKey = res.data.docs[0].keyId;
-                      const paymentOrderId = response.data.id;
-                      const options: any = {
-                        key: this.razorPayKey,
-                        amount:this.totalFee,
-                        currency: 'INR',
-                        name: userdata.user.email,
-                        description: this.classDetails?.courseId?.title,
-                        order_id: paymentOrderId,
-                        modal: {
-                          escape: false,
-                        },
-                        notes: {},
-                        theme: {
-                          color: '#ddcbff',
-                        },
-                      };
-                      setTimeout(() => {
-                        options.handler = (response: any, error: any) => {
-                          options.response = response;
-                          if (error) {
-                            this.router.navigate([
-                              '/student/fail-course/',
-                              this.classId,
-                            ]);
-                          } else {
-                            this.courseService
-                              .verifyPaymentSignature(
-                                response,
-                                paymentOrderId
-                              )
-                              .subscribe((response: any) => {
-                                let body = {
-                                  courseTitle:
-                                    this.classDetails?.courseId?.title,
-                                  courseFee: this.classDetails?.courseId?.fee+this.classDetails?.instructorCost,
+                                        this.classService
+                                          .saveApprovedClasses(
+                                            this.registeredClassId,
+                                            payload
+                                          )
+                                          .subscribe((res) => {
+                                            this.getClassDetails();
 
-                                };
-                                this.generateInvoice(body);
-                                setTimeout(() => {
-                                  let payload = {
-                                    email: userdata.user.email,
-                                    name: userdata.user.name,
-                                    courseTitle:
-                                      this.classDetails?.courseId?.title,
-                                    courseFee:
-                                      this.totalFee,
-                                    studentId: studentId,
-                                    classId: this.classId,
-                                    title: this.title,
-                                    coursekit: this.courseKit,
-                                    orderId:
-                                      response?.data?.payment
-                                        ?.original_order_id,
-                                    paymentId:
-                                      response?.data?.payment
-                                        ?.razorpay_payment_id,
-                                    razorpay: true,
-                                    invoiceUrl: this.invoiceUrl,
-                                    paid:true,
-                                    adminEmail:userdata.user.adminEmail,
-                                    adminName:userdata.user.adminName,
-                                    courseStartDate:this.classDetails?.courseId?.sessionStartDate,
-                                    courseEndDate:this.classDetails?.courseId?.sessionEndDate
-                            
-                              
-                                  };
-                          
-                                  this.classService
-                                    .saveApprovedClasses(this.registeredClassId,payload)
-                                    .subscribe((res) => {
-                                      this.getClassDetails();
-
-                                      response.data.isPaymentVerfied
-                                        ? this.router.navigate([
-                                            '/student/sucess-course/',
-                                            this.classId,
-                                          ])
-                                        : this.router.navigate([
-                                            '/student/fail-course/',
-                                            this.classId,
-                                          ]);
+                                            response.data.isPaymentVerfied
+                                              ? this.router.navigate([
+                                                  '/student/sucess-course/',
+                                                  this.classId,
+                                                ])
+                                              : this.router.navigate([
+                                                  '/student/fail-course/',
+                                                  this.classId,
+                                                ]);
+                                          });
+                                      }, 5000);
                                     });
-                                }, 5000);
-                              });
-                          }
-                        };
-                        options.modal.ondismiss = () => {
-                          alert('Transaction has been cancelled.');
-                          this.router.navigate([
-                            '/student/fail-course/',
-                            this.classId,
-                          ]);
-                        };
-                        const rzp =
-                          new this.courseService.nativeWindow.Razorpay(
-                            options
-                          );
-                        rzp.open();
-                      }, 100);
+                                }
+                              };
+                              options.modal.ondismiss = () => {
+                                alert('Transaction has been cancelled.');
+                                this.router.navigate([
+                                  '/student/fail-course/',
+                                  this.classId,
+                                ]);
+                              };
+                              const rzp =
+                                new this.courseService.nativeWindow.Razorpay(
+                                  options
+                                );
+                              rzp.open();
+                            }, 100);
+                          });
+                      } else {
+                        alert('Server side error');
+                      }
                     });
-                } else {
-                  alert('Server side error');
                 }
-              });
+              }
+            });
           }
-        }
-      });
-    }
-  });
-} else if(this.feeType == 'paid' && this.approval == 'no'){
-  const today = new Date();
-  const date = today.toISOString().split('T')[0];
-  let body = {
-    email: userdata.user.email,
-    name: userdata.user.name,
-    courseTitle: this.classDetails?.courseId?.title,
-    courseFee: this.classDetails?.courseId?.fee+this.classDetails?.instructorCost,
-    instructorCost: this.classDetails?.instructorCost,
-    studentId: studentId,
-    classId: this.classId,
-    title: this.title,
-    coursekit: this.courseKit,
-    date: date,
-    discountType: this.discountType ? this.discountType : this.selectedDiscount ? this.selectedDiscount.discountType : '',
-    discountValue: this.discountValue ? this.discountValue : this.selectedDiscount ? this.selectedDiscount.value : 0,
+        });
+      } else if (this.feeType == 'paid' && this.approval == 'no') {
+        const today = new Date();
+        const date = today.toISOString().split('T')[0];
+        let body = {
+          email: userdata.user.email,
+          name: userdata.user.name,
+          courseTitle: this.classDetails?.courseId?.title,
+          courseFee:
+            this.classDetails?.courseId?.fee +
+            this.classDetails?.instructorCost,
+          instructorCost: this.classDetails?.instructorCost,
+          studentId: studentId,
+          classId: this.classId,
+          title: this.title,
+          coursekit: this.courseKit,
+          date: date,
+          discountType: this.discountType
+            ? this.discountType
+            : this.selectedDiscount
+            ? this.selectedDiscount.discountType
+            : '',
+          discountValue: this.discountValue
+            ? this.discountValue
+            : this.selectedDiscount
+            ? this.selectedDiscount.value
+            : 0,
 
-    courseStartDate:this.classDetails?.courseId?.sessionStartDate,
-    courseEndDate:this.classDetails?.courseId?.sessionEndDate
-  };
-  const invoiceDialogRef = this.dialog.open(InvoiceComponent, {
-    width: '1000px',
-    height: '600px',
-    data: body,
-  });
-  invoiceDialogRef.afterClosed().subscribe((res) => {
-    if (res) {
-    
-      this.totalFee=res.totalValue
-      const dialogRef = this.dialog.open(PaymentDailogComponent, {
-        width: '450px',
-        height: '300px',
-        data: { payment: '' },
-      });
-      dialogRef.afterClosed().subscribe((result) => {
-        if (result) {
-          if (result.payment === 'card') {
-            this.generateInvoice(body);
-            setTimeout(() => {
-            let payload = {
-              email: userdata.user.email,
-              name: userdata.user.name,
-              courseTitle: this.classDetails?.courseId?.title,
-              courseFee:res.totalValue,
-              courseId: this.classDetails?.courseId?.id,
-              studentId: studentId,
-              classId: this.classId,
-              title: this.title,
-              coursekit: this.courseKit,
-              paid:true,
-              stripe:true,
-              adminEmail:userdata.user.adminEmail,
-              adminName:userdata.user.adminName,
-              companyId:userdata.user.companyId,
-              invoiceUrl:this.invoiceUrl,
-              courseStartDate:this.classDetails?.courseId?.sessionStartDate,
-              courseEndDate:this.classDetails?.courseId?.sessionEndDate,
-              status: 'approved',
-              verify:true
-            }
+          courseStartDate: this.classDetails?.courseId?.sessionStartDate,
+          courseEndDate: this.classDetails?.courseId?.sessionEndDate,
+        };
+        const invoiceDialogRef = this.dialog.open(InvoiceComponent, {
+          width: '1000px',
+          height: '600px',
+          data: body,
+        });
+        invoiceDialogRef.afterClosed().subscribe((res) => {
+          if (res) {
+            this.totalFee = res.totalValue;
+            const dialogRef = this.dialog.open(PaymentDailogComponent, {
+              width: '450px',
+              height: '300px',
+              data: { payment: '' },
+            });
+            dialogRef.afterClosed().subscribe((result) => {
+              if (result) {
+                if (result.payment === 'card') {
+                  this.generateInvoice(body);
+                  setTimeout(() => {
+                    let payload = {
+                      email: userdata.user.email,
+                      name: userdata.user.name,
+                      courseTitle: this.classDetails?.courseId?.title,
+                      courseFee: res.totalValue,
+                      courseId: this.classDetails?.courseId?.id,
+                      studentId: studentId,
+                      classId: this.classId,
+                      title: this.title,
+                      coursekit: this.courseKit,
+                      paid: true,
+                      stripe: true,
+                      adminEmail: userdata.user.adminEmail,
+                      adminName: userdata.user.adminName,
+                      companyId: userdata.user.companyId,
+                      invoiceUrl: this.invoiceUrl,
+                      courseStartDate:
+                        this.classDetails?.courseId?.sessionStartDate,
+                      courseEndDate:
+                        this.classDetails?.courseId?.sessionEndDate,
+                      status: 'approved',
+                      verify: true,
+                    };
 
-            this.classService
-            this.courseService.saveRegisterClass(payload).subscribe((response) => {
-              this.document.location.href = response.data.session.url;
-                      this.getClassDetails();
-                this.getRegisteredClassDetails();
-              });                },5000)
+                    this.classService;
+                    this.courseService
+                      .saveRegisterClass(payload)
+                      .subscribe((response) => {
+                        this.document.location.href = response.data.session.url;
+                        this.getClassDetails();
+                        this.getRegisteredClassDetails();
+                      });
+                  }, 5000);
+                } else if (result.payment === 'other') {
+                  let payload = {
+                    email: userdata.user.email,
+                    name: userdata.user.name,
+                    courseTitle: this.classDetails?.courseId?.title,
+                    courseFee: res.totalValue,
+                    studentId: studentId,
+                    classId: this.classId,
+                    title: this.title,
+                    coursekit: this.courseKit,
+                  };
 
-          } else if (result.payment === 'other') {
-            let payload = {
-              email: userdata.user.email,
-              name: userdata.user.name,
-              courseTitle: this.classDetails?.courseId?.title,
-              courseFee: res.totalValue,
-              studentId: studentId,
-              classId: this.classId,
-              title: this.title,
-              coursekit: this.courseKit,
-            };
+                  this.courseService
+                    .createOrder(payload)
+                    .subscribe((response) => {
+                      if (response.status == 200) {
+                        this.settingsService
+                          .getPayment()
+                          .subscribe((res: any) => {
+                            this.razorPayKey = res.data.docs[0].keyId;
+                            const paymentOrderId = response.data.id;
+                            const options: any = {
+                              key: this.razorPayKey,
+                              amount: this.totalFee,
+                              currency: 'INR',
+                              name: userdata.user.email,
+                              description: this.classDetails?.courseId?.title,
+                              order_id: paymentOrderId,
+                              modal: {
+                                escape: false,
+                              },
+                              notes: {},
+                              theme: {
+                                color: '#ddcbff',
+                              },
+                            };
+                            setTimeout(() => {
+                              options.handler = (response: any, error: any) => {
+                                options.response = response;
+                                if (error) {
+                                  this.router.navigate([
+                                    '/student/fail-course/',
+                                    this.classId,
+                                  ]);
+                                } else {
+                                  this.courseService
+                                    .verifyPaymentSignature(
+                                      response,
+                                      paymentOrderId
+                                    )
+                                    .subscribe((response: any) => {
+                                      let body = {
+                                        courseTitle:
+                                          this.classDetails?.courseId?.title,
+                                        courseFee:
+                                          this.classDetails?.courseId?.fee +
+                                          this.classDetails?.instructorCost,
+                                      };
+                                      this.generateInvoice(body);
+                                      setTimeout(() => {
+                                        let payload = {
+                                          email: userdata.user.email,
+                                          name: userdata.user.name,
+                                          courseTitle:
+                                            this.classDetails?.courseId?.title,
+                                          courseFee: this.totalFee,
+                                          studentId: studentId,
+                                          classId: this.classId,
+                                          title: this.title,
+                                          coursekit: this.courseKit,
+                                          orderId:
+                                            response?.data?.payment
+                                              ?.original_order_id,
+                                          paymentId:
+                                            response?.data?.payment
+                                              ?.razorpay_payment_id,
+                                          razorpay: true,
+                                          invoiceUrl: this.invoiceUrl,
+                                          paid: true,
+                                          adminEmail: userdata.user.adminEmail,
+                                          adminName: userdata.user.adminName,
+                                          courseStartDate:
+                                            this.classDetails?.courseId
+                                              ?.sessionStartDate,
+                                          courseEndDate:
+                                            this.classDetails?.courseId
+                                              ?.sessionEndDate,
+                                        };
 
-            this.courseService
-              .createOrder(payload)
-              .subscribe((response) => {
-                if (response.status == 200) {
-                  this.settingsService
-                    .getPayment()
-                    .subscribe((res: any) => {
-                      this.razorPayKey = res.data.docs[0].keyId;
-                      const paymentOrderId = response.data.id;
-                      const options: any = {
-                        key: this.razorPayKey,
-                        amount:this.totalFee,
-                        currency: 'INR',
-                        name: userdata.user.email,
-                        description: this.classDetails?.courseId?.title,
-                        order_id: paymentOrderId,
-                        modal: {
-                          escape: false,
-                        },
-                        notes: {},
-                        theme: {
-                          color: '#ddcbff',
-                        },
-                      };
-                      setTimeout(() => {
-                        options.handler = (response: any, error: any) => {
-                          options.response = response;
-                          if (error) {
-                            this.router.navigate([
-                              '/student/fail-course/',
-                              this.classId,
-                            ]);
-                          } else {
-                            this.courseService
-                              .verifyPaymentSignature(
-                                response,
-                                paymentOrderId
-                              )
-                              .subscribe((response: any) => {
-                                let body = {
-                                  courseTitle:
-                                    this.classDetails?.courseId?.title,
-                                    courseFee: this.classDetails?.courseId?.fee+this.classDetails?.instructorCost,
+                                        this.classService
+                                          .saveApprovedClasses(
+                                            this.registeredClassId,
+                                            payload
+                                          )
+                                          .subscribe((res) => {
+                                            this.getClassDetails();
 
-                                };
-                                this.generateInvoice(body);
-                                setTimeout(() => {
-                                  let payload = {
-                                    email: userdata.user.email,
-                                    name: userdata.user.name,
-                                    courseTitle:
-                                      this.classDetails?.courseId?.title,
-                                    courseFee:
-                                      this.totalFee,
-                                    studentId: studentId,
-                                    classId: this.classId,
-                                    title: this.title,
-                                    coursekit: this.courseKit,
-                                    orderId:
-                                      response?.data?.payment
-                                        ?.original_order_id,
-                                    paymentId:
-                                      response?.data?.payment
-                                        ?.razorpay_payment_id,
-                                    razorpay: true,
-                                    invoiceUrl: this.invoiceUrl,
-                                    paid:true,
-                                    adminEmail:userdata.user.adminEmail,
-                                    adminName:userdata.user.adminName,
-                                    courseStartDate:this.classDetails?.courseId?.sessionStartDate,
-                                    courseEndDate:this.classDetails?.courseId?.sessionEndDate
-                            
-                              
-                                  };
-                          
-                                  this.classService
-                                    .saveApprovedClasses(this.registeredClassId,payload)
-                                    .subscribe((res) => {
-                                      this.getClassDetails();
-
-                                      response.data.isPaymentVerfied
-                                        ? this.router.navigate([
-                                            '/student/sucess-course/',
-                                            this.classId,
-                                          ])
-                                        : this.router.navigate([
-                                            '/student/fail-course/',
-                                            this.classId,
-                                          ]);
+                                            response.data.isPaymentVerfied
+                                              ? this.router.navigate([
+                                                  '/student/sucess-course/',
+                                                  this.classId,
+                                                ])
+                                              : this.router.navigate([
+                                                  '/student/fail-course/',
+                                                  this.classId,
+                                                ]);
+                                          });
+                                      }, 5000);
                                     });
-                                }, 5000);
-                              });
-                          }
-                        };
-                        options.modal.ondismiss = () => {
-                          alert('Transaction has been cancelled.');
-                          this.router.navigate([
-                            '/student/fail-course/',
-                            this.classId,
-                          ]);
-                        };
-                        const rzp =
-                          new this.courseService.nativeWindow.Razorpay(
-                            options
-                          );
-                        rzp.open();
-                      }, 100);
+                                }
+                              };
+                              options.modal.ondismiss = () => {
+                                alert('Transaction has been cancelled.');
+                                this.router.navigate([
+                                  '/student/fail-course/',
+                                  this.classId,
+                                ]);
+                              };
+                              const rzp =
+                                new this.courseService.nativeWindow.Razorpay(
+                                  options
+                                );
+                              rzp.open();
+                            }, 100);
+                          });
+                      } else {
+                        alert('Server side error');
+                      }
                     });
-                } else {
-                  alert('Server side error');
                 }
-              });
+              }
+            });
           }
-        }
-      });
+        });
+      }
     }
-  });
-
-}
-    } 
   }
   generateInvoice(element: any) {
     Swal.fire({
@@ -1236,7 +1326,9 @@ if(this.feeType=="paid" && this.approval == 'yes')
     this.courseService.getCourseById(id).subscribe((response) => {
       this.courseKitDetails = response?.course_kit;
       this.courseDetails = response;
-      console.log("this.courseDetails",this.courseDetails)
+
+      this.discount_Type = this.courseDetails.discount_type;
+      console.log('this.courseDetails', this.discount_Type);
       this.courseKitDetails.map((item: any) => {
         this.url = item?.videoLink[0]?.video_url;
       });
@@ -1257,39 +1349,45 @@ if(this.feeType=="paid" && this.approval == 'yes')
         scormKit: kit.scormKit,
       }));
 
-      this.isScormCourseKit = this.courseKit.some(v=>v.kitType === 'scorm');
+      this.isScormCourseKit = this.courseKit.some((v) => v.kitType === 'scorm');
       console.log(this.courseKit);
-      
-      this.scormModules = this.courseKit.find(v=>v.kitType === 'scorm')?.scormKit?.modules || [];
-      this.scormKit = this.courseKit.find(v=>v.kitType === 'scorm')?.scormKit;
 
-      if(this.studentClassDetails.scormKit&&this.scormModules.length>0){
-        const lastModuleId = this.studentClassDetails.scormKit.currentScormModule;
-        const lastModule = this.scormModules.find(v=>v._id === lastModuleId);
+      this.scormModules =
+        this.courseKit.find((v) => v.kitType === 'scorm')?.scormKit?.modules ||
+        [];
+      this.scormKit = this.courseKit.find(
+        (v) => v.kitType === 'scorm'
+      )?.scormKit;
+
+      if (this.studentClassDetails.scormKit && this.scormModules.length > 0) {
+        const lastModuleId =
+          this.studentClassDetails.scormKit.currentScormModule;
+        const lastModule = this.scormModules.find(
+          (v) => v._id === lastModuleId
+        );
         const launchUrl = lastModule?.launch;
         this.lastcommit = this.studentClassDetails.scormKit.lastCommit;
         const scormKit = this.scormKit;
-        const url = scormKit?.path+'/'+launchUrl;
+        const url = scormKit?.path + '/' + launchUrl;
         this.currentScormModule = lastModule;
         this.initScorm2004(url);
-        console.log("launchUrl==",this.scormModules);
-        
+        console.log('launchUrl==', this.scormModules);
       }
 
-      if(this.paidProgram){
-        this.classService.getClassList({courseId:this.courseDetails.id,program:'yes'}).subscribe((response) => {
-          this.classId = response.docs[0].id
-          localStorage.setItem('classId', this.classId);
-          this.getClassDetails();    
-          this.commonService.notifyVideoObservable$
-          .pipe(takeUntil(this.unsubscribe$))
-          .subscribe(() => {
+      if (this.paidProgram) {
+        this.classService
+          .getClassList({ courseId: this.courseDetails.id, program: 'yes' })
+          .subscribe((response) => {
+            this.classId = response.docs[0].id;
+            localStorage.setItem('classId', this.classId);
+            this.getClassDetails();
+            this.commonService.notifyVideoObservable$
+              .pipe(takeUntil(this.unsubscribe$))
+              .subscribe(() => {
+                this.getRegisteredClassDetails();
+              });
             this.getRegisteredClassDetails();
           });
-        this.getRegisteredClassDetails();
-  
-        })
-
       }
 
       this.documentLink = this.courseKitDetails[0].documentLink;
@@ -1319,31 +1417,87 @@ if(this.feeType=="paid" && this.approval == 'yes')
     });
   }
 
+  getAttendanceDetails(getstudentClassDetails:any){
+// console.log("this.courseDetails",getstudentClassDetails)
+const userData = JSON.parse(localStorage.getItem('user_data') || '');
+const currentDate = new Date().toISOString().split('T')[0];
+const currentTime = new Date().toISOString().split('T')[1];
+// let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+// console.log("userData",userData)
+    const palyload={
+      "uen": localStorage.getItem('uen') || '',
+      "courseRunId":getstudentClassDetails?.classId?.courseTPRunId,
+      "courseId":getstudentClassDetails?.courseId?.id,
+      "Title":getstudentClassDetails?.courseId?.title,
+      "traineeId": userData.user.id,
+      "date":currentDate,
+      "time":currentTime,
+      "course": {
+        "sessionID": "",
+        "attendance": {
+          "status": {
+            "code": "1"
+          },
+          "trainee": {
+            "id": userData.user.id,
+            "name": userData.user.name + userData.user.last_name,
+            "email": userData.user.email,
+            "idType": {
+              "code": userData.user.idType.code
+            },
+            "contactNumber": {
+              "mobile": userData.user.mobile,
+              "areaCode": null,
+              "countryCode": 65
+            },
+            "numberOfHours": 3.5,
+            "surveyLanguage": {
+              "code": "EL"
+            }
+          }
+        },
+        "referenceNumber":getstudentClassDetails?.courseId?.courseCode
+      },
+      "corppassId": "SxxxxxxxT"
+    }
+    this.settingsService.saveAttendance(palyload).subscribe((res)=>{
+      console.log("attendance",res)
+    })
+
+  }
   getRegisteredClassDetails() {
     const studentId = localStorage.getItem('id');
     this.courseService
       .getStudentClass(studentId, this.classId)
       .subscribe((response) => {
+
+        
         this.studentClassDetails = response?.data?.docs[0];
         this.registeredClassId = response?.data?.docs[0]?.id;
-        if( response.data.docs[0].discount){
-          this.discountType =  response?.data?.docs[0]?.discount.discountType;
-          this.discountValue =  response?.data?.docs[0]?.discount.value
+        if (response.data.docs[0].discount) {
+          this.discountType = response?.data?.docs[0]?.discount.discountType;
+          this.discountValue = response?.data?.docs[0]?.discount.value;
+        }else{
+          console.log("discountValue: " , response.data?.docs[0])
+          this.discountType = '';
+          this.discountValue = response?.data?.docs[0]?.discount_type;
         }
         this.coursekitDetails = response?.data?.docs[0]?.coursekit;
         this.longDescription = this?.coursekitDetails[0]?.longDescription;
         let totalPlaybackTime = 0;
         let documentCount = 0;
-        if(this.studentClassDetails.scormKit&&this.scormModules.length>0){
-          const lastModuleId = this.studentClassDetails.scormKit.currentScormModule;
-          const lastModule = this.scormModules.find(v=>v._id === lastModuleId);
+        if (this.studentClassDetails.scormKit && this.scormModules.length > 0) {
+          const lastModuleId =
+            this.studentClassDetails.scormKit.currentScormModule;
+          const lastModule = this.scormModules.find(
+            (v) => v._id === lastModuleId
+          );
           const launchUrl = lastModule?.launch;
           this.lastcommit = this.studentClassDetails.scormKit.lastCommit;
           const scormKit = this.scormKit;
-          const url = scormKit?.path+'/'+launchUrl
+          const url = scormKit?.path + '/' + launchUrl;
           // this.initScorm2004(url);
-          console.log("launchUrl==",this.scormModules);
-          
+          console.log('launchUrl==', this.scormModules);
         }
         this.coursekitDetails.forEach(
           (doc: { playbackTime: any }, index: number) => {
@@ -1355,17 +1509,26 @@ if(this.feeType=="paid" && this.approval == 'yes')
         const time = totalPlaybackTime / documentCount;
         this.playBackTime = time;
         this.commonService.setCompletedPercentage(this.playBackTime);
-        const issueCertificate=this.studentClassDetails.classId.courseId.issueCertificate;
-        const playBackTimes=this.studentClassDetails.playbackTime;
+        const issueCertificate =
+          this.studentClassDetails.classId.courseId.issueCertificate;
+        const playBackTimes = this.studentClassDetails.playbackTime;
 
-        if (this.studentClassDetails.status == 'registered' && this.studentClassDetails.verify == true && this.studentClassDetails.paid == false) {
+        if (
+          this.studentClassDetails.status == 'registered' &&
+          this.studentClassDetails.verify == true &&
+          this.studentClassDetails.paid == false
+        ) {
           this.isRegistered = true;
           this.isStatus = true;
           this.verify = true;
           this.payment = true;
           this.paidAmount = false;
         }
-        if (this.studentClassDetails.status == 'registered' && this.studentClassDetails.verify == true && this.studentClassDetails.paid == true) {
+        if (
+          this.studentClassDetails.status == 'registered' &&
+          this.studentClassDetails.verify == true &&
+          this.studentClassDetails.paid == true
+        ) {
           this.isRegistered = true;
           this.isStatus = true;
           this.verify = true;
@@ -1373,18 +1536,22 @@ if(this.feeType=="paid" && this.approval == 'yes')
           this.paidAmount = true;
         }
 
-        if (this.studentClassDetails.status == 'registered' && this.studentClassDetails.verify == false) {
+        if (
+          this.studentClassDetails.status == 'registered' &&
+          this.studentClassDetails.verify == false
+        ) {
           this.isRegistered = true;
           this.isStatus = true;
           this.payment = false;
           this.verify = false;
         }
 
-
         if (this.studentClassDetails.status == 'approved') {
-        //  console.log("this is the approved==",this.studentClassDetails)
-          this.isTest = (issueCertificate=== 'test' && playBackTimes === 100) ? true : false;
-          this.isDocument=issueCertificate==='document'?false:true;
+          this.getAttendanceDetails(this.studentClassDetails);
+          console.log("this is the approved==",this.studentClassDetails)
+          this.isTest =
+            issueCertificate === 'test' && playBackTimes === 100 ? true : false;
+          this.isDocument = issueCertificate === 'document' ? false : true;
           this.isRegistered == true;
           this.isApproved = true;
         }
@@ -1392,8 +1559,9 @@ if(this.feeType=="paid" && this.approval == 'yes')
           !this.studentClassDetails.certifiacteUrl &&
           this.studentClassDetails.status == 'completed'
         ) {
-          this.isTest = (issueCertificate === 'test' && playBackTimes === 100) ? true : false;
-          this.isDocument=issueCertificate==='document'?false:true;
+          this.isTest =
+            issueCertificate === 'test' && playBackTimes === 100 ? true : false;
+          this.isDocument = issueCertificate === 'document' ? false : true;
           this.isRegistered == true;
           this.isCompleted = true;
         }
@@ -1401,19 +1569,26 @@ if(this.feeType=="paid" && this.approval == 'yes')
           this.studentClassDetails.certifiacteUrl &&
           this.studentClassDetails.status == 'completed'
         ) {
-          this.isTest = (issueCertificate === 'test' && playBackTimes === 100) ? true : false;
+          this.isTest =
+            issueCertificate === 'test' && playBackTimes === 100 ? true : false;
           this.isRegistered == true;
           this.isCompleted = true;
-          this.isCertificate = "Yes";
+          this.isCertificate = 'Yes';
           this.certificateIssued = true;
         }
-        if (this.studentClassDetails.status == 'cancel' && this.studentClassDetails.discountVerification == false) {
+        if (
+          this.studentClassDetails.status == 'cancel' &&
+          this.studentClassDetails.discountVerification == false
+        ) {
           this.isRegistered == true;
           this.isCancelled = true;
           this.isDiscountVerification = true;
         }
 
-        if (this.studentClassDetails.status == 'cancel' && this.studentClassDetails.approval == false) {
+        if (
+          this.studentClassDetails.status == 'cancel' &&
+          this.studentClassDetails.approval == false
+        ) {
           this.isRegistered == true;
           this.isCancelled = true;
           this.isApproval = true;
@@ -1430,82 +1605,93 @@ if(this.feeType=="paid" && this.approval == 'yes')
         // this.assessmentTaken = response['count']-this.RetakeRequestCount;
         this.assessmentTaken = response['count'];
         // const retakeRequestCount=this.getRetakeRequests(studentId,courseId);
-        console.log("assessmentTake=",this.assessmentTaken)
-        if(this.RetakeRequestCount==1)
-          {
-            this.updateRetakeRequest(courseId)
-          }
+        console.log('assessmentTake=', this.assessmentTaken);
+        if (this.RetakeRequestCount == 1) {
+          this.updateRetakeRequest(courseId);
+        }
         this.updateShowAssessmentQuestions();
         this.assessmentAnswerLatest = response['latestRecord'];
         if (this.assessmentTaken >= 1) {
           this.updateCompletionStatus();
         }
-        
       });
-      
   }
-  updateRetakeRequest(courseId:any)
-  {
+  updateRetakeRequest(courseId: any) {
     const studentId = localStorage.getItem('id') || '';
-    this.retakeResponseData.data[0].retakes=0;
-    const payload=this.retakeResponseData.data[0];
-    this.settingsService.putRetakeRequestByStudentIdCourseId(studentId,courseId,payload).subscribe((response)=>{
-      console.log("response updateRetakeRequest=",response)
-
-    })
+    this.retakeResponseData.data[0].retakes = 0;
+    const payload = this.retakeResponseData.data[0];
+    this.settingsService
+      .putRetakeRequestByStudentIdCourseId(studentId, courseId, payload)
+      .subscribe((response) => {
+        console.log('response updateRetakeRequest=', response);
+      });
   }
-  getRetakeRequests(courseId:any){
+  getRetakeRequests(courseId: any) {
     const studentId = localStorage.getItem('id') || '';
-    this.settingsService.getRetakeRequestByStudentIdAndCourseId(studentId,courseId).subscribe((response)=>{
-      this.retakeResponseData=response;
-      this.RetakeRequestCount=response.data[0].retakes;
-      
-    })
+    this.settingsService
+      .getRetakeRequestByStudentIdAndCourseId(studentId, courseId)
+      .subscribe((response) => {
+        this.retakeResponseData = response;
+        this.RetakeRequestCount = response.data[0].retakes;
+      });
     // console.log("this.RetakeRequestCount",this.RetakeRequestCount);
     //  this.updateRetakeRequest(courseId)
   }
-  
-  updateShowAssessmentQuestions(){
-    if(this.assessmentTempInfo && !this.assessmentInfo.resultAfterFeedback && this.isFeedBackSubmitted){
+
+  updateShowAssessmentQuestions() {
+    if (
+      this.assessmentTempInfo &&
+      !this.assessmentInfo.resultAfterFeedback &&
+      this.isFeedBackSubmitted
+    ) {
       this.assessmentTempInfo = null;
       this.isAnswersSubmitted = false;
       this.answersResult = null;
       this.questionList = this.assessmentInfo?.questions || [];
     }
-    if(this.RetakeRequestCount===1)
-    {
-      this.assessmentTaken=1;
+    if (this.RetakeRequestCount === 1) {
+      this.assessmentTaken = 1;
     }
-     console.log("this.assessmentTaken",this.assessmentTaken);
-    console.log("this.assessmentInfo.retake",this.assessmentInfo.retake)
+    console.log('this.assessmentTaken', this.assessmentTaken);
+    console.log('this.assessmentInfo.retake', this.assessmentInfo.retake);
     // if(this.assessmentTaken == this.assessmentInfo.retake){
     //   // this.isShowAssessmentQuestions =  false;
     //   this.isRetakeOver=false;
     // }
-    if(this.assessmentTaken <= this.assessmentInfo.retake){
-      if(this.assessmentTempInfo == null || (this.isAnswersSubmitted && !this.isFeedBackSubmitted)){
-        if(this.assessmentInfo.resultAfterFeedback && this.isAnswersSubmitted && !this.isFeedBackSubmitted){
-          this.isShowAssessmentQuestions =  false;
-          this.isShowFeedback = true;
-        }else if(this.isShowFeedback){
+    if (this.assessmentTaken <= this.assessmentInfo.retake) {
+      if (
+        this.assessmentTempInfo == null ||
+        (this.isAnswersSubmitted && !this.isFeedBackSubmitted)
+      ) {
+        if (
+          this.assessmentInfo.resultAfterFeedback &&
+          this.isAnswersSubmitted &&
+          !this.isFeedBackSubmitted
+        ) {
           this.isShowAssessmentQuestions = false;
-        }else{
+          this.isShowFeedback = true;
+        } else if (this.isShowFeedback) {
+          this.isShowAssessmentQuestions = false;
+        } else {
           this.isShowAssessmentQuestions = true;
           this.isShowFeedback = false;
         }
         this.isFeedBackSubmitted = false;
-      }else if(this.assessmentInfo.resultAfterFeedback && this.isAnswersSubmitted && this.isFeedBackSubmitted){
+      } else if (
+        this.assessmentInfo.resultAfterFeedback &&
+        this.isAnswersSubmitted &&
+        this.isFeedBackSubmitted
+      ) {
         this.isShowAssessmentQuestions = true;
         this.isShowFeedback = false;
         this.assessmentTempInfo = null;
-      }else{
+      } else {
         this.isShowAssessmentQuestions = true;
         this.isFeedBackSubmitted = false;
       }
-    }else{
+    } else {
       this.isShowAssessmentQuestions = false;
     }
-    
   }
 
   updateCompletionStatus() {
@@ -1517,9 +1703,7 @@ if(this.feeType=="paid" && this.approval == 'yes')
     };
     this.classService
       .saveApprovedClasses(this.classId, payload)
-      .subscribe((response) => {
-        
-      });
+      .subscribe((response) => {});
   }
 
   getExamAssessmentAnswerCount(courseId: string) {
@@ -1538,7 +1722,7 @@ if(this.feeType=="paid" && this.approval == 'yes')
       .subscribe((response) => {
         this.studentClassDetails = response?.data?.docs[0];
         this.coursekitDetails = response?.data?.docs[0]?.coursekit;
-        
+
         this.longDescription = this?.coursekitDetails[0]?.longDescription;
         let totalPlaybackTime = 0;
         let documentCount = 0;
@@ -1557,7 +1741,6 @@ if(this.feeType=="paid" && this.approval == 'yes')
           this.isStatus = true;
         }
         if (this.studentClassDetails.status == 'approved') {
-
           this.isRegistered == true;
           this.isApproved = true;
         }
@@ -1603,7 +1786,7 @@ if(this.feeType=="paid" && this.approval == 'yes')
     let classId = localStorage.getItem('classId');
     let courseId = this.courseDetailsId;
     let studentId = localStorage.getItem('id');
-console.log('lastButOneValue',lastButOneValue)
+    console.log('lastButOneValue', lastButOneValue);
     if (this.paid) {
       let payload = {
         studentId: studentId,
@@ -1701,11 +1884,11 @@ console.log('lastButOneValue',lastButOneValue)
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
-  getTPAssessmentData(){
+  getTPAssessmentData() {
     // console.log("TpDetails", this.classDetails)
     // console.log("this.courseDetails",this.courseDetails)
     // console.log("this.courseDetails",this.courseDetails?.assessment?.passingCriteria)
-    let uen =localStorage.getItem('uen') || '';
+    let uen = localStorage.getItem('uen') || '';
     const userData = JSON.parse(localStorage.getItem('user_data') || '');
     // console.log("uen",uen)
     // console.log("courseReferenceNumber",this.classDetails.course.courseReferenceNumber)
@@ -1713,37 +1896,37 @@ console.log('lastButOneValue',lastButOneValue)
     // console.log("userNmae",userData.user.name)
     // console.log("userNmae",userData.user.id)
     const currentDate = new Date().toISOString().split('T')[0];
-   let TPAssessment= {
-      "assessment": {
-        "passingCriteria":this.courseDetails?.assessment?.passingCriteria||0,
-        "trainingPartner": {
-          "uen": uen
+    let TPAssessment = {
+      assessment: {
+        passingCriteria: this.courseDetails?.assessment?.passingCriteria || 0,
+        trainingPartner: {
+          uen: uen,
         },
-        "course": {
-          "referenceNumber": this.classDetails.course.courseReferenceNumber,
-          "run": {
-            "id": this.classDetails.courseTPRunId,
-          }
+        course: {
+          referenceNumber: this.classDetails.course.courseReferenceNumber,
+          run: {
+            id: this.classDetails.courseTPRunId,
+          },
         },
-        "trainee": {
-          "idType": "NRIC",
-          "id": userData.user.id,
-          "fullName": userData.user.name
+        trainee: {
+          idType: 'NRIC',
+          id: userData.user.id,
+          fullName: userData.user.name,
         },
-        "result": "Pass",
-        "score": 80,
-        "grade": "B",
-        "assessmentDate": currentDate,
-          "skillCode": "ATP-SSM-3007-1.1"
-      }
-    }
+        result: 'Pass',
+        score: 80,
+        grade: 'B',
+        assessmentDate: currentDate,
+        skillCode: 'ATP-SSM-3007-1.1',
+      },
+    };
     return TPAssessment;
   }
 
   submitAnswers(payload: any = []) {
     const studentId = localStorage.getItem('id');
     const assesmentId = this.assessmentInfo?.id;
-    let TpAassment1 =this.getTPAssessmentData();
+    let TpAassment1 = this.getTPAssessmentData();
     const requestBody = {
       studentId,
       assessmentId: assesmentId,
@@ -1752,8 +1935,8 @@ console.log('lastButOneValue',lastButOneValue)
       is_tutorial: payload.is_tutorial,
       tpAssessment: TpAassment1,
     };
-    
-console.log("helo",requestBody)
+
+    console.log('helo', requestBody);
     this.studentService.submitAssessment(requestBody).subscribe(
       (response: any) => {
         Swal.fire({
@@ -1772,11 +1955,11 @@ console.log("helo",requestBody)
     );
   }
 
-  openFeedBack(payload:any) {
-    if(!this.assessmentInfo.resultAfterFeedback) {
-      this.isShowFeedback=true
-    }else{
-      this.isShowFeedback =false;
+  openFeedBack(payload: any) {
+    if (!this.assessmentInfo.resultAfterFeedback) {
+      this.isShowFeedback = true;
+    } else {
+      this.isShowFeedback = false;
       this.questionList = this.assessmentInfo?.questions || [];
       this.assessmentTempInfo = null;
       this.isAnswersSubmitted = false;
@@ -1785,19 +1968,16 @@ console.log("helo",requestBody)
     this.updateShowAssessmentQuestions();
   }
 
-
-
   getAnswerById(answerId: string) {
     this.isFeedBackSubmitted = false;
-    
+
     this.studentService.getAnswerById(answerId).subscribe((res: any) => {
-  
-      this.getAssessmentId=res.assessmentAnswer.assessmentId.id;
+      this.getAssessmentId = res.assessmentAnswer.assessmentId.id;
       this.isAnswersSubmitted = true;
       this.answersResult = res.assessmentAnswer;
       const assessmentAnswer = res.assessmentAnswer;
       const assessmentId = assessmentAnswer.assessmentId;
-      
+
       this.questionList = assessmentId.questions.map((question: any) => {
         const answer = assessmentAnswer.answers.find(
           (ans: any) => ans.questionText === question.questionText
@@ -1837,7 +2017,7 @@ console.log("helo",requestBody)
       studentFirstName,
       studentLastName,
       courseName: this.title,
-      companyId:userData.user.companyId
+      companyId: userData.user.companyId,
     };
     this.surveyService.addSurveyBuilder(payload).subscribe(
       (response) => {
@@ -1849,10 +2029,10 @@ console.log("helo",requestBody)
         });
         const feedbackInfo = { ...this.feedbackInfo };
         this.feedbackInfo = feedbackInfo;
-        this.isShowFeedback= false;
-        if(!this.assessmentInfo.resultAfterFeedback){
+        this.isShowFeedback = false;
+        if (!this.assessmentInfo.resultAfterFeedback) {
           this.router.navigate(['/student/enrollment/assessment-exam']);
-        }else {
+        } else {
           this.updateShowAssessmentQuestions();
         }
       },
@@ -1868,7 +2048,7 @@ console.log("helo",requestBody)
   }
   skipFeedback() {
     this.isFeedBackSubmitted = true;
-    this.isShowFeedback= false;
+    this.isShowFeedback = false;
     this.updateShowAssessmentQuestions();
   }
 
@@ -1901,46 +2081,53 @@ console.log("helo",requestBody)
     (window as any).API_1484_11.cmi.suspend_data = this.currentScormModule._id;
     (window as any).API_1484_11.cmi.learner_id = studentId;
 
-    if(this.lastcommit){
-      (window as any).API.loadFromJSON(this.lastcommit, "");
+    if (this.lastcommit) {
+      (window as any).API.loadFromJSON(this.lastcommit, '');
     }
   }
 
   receiveMessage(CMIElement: any, value: any): void {
-    if(CMIElement == 'cmi.completion_status' && value ==='completed'){
+    if (CMIElement == 'cmi.completion_status' && value === 'completed') {
       const studentId = localStorage.getItem('id');
-      const percentagePerModule = 100/this.scormModules.length;
-      const playBackTime =this.playBackTime+percentagePerModule;
+      const percentagePerModule = 100 / this.scormModules.length;
+      const playBackTime = this.playBackTime + percentagePerModule;
       this.playBackTime = playBackTime;
-      let payload={
-        playbackTime:playBackTime>100?100:playBackTime,
-        status:playBackTime>=100?'completed':'approved'
-      }
-      this.classService.saveScormCompletion(this.registeredClassId,payload).subscribe((response)=>{
-        if(playBackTime>=100){
-          Swal.fire({
-            title: 'Course Completed Successfully',
-            text: 'Please Wait For the Certificate',
-            icon: 'success',
-          }).then((result) => {
-            if (result.isConfirmed) {
-              location.reload();
-            }
-          });
-        }
-      });
+      let payload = {
+        playbackTime: playBackTime > 100 ? 100 : playBackTime,
+        status: playBackTime >= 100 ? 'completed' : 'approved',
+      };
+      this.classService
+        .saveScormCompletion(this.registeredClassId, payload)
+        .subscribe((response) => {
+          if (playBackTime >= 100) {
+            Swal.fire({
+              title: 'Course Completed Successfully',
+              text: 'Please Wait For the Certificate',
+              icon: 'success',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                location.reload();
+              }
+            });
+          }
+        });
     }
   }
 
-  openScormModule(module:any, scormKit:any){
+  openScormModule(module: any, scormKit: any) {
     console.log(scormKit);
-    this.currentScormModule = {...module, launchUrl: scormKit.path+'/'+module.launch};
+    this.currentScormModule = {
+      ...module,
+      launchUrl: scormKit.path + '/' + module.launch,
+    };
     this.initScorm2004(this.currentScormModule.launchUrl);
   }
 
   hasSessionEnded(): boolean {
-    if (! this.classDetails?.sessions?.[0]?.sessionEndDate ) return true;
-    const sessionEndDate = new Date(this.classDetails?.sessions?.[0]?.sessionEndDate);
+    if (!this.classDetails?.sessions?.[0]?.sessionEndDate) return true;
+    const sessionEndDate = new Date(
+      this.classDetails?.sessions?.[0]?.sessionEndDate
+    );
     const today = new Date();
     return sessionEndDate < today;
   }

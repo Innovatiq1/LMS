@@ -89,7 +89,19 @@ export class SettingsService {
       params: this.buildParams(filter),
     });
   }
-
+  saveAttendance(data: any) {
+    const apiUrl = `${this.prefix}admin/attendance`;
+    return this._Http
+      .post<ApiResponse>(apiUrl, data)
+      .pipe(map((response) => {}));
+  }
+  getAttendanceSessionID(data:any,filter?: Partial<CoursePaginationModel>): Observable<ApiResponse> {
+    console.log('getAttandance',data)
+    const apiUrl = this.defaultUrl + 'admin/attendance';
+    return this._Http.get<ApiResponse>(apiUrl, {
+      params: this.buildParams(filter),
+    });
+  }
 
   saveSmtp(smtp: any) {
     const apiUrl = `${this.prefix}admin/smtp`;
