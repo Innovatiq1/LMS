@@ -1417,6 +1417,54 @@ export class ViewCourseComponent implements OnDestroy {
     });
   }
 
+  getAttendanceDetails(getstudentClassDetails:any){
+// console.log("this.courseDetails",getstudentClassDetails)
+const userData = JSON.parse(localStorage.getItem('user_data') || '');
+const currentDate = new Date().toISOString().split('T')[0];
+const currentTime = new Date().toISOString().split('T')[1];
+// let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+// console.log("userData",userData)
+    const palyload={
+      "uen": localStorage.getItem('uen') || '',
+      "courseRunId":getstudentClassDetails?.classId?.courseTPRunId,
+      "courseId":getstudentClassDetails?.courseId?.id,
+      "Title":getstudentClassDetails?.courseId?.title,
+      "traineeId": userData.user.id,
+      "date":currentDate,
+      "time":currentTime,
+      "course": {
+        "sessionID": "",
+        "attendance": {
+          "status": {
+            "code": "1"
+          },
+          "trainee": {
+            "id": userData.user.id,
+            "name": userData.user.name + userData.user.last_name,
+            "email": userData.user.email,
+            "idType": {
+              "code": userData.user.idType.code
+            },
+            "contactNumber": {
+              "mobile": userData.user.mobile,
+              "areaCode": null,
+              "countryCode": 65
+            },
+            "numberOfHours": 3.5,
+            "surveyLanguage": {
+              "code": "EL"
+            }
+          }
+        },
+        "referenceNumber":getstudentClassDetails?.courseId?.courseCode
+      },
+      "corppassId": "SxxxxxxxT"
+    }
+    this.settingsService.saveAttendance(palyload).subscribe((res)=>{
+      console.log("attendance",res)
+    })
+
+  }
   getRegisteredClassDetails() {
     const studentId = localStorage.getItem('id');
     this.courseService
@@ -1499,7 +1547,8 @@ export class ViewCourseComponent implements OnDestroy {
         }
 
         if (this.studentClassDetails.status == 'approved') {
-          //  console.log("this is the approved==",this.studentClassDetails)
+          this.getAttendanceDetails(this.studentClassDetails);
+          console.log("this is the approved==",this.studentClassDetails)
           this.isTest =
             issueCertificate === 'test' && playBackTimes === 100 ? true : false;
           this.isDocument = issueCertificate === 'document' ? false : true;
