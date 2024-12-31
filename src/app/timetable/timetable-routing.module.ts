@@ -7,6 +7,7 @@ import { ViewProgramClassComponent } from './schedule-class/view-program-class/v
 import { EAttendanceComponent } from './e-attendance/e-attendance.component';
 import { MyProgramsComponent } from './my-programs/my-programs.component';
 import { MyCoursesComponent } from './my-courses/my-courses.component';
+import { ViewEAttendanceComponent } from './view-e-attendance/view-e-attendance.component';
 const routes: Routes = [
   {
     path: 'course-timetable',
@@ -40,6 +41,10 @@ const routes: Routes = [
   {
     path: 'e-attendance',
     component: EAttendanceComponent,
+  },
+  {
+    path: 'view-e-attendance/:coursename/:id',
+    component: ViewEAttendanceComponent,
   },
 ];
 @NgModule({

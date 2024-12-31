@@ -95,14 +95,17 @@ export class SettingsService {
       .post<ApiResponse>(apiUrl, data)
       .pipe(map((response) => {}));
   }
-  getAttendanceSessionID(data:any,filter?: Partial<CoursePaginationModel>): Observable<ApiResponse> {
-    console.log('getAttandance',data)
+  getAllAttendance(filter?: Partial<CoursePaginationModel>): Observable<ApiResponse> {
+    // console.log('getAttandance',data)
     const apiUrl = this.defaultUrl + 'admin/attendance';
     return this._Http.get<ApiResponse>(apiUrl, {
       params: this.buildParams(filter),
     });
   }
-
+  getAttendanceByCourseId(id: string) {
+    const apiUrl = `${this.prefix}admin/attendance/course/${id}`;
+    return this._Http.get<any>(apiUrl).pipe(map((response) => response));
+  }
   saveSmtp(smtp: any) {
     const apiUrl = `${this.prefix}admin/smtp`;
     return this._Http
