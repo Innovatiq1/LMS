@@ -133,6 +133,18 @@
                   </mat-cell>
                 </ng-container>
 
+                <ng-container matColumnDef="Activity">
+                  <mat-header-cell *matHeaderCellDef >
+                    Activity
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let row">
+                    <span class="mobile-label">Activity Count:</span>
+                    <span (click)="openActivityLogModal(row.activityLogs)">
+                      {{ row.activityCount }}
+                    </span>
+                  </mat-cell>
+                </ng-container>
+
                 <ng-container matColumnDef="Action">
                   <mat-header-cell *matHeaderCellDef 
                     >Actions
