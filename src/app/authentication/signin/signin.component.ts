@@ -195,7 +195,7 @@ export class SigninComponent
               googleBtnContainer.classList.add('login-btn');
             }
           });
-      });
+      }); 
   }
   handleGmailLogin(data: any) {
     if (data) {
