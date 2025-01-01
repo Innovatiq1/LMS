@@ -69,6 +69,7 @@ export class SigninComponent
   body: any;
   linkedinKeys: any;
   domain: any;
+  currentYear!: number;
 
   constructor(
     private formBuilder: UntypedFormBuilder,
@@ -196,6 +197,7 @@ export class SigninComponent
             }
           });
       });
+      this.currentYear = new Date().getFullYear();
   }
   handleGmailLogin(data: any) {
     if (data) {
