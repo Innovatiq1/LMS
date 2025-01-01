@@ -1422,7 +1422,7 @@ export class ViewCourseComponent implements OnDestroy {
 const userData = JSON.parse(localStorage.getItem('user_data') || '');
 const currentDate = new Date().toISOString().split('T')[0];
 const currentTime = new Date().toISOString().split('T')[1];
-// let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+ let companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
 // console.log("userData",userData)
     const palyload={
       "uen": localStorage.getItem('uen') || '',
@@ -1432,6 +1432,7 @@ const currentTime = new Date().toISOString().split('T')[1];
       "traineeId": userData.user.id,
       "date":currentDate,
       "time":currentTime,
+      "companyId":companyId,
       "course": {
         "sessionID": "",
         "attendance": {

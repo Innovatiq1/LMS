@@ -14,6 +14,7 @@ import { EAttendanceComponent } from './e-attendance/e-attendance.component';
 import { EventDetailDialogComponent } from './program-timetable/event-detail-dialog/event-detail-dialog.component';
 import { MyProgramsComponent } from './my-programs/my-programs.component';
 import { MyCoursesComponent } from './my-courses/my-courses.component';
+import { ViewEAttendanceComponent } from './view-e-attendance/view-e-attendance.component';
 @NgModule({
   declarations: [
     CourseTimetableComponent,
@@ -23,7 +24,8 @@ import { MyCoursesComponent } from './my-courses/my-courses.component';
     EAttendanceComponent,
     EventDetailDialogComponent,
     MyProgramsComponent,
-    MyCoursesComponent
+    MyCoursesComponent,
+    ViewEAttendanceComponent
 
   ],
   imports: [

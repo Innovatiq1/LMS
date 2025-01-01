@@ -1,0 +1,13 @@
+.red-color {
+    color: red;
+  }
+  ::ng-deep .mat-mdc-tab-body-content{
+      overflow-x: hidden !important;
+    }
+  
+    .table-wrapper{
+      max-height: 260px; 
+      overflow-y: auto;
+      margin-right: 20px;
+      margin-bottom: 40px;
+    }
