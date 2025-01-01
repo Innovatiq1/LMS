@@ -209,6 +209,7 @@ export class SigninComponent
         authToken: data.credential, // Include the raw token as authToken
         id: payload.sub,
         gmail: true,
+        
       };
       if (this.extractedName == 'authentication') {
         this.authenticationService
