@@ -1416,17 +1416,19 @@ export class ViewCourseComponent implements OnDestroy {
         : null;
     });
   }
-
   getAttendanceDetails(getstudentClassDetails:any){
 // console.log("this.courseDetails",getstudentClassDetails)
 const userData = JSON.parse(localStorage.getItem('user_data') || '');
 const currentDate = new Date().toISOString().split('T')[0];
-const currentTime = new Date().toISOString().split('T')[1];
+const options = { hour12: true };
+const currentTime = new Date().toLocaleTimeString('en-US', options);
+
  let companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
 // console.log("userData",userData)
     const palyload={
       "uen": localStorage.getItem('uen') || '',
       "courseRunId":getstudentClassDetails?.classId?.courseTPRunId,
+      "runId":getstudentClassDetails?.classId?.courseTPRunId,
       "courseId":getstudentClassDetails?.courseId?.id,
       "Title":getstudentClassDetails?.courseId?.title,
       "traineeId": userData.user.id,
@@ -1440,7 +1442,7 @@ const currentTime = new Date().toISOString().split('T')[1];
             "code": "1"
           },
           "trainee": {
-            "id": userData.user.id,
+            "id":"S1913366D",
             "name": userData.user.name + userData.user.last_name,
             "email": userData.user.email,
             "idType": {
@@ -1459,7 +1461,7 @@ const currentTime = new Date().toISOString().split('T')[1];
         },
         "referenceNumber":getstudentClassDetails?.courseId?.courseCode
       },
-      "corppassId": "SxxxxxxxT"
+      "corppassId": "S5883425D"
     }
     this.settingsService.saveAttendance(palyload).subscribe((res)=>{
       console.log("attendance",res)
