@@ -152,12 +152,12 @@ if (this.attendanceForm.value.course !== '') {
       //  this.courseData = response.data.docs; 
        this.attendanceData=response.data.docs;
       //  console.log("response123 ",response.data.docs)
-      //  this.dataSource = new MatTableDataSource(this.courseData); 
-      //  this.totalItems = response.data.totalDocs; 
-      //  this.coursePaginationModel.docs = response.data.docs;
-      //  this.coursePaginationModel.page = response.data.page;
-      //  this.coursePaginationModel.limit = response.data.limit;
-      //  this.coursePaginationModel.totalDocs = response.data.totalDocs;
+      this.attendanceData = new MatTableDataSource(this.attendanceData); 
+       this.totalItems = response.data.totalDocs; 
+       this.coursePaginationModel.docs = response.data.docs;
+       this.coursePaginationModel.page = response.data.page;
+       this.coursePaginationModel.limit = response.data.limit;
+       this.coursePaginationModel.totalDocs = response.data.totalDocs;
     });
  }
   onSelectCourse(event: any){
@@ -190,5 +190,6 @@ if (this.attendanceForm.value.course !== '') {
   pageSizeChange($event: any) {
     this.coursePaginationModel.page = $event?.pageIndex + 1;
     this.coursePaginationModel.limit = $event?.pageSize;
+    this.getAllCourses();
   }
 }

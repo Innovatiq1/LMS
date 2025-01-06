@@ -84,32 +84,39 @@ getAttendanceByCourseId(){
 exportExcel() {
   const exportData: Partial<TableElement>[] = this.dataSource.map(
     (x: any) => ({
-      'Users': x.studentId.name,
-      'Department': x.studentId.department,
-      'Status': x.status,
-      'Registered Date':
-          formatDate(new Date(x.registeredOn), 'yyyy-MM-dd', 'en') || '',
+      
+      'Users': x.course?.attendance?.trainee?.name,
+      'Email': x.course?.attendance?.trainee?.email,
+      'Time': x.time,
+      'Date':
+          formatDate(new Date(x.date), 'yyyy-MM-dd', 'en') || '',
+      'Login Count':x.loginCount,
     })
   );
 
-  TableExportUtil.exportToExcel(exportData, 'Reports');
+  TableExportUtil.exportToExcel(exportData, 'Attendance');
 }
+
+
+
 
 generatePdf() {
   const doc = new jsPDF();
   const headers = [
     [
       'Users',
-      'Department',
-      'Status',
-      'Registered Date'
+      'Email',
+      'Time',
+      'Date',
+      'Login Count',
     ],
   ];
   const data = this.dataSource.map((x: any) => [
-    x.studentId.name,
-    x.studentId.department,
-    x.status,
-    formatDate(new Date(x.registeredOn), 'yyyy-MM-dd', 'en') || '',
+    x.course?.attendance?.trainee?.name,
+    x.course?.attendance?.trainee?.email,
+    x.time,
+    formatDate(new Date(x.date), 'yyyy-MM-dd', 'en') || '',
+    x.loginCount||1,
   ]);
   const columnWidths = [50, 20, 30, 20, 20, 20, 30, 30, 30, 20];
 
@@ -124,6 +131,6 @@ generatePdf() {
     },
   });
 
-  doc.save('Reports.pdf');
+  doc.save('Attendance.pdf');
 }
 }
