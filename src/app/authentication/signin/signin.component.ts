@@ -601,6 +601,7 @@ export class SigninComponent
                 console.log("2st",user)
                 this.authenticationService.saveUserInfo(user);
                 localStorage.setItem('uen', res[0]?.uen || '');
+                localStorage.setItem('code', res[0]?.code || '');
                 let userId = JSON.parse(localStorage.getItem('user_data')!).user
                   .companyId;
 
@@ -651,6 +652,7 @@ export class SigninComponent
         console.log("12tres",res)
    let companyId=res[0]?.companyId
    localStorage.setItem('uen', res[0]?.uen || '');
+   localStorage.setItem('code', res[0]?.code || '');
     this.authenticationService
       .loginUser(formData.email.trim(), formData.password.trim(),companyId)
       .subscribe(
