@@ -75,7 +75,8 @@ export class CreateSuperAdminComponent {
         ...this.utils.validators.mobile,
       ]),
       company: new FormControl('', [Validators.required]),
-      uen: new FormControl('', [Validators.required]),
+      uen: new FormControl('',[]),
+      code:new FormControl('',[]),
       qualification: new FormControl('', []),
       address: new FormControl('', []),
       email: new FormControl('', [
@@ -261,6 +262,7 @@ export class CreateSuperAdminComponent {
               courses:this.userForm.value.courses,
               expiryDate:this.userForm.value.expiryDate,
               uen: this.userForm.value.uen,
+              code:this.userForm.value.code,
             }
             this.userService.createCompany(payload).subscribe(() =>{
               Swal.fire({

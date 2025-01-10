@@ -1912,15 +1912,14 @@ const currentTime = new Date().toLocaleTimeString('en-US', options);
           },
         },
         trainee: {
-          idType: 'NRIC',
-          id: userData.user.id,
+          idType:userData.user.idType.description,
+          id: userData.user.idNumber,
           fullName: userData.user.name,
         },
-        result: 'Pass',
-        score: 80,
-        grade: 'B',
+        result: '',
+        score: 0,
+        grade: '',
         assessmentDate: currentDate,
-        skillCode: 'ATP-SSM-3007-1.1',
       },
     };
     return TPAssessment;
