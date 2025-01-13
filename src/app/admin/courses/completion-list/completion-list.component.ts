@@ -622,7 +622,7 @@ export class CompletionListComponent {
   // }
 
   update(pdfBlob: Blob) {
-    let countdown = 10; // Countdown time in seconds
+    let countdown = 50; 
 
     Swal.fire({
       title: 'Certificate Generating...',
@@ -647,7 +647,6 @@ export class CompletionListComponent {
         }, 1000);
       },
     });
-
     this.dafaultGenratepdf = true;
     this.copyPreviewToContentToConvert();
 
@@ -827,84 +826,199 @@ export class CompletionListComponent {
   //       this.isGeneratingCertificates = false; // Stop the spinner even if there's an error
   //     });
   // }
+  
+//   enableMultipleCertificates() {
+//   if (this.selectedRows.length === 0) {
+//     return;
+//   }
+
+//   // Show confirmation popup before starting the countdown
+//   Swal.fire({
+//     title: 'Are you sure?',
+//     text: 'Do you want to generate certificates for the selected students?',
+//     icon: 'warning',
+//     confirmButtonText: 'Yes',
+//     cancelButtonText: 'No',
+//     showCancelButton: true,
+//     cancelButtonColor: '#d33',
+//   }).then((result) => {
+//     if (result.isConfirmed) {
+//       // User confirmed, start countdown and certificate generation
+//       let countdown = 90; // Countdown time in seconds
+
+//       Swal.fire({
+//         title: 'Certificate Generating...',
+//         html: `<p>Please wait...<br>Time remaining: <strong>${countdown}</strong> seconds</p>`,
+//         allowOutsideClick: false,
+//         timer: countdown * 1000,
+//         timerProgressBar: true,
+//         didOpen: () => {
+//           const content = Swal.getHtmlContainer();
+//           const countdownElement = content?.querySelector('strong');
+
+//           // Start countdown timer
+//           const interval = setInterval(() => {
+//             countdown--;
+//             if (countdownElement) {
+//               countdownElement.textContent = `${countdown}`;
+//             }
+//             if (countdown <= 0) {
+//               clearInterval(interval);
+//             }
+//           }, 1000);
+//         },
+//       });
+
+//       this.isGeneratingCertificates = true;
+//       let alreadyIssuedCount = 0;
+//       let successfulCount = 0;
+
+//       const promises = this.selectedRows.map((row: any) => {
+//         if (!row.certificate) {
+//           return this.generateCertificateForRow(row)
+//             .then(() => {
+//               successfulCount++;
+//             })
+//             .catch(() => {
+//               console.log(`Failed to generate certificate for student ID: ${row.studentId._id}`);
+//             });
+//         } else {
+//           alreadyIssuedCount++;
+//           console.log(`Certificate already issued for student ID: ${row.studentId._id}`);
+//           return Promise.resolve();
+//         }
+//       });
+
+//       Promise.all(promises)
+//         .then(() => {
+//           this.isGeneratingCertificates = false;
+//           const certificate = successfulCount > 1 ? 'certificates' : 'certificate';
+//           let message = '';
+//           if (successfulCount > 0) {
+//             message = `${successfulCount} ${certificate} generated successfully!`;
+//           }
+
+//           if (alreadyIssuedCount > 0) {
+//             const alreadyCount = alreadyIssuedCount > 1 ? 'certificates are ' : 'certificate is';
+//             const text = successfulCount > 0 ? 'For other' : '';
+//             message += ` ${text} selected course ${alreadyCount} already Issued`;
+//           }
+
+//           Swal.fire({
+//             title: 'Certificate Generation',
+//             text: message,
+//             icon: successfulCount > 0 ? 'success' : 'warning',
+//           }).then(() => {
+//             this.clearSelection();
+//             this.getCompletedList();
+//           });
+//         })
+//         .catch(() => {
+//           this.isGeneratingCertificates = false; // Stop the spinner even if there's an error
+//         });
+//     }
+//   });
+// }
+
   enableMultipleCertificates() {
-    if (this.selectedRows.length === 0) {
-      return;
-    }
+  if (this.selectedRows.length === 0) {
+    return;
+  }
 
-    let countdown = 10; 
+  // Step 1: Show countdown popup
+  let countdown = 50; // Countdown time in seconds
 
+  Swal.fire({
+    title: 'Certificate Generating...',
+    html: `<p>Please wait...<br>Time remaining: <strong>${countdown}</strong> seconds</p>`,
+    allowOutsideClick: false,
+    timer: countdown * 1000,
+    timerProgressBar: true,
+    didOpen: () => {
+      const content = Swal.getHtmlContainer();
+      const countdownElement = content?.querySelector('strong');
+
+      // Start countdown timer
+      const interval = setInterval(() => {
+        countdown--;
+        if (countdownElement) {
+          countdownElement.textContent = `${countdown}`;
+        }
+        if (countdown <= 0) {
+          clearInterval(interval);
+        }
+      }, 1000);
+    },
+  }).then(() => {
     Swal.fire({
-      title: 'Certificate Generating...',
-      html: `<p>Please wait...<br>Time remaining: <strong>${countdown}</strong> seconds</p>`,
-      allowOutsideClick: false,
-      timer: countdown * 1000,
-      timerProgressBar: true,
-      didOpen: () => {
-        const content = Swal.getHtmlContainer();
-        const countdownElement = content?.querySelector('strong');
+      title: 'Are you sure?',
+      text: 'Do you want to generate certificates for the selected students?',
+      icon: 'warning',
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      showCancelButton: true,
+      cancelButtonColor: '#d33',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Step 3: Generate certificates
+        this.isGeneratingCertificates = true;
+        let alreadyIssuedCount = 0;
+        let successfulCount = 0;
 
-        
-        const interval = setInterval(() => {
-          countdown--;
-          if (countdownElement) {
-            countdownElement.textContent = `${countdown}`;
+        const promises = this.selectedRows.map((row: any) => {
+          if (!row.certificate) {
+            return this.generateCertificateForRow(row)
+              .then(() => {
+                successfulCount++;
+              })
+              .catch(() => {
+                console.log(
+                  `Failed to generate certificate for student ID: ${row.studentId._id}`
+                );
+              });
+          } else {
+            alreadyIssuedCount++;
+            console.log(
+              `Certificate already issued for student ID: ${row.studentId._id}`
+            );
+            return Promise.resolve();
           }
-          if (countdown <= 0) {
-            clearInterval(interval);
-          }
-        }, 1000);
-      }
-    });
+        });
 
-    this.isGeneratingCertificates = true;
-    let alreadyIssuedCount = 0;
-    let successfulCount = 0;
-
-    const promises = this.selectedRows.map((row: any) => {
-      if (!row.certificate) {
-        return this.generateCertificateForRow(row)
+        Promise.all(promises)
           .then(() => {
-            successfulCount++;
+            this.isGeneratingCertificates = false;
+            const certificate = successfulCount > 1 ? 'certificates' : 'certificate';
+            let message = '';
+            if (successfulCount > 0) {
+              message = `${successfulCount} ${certificate} generated successfully!`;
+            }
+
+            if (alreadyIssuedCount > 0) {
+              const alreadyCount = alreadyIssuedCount > 1 ? 'certificates are ' : 'certificate is';
+              const text = successfulCount > 0 ? 'For other' : '';
+              message += ` ${text} selected course ${alreadyCount} already Issued`;
+            }
+
+            Swal.fire({
+              title: 'Certificate Generation',
+              text: message,
+              icon: successfulCount > 0 ? 'success' : 'warning',
+            }).then(() => {
+              this.clearSelection();
+              this.getCompletedList();
+            });
           })
           .catch(() => {
-            console.log(`Failed to generate certificate for student ID: ${row.studentId._id}`);
+            this.isGeneratingCertificates = false; // Stop the spinner even if there's an error
           });
       } else {
-        alreadyIssuedCount++;
-        console.log(`Certificate already issued for student ID: ${row.studentId._id}`);
-        return Promise.resolve();
+        Swal.fire('Cancelled', 'Certificate generation was cancelled.', 'info');
       }
     });
+  });
+}
 
-    Promise.all(promises)
-      .then(() => {
-        this.isGeneratingCertificates = false;
-        const certificate = successfulCount > 1 ? 'certificates' : 'certificate';
-        let message = '';
-        if (successfulCount > 0) {
-          message = `${successfulCount} ${certificate} generated successfully!`;
-        }
-
-        if (alreadyIssuedCount > 0) {
-          const alreadyCount = alreadyIssuedCount > 1 ? 'certificates are ' : 'certificate is';
-          const text = successfulCount > 0 ? 'For other' : '';
-          message += ` ${text} selected course ${alreadyCount} already Issued`;
-        }
-
-        Swal.fire({
-          title: 'Certificate Generation',
-          text: message,
-          icon: successfulCount > 0 ? 'success' : 'warning',
-        }).then(() => {
-          this.clearSelection();
-          this.getCompletedList();
-        });
-      })
-      .catch(() => {
-        this.isGeneratingCertificates = false; // Stop the spinner even if there's an error
-      });
-  }
 
   generateCertificateForRow(row: any): Promise<void> {
     return new Promise((resolve, reject) => {
