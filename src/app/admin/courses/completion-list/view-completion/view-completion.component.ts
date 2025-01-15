@@ -150,7 +150,6 @@ export class ViewCompletionComponent implements OnInit {
      this.courseService.getStudentClassById(id).subscribe((response: any) => {
       this.classDataById = response?._id;
       this.response = response;
-     
       if(response.discount){
         this.isDiscount = true;
         this.courseService.getDiscountById(response.discount).subscribe(discountResponse => {
@@ -159,7 +158,15 @@ export class ViewCompletionComponent implements OnInit {
       }
       else {
         this.isDiscountType = true;
+        if(this.response.classId)
+        {
+          this.isDiscountType = true;
+        }
+        else{
+          this.isDiscountType = false;
+        }
         this.discountType = response.discount_type;
+
       }
 
 
