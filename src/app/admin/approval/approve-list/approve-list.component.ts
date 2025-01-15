@@ -137,6 +137,7 @@ export class ApproveListComponent {
         payload
       )
       .subscribe((response: { data: CoursePaginationModel }) => {
+        console.log("dddd=",response.data.docs)
         this.isLoading = false;
         this.coursePaginationModel = response.data;
         this.dataSource = response.data.docs;

@@ -81,7 +81,7 @@
                     >Course</mat-header-cell
                   >
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
-                    <span class="mobile-label">Course:</span>{{row?.title }}
+                    <span class="mobile-label">Course:</span>{{row?.title||row?.courseId?.title }}
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="Fee Type">
