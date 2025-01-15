@@ -691,7 +691,7 @@ export class CompletionListComponent {
 
         this.dafaultGenratepdf = false;
       }
-    }, 1000);
+    }, 10000);
   }
 
   generateRandomString(length: number) {
@@ -1258,7 +1258,7 @@ export class CompletionListComponent {
             console.error('Error generating PDF:', error);
             reject();
           });
-      }, 1000);
+      }, 10000);
     });
   }
 
