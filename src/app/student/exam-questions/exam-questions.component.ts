@@ -23,8 +23,6 @@ import {
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
 
-import * as faceapi from "face-api.js";
-
 @Component({
   selector: 'app-exam-questions',
   templateUrl: './exam-questions.component.html',
@@ -83,11 +81,6 @@ export class ExamQuestionsComponent {
   multipleFacesVisible: boolean = false;
   checkedPrevLogs: boolean = false;
   isEnableProtector: boolean = false;
-  userProfilePic: string = '';
-  profilePicDesc: Float32Array|null = null;
-  isFaceFirstMatch: boolean = false;
-  showOverlay: boolean = false;
-
 
   @ViewChild('proctoringDiv', { static: true }) proctoringDiv!: ElementRef;
   @ViewChild('videoElement') videoElement!: ElementRef;
@@ -126,19 +119,6 @@ export class ExamQuestionsComponent {
     this.sendWarning('Multiple Face Detected', this.analyzerId);
   }
 
-  handleFaceMatchDetected(isMatch:boolean): void {
-    if(!isMatch){
-      if(!this.isFaceFirstMatch) {
-        this.isFaceFirstMatch = false;
-      } else 
-        this.sendWarning('Face Not Matched', this.analyzerId);
-    }else {
-      this.isFaceFirstMatch = true;
-      this.showOverlay = false;
-      this.calculateTotalTime();
-    }
-  }
-
   sendWarning(message: string, analyzerId: string) {
     const payload = {
       warning_type: message,
@@ -150,22 +130,19 @@ export class ExamQuestionsComponent {
       });
   }
 
-  async startVideoAnalyzer() {
-    const cameraPermission = await this.checkCameraPermission();
-    if (cameraPermission) {
-      const studentId = localStorage.getItem('id') || '';
-      let payload = {
-        studentId,
-        status: 'connected',
-      };
-      this.assessmentService.createAnalyzerId(payload).subscribe((res) => {
-        if (res?.response) {
-          this.analyzerId = res?.response.id;
-          this.isEnableProtector = true;
-          this.initializeEventListeners();
-        }
-      });
-    }
+  startVideoAnalyzer() {
+    const studentId = localStorage.getItem('id') || '';
+    let payload = {
+      studentId,
+      status: 'connected',
+    };
+    this.assessmentService.createAnalyzerId(payload).subscribe((res) => {
+      if (res?.response) {
+        this.analyzerId = res?.response.id;
+        this.isEnableProtector = true;
+        this.initializeEventListeners();
+      }
+    });
   }
 
   constructor(
@@ -181,7 +158,6 @@ export class ExamQuestionsComponent {
   ) {}
 
   ngOnInit(): void {
-    this.getProfilePic();
     this.fetchAssessmentDetails();
     this.getCourseDetails();
     this.getClassDetails();
@@ -193,7 +169,7 @@ export class ExamQuestionsComponent {
     // this.startVideoAnalyzer();
     // this.startVideoSession();
     // this.startMonitoringTabSwitch();
-    // this.startTimer();
+    this.startTimer();
   }
 
   getClassDetails(): void {
@@ -223,60 +199,9 @@ export class ExamQuestionsComponent {
       this.courseDetails = response;
       const videoAnalyzerReq = response?.exam_assessment?.videoAnalyzerReq;
       if (videoAnalyzerReq) {
-        this.showOverlay = true;
         this.startVideoAnalyzer();
       }
     });
-  }
-
-  async checkCameraPermission(): Promise<boolean> {
-    try {
-      // Check if Permissions API is supported
-      if (navigator.permissions) {
-        const status = await navigator.permissions.query({
-          name: 'camera' as PermissionName,
-        });
-
-        if (status.state === 'granted') {
-          console.log('Camera permission granted');
-          return true;
-        }
-
-        if (status.state === 'prompt') {
-          console.log('Camera permission needs to be requested');
-          return this.requestCameraPermission(); // This will return a boolean
-        }
-
-        if (status.state === 'denied') {
-          console.error('Camera permission denied');
-          this.showPermissionError();
-          return false;
-        }
-      } else {
-        console.warn(
-          'Permissions API not supported, directly requesting permission'
-        );
-        return this.requestCameraPermission(); // Fallback, will return a boolean
-      }
-    } catch (error) {
-      console.error('Error checking camera permission:', error);
-      return false; // Ensure the function returns false in case of an error
-    }
-
-    // Default return value to satisfy TypeScript
-    return false;
-  }
-
-  async requestCameraPermission(): Promise<boolean> {
-    try {
-      await navigator.mediaDevices.getUserMedia({ video: true });
-      console.log('Camera access granted');
-      return true;
-    } catch (error) {
-      console.error('Camera access denied:', error);
-      this.showPermissionError();
-      return false;
-    }
   }
 
   onPageChange(event: PageEvent): void {
@@ -343,56 +268,6 @@ export class ExamQuestionsComponent {
       this.user_name = res.name;
     });
   }
-
-  getProfilePic(){
-    const studentId = localStorage.getItem('id') || '';
-    this.studentService.getStudentById(studentId).subscribe(async (res: any) => {
-      const userProfilePicture = res?.avatar;
-      // const userProfilePicture = "https://www.pmindia.gov.in/wp-content/uploads/2022/12/twitter_2.jpg";
-      this.userProfilePic = res?.avatar;
-      await this.loadModels();
-      this.profilePicDesc = await this.generateFaceDescriptor(
-        userProfilePicture
-      );
-      if(!this.profilePicDesc) {
-        Swal.fire({
-          title: 'Error!',
-          text: 'Please Upload Profile Picture.',
-          icon: 'error',
-          confirmButtonText: 'OK',
-        });
-      }
-    });
-  }
-
-  async loadModels(): Promise<void> {
-      const MODEL_URL = '/assets/models';
-      await Promise.all([
-        faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL),
-        faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
-        faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL)
-      ]);
-    }
-
-  async generateFaceDescriptor(
-      imagePath: string
-    ): Promise<Float32Array | null> {
-      try {
-        const img = await faceapi.fetchImage(imagePath);
-        const detection = await faceapi
-          .detectSingleFace(img)
-          .withFaceLandmarks()
-          .withFaceDescriptor();
-        if (!detection) {
-          console.error('No face detected in the profile picture.');
-          return null;
-        }
-        return detection.descriptor;
-      } catch (error) {
-        console.error('Error generating face descriptor:', error);
-        return null;
-      }
-    }
 
   handleRadioChange(index: any) {
     this.answers[index].questionText = this.questionList[index]?.questionText;
@@ -584,12 +459,8 @@ export class ExamQuestionsComponent {
   }
 
   calculateTotalTime() {
-    if(this.courseDetails && this.questionList){
-      this.totalTime = this.questionList.length * this.timerInSeconds;
-      const isStartTimer = this.isEnableProtector ? this.isFaceFirstMatch : true;
-      if(isStartTimer)
-      this.startTimer();
-    }
+    this.totalTime = this.questionList.length * this.timerInSeconds;
+    this.startTimer();
   }
 
   startTimer() {
@@ -714,7 +585,7 @@ export class ExamQuestionsComponent {
         top >= containerRect.top &&
         top + element.offsetHeight <= containerRect.bottom
       ) {
-        element.style.position = 'fixed';
+        element.style.position = 'absolute';
         element.style.left = `${left - containerRect.left}px`;
         element.style.top = `${top - containerRect.top}px`;
       }
@@ -924,7 +795,7 @@ export class ExamQuestionsComponent {
       cancelButtonText: 'Cancel',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.startVideoAnalyzer();
+        this.startVideoSession();
       } else {
         this.cancelExam();
       }
