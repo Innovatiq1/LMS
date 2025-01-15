@@ -38,6 +38,9 @@ import { DeptBudgetReqNotifComponent } from './dept-budget-req-notif/dept-budget
 import { DeptBudgetReqComponent } from './dept-budget-req/dept-budget-req.component';
 import { DeptBudgetReqApprovalComponent } from './dept-budget-req-approval/dept-budget-req-approval.component';
 import { DeptBudgetReqRejectedComponent } from './dept-budget-req-rejected/dept-budget-req-rejected.component';
+import { ZoomCreateComponent } from './zoom-create/zoom-create.component';
+import { ZoomUpdateComponent } from './zoom-update/zoom-update.component';
+import { ZoomDeleteComponent } from './zoom-delete/zoom-delete.component';
 
 
 
@@ -76,7 +79,10 @@ import { DeptBudgetReqRejectedComponent } from './dept-budget-req-rejected/dept-
                  DeptBudgetReqNotifComponent,
                  DeptBudgetReqComponent,
                  DeptBudgetReqApprovalComponent,
-                 DeptBudgetReqRejectedComponent
+                 DeptBudgetReqRejectedComponent,
+                 ZoomCreateComponent,
+                 ZoomUpdateComponent,
+                 ZoomDeleteComponent
   ],
     imports: [
         CommonModule, EmailConfigurationRoutingModule,

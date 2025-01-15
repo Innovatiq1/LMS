@@ -32,6 +32,9 @@ import { DeptBudgetReqNotifComponent } from './dept-budget-req-notif/dept-budget
 import { DeptBudgetReqComponent } from './dept-budget-req/dept-budget-req.component';
 import { DeptBudgetReqApprovalComponent } from './dept-budget-req-approval/dept-budget-req-approval.component';
 import { DeptBudgetReqRejectedComponent } from './dept-budget-req-rejected/dept-budget-req-rejected.component';
+import { ZoomCreateComponent } from './zoom-create/zoom-create.component';
+import { ZoomUpdateComponent } from './zoom-update/zoom-update.component';
+import { ZoomDeleteComponent } from './zoom-delete/zoom-delete.component';
 
 
 const routes: Routes = [
@@ -162,6 +165,18 @@ const routes: Routes = [
       {
         path: 'settings/program-completion-email',
         component: ProgramCompletionComponent
+      },
+      {
+        path: 'settings/zoom-create',
+        component: ZoomCreateComponent
+      },
+      {
+        path: 'settings/zoom-update',
+        component: ZoomUpdateComponent
+      },
+      {
+        path: 'settings/zoom-delete',
+        component: ZoomDeleteComponent
       }
 
 ];

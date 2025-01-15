@@ -1,0 +1,156 @@
+
+<section class="content">
+    <div class="content-block">
+        <div class="block-header" *ngFor="let breadscrum of breadscrums">
+            <!-- breadcrumb -->
+            <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
+            </app-breadcrumb>
+        </div>
+        <div class="row clearfix">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                <div class="card">
+                    <div class="header">
+
+                    </div>
+                    <div class="body" *ngIf="edit">
+                        <div class="row">
+                            <div class="col-5">
+                            </div>
+                        </div>
+                        <div class="row para" *ngFor="let listdata of assignData;  let j = index;" (click)="toggle(listdata)">
+                            <div class="col-md-11" >
+                                <p>{{listdata.email_subject}}</p>
+
+                            </div>
+                        </div>
+                    </div>
+                    <form [formGroup]="emailTemplateForm" *ngFor="let listdata of assignData;">
+                        <div class="body mx-auto" *ngIf="!edit" >
+                            <div class="row">
+                                <div class="col-xl-10 col-lg-10 col-md-12 col-sm-12 mb-2 mx-auto">
+                                    <label>Email Subject<span class="mandatory">&nbsp;*</span></label>
+                                    <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                        <input matInput type="text" id="name"
+                                            class="form-control" placeholder="Welcome" formControlName="email_subject">
+                                            <mat-error *ngIf="emailTemplateForm.get('email_subject')?.invalid ||emailTemplateForm.get('email_subject')?.touched">
+                                                {{ utils.getErrorMessage1(emailTemplateForm.get('email_subject'), 'email_subject') }}
+                                              </mat-error> 
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-10 col-lg-10 col-md-12 col-sm-12 mb-2 mx-auto">
+                                    <label>Top Header Text<span class="mandatory">&nbsp;*</span></label>
+                                    <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                        <input matInput type="text" id="name"
+                                            class="form-control" placeholder="Welcome to Tribe of Doers" formControlName="email_top_welcome_text">
+                                            <mat-error *ngIf="emailTemplateForm.get('email_top_welcome_text')?.invalid ||emailTemplateForm.get('email_top_welcome_text')?.touched">
+                                                {{ utils.getErrorMessage1(emailTemplateForm.get('email_top_welcome_text'), 'email_top_welcome_text') }}
+                                              </mat-error> 
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-10 col-lg-10 col-md-12 col-sm-12 mb-2 mx-auto">
+                                    <label>Row 1<span class="mandatory">&nbsp;*</span></label>
+                                    <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                        <input matInput type="text" id="name"
+                                            class="form-control" placeholder="title" formControlName="email_top_welcome_title1">
+                                            <mat-error *ngIf="emailTemplateForm.get('email_top_welcome_title1')?.invalid ||emailTemplateForm.get('email_top_welcome_title1')?.touched">
+                                                {{ utils.getErrorMessage1(emailTemplateForm.get('email_top_welcome_title1'), 'email_top_welcome_title1') }}
+                                              </mat-error> 
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-10 col-lg-10 col-md-12 col-sm-12 mb-2 mx-auto">
+                                    <label>Row 2<span class="mandatory">&nbsp;*</span></label>
+                                    <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                        <input matInput type="text" id="name"
+                                            class="form-control" placeholder="title" formControlName="email_top_welcome_title2">
+                                            <mat-error *ngIf="emailTemplateForm.get('email_top_welcome_title2')?.invalid ||emailTemplateForm.get('email_top_welcome_title2')?.touched">
+                                                {{ utils.getErrorMessage1(emailTemplateForm.get('email_top_welcome_title2'), 'email_top_welcome_title2') }}
+                                              </mat-error> 
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-10 col-lg-10 col-md-12 col-sm-12 mb-2 mx-auto">
+                                    <label>Row 3<span class="mandatory">&nbsp;*</span></label>
+                                    <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                        <input matInput type="text" id="name"
+                                            class="form-control" placeholder="title" formControlName="email_top_welcome_title3">
+                                            <mat-error *ngIf="emailTemplateForm.get('email_top_welcome_title3')?.invalid ||emailTemplateForm.get('email_top_welcome_title3')?.touched">
+                                                {{ utils.getErrorMessage1(emailTemplateForm.get('email_top_welcome_title3'), 'email_top_welcome_title3') }}
+                                              </mat-error> 
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-10 col-lg-10 col-md-12 col-sm-12 mb-2 mx-auto">
+                                    <label>Row 4<span class="mandatory">&nbsp;*</span></label>
+                                    <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                        <input matInput type="text" id="name"
+                                            class="form-control" placeholder="title" formControlName="email_top_welcome_title4">
+                                            <mat-error *ngIf="emailTemplateForm.get('email_top_welcome_title4')?.invalid ||emailTemplateForm.get('email_top_welcome_title4')?.touched">
+                                                {{ utils.getErrorMessage1(emailTemplateForm.get('email_top_welcome_title4'), 'email_top_welcome_title4') }}
+                                              </mat-error> 
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-10 col-lg-10 col-md-12 col-sm-12 mb-2 mx-auto">
+                                    <label>Row 5<span class="mandatory">&nbsp;*</span></label>
+                                    <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                        <input matInput type="text" id="name"
+                                            class="form-control" placeholder="title" formControlName="email_top_welcome_title5">
+                                            <mat-error *ngIf="emailTemplateForm.get('email_top_welcome_title5')?.invalid ||emailTemplateForm.get('email_top_welcome_title5')?.touched">
+                                                {{ utils.getErrorMessage1(emailTemplateForm.get('email_top_welcome_title5'), 'email_top_welcome_title5') }}
+                                              </mat-error> 
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-10 col-lg-10 col-md-12 col-sm-12 mb-2 mx-auto">
+                                    <label>Row 6<span class="mandatory">&nbsp;*</span></label>
+                                    <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                        <input matInput type="text" id="name"
+                                            class="form-control" placeholder="title" formControlName="email_top_welcome_title6">
+                                            <mat-error *ngIf="emailTemplateForm.get('email_top_welcome_title6')?.invalid ||emailTemplateForm.get('email_top_welcome_title6')?.touched">
+                                                {{ utils.getErrorMessage1(emailTemplateForm.get('email_top_welcome_title6'), 'email_top_welcome_title6') }}
+                                              </mat-error> 
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-10 col-lg-10 col-md-12 col-sm-12 mb-2 mx-auto">
+                                  <label>Text<span class="mandatory">&nbsp;*</span></label>
+                                  <div [class.error]="emailTemplateForm.get('email_content1')?.invalid &&(emailTemplateForm.get('email_content1')?.touched || emailTemplateForm.get('email_content1')?.pristine)">
+                                    <angular-editor placeholder="Enter text..." formControlName="email_content1" [config]="config"></angular-editor>
+                                    <mat-error class="editor" *ngIf="emailTemplateForm.get('email_content1')?.invalid && emailTemplateForm.get('email_content1')?.touched">
+                                        {{ utils.getErrorMessage1(emailTemplateForm.get('email_content1'), 'email_content1') }}
+                                    </mat-error> 
+                                </div>
+                                </div>
+
+                              </div>
+                            <div class="row body">
+                                <div class="col-md-10 ">
+                                  <button mat-raised-button id="back" (click)="back()">Back</button>
+                                </div>
+                                <div class="col-md-2">
+                                  <div class="d-grid  d-md-flex">
+                                  <button mat-raised-button id="submit" (click)="update()">Update</button>
+
+                                  </div>
+                                </div>
+                              </div>
+
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
