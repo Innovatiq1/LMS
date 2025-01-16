@@ -110,7 +110,23 @@ export class ExamTestListComponent {
   }
 
   navToExamSub(data: any) {
+    console.log(data);
+    const isApprovalRequired = data?.courseId?.approval == 'yes' && !data.studentClassId?.length;
     const studentId = localStorage.getItem('id') || '';
+    if(isApprovalRequired){
+      const studentClasses = data.studentClassId || [];
+        if (
+          studentClasses.length &&
+          studentClasses.some((v: any) => v.status == 'approved')
+        ) {
+          const courseDetails = data.courseId;
+          this.studentClassId = studentClasses[0]?._id;
+          const examAssessment = data.courseId.exam_assessment._id;
+          this.redirectToExam(courseDetails, studentId, null);
+        } else {
+          this.paidDirectExamFlow(data);
+        }
+    }else{
     Swal.fire({
       title: 'Are you sure?',
       text: 'Please ensure to allow your camera and microphone while taking the exam.',
@@ -136,6 +152,7 @@ export class ExamTestListComponent {
         console.log('Exam start was canceled by the user.');
       }
     });
+  }
   }
 
   getLabel(data: any): string {
