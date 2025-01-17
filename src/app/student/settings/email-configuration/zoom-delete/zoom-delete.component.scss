@@ -1,0 +1,78 @@
+
+
+
+
+
+#submit {
+    margin-left: 30px;
+}
+
+.mandatory {
+    color: red;
+}
+svg {
+    position: absolute;
+    fill: #000;
+    background-color: #d3cdcd;
+    margin-top: -15px;
+    margin-left: -15px;
+    border-radius: 10px;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+// modal-box styling
+::ng-deep .mat-mdc-menu-content {
+        margin: 0;
+        padding: 8px 20px;
+        border-radius: 10px;
+        list-style-type: none;
+       
+}
+// modal-box curving
+::ng-deep .mat-mdc-menu-panel{
+    --mat-menu-container-shape: 12px;
+}
+.menu-text{
+    padding-left: 20px;
+}
+
+.para{
+    padding-left: 20px;
+    padding-top: 10px;
+    margin-left: 20px;
+    border-radius: 10px;
+    background-color: #FFF;
+    width: 90%;
+    border: 1px solid #7A7A7A;
+    height: fit-content;
+    cursor: pointer;
+}
+h3{
+    margin-left: 20px;
+}
+// ckeditor styling
+
+  ::ng-deep .ck-rounded-corners .ck.ck-editor__main>.ck-editor__editable, .ck.ck-editor__main>.ck-editor__editable.ck-rounded-corners {
+    border-radius: var(--ck-border-radius);
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    height: 200px;
+  }
+  ::ng-deep .ck-rounded-corners .ck.ck-editor__top .ck-sticky-panel .ck-toolbar, .ck.ck-editor__top .ck-sticky-panel .ck-toolbar.ck-rounded-corners {
+    border-radius: var(--ck-border-radius);
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+  }
+.error ::ng-deep .angular-editor-textarea {
+    border: 1px solid red !important;
+}
+
+  #editor {
+    font-size: 16px;
+    font-style: italic;
+    padding: 10px;
+  }
+  .editor{
+    margin-left: -2px;
+    font-size: 12px;
+  }
