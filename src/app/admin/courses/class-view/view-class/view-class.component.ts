@@ -30,6 +30,7 @@ export class ViewClassComponent {
   initialDateTime: Date | null = null;
   minDate: Date | null = null;
   maxDate: Date | null = null;
+  occurrences: any[] = [];
   constructor(public _classService: ClassService,private _router: Router, private activatedRoute: ActivatedRoute,private authenService: AuthenService, private clipboard: Clipboard) {
     this.storedItems = localStorage.getItem('activeBreadcrumb');
     if (this.storedItems) {
@@ -49,6 +50,18 @@ export class ViewClassComponent {
 
       
     });
+  }
+
+  public filterDate = (d: any): boolean => {
+    if(!d)
+      return true;
+    const ISTDate = new Date(d)
+    const dateString = new Date(ISTDate.getTime()- ISTDate.getTimezoneOffset() * 60000).toISOString().split('T')[0];
+    const res =this.occurrences.some(v=> {
+      const occDate = new Date(v.startTime).toISOString().split('T')[0];
+      return occDate == dateString
+  });
+    return res
   }
 
   ngOnInit(): void {
@@ -120,6 +133,7 @@ export class ViewClassComponent {
       this.response = response;
       this.classDataById = response?._id;
       console.log('Fetched data:', this.response);
+      this.occurrences = this.response?.occurrences||[]
   
       if (this.response && this.response.sessions && this.response.sessions.length > 0) {
         const session = this.response.sessions[0]; 

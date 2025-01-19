@@ -810,13 +810,34 @@ getTPCourse(classForm:any){
     }
     return false;
   }
+  getCurrentHost(): string {
+    return window.location.hostname; // Get the current host without port
+  }
+  updateHost(url: string): string {
+    const currentHost = this.getCurrentHost();
+    try {
+      const parsedUrl = new URL(url);
+      if (parsedUrl.hostname !== currentHost) {
+        parsedUrl.hostname = currentHost; // Replace the hostname
+      }
+      return encodeURI(parsedUrl.toString());
+    } catch (e) {
+      console.error('Invalid URL:', url);
+      return encodeURIComponent(url); // Return the original URL if it's invalid
+    }
+  }
   scheduleMeet() {
     const formData = this.classForm.value;
     localStorage.setItem('classFormData', JSON.stringify(formData));
     localStorage.setItem('courseCode', this.courseCode);
     localStorage.setItem('courseTitle', this.courseTitle);
     if (this.classForm.get('meetingPlatform')?.value === 'zoom') {
-      const zoomAuthUrl = environment.ZoomUrl;
+      const zoomKey = JSON.parse(localStorage.getItem('user_data')!)?.user?.zoomKey;
+
+      const clientId = zoomKey.clientId || '';
+      const redirectUri = this.updateHost(zoomKey.redirectUri) 
+      const zoomURL = `https://zoom.us/oauth/authorize?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}`
+      const zoomAuthUrl = zoomURL;
       localStorage.setItem('zoomSessionCreated', 'true');
       window.location.href = zoomAuthUrl;
     }

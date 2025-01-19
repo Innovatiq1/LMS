@@ -13,7 +13,7 @@
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
           <div class="card m-auto">
             <div class="header">
-              <h2>zoom credentials</h2>
+              <h2>Zoom Credentials</h2>
             </div>
             <div class="body">
               <mat-tab-group>
@@ -103,7 +103,7 @@
                                     </mat-error>
                                   </mat-form-field>
                                 </div>
-                                <div class="col-8">
+                                <div class="col-6">
                                   <label
                                     >Redirect URI<span class="mandatory"
                                       >&nbsp;*</span
@@ -115,26 +115,9 @@
                                   >
                                     <input
                                       matInput
-                                      [type]="rhide ? 'password' : 'text'"
+                                      type="text"
                                       formControlName="redirectUri"
                                     />
-                                    <a
-                                      href="#"
-                                      onClick="return false;"
-                                      matSuffix
-                                      (click)="rhide = !rhide"
-                                      [attr.aria-label]="'Hide password'"
-                                      [attr.aria-pressed]="rhide"
-                                    >
-                                      <mat-icon
-                                        class="material-icons-two-tone color-icon m-3"
-                                        matSuffix
-                                      >
-                                        {{
-                                          rhide ? "visibility_off" : "visibility"
-                                        }}</mat-icon
-                                      >
-                                    </a>
                                     <mat-error
                                       *ngIf="
                                         zoomForm.get('redirectUri')?.invalid &&
