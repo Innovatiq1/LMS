@@ -189,12 +189,12 @@
                       !codeExists && !classId">
                   <button mat-raised-button color="primary" (click)="scheduleMeet()">Create Zoom Session</button>
                 </div>
-                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mt-3" *ngIf="labelStatusCheck('External Room')">
+                <!-- <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mt-3" *ngIf="labelStatusCheck('External Room')">
                   <section class="example-section">
                     <mat-checkbox class="example-margin" formControlName="externalRoom"><span class="fs-6">External
                         Room</span></mat-checkbox>
                   </section>
-                </div>
+                </div> -->
                 <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-2">
                   <label>Registration Start Date<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
@@ -286,7 +286,7 @@
               <div class="row" *ngFor="let element of dataSource; index as index">
                 <!-- Start Date Input -->
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
-                  <label for="start-date">Start Date<span class="mandatory">&nbsp;*</span></label>
+                  <label for="start-date">Class Start Date<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <input matInput id="start-date" [owlDateTimeTrigger]="date" [owlDateTime]="date"
                       [(ngModel)]="element.start" name="start" #startInput="ngModel" required [min]="minDates"
@@ -294,21 +294,21 @@
                     <mat-icon matSuffix [owlDateTimeTrigger]="date" class="date-icon">today</mat-icon>
                     <owl-date-time #date></owl-date-time>
                     <mat-error *ngIf="startInput.invalid && (startInput.touched || form.submitted)">
-                      Select Start Date
+                      Select Class Start Date
                     </mat-error>
                   </mat-form-field>
                 </div>
 
                 <!-- End Date Input -->
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
-                  <label for="end-date">End Date<span class="mandatory">&nbsp;*</span></label>
+                  <label for="end-date">Class End Date<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <input matInput id="end-date" [owlDateTimeTrigger]="date2" [owlDateTime]="date2"
                       [(ngModel)]="element.end" [min]="element.start" name="end" #endInput="ngModel" required />
                     <mat-icon matSuffix [owlDateTimeTrigger]="date2" class="date-icon">today</mat-icon>
                     <owl-date-time #date2></owl-date-time>
                     <mat-error *ngIf="endInput.invalid && (endInput.touched || form.submitted)">
-                      Select End Date
+                      Select Class End Date
                     </mat-error>
                   </mat-form-field>
                 </div>

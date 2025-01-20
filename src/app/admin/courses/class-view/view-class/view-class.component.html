@@ -127,7 +127,7 @@
                                         </div> -->
                     <div class="row pt-2">
                       <div class="col-xl-6 col-md-12 col-sm-12">
-                        <h6>Start Date</h6>
+                        <h6>Class Start Date</h6>
                       </div>
                       <div class="col-xl-6 col-md-12 col-sm-12">
                         <p>
@@ -137,12 +137,13 @@
                     </div>
                     <div class="row pt-2">
                       <div class="col-xl-6 col-md-12 col-sm-12">
-                        <h6>Start Time</h6>
+                        <h6>Class Start Time</h6>
                       </div>
                       <div class="col-6">
                         <p>{{ response.sessions[0]?.sessionStartTime }}</p>
                       </div>
                     </div>
+                    
                     <div class="row pt-2">
                       <div class="col-xl-6 col-md-12 col-sm-12">
                         <h6>Minimum{{ commonRoles.STUDENT_ROLE }}s</h6>
@@ -272,10 +273,18 @@
                                         </div> -->
                     <div class="row pt-2">
                       <div class="col-xl-6 col-md-12 col-sm-12">
-                        <h6>End Date</h6>
+                        <h6>Class End Date</h6>
                       </div>
                       <div class="col-6">
                         <p>{{ response.sessions[0]?.sessionEndDate | date }}</p>
+                      </div>
+                    </div>
+                    <div class="row pt-2">
+                      <div class="col-xl-6 col-md-12 col-sm-12">
+                        <h6>Class End Time</h6>
+                      </div>
+                      <div class="col-6">
+                        <p>{{ response.sessions[0]?.sessionEndTime }}</p>
                       </div>
                     </div>
                     <div class="row pt-2">
