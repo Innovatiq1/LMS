@@ -54,6 +54,14 @@ export class EditCourseKitComponent {
   videoLink: any;
   videoSrc: any;
   videoId: any;
+  kitType: any;
+  scormKit: any;
+  scormId: any;
+  kitTypeOpt: any[] = [
+    { code: 'course', label: 'Course' },
+    { code: 'scorm', label: 'Scorm' },
+  ];
+  isScormKit: boolean = false;
   constructor(
     private router: Router,
 
@@ -94,6 +102,8 @@ export class EditCourseKitComponent {
         ...this.utils.validators.noLeadingSpace,]),
       videoLink: new FormControl('', [ 
         ...this.utils.validators.noLeadingSpace,]),
+      kitType: new FormControl('', [...this.utils.validators.descripton,
+        ...this.utils.validators.noLeadingSpace]),
     });
 
     this.subscribeParams = this.activatedRoute.params.subscribe(
@@ -101,6 +111,18 @@ export class EditCourseKitComponent {
         this.courseId = params.id;
       }
     );
+
+    this.courseKitForm.get('kitType')?.valueChanges.subscribe((value) => {
+      if (value === 'scorm') {
+        this.isScormKit = true;
+      this.courseKitForm.patchValue({
+        videoLink: '',
+        documentLink: '',
+      });
+      } else {
+        this.isScormKit = false;
+      }
+    });
   }
   dateValidator(group: FormGroup) {
     const startDate = group.get('startDate')?.value;
@@ -169,6 +191,15 @@ export class EditCourseKitComponent {
         timer: 90000,
         timerProgressBar: true,
       });
+      if(this.isScormKit){
+        this.courseService.updateScormKit(this.scormId,formdata).subscribe((data) => {
+          const courseKitData: CourseKit = this.courseKitForm.value;
+          delete courseKitData.videoLink;
+          delete courseKitData.documentLink;
+          courseKitData.scormKit = data.data._id;
+          this.editCourseKit(courseKitData);
+        });
+      }else{
           this.courseService.updateVideo(this.videoId,formdata).subscribe((data) => {
             const courseKitData: CourseKit = this.courseKitForm.value;
             courseKitData.videoLink = data.data._id;
@@ -183,6 +214,7 @@ export class EditCourseKitComponent {
             });
             Swal.close();
           });
+        }
     } 
   cancel() {
     window.history.back();
@@ -192,22 +224,30 @@ export class EditCourseKitComponent {
       course: this.courseService.getCourseKitById(this.courseId),
     }).subscribe((response: any) => {
       if (response) {
+        console.log(response);
+        
         this.course = response.course;
-        this.fileName = response?.course?.videoLink
+        this.fileName = response?.course?.videoLink?.length > 0
           ? response?.course?.videoLink[0].filename
           : null;
         this.documentLink = response.course?.documentLink;
         this.docs = response.course?.documentLink;
         this.videoLink = response.course?.videoLink;
-
+        if(response.course?.videoLink?.length > 0){
         let courseKitDetails = response.course.videoLink[0];
         this.videoId = courseKitDetails._id
         this.videoSrc = courseKitDetails.video_filename;
         this.uploadedDocument = courseKitDetails.doc_filename;
+        }else {
+          this.scormId = response.course.scormKit._id;
+          this.scormKit = response.course.scormKit;
+        }
+        this.kitType = response.course.kitType;
         this.courseKitForm.patchValue({
           name: response?.course?.name,
           shortDescription: response?.course?.shortDescription,
           longDescription: response?.course?.longDescription,
+          kitType: response?.course?.kitType,
         });
       }
     });

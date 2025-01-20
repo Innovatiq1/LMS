@@ -143,6 +143,10 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   storedItems: string | null;
   optionValue?:string;
   isVideo:boolean=false;
+  editTPUrl:boolean=false;
+  TPLearningAndTutorial:boolean=false;
+  TPonlyExam:boolean=false;
+  TPAssessmentAndExam:boolean=false;
 
   constructor(
     private router: Router,
@@ -179,12 +183,13 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     // console.log('Option value from URL:', this.optionValue);
     this.editUrl = urlPath.includes('edit-course');
     this.viewUrl = urlPath.includes('view-course');
+    this.editTPUrl=urlPath.includes('edit-course');
 
     if (this.editUrl === true) {
       this.breadcrumbs = [
         {
           title: 'Edit Course',
-          items: [this.storedItems],
+          items: ['Pending Courses'],
           active: 'Edit Course',
         },
       ];
@@ -192,11 +197,13 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       this.breadcrumbs = [
         {
           title: 'View Course',
-          items: [this.storedItems],
+          items: ['Course Name'],
           active: 'View Course',
         },
       ];
     }
+
+    
 
     this.firstFormGroup = this._formBuilder.group({
       title: ['', [Validators.required, Validators.pattern(/^[a-zA-Z ]/)]],
@@ -205,6 +212,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         [Validators.required, Validators.pattern(/^[a-zA-Z0-9]/)],
       ],
       fee: new FormControl('', [Validators.pattern(/^\d+(\.\d+)?$/)]),
+      discount_type: new FormControl('', [Validators.required]),
       currency_code: [''],
 
       course_duration_in_days: new FormControl('', [
@@ -281,7 +289,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.optionValue = params['option'] || null;
-      // console.log('Option value from URL:', this.optionValue);
+        // console.log('Option value from URL:', this.optionValue);
     });
     this.getCourseKitsnew()
     this.getFundingGrantNew();
@@ -343,11 +351,23 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     }
 
     this.loadData();
+    // this.checkForEditTPCourse();
     setInterval(() => {
-      this.startAutoSave();
+      //  this.startAutoSave();
     }, 30000);
   }
+  
+// checkForEditTPCourse(){
+//   if(this.editTPUrl && this.optionValue){
+//     this.TPLearningAndTutorial=this.optionValue=='LearningAndTutorial'?true:false;
+//     this.TPAssessmentAndExam=this.optionValue=='AssessmentAndExam'?true:false;
+//     this.TPonlyExam=this.optionValue=='AssessmentAndExam'?true:false;
+//   }
+//   console.log("this.TPLearningAndTutorial",this.TPLearningAndTutorial)
+//   console.log("this.TPAssessmentAndExam",this.TPAssessmentAndExam)
+//   console.log("this.TPonlyExam",this.TPonlyExam)
 
+// }
   // openCreateCourseKitDialog(): void {
   //   const dialogRef = this.dialog.open(CreateCourseKitComponent, {
   //     width: '80%',
@@ -383,6 +403,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   // }
 
   // trying new Ways
+  
    openCreateCourseKitDialog(): void {
     const someVariable = 'dialogApproved';
       const dialogRef = this.dialog.open(CreateCourseKitComponent, {
@@ -900,6 +921,32 @@ this.exam_assessments=res?.data.reverse();
     );
     // if (this.firstFormGroup.valid) {
       const courseData = this.firstFormGroup.value;
+     
+      if(this.editTPUrl && this.optionValue){
+        if(this.optionValue=='OnlyLearning'||this.optionValue=='LearningAndTutorial')
+          {
+            courseData.issueCertificate="video";
+        }
+        else{
+          courseData.issueCertificate="test";
+          if(this.isOnlyExam)
+          {
+            courseData.examType="direct"
+          }
+          else
+          {
+            courseData.examType="after"
+          }
+  
+        }
+        if(this.optionValue=='LearningAndTutorial'){
+          courseData.learningTutorial=true;
+        }
+        else{
+          courseData.learningTutorial=false;
+        }
+
+      }
       let creator = JSON.parse(localStorage.getItem('user_data')!).user.name;
       let payload = {
         title: courseData?.title,
@@ -908,6 +955,7 @@ this.exam_assessments=res?.data.reverse();
         training_hours: courseData?.training_hours,
         department: courseData?.department,
         fee: courseData?.fee,
+        discount_type:courseData?.discount_type,
         approval: courseData?.approval,
         currency_code: courseData?.currency_code,
         skill_connect_code: courseData?.skill_connect_code,
@@ -940,6 +988,7 @@ this.exam_assessments=res?.data.reverse();
         isFeedbackRequired: courseData?.isFeedbackRequired,
         examType: courseData?.examType,
         issueCertificate: courseData?.issueCertificate,
+        learningTutorial:courseData?.learningTutorial,
         certificate_template: courseData?.certificate_temp,
         certificate_template_id: certicate_temp_id[0].id,
         status: 'inactive',
@@ -1115,6 +1164,7 @@ this.exam_assessments=res?.data.reverse();
         training_hours: courseData?.training_hours,
         department: courseData?.department,
         fee: courseData?.fee,
+        discount_type:courseData?.discount_type,
         approval: courseData?.approval,
         currency_code: courseData?.currency_code,
         skill_connect_code: courseData?.skill_connect_code,
@@ -1151,7 +1201,8 @@ this.exam_assessments=res?.data.reverse();
         certificate_template_id: certicate_temp_id[0].id,
         companyId: userId,
         courses: courses,
-        learningTutorial:courseData.learningTutorial
+        learningTutorial:courseData.learningTutorial,
+        selectedOptionValue:this.optionValue
 
       };
 // console.log("payload--",payload)
@@ -1203,7 +1254,9 @@ this.exam_assessments=res?.data.reverse();
       exam_assessment: this.questionService.getExamQuestionJson({ status: 'approved' }),
     }).subscribe((response: any) => {
       this.fundingGrants = response.fundingGrant;
-      // console.log("newRes===",response)
+      //  console.log("newRes===",response)
+      //  this.optionValue=response.course.selectedOptionValue;
+      
        this.courseKits = response.courseKit?.docs;
         this.assessments = response.assessment?.data?.docs;
       this.exam_assessments = response.exam_assessment.data.docs;
@@ -1223,6 +1276,8 @@ this.exam_assessments=res?.data.reverse();
       let exam_assessmentId = this.course?.exam_assessment?.id;
       let tutorialId = this.course?.tutorial?.id;
       let feedbackId = this.course?.survey?.id;
+
+      
       if (this.course?.feeType == 'paid') {
         this.isPaid = true;
       }
@@ -1255,6 +1310,7 @@ this.exam_assessments=res?.data.reverse();
         course_detailed_description: this.course?.course_detailed_description,
         skill_connect_code: this.course?.skill_connect_code,
         fee: this.course?.fee?.toString(),
+        discount_type:this.course?.discount_type,
         approval: this.course?.approval,
         sessionStartDate: `${moment(this.course?.sessionStartDate).format(
           'YYYY-MM-DD'
@@ -1314,6 +1370,28 @@ this.exam_assessments=res?.data.reverse();
          this.firstFormGroup.patchValue({
           course_kit: this.course?.course_kit?.map((item: { id: any }) => item?.id) || [],
         });
+      }
+
+      if(this.editTPUrl && this.optionValue){
+        // this.TPLearningAndTutorial=this.optionValue=='LearningAndTutorial'?true:false;
+        // this.TPAssessmentAndExam=this.optionValue=='AssessmentAndExam'?true:false;
+        // this.TPonlyExam=this.optionValue=='AssessmentAndExam'?true:false;
+        if(this.optionValue=='LearningAndTutorial')
+        {
+          // console.log("heloo",this.optionValue)
+          this.isTestIssueCertificate = false;
+          this.isLearningAndTutorial=true;
+        }
+        else if(this.optionValue=='AssessmentAndExam'){
+          this.isTestIssueCertificate = true;
+          this.isAfterExamType = true;
+          this.isLearningAndTutorial=false;
+        }
+        else if(this.optionValue=='OnlyExam'){
+          this.isExamTypeCertificate = true;
+          this.isAfterExamType = false;
+          this.isLearningAndTutorial=false;
+        }
       }
   
       this.cd.detectChanges();

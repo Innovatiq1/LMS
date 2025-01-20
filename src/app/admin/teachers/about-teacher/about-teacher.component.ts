@@ -95,6 +95,9 @@ export class AboutTeacherComponent {
 }
 deleteItem(row: any) {
   // this.id = row.id;
+  const payLoad:any={
+    action:"delete"
+  }
    Swal.fire({
      title: "Confirm Deletion",
      text: "Are you sure you want to delete this Instructor?",
@@ -106,7 +109,7 @@ deleteItem(row: any) {
      cancelButtonText: "Cancel",
    }).then((result) => {
      if (result.isConfirmed) {
-       this.teachersService.deleteUser(row.id).subscribe(
+       this.teachersService.deleteUser(row.id,payLoad).subscribe(
          () => {
            Swal.fire({
              title: "Deleted",

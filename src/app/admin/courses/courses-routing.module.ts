@@ -23,6 +23,7 @@ import { RetakeRequestsComponent } from './retake-requests/retake-requests.compo
 import { ViewClassComponent } from './class-view/view-class/view-class.component';
 import { ClassListComponent } from './class-list/class-list.component';
 import { EnquiryListComponent } from './enquiry-list/enquiry-list.component';
+import { ScheduleMeetingComponent } from './schedule-meeting/schedule-meeting.component';
 const routes: Routes = [
   {
     path: 'course-name',
@@ -87,7 +88,7 @@ const routes: Routes = [
     component: ViewCompletionComponent,
   },
   {
-    path: 'student-courses/verification-list/view-completion-list',
+    path: 'student-courses/registered-pending-courses/view-completion-list',
     component: ViewCompletionComponent,
   },
   {

@@ -8,6 +8,8 @@ import { StudentsService } from './students/students.service';
 @NgModule({
   declarations: [
 
+  
+  
   ],
   imports: [CommonModule, AdminRoutingModule],
   providers: [StudentsService],

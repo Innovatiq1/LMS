@@ -1,154 +1,451 @@
 <section class="content">
-    <div class="content-block">
-        <div class="block-header" *ngFor="let breadscrum of breadcrumbs">
-            <!-- breadcrumb -->
-            <app-static-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
-            </app-static-breadcrumb>
-        </div>
+  <div class="content-block">
+    <div class="block-header" *ngFor="let breadscrum of breadcrumbs">
+      <!-- breadcrumb -->
+      <app-static-breadcrumb
+        [title]="breadscrum.title"
+        [items]="breadscrum.items"
+        [active_item]="breadscrum.active"
+      >
+      </app-static-breadcrumb>
+    </div>
 
-<div class="card">
-    <div class="row clearfix p-2">
+    <div class="card">
+      <div class="row clearfix p-2">
         <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
-            <div class="card">
-                <div class="p-4">
-                    <div class="card-container">
-                        <!-- <div class="header">
+          <div class="card">
+            <div class="p-4">
+              <div class="card-container">
+                <!-- <div class="header">
                             <h6>Course Class</h6>
                         </div> -->
-                        <button class="icons" alt="Edit" *ngIf="isAdmin && !isInstructor && edit" mat-menu-item (click)="editClass(response.id)">
-                            <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                        </button>
-                        <button class="icons" alt="Delete" *ngIf="isAdmin && !isInstructor && isDelete" mat-menu-item (click)="delete(response.id)">
-                            <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                        </button>
-                    </div>
-                    <div class="row">
-                        <div class="col-xl-6 col-md-12 col-sm-12">
-                            <img class="image-link" src="{{response?.courseId?.image_link || 'assets/noimage.jpg'}}">
-                          </div>
-                        <div class="col-xl-6 col-md-12 col-sm-12">
-                            <div class="row mt-3 mx-auto">
-                                        <div class="col-xl-6 col-md-12 col-sm-12">
-                                           <h6>Course</h6>
-                                        </div>
-                                        <div class="col-xl-6 col-md-12 col-sm-12">
-                                            <p>{{response?.courseId?.title}}</p>
-                                        </div>
-                            </div>
-                            <div class="row mt-3 mx-auto">
-                                <div class="col-xl-6 col-md-12 col-sm-12">
-                                    <h6>Course Code</h6>
-                                </div>
-                                <div class="col-xl-6 col-md-12 col-sm-12" style="width: 40%;display: flex;">
-                                    <p>{{response?.courseId?.courseCode}}</p>
-                                </div>
-                            </div>
-                            <div class="row mt-3 mx-auto">
-                                <div class="col-xl-6 col-md-12 col-sm-12">
-                                    <h6>{{commonRoles?.INSTRUCTOR_ROLE}}</h6>
-                                </div>
-                                <div class="col-xl-6 col-md-12 col-sm-12">
-                                    <p>{{response.sessions[0]?.instructorId?.name | titlecase}}</p>
-                                </div>
-                            </div>
-                            <div class="row mt-3 mx-auto">
-                                <div class="col-xl-6 col-md-12 col-sm-12">
-                                    <h6>Class</h6>
-                                </div>
-                                        <div class="col-xl-6 col-md-12 col-sm-12">
-                                            <h6
-                                      [ngClass]="
-                                      response.classDeliveryType === 'online'
-                                      ? 'badge badge-solid-green'
-                                      : response?.classDeliveryType === 'offline' ? 'badge badge-solid-red' : ''
-                                      "
-                                    >
-                                      <span
-                                        [ngClass]="
-                                        response?.classDeliveryType === 'online'
-                                        ? 'status-dot' :
-                                        response?.classDeliveryType === 'offline' ? 'status-red' : ''
-                                        "
-                                      ></span
-                                      >{{ response.classDeliveryType | titlecase}}
-                                    </h6>
-                                        </div>
-                            </div>
-                            
-                        </div>
-                        </div>
-                    <div class="row">
-                        <div class="col-xl-6 col-md-12 col-sm-12">
-                            <div class="p-2">
-                                <!-- <div class="row pt-2">
-                                    <div class="col-xl-6 col-md-12 col-sm-12">
-                                        <h6>Class Type</h6>
-                                    </div>
-                                    <div class="col-xl-6 col-md-12 col-sm-12">
-                                        <p>{{response?.classType == '2'?'Private':'Public'}}</p>
-                                    </div>
-                                </div> -->
-                                <div class="row pt-2">
-                                    <div class="col-xl-6 col-md-12 col-sm-12">
-                                        <h6>Start Date</h6>
-                                    </div>
-                                    <div class="col-xl-6 col-md-12 col-sm-12">
-                                        <p>{{response.sessions[0]?.sessionStartDate | date }}</p>
-                                    </div>
-                                </div>
-                                <div class="row pt-2">
-                                    <div class="col-xl-6 col-md-12 col-sm-12">
-                                        <h6>Minimum{{commonRoles.STUDENT_ROLE}}s</h6>
-                                    </div>
-                                    <div class="col-xl-6 col-md-12 col-sm-12">
-                                        <p>{{response?.minimumEnrollment}}</p>
-                                    </div>
-                                   
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="col-xl-6 col-md-12 col-sm-12">
-                            <div class="p-2">
-                                <!-- <div class="row">
-                                    <div class="col-xl-6 col-md-12 col-sm-12">
-                                        <h6>{{commonRoles?.INSTRUCTOR_ROLE}} Fee</h6>
-                                    </div>
-                                    <div class="col-xl-6 col-md-12 col-sm-12">
-                                        <p>$ {{response?.instructorCost}}.00</p>
-                                    </div>
-                                </div> -->
-                                <div class="row pt-2">
-                                    <div class="col-xl-6 col-md-12 col-sm-12">
-                                        <h6>End Date</h6>
-                                    </div>
-                                    <div class="col-xl-6 col-md-12 col-sm-12">
-                                        <p>{{response.sessions[0]?.sessionEndDate | date }}</p>
-                                    </div>
-                                </div>
-                                <div class="row pt-2">
-                                    <div class="col-xl-6 col-md-12 col-sm-12">
-                                        <h6>Maximum {{commonRoles.STUDENT_ROLE}}s</h6>
-                                    </div>
-                                    <div class="col-xl-6 col-md-12 col-sm-12">
-                                        <p>{{response?.maximumEnrollment}}</p>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    <h2 class="text-end"><span></span></h2>
-                    <p class="m-b-0"></p>
+                <button
+                  class="icons"
+                  alt="Edit"
+                  *ngIf="isAdmin && !isInstructor && edit"
+                  mat-menu-item
+                  (click)="editClass(response.id)"
+                >
+                  <app-feather-icons
+                    [icon]="'edit'"
+                    [class]="'tbl-fav-edit'"
+                  ></app-feather-icons>
+                </button>
+                <button
+                  class="icons"
+                  alt="Delete"
+                  *ngIf="isAdmin && !isInstructor && isDelete"
+                  mat-menu-item
+                  (click)="delete(response.id)"
+                >
+                  <app-feather-icons
+                    [icon]="'trash-2'"
+                    [class]="'tbl-fav-delete'"
+                  ></app-feather-icons>
+                </button>
+              </div>
+              <div class="row">
+                <div class="col-xl-6 col-md-12 col-sm-12">
+                  <img
+                    class="image-link"
+                    src="{{
+                      response?.courseId?.image_link || 'assets/noimage.jpg'
+                    }}"
+                  />
                 </div>
-                <div class="col-md-10 m-3">
-                    <button mat-raised-button id="back"(click)=back()>Back</button>
+                <div class="col-xl-6 col-md-12 col-sm-12">
+                  <div class="row mt-3 mx-auto">
+                    <div class="col-xl-6 col-md-12 col-sm-12">
+                      <h6>Course</h6>
+                    </div>
+                    <div class="col-xl-6 col-md-12 col-sm-12">
+                      <p>{{ response?.courseId?.title }}</p>
+                    </div>
                   </div>
-            </div>
-        </div>
-    </div>
-</div>
+                  <div class="row mt-3 mx-auto">
+                    <div class="col-xl-6 col-md-12 col-sm-12">
+                      <h6>Course Code</h6>
+                    </div>
+                    <div
+                      class="col-xl-6 col-md-12 col-sm-12"
+                      style="width: 40%; display: flex"
+                    >
+                      <p>{{ response?.courseId?.courseCode }}</p>
+                    </div>
+                  </div>
+                  <div class="row mt-3 mx-auto">
+                    <div class="col-xl-6 col-md-12 col-sm-12">
+                      <h6>{{ commonRoles?.INSTRUCTOR_ROLE }}</h6>
+                    </div>
+                    <div class="col-xl-6 col-md-12 col-sm-12">
+                      <p>
+                        {{
+                          response.sessions[0]?.instructorId?.name | titlecase
+                        }}
+                      </p>
+                    </div>
+                  </div>
+                  <div class="row mt-3 mx-auto">
+                    <div class="col-xl-6 col-md-12 col-sm-12">
+                      <h6>Class</h6>
+                    </div>
+                    <div class="col-xl-6 col-md-12 col-sm-12">
+                      <h6
+                        [ngClass]="
+                          response.classDeliveryType === 'online'
+                            ? 'badge badge-solid-green'
+                            : response?.classDeliveryType === 'offline'
+                            ? 'badge badge-solid-red'
+                            : ''
+                        "
+                      >
+                        <span
+                          [ngClass]="
+                            response?.classDeliveryType === 'online'
+                              ? 'status-dot'
+                              : response?.classDeliveryType === 'offline'
+                              ? 'status-red'
+                              : ''
+                          "
+                        ></span
+                        >{{ response.classDeliveryType | titlecase }}
+                      </h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xl-6 col-md-12 col-sm-12">
+                  <div class="p-2">
+                    <!--  <div class="row pt-2">
+                                            <div class="col-6">
+                                                <h6>Class Type</h6>
+                                            </div>
+                                            <div class="col-6">
+                                                <p>{{response?.classType == '2'?'Private':'Public'}}</p>
+                                            </div>
+                                        </div> -->
+                    <div class="row pt-2">
+                      <div class="col-xl-6 col-md-12 col-sm-12">
+                        <h6>Class Start Date</h6>
+                      </div>
+                      <div class="col-xl-6 col-md-12 col-sm-12">
+                        <p>
+                          {{ response.sessions[0]?.sessionStartDate | date }}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="row pt-2">
+                      <div class="col-xl-6 col-md-12 col-sm-12">
+                        <h6>Class Start Time</h6>
+                      </div>
+                      <div class="col-6">
+                        <p>{{ response.sessions[0]?.sessionStartTime }}</p>
+                      </div>
+                    </div>
+                    
+                    <div class="row pt-2">
+                      <div class="col-xl-6 col-md-12 col-sm-12">
+                        <h6>Minimum{{ commonRoles.STUDENT_ROLE }}s</h6>
+                      </div>
+                      <div class="col-6">
+                        <p>{{ response?.minimumEnrollment }}</p>
+                      </div>
+                    </div>
+                    <div
+                      class="row pt-2"
+                      *ngIf="response?.classDeliveryType === 'online'"
+                    >
+                      <div class="col-6">
+                        <h6>Meeting Link</h6>
+                      </div>
+                      <!-- Conditionally show this div only if the platform is 'online' -->
+                      <div class="col-6 d-flex align-items-center">
+                        <p style="margin-bottom: 0">
+                          <!-- Remove bottom margin for better alignment -->
+                          <!-- Start Meeting Button -->
+                          <ng-container *ngIf="!isDateExpired(response.sessions[0]?.sessionEndDate); else expiredMessage">
+                            <a
+                            href="{{ response?.meetingUrl }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style="
+                              display: inline-block;
+                              background-color: white;
+                              color: #28a745;
+                              padding: 5px 10px;
+                              text-align: center;
+                              text-decoration: none;
+                              border-radius: 5px;
+                              margin-right: 10px;
+                              border: 0.5px solid #28a745;
+                              font-size: 14px;
+                            "
+                          >
+                            Start Meeting
+                          </a>
 
-        
+                          <!-- Copy Link Button -->
+                          <button
+                            (click)="copyToClipboard(response?.meetingUrl)"
+                            style="
+                              display: inline-block;
+                              background-color: white;
+                              color: #28a745;
+                              padding: 5px 10px;
+                              text-align: center;
+                              border: 0.5px solid #28a745;
+                              border-radius: 5px;
+                              margin-right: 10px;
+                              font-size: 14px;
+                            "
+                          >
+                            <i class="fas fa-copy"></i>
+                            <!-- Font Awesome Copy Icon -->
+                          </button>
+
+                          <!-- Update Link Button -->
+                          <button
+                            type="button"
+                            (click)="toggleZoomMeetingForm()"
+                            style="
+                              display: inline-block;
+                              background-color: white;
+                              color: #28a745;
+                              padding: 5px 10px;
+                              text-align: center;
+                              border: 0.5px solid #28a745;
+                              border-radius: 5px;
+                              font-size: 14px;
+                            "
+                          >
+                            <i class="fas fa-edit"></i>
+                            <!-- Font Awesome Update Icon -->
+                          </button>
+
+                          <!-- Delete Button -->
+                          <button
+                            type="button"
+                            (click)="toggleZoomMeetingFormDelete()"
+                            style="
+                              display: inline-block;
+                              background-color: white;
+                              color: #dc3545;
+                              padding: 5px 10px;
+                              text-align: center;
+                              border: 0.5px solid #dc3545;
+                              border-radius: 5px;
+                              font-size: 14px;
+                            "
+                          >
+                            <i class="fas fa-trash"></i>
+                          </button>
+                        </ng-container>
+                        <ng-template #expiredMessage>
+                            <span>Link Expired</span>
+                          </ng-template>
+                        </p>
+                      </div>
+                    </div>
+
+                    <div
+                      class="row pt-2"
+                      *ngIf="response?.classDeliveryType === 'online'"
+                    >
+                      <div class="col-6">
+                        <h6>Duration</h6>
+                      </div>
+                      <div class="col-6">
+                        <p>{{ response?.duration | divideBy60 }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xl-6 col-md-12 col-sm-12">
+                  <div class="p-2">
+                    <!-- <div class="row">
+                                            <div class="col-6">
+                                                <h6>{{commonRoles?.INSTRUCTOR_ROLE}} Fee</h6>
+                                            </div>
+                                            <div class="col-6">
+                                                <p>$ {{response?.instructorCost}}.00</p>
+                                            </div>
+                                        </div> -->
+                    <div class="row pt-2">
+                      <div class="col-xl-6 col-md-12 col-sm-12">
+                        <h6>Class End Date</h6>
+                      </div>
+                      <div class="col-6">
+                        <p>{{ response.sessions[0]?.sessionEndDate | date }}</p>
+                      </div>
+                    </div>
+                    <div class="row pt-2">
+                      <div class="col-xl-6 col-md-12 col-sm-12">
+                        <h6>Class End Time</h6>
+                      </div>
+                      <div class="col-6">
+                        <p>{{ response.sessions[0]?.sessionEndTime }}</p>
+                      </div>
+                    </div>
+                    <div class="row pt-2">
+                      <div class="col-xl-6 col-md-12 col-sm-12">
+                        <h6>Maximum {{ commonRoles.STUDENT_ROLE }}s</h6>
+                      </div>
+                      <div class="col-xl-6 col-md-12 col-sm-12">
+                        <p>{{ response?.maximumEnrollment }}</p>
+                      </div>
+                    </div>
+                    <div
+                      class="row pt-2"
+                      *ngIf="response?.classDeliveryType === 'online'"
+                    >
+                      <div class="col-xl-6 col-md-12 col-sm-12">
+                        <h6>Meeting Platform</h6>
+                      </div>
+                      <div class="col-6">
+                        <p>{{ response?.meetingPlatform }}</p>
+                      </div>
+                    </div>
+                    <div
+                      class="row pt-2"
+                      *ngIf="response?.classDeliveryType === 'online'"
+                    >
+                      <div class="col-6">
+                        <h6>Accessing Recordings</h6>
+                      </div>
+                      <div class="col-6">
+                        <button
+                          type="button"
+                          style="
+                            display: inline-block;
+                            background-color: white;
+                            color: #28a745;
+                            padding: 5px 10px;
+                            text-align: center;
+                            border: 0.5px solid #28a745;
+                            border-radius: 5px;
+                          "
+                          (click)="getRecordedVideoLink()"
+                        >
+                          Click here
+                        </button>
+                      </div>
+                    </div>
+                    <div class="col-12" *ngIf="isZoomMeetingFormVisible && response?.meetingPlatform === 'zoom'">
+                      <div class="zoom-meeting-box p-3">
+                        <button
+                        mat-icon-button
+                        (click)="closeZoomMeetingForm()"
+                        class="close-btn"
+                        aria-label="Close"
+                      >
+                        <mat-icon>close</mat-icon>
+                      </button>
+                        <!-- Show Update or Delete Title Based on Mode -->
+                        <h6>{{ isUpdateMode ? 'Update Zoom Link' : 'Delete Zoom Link' }}</h6>
+                    
+                        <!-- Date selection and duration field (only shown if isUpdateMode is true) -->
+                        <div class="row mb-3">
+                          <div class="col-6">
+                            <!-- Date and Time Field -->
+                            <div class="form-group">
+                              <label for="start-date">Choose a date and time</label>
+                              <mat-form-field class="example-full-width" appearance="outline">
+                                <input
+                                  matInput
+                                  [owlDateTimeTrigger]="date"
+                                  [owlDateTime]="date"
+                                  [owlDateTimeFilter]="filterDate"
+                                  name="start"
+                                  id="start-date"
+                                  #startDate
+                                  [(ngModel)]="initialDateTime"
+                                  [min]="response.sessions[0]?.sessionStartDate | date : 'yyyy-MM-dd'"
+                                  [max]="maxDate"                                />
+                                <mat-icon matSuffix [owlDateTimeTrigger]="date" class="date-icon">today</mat-icon>
+                                <owl-date-time #date></owl-date-time>
+                                <mat-error>Enter a valid date and time</mat-error>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                          <!-- Duration Field, only shown if isUpdateMode is true -->
+                          <div class="col-6" *ngIf="isUpdateMode">
+                            <div class="form-group">
+                              <label for="duration">Duration</label>
+                              <mat-form-field class="example-full-width" appearance="outline">
+                                <!-- <input
+                                  matInput
+                                  type="time"
+                                  id="duration"
+                                  name="duration"
+                                  [(ngModel)]="duration"
+                                  min="1"
+                                  #durationInput
+                                /> -->
+
+                                <input id="duration" #durationInput matInput [(ngModel)]="duration" (input)="formatDuration()" maxlength="5"  placeholder="HH:MM" />
+
+                                <mat-error *ngIf="durationInput.oninvalid">Enter a valid duration</mat-error>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                        </div>
+                    
+                        <!-- Update and Delete Buttons -->
+                        <div class="d-flex justify-content-end mt-3">
+                          <!-- Show Update button only if isUpdateMode is true -->
+                          <button
+                            *ngIf="isUpdateMode"
+                            type="button"
+                            (click)="updateDateTime(startDate.value, duration)"
+                            style="
+                              display: inline-block;
+                              background-color: white;
+                              color: #28a745;
+                              padding: 5px 10px;
+                              text-align: center;
+                              border: 0.5px solid #28a745;
+                              border-radius: 5px;
+                              font-size: 14px;
+                            "
+                          >
+                            Update
+                          </button>
+                    
+                          <!-- Show Delete button only if isDeleteMode is true -->
+                          <button
+                            *ngIf="isDeleteMode"
+                            type="button"
+                            (click)="deleteDateTime(startDate.value)"
+                            style="
+                              display: inline-block;
+                              background-color: white;
+                              color: #dc3545;
+                              padding: 5px 10px;
+                              text-align: center;
+                              border: 0.5px solid #dc3545;
+                              border-radius: 5px;
+                              font-size: 14px;
+                            "
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+              <h2 class="text-end"><span></span></h2>
+              <p class="m-b-0"></p>
+            </div>
+            <div class="col-md-10 m-3">
+              <button mat-raised-button id="back" (click)="back()">Back</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </section>

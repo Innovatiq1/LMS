@@ -88,6 +88,17 @@
                     }}</mat-option>
                   </mat-select>
                 </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <h6>
+                  Video Analyzer <span class="mandatory">&nbsp;*</span>
+                </h6>
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-select formControlName="videoAnalyzerReq">
+                    <mat-option  [value]="true">Enable</mat-option>
+                    <mat-option  [value]="false">Disable</mat-option>
+                  </mat-select>
+                </mat-form-field>
 
               </div>
             </div>

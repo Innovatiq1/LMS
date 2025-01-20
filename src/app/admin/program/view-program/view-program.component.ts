@@ -41,7 +41,7 @@ export class ViewProgramComponent {
        {
          title: '', 
          items: [this.storedItems],  
-         active: 'View Program',  
+         active: 'View Course',  
        },
      ];
    }

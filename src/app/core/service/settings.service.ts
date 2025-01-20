@@ -89,8 +89,23 @@ export class SettingsService {
       params: this.buildParams(filter),
     });
   }
-
-
+  saveAttendance(data: any) {
+    const apiUrl = `${this.prefix}admin/attendance`;
+    return this._Http
+      .post<ApiResponse>(apiUrl, data)
+      .pipe(map((response) => {}));
+  }
+  getAllAttendance(filter?: Partial<CoursePaginationModel>): Observable<ApiResponse> {
+    // console.log('getAttandance',data)
+    const apiUrl = this.defaultUrl + 'admin/attendance';
+    return this._Http.get<ApiResponse>(apiUrl, {
+      params: this.buildParams(filter),
+    });
+  }
+  getAttendanceByCourseId(id: string) {
+    const apiUrl = `${this.prefix}admin/attendance/course/${id}`;
+    return this._Http.get<any>(apiUrl).pipe(map((response) => response));
+  }
   saveSmtp(smtp: any) {
     const apiUrl = `${this.prefix}admin/smtp`;
     return this._Http
@@ -331,9 +346,22 @@ export class SettingsService {
     });
   }
 
+  getZoomKeysByCompanyId(companyId: string): Observable<ApiResponse> {
+    const apiUrl = `${this.publicUrl}getZoomKeys?companyId=${companyId}`;
+    return this._Http.get<ApiResponse>(apiUrl, {
+    });
+  }
+
     
   updateKey(data: any) {
     const apiUrl = `${this.prefix}admin/social-keys`;
+    return this._Http
+      .put<ApiResponse>(apiUrl, data)
+      .pipe(map((response) => {response}));
+  }
+
+  updateZoomKey(data: any) {
+    const apiUrl = `${this.prefix}admin/zoom-keys`;
     return this._Http
       .put<ApiResponse>(apiUrl, data)
       .pipe(map((response) => {response}));

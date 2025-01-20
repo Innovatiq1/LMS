@@ -18,7 +18,7 @@
           <div class="row clearfix">
             <div class="col-lg-4 col-md-4">
               <div class="form-group">
-                <label>First Name<span class="mandatory">&nbsp;*</span></label>
+                <label>Name<span class="mandatory">&nbsp;*</span></label>
                 <mat-form-field class="example-full-width" appearance="outline">
                   <input matInput formControlName="name" />
                   <mat-error
@@ -27,7 +27,7 @@
                       stdForm1.get('name')?.touched
                     "
                   >
-                    {{ utils.getErrorMessage1(stdForm1.get("name"), "fname") }}
+                    {{ utils.getErrorMessage1(stdForm1.get("name"), "name") }}
                   </mat-error>
                 </mat-form-field>
               </div>
@@ -41,7 +41,85 @@
                 </mat-form-field>
               </div>
             </div>
-
+            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+              <label>Qualification<span class="mandatory">&nbsp;*</span></label>
+              <mat-form-field class="example-full-width mb-3" appearance="outline">
+                <input matInput formControlName="qualifications">
+                <mat-error
+                *ngIf="
+                stdForm1.get('qualifications')?.invalid &&
+                stdForm1.get('qualifications')?.touched
+                "
+              >
+                {{
+                  utils.getErrorMessage1(stdForm1.get("qualifications"), "qualification")
+                }}
+              </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+              <label>ID Number<span class="mandatory">&nbsp;*</span></label>
+              <mat-form-field class="example-full-width mb-3" appearance="outline">
+                <input matInput formControlName="idNumber">
+                <mat-error *ngIf="stdForm1.get('idNumber')?.hasError('required')">
+                  Enter ID Number 
+                 </mat-error>
+              </mat-form-field>
+            </div> 
+            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+              <label>ID Type<span class="mandatory">&nbsp;*</span></label>
+              <mat-form-field class="example-full-width mb-3" appearance="outline">
+                <input matInput formControlName="idType">
+                <mat-error *ngIf="stdForm1.get('idType')?.hasError('required')">
+                  Enter ID Type 
+                 </mat-error>
+              </mat-form-field>
+            </div> 
+            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+              <label>ID Code<span class="mandatory">&nbsp;*</span></label>
+              <mat-form-field class="example-full-width mb-3" appearance="outline">
+                <input matInput formControlName="code">
+                <mat-error *ngIf="stdForm1.get('code')?.hasError('required')">
+                  Enter ID Code 
+                 </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+              <label>Area of Practice<span class="mandatory">&nbsp;*</span></label>
+              <mat-form-field class="example-full-width mb-3" appearance="outline">
+                <input matInput formControlName="domainAreaOfPractice">
+                <mat-error *ngIf="stdForm1.get('domainAreaOfPractice')?.hasError('required')">
+                  Enter Area of Practice 
+                 </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-lg-4 col-md-4">
+              <div class="form-group">
+                <label>Email<span class="mandatory">&nbsp;*</span></label>
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <input matInput formControlName="email" />
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+              <label>Gender<span class="mandatory">&nbsp;*</span></label>
+              <mat-form-field class="example-full-width mb-3" appearance="outline">
+                <mat-select formControlName="gender" required>
+                  <mat-option [value]="'male'">
+                    Male
+                  </mat-option>
+                  <mat-option [value]="'female'">
+                    Female
+                  </mat-option>
+                  <mat-option [value]="'other'">
+                    Other
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="stdForm1.get('gender')?.hasError('required')">
+                 Select gender
+                </mat-error>
+              </mat-form-field>
+            </div>
             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-2">
               <label>Department <span class="mandatory">&nbsp;*</span></label>
               <mat-form-field
@@ -73,7 +151,7 @@
             </div>
             <div class="col-lg-4 col-md-4">
               <div class="form-group">
-                <label>Mobile Number</label>
+                <label>Mobile</label>
                 <mat-form-field class="example-full-width" appearance="outline">
                   <input matInput formControlName="mobile" />
                   <mat-error
@@ -89,15 +167,30 @@
                 </mat-form-field>
               </div>
             </div>
-
-            <div class="col-lg-4 col-md-4">
-              <div class="form-group">
-                <label>Email<span class="mandatory">&nbsp;*</span></label>
-                <mat-form-field class="example-full-width" appearance="outline">
-                  <input matInput formControlName="email" />
-                </mat-form-field>
-              </div>
+            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+              <label>Date of Birth<span class="mandatory">&nbsp;*</span></label>
+              <mat-form-field class="example-full-width mb-3" appearance="outline">
+                <input matInput [matDatepicker]="picker" formControlName="dob" required>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="stdForm1.get('dob')?.hasError('required')">
+                  Select date
+                </mat-error>
+              </mat-form-field>
             </div>
+            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+              <label>Experience</label>
+              <mat-form-field class="example-full-width mb-3" appearance="outline">
+                <input matInput formControlName="experience">
+              </mat-form-field>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+              <label>LinkedIn URL</label>
+              <mat-form-field class="example-full-width mb-3" appearance="outline">
+                <input matInput formControlName="linkedInURL">
+              </mat-form-field>
+            </div>
+            
             <div class="col-lg-4 col-md-4">
               <div class="form-group">
                 <label>City<span class="mandatory">&nbsp;*</span></label>
@@ -491,24 +584,35 @@
             <button
               id="saved"
               [routerLink]="[
-                '/student/email-configuration/settings/department-budget-request-approval'
+                '/student/email-configuration/settings/zoom-create'
               ]"
             >
-              Department Budget Approval
+              Zoom Create
             </button>
           </div>
           <div class="col-md-6">
             <button
               id="saved"
               [routerLink]="[
-                '/student/email-configuration/settings/department-budget-request-rejected'
+                '/student/email-configuration/settings/zoom-update'
               ]"
             >
-              Department Budget Request Rejected
+              Zoom Update
             </button>
           </div>
         </div>
-        <div class="row py-3 mb-3"></div>
+        <div class="row py-3 mb-3">
+          <div class="col-md-6 email">
+            <button
+              id="saved"
+              [routerLink]="[
+                '/student/email-configuration/settings/zoom-delete'
+              ]"
+            >
+              Zoom Delete
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     <!-- <div

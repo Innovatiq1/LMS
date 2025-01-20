@@ -43,7 +43,7 @@
                                     ${{data.courseFee}}.00
                                 </td>
                             </tr>
-                            <tr>
+                            <tr *ngIf="isDiscount">
                                 <td>
                                     <h6 >Discount({{data.discountValue}}{{data.discountType =='percentage'? '%':''}})</h6>
                                 </td>
@@ -58,7 +58,21 @@
                                 </td>
 
                             </tr>
-                            <tr>
+
+                            <tr *ngIf="isDiscounttypeValue">
+                                <td>
+                                    <h6 >Discount(${{this.dicountValueType }})</h6>
+                                </td>
+                                <td colspan="4"  class="price">
+                                    - ${{dicountValueType | number : '1.2-2'}}
+                                </td>
+
+                            </tr>
+
+
+
+
+                            <tr *ngIf="isDiscount">
                                 <td>
                                     <h6>Total</h6>
                                 </td>
@@ -70,6 +84,15 @@
                                 </td>
                                 <td colspan="4" *ngIf=!data.discountType class="price">
                                     ${{data.courseFee| number : '1.2-2'}}
+                                </td>
+                            </tr>
+
+                            <tr *ngIf="isDiscounttypeValue">
+                                <td>
+                                    <h6>Total</h6>
+                                </td>
+                                <td colspan="4" class="price">
+                                    ${{data.courseFee - dicountValueType | number : '1.2-2'}}
                                 </td>
                             </tr>
                         </tbody>

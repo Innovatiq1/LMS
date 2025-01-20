@@ -110,6 +110,7 @@ export class AddTeacherComponent {
   onSubmit() {
     let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     let subdomain =localStorage.getItem('subdomain') || '';
+    let uen =localStorage.getItem('uen') || '';
     this.userService.getCompanyByIdentifierWithoutToken(subdomain).subscribe(
       (res: any) => {
 
@@ -129,11 +130,12 @@ export class AddTeacherComponent {
       let qualifications = [{
         description: this.proForm.value.qualifications,
         level: {
-          code: "",
+          code: "21",
         }
       }]
       const payload: any = {
          name: this.proForm.value.name,
+         last_name:this.proForm.value.last_name,
          gender: this.proForm.value.gender,
          domainAreaOfPractice: this.proForm.value.domainAreaOfPractice,
          email: this.proForm.value.email,
@@ -162,7 +164,8 @@ export class AddTeacherComponent {
          type: AppConstants.INSTRUCTOR_ROLE,
          role: AppConstants.INSTRUCTOR_ROLE,
          avatar: this.avatar,
-         users: res[0]?.users
+         users: res[0]?.users,
+         uen: uen
       };
         this.createInstructor(payload);
     }else{

@@ -251,10 +251,10 @@
         </div>
       </div>
 
-      <button mat-raised-button id="submit" (click)="generateCertificatePDF()" style="margin-left: 700px; margin-top: 10px;">
+      <button mat-raised-button id="submit" (click)="generateCertificatePDF()" [disabled]="isGeneratingCertificates" style="margin-left: 700px; margin-top: 10px;">
         Generate Certificate
       </button>
-      
+     
       <!-- <button mat-raised-button id="submit" (click)="update()" style="margin-left: 700px; margin-top: 10px;">
         Generate Certificate
       </button> -->

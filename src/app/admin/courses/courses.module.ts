@@ -35,6 +35,8 @@ import { ViewCompletionComponent } from './completion-list/view-completion/view-
 import { ViewClassComponent } from './class-view/view-class/view-class.component';
 import { ClassListComponent } from './class-list/class-list.component';
 import { EnquiryListComponent } from './enquiry-list/enquiry-list.component';
+import { ScheduleMeetingComponent } from './schedule-meeting/schedule-meeting.component';
+import { DivideBy60Pipe } from './pipes/divide-by60.pipe';
 
 
 
@@ -61,8 +63,10 @@ import { EnquiryListComponent } from './enquiry-list/enquiry-list.component';
     StudentCourseComponent,
     DraftedCoursesComponent,
     RetakeRequestsComponent,
+    ScheduleMeetingComponent,
     ClassListComponent,
-   EnquiryListComponent
+   EnquiryListComponent,
+   DivideBy60Pipe
     
 
   ],

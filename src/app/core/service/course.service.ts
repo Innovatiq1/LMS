@@ -642,9 +642,27 @@ private tpUrl=environment.Url;
       return this._Http.post<any>(apiUrl, payload).pipe(map((response) => response));
     }
 
+    saveScormKit(payload: any){
+      const apiUrl = `${this.prefix}uploadScorm/`;
+      return this._Http.post<any>(apiUrl, payload).pipe(map((response) => response));
+    }
+
 
     updateVideo(id:string,payload: any){
         const apiUrl = `${this.prefix}uploadVideo/${id}`;
+        return this._Http.put<ApiResponse>(apiUrl, payload);
+      }
+
+    updateScormKit(id:string,payload: any){
+        const apiUrl = `${this.prefix}uploadScorm/${id}`;
+        return this._Http.put<ApiResponse>(apiUrl, payload);
+      }
+      createStudentScorm(payload: any){
+        const apiUrl = `${this.prefix}uploadScorm/studentClasses/scorm`;
+        return this._Http.post<any>(apiUrl, payload).pipe(map((response) => response));
+      }
+    commitScormKit(id:string,payload: any){
+        const apiUrl = `${this.prefix}uploadScorm/${id}/commit`;
         return this._Http.put<ApiResponse>(apiUrl, payload);
       }
 
@@ -744,8 +762,9 @@ uploadFile(file: File): Observable<any> {
 getRetreiveTPCourses(
   filter?: Partial<any>
 ): Observable<ApiResponse> {
+  let uen = localStorage.getItem('uen')
   let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId
-  const apiUrl = `${this.tpUrl}getRetreiveTPCourses?companyId=${userId}`;
+  const apiUrl = `${this.tpUrl}getCoursesByTPUEN?companyId=${userId}&uen=${uen}`;
   return this._Http.get<ApiResponse>(apiUrl, {
     params: this.buildParams(filter),
   });

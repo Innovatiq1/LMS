@@ -7,7 +7,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "ng-high-memory": "node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng build"
+    "ng-high-memory,": "node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng build",
+    "dev": "node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng serve"
   },
   "private": true,
   "dependencies": {
@@ -40,7 +41,10 @@
     "@ngx-translate/http-loader": "^8.0.0",
     "@popperjs/core": "^2.11.8",
     "@swimlane/ngx-charts": "^20.4.1",
-    "@swimlane/ngx-datatable": "^20.1.0",
+    "@swimlane/ngx-datatable": "^20.1.0",    
+    "@tensorflow-models/coco-ssd": "^2.2.2",
+    "@tensorflow-models/posenet": "^2.2.2",
+    "@tensorflow/tfjs": "^3.11.0",
     "@types/d3-shape": "^3.1.1",
     "@types/dom-to-image": "^2.6.7",
     "@types/html2canvas": "^1.0.0",
@@ -61,6 +65,7 @@
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.6.0",
     "jszip": "^3.10.1",
+    "long": "^5.2.3",
     "moment": "^2.29.4",
     "ng-apexcharts": "^1.8.0",
     "ng2-charts": "^5.0.1",

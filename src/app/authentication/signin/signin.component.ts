@@ -195,7 +195,7 @@ export class SigninComponent
               googleBtnContainer.classList.add('login-btn');
             }
           });
-      });
+      }); 
   }
   handleGmailLogin(data: any) {
     if (data) {
@@ -209,6 +209,7 @@ export class SigninComponent
         authToken: data.credential, // Include the raw token as authToken
         id: payload.sub,
         gmail: true,
+        
       };
       if (this.extractedName == 'authentication') {
         this.authenticationService
@@ -599,6 +600,8 @@ export class SigninComponent
               (user) => {
                 console.log("2st",user)
                 this.authenticationService.saveUserInfo(user);
+                localStorage.setItem('uen', res[0]?.uen || '');
+                localStorage.setItem('code', res[0]?.code || '');
                 let userId = JSON.parse(localStorage.getItem('user_data')!).user
                   .companyId;
 
@@ -648,6 +651,8 @@ export class SigninComponent
       (res: any) => {
         console.log("12tres",res)
    let companyId=res[0]?.companyId
+   localStorage.setItem('uen', res[0]?.uen || '');
+   localStorage.setItem('code', res[0]?.code || '');
     this.authenticationService
       .loginUser(formData.email.trim(), formData.password.trim(),companyId)
       .subscribe(

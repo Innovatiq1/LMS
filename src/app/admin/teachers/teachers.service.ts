@@ -78,9 +78,10 @@ export class TeachersService extends UnsubscribeOnDestroyAdapter {
     const apiUrl = `${this.prefix}auth/instructorUpdate/${id}`;
     return this.httpClient.put<ApiResponse>(apiUrl, users);
   }
-  deleteUser(userId: string): Observable<ApiResponse> {
+  deleteUser(userId: string,data:any): Observable<ApiResponse> {
+    console.log("data",data);
     const apiUrl = `${this.prefix}auth/instructorDelete/${userId}`;
-    return this.httpClient.delete<ApiResponse>(apiUrl);
+    return this.httpClient.delete<ApiResponse>(apiUrl,{ body: data });
   }
 
   getInstructor(filter?: Partial<UsersPaginationModel>,type?:string): Observable<ApiResponse> {

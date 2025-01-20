@@ -6,8 +6,8 @@ import { CourseService } from '@core/service/course.service';
 import { AppConstants } from '@shared/constants/app.constants';
 import { ClassService } from 'app/admin/schedule-class/class.service';
 import { forkJoin } from 'rxjs';
-
-
+import { SettingsService } from '@core/service/settings.service';
+import { MatTableDataSource } from '@angular/material/table';
 @Component({
   selector: 'app-e-attendance',
   templateUrl: './e-attendance.component.html',
@@ -16,11 +16,11 @@ import { forkJoin } from 'rxjs';
 export class EAttendanceComponent {
   attendanceForm!:FormGroup
   displayedColumns = [
-    'Student',
     'name',
+    'code',
     'startDate',
       'endDate',
-      'registeredDate'
+      'attendance'
   ];
   headeritems: string[] = [ AppConstants.STUDENT_ROLE, ...Array.from({ length: 31 }, (_, i) => (i + 1).toString())];
   courseData = [
@@ -52,12 +52,14 @@ export class EAttendanceComponent {
   totalItems: any;
   pageSizeArr = [10, 25, 50, 100];
   commonRoles: any;
-
+attendanceData:any;
   constructor(
     private _classService: ClassService,
     private fb:FormBuilder,
     private cd: ChangeDetectorRef,
     private courseService: CourseService,
+    private settingsService:SettingsService
+    
   ) {
     this.attendanceForm = this.fb.group({
       course: ['',[] ],
@@ -70,6 +72,7 @@ export class EAttendanceComponent {
   }
 
   ngOnInit() {
+    this.getAllCourses();
     forkJoin({
       courses: this._classService.getAllCoursesTitle('active'),
       programs: this.courseService.getPrograms({...this.coursePaginationModel,status:'active'}),
@@ -78,7 +81,7 @@ export class EAttendanceComponent {
       this.programList = response.programs;
       this.cd.detectChanges();
     });
-    this.commonRoles = AppConstants
+    this.commonRoles = AppConstants;
   }
   search() {
     var startdateObj = new Date(this.attendanceForm.value.fromDate);
@@ -143,6 +146,20 @@ if (this.attendanceForm.value.course !== '') {
     
   
       }
+
+        getAllCourses() {
+    this.courseService.getAllCoursesWithPagination({ ...this.coursePaginationModel }).subscribe((response) => {
+      //  this.courseData = response.data.docs; 
+       this.attendanceData=response.data.docs;
+      //  console.log("response123 ",response.data.docs)
+      this.attendanceData = new MatTableDataSource(this.attendanceData); 
+       this.totalItems = response.data.totalDocs; 
+       this.coursePaginationModel.docs = response.data.docs;
+       this.coursePaginationModel.page = response.data.page;
+       this.coursePaginationModel.limit = response.data.limit;
+       this.coursePaginationModel.totalDocs = response.data.totalDocs;
+    });
+ }
   onSelectCourse(event: any){
    if(event.value == 'course'){
     this.isCourse = true;
@@ -173,5 +190,6 @@ if (this.attendanceForm.value.course !== '') {
   pageSizeChange($event: any) {
     this.coursePaginationModel.page = $event?.pageIndex + 1;
     this.coursePaginationModel.limit = $event?.pageSize;
+    this.getAllCourses();
   }
 }

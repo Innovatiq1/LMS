@@ -393,6 +393,21 @@
                       placeholder="Enter Fees" />
                   </mat-form-field>
                 </div>
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2" *ngIf="isPaid">
+                 <label>Discount Type<span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-select formControlName="discount_type">
+                      <mat-option value="application discount" [disabled]="viewUrl == true">Application Discount</mat-option>
+                      <mat-option value="tp gateway discount" [disabled]="viewUrl == true">TP Gateway Discount</mat-option>
+                      <mat-option value="none" [disabled]="viewUrl == true">None</mat-option>
+                    </mat-select>
+                     <mat-error *ngIf="firstFormGroup.get('discount_type')?.hasError('required') && firstFormGroup.get('discount_type')?.touched">
+                   Select  Discount Type
+                  </mat-error>
+                  </mat-form-field>
+
+                </div>
+                
                 <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2" *ngIf="labelStatusCheck('Currency') && isPaid">
                   <label>Currency</label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">

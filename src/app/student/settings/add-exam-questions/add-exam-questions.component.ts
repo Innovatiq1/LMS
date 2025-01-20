@@ -86,6 +86,7 @@ export class AddExamQuestionsComponent implements OnInit, OnDestroy{
       timer: [],
       retake:[],
       passingCriteria:['', Validators.required],
+      videoAnalyzerReq: [false, Validators.required],
       scoreAlgorithm:[, [Validators.required,Validators.min(0.1)]],
       questions: this.formBuilder.array([]),
     });
@@ -163,6 +164,7 @@ saveDraft(data?: string) {
           retake: this.questionFormTab2.value.retake,
           passingCriteria:this.questionFormTab2.value.passingCriteria,
           scoreAlgorithm: this.questionFormTab2.value.scoreAlgorithm,
+          videoAnalyzerReq: this.questionFormTab2.value.videoAnalyzerReq,
           status: 'draft',
           companyId:userId,
           questions: this.questionFormTab2.value.questions.map((v: any) => ({
@@ -240,6 +242,7 @@ saveDraft(data?: string) {
               passingCriteria:String(response?.passingCriteria),
               retake:String(response?.retake),
               scoreAlgorithm:response?.scoreAlgorithm,
+              videoAnalyzerReq: response?.videoAnalyzerReq,
               timer:response?.timer
             });
 
@@ -397,6 +400,7 @@ saveDraft(data?: string) {
         retake: this.questionFormTab2.value.retake,
         passingCriteria:this.questionFormTab2.value.passingCriteria,
         scoreAlgorithm: this.questionFormTab2.value.scoreAlgorithm,
+        videoAnalyzerReq: this.questionFormTab2.value.videoAnalyzerReq,
         status:this.dialogStatus?'approved':'open',
         companyId:userId,
         questions: this.questionFormTab2.value.questions.map((v: any) => ({

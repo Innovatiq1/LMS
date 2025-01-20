@@ -123,6 +123,9 @@ import { DocumentViewComponent } from './view-course/document-view/document-view
 //import { SafeUrlPipe } from './view-course/document-view/safe-url.pipe';
 import { MatDialogModule } from '@angular/material/dialog';
 import { SocialLoginComponent } from './settings/social-login/social-login.component';
+import { SafePipe } from './safe.pipe';
+import { ZoomKeysComponent } from './settings/zoom-keys/zoom-keys.component';
+import { ObjectDetectionComponent } from './object-detection/object-detection.component';
 
 
 @NgModule({
@@ -225,7 +228,8 @@ import { SocialLoginComponent } from './settings/social-login/social-login.compo
     UpdateTimeAlgorithmComponent,
     TutorialQuestionsComponent,
     DocumentViewComponent,
-    SocialLoginComponent  
+    SocialLoginComponent,    
+    SafePipe, ZoomKeysComponent, ObjectDetectionComponent,
    // SafeUrlPipe,
   ],
   imports: [
