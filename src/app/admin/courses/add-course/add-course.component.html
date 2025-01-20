@@ -474,11 +474,11 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('Start Date')">
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('Start Date') && isOnlyExamOption">
                   <label>Start Date</label>
                   <input type="date" formControlName="sessionStartDate" id="date" class="form-control" />
                 </div>
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('End Date')">
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('End Date')&& isOnlyExamOption">
                   <label>End Date</label>
                   <input type="date" formControlName="sessionEndDate" class="form-control" id="date" />
                 </div>
