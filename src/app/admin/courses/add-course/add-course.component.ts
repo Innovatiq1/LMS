@@ -147,6 +147,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   TPLearningAndTutorial:boolean=false;
   TPonlyExam:boolean=false;
   TPAssessmentAndExam:boolean=false;
+  isOnlyExamOption:boolean=false;
 
   constructor(
     private router: Router,
@@ -180,7 +181,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
    }
     let urlPath = this.router.url.split('/');
     // console.log("urlPath==",this.router.url);
-    // console.log('Option value from URL:', this.optionValue);
+  //  console.log('Option value from URL:', this.optionValue);
     this.editUrl = urlPath.includes('edit-course');
     this.viewUrl = urlPath.includes('view-course');
     this.editTPUrl=urlPath.includes('edit-course');
@@ -289,7 +290,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.optionValue = params['option'] || null;
-        // console.log('Option value from URL:', this.optionValue);
+         console.log('Option value from URL:', this.optionValue);
     });
     this.getCourseKitsnew()
     this.getFundingGrantNew();
@@ -297,6 +298,11 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     this.getTutorialsNew();
     this.getAssessementNew();
      this.getExamNew();
+
+    if(this.optionValue=='OnlyExam')
+    {
+    this.isOnlyExamOption=true;
+    }
     if(this.optionValue=='OnlyLearning'||this.optionValue=='LearningAndTutorial')
       {
         this.isLearningAndTutorial=this.optionValue=='LearningAndTutorial'?true:false;
