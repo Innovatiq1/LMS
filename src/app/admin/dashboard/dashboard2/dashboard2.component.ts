@@ -7,6 +7,8 @@ import { InstructorService } from '@core/service/instructor.service';
 import { SettingsService } from '@core/service/settings.service';
 import { AppConstants } from '@shared/constants/app.constants';
 import { ClassService } from 'app/admin/schedule-class/class.service';
+import { LecturesService } from 'app/teacher/lectures/lectures.service';
+import { UserService } from '@core/service/user.service';
 import {
   ApexAxisChartSeries,
   ApexChart,
@@ -25,6 +27,7 @@ import {
   ApexNonAxisChartSeries,
 } from 'ng-apexcharts';
 import Swal from 'sweetalert2';
+import { tap } from 'rxjs';
 export type chartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -109,13 +112,17 @@ export class Dashboard2Component implements OnInit,AfterViewInit {
   isFeesPie: boolean = false;
   dashboard: any;
   commonRoles: any;
-  
+  filterName='';
+  trainerMap: { [key: string]: string } = {}; 
+  userGroups: any;
   constructor(private instructorService: InstructorService,
     private courseService: CourseService,
     private classService: ClassService,
     private router: Router,
     private settingsService: SettingsService,
     private authenticationService:AuthenService,
+    public lecturesService: LecturesService,
+    public userService:UserService,
     private cdr: ChangeDetectorRef) {
     //constructor
   }
@@ -131,7 +138,10 @@ export class Dashboard2Component implements OnInit,AfterViewInit {
     this.commonRoles = AppConstants
     this.getInstructorsList();
     this.getProgramList();
-    this.getAllCourse();
+    // this.getAllCourse();
+    this.getAllTrainers();
+    this.getAllUpcomingCourseBatches();
+    // this.getUserGroups();
     const role = this.authenticationService.currentUserValue.user.role;
     if (role == AppConstants.ADMIN_ROLE || role ==AppConstants.ASSESSOR_ROLE) {
       this.getStudentDashboards();
@@ -179,6 +189,7 @@ export class Dashboard2Component implements OnInit,AfterViewInit {
       const type = AppConstants.INSTRUCTOR_ROLE
      
     this.instructorService.getInstructorsList(type).subscribe((response: any) => {
+      console.log("getInstractors",response.data.docs)
       this.instructors = response.data.docs.slice(0, 8);
       const currentDate = new Date();
       const currentMonth = currentDate.getMonth();
@@ -375,6 +386,205 @@ export class Dashboard2Component implements OnInit,AfterViewInit {
         });
     })
   }
+//   getAllUpcomingCourseBatches(){
+//     localStorage.removeItem('zoomSessionCreated');
+//     localStorage.removeItem('classFormData');
+//     let filterClass = this.filterName;
+//     const payload = { ...this.coursePaginationModel,courseName:filterClass };
+//     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+//     this.classService.getClassListWithPagination(payload,userId).subscribe((response)=>{
+//        console.log("rrrr",response);
+//       this.courseData = response.data.docs.slice(0,5);
+//       console.log("rrrr123",this.courseData);
+//      const currentDate = new Date();
+//         const currentMonth = currentDate.getMonth();
+//         const currentYear = currentDate.getFullYear();  
+//         const tomorrow = new Date(currentYear, currentMonth, currentDate.getDate() + 1);
+//         this.upcomingCourses = this.courseData.filter((item: { registrationStartDate: string | number | Date; }) => {
+//           const sessionStartDate = new Date(item.registrationStartDate);
+//           return (
+//             sessionStartDate >= tomorrow 
+//           );
+//         });
+        
+
+//         console.log(" this.upcomingCourses", this.upcomingCourses)
+//     })
+//     }
+
+//   getAllTrainers(){
+//     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+//     let payload = {
+//   type: AppConstants.INSTRUCTOR_ROLE,
+//   companyId:userId
+
+// };
+// this.instructorService.getInstructorLists(payload).subscribe((res) => {
+//   console.log("getTrainer111",res)
+//   // this.instructorList = res;
+// });
+//   }
+
+
+//Working code here
+// getAllUpcomingCourseBatches() {
+//   let userType = localStorage.getItem('user_type');
+//   if (userType == AppConstants.ADMIN_USERTYPE ||userType == AppConstants.ADMIN_ROLE) {
+//     localStorage.removeItem('zoomSessionCreated');
+//   localStorage.removeItem('classFormData');
+//   const filterClass = this.filterName;
+//   const payload = { ...this.coursePaginationModel, courseName: filterClass };
+//   const userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+
+//   this.classService.getClassListWithPagination(payload, userId).subscribe((response) => {
+//     this.courseData = response.data.docs.slice(0, 5);
+//     const currentDate = new Date();
+//     const currentMonth = currentDate.getMonth();
+//     const currentYear = currentDate.getFullYear();
+//     const tomorrow = new Date(currentYear, currentMonth, currentDate.getDate() + 1);
+
+//     this.upcomingCourses = this.courseData.filter((item: { registrationStartDate: string | number | Date }) => {
+//       const sessionStartDate = new Date(item.registrationStartDate);
+//       return sessionStartDate >= tomorrow;
+//     });
+// console.log("ff1",this.trainerMap)
+//     this.upcomingCourses = this.upcomingCourses.map((courses: any) => ({
+//       ...courses,
+//       traineeName: this.trainerMap[courses?.sessions[0]?.instructorId] || 'Unknown', // Map trainerId to name
+//     }));
+//     this.getAllTrainers();
+//   });
+//   } else {
+//     this.getAllTrainers();
+//     let instructorId = localStorage.getItem('id')
+//     console.log("instructorId",instructorId)
+//     console.log("this.filterName",this.filterName)
+//     this.lecturesService.getClassListWithPagination(instructorId, this.filterName,{ ...this.coursePaginationModel }).subscribe(
+//       (response) => {
+//         console.log("instructorId123",response)
+//         this.courseData = response.data.docs.slice(0, 5);
+//         const currentDate = new Date();
+//         const currentMonth = currentDate.getMonth();
+//         const currentYear = currentDate.getFullYear();
+//         const tomorrow = new Date(currentYear, currentMonth, currentDate.getDate() + 1);
+    
+//         this.upcomingCourses = this.courseData.filter((item: { registrationStartDate: string | number | Date }) => {
+//           const sessionStartDate = new Date(item.registrationStartDate);
+//           return sessionStartDate >= tomorrow;
+//         });
+//     console.log("hell",this.upcomingCourses[0]?.sessions[0]?.instructorId)
+//     console.log("ff",this.trainerMap)
+//         this.upcomingCourses = this.upcomingCourses.map((courses: any) => ({
+//           ...courses,
+//           traineeName: this.trainerMap[courses?.sessions[0]?.instructorId] || 'Unknown', // Map trainerId to name
+//         }));
+
+//         console.log("this.upcomingCourses",this.upcomingCourses)
+        
+//       })
+//   }
+  
+// }
+
+// getAllTrainers() {
+//   const userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+//   const payload = {
+//     type: AppConstants.INSTRUCTOR_ROLE,
+//     companyId: userId,
+//   };
+
+//   this.instructorService.getInstructorLists(payload).subscribe((res) => {
+//     console.log("gettrainers",res)
+//     if (Array.isArray(res) && res.length > 0) {
+//       this.trainerMap = res.reduce((map: { [key: string]: string }, trainer: any) => {
+//         map[trainer?._id] = trainer?.name;
+//         return map;
+//       }, {});
+//     }
+
+//     console.log("this.trainerMap",this.trainerMap)
+//   });
+// }
+getAllUpcomingCourseBatches() {
+  const userType = localStorage.getItem('user_type');
+  
+  if (userType == AppConstants.ADMIN_USERTYPE || userType == AppConstants.ADMIN_ROLE) {
+    localStorage.removeItem('zoomSessionCreated');
+    localStorage.removeItem('classFormData');
+    const filterClass = this.filterName;
+    const payload = { ...this.coursePaginationModel, courseName: filterClass };
+    const userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+
+    // Fetch trainers first
+    this.getAllTrainers().subscribe(() => {
+      this.classService.getClassListWithPagination(payload, userId).subscribe((response) => {
+        this.courseData = response.data.docs.slice(0, 5);
+        const currentDate = new Date();
+        const currentMonth = currentDate.getMonth();
+        const currentYear = currentDate.getFullYear();
+        const tomorrow = new Date(currentYear, currentMonth, currentDate.getDate() + 1);
+
+        this.upcomingCourses = this.courseData.filter((item: { registrationStartDate: string | number | Date }) => {
+          const sessionStartDate = new Date(item.registrationStartDate);
+          return sessionStartDate >= tomorrow;
+        });
+
+        this.upcomingCourses = this.upcomingCourses.map((courses: any) => ({
+          ...courses,
+          traineeName: this.trainerMap[courses?.sessions[0]?.instructorId] || 'Unknown',
+        }));
+      });
+    });
+  } else {
+    this.getAllTrainers().subscribe(() => {
+      const instructorId = localStorage.getItem('id');
+      this.lecturesService.getClassListWithPagination(instructorId, this.filterName, { ...this.coursePaginationModel }).subscribe((response) => {
+        this.courseData = response.data.docs.slice(0, 5);
+        const currentDate = new Date();
+        const currentMonth = currentDate.getMonth();
+        const currentYear = currentDate.getFullYear();
+        const tomorrow = new Date(currentYear, currentMonth, currentDate.getDate() + 1);
+
+        this.upcomingCourses = this.courseData.filter((item: { registrationStartDate: string | number | Date }) => {
+          const sessionStartDate = new Date(item.registrationStartDate);
+          return sessionStartDate >= tomorrow;
+        });
+
+        this.upcomingCourses = this.upcomingCourses.map((courses: any) => ({
+          ...courses,
+          traineeName: this.trainerMap[courses?.sessions[0]?.instructorId] || 'Unknown',
+        }));
+
+      });
+    });
+  }
+}
+
+getAllTrainers() {
+  const userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+  const payload = {
+    type: AppConstants.INSTRUCTOR_ROLE,
+    companyId: userId,
+  };
+
+  return this.instructorService.getInstructorLists(payload).pipe(
+    tap((res:any) => {
+      if (Array.isArray(res) && res.length > 0) {
+        this.trainerMap = res.reduce((map: { [key: string]: string }, trainer: any) => {
+          map[trainer?._id] = trainer?.name;
+          return map;
+        }, {});
+      }
+    })
+  );
+}
+
+getUserGroups() {
+  this.userService.getUserGroups().subscribe((response: any) => {
+    console.log("userGroups",response)
+    this.userGroups = response.data.docs;
+  });
+}
   getCoursesList() {
     this.courseService.getAllCourses({status:'active'})
       .subscribe(response => {

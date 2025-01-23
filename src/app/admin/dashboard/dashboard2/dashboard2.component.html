@@ -55,30 +55,34 @@
       style="width: 100%;">
       <div class="card">
         <div class="header mt-3">
-          <h2>Upcoming Courses</h2>
+          <h2>Upcoming Course Batches</h2>
         </div>
-        <div class="body">
+        <!-- <div class="body">
           <div class="card-block" *ngFor="let data of upcomingCourses" style="cursor: pointer;"
             [routerLink]="['/admin/courses/all-courses']">
             <div class="row m-b-20">
-              <div class="col-md-3">
-                <img src="{{data.image_link}}" alt="user image" class="img-fluid">
-              </div>
               <div class="col-md-8" style="margin-left: -15px;">
-                <h6>{{data.title | titlecase |truncate : 25}}</h6>
+                <h6>{{data.courseName| titlecase |truncate : 25}}</h6>
                 <div class="row">
                   <div class="col-md-2">
-                    <b>{{ data?.courseCode }}</b>
+                    <b>{{ data.traineeName}}</b>
                   </div>
                   <div class="col-md-2">
-                    <b>{{ data.training_hours}} Hours</b>
+                    <b>{{ data.department}}</b>
                   </div>
                   <div class="col-md-2">
-                    <b>{{data.course_duration_in_days}}</b>
+                    <b>{{ data?.courseReferenceNumber}}</b>
                   </div>
                   <div class="col-md-3">
-                    <b style="color: blue;"><i class="fa fa-play-circle-o"></i> {{data.sessionStartDate | date}}</b>
+                    <b style="color: blue;"><i class="fa fa-play-circle-o"></i> {{data.registrationStartDate | date}}</b>
                   </div>
+                  <div class="col-md-3">
+                  <span
+                        [class]=" data.classDeliveryType === 'online' ? 'badge badge-solid-green' :  data.classDeliveryType === 'offline' ? 'badge badge-solid-red' : ''">
+                        <span
+                          [class]=" data.classDeliveryType === 'online' ? 'status-dot' :  data.classDeliveryType === 'offline' ? 'status-red' : ''"></span>
+                        {{ data.classDeliveryType ==='online'? 'Online':'Offline' | titlecase}}</span>
+                      </div>
                 </div>
               </div>
             </div>
@@ -86,6 +90,41 @@
           <div class="text-center">
             <button mat-stroked-button [routerLink]="['/admin/courses/course-name']" color="primary">View
               More</button>
+          </div>
+        </div> -->
+        <div class="tableBody">
+          <div class="table-responsive">
+            <table class="table display product-overview mb-30" id="support_table">
+              <thead>
+                <tr>
+                  <th>Course</th>
+                  <th>{{commonRoles?.INSTRUCTOR_ROLE}}</th>
+                  <th>Department</th>
+                  <th>Course Code</th>
+                  <th>Date</th>
+                  <th> Class</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of upcomingCourses" style="cursor: pointer;">
+                  
+                  <td>{{data.courseName| titlecase |truncate : 25}}</td>
+                  <td>{{data.traineeName | titlecase}}</td>
+                  <td>
+                    <div class="badge col-green">{{data.department}}</div>
+                  </td>
+                  
+                  <td>{{data?.courseReferenceNumber}}</td>
+                  <td> {{data.registrationStartDate | date}}</td>
+                  <td><span
+                    [class]=" data.classDeliveryType === 'online' ? 'badge badge-solid-green' :  data.classDeliveryType === 'offline' ? 'badge badge-solid-red' : ''">
+                    <span
+                      [class]=" data.classDeliveryType === 'online' ? 'status-dot' :  data.classDeliveryType === 'offline' ? 'status-red' : ''"></span>
+                    {{ data.classDeliveryType ==='online'? 'Online':'Offline' | titlecase}}</span></td>
+                 
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

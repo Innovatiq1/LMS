@@ -29,6 +29,10 @@
                         (ProhibitedObject)="handleProhibitedObjectDetected()"
                         (FaceNotVisible)="handleFaceNotVisible()"
                         (MultipleFacesVisible)="handleMultipleFacesDetected()"
+                        (FaceMatchDetect)="handleFaceMatchDetected(true)"
+                        (FaceMisMatchDetect)="handleFaceMatchDetected(false)"
+                        (FaceMatchError)="handleFaceMatchError()"
+                        [profilePic]="userProfilePic"
                       ></app-object-detection>
                       <!-- <video #videoElement autoplay class="w-100 border rounded"></video> -->
                     </div>
@@ -117,6 +121,11 @@
                     </div>
                 </div>
             </ng-container>
+            <div class="overlay" *ngIf="showOverlay">
+                <div class="overlay-content">
+                  <p class="h3">Waiting for Face Match...</p>
+                </div>
+              </div>
         </div>
     </div>
 </section>

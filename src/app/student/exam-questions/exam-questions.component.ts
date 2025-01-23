@@ -81,6 +81,11 @@ export class ExamQuestionsComponent {
   multipleFacesVisible: boolean = false;
   checkedPrevLogs: boolean = false;
   isEnableProtector: boolean = false;
+  userProfilePic: string = '';
+  showOverlay: boolean = false;
+  checkFaceMatch: boolean = false;
+  faceMatchCount: number = 0;
+
 
   @ViewChild('proctoringDiv', { static: true }) proctoringDiv!: ElementRef;
   @ViewChild('videoElement') videoElement!: ElementRef;
@@ -119,18 +124,26 @@ export class ExamQuestionsComponent {
     this.sendWarning('Multiple Face Detected', this.analyzerId);
   }
 
-  sendWarning(message: string, analyzerId: string) {
-    const payload = {
-      warning_type: message,
-    };
-    this.assessmentService
-      .addWarningById(analyzerId, payload)
-      .subscribe((res) => {
-        console.log('Uploaded warning=>', message);
-      });
+  handleFaceMatchDetected(isMatch: boolean): void {
+    if(isMatch)
+      this.faceMatchCount++;
+    if (!isMatch && this.faceMatchCount > 1) {
+      this.sendWarning('Face Not Matched', this.analyzerId);
+    } else if (this.faceMatchCount == 1) {
+      this.checkFaceMatch = false;
+      this.showOverlay = false;
+      console.log('Face match detected...')
+      this.calculateTotalTime();
+    }
   }
 
-  startVideoAnalyzer() {
+  handleFaceMatchError():void {
+    Swal.fire('Face Match Error', 'Please Upload the Profile Picture', 'error').then(res=>{
+      this.location.back()
+    });
+  }
+
+  startProtoring() {
     const studentId = localStorage.getItem('id') || '';
     let payload = {
       studentId,
@@ -145,6 +158,24 @@ export class ExamQuestionsComponent {
     });
   }
 
+  sendWarning(message: string, analyzerId: string) {
+    const payload = {
+      warning_type: message,
+    };
+    this.assessmentService
+      .addWarningById(analyzerId, payload)
+      .subscribe((res) => {
+        console.log('Uploaded warning=>', message);
+      });
+  }
+
+  async startVideoAnalyzer() {
+    const cameraPermission = await this.checkCameraPermission();
+    if (cameraPermission) {
+      this.checkFaceMatch = true;
+    }
+  }
+
   constructor(
     private assessmentService: AssessmentService,
     private route: ActivatedRoute,
@@ -155,9 +186,10 @@ export class ExamQuestionsComponent {
     private location: Location,
     private snackBar: MatSnackBar,
     private renderer: Renderer2
-  ) {}
+  ) { }
 
   ngOnInit(): void {
+    this.getProfilePic();
     this.fetchAssessmentDetails();
     this.getCourseDetails();
     this.getClassDetails();
@@ -169,7 +201,6 @@ export class ExamQuestionsComponent {
     // this.startVideoAnalyzer();
     // this.startVideoSession();
     // this.startMonitoringTabSwitch();
-    this.startTimer();
   }
 
   getClassDetails(): void {
@@ -199,9 +230,62 @@ export class ExamQuestionsComponent {
       this.courseDetails = response;
       const videoAnalyzerReq = response?.exam_assessment?.videoAnalyzerReq;
       if (videoAnalyzerReq) {
+        this.showOverlay = true;
         this.startVideoAnalyzer();
       }
     });
+  }
+
+
+
+  async checkCameraPermission(): Promise<boolean> {
+    try {
+      // Check if Permissions API is supported
+      if (navigator.permissions) {
+        const status = await navigator.permissions.query({
+          name: 'camera' as PermissionName,
+        });
+
+        if (status.state === 'granted') {
+          console.log('Camera permission granted');
+          return true;
+        }
+
+        if (status.state === 'prompt') {
+          console.log('Camera permission needs to be requested');
+          return this.requestCameraPermission(); // This will return a boolean
+        }
+
+        if (status.state === 'denied') {
+          console.error('Camera permission denied');
+          this.showPermissionError();
+          return false;
+        }
+      } else {
+        console.warn(
+          'Permissions API not supported, directly requesting permission'
+        );
+        return this.requestCameraPermission(); // Fallback, will return a boolean
+      }
+    } catch (error) {
+      console.error('Error checking camera permission:', error);
+      return false; // Ensure the function returns false in case of an error
+    }
+
+    // Default return value to satisfy TypeScript
+    return false;
+  }
+
+  async requestCameraPermission(): Promise<boolean> {
+    try {
+      await navigator.mediaDevices.getUserMedia({ video: true });
+      console.log('Camera access granted');
+      return true;
+    } catch (error) {
+      console.error('Camera access denied:', error);
+      this.showPermissionError();
+      return false;
+    }
   }
 
   onPageChange(event: PageEvent): void {
@@ -253,7 +337,6 @@ export class ExamQuestionsComponent {
         this.questionList = response?.questions;
         this.timerInSeconds = response?.timer;
         this.retakeNo = response?.retake;
-        this.calculateTotalTime();
         this.answers = Array.from({ length: this.questionList.length }, () => ({
           questionText: null,
           selectedOptionText: null,
@@ -266,6 +349,15 @@ export class ExamQuestionsComponent {
   student() {
     this.studentService.getStudentById(this.studentId).subscribe((res: any) => {
       this.user_name = res.name;
+    });
+  }
+
+  getProfilePic() {
+    const studentId = localStorage.getItem('id') || '';
+    this.studentService.getStudentById(studentId).subscribe(async (res: any) => {
+      const userProfilePicture = res?.avatar;
+      this.userProfilePic = userProfilePicture;
+      this.startProtoring();
     });
   }
 
@@ -311,6 +403,7 @@ export class ExamQuestionsComponent {
   }
 
   submitAnswers() {
+    clearInterval(this.interval);
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     const requestBody = {
       studentId: this.studentId,
@@ -321,6 +414,8 @@ export class ExamQuestionsComponent {
       companyId: userId,
       studentClassId: this.studentClassId,
     };
+
+    console.log('Submitting Answer...')
 
     this.assessmentService.submitAssessment(requestBody).subscribe(
       (response: any) => {
@@ -377,7 +472,7 @@ export class ExamQuestionsComponent {
 
   updateExamStatus(): void {
     this.assessmentService.updateExamStatus(this.answerAssessmentId).subscribe(
-      () => {},
+      () => { },
       (error) => {
         console.error('Error updating exam status:', error);
       }
@@ -396,7 +491,7 @@ export class ExamQuestionsComponent {
 
     this.classService
       .saveApprovedClasses(classId, payload)
-      .subscribe((response) => {});
+      .subscribe((response) => { });
   }
 
   updateRetakes() {
@@ -407,7 +502,7 @@ export class ExamQuestionsComponent {
         retake: newRetakeNo,
       };
       this.assessmentService.updateRetakes(requestBody).subscribe(
-        (response: any) => {},
+        (response: any) => { },
         (error: any) => {
           console.error('Error:', error);
         }
@@ -464,6 +559,10 @@ export class ExamQuestionsComponent {
   }
 
   startTimer() {
+    console.log(`Time Left: ${this.totalTime}, Interval ID: ${this.interval}`);
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
     this.interval = setInterval(() => {
       if (this.totalTime > 0) {
         this.minutes = Math.floor(this.totalTime / 60);
@@ -471,9 +570,7 @@ export class ExamQuestionsComponent {
         this.totalTime--;
       } else {
         clearInterval(this.interval);
-        if (this.isRecording) {
-          this.stopRecording();
-        }
+        this.interval = null;
         this.submitAnswers();
       }
     }, 1000);
@@ -585,7 +682,7 @@ export class ExamQuestionsComponent {
         top >= containerRect.top &&
         top + element.offsetHeight <= containerRect.bottom
       ) {
-        element.style.position = 'absolute';
+        element.style.position = 'fixed';
         element.style.left = `${left - containerRect.left}px`;
         element.style.top = `${top - containerRect.top}px`;
       }
@@ -795,7 +892,7 @@ export class ExamQuestionsComponent {
       cancelButtonText: 'Cancel',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.startVideoSession();
+        this.startVideoAnalyzer();
       } else {
         this.cancelExam();
       }
