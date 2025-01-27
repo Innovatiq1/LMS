@@ -304,7 +304,7 @@
                   <label for="end-date">Class End Date<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <input matInput id="end-date" [owlDateTimeTrigger]="date2" [owlDateTime]="date2"
-                      [(ngModel)]="element.end" [min]="element.start" name="end" #endInput="ngModel" required />
+                      [(ngModel)]="element.end" [min]="element.start" [max]="expiryDate" name="end" #endInput="ngModel" required />
                     <mat-icon matSuffix [owlDateTimeTrigger]="date2" class="date-icon">today</mat-icon>
                     <owl-date-time #date2></owl-date-time>
                     <mat-error *ngIf="endInput.invalid && (endInput.touched || form.submitted)">

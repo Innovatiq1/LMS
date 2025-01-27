@@ -387,10 +387,16 @@
                 </div>
 
                 <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2" *ngIf="labelStatusCheck('Fees') && isPaid">
-                  <label>Fees </label>
+                  <label>Fees <span class="mandatory">&nbsp;*</span> </label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <input matInput formControlName="fee" type="number" [readonly]="isInputReadonly()"
                       placeholder="Enter Fees" />
+                      <mat-error *ngIf="
+                      firstFormGroup.get('fee')?.hasError('required') ||
+                      firstFormGroup.get('fee')?.touched
+                    ">
+                      Enter Fees
+                    </mat-error>
                   </mat-form-field>
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2" *ngIf="isPaid">
@@ -474,14 +480,56 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('Start Date') && isOnlyExamOption">
+                <!-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('Start Date') && isOnlyExamOption">
                   <label>Start Date</label>
                   <input type="date" formControlName="sessionStartDate" id="date" class="form-control" />
-                </div>
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('End Date')&& isOnlyExamOption">
-                  <label>End Date</label>
+                </div> -->
+                <!-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('End Date')">
+                  <label>Expiry Date <span class="mandatory">&nbsp;*</span></label>
                   <input type="date" formControlName="sessionEndDate" class="form-control" id="date" />
+                  <mat-error *ngIf="firstFormGroup.get('sessionEndDate')?.hasError('required') && firstFormGroup.get('sessionEndDate')?.touched">
+                   Select Course Expiry Date
+                  </mat-error>
+                </div> -->
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('Start Date') && isOnlyExamOption">
+                  <label>Start Date <span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <!-- <mat-label>Expiry Date</mat-label> -->
+                    <input
+                      matInput
+                      [matDatepicker]="picker"
+                      formControlName="sessionStartDate"
+                      placeholder="Select Start Date"
+                    />
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-error
+                      *ngIf="firstFormGroup.get('sessionStartDate')?.hasError('required') && firstFormGroup.get('sessionEndDate')?.touched"
+                    >
+                      Select Course Start Date
+                    </mat-error>
+                  </mat-form-field>
                 </div>
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('End Date')">
+                  <label>Expiry Date <span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <!-- <mat-label>Expiry Date</mat-label> -->
+                    <input
+                      matInput
+                      [matDatepicker]="picker"
+                      formControlName="sessionEndDate"
+                      placeholder="Select Expiry Date"
+                    />
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-error
+                      *ngIf="firstFormGroup.get('sessionEndDate')?.hasError('required') && firstFormGroup.get('sessionEndDate')?.touched"
+                    >
+                      Select Course Expiry Date
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                
 
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('Skill Connect Code')">
                   <label>Skill Connect Code</label>
