@@ -64,6 +64,7 @@ export class CreateClassComponent {
   user_id: any;
   courseCode: any;
   courseCode1: any;
+  expiryDate:any;
   classId!: string;
   forms!: any[];
   title: boolean = false;
@@ -159,9 +160,11 @@ export class CreateClassComponent {
   this.zoomSessionCreated = storedZoomSessionCreated === 'true';
   const savedCourseCode = localStorage.getItem('courseCode');
   const savedCourseTitle = localStorage.getItem('courseTitle');
+  const savedExpiryDate=localStorage.getItem('expiryDate')
   if (savedCourseCode && savedCourseTitle) {
     this.courseCode = savedCourseCode;
     this.courseTitle = savedCourseTitle;
+    this.expiryDate=savedExpiryDate;
   }
     this.loadSavedFormData();
 
@@ -205,6 +208,7 @@ export class CreateClassComponent {
     forkJoin({
       courses: this._classService.getAllCoursesTitle('active'),
     }).subscribe((response) => {
+      console.log("courses",response)
       this.courseList = response.courses.reverse();
       this.cd.detectChanges();
     });
@@ -471,6 +475,10 @@ loadForm() {
     );
     this.courseTitle=filteredData[0].title
     this.courseCode=filteredData[0].courseCode
+    this.expiryDate=filteredData[0].sessionEndDate
+
+    console.log("this.expiry",this.expiryDate)
+
   }
 
   onSelectChange1(event :any,element:any) {
@@ -830,6 +838,7 @@ getTPCourse(classForm:any){
     const formData = this.classForm.value;
     localStorage.setItem('classFormData', JSON.stringify(formData));
     localStorage.setItem('courseCode', this.courseCode);
+    localStorage.setItem('expiryDate', this.expiryDate);
     localStorage.setItem('courseTitle', this.courseTitle);
     if (this.classForm.get('meetingPlatform')?.value === 'zoom') {
       const zoomKey = JSON.parse(localStorage.getItem('user_data')!)?.user?.zoomKey;
