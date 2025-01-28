@@ -212,7 +212,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
         '',
         [Validators.required, Validators.pattern(/^[a-zA-Z0-9]/)],
       ],
-      fee: new FormControl('', [Validators.pattern(/^\d+(\.\d+)?$/)]),
+      fee: new FormControl('', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]),
       discount_type: new FormControl('', [Validators.required]),
       currency_code: [''],
 
@@ -230,8 +230,8 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       course_description: new FormControl('', [Validators.maxLength(100)]),
       course_detailed_description: new FormControl('', []),
       sessionStartDate: new FormControl('', []),
-      sessionStartTime: new FormControl('', []),
-      sessionEndDate: new FormControl('', []),
+      sessionStartTime: new FormControl('', [Validators.required]),
+      sessionEndDate: new FormControl('', [Validators.required]),
       sessionEndTime: new FormControl('', []),
       pdu_technical: new FormControl('', [Validators.pattern(/^\d+(\.\d+)?$/)]),
       pdu_leadership: new FormControl('', [

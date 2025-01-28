@@ -134,6 +134,7 @@ getAllCourse(){
   }
   let companyId= JSON.parse(localStorage.getItem('user_data')!).user.companyId;
   this.classService.getClassListWithPagination(payload,companyId).subscribe(response =>{
+    console.log("respons",response);
    this.classesData = response.data.docs;
    this.totalItems = response.data.totalDocs
    this.coursePaginationModel.docs = response.data.docs;
@@ -146,13 +147,13 @@ getAllCourse(){
 }
 
 getActiveCourse(){
-  console.log('filterprem',this.filterName)
+  // console.log('filterprem',this.filterName)
   let filterText = this.filterName
-  const payload = { filterText,...this.coursePaginationModel, status: 'active' ,department:this.department, datefilter:'yes'}
+  const payload = { filterText,...this.coursePaginationModel, status: 'active' ,department:this.department, datefilter:'yesff'}
   let companyId= JSON.parse(localStorage.getItem('user_data')!).user.companyId;
   this._courseService.getAllCourses(companyId,payload).subscribe(response =>{
    this.activeCourses = response.data.docs;
-   console.log("active Courses=",this.activeCourses)
+  //  console.log("active Courses1=",this.activeCourses)
    this.totalCourseItems = response.data.totalDocs
    this.coursePaginationModel.docs = response.data.docs;
    this.coursePaginationModel.page = response.data.page;
