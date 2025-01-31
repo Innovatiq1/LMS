@@ -213,8 +213,50 @@ EMAILCONFIGURATION_LIST =[
         "email_subject": "Account Expiry",
         "email_top_header_text": "Your account will expire in 1 month.",
         "email_content": "Please contact Innovatiq for renewal."
+      },
+    ],
+    'zoom_meeting_creation_template': [
+      {
+        "email_top_welcome_text": "Zoom Meeting Scheduled",
+        "email_content1": "<p>A new Zoom meeting has been scheduled for your upcoming class.&#160;</p><p>Here are the details:<font face=\"Arial\">-</font></p><p><br></p>",
+        "email_top_welcome_title1": "Course",
+        "email_top_welcome_title2": "Trainer",
+        "email_top_welcome_title3": "Start Date",
+        "email_top_welcome_title4": "End Date",
+        "email_top_welcome_title5": "Time",
+        "email_top_welcome_title6": "Duration",
+        "bottom_button_text": "",
+        "email_subject": "New Zoom Meeting Scheduled for"
       }
     ],
+    "zoom_meeting_updation_template": [
+    {
+      "email_top_welcome_text": "Zoom Meeting Updated",
+      "email_content1": "Your Zoom meeting has been updated.&#160;<p>Here are the details:</p>",
+      "email_top_welcome_title1": "Course",
+      "email_top_welcome_title2": "Trainer",
+      "email_top_welcome_title3": "Start Date",
+      "email_top_welcome_title4": "End Date",
+      "email_top_welcome_title5": "Time",
+      "email_top_welcome_title6": "Duration",
+      "bottom_button_text": "",
+      "email_subject": "Zoom meeting for the {course_name} has been updated"
+    }
+  ],
+  "zoom_meeting_deletion_template": [
+    {
+      "email_top_welcome_text": "Zoom Meeting Cancelled",
+      "email_content1": "Your Zoom meeting has been cancelled. Here are the details:<br>Please ensure that you remove this date from your calendar to avoid any confusion.",
+      "email_top_welcome_title1": "Course",
+      "email_top_welcome_title2": "Trainer",
+      "email_top_welcome_title3": "Start Date",
+      "email_top_welcome_title4": "End Date",
+      "email_top_welcome_title5": "Start Time",
+      "email_top_welcome_title6": "Duration",
+      "bottom_button_text": "",
+      "email_subject": "Zoom meeting for the {course_name} has cancelled"
+    }
+  ]
     
   }
 
