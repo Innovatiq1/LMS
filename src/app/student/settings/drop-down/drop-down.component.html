@@ -1,0 +1,95 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header" *ngFor="let breadscrum of breadscrums">
+      <!-- breadcrumb -->
+      <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
+      </app-breadcrumb>
+    </div>
+    <div class="row clearfix">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="card" style="height: fit-content;">
+          <div class="header">
+            <h2>Create Drop Down</h2>
+          </div>
+          <div class="body">
+
+            <form [formGroup]="dropDownForm">
+
+              <div class="row">
+                <div class="col-4">
+                  <label>Drop Down<span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-select formControlName="field">
+                      <mat-option [value]="'meetingPlatform'">Meeting Platform</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="dropDownForm.get('meetingPlatform')?.hasError('required') || 
+                    dropDownForm.get('meetingPlatform')?.touched">
+                      Select a Drop Down
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-4">
+                  <label>Label<span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width " appearance="outline">
+                    <input matInput type="text" formControlName="name" class="form-control" placeholder="Enter Label">
+                  </mat-form-field>
+                </div>
+                <div class="col-4">
+                  <label>Value<span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <input matInput type="text" formControlName="code" class="form-control" placeholder="Enter Value">
+                  </mat-form-field>
+                </div>
+              </div>
+            </form>
+            <hr />
+            <div class="float-end">
+              <div class="d-grid gap-3 d-md-flex">
+                <button mat-raised-button *ngIf="isCreate" id="submit" (click)="onSubmit()"> Create </button>
+              </div>
+            </div>
+            <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
+              <div class="header mt-3">
+                <h2>Drop Down Listing</h2>
+              </div>
+              <div class="table-wrapper">
+                <div class="table-responsive">
+                  <table class="table ">
+                    <thead>
+                      <tr>
+                        <th>Drop Down</th>
+                        <th>Options</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let field of fields">
+                        <td>{{field.name}}</td>
+                        <td class="p-0">
+                          <table class="table table-hover mb-0">
+                            <tbody>
+                            <tr class="w-100" style="cursor: pointer;"
+                              *ngFor="let row of getOptions(dataSource,field.code)">
+                              <td (click)="isEdit ?update(row, field.code):null">{{row.name}}</td>
+                              <!-- <td>
+                                <button class="icons" (click)="deleteDropDown(row)" alt="Delete" matTooltip="Delete"
+                                  mat-menu-item>
+                                  <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
+                                </button>
+                              </td> -->
+                            </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

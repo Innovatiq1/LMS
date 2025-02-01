@@ -342,7 +342,7 @@
                         <mat-icon>close</mat-icon>
                       </button>
                         <!-- Show Update or Delete Title Based on Mode -->
-                        <h6>{{ isUpdateMode ? 'Update Zoom Link' : 'Delete Zoom Link' }}</h6>
+                        <h6>{{ isUpdateMode ? 'Update' : 'Delete' }} {{ response?.courseId?.title }}</h6>
                     
                         <!-- Date selection and duration field (only shown if isUpdateMode is true) -->
                         <div class="row mb-3">

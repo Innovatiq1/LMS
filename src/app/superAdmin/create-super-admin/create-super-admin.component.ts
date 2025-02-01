@@ -29,6 +29,8 @@ import { LOGOMENU_LIST } from '@shared/logo-item';
 import { EMAILCONFIGURATION_LIST } from '@shared/emailConfigurations-items';
 import { DASHBOARDMENU_LIST } from '@shared/dashboard-item';
 import { FORMCREATION_LIST } from '@shared/formCreations-item';
+import { DROPDOWN_OPTION_LIST } from '@shared/dropDown';
+import { SettingsService } from '@core/service/settings.service';
 
 
 @Component({
@@ -60,7 +62,8 @@ export class CreateSuperAdminComponent {
     private adminService: AdminService,
     public utils: UtilsService,
     private userService: UserService,
-    private emailConfigService:EmailConfigService
+    private emailConfigService:EmailConfigService,
+    private settingService:SettingsService
   ) {}
   ngOnInit() {
     this.userForm = this._fb.group({
@@ -319,7 +322,11 @@ export class CreateSuperAdminComponent {
                 // console.log("response",respone);
               }) 
              }
-            
+             DROPDOWN_OPTION_LIST[0].companyId= response.companyId;
+             const dropDownPayload = DROPDOWN_OPTION_LIST[0];
+             this.settingService.createDropDown(dropDownPayload).subscribe((res)=>{
+              
+             })
 
 
           
