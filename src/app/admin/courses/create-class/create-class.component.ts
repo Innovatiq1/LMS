@@ -593,10 +593,10 @@ getTPCourse(classForm:any){
   submit() {
     const deliveryType = this.classForm.get('classDeliveryType')?.value;
     const meetingPlatform = this.classForm.get('meetingPlatform')?.value;
-    if (deliveryType === 'online' && meetingPlatform === 'zoom' && !this.zoomSessionCreated && !this.classId) {
-      alert('Please create the Zoom session before submitting the form.');
-      return;
-    }
+    // if (deliveryType === 'online' && meetingPlatform === 'zoom' && !this.zoomSessionCreated && !this.classId) {
+    //   alert('Please create the Zoom session before submitting the form.');
+    //   return;
+    // }
     if(this.classForm.valid){
       
     const sessions = this.getSession();

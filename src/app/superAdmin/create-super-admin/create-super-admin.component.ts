@@ -328,6 +328,9 @@ export class CreateSuperAdminComponent {
               
              })
 
+             const companyId = response.companyId;
+             this.settingService.cloneZoneKey({companyId}).subscribe((res:any)=>{
+             })
 
           
                
