@@ -366,4 +366,34 @@ export class SettingsService {
       .put<ApiResponse>(apiUrl, data)
       .pipe(map((response) => {response}));
   }
+
+  getDropDowns(params:any):Observable<any> {
+    const apiUrl = `${this.prefix}admin/drop-down`;
+    return this._Http.get<ApiResponse>(apiUrl, {params})
+  }
+
+  addDropDownOption(data:any):Observable<any> {
+    const apiUrl = `${this.prefix}admin/drop-down/option`;
+    return this._Http.post<ApiResponse>(apiUrl, data);
+  }
+
+  getDropDownOptionById(params:any):Observable<any> {
+    const apiUrl = `${this.prefix}admin/drop-down/option`;
+    return this._Http.get<ApiResponse>(apiUrl, {params});
+  }
+
+  updateDropDownOption(data:any):Observable<any> {
+    const apiUrl = `${this.prefix}admin/drop-down/option`;
+    return this._Http.put<ApiResponse>(apiUrl, data);
+  }
+
+  deleteOption(data:any):Observable<any> {
+    const apiUrl = `${this.prefix}admin/drop-down/option/delete`;
+    return this._Http.post<ApiResponse>(apiUrl,data);
+  }
+
+  createDropDown(data:any):Observable<any> {
+    const apiUrl = `${this.prefix}admin/drop-down`;
+    return this._Http.post<ApiResponse>(apiUrl, data);
+  }
 }

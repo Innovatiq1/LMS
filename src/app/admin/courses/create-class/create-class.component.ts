@@ -103,6 +103,7 @@ export class CreateClassComponent {
   zoomSessionCreated: boolean = false;
   isValidDuration: boolean = true;
   totalMinutes: number | null = null;
+  meetingPlatforms:any[] = [];
   addNewRow() {
     if (this.isInstructorFailed != 1) {
       this.isInstructorFailed = 0;
@@ -207,9 +208,11 @@ export class CreateClassComponent {
 
     forkJoin({
       courses: this._classService.getAllCoursesTitle('active'),
+      dropDowns: this._classService.getDropDowns(userId, "meetingPlatform")
     }).subscribe((response) => {
-      console.log("courses",response)
       this.courseList = response.courses.reverse();
+      this.meetingPlatforms = response.dropDowns?.data?.meetingPlatform;
+      console.log(response.dropDowns);
       this.cd.detectChanges();
     });
 
@@ -880,6 +883,22 @@ getTPCourse(classForm:any){
       const hours = cleaned.slice(0, 2);
       const minutes = cleaned.slice(2, 4);
       this.classForm.get('duration')?.setValue(`${hours}:${minutes}`);
+    }
+  }
+  endDateChange(event:any, element:any){
+    const duration = this.classForm.get('duration')?.value;
+    const startDateTime = element.start;
+    const endDateTime = event;
+    if (duration && startDateTime && endDateTime) {
+      const [hours, minutes] = duration.split(':').map(Number);
+      const startDateObj =  moment(startDateTime);
+      const st_hour = startDateObj.get('hours');
+      const st_min = startDateObj.get('minutes');
+      const updatedendDateTime = moment(endDateTime)
+        .hour(st_hour+hours)
+        .minute(st_min+minutes)
+        .second(0).toDate();
+        element.end =  updatedendDateTime;
     }
   }
   

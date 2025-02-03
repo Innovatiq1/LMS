@@ -494,7 +494,30 @@ SETTING_SIDEMENU_LIST =[
               }
             ],
             "children": []
-          }
+          },
+          {
+            "title": "Drop Down",
+            "id": "drop-down",
+            "class": "ml-menu",
+            "actions": [
+              {
+                "title": "Create",
+                "id": "create-dropdown",
+                "class": "ml-menu3"
+              },
+              {
+                "title": "Edit",
+                "id": "edit-dropdown",
+                "class": "ml-menu3"
+              },
+              {
+                "title": "Delete",
+                "id": "delete-dropdown",
+                "class": "ml-menu3"
+              }
+            ],
+            "children": []
+          },
         ]
       },
       {

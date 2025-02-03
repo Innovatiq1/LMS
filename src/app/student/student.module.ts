@@ -126,6 +126,8 @@ import { SocialLoginComponent } from './settings/social-login/social-login.compo
 import { SafePipe } from './safe.pipe';
 import { ZoomKeysComponent } from './settings/zoom-keys/zoom-keys.component';
 import { ObjectDetectionComponent } from './object-detection/object-detection.component';
+import { DropDownComponent } from './settings/drop-down/drop-down.component';
+import { UpdateDropDownComponent } from './settings/drop-down/update-drop-down/update-drop-down.component';
 
 
 @NgModule({
@@ -229,7 +231,7 @@ import { ObjectDetectionComponent } from './object-detection/object-detection.co
     TutorialQuestionsComponent,
     DocumentViewComponent,
     SocialLoginComponent,    
-    SafePipe, ZoomKeysComponent, ObjectDetectionComponent,
+    SafePipe, ZoomKeysComponent, ObjectDetectionComponent, DropDownComponent, UpdateDropDownComponent,
    // SafeUrlPipe,
   ],
   imports: [

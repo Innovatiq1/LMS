@@ -1,0 +1,52 @@
+
+
+
+<section class="content">
+    <div class="content-block">
+      <div class="block-header" *ngFor="let breadscrum of breadscrums">
+        <!-- breadcrumb -->
+        <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
+        </app-breadcrumb>
+      </div>
+      <div class="row clearfix">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <div class="card" style="height: fit-content;">
+            <div class="header d-flex justify-content-between">
+              <h2>Update Drop Down Option</h2>
+              <button class="icons" *ngIf="isDelete"   (click)="deleteDiscount(id)" alt="Delete" matTooltip="Delete" mat-menu-item>
+                <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
+            </button>
+            </div>
+            <div class="body">
+                <form [formGroup]="dropDownForm">
+
+                  <div class="row">
+                    <div class="col-4">
+                      <label>Label<span class="mandatory">&nbsp;*</span></label>
+                      <mat-form-field class="example-full-width " appearance="outline">
+                        <input matInput type="text" formControlName="name" class="form-control" placeholder="Enter Label">
+                      </mat-form-field>
+                    </div>
+                    <div class="col-4">
+                      <label>Value<span class="mandatory">&nbsp;*</span></label>
+                      <mat-form-field class="example-full-width" appearance="outline">
+                        <input matInput type="text" formControlName="code" class="form-control" placeholder="Enter Value">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </form>
+                <hr/>
+                <div class="float-end">
+                    <div class="d-grid gap-3 d-md-flex">
+                      <button type="button" mat-raised-button id="back"  (click)="goBack()">
+                        Back
+                      </button>
+                    <button  mat-raised-button  id="submit" (click)="onUpdate()" > Update </button>
+                    </div>
+                  </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

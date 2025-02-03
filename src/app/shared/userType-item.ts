@@ -1707,7 +1707,43 @@ MENU_LIST =[
           "indeterminate": false,
           "class": "ml-menu",
           "isLeaf": true
-        }
+        },
+        {
+          "title": "Drop Down",
+          "id": "drop-down",
+          "children": [],
+          "isAction": false,
+          "checked": true,
+          "indeterminate": false,
+          "class": "ml-menu",
+          "isLeaf": true,
+          "actions": [
+            {
+              "title": "Create",
+              "id": "create-dropdown",
+              "checked": true,
+              "indeterminate": false,
+              "isLeaf": true,
+              "isAction": true
+            },
+            {
+              "title": "Edit",
+              "id": "edit-dropdown",
+              "checked": true,
+              "indeterminate": false,
+              "isLeaf": true,
+              "isAction": true
+            },
+            {
+              "title": "Delete",
+              "id": "delete-dropdown",
+              "checked": true,
+              "indeterminate": false,
+              "isLeaf": true,
+              "isAction": true
+            }
+          ],
+        },
       ],
       "actions": [],
       "isAction": false,
