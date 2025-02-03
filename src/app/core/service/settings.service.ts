@@ -352,7 +352,6 @@ export class SettingsService {
     });
   }
 
-    
   updateKey(data: any) {
     const apiUrl = `${this.prefix}admin/social-keys`;
     return this._Http
@@ -365,6 +364,27 @@ export class SettingsService {
     return this._Http
       .put<ApiResponse>(apiUrl, data)
       .pipe(map((response) => {response}));
+  }
+
+  createZoomKey(data:any) {
+    const apiUrl = `${this.prefix}admin/zoom-keys`;
+    return this._Http
+    .post<ApiResponse>(apiUrl, data)
+    .pipe(map((response)=>{response}));
+  }
+
+  getLatestZoomKey() {
+    const apiUrl = `${this.prefix}admin/zoom-keys`;
+    return this._Http
+    .get<ApiResponse>(apiUrl)
+    .pipe(map((response)=>{response}));
+  }
+
+  cloneZoneKey(data:any) {
+    const apiUrl = `${this.prefix}admin/zoom-keys/clone`;
+    return this._Http
+    .post<ApiResponse>(apiUrl, data)
+    .pipe(map((response)=>{response}));
   }
 
   getDropDowns(params:any):Observable<any> {

@@ -105,7 +105,7 @@
                                 </div>
                                 <div class="col-6">
                                   <label
-                                    >Redirect URI<span class="mandatory"
+                                    >Account ID<span class="mandatory"
                                       >&nbsp;*</span
                                     ></label
                                   >
@@ -116,18 +116,18 @@
                                     <input
                                       matInput
                                       type="text"
-                                      formControlName="redirectUri"
+                                      formControlName="accountId"
                                     />
                                     <mat-error
                                       *ngIf="
-                                        zoomForm.get('redirectUri')?.invalid &&
-                                        zoomForm.get('redirectUri')?.touched
+                                        zoomForm.get('accountId')?.invalid &&
+                                        zoomForm.get('accountId')?.touched
                                       "
                                     >
                                       {{
                                         utils.getErrorMessage1(
-                                          zoomForm.get("redirectUri"),
-                                          "redirectUri"
+                                          zoomForm.get("accountId"),
+                                          "accountId"
                                         )
                                       }}
                                     </mat-error>
