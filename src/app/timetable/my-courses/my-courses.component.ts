@@ -37,8 +37,6 @@ export class MyCoursesComponent {
   }
 
   ngOnInit(){
- 
-
     this.courseCalendarOptions ={
       initialView: 'dayGridMonth',
       plugins: [dayGridPlugin],  
@@ -47,8 +45,6 @@ export class MyCoursesComponent {
             { title: '', date: '' }
           ]
     };
-    
-  
   }
    getInstructorApprovedCourse(){
     let studentId=localStorage.getItem('id')
@@ -185,20 +181,30 @@ export class MyCoursesComponent {
         const instructorCost = courseClass?.classId?.instructorCost;
         const department = courseClass?.classId?.department;
         const datesArray = [];
+        const meetingPlatform = courseClass?.meetingPlatform;
         let currentDate = startDate;
             while (currentDate <= endDate) {
-          datesArray.push({
-            title: title,
-            date: new Date(currentDate),
-            extendedProps: {
-              sessionStartTime: sessionStartTime,
-              sessionEndTime: sessionEndTime,
-              courseCode: courseCode,
-              instructorCost:instructorCost,
-              deliveryType:deliveryType,
-              department:department
-            }
-          });
+              let isZoomClassAvailable = true;
+              if(meetingPlatform == 'zoom'){
+                isZoomClassAvailable = courseClass?.occurrences?.some((occ:any)=>{
+                  const occDate = new Date(occ.startTime);
+                  return this.isSameDate(occDate, currentDate)
+                })
+              }
+              if(isZoomClassAvailable){
+                datesArray.push({
+                  title: title,
+                  date: new Date(currentDate),
+                  extendedProps: {
+                    sessionStartTime: sessionStartTime,
+                    sessionEndTime: sessionEndTime,
+                    courseCode: courseCode,
+                    instructorCost:instructorCost,
+                    deliveryType:deliveryType,
+                    department:department
+                  }
+                });
+              }
           currentDate.setDate(currentDate.getDate() + 1); 
         }
         return datesArray;
@@ -228,8 +234,11 @@ export class MyCoursesComponent {
         eventDisplay: 'block' ,
         eventClick: (clickInfo) => this.openDialog(clickInfo.event)
       };
-    });
-        
+    });   
+  }
+
+  isSameDate(date1:Date, date2:Date) {
+    return date1.toDateString() === date2.toDateString();
   }
 
 }

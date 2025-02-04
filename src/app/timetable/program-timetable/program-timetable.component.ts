@@ -187,24 +187,34 @@ export class ProgramTimetableComponent implements OnInit {
             const id = courseClass?.id;
             const programName = courseClass?.programName;
             const datesArray = [];
+            const meetingPlatform = courseClass?.meetingPlatform;
             let currentDate = startDate;
             while (currentDate <= endDate) {
-              datesArray.push({
-                title: title,
-                date: new Date(currentDate),
-                extendedProps: {
-                  sessionStartTime: sessionStartTime,
-                  sessionEndTime: sessionEndTime,
-                  programCode: programCode,
-                  status: status,
-                  sessionStartDate: startDate,
-                  sessionEndDate: endDate,
-                  instructorCost: instructorCost,
-                  deliveryType: deliveryType,
-                  id: id,
-                  programName: programName,
-                },
-              });
+              let isZoomClassAvailable = true;
+              if(meetingPlatform == 'zoom'){
+                isZoomClassAvailable = courseClass?.occurrences?.some((occ:any)=>{
+                  const occDate = new Date(occ.startTime);
+                  return this.isSameDate(occDate, currentDate)
+                })
+              }
+              if(isZoomClassAvailable){
+                datesArray.push({
+                  title: title,
+                  date: new Date(currentDate),
+                  extendedProps: {
+                    sessionStartTime: sessionStartTime,
+                    sessionEndTime: sessionEndTime,
+                    programCode: programCode,
+                    status: status,
+                    sessionStartDate: startDate,
+                    sessionEndDate: endDate,
+                    instructorCost: instructorCost,
+                    deliveryType: deliveryType,
+                    id: id,
+                    programName: programName,
+                  },
+                });
+              }
               currentDate.setDate(currentDate.getDate() + 1);
             }
             return datesArray;
@@ -240,6 +250,10 @@ export class ProgramTimetableComponent implements OnInit {
         };
         this.upcomingProgramsLength = this.upcomingProgramClasses.length;
       });
+  }
+
+  isSameDate(date1:Date, date2:Date) {
+    return date1.toDateString() === date2.toDateString();
   }
 
   openDialog(event: { title: any; extendedProps: { [x: string]: any } }) {

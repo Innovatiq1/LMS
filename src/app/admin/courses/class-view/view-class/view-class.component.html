@@ -108,7 +108,7 @@
                               : ''
                           "
                         ></span
-                        >{{ response.classDeliveryType | titlecase }}
+                        >{{ response.classDeliveryType | titlecase }} {{(response?.classDeliveryType === 'online' ? '('+response.meetingPlatform+')':'') | titlecase}}
                       </h6>
                     </div>
                   </div>
@@ -161,10 +161,11 @@
                       </div>
                       <!-- Conditionally show this div only if the platform is 'online' -->
                       <div class="col-6 d-flex align-items-center">
-                        <p style="margin-bottom: 0">
+                        <div>
                           <!-- Remove bottom margin for better alignment -->
                           <!-- Start Meeting Button -->
                           <ng-container *ngIf="!isDateExpired(response.sessions[0]?.sessionEndDate); else expiredMessage">
+                            <div class="mb-1">
                             <a
                             href="{{ response?.meetingUrl }}"
                             target="_blank"
@@ -177,7 +178,6 @@
                               text-align: center;
                               text-decoration: none;
                               border-radius: 5px;
-                              margin-right: 10px;
                               border: 0.5px solid #28a745;
                               font-size: 14px;
                             "
@@ -196,14 +196,15 @@
                               text-align: center;
                               border: 0.5px solid #28a745;
                               border-radius: 5px;
-                              margin-right: 10px;
                               font-size: 14px;
                             "
+                            class="mx-1"
                           >
                             <i class="fas fa-copy"></i>
                             <!-- Font Awesome Copy Icon -->
                           </button>
-
+                          </div>
+                          <div>
                           <!-- Update Link Button -->
                           <button
                             type="button"
@@ -237,14 +238,16 @@
                               border-radius: 5px;
                               font-size: 14px;
                             "
+                            class="mx-1"
                           >
                             <i class="fas fa-trash"></i>
                           </button>
+                          </div>
                         </ng-container>
                         <ng-template #expiredMessage>
                             <span>Link Expired</span>
                           </ng-template>
-                        </p>
+                      </div>
                       </div>
                     </div>
 
