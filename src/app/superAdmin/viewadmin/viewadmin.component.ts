@@ -61,7 +61,7 @@ ngOnInit(){
   deleteItem(row: any) {
     Swal.fire({
       title: 'Confirm Deletion',
-      text: 'Are you sure you want to delete this user?',
+      text: 'Do you want to delete this company',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#d33',
@@ -74,7 +74,7 @@ ngOnInit(){
           () => {
             Swal.fire({
               title: 'Deleted',
-              text: 'User deleted successfully',
+              text: 'Company deleted successfully',
               icon: 'success',
             });
             this.router.navigate(['/super-admin/admin-list']);
