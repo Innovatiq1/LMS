@@ -191,11 +191,9 @@ export class EditSuperAdminComponent {
   }
   update() {
     if (this.userForm.valid) {
-     
-    
         Swal.fire({
           title: 'Are you sure?',
-          text: 'Do you want to update user!',
+          text: 'Do you want to update this company',
           icon: 'warning',
           confirmButtonText: 'Yes',
           showCancelButton: true,
@@ -237,7 +235,7 @@ export class EditSuperAdminComponent {
           this.isLoading = false;
           Swal.fire({
             title: 'Successful',
-            text: 'User updated succesfully',
+            text: 'Company updated succesfully',
             icon: 'success',
           }).then(() => {
             resolve(response);
