@@ -32,11 +32,13 @@ import {
   ApexResponsive,
   ApexTheme,
   ApexNonAxisChartSeries,
+  ApexNoData,
 } from 'ng-apexcharts';
 import Swal from 'sweetalert2';
 export type chartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
+  noData: ApexNoData; 
   xaxis: ApexXAxis;
   yaxis: ApexYAxis;
   stroke: ApexStroke;
@@ -73,6 +75,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 export type barChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
+
   dataLabels: ApexDataLabels;
   plotOptions: ApexPlotOptions;
   responsive: ApexResponsive[];
@@ -324,6 +327,8 @@ export class MainComponent implements OnInit {
   roleType: any;
   roles:any;
   classDataById: any;
+  isSurveyDataAvailable: boolean=false;
+  isUserDataAvailable: boolean=false;
   constructor(
     private courseService: CourseService,
     private userService: UserService,
@@ -954,92 +959,174 @@ export class MainComponent implements OnInit {
       },
     };
   }
-  private surveyBarChart() {
-      this.surveyBarChartOptions = {
-        series: [
-          {
-            name:`New ${AppConstants.STUDENT_ROLE}s`,
-            data: [
-              this.twoMonthsAgoStudents.length,
-              this.fourMonthsAgoStudents.length,
-              this.sixMonthsAgoStudents.length,
-              this.eightMonthsAgoStudents.length,
-              this.tenMonthsAgoStudents.length,
-              this.twelveMonthsAgoStudents.length,
-            ],
-          },
-          {
-            name: `Old ${AppConstants.STUDENT_ROLE}s`,
-            data: [
-              this.tillPreviousTwoMonthsStudents.length,
-              this.tillPreviousFourMonthsStudents.length,
-              this.tillPreviousSixMonthsStudents.length,
-              this.tillPreviousEightMonthsStudents.length,
-              this.tillPreviousTenMonthsStudents.length,
-              this.tillPreviousTwelveMonthsStudents.length,
-            ],
-          },
-        ],
-        chart: {
-          height: 350,
-          type: 'bar',
-          toolbar: {
-            show: false,
-          },
-          foreColor: '#9aa0ac',
-        },
-        colors: ['#9F8DF1', '#E79A3B'],
-        dataLabels: {
-          enabled: false,
-        },
-        stroke: {
-          show: true,
-          width: 2,
-          colors: ['transparent'],
-        },
-        grid: {
-          show: true,
-          borderColor: '#9aa0ac',
-          strokeDashArray: 1,
-        },
-        xaxis: {
-          type: 'category',
-          categories: [
-            '2 Months',
-            '4 Months',
-            '6 Months',
-            '8 Months',
-            '10 Months',
-            '12 Months',
-          ],
-        },
-        legend: {
-          show: true,
-          position: 'top',
-          horizontalAlign: 'center',
-          offsetX: 0,
-          offsetY: 0,
-        },
+  // private surveyBarChart() {
+  //     this.surveyBarChartOptions = {
+  //       series: [
+  //         {
+  //           name:`New ${AppConstants.STUDENT_ROLE}s`,
+  //           data: [
+  //             this.twoMonthsAgoStudents.length,
+  //             this.fourMonthsAgoStudents.length,
+  //             this.sixMonthsAgoStudents.length,
+  //             this.eightMonthsAgoStudents.length,
+  //             this.tenMonthsAgoStudents.length,
+  //             this.twelveMonthsAgoStudents.length,
+  //           ],
+  //         },
+  //         {
+  //           name: `Old ${AppConstants.STUDENT_ROLE}s`,
+  //           data: [
+  //             this.tillPreviousTwoMonthsStudents.length,
+  //             this.tillPreviousFourMonthsStudents.length,
+  //             this.tillPreviousSixMonthsStudents.length,
+  //             this.tillPreviousEightMonthsStudents.length,
+  //             this.tillPreviousTenMonthsStudents.length,
+  //             this.tillPreviousTwelveMonthsStudents.length,
+  //           ],
+  //         },
+  //       ],
+  //       chart: {
+  //         height: 350,
+  //         type: 'bar',
+  //         toolbar: {
+  //           show: false,
+  //         },
+  //         foreColor: '#9aa0ac',
+  //       },
+  //       colors: ['#9F8DF1', '#E79A3B'],
+  //       dataLabels: {
+  //         enabled: false,
+  //       },
+  //       stroke: {
+  //         show: true,
+  //         width: 2,
+  //         colors: ['transparent'],
+  //       },
+  //       grid: {
+  //         show: true,
+  //         borderColor: '#9aa0ac',
+  //         strokeDashArray: 1,
+  //       },
+  //       xaxis: {
+  //         type: 'category',
+  //         categories: [
+  //           '2 Months',
+  //           '4 Months',
+  //           '6 Months',
+  //           '8 Months',
+  //           '10 Months',
+  //           '12 Months',
+  //         ],
+  //       },
+  //       legend: {
+  //         show: true,
+  //         position: 'top',
+  //         horizontalAlign: 'center',
+  //         offsetX: 0,
+  //         offsetY: 0,
+  //       },
   
-        tooltip: {
-          x: {
-            format: 'MMMM',
-          },
+  //       tooltip: {
+  //         x: {
+  //           format: 'MMMM',
+  //         },
+  //       },
+  //       yaxis: {
+  //         title: {
+  //           text: `Number of ${AppConstants.STUDENT_ROLE}s`,
+  //         },
+  //       },
+  //       plotOptions: {
+  //         bar: {
+  //           horizontal: false,
+  //           columnWidth: '55%',
+  //           // endingShape: 'rounded'
+  //         },
+  //       },
+  //     };
+  //   }
+  
+  private surveyBarChart() {
+    const newStudentsData = [
+      this.twoMonthsAgoStudents.length,
+      this.fourMonthsAgoStudents.length,
+      this.sixMonthsAgoStudents.length,
+      this.eightMonthsAgoStudents.length,
+      this.tenMonthsAgoStudents.length,
+      this.twelveMonthsAgoStudents.length,
+    ];
+  
+    const oldStudentsData = [
+      this.tillPreviousTwoMonthsStudents.length,
+      this.tillPreviousFourMonthsStudents.length,
+      this.tillPreviousSixMonthsStudents.length,
+      this.tillPreviousEightMonthsStudents.length,
+      this.tillPreviousTenMonthsStudents.length,
+      this.tillPreviousTwelveMonthsStudents.length,
+    ];
+  
+    this.isSurveyDataAvailable = newStudentsData.some(val => val > 0) || oldStudentsData.some(val => val > 0);
+  
+    this.surveyBarChartOptions = {
+      series: [
+        {
+          name: `New ${AppConstants.STUDENT_ROLE}s`,
+          data: newStudentsData,
         },
-        yaxis: {
-          title: {
-            text: `Number of ${AppConstants.STUDENT_ROLE}s`,
-          },
+        {
+          name: `Old ${AppConstants.STUDENT_ROLE}s`,
+          data: oldStudentsData,
         },
-        plotOptions: {
-          bar: {
-            horizontal: false,
-            columnWidth: '55%',
-            // endingShape: 'rounded'
-          },
+      ],
+      chart: {
+        height: 350,
+        type: 'bar',
+        toolbar: { show: false },
+        foreColor: '#9aa0ac',
+      },
+      colors: ['#9F8DF1', '#E79A3B'],
+      dataLabels: { enabled: false },
+      stroke: {
+        show: true,
+        width: 2,
+        colors: ['transparent'],
+      },
+      grid: {
+        show: true,
+        borderColor: '#9aa0ac',
+        strokeDashArray: 1,
+      },
+      xaxis: {
+        type: 'category',
+        categories: ['2 Months', '4 Months', '6 Months', '8 Months', '10 Months', '12 Months'],
+      },
+      legend: {
+        show: true,
+        position: 'top',
+        horizontalAlign: 'center',
+        offsetX: 0,
+        offsetY: 0,
+      },
+      tooltip: {
+        x: { format: 'MMMM' },
+      },
+      yaxis: {
+        title: {
+          text: `Number of ${AppConstants.STUDENT_ROLE}s`,
         },
-      };
-    }
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: '55%',
+        },
+      },
+    };
+  }
+  
+  
+  
+  
   
   private surveyPieChart() {
     const newStudentsData = [
@@ -1585,20 +1672,65 @@ private attendanceBarChart() {
       },
   };
 }
+  // private usersPieChart() {
+  //   this.polarChartOptions = {
+  //     series2: [this.instructorCount, this.studentCount],
+  //     chart: {
+  //       type: 'pie',
+  //       height: 350,
+  //       events: {
+  //         dataPointSelection: (event: any, chartContext: any, config: any) => {
+  //           // Check which slice is clicked (index 0 for instructor, index 1 for student)
+  //           if (config.dataPointIndex === 0) {
+  //             // Redirect to instructors page
+  //             this.router.navigate(['/student/settings/all-user/all-instructors']);
+  //           } else if (config.dataPointIndex === 1) {
+  //             // Redirect to students page
+  //             this.router.navigate(['/student/settings/all-user/all-students']);
+  //           }
+  //         }
+  //       }
+  //     },
+  //     legend: {
+  //       show: true,
+  //       position: 'bottom',
+  //     },
+  //     dataLabels: {
+  //       enabled: false,
+  //     },
+  //     labels: [`${AppConstants.INSTRUCTOR_ROLE}s`, `${AppConstants.STUDENT_ROLE}s`],
+  //     colors: ['#6777ef', '#ff9800', '#B71180'],
+  //     responsive: [
+  //       {
+  //         breakpoint: 480,
+  //         options: {
+  //           chart: {
+  //             width: 200,
+  //           },
+  //           legend: {
+  //             position: 'bottom',
+  //           },
+  //         },
+  //       },
+  //     ],
+  //   };
+  // }
   private usersPieChart() {
+    const seriesData = [this.instructorCount, this.studentCount];
+  
+    // Check if there is any non-zero data
+    this.isUserDataAvailable = seriesData.some(val => val > 0);
+  
     this.polarChartOptions = {
-      series2: [this.instructorCount, this.studentCount],
+      series2: seriesData,
       chart: {
         type: 'pie',
         height: 350,
         events: {
           dataPointSelection: (event: any, chartContext: any, config: any) => {
-            // Check which slice is clicked (index 0 for instructor, index 1 for student)
             if (config.dataPointIndex === 0) {
-              // Redirect to instructors page
               this.router.navigate(['/student/settings/all-user/all-instructors']);
             } else if (config.dataPointIndex === 1) {
-              // Redirect to students page
               this.router.navigate(['/student/settings/all-user/all-students']);
             }
           }
@@ -1628,6 +1760,7 @@ private attendanceBarChart() {
       ],
     };
   }
+  
   private usersBarChart() {
     this.usersBarChartOptions = {
       series: [

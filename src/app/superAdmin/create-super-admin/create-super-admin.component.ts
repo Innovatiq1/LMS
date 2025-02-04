@@ -78,8 +78,8 @@ export class CreateSuperAdminComponent {
         ...this.utils.validators.mobile,
       ]),
       company: new FormControl('', [Validators.required]),
-      uen: new FormControl('',[]),
-      code:new FormControl('',[]),
+      uen: new FormControl('',[Validators.required]),
+      code:new FormControl('',[Validators.required]),
       qualification: new FormControl('', []),
       address: new FormControl('', []),
       email: new FormControl('', [

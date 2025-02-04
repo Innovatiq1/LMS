@@ -43,6 +43,7 @@ export class SuperAdminComponent extends UnsubscribeOnDestroyAdapter {
  
   dataSource: any[] = [];
   filteredData: any[] = [];
+  filteredDataForTable:any[]=[];
   isLoading: boolean = true;
   searchResults: Users[] = [];
   totalItems: number = 0;
@@ -83,6 +84,7 @@ export class SuperAdminComponent extends UnsubscribeOnDestroyAdapter {
         (response: any) => {
           this.dataSource = [...this.dataSource, ...response.data.data.docs];
           this.totalItems = this.dataSource.length;
+          console.log("this.dataSource",this.dataSource)
 
           if (this.dataSource.length < this.totalItems) {
             this.coursePaginationModel.page += 1;
@@ -109,17 +111,61 @@ export class SuperAdminComponent extends UnsubscribeOnDestroyAdapter {
     );
     this.ref.detectChanges();
   }
+  // applyFilter() {
+  //   this.filteredData = this.dataSource.filter(
+  //     (data) => data.type === 'Admin' || data.type === 'admin'
+  //   );
+  //   console.log("this.filteredData",this.filteredData)
+  //   let active = this.filteredData.filter(data => data.Active === true);
+  //   this.activeCount = active.length;
+  //   let in_active = this.filteredData.filter(data => data.Active === false);
+  //   this.inactiveCount = in_active.length;
+  //   this.totalItems = this.filteredData.length;
+  //   this.filteredDataForTable = this.dataSource
+  //   .filter((data) => data.type === 'Admin' || data.type === 'admin')
+  //   .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()) // Ensure latest records first
+  //   .slice(0, 5); // Get latest five records
+
+  // console.log("this.filteredData", this.filteredData);
+
+  //   // this.fetchData=this.filteredData.slice(0,5);
+  //   this.updateDisplayedData();
+  // }
   applyFilter() {
     this.filteredData = this.dataSource.filter(
       (data) => data.type === 'Admin' || data.type === 'admin'
     );
-    let active = this.filteredData.filter(data => data.Active === true);
-    this.activeCount = active.length;
-    let in_active = this.filteredData.filter(data => data.Active === false);
-    this.inactiveCount = in_active.length;
+  
+    this.activeCount = this.filteredData.filter(data => data.Active === true).length;
+    this.inactiveCount = this.filteredData.filter(data => data.Active === false).length;
     this.totalItems = this.filteredData.length;
+  
+    this.filteredDataForTable = this.filteredData.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    .slice(0, 5);
+  
     this.updateDisplayedData();
   }
+  
+  filterTable(type: string) {
+    let filtered = [];
+  
+    if (type === 'all') {
+      filtered = this.filteredData;
+    } else if (type === 'active') {
+      filtered = this.filteredData.filter(company => company.Active);
+    } else if (type === 'inactive') {
+      filtered = this.filteredData.filter(company => !company.Active);
+    }
+  
+    this.filteredDataForTable = filtered
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      .slice(0, 5);
+  
+    this.ref.detectChanges();
+  }
+  
+  
+
   resetData() {
     this.dataSource = [];
     this.filteredData = [];
@@ -127,7 +173,9 @@ export class SuperAdminComponent extends UnsubscribeOnDestroyAdapter {
     this.coursePaginationModel.page = 1;
   }
 
-
+  editAdmin(id:string){
+    this.router.navigate(['super-admin/view-admin'],{queryParams: {id:id}});
+  }
   pageSizeChange($event: any) {
     this.coursePaginationModel.page = $event?.pageIndex + 1;
     this.coursePaginationModel.limit = $event?.pageSize;
