@@ -40,8 +40,7 @@ export class ZoomKeysComponent {
     this.zoomForm = this.fb.group({
       clientId: ['', [Validators.required,  ...this.utils.validators.password]],
       clientSecret: ['', [Validators.required,  ...this.utils.validators.password]],
-      redirectUri: ['', [Validators.required,  ...this.utils.validators.password]],
-
+      accountId: ['', [Validators.required,  ...this.utils.validators.password]],
     });
   }
   ngOnInit(): void {
@@ -54,7 +53,7 @@ export class ZoomKeysComponent {
         companyId: companyId,
         clientId:this.zoomForm.value.clientId,
         clientSecret:this.zoomForm.value.clientSecret,
-        redirectUri:this.zoomForm.value.redirectUri,
+        accountId:this.zoomForm.value.accountId,
         type: 'zoom',
       };
 
@@ -85,13 +84,10 @@ export class ZoomKeysComponent {
     const companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     this.settingsService.getZoomKeysByCompanyId(companyId).subscribe((response: any) => {
       this.zoom = response.data.filter((item: any) => item.type == 'zoom');;
-
-console.log('data',this.zoom)
       this.zoomForm.patchValue({
         clientId:this.zoom[0]?.clientId,
         clientSecret:this.zoom[0]?.clientSecret,
-        redirectUri:this.zoom[0]?.redirectUri
-
+        accountId:this.zoom[0]?.accountId
       })
     })
   }

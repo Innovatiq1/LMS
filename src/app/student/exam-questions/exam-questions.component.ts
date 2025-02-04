@@ -152,7 +152,6 @@ export class ExamQuestionsComponent {
     this.assessmentService.createAnalyzerId(payload).subscribe((res) => {
       if (res?.response) {
         this.analyzerId = res?.response.id;
-        this.isEnableProtector = true;
         this.initializeEventListeners();
       }
     });
@@ -229,7 +228,9 @@ export class ExamQuestionsComponent {
     this.courseService.getCourseById(this.courseId).subscribe((response) => {
       this.courseDetails = response;
       const videoAnalyzerReq = response?.exam_assessment?.videoAnalyzerReq;
+      console.log(response)
       if (videoAnalyzerReq) {
+        this.isEnableProtector = true;
         this.showOverlay = true;
         this.startVideoAnalyzer();
       }
@@ -786,14 +787,14 @@ export class ExamQuestionsComponent {
   sendLogsToServer(): void {}
 
   handleVisibilityChange(): void {
-    if (document.hidden) {
+    if (document.hidden && this.isEnableProtector) {
       this.tabChange++;
       Swal.fire('Changed Tab Detected', 'Action has been Recorded', 'error');
     }
   }
 
   handleKeyPress(event: KeyboardEvent): void {
-    if (event.altKey || event.ctrlKey) {
+    if ((event.altKey || event.ctrlKey) && this.isEnableProtector) {
       this.keyPress++;
       Swal.fire(
         `${event.altKey ? 'Alt' : 'Ctrl'} Key Press Detected`,

@@ -127,6 +127,10 @@ export class ExamTestListComponent {
           this.paidDirectExamFlow(data);
         }
     }else{
+      if(!data.examAssessmentId?.videoAnalyzerReq){
+        this.triggerStartExam(data);
+        return
+      }
     Swal.fire({
       title: 'Are you sure?',
       text: 'Please ensure to allow your camera and microphone while taking the exam.',
@@ -136,7 +140,17 @@ export class ExamTestListComponent {
       cancelButtonText: 'Cancel',
     }).then((result) => {
       if (result.isConfirmed) {
-        const studentClasses = data.studentClassId || [];
+        this.triggerStartExam(data);
+      } else {
+        console.log('Exam start was canceled by the user.');
+      }
+    });
+  }
+  }
+
+  triggerStartExam(data:any){
+    const studentId = localStorage.getItem('id') || '';
+    const studentClasses = data.studentClassId || [];
         if (
           studentClasses.length &&
           studentClasses.some((v: any) => v.status == 'approved')
@@ -148,11 +162,6 @@ export class ExamTestListComponent {
         } else {
           this.paidDirectExamFlow(data);
         }
-      } else {
-        console.log('Exam start was canceled by the user.');
-      }
-    });
-  }
   }
 
   getLabel(data: any): string {

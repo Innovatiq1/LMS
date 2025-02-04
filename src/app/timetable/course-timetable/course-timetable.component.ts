@@ -185,6 +185,7 @@ export class CourseTimetableComponent implements OnInit {
   getClassList() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     this.classService.getClassListWithPagination({},userId).subscribe((response) => {
+      console.log(response.data)
       this.allClasses = response.data.docs;
       const currentDate = new Date();
       const currentMonth = currentDate.getMonth();
@@ -220,8 +221,17 @@ export class CourseTimetableComponent implements OnInit {
           const meetingUrl = courseClass?.meetingUrl;
           const datesArray = [];
           let currentDate = startDate;
+          const meetingPlatform = courseClass?.meetingPlatform;
           while (currentDate <= endDate) {
-            const isSpecialEvent = deliveryType === "online"
+            const isSpecialEvent = deliveryType === "online";
+            let isZoomClassAvailable = true;
+            if(meetingPlatform == 'zoom'){
+              isZoomClassAvailable = courseClass?.occurrences?.some((occ:any)=>{
+                const occDate = new Date(occ.startTime);
+                return this.isSameDate(occDate, currentDate)
+              })
+            }
+            if(isZoomClassAvailable){
             datesArray.push({
               title: title,
               date: new Date(currentDate),
@@ -243,6 +253,7 @@ export class CourseTimetableComponent implements OnInit {
               backgroundColor: isSpecialEvent ? '#fb8500' : '',
               borderColor: isSpecialEvent ? 'darkgreen' : '',
             });
+          }
             currentDate.setDate(currentDate.getDate() + 1);
           }
           return datesArray;
@@ -276,6 +287,9 @@ export class CourseTimetableComponent implements OnInit {
         eventClick: (clickInfo) => this.openDialog(clickInfo.event),
       };
     });
+  }
+  isSameDate(date1:Date, date2:Date) {
+    return date1.toDateString() === date2.toDateString();
   }
   getApprovedCourse() {
     let studentId = localStorage.getItem('id');
