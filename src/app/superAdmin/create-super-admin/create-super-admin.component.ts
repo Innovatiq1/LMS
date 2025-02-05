@@ -39,13 +39,13 @@ import { SettingsService } from '@core/service/settings.service';
   styleUrls: ['./create-super-admin.component.scss'],
 })
 export class CreateSuperAdminComponent {
-  breadscrums = [
-    {
-      title: 'Blank',
-      items: ['Super Admin'],
-      active: 'Create Company',
-    },
-  ];
+  // breadscrums = [
+  //   {
+  //     title: 'Blank',
+  //     items: [''],
+  //     active: '',
+  //   },
+  // ];
   userForm!: FormGroup;
   hide = true;
   dept: any;
@@ -53,6 +53,8 @@ export class CreateSuperAdminComponent {
   userTypes: UserType[] | undefined;
   isSubmitted: boolean = false;
   status = true;
+  breadcrumbs:any[] = [];
+  storedItems: string | null;
   constructor(
     public _fb: FormBuilder,
     public dialog: MatDialog,
@@ -64,7 +66,20 @@ export class CreateSuperAdminComponent {
     private userService: UserService,
     private emailConfigService:EmailConfigService,
     private settingService:SettingsService
-  ) {}
+  ) {
+
+    this.storedItems = localStorage.getItem('activeBreadcrumb');
+    if (this.storedItems) {
+     this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+     this.breadcrumbs = [
+       {
+         title: '', 
+         items: [this.storedItems],  
+         active: 'Create Company',  
+       },
+     ];
+   }
+  }
   ngOnInit() {
     this.userForm = this._fb.group({
       name: new FormControl('', [
