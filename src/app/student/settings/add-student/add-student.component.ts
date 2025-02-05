@@ -424,4 +424,24 @@ getDepartment(){
       }
     );
   }
+
+    getMinDOB(): string {
+    const today = new Date();
+    const minDate = new Date(today.getFullYear() - 20, today.getMonth(), today.getDate());
+    return minDate.toISOString().split('T')[0]; // Format YYYY-MM-DD
+  }
+
+  minAgeValidator(minAge: number) {
+    return (control: any) => {
+      if (!control.value) {
+        return null;
+      }
+      const birthDate = new Date(control.value);
+      const today = new Date();
+      const age = today.getFullYear() - birthDate.getFullYear();
+      const hasBirthdayPassed = (today.getMonth() > birthDate.getMonth()) ||
+                                (today.getMonth() === birthDate.getMonth() && today.getDate() >= birthDate.getDate());
+      return (age > minAge || (age === minAge && hasBirthdayPassed)) ? null : { minAge: true };
+    };
+  }
 }

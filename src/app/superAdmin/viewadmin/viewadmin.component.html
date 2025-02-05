@@ -119,6 +119,13 @@
                             {{ aboutData1?.address }}
                           </p>
                         </div> -->
+                       <div class="col-md-4 col-6">
+                         <strong>Status</strong>
+                          <br /> 
+                          <span *ngIf="aboutData1?.Active; else inactive">Active</span>
+                          <ng-template #inactive>Inactive</ng-template>
+                      </div>
+
                       </div>
                     </div>
                     <div class="header" >
@@ -147,6 +154,8 @@
                           {{ aboutData1?.expiryDate | date }}
                         </p>
                       </div>
+                      
+
                       </div>
                     </div>
                   </div>
