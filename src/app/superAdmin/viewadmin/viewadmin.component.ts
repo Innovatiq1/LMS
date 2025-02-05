@@ -10,17 +10,18 @@ import Swal from 'sweetalert2';
   styleUrls: ['./viewadmin.component.scss'],
 })
 export class ViewadminComponent {
-  breadscrums = [
-    {
-      title: 'Profile',
-      items: ['Super Admin'],
-      active: 'View Admin',
-    },
-  ];
+  // breadscrums = [
+  //   {
+  //     title: 'Profile',
+  //     items: ['Super Admin'],
+  //     active: 'View Admin',
+  //   },
+  // ];
   currentId: any;
   aboutData1: any;
   viewPackageUrl: any;
-  
+  breadcrumbs:any[] = [];
+  storedItems: string | null;
 
   constructor(
     private activeRoute: ActivatedRoute,
@@ -28,6 +29,18 @@ export class ViewadminComponent {
     private StudentService: StudentsService,
     private router: Router
   ) {
+
+    this.storedItems = localStorage.getItem('activeBreadcrumb');
+    if (this.storedItems) {
+     this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+     this.breadcrumbs = [
+       {
+         title: '', 
+         items: [this.storedItems],  
+         active: ' View Company',  
+       },
+     ];
+   }
     this.activeRoute.queryParams.subscribe((params) => {
       this.currentId = params['id'];
     });
@@ -38,13 +51,24 @@ export class ViewadminComponent {
 
 
     if(this.viewPackageUrl == true){
-      this.breadscrums = [
-        {
-          title: 'Profile',
-          items: ['Super Admin'],
-          active: 'View Package',
-        },
-      ];
+      // this.breadscrums = [
+      //   {
+      //     title: 'Profile',
+      //     items: ['Super Admin'],
+      //     active: 'View Package',
+      //   },
+      // ];
+      this.storedItems = localStorage.getItem('activeBreadcrumb');
+    if (this.storedItems) {
+     this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+     this.breadcrumbs = [
+       {
+         title: '', 
+         items: [this.storedItems],  
+         active: 'View Package',  
+       },
+     ];
+   }
     }
   }
 ngOnInit(){

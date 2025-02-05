@@ -21,13 +21,13 @@ import Swal from 'sweetalert2';
   styleUrls: ['./edit-super-admin.component.scss']
 })
 export class EditSuperAdminComponent {
-  breadscrums = [
-    {
-      title: 'Blank',
-      items: ['Super Admin'],
-      active: 'Edit Company',
-    },
-  ];
+  // breadscrums = [
+  //   {
+  //     title: 'Blank',
+  //     items: ['Super Admin'],
+  //     active: 'Edit Company',
+  //   },
+  // ];
   userForm!: FormGroup;
   hide = true;
   dept: any;
@@ -41,6 +41,8 @@ export class EditSuperAdminComponent {
   fileName: any;
   currentId:any;
   companyDataId: any;
+  breadcrumbs:any[] = [];
+  storedItems: string | null;
   constructor(
     public _fb: FormBuilder,
     public dialog: MatDialog, private router: Router,public activeRoute: ActivatedRoute,
@@ -49,6 +51,18 @@ export class EditSuperAdminComponent {
     this.activeRoute.queryParams.subscribe(params => {
       this.currentId = params['id'];
     })
+
+    this.storedItems = localStorage.getItem('activeBreadcrumb');
+    if (this.storedItems) {
+     this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+     this.breadcrumbs = [
+       {
+         title: '', 
+         items: [this.storedItems],  
+         active: 'Edit Company',  
+       },
+     ];
+   }
 
   }
   ngOnInit() {
