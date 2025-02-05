@@ -224,7 +224,7 @@ export class AdminListComponent  extends UnsubscribeOnDestroyAdapter{
         Status: user.Active ? 'Active' : 'Inactive',
       })
     );
-    TableExportUtil.exportToExcel(exportData, 'AllUsers-list');
+    TableExportUtil.exportToExcel(exportData, 'Companies-list');
   }
   addNew(type: any) {
     let tempDirection: Direction;
@@ -272,7 +272,7 @@ export class AdminListComponent  extends UnsubscribeOnDestroyAdapter{
         cellWidth: 'wrap',
       },
     });
-    doc.save('AllUsers-list.pdf');
+    doc.save('Companies-list.pdf');
   }
 
   editAdmin(id:string){

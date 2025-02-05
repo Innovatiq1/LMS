@@ -1,7 +1,7 @@
 <section class="content">
     <div class="content-block">
       <div class="block-header" *ngFor="let breadscrum of breadscrums">
-        <!-- breadcrumb -->
+       
         <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
         </app-breadcrumb>
       </div>
@@ -91,7 +91,7 @@
                         class="mat-cell advance-table"
                       >
                         <ng-container matColumnDef="Company">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header
+                          <mat-header-cell *matHeaderCellDef 
                            >Company</mat-header-cell
                           >
                           <mat-cell
@@ -103,7 +103,7 @@
                           >
                         </ng-container>  
                         <ng-container matColumnDef="Name">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header
+                          <mat-header-cell *matHeaderCellDef 
                            >Name</mat-header-cell
                           >
                           <mat-cell
@@ -115,7 +115,7 @@
                           >
                         </ng-container>
                         <ng-container matColumnDef="Website">
-                          <mat-header-cell class="mat_col" *matHeaderCellDef mat-sort-header>
+                          <mat-header-cell class="mat_col" *matHeaderCellDef >
                            Company Website</mat-header-cell>
                           
                           <mat-cell
@@ -128,7 +128,7 @@
                         </ng-container>  
                         <!-- Course Code -->
                         <ng-container matColumnDef="User Type">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header
+                          <mat-header-cell *matHeaderCellDef 
                             >Role
                           </mat-header-cell>
                           <mat-cell
@@ -140,7 +140,7 @@
                           >
                         </ng-container>
                         <ng-container matColumnDef="Mobile">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header
+                          <mat-header-cell *matHeaderCellDef 
                             >Mobile
                           </mat-header-cell>
                           <mat-cell
@@ -153,7 +153,7 @@
                         </ng-container>
                         <!-- Sub Category -->
                         <ng-container matColumnDef="Email">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header
+                          <mat-header-cell *matHeaderCellDef 
                             >Email</mat-header-cell
                           >
                           <mat-cell
@@ -169,7 +169,7 @@
                           </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="Status">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header
+                          <mat-header-cell *matHeaderCellDef 
                             >Status
                           </mat-header-cell>
                           <mat-cell

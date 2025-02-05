@@ -3,10 +3,10 @@
 <section class="content">
   <div class="content-block">
     <div class="block-header" *ngFor="let breadscrum of breadscrums">
-      <!-- breadcrumb -->
       <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
       </app-breadcrumb>
     </div>
+    
     <div class="row clearfix">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <div class="card">
@@ -44,24 +44,24 @@
                         </mat-form-field>
                       </div>
                       <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" >
-                        <label>UEN</label>
+                        <label>UEN <span class="mandatory">&nbsp;*</span></label>
                         <mat-form-field class="example-full-width mb-3" appearance="outline">
                             <input matInput type="text" formControlName="uen"
                                 class="form-control" >
-                            <!-- <mat-error *ngIf="userForm.get('uen')?.hasError('required')">
+                            <mat-error *ngIf="userForm.get('uen')?.hasError('required')">
                                 Enter UEN
-                            </mat-error> -->
+                            </mat-error>
                            
                         </mat-form-field>
                       </div>
                       <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" >
-                        <label>Uen Code</label>
+                        <label>Uen Code <span class="mandatory">&nbsp;*</span></label>
                         <mat-form-field class="example-full-width mb-3" appearance="outline">
                             <input matInput type="text" formControlName="code"
                                 class="form-control" >
-                            <!-- <mat-error *ngIf="userForm.get('uen')?.hasError('required')">
+                            <mat-error *ngIf="userForm.get('uen')?.hasError('required')">
                                 Enter UEN
-                            </mat-error> -->
+                            </mat-error>
                            
                         </mat-form-field>
                       </div>

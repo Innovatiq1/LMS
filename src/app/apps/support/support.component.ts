@@ -20,10 +20,17 @@ export class SupportComponent implements OnInit {
   mainCategories!: MainCategory[];
   subCategories!: SubCategory[];
   allSubCategories!: SubCategory[];
-  coursePaginationModel: Partial<CoursePaginationModel>;
+  currentFilter: string = 'all';
+
+  // coursePaginationModel: Partial<CoursePaginationModel>;
+  totalTicketsPagination: Partial<CoursePaginationModel> = {};
+  resolvedPagination: Partial<CoursePaginationModel> = {};
+  pendingPagination: Partial<CoursePaginationModel> = {};
+
+  coursePaginationModel: Partial<CoursePaginationModel> = {};
   totalItems: any;
   totalTickets:any;
-  pageSizeArr = [10, 2, 50, 100];
+  pageSizeArr = [10, 20, 50, 100];
   @Input() dashboardCpm : any;
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   breadscrums = [
@@ -38,12 +45,13 @@ export class SupportComponent implements OnInit {
   openData: any;
   constructor(private ticketService: SupportService, public router: Router) {
     //constructor
-    this.coursePaginationModel = {};
+    // this.coursePaginationModel = {};
     this.getCount();
   }
   ngOnInit() {
-    this.listOfTicket();
+    // this.listOfTicket();
     this.getCount();
+    this.getfilterd('all');
   }
 
   pageSizeChange($event: any) {
@@ -60,11 +68,43 @@ export class SupportComponent implements OnInit {
     })
        
   }
+  // listOfTicket() {
+  //   this.ticketService.getAllTickets({ ...this.coursePaginationModel }).subscribe((res) => {
+  //     this.dataSource = res.data.docs;
+  //     this.totalTickets = res.data.totalDocs;
+  //     this.totalItems = res.data.totalDocs;
+  //     this.coursePaginationModel.docs = res.data.docs;
+  //     this.coursePaginationModel.page = res.data.page;
+  //     this.coursePaginationModel.limit = res.data.limit;
+  //     this.coursePaginationModel.totalDocs = res.data.totalDocs;
+  //   });
+  // }
+//new one
+  // listOfTicket() {
+  //   // this.coursePaginationModel.status = "closed";
+  //   this.ticketService.getAllTickets({ ...this.coursePaginationModel }).subscribe((res) => {
+  //     this.coursePaginationModel.docs = res.data.docs;
+  //     this.totalTickets = res.data.totalDocs;
+  //     this.totalItems = res.data.totalDocs;
+  //     this.coursePaginationModel.page = res.data.page;
+  //     this.coursePaginationModel.limit = res.data.limit;
+  //     this.coursePaginationModel.totalDocs = res.data.totalDocs;
+  //     this.dataSource = this.coursePaginationModel.docs;  
+  //   });
+  // }
+  //updated code 
+
   listOfTicket() {
-    this.ticketService.getAllTickets({ ...this.coursePaginationModel }).subscribe((res) => {
+    this.ticketService.getAllTickets({ ...this.coursePaginationModel }).subscribe(res => {
       this.dataSource = res.data.docs;
-      this.totalTickets = res.data.totalDocs;
+      if(this.coursePaginationModel.status!='closed'&&this.coursePaginationModel.status!=='open')
+      {
+        this.totalTickets = res.data.totalDocs;
+      }
+      
       this.totalItems = res.data.totalDocs;
+
+      // Update the pagination model
       this.coursePaginationModel.docs = res.data.docs;
       this.coursePaginationModel.page = res.data.page;
       this.coursePaginationModel.limit = res.data.limit;
@@ -72,13 +112,62 @@ export class SupportComponent implements OnInit {
     });
   }
 
+  // getfilterd(status: string) {
+  //   if (status === 'all') {
+  //     this.dataSource = this.coursePaginationModel.docs ?? [];
+  //   } else {
+  //     this.dataSource = this.coursePaginationModel.docs?.filter((data: { status: string }) => data.status === status) ?? [];
+  //   }
+  // }
+  //newOne
+  // getfilterd(status: string) {
+  //   if(status==='open')
+  //   {
+  //     this.coursePaginationModel.status = "open";
+  //     this.listOfTicket();
+
+  //   }
+  //   else if (status === 'all') {
+  //     this.listOfTicket(); 
+  //   } 
+  //   else if(status==='closed'){
+  //     this.coursePaginationModel.status = "closed";
+  //     this.listOfTicket();
+      
+  //   }
+  //   else{
+  //     this.dataSource = this.coursePaginationModel.docs?.filter((data: { status: string }) => data.status === status) ?? [];
+  //     this.totalItems = this.dataSource.length;
+  //     this.paginator.pageIndex = 0;
+  //   }
+  // }
   getfilterd(status: string) {
-    if (status === 'all') {
-      this.dataSource = this.coursePaginationModel.docs ?? [];
-    } else {
-      this.dataSource = this.coursePaginationModel.docs?.filter((data: { status: string }) => data.status === status) ?? [];
+    this.currentFilter = status;
+    
+    // Reset paginator on filter change
+    if (this.paginator) {
+      this.paginator.pageIndex = 0;
     }
+
+    switch (status) {
+      case 'all':
+        this.coursePaginationModel = this.totalTicketsPagination;
+        break;
+      case 'closed':
+        this.coursePaginationModel = this.resolvedPagination;
+        this.coursePaginationModel.status = 'closed';
+        break;
+      case 'open':
+        this.coursePaginationModel = this.pendingPagination;
+        this.coursePaginationModel.status = 'open';
+        break;
+      default:
+        this.coursePaginationModel = this.totalTicketsPagination;
+    }
+
+    this.listOfTicket();
   }
+
   view(id: any) {
     this.router.navigate(['apps/inbox'],{queryParams:{id:id}});
   }

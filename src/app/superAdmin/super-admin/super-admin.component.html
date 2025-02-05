@@ -7,33 +7,39 @@
       </div>
       <div class="row clearfix">
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-          <div class="card">
-            <div class="header">
-              <h2>Total Companies</h2>
-            </div>
-            <div class="body">
+          <div class="info-box7 bg-c-yellow order-info-box7" (click)="filterTable('all')" style="cursor: pointer;">
+            <div class="info-box7-block">
+              <h4 class="m-b-20">Total Companies</h4>
               <h3>{{totalItems}}</h3>
+              <!-- <h2>Total Companies</h2> -->
             </div>
+            <!-- <div class="body">
+              <h3>{{totalItems}}</h3>
+            </div> -->
           </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-          <div class="card">
-            <div class="header">
-              <h2>Active Companies</h2>
-            </div>
-            <div class="body">
+          <div class="info-box7 bg-c-green order-info-box7" (click)="filterTable('active')" style="cursor: pointer;">
+            <div class="info-box7-block">
+              <h4 class="m-b-20">Active Companies</h4>
               <h3>{{activeCount}}</h3>
+              <!-- <h2>Active Companies</h2> -->
             </div>
+            <!-- <div class="body">
+              <h3>{{activeCount}}</h3>
+            </div> -->
           </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-          <div class="card">
-            <div class="header">
-              <h2>In-active Companies</h2>
-            </div>
-            <div class="body">
+          <div class="info-box7 bg-c-pink order-info-box7" (click)="filterTable('inactive')" style="cursor: pointer;">
+            <div class="info-box7-block">
+              <h4 class="m-b-20">In-active Companies</h4>
               <h3>{{inactiveCount}}</h3>
+              <!-- <h2>In-active Companies</h2> -->
             </div>
+            <!-- <div class="body">
+              <h3>{{inactiveCount}}</h3>
+            </div> -->
           </div>
         </div>
       </div>
@@ -53,28 +59,29 @@
                   <table
                     mat-table
                     matSort
-                    [dataSource]="filteredData"
+                    [dataSource]="filteredDataForTable"
                     class="mat-cell advance-table"
                   >
                     <ng-container matColumnDef="Company">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header
+                      <mat-header-cell *matHeaderCellDef 
                        >Company</mat-header-cell
                       >
                       <mat-cell
                         *matCellDef="let row"
                         class="name"
+                        (click)="editAdmin(row.id)"
                          >
                         <span class="mobile-label">Company:</span
                         >{{ row?.company | capitalizeFirstLetter }}</mat-cell
                       >
                     </ng-container>
                     <ng-container matColumnDef="Website">
-                      <mat-header-cell class="mat_col" *matHeaderCellDef mat-sort-header
+                      <mat-header-cell class="mat_col" *matHeaderCellDef 
                        >Company Website</mat-header-cell
                       >
                       <mat-cell
                         *matCellDef="let row"
-                      
+                        (click)="editAdmin(row.id)"
                          >
                         <span class="mobile-label">Name:</span
                         >{{ row.website  }}</mat-cell
@@ -82,12 +89,12 @@
                     </ng-container>
 
                     <ng-container matColumnDef="Name">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header
+                      <mat-header-cell *matHeaderCellDef 
                        >Name</mat-header-cell
                       >
                       <mat-cell
                         *matCellDef="let row"
-                      
+                        (click)="editAdmin(row.id)"
                          >
                         <span class="mobile-label">Name:</span
                         >{{ row.name | capitalizeFirstLetter }}</mat-cell
@@ -95,24 +102,24 @@
                     </ng-container>
                     <!-- Course Code -->
                     <ng-container matColumnDef="User Type">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header
+                      <mat-header-cell *matHeaderCellDef 
                         >Role
                       </mat-header-cell>
                       <mat-cell
                         *matCellDef="let row"
-                         
+                        (click)="editAdmin(row.id)"
                       >
                         <span class="mobile-label">User Role:</span
                         >{{ row.type | titlecase }}</mat-cell
                       >
                     </ng-container>
                     <ng-container matColumnDef="Mobile">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header
+                      <mat-header-cell *matHeaderCellDef 
                         >Mobile
                       </mat-header-cell>
                       <mat-cell
                         *matCellDef="let row"
-                       
+                        (click)="editAdmin(row.id)"
                       >
                         <span class="mobile-label">Mobile:</span
                         >{{ row.mobile }}</mat-cell
@@ -120,11 +127,12 @@
                     </ng-container>
                     <!-- Sub Category -->
                     <ng-container matColumnDef="Email">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header
+                      <mat-header-cell *matHeaderCellDef 
                         >Email</mat-header-cell
                       >
                       <mat-cell
                         *matCellDef="let row"  
+                        (click)="editAdmin(row.id)"
                       >
                         <span class="mobile-label">Email:</span>
                         <img
@@ -136,12 +144,12 @@
                       </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="Status">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header
+                      <mat-header-cell *matHeaderCellDef 
                         >Status
                       </mat-header-cell>
                       <mat-cell
                         *matCellDef="let row"  
-                        
+                        (click)="editAdmin(row.id)"
                       >
                         <span class="mobile-label">Status:</span
                         ><span
@@ -181,14 +189,18 @@
                     </mat-progress-spinner>
                   </div>
 
-                  <mat-paginator
+                  <!-- <mat-paginator
                     #paginator
                     [length]="totalItems"
                     (page)="pageSizeChange($event)"
                     [pageSizeOptions]="pageSizeArr"
                     aria-label="select pagination option"
                   >
-                  </mat-paginator>
+                  </mat-paginator> -->
+                </div>
+                <div class="text-center">
+                  <button mat-stroked-button [routerLink]="['/super-admin/admin-list']" color="primary">View
+                    More</button>
                 </div>
               </div>
             </div>
