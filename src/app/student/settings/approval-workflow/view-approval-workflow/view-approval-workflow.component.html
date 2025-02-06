@@ -1,10 +1,19 @@
 <section class="content">
     <div class="content-block">
-        <div class="block-header" *ngFor="let breadscrum of breadscrums">
-            <!-- breadcrumb -->
+        <!-- <div class="block-header" *ngFor="let breadscrum of breadscrums">
+            
             <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
             </app-breadcrumb>
-        </div>
+        </div> -->
+        <div class="block-header"  *ngFor="let breadscrum of breadcrumbs">
+            <!-- breadcrumb -->
+            <app-static-breadcrumb
+            [title]="breadscrum.title"
+            [items]="breadscrum.items"
+            [active_item]="breadscrum.active"
+          >
+          </app-static-breadcrumb>
+          </div>
 
         <div class="row clearfix p-2">
 

@@ -54,9 +54,11 @@ export class AllCourseComponent {
     // 'Days',
     // 'Training Hours',
     'Fee Type',
-    'startDate',
+    // 'startDate',
+    'examType',
     'endDate',
-    'Vendor',
+    'approval',
+    // 'Vendor',
     // 'Users',
     'Fees',
     'Users',
@@ -140,9 +142,11 @@ export class AllCourseComponent {
         'Fee Type',
         // 'Days',
         // 'Training Hours',
-        'startDate',
+        // 'startDate',
+        'examType',
         'endDate',
-        'Vendor',
+        'approval',
+        // 'Vendor',
         // 'Users',
         'Fees',
         'Users',
@@ -158,9 +162,11 @@ export class AllCourseComponent {
         'Fee Type',
         // 'Days',
         // 'Training Hours',
-        'startDate',
+        // 'startDate',
+        'examType',
         'endDate',
-        'Vendor',
+        'approval',
+        // 'Vendor',
         'Users',
         'Fees',
       ];
@@ -635,7 +641,7 @@ getAllTpCourses() {
           const textContent = await page.getTextContent();
           pdfText += textContent.items.map((item: any) => item.str).join(' ');
         }
-        console.log('Extracted Text Content:', pdfText);
+        // console.log('Extracted Text Content:', pdfText);
   
       } catch (error) {
         console.error('Error parsing PDF document:', error);
