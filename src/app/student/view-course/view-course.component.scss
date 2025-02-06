@@ -1,73 +1,76 @@
 .red-text {
     color: red;
-  }
-  
-  .green-text {
+}
+
+.green-text {
     color: green;
-  }
+}
 
-  .text{
+.text {
     margin-left: 15px;
-  }
+}
 
-  .top{
+.top {
     vertical-align: top;
-  }
-  .discount{
+}
+
+.discount {
     background-color: #e0dfdf;
-    border:1px solid black
-  }
+    border: 1px solid black
+}
 
 .kit {
-  font-size: 16px;
-  font-weight: 700;
-  margin-left: 5px;
-  align-items: center;
+    font-size: 16px;
+    font-weight: 700;
+    margin-left: 5px;
+    align-items: center;
 }
 
 .icon {
-  font-size: 16px;
-  margin-top: 2px;
-  font-weight: 100;
-  color:#8b8989
+    font-size: 16px;
+    margin-top: 2px;
+    font-weight: 100;
+    color: #8b8989
 }
 
 .dis_font {
-  font-size: 10px;
-  margin-left: 3px;
+    font-size: 10px;
+    margin-left: 3px;
 }
-.day_font{
-  font-size: 25px;
-  font-weight: 600;
+
+.day_font {
+    font-size: 25px;
+    font-weight: 600;
 }
-.pointer{
-  cursor: pointer;
+
+.pointer {
+    cursor: pointer;
 }
 
 .duration {
-  font-size: 12px;
+    font-size: 12px;
 }
 
 
 .video-container {
-  position: relative;
-  display: inline-block;
-  width: 100%;
-  box-shadow: #2c2c2c;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    box-shadow: #2c2c2c;
 }
 
 .play-button {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 60px;
-  height: 60px;
-  background: url('../../../assets/playbtn.png') no-repeat center center;
-  background-size: contain;
-  cursor: pointer;
-  z-index: 1;
-  opacity: 20%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    background: url('../../../assets/playbtn.png') no-repeat center center;
+    background-size: contain;
+    cursor: pointer;
+    z-index: 1;
+    opacity: 20%;
 }
 
 button,
@@ -324,44 +327,46 @@ body {
 
 
 @font-face {
-  font-family: 'Nucleo Outline';
-  src: url("https://github.com/creativetimofficial/now-ui-kit/blob/master/assets/fonts/nucleo-outline.eot");
-  src: url("https://github.com/creativetimofficial/now-ui-kit/blob/master/assets/fonts/nucleo-outline.eot") format("embedded-opentype");
-  src: url("https://raw.githack.com/creativetimofficial/now-ui-kit/master/assets/fonts/nucleo-outline.woff2");
-  font-weight: normal;
-  font-style: normal;
-        
+    font-family: 'Nucleo Outline';
+    src: url("https://github.com/creativetimofficial/now-ui-kit/blob/master/assets/fonts/nucleo-outline.eot");
+    src: url("https://github.com/creativetimofficial/now-ui-kit/blob/master/assets/fonts/nucleo-outline.eot") format("embedded-opentype");
+    src: url("https://raw.githack.com/creativetimofficial/now-ui-kit/master/assets/fonts/nucleo-outline.woff2");
+    font-weight: normal;
+    font-style: normal;
+
 }
 
 .now-ui-icons {
-  display: inline-block;
-  font: normal normal normal 14px/1 'Nucleo Outline';
-  font-size: inherit;
-  speak: none;
-  text-transform: none;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    display: inline-block;
+    font: normal normal normal 14px/1 'Nucleo Outline';
+    font-size: inherit;
+    speak: none;
+    text-transform: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 
-footer{
-    margin-top:50px;
+footer {
+    margin-top: 50px;
     color: #555;
     background: #fff;
     padding: 25px;
     font-weight: 300;
     background: #f7f7f7;
-    
+
 }
-.footer p{
+
+.footer p {
     margin-bottom: 0;
 }
-footer p a{
+
+footer p a {
     color: #555;
     font-weight: 400;
 }
 
-footer p a:hover{
+footer p a:hover {
     color: #e86c42;
 }
 
@@ -379,8 +384,18 @@ footer p a:hover{
         margin-bottom: 5px;
     }
 }
+
 iframe {
-    overflow-y: clip;   
-    border: none; 
+    overflow-y: clip;
+    border: none;
     background: white;
-  }
+}
+
+.meeting-link {
+    color: #f96332;
+    text-decoration: none;
+}
+
+.text-green{
+    color: #008000;
+}

@@ -223,7 +223,7 @@ EMAILCONFIGURATION_LIST =[
         "email_top_welcome_title2": "Trainer",
         "email_top_welcome_title3": "Start Date",
         "email_top_welcome_title4": "End Date",
-        "email_top_welcome_title5": "Time",
+        "email_top_welcome_title5": "Start Time",
         "email_top_welcome_title6": "Duration",
         "bottom_button_text": "",
         "email_subject": "New Zoom Meeting Scheduled for"
@@ -237,7 +237,7 @@ EMAILCONFIGURATION_LIST =[
       "email_top_welcome_title2": "Trainer",
       "email_top_welcome_title3": "Start Date",
       "email_top_welcome_title4": "End Date",
-      "email_top_welcome_title5": "Time",
+      "email_top_welcome_title5": "Start Time",
       "email_top_welcome_title6": "Duration",
       "bottom_button_text": "",
       "email_subject": "Zoom meeting for the {course_name} has been updated"

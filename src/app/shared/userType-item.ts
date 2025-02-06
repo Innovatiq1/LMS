@@ -1709,8 +1709,8 @@ MENU_LIST =[
           "isLeaf": true
         },
         {
-          "title": "Drop Down",
-          "id": "drop-down",
+          "title": "Meeting Platform",
+          "id": "meeting-platform",
           "children": [],
           "isAction": false,
           "checked": true,
@@ -1720,7 +1720,7 @@ MENU_LIST =[
           "actions": [
             {
               "title": "Create",
-              "id": "create-dropdown",
+              "id": "create-meeting-platform",
               "checked": true,
               "indeterminate": false,
               "isLeaf": true,
@@ -1728,7 +1728,7 @@ MENU_LIST =[
             },
             {
               "title": "Edit",
-              "id": "edit-dropdown",
+              "id": "edit-meeting-platform",
               "checked": true,
               "indeterminate": false,
               "isLeaf": true,
@@ -1736,7 +1736,7 @@ MENU_LIST =[
             },
             {
               "title": "Delete",
-              "id": "delete-dropdown",
+              "id": "delete-meeting-platform",
               "checked": true,
               "indeterminate": false,
               "isLeaf": true,

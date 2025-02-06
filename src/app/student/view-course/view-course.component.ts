@@ -1350,7 +1350,7 @@ export class ViewCourseComponent implements OnDestroy {
       }));
 
       this.isScormCourseKit = this.courseKit.some((v) => v.kitType === 'scorm');
-      console.log(this.courseKit);
+      console.log('courseKit:',this.courseKit);
 
       this.scormModules =
         this.courseKit.find((v) => v.kitType === 'scorm')?.scormKit?.modules ||
@@ -1358,7 +1358,7 @@ export class ViewCourseComponent implements OnDestroy {
       this.scormKit = this.courseKit.find(
         (v) => v.kitType === 'scorm'
       )?.scormKit;
-
+      console.log(this.studentClassDetails)
       if (this.studentClassDetails.scormKit && this.scormModules.length > 0) {
         const lastModuleId =
           this.studentClassDetails.scormKit.currentScormModule;
@@ -1370,6 +1370,7 @@ export class ViewCourseComponent implements OnDestroy {
         const scormKit = this.scormKit;
         const url = scormKit?.path + '/' + launchUrl;
         this.currentScormModule = lastModule;
+        console.log('CurrentScormModule:',this.currentScormModule);
         this.initScorm2004(url);
         console.log('launchUrl==', this.scormModules);
       }
@@ -2134,7 +2135,7 @@ export class ViewCourseComponent implements OnDestroy {
     return sessionEndDate < today;
   }
 
-  isMeetingAvailableToday():boolean{
+  isMeetingAvailableToday(): boolean {
     const today = new Date();
     const meetingPlatform = this.classDetails?.meetingPlatform;
     let isZoomClassAvailable = true;
@@ -2149,5 +2150,23 @@ export class ViewCourseComponent implements OnDestroy {
 
   isSameDate(date1: Date, date2: Date) {
     return date1.toDateString() === date2.toDateString();
+  }
+
+  openMeeting(link: any) {
+    if (link) {
+      Swal.fire({
+        title: 'Open Meeting Page',
+        text: 'Do you want redirecting to Meeting Page',
+        icon: 'warning',
+        confirmButtonText: 'Okay',
+        showCancelButton: true,
+        cancelButtonColor: '#d33',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.open(link, "_blank");
+        }
+      });
+    }
+
   }
 }

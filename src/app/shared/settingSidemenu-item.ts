@@ -496,23 +496,23 @@ SETTING_SIDEMENU_LIST =[
             "children": []
           },
           {
-            "title": "Drop Down",
-            "id": "drop-down",
+            "title": "Meeting Platform",
+            "id": "meeting-platform",
             "class": "ml-menu",
             "actions": [
               {
                 "title": "Create",
-                "id": "create-dropdown",
+                "id": "create-meeting-platform",
                 "class": "ml-menu3"
               },
               {
                 "title": "Edit",
-                "id": "edit-dropdown",
+                "id": "edit-meeting-platform",
                 "class": "ml-menu3"
               },
               {
                 "title": "Delete",
-                "id": "delete-dropdown",
+                "id": "delete-meeting-platform",
                 "class": "ml-menu3"
               }
             ],
