@@ -210,11 +210,18 @@
                                 class="mobile-label">Fee Type:</span>{{row.feeType ? (row.feeType | titlecase) : "--"}}
                             </mat-cell>
                           </ng-container>
-                          <ng-container matColumnDef="Vendor">
+                          <!-- <ng-container matColumnDef="Vendor">
                             <mat-header-cell *matHeaderCellDef  class="compulsory-count-header">Vendor
                             </mat-header-cell>
                             <mat-cell *matCellDef="let row" (click)="view ? viewCourse(row.id) : null"> <span
                                 class="mobile-label">Vendor:</span>{{row.vendor ? (row.vendor) : "--"}}
+                            </mat-cell>
+                          </ng-container> -->
+                          <ng-container matColumnDef="approval">
+                            <mat-header-cell *matHeaderCellDef  class="compulsory-count-header">Approval required
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row" (click)="view ? viewCourse(row.id) : null"> <span
+                                class="mobile-label">approval:</span>{{row.approval ? (row.approval) : "--"}}
                             </mat-cell>
                           </ng-container>
                           <ng-container matColumnDef="Users">
@@ -229,7 +236,7 @@
                               </button>
                             </mat-cell>
                           </ng-container>
-                          <ng-container matColumnDef="startDate">
+                          <!-- <ng-container matColumnDef="startDate">
                             <mat-header-cell *matHeaderCellDef  class="compulsory-count-header">Start
                               Date
                             </mat-header-cell>
@@ -237,9 +244,16 @@
                                 class="mobile-label">Start Date:</span><span>{{row.sessionStartDate ?
                                 (row.sessionStartDate | date) : "--"}}</span>
                             </mat-cell>
+                          </ng-container> -->
+                          <ng-container matColumnDef="examType">
+                            <mat-header-cell *matHeaderCellDef  class="compulsory-count-header">Exam Type
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row" (click)="view ? viewCourse(row.id) : null"> <span
+                                class="mobile-label">Start Date:</span><span>{{row.examType | titlecase}}</span>
+                            </mat-cell>
                           </ng-container>
                           <ng-container matColumnDef="endDate">
-                            <mat-header-cell *matHeaderCellDef  class="compulsory-count-header">End Date
+                            <mat-header-cell *matHeaderCellDef  class="compulsory-count-header">Expiry Date
                             </mat-header-cell>
                             <mat-cell *matCellDef="let row" (click)="view ? viewCourse(row.id) : null"> <span
                                 class="mobile-label">End Date:</span><span>{{ row.sessionEndDate ?(row.sessionEndDate
@@ -274,6 +288,10 @@
                             matRipple>
                           </mat-row>
                         </table>
+
+                        <div *ngIf="!courseData || courseData.length === 0" class="text-center py-3 no-data-text">
+                          No data found
+                        </div>
 
                         <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems"
                           (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr"

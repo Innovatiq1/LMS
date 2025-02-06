@@ -289,6 +289,56 @@ export class CreateSuperAdminComponent {
                 icon: 'success',
               });
 
+              const smtpPayload={
+                emailFrom:"support.learning@innovatiqconsulting.com",
+                emailUsername:"support.learning@innovatiqconsulting.com",
+                emailHost:"smtp.gmail.com",
+                emailPort:"465",
+                emailPassword:"jcttdiabvjrqzaun",
+                companyId:response.companyId
+              }
+
+              this.settingService.saveSmtp(smtpPayload).subscribe((res)=>{
+                // console.log("ressmtp",res)
+
+              })
+
+              let gmailKeyspayload={
+                companyId: response.companyId,
+                 clientId:"254303785853-4av7vt4kjc2fus3rgf01e3ltnp2icad0.apps.googleusercontent.com",
+                 type: 'google',
+              }
+
+              this.settingService.saveKey(gmailKeyspayload).subscribe((res)=>{
+                // console.log("gmailKeyspayload",res)
+              })
+
+              let linkedinKeyspayload = {
+                companyId: response.companyId,
+                clientId:"77r1poks3r9jfo",
+                clientSecret:"ZgFGOi8fXTy9zjoS",
+                redirectUri:"http://localhost:4200/innovatiq-uat/authentication/auth/linkedin/redirect",
+                type: 'linkedin',
+              };
+
+              this.settingService.saveKey(linkedinKeyspayload).subscribe((res)=>{
+                // console.log("linkedinKeyspayload",res)
+              })
+
+              let zoomKeysPayload = {
+                companyId: response.companyId,
+                clientId:"LAse3DR_Te2SeOJy4X36uA",
+                clientSecret:"2epsBoUSuVVIkG3QO1d3uBYfGfGhjl41",
+                accountId:"xJT-nxXLQ8CxtIPQnSLdTw",
+                type: 'zoom',
+              };
+
+              this.settingService.createZoomKey(zoomKeysPayload).subscribe((res)=>{
+                // console.log("zoomKeysPayload",res)
+              })
+
+
+
 
               
               

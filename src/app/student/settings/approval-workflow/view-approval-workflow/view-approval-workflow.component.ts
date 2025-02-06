@@ -11,13 +11,13 @@ import Swal from 'sweetalert2';
   styleUrls: ['./view-approval-workflow.component.scss']
 })
 export class ViewApprovalWorkflowComponent {
-  breadscrums = [
-    {
-      title: 'Blank',
-      items: ['Approval Flow'],
-      active: 'View Approval Flow',
-    },
-  ];
+  // breadscrums = [
+  //   {
+  //     title: 'Blank',
+  //     items: ['Approval Flow'],
+  //     active: 'View Approval Flow',
+  //   },
+  // ];
 
   approvalDataById: any;
   dataSource: any;
@@ -27,13 +27,27 @@ export class ViewApprovalWorkflowComponent {
   approvers: any;
   isEdit = false;
   isDelete = false;
-  
+  breadcrumbs:any[] = [];
+  storedItems: string | null;
   constructor(
     private settingsService: SettingsService, 
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private authenService: AuthenService
   ) {
+
+    this.storedItems = localStorage.getItem('activeBreadcrumb');
+    if (this.storedItems) {
+     this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+     this.breadcrumbs = [
+       {
+         title: '', 
+         items: [this.storedItems],  
+         active: 'View Approval Flow',  
+       },
+     ];
+   }
+
     this.coursePaginationModel = {};
     this.activatedRoute.params.subscribe((params: any) => {
       this.approvalId = params.id;

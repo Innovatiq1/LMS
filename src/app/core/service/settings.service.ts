@@ -351,7 +351,12 @@ export class SettingsService {
     return this._Http.get<ApiResponse>(apiUrl, {
     });
   }
-
+  saveKey(data: any) {
+    const apiUrl = `${this.prefix}admin/social-keys`;
+    return this._Http
+      .post<ApiResponse>(apiUrl, data)
+      .pipe(map((response) => {}));
+  }
   updateKey(data: any) {
     const apiUrl = `${this.prefix}admin/social-keys`;
     return this._Http
