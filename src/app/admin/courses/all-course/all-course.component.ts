@@ -55,7 +55,8 @@ export class AllCourseComponent {
     // 'Training Hours',
     'Fee Type',
     // 'startDate',
-    'examType',
+    // 'examType',
+    'selectedOptionValue',
     'endDate',
     'approval',
     // 'Vendor',
@@ -92,6 +93,7 @@ export class AllCourseComponent {
   filter = false;
   vendors: any;
   selectedVendors: any = [];
+  selectedOptionValues:any=[];
   selectedStatus: any = [];
   users: any;
   selectedCreators: any = [];
@@ -130,6 +132,7 @@ export class AllCourseComponent {
       creator: ['', []],
       status: ['', []],
       vendor: ['', []],
+      selectedOptionValue:['',[]],
     });
 
     if (this.path == 'course') {
@@ -143,7 +146,8 @@ export class AllCourseComponent {
         // 'Days',
         // 'Training Hours',
         // 'startDate',
-        'examType',
+        // 'examType',
+        'selectedOptionValue',
         'endDate',
         'approval',
         // 'Vendor',
@@ -163,7 +167,8 @@ export class AllCourseComponent {
         // 'Days',
         // 'Training Hours',
         // 'startDate',
-        'examType',
+        // 'examType',
+        'selectedOptionValue',
         'endDate',
         'approval',
         // 'Vendor',
@@ -281,11 +286,15 @@ getAllTpCourses() {
     TableExportUtil.exportToExcel(exportData, 'AllCourses-list');
   }
   onSelectionChange(event: any, field: any) {
+    console.log("event",event, "field",field)
     if (field == 'course') {
       this.selectedCourses = event.value;
     }
-    if (field == 'vendor') {
-      this.selectedVendors = event.value;
+    // if (field == 'vendor') {
+    //   this.selectedVendors = event.value;
+    // }
+    if (field == 'selectedOptionValue') {
+      this.selectedOptionValues = event.value;
     }
     if (field == 'status') {
       this.selectedStatus = event.value;
@@ -305,6 +314,7 @@ getAllTpCourses() {
     this.filterForm.reset();  // Reset the form values
     this.selectedCourses = [];
     this.selectedVendors = [];
+    this.selectedOptionValues=[];
     this.selectedStatus = [];
     this.selectedCreators = [];
     this.filter = false;
@@ -317,12 +327,14 @@ getAllTpCourses() {
 
   applyFilter() {
     this.filterBody = {};
-    
     if (this.selectedCourses.length > 0) {
       this.filterBody.title = this.selectedCourses;
     }
     if (this.selectedVendors.length > 0) {
       this.filterBody.vendor = this.selectedVendors;
+    }
+    if (this.selectedOptionValues.length > 0) {
+      this.filterBody.selectedOptionValue = this.selectedOptionValues;
     }
     if (this.selectedStatus.length > 0) {
       this.filterBody.status = this.selectedStatus;
