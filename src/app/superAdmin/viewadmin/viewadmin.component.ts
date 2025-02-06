@@ -74,14 +74,28 @@ export class ViewadminComponent {
 ngOnInit(){
   this.loadData();
 }
+  // loadData(filters?: any) {
+  //   this.userService.getUserById(this.currentId).subscribe(
+  //     (response: any) => {
+  //       this.aboutData1 = response.data.data;
+  //     },
+  //     () => {}
+  //   );
+  // }
+
   loadData(filters?: any) {
-    this.userService.getUserById(this.currentId).subscribe(
-      (response: any) => {
-        this.aboutData1 = response.data.data;
-      },
-      () => {}
-    );
-  }
+  this.userService.getUserById(this.currentId).subscribe(
+    (response: any) => {
+      this.aboutData1 = response.data.data;
+      console.log("Fetched user data:", this.aboutData1);
+    },
+    (error) => {
+      console.error("Error fetching user data:", error);
+    }
+  );
+}
+
+
   deleteItem(row: any) {
     Swal.fire({
       title: 'Confirm Deletion',
