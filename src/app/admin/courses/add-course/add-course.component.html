@@ -528,6 +528,7 @@
                       [matDatepicker]="picker"
                       formControlName="sessionEndDate"
                       placeholder="Select Expiry Date"
+                      [min]="minDate"
                     />
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>

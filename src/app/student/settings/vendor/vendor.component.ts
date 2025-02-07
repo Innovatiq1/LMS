@@ -33,7 +33,7 @@ export class VendorComponent {
     @Optional() private dialogRef: MatDialogRef<VendorComponent>) {
       if (data11) {
         this.dialogStatus=true;
-        console.log("Received variable:", data11.variable);
+        // console.log("Received variable:", data11.variable);
       }
       this.vendorForm = this.fb.group({
         vendor: ['', [Validators.required,...this.utils.validators.noLeadingSpace,...this.utils.validators.name]],
@@ -83,6 +83,9 @@ export class VendorComponent {
           },);
           this.getAllVendors();
           this.vendorForm.reset();
+          if (this.dialogRef) {
+            this.dialogRef.close();  
+          }
         },
         (error) => {
           Swal.fire({

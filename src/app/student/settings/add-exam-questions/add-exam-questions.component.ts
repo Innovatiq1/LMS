@@ -479,6 +479,9 @@ saveDraft(data?: string) {
           text: 'Question created successfully',
           icon: 'success',
         });
+        if (this.dialogRef) {
+          this.dialogRef.close();  
+        }
         if(!this.dialogStatus){
           window.history.back();
         }

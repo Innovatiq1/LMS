@@ -69,7 +69,7 @@ draftId!: string;
   ) {
     if (data11) {
       this.dialogStatus=true;
-      console.log("Received variable:", data11.variable);
+      // console.log("Received variable:", data11.variable);
     }
     let urlPath = this.router.url.split('/');
     this.editUrl = urlPath.includes('edit-questions');
@@ -533,6 +533,9 @@ draftId!: string;
           text: 'Question created successfully',
           icon: 'success',
         });
+        if (this.dialogRef) {
+          this.dialogRef.close();  
+        }
         if(!this.dialogStatus){
           window.history.back();
         }
