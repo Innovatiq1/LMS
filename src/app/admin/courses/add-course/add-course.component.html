@@ -769,49 +769,45 @@
               </div>
             </div>
 
-            <div class="row">
-              <div class="col-md-12 mb-5">
-                <div class="d-flex flex-wrap justify-content-between m-2">
-
-                  <button mat-raised-button class="btn-space" *ngIf="editUrl || viewUrl" type="button" id="back"
+          <div class="row">
+            <div class="col-md-12 mb-5">
+              <div class="d-flex flex-wrap justify-content-between m-2">
+                
+                <button mat-raised-button class="btn-space" *ngIf="editUrl || viewUrl" type="button" id="back"
                   (click)="cancel()">
                   Back
                 </button>
 
                 <button mat-raised-button class="btn-space" *ngIf="!editUrl && !viewUrl" type="button" id="back"
+                  (click)="cancel()">
+                  Back
+                </button>
 
-                    <button mat-raised-button class="btn-space" type="button" id="back"
-                      (click)="cancel()">
-                      Back
-                    </button>
-                  
-                    <button style="margin-left: 601px;" mat-raised-button (click)="submit()" *ngIf="!editUrl && !viewUrl" id="submit"
+                <button style="margin-left: 601px;" mat-raised-button (click)="submit()" *ngIf="!editUrl && !viewUrl" id="submit">
+                  Submit
+                </button>
 
-                  <div class="d-flex gap-1">  
-                    <button mat-raised-button (click)="submit()" *ngIf="!editUrl && !viewUrl" id="submit"
-                      [attr.data-bs-toggle]="
-                        firstFormGroup.valid ? 'modal' : null
-                      ">
-                      Save
-                    </button>
+                <div class="d-flex gap-1">
+                  <button mat-raised-button (click)="submit()" *ngIf="!editUrl && !viewUrl" id="submit"
+                    [attr.data-bs-toggle]="firstFormGroup.valid ? 'modal' : null">
+                    Save
+                  </button>
 
-                    <button mat-raised-button (click)="saveDraft('draft')" *ngIf="!editUrl && !viewUrl" id="draft"
-                      color="warn" [attr.data-bs-toggle]="
-                      firstFormGroup.valid ? 'modal' : null
-                    ">
-                      Save as draft
-                    </button>
+                  <button mat-raised-button (click)="saveDraft('draft')" *ngIf="!editUrl && !viewUrl" id="draft"
+                    color="warn" [attr.data-bs-toggle]="firstFormGroup.valid ? 'modal' : null">
+                    Save as draft
+                  </button>
 
-                    <button mat-raised-button *ngIf="editUrl && !viewUrl" id="save" [attr.data-bs-toggle]="
-                        firstFormGroup.valid ? 'modal' : null
-                      " (click)="save()">
-                      Submit
-                    </button>
-                  </div>  
-
+                  <button mat-raised-button *ngIf="editUrl && !viewUrl" id="save" [attr.data-bs-toggle]="firstFormGroup.valid ? 'modal' : null"
+                    (click)="save()">
+                    Submit
+                  </button>
                 </div>
+
               </div>
             </div>
+          </div>
+
           </form>
         </div>
       </div>
