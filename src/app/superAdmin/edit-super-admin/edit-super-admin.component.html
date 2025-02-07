@@ -44,6 +44,38 @@
                             </mat-error>
                           </mat-form-field>
                         </div>
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" >
+                          <label>UEN <span class="mandatory">&nbsp;*</span></label>
+                          <mat-form-field class="example-full-width mb-3" appearance="outline">
+                              <input matInput type="text" formControlName="uen"
+                                  class="form-control" required >
+                              <mat-error *ngIf="userForm.get('uen')?.hasError('required')">
+                                  Enter UEN
+                              </mat-error>
+                             
+                          </mat-form-field>
+                        </div>
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" >
+                          <label>UEN Code <span class="mandatory">&nbsp;*</span></label>
+                          <mat-form-field class="example-full-width mb-3" appearance="outline">
+                              <input matInput type="text" formControlName="code"
+                                  class="form-control" required>
+                              <mat-error *ngIf="userForm.get('code')?.hasError('required')">
+                                  Enter UEN Code
+                              </mat-error>
+                             
+                          </mat-form-field>
+                        </div>
+
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" >
+                          <label>Company Website</label>
+                          <mat-form-field
+                            class="example-full-width mb-3"
+                            appearance="outline"
+                          >
+                            <input matInput formControlName="website" />
+                          </mat-form-field>
+                        </div>
                         <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                           <label>Email<span class="mandatory">&nbsp;*</span></label>
                           <mat-form-field class="example-full-width mb-3" appearance="outline">
@@ -140,6 +172,29 @@
                               class="form-control" required>
                           <mat-error *ngIf="userForm.get('domain')?.hasError('required')">
                               Enter Domain
+                          </mat-error>
+                         
+                      </mat-form-field>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" >
+                      <label>Learner<span class="mandatory">&nbsp;*</span></label>
+                      <mat-form-field class="example-full-width mb-3" appearance="outline">
+                          <input matInput type="text" formControlName="learner"
+                              class="form-control" required>
+                          <mat-error *ngIf="userForm.get('learner')?.hasError('required')">
+                              Enter Learner
+                          </mat-error>
+                         
+                      </mat-form-field>
+                    </div>
+                    
+                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" >
+                      <label>Trainer<span class="mandatory">&nbsp;*</span></label>
+                      <mat-form-field class="example-full-width mb-3" appearance="outline">
+                          <input matInput type="text" formControlName="trainer"
+                              class="form-control" required>
+                          <mat-error *ngIf="userForm.get('trainer')?.hasError('required')">
+                              Enter Trainer
                           </mat-error>
                          
                       </mat-form-field>

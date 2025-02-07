@@ -148,7 +148,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   TPonlyExam:boolean=false;
   TPAssessmentAndExam:boolean=false;
   isOnlyExamOption:boolean=false;
-
+  minDate: Date = new Date();
   constructor(
     private router: Router,
     private fb: FormBuilder,
