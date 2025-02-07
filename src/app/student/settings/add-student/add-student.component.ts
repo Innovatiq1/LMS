@@ -431,6 +431,13 @@ getDepartment(){
     return minDate.toISOString().split('T')[0]; // Format YYYY-MM-DD
   }
 
+  passwordMatchValidator(group: UntypedFormGroup): { [key: string]: boolean } | null {
+  const password = group.get('password')?.value;
+  const confirmPassword = group.get('conformPassword')?.value;
+  return password === confirmPassword ? null : { mismatch: true };
+}
+
+
   minAgeValidator(minAge: number) {
     return (control: any) => {
       if (!control.value) {

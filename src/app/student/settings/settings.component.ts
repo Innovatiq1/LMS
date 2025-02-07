@@ -1416,6 +1416,22 @@ export class SettingsComponent {
     );
   }
 
+  confirmSubmit() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to approve this course!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'Cancel',
+      cancelButtonColor: '#d33',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.saveDashboardConfig();
+      }
+    });
+  }
+
   saveDashboardConfig(): void {
     const userId = JSON.parse(localStorage.getItem('user_data')!).user
       .companyId;
