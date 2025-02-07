@@ -85,6 +85,7 @@ export class ExamQuestionsComponent {
   showOverlay: boolean = false;
   checkFaceMatch: boolean = false;
   faceMatchCount: number = 0;
+  faceMisMatchCount: number =0;
 
 
   @ViewChild('proctoringDiv', { static: true }) proctoringDiv!: ElementRef;
@@ -127,6 +128,10 @@ export class ExamQuestionsComponent {
   handleFaceMatchDetected(isMatch: boolean): void {
     if(isMatch)
       this.faceMatchCount++;
+    else{
+      this.faceMisMatchCount++;
+      this.countingFaceMisMatch();
+    }
     if (!isMatch && this.faceMatchCount > 1) {
       this.sendWarning('Face Not Matched', this.analyzerId);
     } else if (this.faceMatchCount == 1) {
@@ -134,6 +139,16 @@ export class ExamQuestionsComponent {
       this.showOverlay = false;
       console.log('Face match detected...')
       this.calculateTotalTime();
+    }
+  }
+
+  countingFaceMisMatch(){
+    if(this.faceMatchCount ==0 && this.faceMisMatchCount == 5){
+      Swal.fire('Face Not Match', 'The Exam has been canceled due to Face Not Matched', 'error').then(res=>{
+        this.location.back()
+      });
+    }else if(this.faceMatchCount<5) {
+      Swal.fire('Face Not Match', 'Action has been recorded', 'error')
     }
   }
 

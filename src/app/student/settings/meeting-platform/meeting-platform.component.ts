@@ -7,17 +7,17 @@ import { UtilsService } from '@core/service/utils.service';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-drop-down',
-  templateUrl: './drop-down.component.html',
-  styleUrls: ['./drop-down.component.scss']
+  selector: 'app-meeting-platform',
+  templateUrl: './meeting-platform.component.html',
+  styleUrls: ['./meeting-platform.component.scss']
 })
-export class DropDownComponent {
-  dropDownForm!: FormGroup;
+export class MeetingPlatformComponent {
+  meetingPlatformForm!: FormGroup;
   breadscrums = [
     {
-      title: 'Drop Down Algorithm',
+      title: 'Meeting Platform',
       items: ['Configuration'],
-      active: 'Drop Down',
+      active: 'Meeeting Platform',
     },
   ];
   dataSource: any;
@@ -34,8 +34,7 @@ export class DropDownComponent {
   constructor(private fb: FormBuilder, private router: Router,
     private activatedRoute: ActivatedRoute, private SettingsService: SettingsService, public utils: UtilsService,
     private authenService: AuthenService) {
-    this.dropDownForm = this.fb.group({
-      field: ['', [Validators.required, ...this.utils.validators.noLeadingSpace, ...this.utils.validators.value]],
+    this.meetingPlatformForm = this.fb.group({
       name: ['', [Validators.required, ...this.utils.validators.noLeadingSpace, ...this.utils.validators.value]],
       code: ['', [Validators.required, ...this.utils.validators.noLeadingSpace, ...this.utils.validators.value]],
 
@@ -64,12 +63,12 @@ export class DropDownComponent {
   }
 
   onSubmit() {
-    if (this.dropDownForm.valid) {
+    if (this.meetingPlatformForm.valid) {
       let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-      this.dropDownForm.value.companyId = userId;
+      this.meetingPlatformForm.value.companyId = userId;
       Swal.fire({
         title: 'Are you sure?',
-        text: 'Do you want to add Drop Down Option',
+        text: 'Do you want to add Meeting Platform',
         icon: 'warning',
         confirmButtonText: 'Yes',
         showCancelButton: true,
@@ -77,17 +76,20 @@ export class DropDownComponent {
       }).then((result) => {
         if (result.isConfirmed) {
           const payload = {
-            data: this.dropDownForm.getRawValue(),
+            data: {
+              field:"meetingPlatform",
+              ...this.meetingPlatformForm.getRawValue(),
+            },
             companyId: userId
           }
           this.SettingsService.addDropDownOption(payload).subscribe((response: any) => {
             Swal.fire({
               title: 'Successful',
-              text: 'Drop Down Option created successfully',
+              text: 'Meeting Platform created successfully',
               icon: 'success',
             });
             this.getAllDropDowns();
-            this.dropDownForm.reset();
+            this.meetingPlatformForm.reset();
           },
             (error) => {
               Swal.fire({
@@ -100,13 +102,13 @@ export class DropDownComponent {
         }
       });
     } else {
-      this.dropDownForm.markAllAsTouched();
+      this.meetingPlatformForm.markAllAsTouched();
     }
   }
 
   update(data: any, field:any) {
     console.log(data);
-    this.router.navigate(['/student/settings/configuration/drop-down/update'], {
+    this.router.navigate(['/student/settings/configuration/meeting-platform/update'], {
       queryParams: {
         id: data._id,
         field,
@@ -138,5 +140,11 @@ export class DropDownComponent {
       if (result.isConfirmed) {
       }
     });
+  }
+
+  meetingPlatFormOnly(dropDowns:any[]){
+    console.log(dropDowns)
+    return [];
+    // return dropDowns.filter((item:any)=>item ==='meetingPlatform')
   }
 }
