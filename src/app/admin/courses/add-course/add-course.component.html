@@ -540,60 +540,6 @@
                   </mat-form-field>
                 </div>
 
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('Funding/Grant')">
-                  <div class="label-container">
-                    <label>Funding/Grant </label>
-                    <!-- <button class="btn" [routerLink]="['/student/settings/configuration/funding-grant']">
-                      <img src="/assets/Close.svg" alt="plus" />
-                    </button> -->
-                    <button class="btn" (click)="openFundingComponent()">
-                      <img src="/assets/Close.svg" alt="plus" />
-                    </button>
-                  </div>
-                  <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <mat-select formControlName="funding_grant">
-                      <mat-option *ngFor="let item of fundingGrants" [value]="item.id" [disabled]="viewUrl == true">
-                        {{ item.grant_type }}
-                      </mat-option>
-                    </mat-select>
-                    <!-- <mat-error *ngIf="
-                        firstFormGroup
-                          .get('funding_grant')
-                          ?.hasError('required') ||
-                        firstFormGroup.get('funding_grant')?.touched
-                      ">
-                      Select Funding/Grant
-                    </mat-error> -->
-                  </mat-form-field>
-                </div>
-              
-
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('Vendor')">
-                  <div class="label-container">
-                    <label>Vendor </label>
-                    <!-- <button class="btn" [routerLink]="['/student/settings/configuration/vendor']">
-                      <img src="/assets/Close.svg" alt="plus" />
-                    </button> -->
-                    <button class="btn" (click)="openVendorComponent()">
-                      <img src="/assets/Close.svg" alt="plus" />
-                    </button>
-
-                  </div>
-                  <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <mat-select formControlName="vendor">
-                      <mat-option *ngFor="let item of vendors" [value]="item.vendor" [disabled]="viewUrl == true">
-                        {{ item.vendor }}
-                      </mat-option>
-                    </mat-select>
-                    <!-- <mat-error *ngIf="
-                    firstFormGroup.get('vendor')?.hasError('maxLength') ||
-                    firstFormGroup.get('vendor')?.touched
-                  ">
-                  Select Vendor
-                    </mat-error> -->
-                  </mat-form-field>
-                </div>
-
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('Skill Connect Code')">
                   <label>Skill Connect Code</label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
@@ -784,9 +730,9 @@
                   Back
                 </button>
 
-                <button style="margin-left: 601px;" mat-raised-button (click)="submit()" *ngIf="!editUrl && !viewUrl" id="submit">
+              <!--   <button style="margin-left: 601px;" mat-raised-button (click)="submit()" *ngIf="!editUrl && !viewUrl" id="submit">
                   Submit
-                </button>
+                </button> -->
 
                 <div class="d-flex gap-1">
                   <button mat-raised-button (click)="submit()" *ngIf="!editUrl && !viewUrl" id="submit"
