@@ -127,13 +127,13 @@ export class ExamTestListComponent {
           this.paidDirectExamFlow(data);
         }
     }else{
-      if(!data.examAssessmentId?.videoAnalyzerReq){
-        this.triggerStartExam(data);
-        return
+      let alertMessage = 'You want to take exam ?'
+      if(data.examAssessmentId?.videoAnalyzerReq){
+        alertMessage = 'Please ensure to allow your camera and microphone while taking the exam.';
       }
     Swal.fire({
       title: 'Are you sure?',
-      text: 'Please ensure to allow your camera and microphone while taking the exam.',
+      text: alertMessage,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, Start Exam!',
