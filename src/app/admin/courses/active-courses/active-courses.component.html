@@ -229,6 +229,9 @@
                         >
                         </mat-row>
                       </table>
+                      <div *ngIf="!courseData || courseData.length === 0" class="text-center py-3 no-data-text">
+                        No data found
+                      </div>
 
                       <mat-paginator
                         class="paginator rounded-5"

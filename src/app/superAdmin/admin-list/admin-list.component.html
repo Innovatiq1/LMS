@@ -130,7 +130,6 @@
                             >{{ row.website  }}</mat-cell
                           >
                         </ng-container>  
-                        <!-- Course Code -->
                         <ng-container matColumnDef="User Type">
                           <mat-header-cell *matHeaderCellDef 
                             >Role
@@ -155,7 +154,7 @@
                             >{{ row.mobile }}</mat-cell
                           >
                         </ng-container>
-                        <!-- Sub Category -->
+                        
                         <ng-container matColumnDef="Email">
                           <mat-header-cell *matHeaderCellDef 
                             >Email</mat-header-cell
@@ -207,6 +206,9 @@
                         >
                         </mat-row>
                       </table>
+                      <div *ngIf="!filteredData || filteredData.length === 0" class="text-center py-3 no-data-text">
+                        No data found
+                      </div>
                       <!-- Loading spinner -->
                       <div class="tbl-spinner">
                         <mat-progress-spinner
@@ -226,7 +228,9 @@
                         aria-label="select pagination option"
                       >
                       </mat-paginator>
+
                     </div>
+
                   </div>
                 </div>
               </div>

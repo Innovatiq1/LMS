@@ -169,6 +169,7 @@ export class CreateClassComponent {
   }
     this.loadSavedFormData();
 
+
     this.commonRoles = AppConstants
     if (this.classId != undefined) {
       this.loadClassList(this.classId);
@@ -212,7 +213,7 @@ export class CreateClassComponent {
     }).subscribe((response) => {
       this.courseList = response.courses.reverse();
       this.meetingPlatforms = response.dropDowns?.data?.meetingPlatform;
-      console.log(response.dropDowns);
+      // console.log(response.dropDowns);
       this.cd.detectChanges();
     });
 
@@ -232,6 +233,9 @@ export class CreateClassComponent {
    this.getUserGroups()
   }
   
+  get registrationStartDate() {
+    return this.classForm.get('registrationStartDate')?.value;
+  }
   
 
 
@@ -239,6 +243,7 @@ export class CreateClassComponent {
     const savedFormData = localStorage.getItem('classFormData');
     if (savedFormData) {
       const parsedFormData = JSON.parse(savedFormData);
+      // console.log("parsedFormData",parsedFormData)
       this.classForm.patchValue({
         courseId: parsedFormData?.courseId,
         classType: parsedFormData?.classType, 
@@ -343,6 +348,7 @@ loadForm() {
       this.trainerId=item?.course?.runs[0]?.linkCourseRunTrainer[0]?.trainer?.id;
       this.courseTitle=item?.courseName;
       this.courseCode=item?.courseReferenceNumber;
+      this.expiryDate=item?.courseExpiryDate;
       // console.log("getrrr",response);
       this.classForm.patchValue({
         courseId: item?.courseId?.id,
@@ -362,6 +368,7 @@ loadForm() {
         meetingPlatform: item?.meetingPlatform,
         registrationStartDate:item.registrationStartDate,
         registrationEndDate:item.registrationEndDate,
+        
         // courseReferenceNumber:item.courseReferenceNumber,
         // courseTPRunId:item.courseTPRunId
       });
@@ -480,7 +487,7 @@ loadForm() {
     this.courseCode=filteredData[0].courseCode
     this.expiryDate=filteredData[0].sessionEndDate
 
-    console.log("this.expiry",this.expiryDate)
+    // console.log("this.expiry",this.expiryDate)
 
   }
 
@@ -668,6 +675,7 @@ getTPCourse(classForm:any){
                   uen:localStorage.getItem('uen') || ''
                 };
         this.classForm.value.course= this.getTPCourse(this.classForm);
+        this.classForm.value.courseExpiryDate=this.expiryDate;
               if (!this.classForm.valid) {
           Swal.fire({
             title: 'Error',
