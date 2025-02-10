@@ -1374,9 +1374,9 @@
                   Cancel
                 </button>
                 <button
-                  mat-raised-button
+                   mat-raised-button
                   id="submit"
-                  (click)="saveDashboardConfig()"
+                  (click)="confirmSubmit()"
                 >
                   Submit
                 </button>
@@ -1384,6 +1384,7 @@
               <hr />
             </div>
           </div>
+ 
 
           <div *ngIf="!isCreate" class="content-block">
             <div class="card" style="min-height: 745px">

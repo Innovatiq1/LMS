@@ -491,6 +491,11 @@ export class UtilsService {
     'company':[
       {type:'required', message: 'Enter Company Name'}
     ],
+    'meetingPlatform': [
+      {
+        type:'required', message:'Enter Meeting Platform Name'
+      }
+    ]
   };
 
 

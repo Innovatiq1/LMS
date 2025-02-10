@@ -41,9 +41,9 @@ export class DraftedCoursesComponent {
     // 'Days',
     // 'Training Hours',
     'Fee Type',
-    'startDate',
+    // 'startDate',
     'endDate',
-    'Vendor',
+    // 'Vendor',
     'Users',
     'Fees',
   ];
@@ -141,7 +141,7 @@ export class DraftedCoursesComponent {
     this.userService.getAllUsers().subscribe((response: any) => {
       const user = response?.results;
       this.users = user.filter((x: any) => x.type == 'Trainer');
-      console.log("users", this.users)
+      // console.log("users", this.users)
     });
   }
 
@@ -232,9 +232,9 @@ export class DraftedCoursesComponent {
         'Days',
         'Hours',
         'Payment',
-        'Start Date ',
+        // 'Start Date ',
         'End Date   ',
-        'Vendor  ',
+        // 'Vendor  ',
       ],
     ];
     const data = this.courseData.map((x: any) => [

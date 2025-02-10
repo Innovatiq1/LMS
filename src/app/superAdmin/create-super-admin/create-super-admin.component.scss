@@ -1,0 +1,36 @@
+.example-button-row {
+  display: flex;
+  justify-content: flex-start; 
+}
+
+.standard-button {
+  min-width: 120px; 
+  height: 40px;
+}
+
+$custom-accent-color: #6200ea;
+
+.mat-accent {
+  background-color: $custom-accent-color !important;
+  color: white !important;
+}
+
+.mat-icon {
+  color: $custom-accent-color !important;
+}
+
+.button-with-padding {
+  background-color: #6200ea; 
+  color: white;
+  padding-left: -19rem; 
+}
+
+example-button-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.spacer {
+  flex: 1; 
+}

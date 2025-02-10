@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DropDownComponent } from './drop-down.component';
+import { MeetingPlatformComponent } from './meeting-platform.component';
 
 describe('DropDownComponent', () => {
-  let component: DropDownComponent;
-  let fixture: ComponentFixture<DropDownComponent>;
+  let component: MeetingPlatformComponent;
+  let fixture: ComponentFixture<MeetingPlatformComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [DropDownComponent]
+      declarations: [MeetingPlatformComponent]
     });
-    fixture = TestBed.createComponent(DropDownComponent);
+    fixture = TestBed.createComponent(MeetingPlatformComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

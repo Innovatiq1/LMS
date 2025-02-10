@@ -118,34 +118,32 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                  <label>Password <span class="mandatory">&nbsp;*</span></label>
-                  <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <input matInput formControlName="password" type="password" required />
-                    <mat-error *ngIf="stdForm.get('password')?.hasError('required')">
-                      Enter Password
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-                <div *ngIf="!edit" class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                  <label>Re-Enter Password
-                    <span class="mandatory">&nbsp;*</span></label>
-                  <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <input matInput formControlName="conformPassword" type="password" required />
-                    <mat-error *ngIf="
-                        stdForm.get('conformPassword')?.hasError('required')
-                      ">
-                      Re-Enter Password
-                    </mat-error>
-                    <mat-error *ngIf="
-                        stdForm
-                          .get('conformPassword')
-                          ?.hasError('confirmedValidator')
-                      ">
-                      Password and Re-Enter Password must be match
-                    </mat-error>
-                  </mat-form-field>
-                </div>
+                
+               <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                <label>Password <span class="mandatory">&nbsp;*</span></label>
+                <mat-form-field class="example-full-width mb-3" appearance="outline">
+                  <input matInput formControlName="password" type="password" required />
+                  <mat-error *ngIf="stdForm.get('password')?.hasError('required')">
+                    Enter Password
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div *ngIf="!edit" class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                <label>Re-Enter Password <span class="mandatory">&nbsp;*</span></label>
+                <mat-form-field class="example-full-width mb-3" appearance="outline">
+                  <input matInput formControlName="conformPassword" type="password" required />
+                  
+                  <mat-error *ngIf="stdForm.get('conformPassword')?.hasError('required')">
+                    Re-Enter Password
+                  </mat-error>
+
+                  <mat-error *ngIf="stdForm.hasError('mismatch') && stdForm.get('conformPassword')?.touched">
+                    Password and Re-Enter Password must match
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <label>Mobile<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
@@ -189,19 +187,29 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                  <label>Date of Birth<span class="mandatory">&nbsp;*</span>
-                  </label>
+              
+               <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                  <label>Date of Birth<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <input matInput [matDatepicker]="picker" formControlName="dob" />
+                    <input 
+                      matInput 
+                      [matDatepicker]="picker" 
+                      formControlName="dob" 
+                      [max]="getMinDOB()" 
+                      />
 
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
+
                     <mat-error *ngIf="stdForm.get('dob')?.hasError('required')">
-                      Select date
+                      Date of Birth is required.
+                    </mat-error>
+                    <mat-error *ngIf="stdForm.get('dob')?.hasError('minAge')">
+                      You must be at least 20 years old.
                     </mat-error>
                   </mat-form-field>
                 </div>
+
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <label>Registration Date
                     <span class="mandatory">&nbsp;*</span></label>

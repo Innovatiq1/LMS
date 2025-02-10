@@ -196,7 +196,7 @@
                 <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-2">
                   <label>Registration Start Date<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <input matInput [matDatepicker]="startDatePicker" formControlName="registrationStartDate" />
+                    <input matInput [matDatepicker]="startDatePicker" formControlName="registrationStartDate" [min]="minDates" [max]="expiryDate" />
                     <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
                     <mat-datepicker #startDatePicker></mat-datepicker>
                     <mat-error *ngIf="classForm.get('registrationStartDate')?.hasError('required')">
@@ -208,7 +208,7 @@
                 <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-2">
                   <label>Registration End Date<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <input matInput [matDatepicker]="endDatePicker" formControlName="registrationEndDate" />
+                    <input matInput [matDatepicker]="endDatePicker" formControlName="registrationEndDate" [min]="registrationStartDate"  [max]="expiryDate"/>
                     <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
                     <mat-datepicker #endDatePicker></mat-datepicker>
                     <mat-error *ngIf="classForm.get('registrationEndDate')?.hasError('required')">
@@ -287,7 +287,7 @@
                   <label for="start-date">Class Start Date<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <input matInput id="start-date" [owlDateTimeTrigger]="date" [owlDateTime]="date"
-                      [(ngModel)]="element.start" name="start" #startInput="ngModel" required [min]="minDates"
+                      [(ngModel)]="element.start" name="start" #startInput="ngModel" required [min]="registrationStartDate"
                       (change)="startDateChange(element)" />
                     <mat-icon matSuffix [owlDateTimeTrigger]="date" class="date-icon">today</mat-icon>
                     <owl-date-time #date></owl-date-time>

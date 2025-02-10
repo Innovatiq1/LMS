@@ -34,7 +34,7 @@ export class FundingComponent implements OnInit {
   ) {
       if (data11) {
         this.dialogStatus=true;
-        console.log("Received variable:", data11.variable);
+        // console.log("Received variable:", data11.variable);
       }
       this.fundingForm = this.fb.group({
         grant_type: ['', [Validators.required,...this.utils.validators.name,...this.utils.validators.noLeadingSpace]],
@@ -84,6 +84,9 @@ export class FundingComponent implements OnInit {
           });
           this.getAllFundingGrants();
           this.fundingForm.reset();
+          if (this.dialogRef) {
+            this.dialogRef.close();  
+          }
         },
         (error) => {
           Swal.fire({

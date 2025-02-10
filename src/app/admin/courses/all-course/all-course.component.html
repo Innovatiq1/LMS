@@ -48,13 +48,13 @@
                               
 
 
-                              <li class="tbl-header-btn">
+                              <!-- <li class="tbl-header-btn">
                                 <div class="m-l-10" matTooltip="ADD" >
                                   
                                   <button mat-raised-button  id="submit" (click)="getAllTpCourses()"><span class="custom-button-padding">Get SSG Courses</span></button>
                                 </div>
     
-                              </li>
+                              </li> -->
                               
                             <!-- <li>
                               <div class="upload-btn m-l-10" matTooltip="Bulk Upload">
@@ -129,13 +129,34 @@
                                     </mat-select>
                                   </mat-form-field>
                                 </div>
-                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
+                                <!-- <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
                                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                                     <mat-label>Vendor</mat-label>
                                     <mat-select (selectionChange)="onSelectionChange($event,'vendor')"
                                       formControlName="vendor" multiple>
                                       <mat-option *ngFor="let vendor of vendors" [value]="vendor.vendor">
                                         {{vendor.vendor | titlecase}} </mat-option>
+                                    </mat-select>
+                                  </mat-form-field>
+                                </div> -->
+                                <!-- <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
+                                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                    <mat-label>Course Type</mat-label>
+                                    <mat-select (selectionChange)="onSelectionChange($event,'selectedOptionValue')"
+                                      formControlName="selectedOptionValue" multiple>
+                                      <mat-option *ngFor="let vendor of vendors" [value]="vendor.selectedOptionValue">
+                                        {{vendor.vendor | titlecase}} </mat-option>
+                                    </mat-select>
+                                  </mat-form-field>
+                                </div> -->
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
+                                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                    <mat-label>Course Type</mat-label>
+                                    <mat-select (selectionChange)="onSelectionChange($event,'selectedOptionValue')"
+                                      formControlName="selectedOptionValue" multiple>
+                                      <mat-option value="LearningAndTutorial"> Learning And Tutorial</mat-option>
+                                      <mat-option value="OnlyExam"> OnlyExam</mat-option>
+                                      <mat-option value="AssessmentAndExam"> Assessment And Exam</mat-option>
                                     </mat-select>
                                   </mat-form-field>
                                 </div>
@@ -210,11 +231,18 @@
                                 class="mobile-label">Fee Type:</span>{{row.feeType ? (row.feeType | titlecase) : "--"}}
                             </mat-cell>
                           </ng-container>
-                          <ng-container matColumnDef="Vendor">
+                          <!-- <ng-container matColumnDef="Vendor">
                             <mat-header-cell *matHeaderCellDef  class="compulsory-count-header">Vendor
                             </mat-header-cell>
                             <mat-cell *matCellDef="let row" (click)="view ? viewCourse(row.id) : null"> <span
                                 class="mobile-label">Vendor:</span>{{row.vendor ? (row.vendor) : "--"}}
+                            </mat-cell>
+                          </ng-container> -->
+                          <ng-container matColumnDef="approval">
+                            <mat-header-cell *matHeaderCellDef  class="compulsory-count-header">Approval required
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row" (click)="view ? viewCourse(row.id) : null"> <span
+                                class="mobile-label">approval:</span>{{row.approval ? (row.approval) : "--"}}
                             </mat-cell>
                           </ng-container>
                           <ng-container matColumnDef="Users">
@@ -229,7 +257,7 @@
                               </button>
                             </mat-cell>
                           </ng-container>
-                          <ng-container matColumnDef="startDate">
+                          <!-- <ng-container matColumnDef="startDate">
                             <mat-header-cell *matHeaderCellDef  class="compulsory-count-header">Start
                               Date
                             </mat-header-cell>
@@ -237,9 +265,23 @@
                                 class="mobile-label">Start Date:</span><span>{{row.sessionStartDate ?
                                 (row.sessionStartDate | date) : "--"}}</span>
                             </mat-cell>
+                          </ng-container> -->
+                          <!-- <ng-container matColumnDef="examType">
+                            <mat-header-cell *matHeaderCellDef  class="compulsory-count-header">Exam Type
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row" (click)="view ? viewCourse(row.id) : null"> <span
+                                class="mobile-label">Start Date:</span><span>{{row.examType | titlecase}}</span>
+                            </mat-cell>
+                          </ng-container> -->
+                          <ng-container matColumnDef="selectedOptionValue">
+                            <mat-header-cell *matHeaderCellDef  class="compulsory-count-header">Course Type
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row" (click)="view ? viewCourse(row.id) : null"> <span
+                                class="mobile-label">Start Date:</span><span>{{row.selectedOptionValue.replace('And', ' & ')}}</span>
+                            </mat-cell>
                           </ng-container>
                           <ng-container matColumnDef="endDate">
-                            <mat-header-cell *matHeaderCellDef  class="compulsory-count-header">End Date
+                            <mat-header-cell *matHeaderCellDef  class="compulsory-count-header">Expiry Date
                             </mat-header-cell>
                             <mat-cell *matCellDef="let row" (click)="view ? viewCourse(row.id) : null"> <span
                                 class="mobile-label">End Date:</span><span>{{ row.sessionEndDate ?(row.sessionEndDate
@@ -274,6 +316,10 @@
                             matRipple>
                           </mat-row>
                         </table>
+
+                        <div *ngIf="!courseData || courseData.length === 0" class="text-center py-3 no-data-text">
+                          No data found
+                        </div>
 
                         <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems"
                           (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr"

@@ -10,17 +10,18 @@ import Swal from 'sweetalert2';
   styleUrls: ['./viewadmin.component.scss'],
 })
 export class ViewadminComponent {
-  breadscrums = [
-    {
-      title: 'Profile',
-      items: ['Super Admin'],
-      active: 'View Admin',
-    },
-  ];
+  // breadscrums = [
+  //   {
+  //     title: 'Profile',
+  //     items: ['Super Admin'],
+  //     active: 'View Admin',
+  //   },
+  // ];
   currentId: any;
   aboutData1: any;
   viewPackageUrl: any;
-  
+  breadcrumbs:any[] = [];
+  storedItems: string | null;
 
   constructor(
     private activeRoute: ActivatedRoute,
@@ -28,6 +29,18 @@ export class ViewadminComponent {
     private StudentService: StudentsService,
     private router: Router
   ) {
+
+    this.storedItems = localStorage.getItem('activeBreadcrumb');
+    if (this.storedItems) {
+     this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+     this.breadcrumbs = [
+       {
+         title: '', 
+         items: [this.storedItems],  
+         active: ' View Company',  
+       },
+     ];
+   }
     this.activeRoute.queryParams.subscribe((params) => {
       this.currentId = params['id'];
     });
@@ -38,30 +51,55 @@ export class ViewadminComponent {
 
 
     if(this.viewPackageUrl == true){
-      this.breadscrums = [
-        {
-          title: 'Profile',
-          items: ['Super Admin'],
-          active: 'View Package',
-        },
-      ];
+      // this.breadscrums = [
+      //   {
+      //     title: 'Profile',
+      //     items: ['Super Admin'],
+      //     active: 'View Package',
+      //   },
+      // ];
+      this.storedItems = localStorage.getItem('activeBreadcrumb');
+    if (this.storedItems) {
+     this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+     this.breadcrumbs = [
+       {
+         title: '', 
+         items: [this.storedItems],  
+         active: 'View Package',  
+       },
+     ];
+   }
     }
   }
 ngOnInit(){
   this.loadData();
 }
+  // loadData(filters?: any) {
+  //   this.userService.getUserById(this.currentId).subscribe(
+  //     (response: any) => {
+  //       this.aboutData1 = response.data.data;
+  //     },
+  //     () => {}
+  //   );
+  // }
+
   loadData(filters?: any) {
-    this.userService.getUserById(this.currentId).subscribe(
-      (response: any) => {
-        this.aboutData1 = response.data.data;
-      },
-      () => {}
-    );
-  }
+  this.userService.getUserById(this.currentId).subscribe(
+    (response: any) => {
+      this.aboutData1 = response.data.data;
+      console.log("Fetched user data:", this.aboutData1);
+    },
+    (error) => {
+      console.error("Error fetching user data:", error);
+    }
+  );
+}
+
+
   deleteItem(row: any) {
     Swal.fire({
       title: 'Confirm Deletion',
-      text: 'Are you sure you want to delete this user?',
+      text: 'Do you want to delete this company',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#d33',
@@ -74,7 +112,7 @@ ngOnInit(){
           () => {
             Swal.fire({
               title: 'Deleted',
-              text: 'User deleted successfully',
+              text: 'Company deleted successfully',
               icon: 'success',
             });
             this.router.navigate(['/super-admin/admin-list']);

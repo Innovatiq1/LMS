@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CourseService } from '@core/service/course.service';
 import { UtilsService } from '@core/service/utils.service';
 import Swal from 'sweetalert2';
 import { Location } from '@angular/common';
@@ -9,12 +8,12 @@ import { AuthenService } from '@core/service/authen.service';
 import { SettingsService } from '@core/service/settings.service';
 
 @Component({
-  selector: 'app-update-drop-down',
-  templateUrl: './update-drop-down.component.html',
-  styleUrls: ['./update-drop-down.component.scss']
+  selector: 'app-update-meeting-platform',
+  templateUrl: './update-meeting-platform.component.html',
+  styleUrls: ['./update-meeting-platform.component.scss']
 })
-export class UpdateDropDownComponent {
-  dropDownForm!: FormGroup;
+export class UpdateMeetingPlatformComponent {
+  meetingPlatformForm!: FormGroup;
   breadscrums = [
     {
       title: 'Drop Down',
@@ -30,7 +29,7 @@ export class UpdateDropDownComponent {
   constructor(private fb: FormBuilder,private router:Router,
     private activatedRoute:ActivatedRoute,private settingService:SettingsService,public utils:UtilsService,  private location: Location,
     private authenService: AuthenService) {
-      this.dropDownForm = this.fb.group({
+      this.meetingPlatformForm = this.fb.group({
         name: ['', [Validators.required,...this.utils.validators.name]],
         code: ['', [Validators.required,...this.utils.validators.value]]
       });
@@ -58,7 +57,7 @@ export class UpdateDropDownComponent {
   }
 
   onUpdate(){
-    if(this.dropDownForm.valid){
+    if(this.meetingPlatformForm.valid){
     Swal.fire({
       title: 'Are you sure?',
       text: 'Do you want to update this!',
@@ -69,7 +68,7 @@ export class UpdateDropDownComponent {
     }).then((result) => {
       if (result.isConfirmed){
     let companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-    const data = this.dropDownForm.value;
+    const data = this.meetingPlatformForm.value;
     const payload = {
       companyId,
       field: this.field,
@@ -99,7 +98,7 @@ export class UpdateDropDownComponent {
     });
   }
   else{
-    this.dropDownForm.markAllAsTouched();
+    this.meetingPlatformForm.markAllAsTouched();
   }
   }
   getDropDownOptionById(optionId:string, field:string) {
@@ -111,7 +110,7 @@ export class UpdateDropDownComponent {
     }
     this.settingService.getDropDownOptionById(query).subscribe(res => {
       const data = res?.data;
-      this.dropDownForm.patchValue({
+      this.meetingPlatformForm.patchValue({
         name: data?.name,
         code: data?.code,
       })

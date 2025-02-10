@@ -92,8 +92,8 @@ import { TimeComponent } from './settings/time/time.component';
 import { UpdateTimeAlgorithmComponent } from './settings/time/update-time-algorithm/update-time-algorithm.component';
 import { SocialLoginComponent } from './settings/social-login/social-login.component';
 import { ZoomKeysComponent } from './settings/zoom-keys/zoom-keys.component';
-import { DropDownComponent } from './settings/drop-down/drop-down.component';
-import { UpdateDropDownComponent } from './settings/drop-down/update-drop-down/update-drop-down.component';
+import { MeetingPlatformComponent } from './settings/meeting-platform/meeting-platform.component';
+import { UpdateMeetingPlatformComponent } from './settings/meeting-platform/update-meeting-platform/update-meeting-platform.component';
 const routes: Routes = [
   {
     path: 'enrollment/course',
@@ -632,12 +632,12 @@ const routes: Routes = [
     component: UpdateDiscountComponent
   },
   {
-    path: 'settings/configuration/drop-down',
-    component: DropDownComponent
+    path: 'settings/configuration/meeting-platform',
+    component: MeetingPlatformComponent
   },
   {
-    path: 'settings/configuration/drop-down/update',
-    component: UpdateDropDownComponent
+    path: 'settings/configuration/meeting-platform/update',
+    component: UpdateMeetingPlatformComponent
   }
 
   

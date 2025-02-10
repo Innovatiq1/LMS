@@ -20,6 +20,59 @@
           <form [formGroup]="firstFormGroup">
             <div class="body">
               <div class="row">
+                <!-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                  <label>Course<span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <input matInput formControlName="title" placeholder="Enter Course"
+                      [readonly]="isInputReadonly()" required />
+                    <mat-error *ngIf="firstFormGroup.get('title')?.hasError('required')">
+                      Enter Course
+                    </mat-error>
+                    <mat-error *ngIf="
+                        firstFormGroup.get('title')?.hasError('pattern') &&
+                        firstFormGroup.get('title')?.touched
+                      ">
+                      Enter a valid Course
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                  <label>Course Code <span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <input matInput formControlName="courseCode" placeholder="Enter Course Code"
+                      [readonly]="isInputReadonly()" required />
+                    <mat-error *ngIf="
+                        firstFormGroup.get('courseCode')?.hasError('required')
+                      ">
+                      Enter Course Code
+                    </mat-error>
+                    <mat-error *ngIf="
+                        firstFormGroup.get('courseCode')?.hasError('pattern') &&
+                        firstFormGroup.get('courseCode')?.touched
+                      ">
+                      Enter a valid Course code
+                    </mat-error>
+                  </mat-form-field>
+                </div> -->
+                
+                <!-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('Funding/Grant')">
+                  <div class="label-container">
+                    <label>Funding/Grant </label>
+                    <button class="btn" (click)="openFundingComponent()">
+                      <img src="/assets/Close.svg" alt="plus" />
+                    </button>
+                  </div>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-select formControlName="funding_grant">
+                      <mat-option *ngFor="let item of fundingGrants" [value]="item.id" [disabled]="viewUrl == true">
+                        {{ item.grant_type }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div> -->
+              
+              </div>
+              <div class="row">
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <label>Course<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
@@ -54,36 +107,10 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
-                
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('Funding/Grant')">
-                  <div class="label-container">
-                    <label>Funding/Grant </label>
-                    <!-- <button class="btn" [routerLink]="['/student/settings/configuration/funding-grant']">
-                      <img src="/assets/Close.svg" alt="plus" />
-                    </button> -->
-                    <button class="btn" (click)="openFundingComponent()">
-                      <img src="/assets/Close.svg" alt="plus" />
-                    </button>
-                  </div>
-                  <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <mat-select formControlName="funding_grant">
-                      <mat-option *ngFor="let item of fundingGrants" [value]="item.id" [disabled]="viewUrl == true">
-                        {{ item.grant_type }}
-                      </mat-option>
-                    </mat-select>
-                    <!-- <mat-error *ngIf="
-                        firstFormGroup
-                          .get('funding_grant')
-                          ?.hasError('required') ||
-                        firstFormGroup.get('funding_grant')?.touched
-                      ">
-                      Select Funding/Grant
-                    </mat-error> -->
-                  </mat-form-field>
-                </div>
-              
-              </div>
-              <div class="row">
+
+            
+              <!-- <div class="row"> -->
+
              
                 <!-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <label>Issue Certificate
@@ -341,34 +368,8 @@
                   </mat-form-field>
                 </div>
 
-
                 <!-- </div> -->
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('Vendor')">
-                  <div class="label-container">
-                    <label>Vendor </label>
-                    <!-- <button class="btn" [routerLink]="['/student/settings/configuration/vendor']">
-                      <img src="/assets/Close.svg" alt="plus" />
-                    </button> -->
-                    <button class="btn" (click)="openVendorComponent()">
-                      <img src="/assets/Close.svg" alt="plus" />
-                    </button>
-
-                  </div>
-                  <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <mat-select formControlName="vendor">
-                      <mat-option *ngFor="let item of vendors" [value]="item.vendor" [disabled]="viewUrl == true">
-                        {{ item.vendor }}
-                      </mat-option>
-                    </mat-select>
-                    <!-- <mat-error *ngIf="
-                    firstFormGroup.get('vendor')?.hasError('maxLength') ||
-                    firstFormGroup.get('vendor')?.touched
-                  ">
-                  Select Vendor
-                    </mat-error> -->
-                  </mat-form-field>
-                </div>
-
+               
                 <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2" *ngIf="labelStatusCheck('Fee Type')">
                   <label>Fee Type <span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
@@ -407,7 +408,7 @@
                       <mat-option value="tp gateway discount" [disabled]="viewUrl == true">TP Gateway Discount</mat-option>
                       <mat-option value="none" [disabled]="viewUrl == true">None</mat-option>
                     </mat-select>
-                     <mat-error *ngIf="firstFormGroup.get('discount_type')?.hasError('required') && firstFormGroup.get('discount_type')?.touched">
+                     <mat-error *ngIf="firstFormGroup.get('discount_type')?.hasError('required') || firstFormGroup.get('discount_type')?.touched">
                    Select  Discount Type
                   </mat-error>
                   </mat-form-field>
@@ -415,7 +416,7 @@
                 </div>
                 
                 <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2" *ngIf="labelStatusCheck('Currency') && isPaid">
-                  <label>Currency</label>
+                  <label>Currency <span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <mat-select formControlName="currency_code">
                       <mat-option value="USD" [disabled]="viewUrl == true">USD</mat-option>
@@ -429,6 +430,9 @@
                       <mat-option value="MYR" [disabled]="viewUrl == true">MYR</mat-option>
                       <mat-option value="AUD" [disabled]="viewUrl == true">AUD</mat-option>
                     </mat-select>
+                    <mat-error *ngIf="firstFormGroup.get('currency_code')?.hasError('required') || firstFormGroup.get('currency_code')?.touched">
+                      Select  Currency
+                     </mat-error>
                   </mat-form-field>
                 </div>
                 <!-- <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2" *ngIf="labelStatusCheck('Days')">
@@ -447,7 +451,12 @@
                   </mat-form-field>
                 </div> -->
                 <!-- <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-2" *ngIf="labelStatusCheck('Training Hours')">
-                  <label>Training Hours</label>
+                  <label>Trai  <div class="row mx-2">
+            <div class="col-md-8">
+                <button mat-raised-button id="back"
+                    [routerLink]="['/admin/budgets/all-requests']">Back</button>
+            </div>
+        </div>ning Hours</label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <input matInput formControlName="training_hours" type="number" [readonly]="isInputReadonly()"
                       placeholder="Enter Training Days" />
@@ -519,17 +528,17 @@
                       [matDatepicker]="picker"
                       formControlName="sessionEndDate"
                       placeholder="Select Expiry Date"
+                      [min]="minDate"
                     />
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
                     <mat-error
-                      *ngIf="firstFormGroup.get('sessionEndDate')?.hasError('required') && firstFormGroup.get('sessionEndDate')?.touched"
+                      *ngIf="firstFormGroup.get('sessionEndDate')?.hasError('required') || firstFormGroup.get('sessionEndDate')?.touched"
                     >
                       Select Course Expiry Date
                     </mat-error>
                   </mat-form-field>
                 </div>
-                
 
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('Skill Connect Code')">
                   <label>Skill Connect Code</label>
@@ -620,6 +629,58 @@
                   </mat-form-field>
                 </div>
 
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('Vendor')">
+                  <div class="label-container">
+                    <label>Vendor </label>
+                    <!-- <button class="btn" [routerLink]="['/student/settings/configuration/vendor']">
+                      <img src="/assets/Close.svg" alt="plus" />
+                    </button> -->
+                    <button class="btn" (click)="openVendorComponent()">
+                      <img src="/assets/Close.svg" alt="plus" />
+                    </button>
+
+                  </div>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-select formControlName="vendor">
+                      <mat-option *ngFor="let item of vendors" [value]="item.vendor" [disabled]="viewUrl == true">
+                        {{ item.vendor }}
+                      </mat-option>
+                    </mat-select>
+                    <!-- <mat-error *ngIf="
+                    firstFormGroup.get('vendor')?.hasError('maxLength') ||
+                    firstFormGroup.get('vendor')?.touched
+                  ">
+                  Select Vendor
+                    </mat-error> -->
+                  </mat-form-field>
+                </div>
+
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('Funding/Grant')">
+                  <div class="label-container">
+                    <label>Funding/Grant </label>
+                    <!-- <button class="btn" [routerLink]="['/student/settings/configuration/funding-grant']">
+                      <img src="/assets/Close.svg" alt="plus" />
+                    </button> -->
+                    <button class="btn" (click)="openFundingComponent()">
+                      <img src="/assets/Close.svg" alt="plus" />
+                    </button>
+                  </div>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-select formControlName="funding_grant">
+                      <mat-option *ngFor="let item of fundingGrants" [value]="item.id" [disabled]="viewUrl == true">
+                        {{ item.grant_type }}
+                      </mat-option>
+                    </mat-select>
+                    <!-- <mat-error *ngIf="
+                        firstFormGroup
+                          .get('funding_grant')
+                          ?.hasError('required') ||
+                        firstFormGroup.get('funding_grant')?.touched
+                      ">
+                      Select Funding/Grant
+                    </mat-error> -->
+                  </mat-form-field>
+                </div>
 
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="!viewUrl">
                   <label>Thumbnail</label>
@@ -645,8 +706,6 @@
                   </div>
                 </div>
 
-
-
               </div>
               <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
@@ -657,36 +716,45 @@
               </div>
             </div>
 
-            <div class="row">
-              <div class="col-md-9">
-              </div>
-              <div class="col-md-12 mb-5">
-                <div class="d-flex flex-wrap justify-content-between m-2">
-                    <button mat-raised-button class="btn-space" *ngIf="editUrl || viewUrl" type="button" id="back"
-                      (click)="cancel()">
-                      Back
-                    </button>
-                  
-                    <button mat-raised-button (click)="submit()" *ngIf="!editUrl && !viewUrl" id="submit"
-                      [attr.data-bs-toggle]="
-                        firstFormGroup.valid ? 'modal' : null
-                      ">
-                      Save
-                    </button>
-                    <button mat-raised-button (click)="saveDraft('draft')" *ngIf="!editUrl && !viewUrl" id="draft"
-                      color="warn" [attr.data-bs-toggle]="
-                      firstFormGroup.valid ? 'modal' : null
-                    ">
-                      Save as draft
-                    </button>
-                    <button mat-raised-button *ngIf="editUrl && !viewUrl" id="save" [attr.data-bs-toggle]="
-                        firstFormGroup.valid ? 'modal' : null
-                      " (click)="save()">
-                      Submit
-                    </button>
+          <div class="row">
+            <div class="col-md-12 mb-5">
+              <div class="d-flex flex-wrap justify-content-between m-2">
+                
+                <button mat-raised-button class="btn-space" *ngIf="editUrl || viewUrl" type="button" id="back"
+                  (click)="cancel()">
+                  Back
+                </button>
+
+                <button mat-raised-button class="btn-space" *ngIf="!editUrl && !viewUrl" type="button" id="back"
+                  (click)="cancel()">
+                  Back
+                </button>
+
+              <!--   <button style="margin-left: 601px;" mat-raised-button (click)="submit()" *ngIf="!editUrl && !viewUrl" id="submit">
+                  Submit
+                </button> -->
+
+                <div class="d-flex gap-1">
+                  <button mat-raised-button (click)="submit()" *ngIf="!editUrl && !viewUrl" id="submit"
+                    [attr.data-bs-toggle]="firstFormGroup.valid ? 'modal' : null">
+                    Save
+                  </button>
+
+                  <button mat-raised-button (click)="saveDraft('draft')" *ngIf="!editUrl && !viewUrl" id="draft"
+                    color="warn" [attr.data-bs-toggle]="firstFormGroup.valid ? 'modal' : null">
+                    Save as draft
+                  </button>
+
+                  <button mat-raised-button *ngIf="editUrl && !viewUrl" id="save" [attr.data-bs-toggle]="firstFormGroup.valid ? 'modal' : null"
+                    (click)="save()">
+                    Submit
+                  </button>
                 </div>
+
               </div>
             </div>
+          </div>
+
           </form>
         </div>
       </div>

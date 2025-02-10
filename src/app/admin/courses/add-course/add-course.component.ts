@@ -148,7 +148,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   TPonlyExam:boolean=false;
   TPAssessmentAndExam:boolean=false;
   isOnlyExamOption:boolean=false;
-
+  minDate: Date = new Date();
   constructor(
     private router: Router,
     private fb: FormBuilder,
@@ -214,7 +214,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       ],
       fee: new FormControl('', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]),
       discount_type: new FormControl('', [Validators.required]),
-      currency_code: [''],
+      currency_code: ['USD',[Validators.required]],
 
       course_duration_in_days: new FormControl('', [
         Validators.min(1),
@@ -290,7 +290,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.optionValue = params['option'] || null;
-         console.log('Option value from URL:', this.optionValue);
+        //  console.log('Option value from URL:', this.optionValue);
     });
     this.getCourseKitsnew()
     this.getFundingGrantNew();

@@ -116,33 +116,78 @@
                 <h2>
                   {{commonRoles.STUDENT_ROLE}}s Survey</h2>
               </div>
-              <div class="body">
+              <!-- <div class="body">
                 <apx-chart [series]="surveyBarChartOptions.series!" [chart]="surveyBarChartOptions.chart!"
                   [xaxis]="surveyBarChartOptions.xaxis!" [yaxis]="surveyBarChartOptions.yaxis!"
                   [colors]="surveyBarChartOptions.colors!" [stroke]="surveyBarChartOptions.stroke!"
                   [legend]="surveyBarChartOptions.legend!" [grid]="surveyBarChartOptions.grid!"
                   [tooltip]="surveyBarChartOptions.tooltip!" [dataLabels]="surveyBarChartOptions.dataLabels!"></apx-chart>
+              </div> -->
+              <div class="body">
+                <div *ngIf="isSurveyDataAvailable; else noData">
+                  <apx-chart 
+                    [series]="surveyBarChartOptions.series!" 
+                    [chart]="surveyBarChartOptions.chart!"
+                    [xaxis]="surveyBarChartOptions.xaxis!" 
+                    [yaxis]="surveyBarChartOptions.yaxis!"
+                    [colors]="surveyBarChartOptions.colors!" 
+                    [stroke]="surveyBarChartOptions.stroke!"
+                    [legend]="surveyBarChartOptions.legend!" 
+                    [grid]="surveyBarChartOptions.grid!"
+                    [tooltip]="surveyBarChartOptions.tooltip!" 
+                    [dataLabels]="surveyBarChartOptions.dataLabels!">
+                  </apx-chart>
+                </div>
+                <ng-template #noData>
+                  <div class="text-center py-5 no-data-text">
+                    <h5>No Data Found</h5>
+                  </div>
+                </ng-template>
               </div>
+              
     
             </div>
           </div>
         </ng-container>
+
         <ng-container *ngFor="let component of dashboard.components">
           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" *ngIf="component.checked && component.id === 'users'">
             <div class="card" style="border-radius: 31px;">
               <div class="header mt-3">
                 <h2>Users</h2>
               </div>
-              <div class="float-start ms-3 me-3">
-                <h5>{{count?.users}} Users(All) <span class="text-muted font-12"></span></h5>
+              <div class="float-start ms-3 me-3" *ngIf="isUserDataAvailable;">
+                <h5>{{count?.users }}{{ count?.users > 1 ? ' Users(All)' : ' User(All)' }} <span class="text-muted font-12"></span></h5>
               </div>
-              <div class="body" style="cursor: pointer;" >
+              <!-- <div class="body" style="cursor: pointer;" >
                 <apx-chart [series]="polarChartOptions.series2!" [chart]="polarChartOptions.chart!"
                   [labels]="polarChartOptions.labels!" [title]="polarChartOptions.title!" [theme]="polarChartOptions.theme!"
                   [fill]="polarChartOptions.fill!" [yaxis]="polarChartOptions.yaxis!" [stroke]="polarChartOptions.stroke!"
                   [legend]="polarChartOptions.legend!" [plotOptions]="polarChartOptions.plotOptions!"
                   [colors]="polarChartOptions.colors!"></apx-chart>
+              </div> -->
+              <div class="body" style="cursor: pointer;">
+                <div *ngIf="isUserDataAvailable; else noData">
+                  <apx-chart [series]="polarChartOptions.series2!" 
+                             [chart]="polarChartOptions.chart!"
+                             [labels]="polarChartOptions.labels!" 
+                             [title]="polarChartOptions.title!" 
+                             [theme]="polarChartOptions.theme!"
+                             [fill]="polarChartOptions.fill!" 
+                             [yaxis]="polarChartOptions.yaxis!" 
+                             [stroke]="polarChartOptions.stroke!"
+                             [legend]="polarChartOptions.legend!" 
+                             [plotOptions]="polarChartOptions.plotOptions!"
+                             [colors]="polarChartOptions.colors!">
+                  </apx-chart>
+                </div>
+                <ng-template #noData>
+                  <div class="text-center py-5 no-data-text">
+                    <h5>No Data Found</h5>
+                  </div>
+                </ng-template>
               </div>
+              
             </div>
           </div>
         </ng-container>
@@ -208,6 +253,9 @@
                       </tr>
                     </thead>
                     <tbody>
+                      <tr *ngIf="classesList.length === 0">
+                        <td colspan="5" class="text-center py-3 no-data-text">No Data Found</td>
+                      </tr>
                       <tr *ngFor="let class of classesList " style="cursor: pointer;"
                         [routerLink]="['/admin/courses/class-list/view-class/',class.id]">
                         <!-- <td class="table-img">
@@ -251,6 +299,9 @@
                       </tr>
                     </thead>
                     <tbody>
+                      <tr *ngIf="students.length === 0">
+                        <td colspan="5" class="text-center py-3 no-data-text">No Data Found</td>
+                      </tr>
                       <tr *ngFor="let student of students" style="cursor: pointer;" (click)="aboutStudent(student.id)">
                         <td class="table-img">
                           <img src="{{student?.avatar || 'assets/profile.png'}}" alt="">

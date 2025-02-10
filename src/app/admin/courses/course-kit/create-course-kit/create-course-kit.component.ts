@@ -279,6 +279,9 @@ export class CreateCourseKitComponent implements OnInit {
               icon: 'success',
             });
             this.courseKitForm.reset();
+            if (this.dialogRef) {
+              this.dialogRef.close();  
+            }
             if(!this.dialogStatus)
             {
               this.router.navigateByUrl('/admin/courses/course-kit');

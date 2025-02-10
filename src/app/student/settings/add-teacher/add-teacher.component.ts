@@ -17,6 +17,7 @@ import { UtilsService } from '@core/service/utils.service';
 import { FormService } from '@core/service/customization.service';
 import { AppConstants } from '@shared/constants/app.constants';
 import { UserService } from '@core/service/user.service';
+import { AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-add-teacher',
@@ -64,7 +65,8 @@ export class AddTeacherComponent {
         '',
         [Validators.required, Validators.email, Validators.minLength(5),...this.utils.validators.noLeadingSpace,...this.utils.validators.email],
       ],
-      dob: ['', [Validators.required]],
+      // dob: ['', [Validators.required]],
+      dob: ['', [Validators.required, this.minAgeValidator(20)]], 
       joiningDate:['', [Validators.required]],
       qualifications: ['', [Validators.required,...this.utils.validators.designation]],
       avatar: ['',],
@@ -78,6 +80,25 @@ export class AddTeacherComponent {
     });
   }
 
+  minAgeValidator(minAge: number) {
+    return (control: AbstractControl) => {
+      if (!control.value) return null; // If no value, return null (valid)
+  
+      const birthDate = new Date(control.value);
+      const today = new Date();
+  
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+      const dayDiff = today.getDate() - birthDate.getDate();
+  
+      // Adjust age if birthday hasn't occurred yet this year
+      if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+        age--;
+      }
+  
+      return age < minAge ? { minAge: true } : null;
+    };
+  }
 
   onFileUpload(event:any) {
     const file = event.target.files[0];

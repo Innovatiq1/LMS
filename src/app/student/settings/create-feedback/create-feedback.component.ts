@@ -59,7 +59,7 @@ export class CreateFeedbackComponent  {
   ) {
     if (data11) {
       this.dialogStatus=true;
-      console.log("Received variable:", data11.variable);
+      // console.log("Received variable:", data11.variable);
     }
 
     this.storedItems = localStorage.getItem('activeBreadcrumb');
@@ -289,6 +289,9 @@ export class CreateFeedbackComponent  {
           text: 'Feedback Question created successfully',
           icon: 'success',
         });
+        if (this.dialogRef) {
+          this.dialogRef.close();  
+        }
         if(!this.dialogStatus)
         {
          this.router.navigate(['/admin/survey/survey-list']);
