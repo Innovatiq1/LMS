@@ -449,7 +449,7 @@
                   <!-- Zoom Link Content -->
                   <div class="p-3">
                     <h5>Meeting Link</h5>
-                    <div *ngIf="!hasSessionEnded() && isMeetingAvailableToday">
+                    <div *ngIf="!hasSessionEnded() && isMeetingAvailableToday()">
                       <span>Here is the Meeting link:</span>
                       <button class="btn btn-link meeting-link" (click)="openMeeting(classDetails?.meetingUrl)">
                         Click here
@@ -458,7 +458,7 @@
                     <p *ngIf="hasSessionEnded()">
                       The session has ended, and the meeting link is no longer available.
                     </p>
-                    <p *ngIf="!hasSessionEnded && !isMeetingAvailableToday">
+                    <p *ngIf="!hasSessionEnded() && !isMeetingAvailableToday()">
                       Today's Meeting was not available.
                     </p>
                   </div>
