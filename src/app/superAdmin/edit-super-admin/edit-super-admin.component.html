@@ -67,7 +67,7 @@
                           </mat-form-field>
                         </div>
 
-                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" >
+                        <!-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" >
                           <label>Company Website</label>
                           <mat-form-field
                             class="example-full-width mb-3"
@@ -75,7 +75,7 @@
                           >
                             <input matInput formControlName="website" />
                           </mat-form-field>
-                        </div>
+                        </div> -->
                         <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                           <label>Email<span class="mandatory">&nbsp;*</span></label>
                           <mat-form-field class="example-full-width mb-3" appearance="outline">
@@ -249,28 +249,7 @@
                       </mat-form-field>
                     </div>
 
-                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" >
-                          <label>UEN</label>
-                          <mat-form-field class="example-full-width mb-3" appearance="outline">
-                              <input matInput type="text" formControlName="uen"
-                                  class="form-control" >
-                              <!-- <mat-error *ngIf="userForm.get('uen')?.hasError('required')">
-                                  Enter UEN
-                              </mat-error> -->
-                             
-                          </mat-form-field>
-                        </div>
-                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" >
-                          <label>Uen Code</label>
-                          <mat-form-field class="example-full-width mb-3" appearance="outline">
-                              <input matInput type="text" formControlName="code"
-                                  class="form-control" >
-                              <!-- <mat-error *ngIf="userForm.get('uen')?.hasError('required')">
-                                  Enter UEN
-                              </mat-error> -->
-                             
-                          </mat-form-field>
-                        </div>
+                        
 
                         <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" >
                           <label>Company Website</label>
@@ -285,14 +264,15 @@
                   </div>
                 </div>
             </form>
-                  <div class="row">
+                  <div class="row buttons">
                   <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
                     <div class="example-button-row d-flex justify-content-start">
-                      <button mat-raised-button color="accent" class="standard-button" (click)="update()" [mat-dialog-close]="1">
-                        Save
-                      </button>
-                      <button mat-raised-button color="warn" class="standard-button" (click)="onNoClick()" tabindex="-1">
+                      
+                      <button mat-raised-button color="warn"  (click)="onNoClick()" tabindex="-1">
                         Cancel
+                      </button>
+                      <button id="submit" mat-raised-button color="primary"  (click)="update()" [mat-dialog-close]="1">
+                        Save
                       </button>
                     </div>
                   </div>
