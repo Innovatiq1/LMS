@@ -8,29 +8,34 @@
   height: 40px;
 }
 
-$custom-accent-color: #6200ea;
+// $custom-accent-color: #6200ea;
 
-.mat-accent {
-  background-color: $custom-accent-color !important;
-  color: white !important;
-}
+// .mat-accent {
+//   background-color: $custom-accent-color !important;
+//   color: white !important;
+// }
 
-.mat-icon {
-  color: $custom-accent-color !important;
-}
+// .mat-icon {
+//   color: $custom-accent-color !important;
+// }
 
-.button-with-padding {
-  background-color: #6200ea; 
-  color: white;
-  padding-left: -19rem; 
-}
+// .button-with-padding {
+//   background-color: #6200ea; 
+//   color: white;
+//   padding-left: -19rem; 
+// }
 
-example-button-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+// example-button-row {
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+// }
 
-.spacer {
-  flex: 1; 
+// .spacer {
+//   flex: 1; 
+// }
+
+.buttons{
+  float: right;
+
 }
