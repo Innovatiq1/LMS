@@ -22,5 +22,15 @@ $custom-accent-color: #6200ea;
 .button-with-padding {
   background-color: #6200ea; 
   color: white;
-  padding-left: -19rem; /* Adjust as needed */
+  padding-left: -19rem; 
+}
+
+example-button-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.spacer {
+  flex: 1; 
 }

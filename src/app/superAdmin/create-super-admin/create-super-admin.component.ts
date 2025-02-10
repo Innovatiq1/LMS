@@ -228,7 +228,7 @@ export class CreateSuperAdminComponent {
     if (this.userForm.valid) {
       Swal.fire({
         title: 'Are you sure?',
-        text: 'Do you want to create user!',
+        text: 'Do you want to create this company',
         icon: 'warning',
         confirmButtonText: 'Yes',
         showCancelButton: true,

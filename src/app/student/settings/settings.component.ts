@@ -1415,11 +1415,14 @@ export class SettingsComponent {
       (error) => {}
     );
   }
+ 
+  confirmSubmit(): void {
+    const actionText = this.typeNameChild ? 'update' : 'create';
+    const confirmationText = `Do you want to ${actionText} this dashboard?`;
 
-  confirmSubmit() {
     Swal.fire({
       title: 'Are you sure?',
-      text: 'Do you want to approve this course!',
+      text: confirmationText,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes',
@@ -1427,23 +1430,22 @@ export class SettingsComponent {
       cancelButtonColor: '#d33',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.saveDashboardConfig();
+        this.saveDashboardConfig(); // Call the function to save or update
       }
     });
   }
 
   saveDashboardConfig(): void {
-    const userId = JSON.parse(localStorage.getItem('user_data')!).user
-      .companyId;
+    const userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+
     const selectedDashboards = this.dashboards.controls
       .map((dashboardGroup) => {
         const dashboardFormGroup = dashboardGroup as FormGroup;
         const components = (
           dashboardFormGroup.get('components') as FormArray
         ).controls
-          .filter(
-            (componentGroup) =>
-              (componentGroup as FormGroup).get('checked')!.value
+          .filter((componentGroup) =>
+            (componentGroup as FormGroup).get('checked')!.value
           )
           .map((componentGroup) => {
             const componentFormGroup = componentGroup as FormGroup;
@@ -1473,30 +1475,31 @@ export class SettingsComponent {
       companyId: userId,
       dashboards: selectedDashboards,
     };
-console.log("config: " + config);
+
+    console.log('config:', config);
+
     if (!this.typeNameChild) {
       this.userService.saveCustomzDashboard(config).subscribe((data: any) => {
         Swal.fire({
           title: 'Successful',
-          text: 'Dashboard Created successfully',
+          text: 'Dashboard created successfully!',
+          icon: 'success',
+        });
+        this.getDashboardComponentsafterSave();
+        this.cancel();
+        this.isCreate = false; 
+      });
+    } else {
+      this.userService.updateCustomzDashboard(config).subscribe((data: any) => {
+        Swal.fire({
+          title: 'Successful',
+          text: 'Dashboard updated successfully!',
           icon: 'success',
         });
         this.getDashboardComponentsafterSave();
         this.cancel();
         this.isCreate = false;
       });
-    } else {
-      this.userService.updateCustomzDashboard(config).subscribe((data: any) => {
-        Swal.fire({
-          title: 'Successful',
-          text: 'Dashboard Updated successfully',
-          icon: 'success',
-        });
-      });
-
-      this.getDashboardComponentsafterSave();
-      this.cancel();
-      this.isCreate = false;
     }
   }
 
