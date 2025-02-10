@@ -173,7 +173,7 @@
                                                         class="mobile-label">Fee Type:</span>{{row.feeType ? (row.feeType | titlecase) : "--"}}
                                                 </mat-cell>
                                             </ng-container>
-                                            <ng-container matColumnDef="Vendor">
+                                            <!-- <ng-container matColumnDef="Vendor">
                                                 <mat-header-cell *matHeaderCellDef 
                                                     class="compulsory-count-header">Vendor
                                                 </mat-header-cell>
@@ -181,7 +181,7 @@
                                                 [routerLink]=" edit ? ['/admin/courses/edit-course/', row.id] : null"> <span
                                                         class="mobile-label">Vendor:</span>{{row.vendor ? (row.vendor) : "--"}}
                                                 </mat-cell>
-                                            </ng-container>
+                                            </ng-container> -->
                                             <ng-container matColumnDef="Users">
                                                 <mat-header-cell *matHeaderCellDef 
                                                     class="compulsory-count-header">{{commonRoles?.STUDENT_ROLE}}
@@ -195,7 +195,7 @@
                                                     </button>
                                                 </mat-cell>
                                             </ng-container>
-                                            <ng-container matColumnDef="startDate">
+                                            <!-- <ng-container matColumnDef="startDate">
                                                 <mat-header-cell *matHeaderCellDef 
                                                     class="compulsory-count-header">Start Date
                                                 </mat-header-cell>
@@ -204,10 +204,10 @@
                                                         class="mobile-label">Start
                                                         Date:</span><span>{{row.sessionStartDate ? (row.sessionStartDate | date) : "--"}}</span>
                                                 </mat-cell>
-                                            </ng-container>
+                                            </ng-container> -->
                                             <ng-container matColumnDef="endDate">
                                                 <mat-header-cell *matHeaderCellDef 
-                                                    class="compulsory-count-header">End Date
+                                                    class="compulsory-count-header">Expiry Date
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let row"
                                                 [routerLink]=" edit ? ['/admin/courses/edit-course/', row.id] : null"> <span
@@ -244,6 +244,10 @@
                                                 [style.cursor]="'pointer'" matRipple>
                                             </mat-row>
                                         </table>
+                                        <div *ngIf="!courseData || courseData.length === 0" class="text-center py-3 no-data-text">
+                                            No data found
+                                          </div>
+
 
                                         <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems"
                                             (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr"

@@ -44,7 +44,7 @@ export class CreateApprovalWorkflowComponent implements OnInit{
        {
          title: '', 
          items: [this.storedItems],  
-         active: 'Create Approval flow',  
+         active: 'Create Approval Workflow',  
        },
      ];
    }
@@ -58,8 +58,8 @@ export class CreateApprovalWorkflowComponent implements OnInit{
       this.breadcrumbs = [
         {
           title:'Edit Categories',
-          items: ['Approval flow'],
-          active: 'Edit Approval flow',
+          items: [this.storedItems],
+          active: 'Edit Approval Workflow',
         },
       ];
     }

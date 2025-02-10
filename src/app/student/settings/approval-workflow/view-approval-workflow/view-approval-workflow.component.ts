@@ -43,7 +43,7 @@ export class ViewApprovalWorkflowComponent {
        {
          title: '', 
          items: [this.storedItems],  
-         active: 'View Approval Flow',  
+         active: 'View Approval Workflow',  
        },
      ];
    }
