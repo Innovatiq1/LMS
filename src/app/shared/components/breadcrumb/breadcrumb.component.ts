@@ -29,12 +29,19 @@ export class BreadcrumbComponent {
     this.url = this.homeURL();
   }
 
+  updateBreadcrumbs() {
+    this.items = JSON.parse(localStorage.getItem('breadcrumbs') || '[]');
+    this.active_item = JSON.parse(localStorage.getItem('activeBreadcrumb') || 'Create Trainee');
+  
+    this.breadcrumbService.setItems(this.items);
+    this.breadcrumbService.setActiveItem(this.active_item);
+  }  
+
+
   ngOnInit(): void {
-    this.router.events.subscribe(event => {
-      // Whenever the route changes, check and update breadcrumbs if necessary
-      if (!localStorage.getItem('breadcrumbs')) {
-        this.setDefaultBreadcrumbs();
-      }
+    this.updateBreadcrumbs(); // Ensure breadcrumbs are updated immediately
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
+      this.updateBreadcrumbs(); // Update on every route change
     });
   }
 

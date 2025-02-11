@@ -89,13 +89,31 @@ export class AddStudentComponent {
     });
   }
 
-  ngOnInit(){
-    this.commonRoles = AppConstants
+  // ngOnInit(){
+  //   this.commonRoles = AppConstants
+  //   this.getDepartment();
+  //   this.getForms();
+
+  // }
+
+
+  ngOnInit() {
+    this.breadscrums = [
+      {
+        title: 'Trainees',
+        items: [],
+        active: 'Create Trainee'
+      }
+    ];
+  
+    localStorage.setItem('breadcrumbs', JSON.stringify(['Trainees']));
+    localStorage.setItem('activeBreadcrumb', JSON.stringify('Create Trainee'));
+  
+    this.commonRoles = AppConstants;
     this.getDepartment();
     this.getForms();
-
   }
-
+  
   getForms(): void {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
         this.formService
