@@ -42,8 +42,10 @@ export class InActiveCoursesComponent {
     // 'Main Category',
     // 'days',
     // 'hr',
-    'vendors',
-    'startDate',
+    // 'vendors',
+    // 'startDate',
+    'Approval',
+    'CourseType',
     'endDate',
     'Fees',
   ];

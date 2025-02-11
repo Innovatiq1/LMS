@@ -37,6 +37,7 @@ export class RetakeRequestsComponent implements OnInit {
   searchTerm: string = '';
   coursePaginationModel: CoursePaginationModel;
   dataSource = new MatTableDataSource<any>([]); // Use MatTableDataSource for pagination
+  tableData:any;
   totalItems: any;
   pageSizeArr = [10, 20, 30, 50, 100];
   isLoading = true;
@@ -74,6 +75,10 @@ export class RetakeRequestsComponent implements OnInit {
 
     this.getAllRetakeRequests();
   }
+  get isDataEmpty(): boolean {
+    return !this.tableData || this.tableData.length== 0;
+  }
+  
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
@@ -121,10 +126,12 @@ export class RetakeRequestsComponent implements OnInit {
     const payload = { ...this.coursePaginationModel,title:filterProgram };
     this.settingService.getRetakeRequest(payload)
       .subscribe(response => {
+        //  console.log("retake response===",response)
         this.isLoading = false;
         this.totalItems = response.data.totalDocs
 
         this.dataSource = response.data.docs;
+        this.tableData=response.data.docs;
         this.coursePaginationModel.docs = response.data.docs;
         this.coursePaginationModel.page = response.data.page;
         this.coursePaginationModel.limit = response.data.limit;

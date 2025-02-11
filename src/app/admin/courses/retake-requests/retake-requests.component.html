@@ -85,13 +85,13 @@
                     </mat-cell>
                   </ng-container>
                 
-                  <ng-container matColumnDef="Registered Date">
+                  <ng-container matColumnDef="registeredDate">
                     <mat-header-cell *matHeaderCellDef >
                       Registered Date
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
                       <span class="mobile-label">Registered Date:</span>
-                      <span>{{ row.createdAt |date }}</span> <!-- Format and display the registration date -->
+                      <span>{{ row.createdAt |date }}</span> 
                     </mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="examType">
@@ -133,6 +133,17 @@
                   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                   <mat-row *matRowDef="let row; columns: displayedColumns" [style.cursor]="'pointer'" matRipple></mat-row>
                 </table> 
+
+                <!-- <div *ngIf=" dataSource?.data?.length===0" class="text-center py-3 no-data-text">
+                  No data found {{dataSource?.data?.length}}
+                </div> -->
+                <div *ngIf="isDataEmpty" class="text-center py-3 no-data-text">
+                  No data found
+                </div>
+                                              
+                
+
+
               <mat-paginator #paginator [length]="totalItems" (page)="pageSizeChange($event)"
               [pageSizeOptions]="pageSizeArr" aria-label="select pagination option">
           </mat-paginator>

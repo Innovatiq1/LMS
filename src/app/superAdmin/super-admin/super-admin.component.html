@@ -178,6 +178,9 @@
                     >
                     </mat-row>
                   </table>
+                  <div *ngIf="!isLoading && (!filteredDataForTable || filteredDataForTable.length === 0)" class="text-center py-3 no-data-text">
+                    No data found
+                  </div>
                   <!-- Loading spinner -->
                   <div class="tbl-spinner">
                     <mat-progress-spinner
@@ -198,7 +201,7 @@
                   >
                   </mat-paginator> -->
                 </div>
-                <div class="text-center">
+                <div class="text-center" *ngIf="filteredDataForTable.length>0">
                   <button mat-stroked-button [routerLink]="['/super-admin/admin-list']" color="primary">View
                     More</button>
                 </div>
