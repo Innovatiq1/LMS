@@ -54,15 +54,16 @@ export class CreateAllUsersComponent {
   avatar: any;
   dept: any;
   forms!: any[];
+  breadcrumbs:any[] = [];
+  storedItems: string | null;
 
-
-  breadscrums = [
-    {
-      title: 'Create All Users',
-      items: ['Users'],
-      active: 'Create User',
-    },
-  ];
+  // breadscrums = [
+  //   {
+  //     title: 'Create All Users',
+  //     items: ['Users'],
+  //     active: 'Create User' ,
+  //   },
+  // ];
   data: any;
 
   update() {
@@ -402,16 +403,29 @@ private createInstructor(userData: Users): void {
     private instructorService: InstructorService,
     
   ) {
+
+    this.storedItems = localStorage.getItem('activeBreadcrumb');
+    if (this.storedItems) {
+     this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+     this.breadcrumbs = [
+       {
+         title: '', 
+         items: [this.storedItems],  
+         active: 'Create User',  
+       },
+     ];
+   }
     let urlPath = this.router.url.split('/');
     this.editUrl = urlPath.includes('edit-all-users');
     this.currentId = urlPath[urlPath.length - 1];
     this.getUserTypeList();
 
+
     if (this.editUrl === true) {
-      this.breadscrums = [
+      this.breadcrumbs = [
         {
           title: 'Edit All Users',
-          items: ['Users'],
+          items: [this.storedItems],
           active: 'Edit User',
         },
       ];

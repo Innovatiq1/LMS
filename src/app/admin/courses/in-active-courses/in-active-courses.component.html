@@ -193,8 +193,32 @@
                         ><span>$</span> {{ row.fee || 0 }}.00</mat-cell
                       >
                     </ng-container>
+                    <ng-container matColumnDef="Approval">
+                      <mat-header-cell *matHeaderCellDef 
+                        >Approval Required
+                      </mat-header-cell>
+                      <mat-cell
+                        *matCellDef="let row"
+                        (click)="view ? viewCourse(row.id) : null"
+                      >
+                        <span class="mobile-label">Approval:</span>
+                        {{ row?.approval | titlecase}}
+                      </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="CourseType">
+                      <mat-header-cell *matHeaderCellDef 
+                        >Course Type
+                      </mat-header-cell>
+                      <mat-cell
+                        *matCellDef="let row"
+                        (click)="view ? viewCourse(row.id) : null"
+                      >
+                        <span class="mobile-label">CourseType:</span>
+                        {{ row?.selectedOptionValue?.replace('And', ' & ')}}
+                      </mat-cell>
+                    </ng-container>
                     <!--Start Date -->
-                    <ng-container matColumnDef="startDate">
+                    <!-- <ng-container matColumnDef="startDate">
                       <mat-header-cell *matHeaderCellDef
                         >Start Date
                       </mat-header-cell>
@@ -209,11 +233,11 @@
                             : "--"
                         }}</mat-cell
                       >
-                    </ng-container>
+                    </ng-container> -->
                     <!--End Date -->
                     <ng-container matColumnDef="endDate">
                       <mat-header-cell *matHeaderCellDef
-                        >End Date
+                        >Expiry Date
                       </mat-header-cell>
                       <mat-cell
                         *matCellDef="let row"
@@ -257,6 +281,9 @@
                     >
                     </mat-row>
                   </table>
+                  <div *ngIf="!isLoading && (!dataSource || dataSource.length === 0)" class="text-center py-3 no-data-text">
+                    No data found
+                  </div>
                   <!-- Loading spinner -->
                   <div class="tbl-spinner">
                     <mat-progress-spinner

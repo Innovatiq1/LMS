@@ -1,13 +1,13 @@
 <section class="content" *ngIf="userType == commonRoles.STUDENT_ROLE">
   <div class="content-block">
-    <div class="block-header" *ngFor="let breadscrum of breadscrums">
+    <div class="block-header"  *ngFor="let breadscrum of breadcrumbs">
       <!-- breadcrumb -->
-      <app-breadcrumb
-        [title]="breadscrum.title"
-        [items]="breadscrum.items"
-        [active_item]="breadscrum.active"
-      >
-      </app-breadcrumb>
+      <app-static-breadcrumb
+      [title]="breadscrum.title"
+      [items]="breadscrum.items"
+      [active_item]="breadscrum.active"
+    >
+    </app-static-breadcrumb>
     </div>
     <div class="row clearfix">
       <div class="col-lg-4 col-md-12">
@@ -341,13 +341,22 @@
 
 <section class="content" *ngIf="userType == commonRoles.INSTRUCTOR_ROLE">
   <div class="content-block">
-    <div class="block-header" *ngFor="let breadscrum of breadscrums">
+    <!-- <div class="block-header" *ngFor="let breadscrum of breadscrums">
       <app-breadcrumb
         [title]="breadscrum.title"
         [items]="breadscrum.items"
         [active_item]="breadscrum.active"
       >
       </app-breadcrumb>
+    </div> -->
+    <div class="block-header"  *ngFor="let breadscrum of breadcrumbs">
+      <!-- breadcrumb -->
+      <app-static-breadcrumb
+      [title]="breadscrum.title"
+      [items]="breadscrum.items"
+      [active_item]="breadscrum.active"
+    >
+    </app-static-breadcrumb>
     </div>
     <div class="row clearfix">
       <div class="col-lg-4 col-md-12">
@@ -772,13 +781,22 @@
 
 <section class="content" *ngIf="!isStudent && !isInstructor">
   <div class="content-block">
-    <div class="block-header" *ngFor="let breadscrum of breadscrums">
+    <!-- <div class="block-header" *ngFor="let breadscrum of breadscrums">
       <app-breadcrumb
         [title]="breadscrum.title"
         [items]="breadscrum.items"
         [active_item]="breadscrum.active"
       >
       </app-breadcrumb>
+    </div> -->
+    <div class="block-header"  *ngFor="let breadscrum of breadcrumbs">
+      <!-- breadcrumb -->
+      <app-static-breadcrumb
+      [title]="breadscrum.title"
+      [items]="breadscrum.items"
+      [active_item]="breadscrum.active"
+    >
+    </app-static-breadcrumb>
     </div>
     <div class="row clearfix">
       <div class="col-lg-4 col-md-12">

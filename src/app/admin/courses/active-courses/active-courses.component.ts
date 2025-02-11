@@ -38,8 +38,10 @@ export class ActiveCoursesComponent {
     'Fee Type',
     // 'Days',
     // 'Training Hours',
-    'Vendor',
-    'startDate',
+    // 'Vendor',
+    // 'startDate',
+    "Approval",
+    "CourseType",
     'endDate',
     'Fees',
   ];

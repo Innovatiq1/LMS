@@ -169,6 +169,10 @@
                 >
                 </mat-row>
               </table>
+
+              <div *ngIf="!dataSource?.data?.length" class="text-center py-3 no-data-text">
+                No data found 
+              </div>
               <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems"
                           (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr"
                           aria-label="select pagination option">
