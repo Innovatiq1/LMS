@@ -15,13 +15,13 @@ import { AuthenService } from '@core/service/authen.service';
   styleUrls: ['./about-student.component.scss'],
 })
 export class AboutStudentComponent {
-  breadscrums = [
-    {
-      title: 'Profile',
-      items: [`${AppConstants.STUDENT_ROLE}`],
-      active: 'Profile',
-    },
-  ];
+  // breadscrums = [
+  //   {
+  //     title: 'Profile',
+  //     items: [`${AppConstants.STUDENT_ROLE}`],
+  //     active: 'Profile',
+  //   },
+  // ];
   aboutDataId:any;
   aboutData:any;
   studentRegisteredClasses: any;
@@ -45,6 +45,8 @@ export class AboutStudentComponent {
   commonRoles: any;
   isEdit = false;
   isDelete = false;
+  breadcrumbs:any[] = [];
+  storedItems: string | null;
 
   constructor(private activeRoute:ActivatedRoute, 
     private StudentService:StudentsService,
@@ -53,6 +55,17 @@ export class AboutStudentComponent {
     private router : Router,
     private authenService: AuthenService
     ) {
+      this.storedItems = localStorage.getItem('activeBreadcrumb');
+      if (this.storedItems) {
+       this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+       this.breadcrumbs = [
+         {
+           title: '', 
+           items: [this.storedItems],  
+           active: 'View Trainee',  
+         },
+       ];
+     }
 
       this.coursePaginationModel = {};
       this.studentRegisteredModel = {};

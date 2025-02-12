@@ -34,6 +34,8 @@ export class AboutTeacherComponent {
   commonRoles: any;
   isEdit = false;
   isDelete = false;
+  breadcrumbs:any[] = [];
+  storedItems: string | null;
 
   constructor(private activeRoute:ActivatedRoute, 
     public lecturesService: LecturesService,
@@ -41,6 +43,18 @@ export class AboutTeacherComponent {
    public teachersService: TeachersService,
    private router : Router,
    private authenService: AuthenService) {
+
+    this.storedItems = localStorage.getItem('activeBreadcrumb');
+    if (this.storedItems) {
+      this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+      this.breadcrumbs = [
+        {
+          title: '', 
+          items: [this.storedItems],  
+          active: 'View Trainer',  
+        },
+      ];
+    }
     this.coursePaginationModel = {};
     this.activeRoute.queryParams.subscribe(param =>{
  
@@ -112,8 +126,8 @@ export class AboutTeacherComponent {
   
 }
 deleteItem(row: any) {
-  console.log("rowdata",row)
-  console.log("rowdata",row.trainerId)
+  // console.log("rowdata",row)
+  // console.log("rowdata",row.trainerId)
   // this.id = row.id;
   const payLoad:any ={
     userId:row.id,
