@@ -93,18 +93,36 @@ export class SigninComponent
     this.lmsUrl = urlPath.includes('LMS');
     this.linkedinUrl = urlPath.includes('linkedin');
 
+    // this.authForm = this.formBuilder.group({
+    //   email: [
+    //     '',
+    //     [
+    //       Validators.required,
+    //       Validators.pattern(
+    //         /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
+    //       ),
+    //     ],
+    //   ],
+    //   password: ['', Validators.required],
+    // });
+
     this.authForm = this.formBuilder.group({
       email: [
         '',
         [
           Validators.required,
-          Validators.pattern(
-            /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
-          ),
+          Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/),
         ],
       ],
-      password: ['', Validators.required],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(/^\S.*$/) // Leading space not allowed
+        ],
+      ],
     });
+    
 
     const pathSegments = this.router.url.split('/');
     this.extractedName = pathSegments[1];

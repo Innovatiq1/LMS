@@ -531,7 +531,9 @@
         </div>
   </ng-container>
   <ng-container *ngFor="let component of dashboard.components">
-        <div *ngIf="component.id === 'announcement-board'" class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <!-- <div *ngIf="component.id === 'announcement-board'" class="col-xs-12 col-sm-12 col-md-4 col-lg-4"> -->
+          <div *ngIf="component.id === 'announcement-board'" class="col-xs-12 col-sm-12 col-md-6 col-lg-6 announcement-board">
+
           <div class="card">
             <div class="header">
               <h2>Announcement Board</h2>
@@ -553,7 +555,9 @@
         </div>
         </ng-container>
         <ng-container *ngFor="let component of dashboard.components">
-        <div *ngIf="component.id === 'reschedule-list'"   class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+        <!-- <div *ngIf="component.id === 'reschedule-list'"   class="col-xs-12 col-sm-12 col-md-8 col-lg-8"> -->
+          <div *ngIf="component.id === 'reschedule-list'" class="col-xs-12 col-sm-12 col-md-6 col-lg-6 reschedule-list">
+
           <div class="card">
             <div class="header">
               <h2>Reschedule list</h2>
