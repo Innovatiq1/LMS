@@ -1,10 +1,13 @@
-<section class="content">
+<section class="content" [ngClass]="{'full-width': dialogStatus, 'content': true}">
+ 
     <div class="content-block">
+      <ng-container *ngIf="!dialogStatus">
       <div class="block-header" *ngFor="let breadscrum of breadscrums">
         <!-- breadcrumb -->
         <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
         </app-breadcrumb>
       </div>
+    </ng-container>
       <div class="row clearfix">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <div class="card" style="height: fit-content;">
@@ -40,12 +43,15 @@
                 </div>
                 </form>
                 <hr/>
-                <div class="float-end">
-                    <div class="d-grid gap-3 d-md-flex">
-                    <button  mat-raised-button (click)="createUserType()" *ngIf="isCreate" id="submit"> Create </button>
-                    </div>
+                <div class="float-end d-flex gap-3 align-items-center">
+        
+                    <button *ngIf="dialogStatus" mat-raised-button color="warn" (click)="closeDialog()">Cancel</button>
+                
+                    <button  mat-raised-button (click)="createUserType()" *ngIf="isCreate || dialogStatus" id="submit"> Create </button>
+      
                   </div>
-                  <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
+                  
+                  <div *ngIf="!dialogStatus" class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
                       <div class="header mt-3">
                         <h2>Roles Listing</h2>
                       </div>
@@ -73,6 +79,10 @@
                             </tbody>
                           </table>
                         </div>
+                        <div *ngIf="!userTypeNames || userTypeNames.length===0" class="text-center py-3 no-data-text">
+                          No data found
+                        </div>
+                        
                       </div>
                   </div>
 

@@ -40,6 +40,8 @@ export class AddStudentComponent {
   thumbnail: any;
   forms!: any[];
   commonRoles: any;
+  breadcrumbs:any[] = [];
+  storedItems: string | null;
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -52,9 +54,34 @@ export class AddStudentComponent {
     private userService: UserService
 
   ) {
+    this.storedItems = localStorage.getItem('activeBreadcrumb');
+    if (this.storedItems) {
+      this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+      this.breadcrumbs = [
+        {
+          title: '', 
+          items: [this.storedItems],  
+          active: 'Create Trainee',  
+        },
+      ];
+    }
+    
+      
     this.activatedRoute.queryParams.subscribe((params: any) => {
       this.StudentId = params.id;
       this.patchValues(this.StudentId);
+      if(this.edit){
+        if (this.storedItems) {
+          this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+          this.breadcrumbs = [
+            {
+              title: '', 
+              items: [this.storedItems],  
+              active: 'Edit Trainee',  
+            },
+          ];
+        }
+      }
     });
     this.stdForm = this.fb.group({
       name: ['', [Validators.required, Validators.pattern(/[a-zA-Z0-9]+/),...this.utils.validators.noLeadingSpace]],
@@ -258,7 +285,7 @@ export class AddStudentComponent {
   private createInstructor(userData: Users): void {
     this.userService.saveUsers(userData).subscribe(
       (res:any) => {
-        console.log('res',res)
+        // console.log('res',res)
         // if(res.status === 'success' && !res.data.status ){
 
         Swal.fire({

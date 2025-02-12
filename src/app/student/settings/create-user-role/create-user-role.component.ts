@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,Optional,Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MenuItemModel } from '@core/models/user.model';
@@ -6,7 +6,7 @@ import { AdminService } from '@core/service/admin.service';
 import { AuthenService } from '@core/service/authen.service';
 import { UtilsService } from '@core/service/utils.service';
 import Swal from 'sweetalert2';
-
+import { MatDialog,MAT_DIALOG_DATA,MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-create-user-role',
   templateUrl: './create-user-role.component.html',
@@ -19,9 +19,17 @@ export class CreateUserRoleComponent {
   userTypeNames: any;
   isEdit: boolean = false;
   isCreate: boolean = false;
-
-  constructor(private fb: FormBuilder, private adminService: AdminService,private router:Router, public utils: UtilsService,
-    private authenService: AuthenService){
+  dialogStatus:boolean=false;
+  constructor(
+    @Optional() @Inject(MAT_DIALOG_DATA) public data11: any,
+    private fb: FormBuilder, private adminService: AdminService,private router:Router, public utils: UtilsService,
+    private authenService: AuthenService,
+    @Optional() private dialogRef: MatDialogRef<CreateUserRoleComponent>
+  ){
+    if (data11) {
+      this.dialogStatus=true;
+      //  console.log("Received variable:", data11.variable);
+    }
 
     this.userTypeFormGroup = this.fb.group({
       typeName: ['', [Validators.required, ...this.utils.validators.noLeadingSpace,...this.utils.validators.name]],
@@ -93,6 +101,9 @@ export class CreateUserRoleComponent {
             );
             this.userTypeFormGroup.reset();
             this.getAllUserTypes()
+            if (this.dialogRef) {
+              this.dialogRef.close();  
+            }
             resolve(response)
           },
           (error: { message: any; error: any; }) => {
@@ -126,6 +137,12 @@ export class CreateUserRoleComponent {
       }
       return null;
     })
+  }
+
+  closeDialog(): void {
+    if (this.dialogRef) {
+      this.dialogRef.close();
+    }
   }
 
 }

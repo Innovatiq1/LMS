@@ -42,6 +42,9 @@ export class EditTeacherComponent {
   thumbnail: any;
   commonRoles: any;
   trainerId:any;
+  breadcrumbs:any[] = [];
+  storedItems: string | null;
+
   constructor(
     private fb: UntypedFormBuilder,
     private courseService: CourseService,
@@ -52,6 +55,18 @@ export class EditTeacherComponent {
     private instructor: InstructorService,
     private router: Router
   ) {
+
+    this.storedItems = localStorage.getItem('activeBreadcrumb');
+    if (this.storedItems) {
+      this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+      this.breadcrumbs = [
+        {
+          title: '', 
+          items: [this.storedItems],  
+          active: 'Edit Trainer',  
+        },
+      ];
+    } 
     this.subscribeParams = this.activatedRoute.params.subscribe(
       (params: any) => {
         this.userId = params.id;

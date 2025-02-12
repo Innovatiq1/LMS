@@ -42,6 +42,8 @@ export class AddTeacherComponent {
   fileName: any;
   forms!: any[];
   commonRoles: any;
+  breadcrumbs:any[] = [];
+  storedItems: string | null;
 
   constructor(private fb: UntypedFormBuilder,
     private instructor: InstructorService,
@@ -53,6 +55,19 @@ export class AddTeacherComponent {
     private userService: UserService
 
    ) {
+
+    this.storedItems = localStorage.getItem('activeBreadcrumb');
+    if (this.storedItems) {
+      this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+      this.breadcrumbs = [
+        {
+          title: '', 
+          items: [this.storedItems],  
+          active: 'Create Trainer',  
+        },
+      ];
+    }
+
     this.proForm = this.fb.group({
       name: ['', [Validators.required,Validators.pattern(/[a-zA-Z0-9]+/),...this.utils.validators.noLeadingSpace]],
       last_name: [''],

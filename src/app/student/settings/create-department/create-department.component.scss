@@ -20,3 +20,15 @@
     display: inline-block;
     margin-right: 5px; // Space between dot and text
   }
+
+  .dialog-header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 8px;
+  }
+
+  .full-width {
+    margin: 0;
+    padding: 0;
+    width: 96%;
+  }
