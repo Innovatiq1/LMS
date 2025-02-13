@@ -199,7 +199,7 @@
                                   </mat-error>
                               </mat-form-field>
                           </div>
-                                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                                <!-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                                   <label>Date of Birth  <span class="mandatory">&nbsp;*</span></label>
                                   <mat-form-field
                                     class="example-full-width mb-3"
@@ -220,7 +220,22 @@
                                       {{ utils.getErrorMessage1(userForm.get('dob'), 'dob') }}
                                     </mat-error> 
                                   </mat-form-field>
+                                </div> -->
+                                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                                  <label>Date of Birth <span class="mandatory">&nbsp;*</span></label>
+                                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                    <input matInput [matDatepicker]="picker" formControlName="dob" />
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                    <mat-error *ngIf="userForm.get('dob')?.hasError('required')">
+                                      Date of Birth is required
+                                    </mat-error>
+                                    <mat-error *ngIf="userForm.get('dob')?.hasError('minimumAge')">
+                                      Minimum age should be 20 years
+                                    </mat-error>
+                                  </mat-form-field>
                                 </div>
+                                
                                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
                                   <label>Registration Date <span class="mandatory">&nbsp;*</span></label>
                                   <mat-form-field

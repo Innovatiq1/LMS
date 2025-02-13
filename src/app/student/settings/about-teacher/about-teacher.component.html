@@ -1,14 +1,21 @@
 <section class="content">
   <div class="content-block">
-    <div class="block-header" *ngFor="let breadscrum of breadscrums">
-      <!-- breadcrumb -->
+    <!-- <div class="block-header" *ngFor="let breadscrum of breadscrums">
       <app-breadcrumb
         [title]="breadscrum.title"
         [items]="breadscrum.items"
         [active_item]="breadscrum.active"
       >
       </app-breadcrumb>
-    </div>
+    </div> -->
+    <div class="block-header"  *ngFor="let breadscrum of breadcrumbs">
+      <app-static-breadcrumb
+      [title]="breadscrum.title"
+      [items]="breadscrum.items"
+      [active_item]="breadscrum.active"
+    >
+    </app-static-breadcrumb>
+  </div>
     <div class="row clearfix">
       <div class="col-lg-4 col-md-12">
         <div class="card">
@@ -71,9 +78,9 @@
                     </div>
                   </li>
                   <li class="list-group-item">
-                    <b>Education</b>
+                    <b>Qualification</b>
                     <div class="profile-desc-item float-end">
-                      {{ aboutData?.education }}
+                      {{ aboutData?.qualifications[0]?.description}}
                     </div>
                   </li>
                   <li class="list-group-item">

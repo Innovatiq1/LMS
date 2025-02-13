@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,Optional,Inject } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CoursePaginationModel } from '@core/models/course.model';
@@ -7,7 +7,7 @@ import { DeptService } from '@core/service/dept.service';
 import { UserService } from '@core/service/user.service';
 import { UtilsService } from '@core/service/utils.service';
 import Swal from 'sweetalert2';
-
+import { MatDialog,MAT_DIALOG_DATA,MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-create-department',
   templateUrl: './create-department.component.html',
@@ -30,11 +30,22 @@ export class CreateDepartmentComponent {
   isEdit = false;
   isDelete = false;
   isView=false;
-  
-  constructor(private fb: UntypedFormBuilder,private deptService: DeptService,private router:Router,private userService: UserService,
+  dialogStatus:boolean=false;
+  constructor(
+    @Optional() @Inject(MAT_DIALOG_DATA) public data11: any,
+    private fb: UntypedFormBuilder,
+    private deptService: DeptService,
+    private router:Router,
+    private userService: UserService,
    public utils: UtilsService,
-   private authenService: AuthenService) {
-    
+   private authenService: AuthenService,
+   @Optional() private dialogRef: MatDialogRef<CreateDepartmentComponent>
+  
+  ) {
+    if (data11) {
+      this.dialogStatus=true;
+      //  console.log("Received variable:", data11.variable);
+    }
 
     this.departmentForm = this.fb.group({
       department: ['', [Validators.required, ...this.utils.validators.noLeadingSpace,...this.utils.validators.dname]],
@@ -91,7 +102,14 @@ export class CreateDepartmentComponent {
               icon: 'success',
             });
             this.getAllDepartments();
-            this.router.navigate(['/student/settings/create-department'])
+            if (this.dialogRef) {
+              this.dialogRef.close();  
+            }
+            else{
+              this.router.navigate(['/student/settings/create-department'])
+
+            }
+            
           },(error) => {
             Swal.fire({
               title: 'Error',
@@ -122,5 +140,10 @@ export class CreateDepartmentComponent {
         id: id
       }
     });
+  }
+  closeDialog(): void {
+    if (this.dialogRef) {
+      this.dialogRef.close();
+    }
   }
 }
