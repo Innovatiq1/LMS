@@ -1446,7 +1446,7 @@ const currentTime = new Date().toLocaleTimeString('en-US', options);
             "name": userData.user.name + userData.user.last_name,
             "email": userData.user.email,
             "idType": {
-              "code": userData.user.idType.code
+              "code": userData?.user?.idType?.code
             },
             "contactNumber": {
               "mobile": userData.user.mobile,
@@ -1481,7 +1481,6 @@ const currentTime = new Date().toLocaleTimeString('en-US', options);
           this.discountType = response?.data?.docs[0]?.discount.discountType;
           this.discountValue = response?.data?.docs[0]?.discount.value;
         }else{
-          console.log("discountValue: " , response.data?.docs[0])
           this.discountType = '';
           this.discountValue = response?.data?.docs[0]?.discount_type;
         }
