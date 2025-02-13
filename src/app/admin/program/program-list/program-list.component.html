@@ -209,6 +209,11 @@
                         <mat-row *matRowDef="let row; columns: displayedColumns;" [style.cursor]="'pointer'" matRipple>
                         </mat-row>
                       </table>
+                      <div *ngIf="!programData || programData.length === 0" class="text-center py-3 no-data-text">
+                        No data found
+                      </div>
+
+
                       <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems"
                         (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr"
                         aria-label="select pagination option">
