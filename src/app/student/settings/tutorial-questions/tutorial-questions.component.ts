@@ -65,7 +65,7 @@ dialogStatus:boolean=false;
   ) {
     if (data11) {
       this.dialogStatus=true;
-      console.log("Received variable:", data11.variable);
+      // console.log("Received variable:", data11.variable);
     }
     
     let urlPath = this.router.url.split('/');
@@ -487,6 +487,9 @@ saveDraft(data?: string) {
           text: 'Question created successfully',
           icon: 'success',
         });
+        if (this.dialogRef) {
+          this.dialogRef.close();  
+        }
         if(!this.dialogStatus){
           window.history.back();
         }

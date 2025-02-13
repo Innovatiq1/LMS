@@ -81,7 +81,7 @@ constructor(private faceMatchService:FaceMatchService){}
   captureAutoFaceMatch(video: HTMLVideoElement, canvas: HTMLCanvasElement){
     this.captureInterval = setInterval(() => {
       this.detectFace(video, canvas)
-    }, 30000);
+    }, 5000);
   }
 
   // Detect face and match with given image URL

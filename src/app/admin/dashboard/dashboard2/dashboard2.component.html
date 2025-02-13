@@ -21,6 +21,9 @@
                 </tr>
               </thead>
               <tbody>
+                <tr *ngIf="instructors?.length == 0">
+                  <td colspan="8" class="text-center py-3 no-data-text">No Data Found</td>
+                </tr>
                 <tr *ngFor="let instructor of instructors" style="cursor: pointer;"
                   (click)="aboutInstructor(instructor.id)">
                   <td class="table-img">
@@ -106,8 +109,10 @@
                 </tr>
               </thead>
               <tbody>
+                <tr *ngIf="upcomingCourses?.length == 0">
+                  <td colspan="8" class="text-center py-3 no-data-text">No Data Found</td>
+                </tr>
                 <tr *ngFor="let data of upcomingCourses" style="cursor: pointer;">
-                  
                   <td>{{data.courseName| titlecase |truncate : 25}}</td>
                   <td>{{data.traineeName | titlecase}}</td>
                   <td>

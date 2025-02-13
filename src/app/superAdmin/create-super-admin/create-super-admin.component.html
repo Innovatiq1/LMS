@@ -1,18 +1,18 @@
-
-
 <section class="content">
   <div class="content-block">
-    <div class="block-header" *ngFor="let breadscrum of breadscrums">
+    <div class="block-header"  *ngFor="let breadscrum of breadcrumbs">
       <!-- breadcrumb -->
-      <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
-      </app-breadcrumb>
+      <app-static-breadcrumb
+      [title]="breadscrum.title"
+      [items]="breadscrum.items"
+      [active_item]="breadscrum.active"
+    >
+    </app-static-breadcrumb>
     </div>
+    
     <div class="row clearfix">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <div class="card">
-          <div class="header">
-            <h2>Create Company</h2>
-          </div>
           <div class="body">
             <form [formGroup]="userForm" >
               <div class="body m-4">
@@ -43,29 +43,30 @@
                           </mat-error>
                         </mat-form-field>
                       </div>
+
                       <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" >
-                        <label>UEN</label>
+                        <label>UEN <span class="mandatory">&nbsp;*</span></label>
                         <mat-form-field class="example-full-width mb-3" appearance="outline">
                             <input matInput type="text" formControlName="uen"
                                 class="form-control" >
-                            <!-- <mat-error *ngIf="userForm.get('uen')?.hasError('required')">
+                            <mat-error *ngIf="userForm.get('uen')?.hasError('required')">
                                 Enter UEN
-                            </mat-error> -->
+                            </mat-error>
                            
                         </mat-form-field>
                       </div>
                       <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" >
-                        <label>Uen Code</label>
+                        <label>UEN Code <span class="mandatory">&nbsp;*</span></label>
                         <mat-form-field class="example-full-width mb-3" appearance="outline">
                             <input matInput type="text" formControlName="code"
                                 class="form-control" >
-                            <!-- <mat-error *ngIf="userForm.get('uen')?.hasError('required')">
-                                Enter UEN
-                            </mat-error> -->
+                            <mat-error *ngIf="userForm.get('code')?.hasError('required')">
+                                Enter UEN Code
+                            </mat-error>
                            
                         </mat-form-field>
                       </div>
-                      <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" >
+                      <!-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" >
                         <label>Company Website</label>
                         <mat-form-field
                           class="example-full-width mb-3"
@@ -73,7 +74,8 @@
                         >
                           <input matInput formControlName="website" />
                         </mat-form-field>
-                      </div>
+                      </div> -->
+
                       <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                         <label>Email<span class="mandatory">&nbsp;*</span></label>
                         <mat-form-field class="example-full-width mb-3" appearance="outline">
@@ -87,6 +89,7 @@
                                </mat-error>
                         </mat-form-field>
                     </div>
+                    
                   <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                     <label>Mobile<span class="mandatory">&nbsp;*</span></label>
                     <mat-form-field
@@ -163,19 +166,18 @@
                          
                       </mat-form-field>
                     </div>
-
                     <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" >
                       <label>Learner<span class="mandatory">&nbsp;*</span></label>
                       <mat-form-field class="example-full-width mb-3" appearance="outline">
                           <input matInput type="text" formControlName="learner"
                               class="form-control" required>
                           <mat-error *ngIf="userForm.get('learner')?.hasError('required')">
-                              Enter Learner 
+                              Enter Learner
                           </mat-error>
                          
                       </mat-form-field>
                     </div>
-
+                    
                     <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" >
                       <label>Trainer<span class="mandatory">&nbsp;*</span></label>
                       <mat-form-field class="example-full-width mb-3" appearance="outline">
@@ -187,8 +189,6 @@
                          
                       </mat-form-field>
                     </div>
-
-                    
                     <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" >
                       <label>Courses<span class="mandatory">&nbsp;*</span></label>
                       <mat-form-field class="example-full-width mb-3" appearance="outline">
@@ -237,13 +237,25 @@
                         </mat-error>
                       </mat-form-field>
                     </div>
+
+                       
+                      <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" >
+                        <label>Company Website</label>
+                        <mat-form-field
+                          class="example-full-width mb-3"
+                          appearance="outline"
+                        >
+                          <input matInput formControlName="website" />
+                        </mat-form-field>
+                      </div>
                     </div>
-                    <div class="row">
+                    <div class="row buttons">
+                      
                       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
                         <div class="example-button-row">
                           <button mat-raised-button color="warn" (click)="onNoClick()" tabindex="-1">Cancel</button>
                           
-                          <button  mat-raised-button color="primary" (click)="update()"  [mat-dialog-close]="1"
+                          <button id="submit" mat-raised-button color="primary" (click)="update()"  [mat-dialog-close]="1"
                            >Save</button>
                         </div>
                       </div>

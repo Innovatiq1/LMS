@@ -167,10 +167,7 @@ export class ViewClassComponent {
           const [endHours, endMinutes] = sessionEndTime.split(':').map(Number);
   
           if (!isNaN(lastSessionDate.getTime())) {
-            lastSessionDate.setHours(endHours);
-            lastSessionDate.setMinutes(endMinutes);
-            lastSessionDate.setSeconds(0);
-            lastSessionDate.setMilliseconds(0);
+            lastSessionDate.setHours(23,59,59,999);
   
             this.maxDate = lastSessionDate;
   

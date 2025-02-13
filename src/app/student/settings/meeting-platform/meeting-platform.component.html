@@ -1,0 +1,81 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header" *ngFor="let breadscrum of breadscrums">
+      <!-- breadcrumb -->
+      <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
+      </app-breadcrumb>
+    </div>
+    <div class="row clearfix">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="card" style="height: fit-content;">
+          <div class="header">
+            <h2>Create Meeting Platform</h2>
+          </div>
+          <div class="body">
+
+            <form [formGroup]="meetingPlatformForm">
+
+              <div class="row">
+                <div class="col-4">
+                  <label>Meeting Platform<span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width " appearance="outline">
+                    <input matInput type="text" formControlName="name" class="form-control" placeholder="Enter Meeting Platform">
+                    <mat-error *ngIf="meetingPlatformForm.get('name')?.invalid ||meetingPlatformForm.get('name')?.touched">
+                      {{ utils.getErrorMessage1(meetingPlatformForm.get('name'), 'meetingPlatform') }}
+                    </mat-error> 
+                  </mat-form-field>
+                </div>
+                <div class="col-4">
+                  <label>Description<span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <input matInput type="text" formControlName="code" class="form-control" placeholder="Enter Description">
+                    <mat-error *ngIf="meetingPlatformForm.get('code')?.invalid ||meetingPlatformForm.get('code')?.touched">
+                      {{ utils.getErrorMessage1(meetingPlatformForm.get('code'), 'descripton') }}
+                    </mat-error> 
+                  </mat-form-field>
+                </div>
+              </div>
+            </form>
+            <hr />
+            <div class="float-end">
+              <div class="d-grid gap-3 d-md-flex">
+                <button mat-raised-button *ngIf="isCreate" id="submit" (click)="onSubmit()"> Create </button>
+              </div>
+            </div>
+            <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
+              <div class="header mt-3">
+                <h2>Meeting Platform Listing</h2>
+              </div>
+              <div class="table-wrapper">
+                <div class="table-responsive">
+                  <table class="table table-hover ">
+                    <thead>
+                      <tr>
+                        <th>Meeting Platform</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                            <tr class="w-100" style="cursor: pointer;"
+                              *ngFor="let row of getOptions(dataSource,'meetingPlatform')">
+                              <td (click)="isEdit ?update(row, 'meetingPlatform'):null">{{row.name}}</td>
+                              <td (click)="isEdit ?update(row, 'meetingPlatform'):null">{{row.code}}</td>
+                              <!-- <td>
+                                <button class="icons" (click)="deleteDropDown(row)" alt="Delete" matTooltip="Delete"
+                                  mat-menu-item>
+                                  <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
+                                </button>
+                              </td> -->
+                            </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

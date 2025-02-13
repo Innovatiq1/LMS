@@ -374,6 +374,10 @@ getClassRecordings(id:any):Observable<any>{
   const apiUrl = `${this.prefix}admin/zoom/recording/list`;
   return this.http.get<ApiResponse>(apiUrl, {params: {classId: id}});
 }
+getDropDowns(companyId:string, dropDown:string):Observable<any> {
+  const apiUrl = `${this.prefix}admin/drop-down`;
+  return this.http.get<ApiResponse>(apiUrl, {params: {companyId:companyId,dropDown}})
+}
 
 }
 

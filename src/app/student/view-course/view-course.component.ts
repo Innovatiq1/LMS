@@ -153,7 +153,7 @@ export class ViewCourseComponent implements OnDestroy {
   verify = false;
   payment = false;
   selectedDiscount: any;
-  selectedDiscountType:any;
+  selectedDiscountType: any;
 
   questionTimer: number = 60;
   defaultTab: string = 'home';
@@ -517,7 +517,7 @@ export class ViewCourseComponent implements OnDestroy {
             };
             this.classService
               .saveApprovedClasses(classId, payload)
-              .subscribe((response) => {});
+              .subscribe((response) => { });
           }
         } else {
         }
@@ -581,7 +581,7 @@ export class ViewCourseComponent implements OnDestroy {
         coursekit: this.courseKit,
         date: date,
         verify: false,
-        discount_type:this.selectedDiscountType || 0,
+        discount_type: this.selectedDiscountType || 0,
         discount: this.selectedDiscount?.id,
       };
       this.courseService.saveRegisterClass(body).subscribe((response) => {
@@ -627,7 +627,7 @@ export class ViewCourseComponent implements OnDestroy {
         courseTitle: this.courseDetails?.title,
         courseFee:
           this.classDetails?.courseId?.fee +
-            this.classDetails?.instructorCost || 0,
+          this.classDetails?.instructorCost || 0,
         courseId: this.courseDetails.id,
         companyId: userdata.user.companyId,
         verify: true,
@@ -656,7 +656,7 @@ export class ViewCourseComponent implements OnDestroy {
         courseTitle: this.courseDetails?.title,
         courseFee:
           this.classDetails?.courseId?.fee +
-            this.classDetails?.instructorCost || 0,
+          this.classDetails?.instructorCost || 0,
         courseId: this.courseDetails.id,
         companyId: userdata.user.companyId,
         verify: true,
@@ -676,7 +676,7 @@ export class ViewCourseComponent implements OnDestroy {
   tpDiscount() {
     const courseReferenceNumber = this.classDetails?.courseReferenceNumber || '';
     const trainingPartnerUen = localStorage.getItem('uen') || '';
-  
+
     const payload = {
       courses: [
         {
@@ -686,7 +686,7 @@ export class ViewCourseComponent implements OnDestroy {
       ],
     };
     console.log('Payload:', payload);
-  
+
     this.http.post('http://localhost:3001/getGrantCalculations', payload).subscribe(
       (response: any) => {
         const course = response?.courses?.[0];
@@ -700,10 +700,10 @@ export class ViewCourseComponent implements OnDestroy {
         console.error('API Error:', error);
       }
     );
-  
+
     this.openDialog(this.discountDialog);
   }
-  
+
   submitForVerification(classId: string, action?: string) {
     // debugger
     var userdata = JSON.parse(localStorage.getItem('currentUser')!);
@@ -729,14 +729,14 @@ export class ViewCourseComponent implements OnDestroy {
         }
       } else if (this.discount_Type === 'tp gateway discount') {
         this.tpDiscount();
-      } else if (this.discount_Type === 'none'){
+      } else if (this.discount_Type === 'none') {
         this.submitDiscount();
       }
 
     } else if (this.paid && this.feeType === 'paid' && this.approval === 'no') {
       if (this.discount_Type === 'application discount' || this.discount_Type === 'tp gateway discount') {
         this.getDiscounts(userdata.user.companyId);
-      } 
+      }
     } else if (this.paid && this.feeType == 'free' && this.approval == 'yes') {
       let payload = {
         studentId: studentId,
@@ -796,7 +796,7 @@ export class ViewCourseComponent implements OnDestroy {
     }
   }
   registerClass(classId?: string) {
-    console.log("regis",this.discountValue)
+    console.log("regis", this.discountValue)
     var userdata = JSON.parse(localStorage.getItem('currentUser')!);
     var studentId = localStorage.getItem('id');
     if (this.paid) {
@@ -969,13 +969,13 @@ export class ViewCourseComponent implements OnDestroy {
 
                                             response.data.isPaymentVerfied
                                               ? this.router.navigate([
-                                                  '/student/sucess-course/',
-                                                  this.classId,
-                                                ])
+                                                '/student/sucess-course/',
+                                                this.classId,
+                                              ])
                                               : this.router.navigate([
-                                                  '/student/fail-course/',
-                                                  this.classId,
-                                                ]);
+                                                '/student/fail-course/',
+                                                this.classId,
+                                              ]);
                                           });
                                       }, 5000);
                                     });
@@ -1023,13 +1023,13 @@ export class ViewCourseComponent implements OnDestroy {
           discountType: this.discountType
             ? this.discountType
             : this.selectedDiscount
-            ? this.selectedDiscount.discountType
-            : '',
+              ? this.selectedDiscount.discountType
+              : '',
           discountValue: this.discountValue
             ? this.discountValue
             : this.selectedDiscount
-            ? this.selectedDiscount.value
-            : 0,
+              ? this.selectedDiscount.value
+              : 0,
 
           courseStartDate: this.classDetails?.courseId?.sessionStartDate,
           courseEndDate: this.classDetails?.courseId?.sessionEndDate,
@@ -1184,13 +1184,13 @@ export class ViewCourseComponent implements OnDestroy {
 
                                             response.data.isPaymentVerfied
                                               ? this.router.navigate([
-                                                  '/student/sucess-course/',
-                                                  this.classId,
-                                                ])
+                                                '/student/sucess-course/',
+                                                this.classId,
+                                              ])
                                               : this.router.navigate([
-                                                  '/student/fail-course/',
-                                                  this.classId,
-                                                ]);
+                                                '/student/fail-course/',
+                                                this.classId,
+                                              ]);
                                           });
                                       }, 5000);
                                     });
@@ -1284,7 +1284,7 @@ export class ViewCourseComponent implements OnDestroy {
               (data: any) => {
                 this.invoiceUrl = data.inputUrl;
               },
-              (err) => {}
+              (err) => { }
             );
           });
           this.isInvoice = false;
@@ -1350,7 +1350,7 @@ export class ViewCourseComponent implements OnDestroy {
       }));
 
       this.isScormCourseKit = this.courseKit.some((v) => v.kitType === 'scorm');
-      console.log(this.courseKit);
+      console.log('courseKit:',this.courseKit);
 
       this.scormModules =
         this.courseKit.find((v) => v.kitType === 'scorm')?.scormKit?.modules ||
@@ -1358,7 +1358,7 @@ export class ViewCourseComponent implements OnDestroy {
       this.scormKit = this.courseKit.find(
         (v) => v.kitType === 'scorm'
       )?.scormKit;
-
+      console.log(this.studentClassDetails)
       if (this.studentClassDetails.scormKit && this.scormModules.length > 0) {
         const lastModuleId =
           this.studentClassDetails.scormKit.currentScormModule;
@@ -1370,6 +1370,7 @@ export class ViewCourseComponent implements OnDestroy {
         const scormKit = this.scormKit;
         const url = scormKit?.path + '/' + launchUrl;
         this.currentScormModule = lastModule;
+        console.log('CurrentScormModule:',this.currentScormModule);
         this.initScorm2004(url);
         console.log('launchUrl==', this.scormModules);
       }
@@ -1402,39 +1403,39 @@ export class ViewCourseComponent implements OnDestroy {
       const survey = response?.survey;
       this.feedbackInfo = survey
         ? {
-            name: survey?.name,
-            id: survey?.id,
-            questions: survey?.questions?.map((question: any) => ({
-              questionText: question?.questionText,
-              type: question?.type,
-              isMandatory: question?.isMandatory,
-              maxRating: question?.maxRating,
-              options:
-                question?.options?.map((option: any) => option.text) || null,
-            })),
-          }
+          name: survey?.name,
+          id: survey?.id,
+          questions: survey?.questions?.map((question: any) => ({
+            questionText: question?.questionText,
+            type: question?.type,
+            isMandatory: question?.isMandatory,
+            maxRating: question?.maxRating,
+            options:
+              question?.options?.map((option: any) => option.text) || null,
+          })),
+        }
         : null;
     });
   }
-  getAttendanceDetails(getstudentClassDetails:any){
-// console.log("this.courseDetails",getstudentClassDetails)
-const userData = JSON.parse(localStorage.getItem('user_data') || '');
-const currentDate = new Date().toISOString().split('T')[0];
-const options = { hour12: true };
-const currentTime = new Date().toLocaleTimeString('en-US', options);
+  getAttendanceDetails(getstudentClassDetails: any) {
+    // console.log("this.courseDetails",getstudentClassDetails)
+    const userData = JSON.parse(localStorage.getItem('user_data') || '');
+    const currentDate = new Date().toISOString().split('T')[0];
+    const options = { hour12: true };
+    const currentTime = new Date().toLocaleTimeString('en-US', options);
 
- let companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-// console.log("userData",userData)
-    const palyload={
+    let companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    // console.log("userData",userData)
+    const palyload = {
       "uen": localStorage.getItem('uen') || '',
-      "courseRunId":getstudentClassDetails?.classId?.courseTPRunId,
-      "runId":getstudentClassDetails?.classId?.courseTPRunId,
-      "courseId":getstudentClassDetails?.courseId?.id,
-      "Title":getstudentClassDetails?.courseId?.title,
+      "courseRunId": getstudentClassDetails?.classId?.courseTPRunId,
+      "runId": getstudentClassDetails?.classId?.courseTPRunId,
+      "courseId": getstudentClassDetails?.courseId?.id,
+      "Title": getstudentClassDetails?.courseId?.title,
       "traineeId": userData.user.id,
-      "date":currentDate,
-      "time":currentTime,
-      "companyId":companyId,
+      "date": currentDate,
+      "time": currentTime,
+      "companyId": companyId,
       "course": {
         "sessionID": "",
         "attendance": {
@@ -1442,7 +1443,7 @@ const currentTime = new Date().toLocaleTimeString('en-US', options);
             "code": "1"
           },
           "trainee": {
-            "id":"S1913366D",
+            "id": "S1913366D",
             "name": userData.user.name + userData.user.last_name,
             "email": userData.user.email,
             "idType": {
@@ -1459,12 +1460,12 @@ const currentTime = new Date().toLocaleTimeString('en-US', options);
             }
           }
         },
-        "referenceNumber":getstudentClassDetails?.courseId?.courseCode
+        "referenceNumber": getstudentClassDetails?.courseId?.courseCode
       },
       "corppassId": "S5883425D"
     }
-    this.settingsService.saveAttendance(palyload).subscribe((res)=>{
-      console.log("attendance",res)
+    this.settingsService.saveAttendance(palyload).subscribe((res) => {
+      console.log("attendance", res)
     })
 
   }
@@ -1474,13 +1475,15 @@ const currentTime = new Date().toLocaleTimeString('en-US', options);
       .getStudentClass(studentId, this.classId)
       .subscribe((response) => {
 
-        
+
         this.studentClassDetails = response?.data?.docs[0];
         this.registeredClassId = response?.data?.docs[0]?.id;
         if (response.data.docs[0].discount) {
           this.discountType = response?.data?.docs[0]?.discount.discountType;
           this.discountValue = response?.data?.docs[0]?.discount.value;
+
         }else{
+
           this.discountType = '';
           this.discountValue = response?.data?.docs[0]?.discount_type;
         }
@@ -1550,7 +1553,7 @@ const currentTime = new Date().toLocaleTimeString('en-US', options);
 
         if (this.studentClassDetails.status == 'approved') {
           this.getAttendanceDetails(this.studentClassDetails);
-          console.log("this is the approved==",this.studentClassDetails)
+          console.log("this is the approved==", this.studentClassDetails)
           this.isTest =
             issueCertificate === 'test' && playBackTimes === 100 ? true : false;
           this.isDocument = issueCertificate === 'document' ? false : true;
@@ -1705,7 +1708,7 @@ const currentTime = new Date().toLocaleTimeString('en-US', options);
     };
     this.classService
       .saveApprovedClasses(this.classId, payload)
-      .subscribe((response) => {});
+      .subscribe((response) => { });
   }
 
   getExamAssessmentAnswerCount(courseId: string) {
@@ -1911,7 +1914,7 @@ const currentTime = new Date().toLocaleTimeString('en-US', options);
           },
         },
         trainee: {
-          idType:userData.user.idType.description,
+          idType: userData.user.idType.description,
           id: userData.user.idNumber,
           fullName: userData.user.name,
         },
@@ -2131,5 +2134,42 @@ const currentTime = new Date().toLocaleTimeString('en-US', options);
     );
     const today = new Date();
     return sessionEndDate < today;
+  }
+
+  isMeetingAvailableToday(): boolean {
+    const today = new Date();
+    const meetingPlatform = this.classDetails?.meetingPlatform;
+    let isZoomClassAvailable = true;
+    if (meetingPlatform == 'zoom') {
+      isZoomClassAvailable = this.classDetails?.occurrences?.some((occ: any) => {
+        const occDate = new Date(occ.startTime);
+        return this.isSameDate(occDate, today)
+      })
+    }
+    return isZoomClassAvailable;
+  }
+
+  isSameDate(date1: Date, date2: Date) {
+    return (date1.getFullYear() === date2.getFullYear() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getDate() === date2.getDate())
+  }
+
+  openMeeting(link: any) {
+    if (link) {
+      Swal.fire({
+        title: 'Open Meeting Page',
+        text: 'Do you want redirecting to Meeting Page',
+        icon: 'warning',
+        confirmButtonText: 'Okay',
+        showCancelButton: true,
+        cancelButtonColor: '#d33',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.open(link, "_blank");
+        }
+      });
+    }
+
   }
 }

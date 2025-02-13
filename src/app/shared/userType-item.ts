@@ -1707,7 +1707,43 @@ MENU_LIST =[
           "indeterminate": false,
           "class": "ml-menu",
           "isLeaf": true
-        }
+        },
+        {
+          "title": "Meeting Platform",
+          "id": "meeting-platform",
+          "children": [],
+          "isAction": false,
+          "checked": true,
+          "indeterminate": false,
+          "class": "ml-menu",
+          "isLeaf": true,
+          "actions": [
+            {
+              "title": "Create",
+              "id": "create-meeting-platform",
+              "checked": true,
+              "indeterminate": false,
+              "isLeaf": true,
+              "isAction": true
+            },
+            {
+              "title": "Edit",
+              "id": "edit-meeting-platform",
+              "checked": true,
+              "indeterminate": false,
+              "isLeaf": true,
+              "isAction": true
+            },
+            {
+              "title": "Delete",
+              "id": "delete-meeting-platform",
+              "checked": true,
+              "indeterminate": false,
+              "isLeaf": true,
+              "isAction": true
+            }
+          ],
+        },
       ],
       "actions": [],
       "isAction": false,

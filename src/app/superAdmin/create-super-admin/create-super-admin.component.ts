@@ -29,6 +29,8 @@ import { LOGOMENU_LIST } from '@shared/logo-item';
 import { EMAILCONFIGURATION_LIST } from '@shared/emailConfigurations-items';
 import { DASHBOARDMENU_LIST } from '@shared/dashboard-item';
 import { FORMCREATION_LIST } from '@shared/formCreations-item';
+import { DROPDOWN_OPTION_LIST } from '@shared/dropDown';
+import { SettingsService } from '@core/service/settings.service';
 
 
 @Component({
@@ -37,13 +39,13 @@ import { FORMCREATION_LIST } from '@shared/formCreations-item';
   styleUrls: ['./create-super-admin.component.scss'],
 })
 export class CreateSuperAdminComponent {
-  breadscrums = [
-    {
-      title: 'Blank',
-      items: ['Super Admin'],
-      active: 'Create Company',
-    },
-  ];
+  // breadscrums = [
+  //   {
+  //     title: 'Blank',
+  //     items: [''],
+  //     active: '',
+  //   },
+  // ];
   userForm!: FormGroup;
   hide = true;
   dept: any;
@@ -51,6 +53,8 @@ export class CreateSuperAdminComponent {
   userTypes: UserType[] | undefined;
   isSubmitted: boolean = false;
   status = true;
+  breadcrumbs:any[] = [];
+  storedItems: string | null;
   constructor(
     public _fb: FormBuilder,
     public dialog: MatDialog,
@@ -60,8 +64,22 @@ export class CreateSuperAdminComponent {
     private adminService: AdminService,
     public utils: UtilsService,
     private userService: UserService,
-    private emailConfigService:EmailConfigService
-  ) {}
+    private emailConfigService:EmailConfigService,
+    private settingService:SettingsService
+  ) {
+
+    this.storedItems = localStorage.getItem('activeBreadcrumb');
+    if (this.storedItems) {
+     this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+     this.breadcrumbs = [
+       {
+         title: '', 
+         items: [this.storedItems],  
+         active: 'Create Company',  
+       },
+     ];
+   }
+  }
   ngOnInit() {
     this.userForm = this._fb.group({
       name: new FormControl('', [
@@ -75,8 +93,8 @@ export class CreateSuperAdminComponent {
         ...this.utils.validators.mobile,
       ]),
       company: new FormControl('', [Validators.required]),
-      uen: new FormControl('',[]),
-      code:new FormControl('',[]),
+      uen: new FormControl('',[Validators.required]),
+      code:new FormControl('',[Validators.required]),
       qualification: new FormControl('', []),
       address: new FormControl('', []),
       email: new FormControl('', [
@@ -210,7 +228,7 @@ export class CreateSuperAdminComponent {
     if (this.userForm.valid) {
       Swal.fire({
         title: 'Are you sure?',
-        text: 'Do you want to create user!',
+        text: 'Do you want to create this company',
         icon: 'warning',
         confirmButtonText: 'Yes',
         showCancelButton: true,
@@ -271,6 +289,56 @@ export class CreateSuperAdminComponent {
                 icon: 'success',
               });
 
+              const smtpPayload={
+                emailFrom:"support.learning@innovatiqconsulting.com",
+                emailUsername:"support.learning@innovatiqconsulting.com",
+                emailHost:"smtp.gmail.com",
+                emailPort:"465",
+                emailPassword:"jcttdiabvjrqzaun",
+                companyId:response.companyId
+              }
+
+              this.settingService.saveSmtp(smtpPayload).subscribe((res)=>{
+                // console.log("ressmtp",res)
+
+              })
+
+              let gmailKeyspayload={
+                companyId: response.companyId,
+                 clientId:"254303785853-4av7vt4kjc2fus3rgf01e3ltnp2icad0.apps.googleusercontent.com",
+                 type: 'google',
+              }
+
+              this.settingService.saveKey(gmailKeyspayload).subscribe((res)=>{
+                // console.log("gmailKeyspayload",res)
+              })
+
+              let linkedinKeyspayload = {
+                companyId: response.companyId,
+                clientId:"77r1poks3r9jfo",
+                clientSecret:"ZgFGOi8fXTy9zjoS",
+                redirectUri:"http://localhost:4200/innovatiq-uat/authentication/auth/linkedin/redirect",
+                type: 'linkedin',
+              };
+
+              this.settingService.saveKey(linkedinKeyspayload).subscribe((res)=>{
+                // console.log("linkedinKeyspayload",res)
+              })
+
+              let zoomKeysPayload = {
+                companyId: response.companyId,
+                clientId:"LAse3DR_Te2SeOJy4X36uA",
+                clientSecret:"2epsBoUSuVVIkG3QO1d3uBYfGfGhjl41",
+                accountId:"xJT-nxXLQ8CxtIPQnSLdTw",
+                type: 'zoom',
+              };
+
+              this.settingService.createZoomKey(zoomKeysPayload).subscribe((res)=>{
+                // console.log("zoomKeysPayload",res)
+              })
+
+
+
 
               
               
@@ -319,8 +387,15 @@ export class CreateSuperAdminComponent {
                 // console.log("response",respone);
               }) 
              }
-            
+             DROPDOWN_OPTION_LIST[0].companyId= response.companyId;
+             const dropDownPayload = DROPDOWN_OPTION_LIST[0];
+             this.settingService.createDropDown(dropDownPayload).subscribe((res)=>{
+              
+             })
 
+             const companyId = response.companyId;
+             this.settingService.cloneZoneKey({companyId}).subscribe((res:any)=>{
+             })
 
           
                

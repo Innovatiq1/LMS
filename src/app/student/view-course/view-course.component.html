@@ -449,14 +449,17 @@
                   <!-- Zoom Link Content -->
                   <div class="p-3">
                     <h5>Meeting Link</h5>
-                    <p *ngIf="!hasSessionEnded()">
-                      Here is the Meeting link:
-                      <a [href]="classDetails?.meetingUrl" target="_blank">
+                    <div *ngIf="!hasSessionEnded() && isMeetingAvailableToday()">
+                      <span>Here is the Meeting link:</span>
+                      <button class="btn btn-link meeting-link" (click)="openMeeting(classDetails?.meetingUrl)">
                         Click here
-                      </a>
-                    </p>
+                      </button>
+                    </div>
                     <p *ngIf="hasSessionEnded()">
                       The session has ended, and the meeting link is no longer available.
+                    </p>
+                    <p *ngIf="!hasSessionEnded() && !isMeetingAvailableToday()">
+                      Today's Meeting was not available.
                     </p>
                   </div>
                 </div>
@@ -683,6 +686,7 @@
                        *ngFor="let module of row.scormKit.modules; let j=index"
                       >
                         <span class="font-bold top"
+                        [ngClass]="{ 'text-green' : module._id === currentScormModule?._id } "
                         (click)="openScormModule(module, row.scormKit)"
                           >Module:{{ j + 1 }} &nbsp;&nbsp;{{ module.title }}
                         </span>

@@ -19,14 +19,15 @@ export class CreateApprovalWorkflowComponent implements OnInit{
   subscribeParams: any;
   categoryId: any; 
   approverData: any;  
-
-  breadscrums = [
-    {
-      title: 'Create Categories',
-      items: ['Approval flow'],
-      active: 'Create Approval flow',
-    },
-  ];
+  breadcrumbs:any[] = [];
+  storedItems: string | null;
+  // breadscrums = [
+  //   {
+  //     title: 'Create Categories',
+  //     items: ['Approval flow'],
+  //     active: 'Create Approval flow',
+  //   },
+  // ];
 
   constructor(
     private router: Router,
@@ -35,6 +36,18 @@ export class CreateApprovalWorkflowComponent implements OnInit{
     public utils:UtilsService,
     private activatedRoute: ActivatedRoute, 
   ){
+
+    this.storedItems = localStorage.getItem('activeBreadcrumb');
+    if (this.storedItems) {
+     this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+     this.breadcrumbs = [
+       {
+         title: '', 
+         items: [this.storedItems],  
+         active: 'Create Approval Workflow',  
+       },
+     ];
+   }
     let urlPath = this.router.url.split('/')
 
     this.editUrl = urlPath.includes('edit-approval-flow');
@@ -42,11 +55,11 @@ export class CreateApprovalWorkflowComponent implements OnInit{
 
 
     if(this.editUrl===true){
-      this.breadscrums = [
+      this.breadcrumbs = [
         {
           title:'Edit Categories',
-          items: ['Approval flow'],
-          active: 'Edit Approval flow',
+          items: [this.storedItems],
+          active: 'Edit Approval Workflow',
         },
       ];
     }

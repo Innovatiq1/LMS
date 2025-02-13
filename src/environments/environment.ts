@@ -11,10 +11,10 @@ export const environment = {
 
   awsUrl: 'https://collegey.s3.ap-southeast-1.amazonaws.com/',
   filesPath: 'https://s3.ap-southeast-1.amazonaws.com/storage.collegey/',
-  apiUrl: 'http://192.168.1.190:3004/api/',
-  Url: 'http://192.168.1.190:3004/',
-  companyUrl: 'http://192.168.1.190:3004/',
-  publicApiUrl: 'http://192.168.1.190:3004/x-api/v1/public/',
+  // apiUrl: 'http://192.168.1.190:3004/api/',
+  // Url: 'http://192.168.1.190:3004/',
+  // companyUrl: 'http://192.168.1.190:3004/',
+  // publicApiUrl: 'http://192.168.1.190:3004/x-api/v1/public/',
 
 
     // apiUrl:'http://13.212.97.97:3001/api/',
@@ -33,18 +33,18 @@ export const environment = {
 
   /* */
   // Localhost server API connection URL  // http://35.154.206.124:3000/
-  // apiUrl: 'http://localhost:3000/api/',
-  // apiEndpointNew: 'http://localhost:3000/x-api/v1/',
-  // frontEndUrl: 'http://localhost:4300/',
-  // apiNewEndpoint: 'http://localhost:3000/api1/',
+  apiUrl: 'http://localhost:3000/api/',
+  apiEndpointNew: 'http://localhost:3000/x-api/v1/',
+  frontEndUrl: 'http://localhost:4300/',
+  apiNewEndpoint: 'http://localhost:3000/api1/',
   /* */
 
   /* */
   // UAT server API connection URL
   // apiUrl: 'http://3.0.100.217/api/',
-  apiEndpointNew: 'http://3.0.100.217/x-api/v1/',
-  frontEndUrl: 'http://3.0.100.217/',
-  apiNewEndpoint: 'http://3.0.100.217/api1/',
+  // apiEndpointNew: 'http://3.0.100.217/x-api/v1/',
+  // frontEndUrl: 'http://3.0.100.217/',
+  // apiNewEndpoint: 'http://3.0.100.217/api1/',
   /* */
 
   /* * /

@@ -257,7 +257,7 @@
                         [class]=" row.classDeliveryType === 'online' ? 'badge badge-solid-green' :  row.classDeliveryType === 'offline' ? 'badge badge-solid-red' : ''">
                         <span
                           [class]=" row.classDeliveryType === 'online' ? 'status-dot' :  row.classDeliveryType === 'offline' ? 'status-red' : ''"></span>
-                        {{ row.classDeliveryType ==='online'? 'Online':'Offline' | titlecase}}</span>
+                        {{ (row.classDeliveryType ==='online'? 'Online('+row.meetingPlatform+')':'Offline') | titlecase}}</span>
                     </div>
                   </mat-cell>
                 </ng-container>
@@ -295,6 +295,9 @@
                 >
                 </mat-row>
               </table>
+              <div *ngIf="!dataSource || dataSource.length === 0" class="text-center py-3 no-data-text">
+                No data found
+              </div>
               <!-- Loading spinner -->
               <div class="tbl-spinner">
                 <mat-progress-spinner
