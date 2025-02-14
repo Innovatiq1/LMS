@@ -33,6 +33,8 @@
               </ng-template>
               <div class="body overflow-auto">
                 <div class="responsive_table">
+
+                  <ng-container *ngIf="dataSource && dataSource.length > 0; else noDataTemplate">
                   <table mat-table [dataSource]="dataSource" matSort class="mat-cell advance-table">
                     <ng-container matColumnDef="Course Name">
                       <mat-header-cell *matHeaderCellDef>Course Name</mat-header-cell>
@@ -98,6 +100,12 @@
                     <mat-row *matRowDef="let row; columns: displayedColumns;" [style.cursor]="'pointer'" matRipple>
                     </mat-row>
                   </table>
+                </ng-container>
+
+                <ng-template #noDataTemplate>
+                  <div class="no-data-message">No data found</div>
+                </ng-template>
+
                   <mat-paginator #paginator [length]="totalItems" (page)="pageSizeChange($event)"
                     [pageSizeOptions]="pageSizeArr" aria-label="select pagination option">
                   </mat-paginator>
@@ -110,6 +118,7 @@
               </ng-template>
               <div class="body overflow-auto">
                 <div class="responsive_table">
+                  <ng-container *ngIf="dataSource && dataSource.length > 0; else noDataTemplate">
                   <table mat-table [dataSource]="dataSource" matSort class="mat-cell advance-table">
                     <ng-container matColumnDef="Course Name">
                       <mat-header-cell *matHeaderCellDef>Course Name</mat-header-cell>
@@ -134,7 +143,7 @@
                       </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="Retakes left">
-                      <mat-header-cell *matHeaderCellDef>Retakes left</mat-header-cell>
+                      <mat-header-cell *matHeaderCellDef>Retakes lefts</mat-header-cell>
                       <mat-cell *matCellDef="let row"><span class="mobile-label">Retakes left:</span> {{
                         calculateRetaks(row) }}
                       </mat-cell>
@@ -169,6 +178,12 @@
                     <mat-row *matRowDef="let row; columns: displayedColumns;" [style.cursor]="'pointer'" matRipple>
                     </mat-row>
                   </table>
+                </ng-container>
+
+                <ng-template #noDataTemplate>
+                  <div class="no-data-message">No data found</div>
+                </ng-template>
+                
                   <mat-paginator #paginator [length]="totalItems" (page)="pageSizeChange($event)"
                     [pageSizeOptions]="pageSizeArr" aria-label="select pagination option">
                   </mat-paginator>
