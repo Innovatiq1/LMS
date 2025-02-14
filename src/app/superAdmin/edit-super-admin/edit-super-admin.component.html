@@ -134,8 +134,8 @@
                         <label>Status<span class="mandatory">&nbsp;*</span></label>
                         <mat-form-field class="example-full-width mb-3" appearance="outline">
                             <mat-select formControlName="Active" required>
-                                <mat-option [value]="'true'"> Active</mat-option>
-                                <mat-option [value]="'false'">InActive</mat-option>
+                                <mat-option [value]="'false'"> Block</mat-option>
+                                <mat-option [value]="'true'">Unblock</mat-option>
                             </mat-select>
                             <mat-error *ngIf="userForm.get('Active')?.hasError('required')">
                                 Select Status

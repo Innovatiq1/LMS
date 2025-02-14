@@ -199,6 +199,9 @@
                   [style.cursor]="'pointer'" matRipple>
                 </mat-row>
               </table>
+              <div *ngIf="!dataSource || dataSource.length === 0" class="text-center py-3 no-data-text">
+                No data found
+              </div>
               <!-- Loading spinner -->
               <!-- <div  class="tbl-spinner">
                 <mat-progress-spinner *ngIf="isLoading" color="primary" [diameter]="40" mode="indeterminate">
