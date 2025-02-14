@@ -42,6 +42,8 @@ export class AddTeacherComponent {
   fileName: any;
   forms!: any[];
   commonRoles: any;
+  breadcrumbs:any[] = [];
+  storedItems: string | null;
 
   constructor(private fb: UntypedFormBuilder,
     private instructor: InstructorService,
@@ -53,6 +55,19 @@ export class AddTeacherComponent {
     private userService: UserService
 
    ) {
+
+    this.storedItems = localStorage.getItem('activeBreadcrumb');
+    if (this.storedItems) {
+      this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+      this.breadcrumbs = [
+        {
+          title: '', 
+          items: [this.storedItems],  
+          active: 'Create Trainer',  
+        },
+      ];
+    }
+
     this.proForm = this.fb.group({
       name: ['', [Validators.required,Validators.pattern(/[a-zA-Z0-9]+/),...this.utils.validators.noLeadingSpace]],
       last_name: [''],
@@ -66,7 +81,10 @@ export class AddTeacherComponent {
         [Validators.required, Validators.email, Validators.minLength(5),...this.utils.validators.noLeadingSpace,...this.utils.validators.email],
       ],
       // dob: ['', [Validators.required]],
-      dob: ['', [Validators.required, this.minAgeValidator(20)]], 
+
+      dob: ['', [Validators.required, this.minAgeValidator(20)]],  // Added minAgeValidator
+
+      
       joiningDate:['', [Validators.required]],
       qualifications: ['', [Validators.required,...this.utils.validators.designation]],
       avatar: ['',],
@@ -99,6 +117,8 @@ export class AddTeacherComponent {
       return age < minAge ? { minAge: true } : null;
     };
   }
+  
+
 
   onFileUpload(event:any) {
     const file = event.target.files[0];

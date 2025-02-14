@@ -590,6 +590,16 @@ MENU_LIST =[
               "isLeaf": true
             },
             {
+              "title": "Enquiry List",
+              "id": "enquiry-list",
+              "children": [],
+              "actions": [],
+              "isAction": false,
+              "checked": true,
+              "indeterminate": false,
+              "isLeaf": true
+            },
+            {
               "title": "Exam Scores",
               "id": "exam-scores",
               "children": [],

@@ -47,18 +47,18 @@
         <span class="highlight"> {{ data.department }}</span>
       </p>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-3" *ngIf="data?.meetingUrl">
       <p class="info-text">Meeting Link</p>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-2" *ngIf="data?.meetingUrl">
       <a *ngIf="data?.meetingUrl" href="{{ data.meetingUrl }}" target="_blank" class="highlight" style="display: inline-block; text-decoration: none; border-radius: 4px;">
        Join now
       </a>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-3" *ngIf="data?.duration">
       <p class="info-text">Duration</p>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4" *ngIf="data?.duration">
       <p class="info-text">
         <span class="highlight">{{ data.duration }}</span>
       </p>

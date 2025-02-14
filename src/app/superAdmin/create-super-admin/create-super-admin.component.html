@@ -66,16 +66,7 @@
                            
                         </mat-form-field>
                       </div>
-                      <!-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" >
-                        <label>Company Website</label>
-                        <mat-form-field
-                          class="example-full-width mb-3"
-                          appearance="outline"
-                        >
-                          <input matInput formControlName="website" />
-                        </mat-form-field>
-                      </div> -->
-
+                      
                       <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                         <label>Email<span class="mandatory">&nbsp;*</span></label>
                         <mat-form-field class="example-full-width mb-3" appearance="outline">
@@ -238,25 +229,33 @@
                       </mat-form-field>
                     </div>
 
-                       
-                      <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" >
-                        <label>Company Website</label>
-                        <mat-form-field
-                          class="example-full-width mb-3"
-                          appearance="outline"
-                        >
-                          <input matInput formControlName="website" />
-                        </mat-form-field>
-                      </div>
+                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" >
+                      <label>Company Website</label>
+                      <mat-form-field
+                        class="example-full-width mb-3"
+                        appearance="outline"
+                      >
+                        <input matInput formControlName="website" />
+                      </mat-form-field>
+                    </div>
+
                     </div>
                     <div class="row buttons">
                       
                       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
-                        <div class="example-button-row">
+                        <!-- <div class="example-button-row">
                           <button mat-raised-button color="warn" (click)="onNoClick()" tabindex="-1">Cancel</button>
                           
                           <button id="submit" mat-raised-button color="primary" (click)="update()"  [mat-dialog-close]="1"
                            >Save</button>
+                        </div> -->
+
+                        <div class="example-button-row">
+                          <button mat-raised-button color="warn" (click)="onNoClick()" tabindex="-1">Cancel</button>
+                          
+                          <span class="spacer"></span> <!-- Spacer to push Save button to the right -->
+                        
+                          <button mat-raised-button color="primary" (click)="update()" [mat-dialog-close]="1">Save</button>
                         </div>
                       </div>
                     </div>

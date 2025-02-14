@@ -157,9 +157,9 @@
                             ><span>$</span> {{ row.fee || 0 }}.00
                           </mat-cell>
                         </ng-container>
-                        <ng-container matColumnDef="startDate">
+                        <!-- <ng-container matColumnDef="startDate">
                           <mat-header-cell *matHeaderCellDef 
-                            >Start Date
+                            >Start Date 11
                           </mat-header-cell>
                           <mat-cell
                             *matCellDef="let row"
@@ -168,10 +168,34 @@
                             <span class="mobile-label">Start Date:</span>
                             {{row.sessionStartDate ? (row.sessionStartDate | date) : "--"}}
                           </mat-cell>
+                        </ng-container> -->
+                        <ng-container matColumnDef="Approval">
+                          <mat-header-cell *matHeaderCellDef 
+                            >Approval Required
+                          </mat-header-cell>
+                          <mat-cell
+                            *matCellDef="let row"
+                            (click)="view ? viewCourse(row.id) : null"
+                          >
+                            <span class="mobile-label">CourseType:</span>
+                            {{ row?.approval | titlecase}}
+                          </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="CourseType">
+                          <mat-header-cell *matHeaderCellDef 
+                            >Course Type
+                          </mat-header-cell>
+                          <mat-cell
+                            *matCellDef="let row"
+                            (click)="view ? viewCourse(row.id) : null"
+                          >
+                            <span class="mobile-label">CourseType:</span>
+                            {{ row?.selectedOptionValue?.replace('And', ' & ')}}
+                          </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="endDate">
                           <mat-header-cell *matHeaderCellDef 
-                            >End Date
+                            >Expiry Date
                           </mat-header-cell>
                           <mat-cell
                             *matCellDef="let row"
@@ -182,7 +206,7 @@
                               | date) : "--"}}
                           </mat-cell>
                         </ng-container>
-                        <ng-container matColumnDef="Vendor">
+                        <!-- <ng-container matColumnDef="Vendor">
                           <mat-header-cell
                             *matHeaderCellDef
                             
@@ -196,7 +220,8 @@
                             <span class="mobile-label">Vendor:</span
                             >{{row.vendor ? (row.vendor) : "--"}}
                           </mat-cell>
-                        </ng-container>
+                        </ng-container> -->
+
                         <ng-container matColumnDef="status">
                           <mat-header-cell
                             *matHeaderCellDef

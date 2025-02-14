@@ -16,3 +16,13 @@
 .btn-space {
   margin-right: 10px !important;
 }
+
+.example-button-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.spacer {
+  flex: 1; /* Pushes the Save button to the right */
+}

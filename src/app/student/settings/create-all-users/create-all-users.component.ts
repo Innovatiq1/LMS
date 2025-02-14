@@ -4,6 +4,8 @@ import {
   FormControl,
   FormGroup,
   Validators,
+  AbstractControl, 
+  ValidationErrors
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -27,7 +29,8 @@ import { DepartmentModalComponent } from '../../../admin/departments/department-
 import { FormService } from '@core/service/customization.service';
 import { AppConstants } from '@shared/constants/app.constants';
 import { InstructorService } from '@core/service/instructor.service';
-
+import { CreateDepartmentComponent } from '../create-department/create-department.component';
+import { CreateUserRoleComponent } from '../create-user-role/create-user-role.component';
 @Component({
   selector: 'app-create-all-users',
   templateUrl: './create-all-users.component.html',
@@ -54,15 +57,16 @@ export class CreateAllUsersComponent {
   avatar: any;
   dept: any;
   forms!: any[];
+  breadcrumbs:any[] = [];
+  storedItems: string | null;
 
-
-  breadscrums = [
-    {
-      title: 'Create All Users',
-      items: ['Users'],
-      active: 'Create User',
-    },
-  ];
+  // breadscrums = [
+  //   {
+  //     title: 'Create All Users',
+  //     items: ['Users'],
+  //     active: 'Create User' ,
+  //   },
+  // ];
   data: any;
 
   update() {
@@ -402,16 +406,29 @@ private createInstructor(userData: Users): void {
     private instructorService: InstructorService,
     
   ) {
+
+    this.storedItems = localStorage.getItem('activeBreadcrumb');
+    if (this.storedItems) {
+     this.storedItems = this.storedItems.replace(/^"(.*)"$/, '$1');
+     this.breadcrumbs = [
+       {
+         title: '', 
+         items: [this.storedItems],  
+         active: 'Create User',  
+       },
+     ];
+   }
     let urlPath = this.router.url.split('/');
     this.editUrl = urlPath.includes('edit-all-users');
     this.currentId = urlPath[urlPath.length - 1];
     this.getUserTypeList();
 
+
     if (this.editUrl === true) {
-      this.breadscrums = [
+      this.breadcrumbs = [
         {
           title: 'Edit All Users',
-          items: ['Users'],
+          items: [this.storedItems],
           active: 'Edit User',
         },
       ];
@@ -443,7 +460,8 @@ private createInstructor(userData: Users): void {
       type: new FormControl('', [Validators.required]),
       parentsName: new FormControl('', []),
       parentsPhone: new FormControl('', []),
-      dob: new FormControl('', [Validators.required,...this.utils.validators.dob]),
+      // dob: new FormControl('', [Validators.required,...this.utils.validators.dob]),
+      dob: new FormControl('', [Validators.required, this.minimumAgeValidator(20)]),
       joiningDate: new FormControl('', [Validators.required]),
       blood_group: new FormControl('', []),
       avatar: new FormControl('', []),
@@ -469,7 +487,22 @@ private createInstructor(userData: Users): void {
     this.getDepartment();
     this.getForms();
   }
+  minimumAgeValidator(minAge: number) {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value) {
+        return null; // No validation error if the field is empty
+      }
+      const birthDate = new Date(control.value);
+      const today = new Date();
+      const age = today.getFullYear() - birthDate.getFullYear();
 
+      // Check if the selected date is less than 20 years old
+      if (age < minAge || (age === minAge && today < new Date(birthDate.setFullYear(birthDate.getFullYear() + minAge)))) {
+        return { minimumAge: true };
+      }
+      return null;
+    };
+  }
   getForms(): void {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
         this.formService
@@ -511,7 +544,7 @@ private createInstructor(userData: Users): void {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     this.adminService.getUserTypeList({ allRows: true }, userId).subscribe(
       (response: any) => {
-        console.log("all users==", response);
+        // console.log("all users==", response);
         
         // Filter out inactive user types
         this.userTypes = response.filter((userType: any) => userType.status !== 'inactive');
@@ -580,15 +613,30 @@ private createInstructor(userData: Users): void {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(DepartmentModalComponent, {
-      width: '50%',
-      height: '80%',
-      maxHeight: '95vh',
-      autoFocus: false,
-      disableClose: true,
-    });
+    // const dialogRef = this.dialog.open(DepartmentModalComponent, {
+    //   width: '50%',
+    //   height: '80%',
+    //   maxHeight: '95vh',
+    //   autoFocus: false,
+    //   disableClose: true,
+    // });
 
+    // dialogRef.afterClosed().subscribe((result) => {
+    //   this.getDepartment();
+    // });
+    const someVariable = 'dialogApproved';
+    const dialogRef = this.dialog.open(CreateDepartmentComponent, {
+      width: 'auto',
+      height: '60%',
+      maxHeight: '80vh',
+      autoFocus: false,
+      disableClose: false,
+      data: { variable: someVariable },
+    });
+  
     dialogRef.afterClosed().subscribe((result) => {
+      // this.getSurveyNew();
+      // this.getAllVendors();
       this.getDepartment();
     });
   }
@@ -600,25 +648,41 @@ back(){
   window.history.back();
 }
 
-  openRoleModal() {
-    let userId = localStorage.getItem('id');
-    this.logoService.getSidemenu(userId).subscribe((response: any) => {
-      let MENU_LIST = response.data.docs[0].MENU_LIST;
-      const items = this.convertToMenuV2(MENU_LIST, null);
-      const dataSourceArray: MenuItemModel[] = [];
-      items?.forEach((item, index) => {
-        if (!dataSourceArray.some((v) => v.id === item.id))
-          dataSourceArray.push(item);
-      });
+  // openRoleModal() {
+  //   let userId = localStorage.getItem('id');
+  //   this.logoService.getSidemenu(userId).subscribe((response: any) => {
+  //     let MENU_LIST = response.data.docs[0].MENU_LIST;
+  //     const items = this.convertToMenuV2(MENU_LIST, null);
+  //     const dataSourceArray: MenuItemModel[] = [];
+  //     items?.forEach((item, index) => {
+  //       if (!dataSourceArray.some((v) => v.id === item.id))
+  //         dataSourceArray.push(item);
+  //     });
 
-      const dialogRef = this.dialog.open(CreateRoleTypeComponent, {
-        data: dataSourceArray,
-      });
-      dialogRef.afterClosed().subscribe((result) => {
-        if (result?.typeName) {
-          this.getUserTypeList(null, result?.typeName);
-        }
-      });
+  //     const dialogRef = this.dialog.open(CreateRoleTypeComponent, {
+  //       data: dataSourceArray,
+  //     });
+  //     dialogRef.afterClosed().subscribe((result) => {
+  //       if (result?.typeName) {
+  //         this.getUserTypeList(null, result?.typeName);
+  //       }
+  //     });
+  //   });
+  // }
+
+  openRoleModal() {
+    const someVariable = 'dialogApproved';
+    const dialogRef = this.dialog.open(CreateUserRoleComponent, {
+      width: 'auto',
+      height: '60%',
+      maxHeight: '80vh',
+      autoFocus: false,
+      disableClose: false,
+      data: { variable: someVariable },
+    });
+  
+    dialogRef.afterClosed().subscribe((result) => {
+      this.getUserTypeList();
     });
   }
 

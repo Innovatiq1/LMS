@@ -1,10 +1,17 @@
 <section class="content">
   <div class="content-block">
-    <div class="block-header" *ngFor="let breadscrum of breadscrums">
-      <!-- breadcrumb -->
+    <!-- <div class="block-header" *ngFor="let breadscrum of breadscrums">
       <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
       </app-breadcrumb>
-    </div>
+    </div> -->
+    <div class="block-header"  *ngFor="let breadscrum of breadcrumbs">
+      <app-static-breadcrumb
+      [title]="breadscrum.title"
+      [items]="breadscrum.items"
+      [active_item]="breadscrum.active"
+    >
+    </app-static-breadcrumb>
+  </div>
     <div class="row clearfix">
       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
         <div class="card">
@@ -157,7 +164,7 @@
                   </mat-error>
                   </mat-form-field>
                 </div>
-            <!--     <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                <!-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <label>Date of Birth<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <input matInput [matDatepicker]="picker" formControlName="dob" required>
@@ -168,9 +175,9 @@
                     </mat-error>
                   </mat-form-field>
                 </div> -->
-                
+
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                  <label>Date of Birth<span class="mandatory"> *</span></label>
+                  <label>Date of Birth<span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <input matInput [matDatepicker]="picker" formControlName="dob" required>
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -182,7 +189,7 @@
                       Minimum age should be 20 yrs
                     </mat-error>
                   </mat-form-field>
-                </div>
+                </div>               
 
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <label>Registration Date<span class="mandatory">&nbsp;*</span></label>

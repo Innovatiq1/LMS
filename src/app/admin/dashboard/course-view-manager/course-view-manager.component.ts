@@ -192,14 +192,14 @@ export class CourseViewManagerComponent {
     const headers = [
       [
         'Course',
-        'Status     ',
+        'Status',
         'Code',
         'Main Category',
         'Days',
         'Hours',
         'Vendor',
         'Payment',
-        'Start Date   ',
+        'Start Date',
         'End Date    ',
       ],
     ];

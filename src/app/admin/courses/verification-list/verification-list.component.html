@@ -136,6 +136,9 @@
                   </mat-row>
                 </table>
                 <!-- Loading spinner -->
+                <div *ngIf="!isLoading && (!dataSource || dataSource.length === 0)" class="text-center py-3 no-data-text">
+                  No data found
+                </div>
                 <div  class="tbl-spinner">
                   <mat-progress-spinner *ngIf="isLoading" color="primary" [diameter]="40" mode="indeterminate">
                   </mat-progress-spinner>

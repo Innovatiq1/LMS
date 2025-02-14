@@ -79,6 +79,7 @@ ngOnInit(): void {
 getCoursesById(id: string){
   this.alluserService.getCoursesById(id).subscribe((response: any) => {
     this.dataSource = response.data.docs;
+    console.log("CoursesRes",this.dataSource);
     this.isLoading = false;
     this.ref.detectChanges();
     this.totalItems = response.data.totalDocs

@@ -1,14 +1,22 @@
 <section class="content">
   <div class="content-block">
-    <div class="block-header" *ngFor="let breadscrum of breadscrums">
-      <!-- breadcrumb -->
+    <!-- <div class="block-header" *ngFor="let breadscrum of breadscrums">
       <app-breadcrumb
         [title]="breadscrum.title"
         [items]="breadscrum.items"
         [active_item]="breadscrum.active"
       >
       </app-breadcrumb>
-    </div>
+    </div> -->
+    <div class="block-header"  *ngFor="let breadscrum of breadcrumbs">
+      <!-- breadcrumb -->
+      <app-static-breadcrumb
+      [title]="breadscrum.title"
+      [items]="breadscrum.items"
+      [active_item]="breadscrum.active"
+    >
+    </app-static-breadcrumb>
+  </div>
     <div class="row clearfix">
       <div class="col-lg-4 col-md-12">
         <div class="card">
@@ -180,7 +188,7 @@
               </div>
               <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="header mt-3">
-                  <h2>Enrolled Programs</h2>
+                  <h2>Enrolled Programs </h2>
                 </div>
                 <div class="table-wrapper">
                   <div class="table-responsive">
