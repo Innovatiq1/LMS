@@ -63,9 +63,16 @@
                     <mat-icon class="material-icons-two-tone color-icon m-3" matSuffix>
                       {{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                   </a>
+                  <!-- <mat-error *ngIf="authForm.get('password')?.hasError('required')">
+                    {{"Enter Password" | translate}}
+                  </mat-error> -->
                   <mat-error *ngIf="authForm.get('password')?.hasError('required')">
                     {{"Enter Password" | translate}}
                   </mat-error>
+                  <mat-error *ngIf="authForm.get('password')?.hasError('pattern')">
+                    {{"Enter valid password" | translate}}
+                  </mat-error>
+                  
                 </mat-form-field>
                 <div  class="invalid-text"*ngIf="isSubmitted" >
                   {{email}}

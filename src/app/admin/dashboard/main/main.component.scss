@@ -44,3 +44,9 @@ svg {
    ::ng-deep .mat-mdc-tab-body-content{
     overflow-x: hidden !important;
   }
+
+  .announcement-board .card,
+.reschedule-list .card {
+    height: 100%;
+    min-height: 400px; /* Adjust as needed */
+}
