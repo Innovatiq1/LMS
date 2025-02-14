@@ -48,6 +48,7 @@ export class FeedbackReportComponent  extends UnsubscribeOnDestroyAdapter
   selection = new SelectionModel<SurveyBuilderModel>(true, []);
   id?: number;
   isLoading = true;
+  getDataSource:any;
   // breadscrums = [
   //   {
   //     title: 'Feedbacks List',
@@ -206,6 +207,7 @@ export class FeedbackReportComponent  extends UnsubscribeOnDestroyAdapter
     .subscribe(response => {
       this.isLoading = false;
       this.totalItems = response.data.totalDocs
+      this.getDataSource=response.data.docs;
 
       this.dataSource = response.data.docs;
       this.coursePaginationModel.docs = response.data.docs;

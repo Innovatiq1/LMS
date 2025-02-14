@@ -81,7 +81,7 @@
                 <ng-container matColumnDef="Program Name">
                   <mat-header-cell *matHeaderCellDef >Program</mat-header-cell>
                   <mat-cell *matCellDef="let row" [routerLink]="view ? ['/admin/program/view-completion-list/',row.id] : null">
-                    <span class="mobile-label">Program:</span>{{row.programTitle | capitalizeFirstLetter}} </mat-cell>
+                    <span class="mobile-label">Program:</span>{{row?.programTitle | capitalizeFirstLetter}} </mat-cell>
                 </ng-container>
                  <!-- Student Name -->
                 
@@ -90,7 +90,7 @@
                   <mat-header-cell *matHeaderCellDef >Start Date
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row" [routerLink]="view ? ['/admin/program/view-completion-list/',row.id] : null">
-                    <span class="mobile-label">Start Date:</span>{{row?.classId?.sessions[0]?.sessionStartDate |date}} </mat-cell>
+                    <span class="mobile-label">Start Date:</span>{{row?.classId?.sessions[0]?.sessionStartDate | date}} </mat-cell>
                 </ng-container>
 
                 <!-- Enddate -->
@@ -105,7 +105,7 @@
                   <mat-header-cell *matHeaderCellDef >Registered Date
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row" [routerLink]="view ? ['/admin/program/view-completion-list/',row.id] : null">
-                    <span class="mobile-label">Registered Date:</span>{{row.registeredOn | date}} </mat-cell>
+                    <span class="mobile-label">Registered Date:</span>{{row?.registeredOn | date}} </mat-cell>
                 </ng-container>
 
                 <!-- Enddate -->
@@ -113,7 +113,7 @@
                   <mat-header-cell *matHeaderCellDef >Completed Date
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row" [routerLink]="view ? ['/admin/program/view-completion-list/',row.id] : null">
-                    <span class="mobile-label">Completed Date:</span>{{row.updatedAt | date}} </mat-cell>
+                    <span class="mobile-label">Completed Date:</span>{{row?.updatedAt | date}} </mat-cell>
                 </ng-container>
 
                 <!-- actions -->
@@ -144,6 +144,9 @@
                   [style.cursor]="'pointer'" matRipple>
                 </mat-row>
               </table>
+              <div *ngIf="!isLoading && (!dataSource || dataSource?.length === 0)" class="text-center py-3 no-data-text">
+                No data found
+              </div>
               <!-- Loading spinner -->
               <div  *ngIf="isLoading" class="tbl-spinner">
                 <mat-progress-spinner color="primary" [diameter]="40" mode="indeterminate">
