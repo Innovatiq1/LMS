@@ -618,6 +618,15 @@ export class SettingsComponent {
 
       address: ['', [Validators.required, ...this.utils.validators.address]],
       avatar: [''],
+      qualifications: ['', Validators.required],
+       gender: ['', Validators.required],
+       idNumber: ['', Validators.required],
+       domainAreaOfPractice: ['', Validators.required],
+       idType: ['', Validators.required],
+       code: ['', Validators.required],
+       dob: ['', Validators.required],
+       
+      
     });
 
     this.roleForm = this.fb.group({
@@ -1050,35 +1059,71 @@ export class SettingsComponent {
       this.stdForm.markAllAsTouched();
     }
   }
+  // onSubmit1() {
+  //   if (this.stdForm1.valid) {
+  //     const userData: any = this.stdForm1.value;
+  //     userData.avatar = this.avatar;
+  //     userData.type = this.editData.type;
+  //     userData.role = this.editData.role;
+  //     userData.ro = this.ro;
+  //     userData.roName = this.roName;
+  //     userData.director = this.director;
+  //     userData.directorName = this.directorName;
+  //     userData.trainingAdmin = this.trainingAdmin;
+  //     userData.trainingAdminName = this.trainingAdminName;
+  
+  //     Swal.fire({
+  //       title: 'Are you sure?',
+  //       text: 'Do you want to update!',
+  //       icon: 'warning',
+  //       confirmButtonText: 'Yes',
+  //       showCancelButton: true,
+  //       cancelButtonColor: '#d33',
+  //     }).then((result) => {
+  //       if (result.isConfirmed) {
+  //         this.updateInstructor(userData);
+  //         Swal.close();
+  //       }
+  //     });
+  //   } else {
+  //     this.stdForm1.markAllAsTouched(); // ✅ Mark all fields as touched to trigger validation errors
+  //   }
+  // }
+
   onSubmit1() {
-    if (this.stdForm1.valid) {
-      const userData: any = this.stdForm1.value;
-      userData.avatar = this.avatar;
-      userData.type = this.editData.type;
-      userData.role = this.editData.role;
-      userData.ro = this.ro;
-      userData.roName = this.roName;
-      userData.director = this.director;
-      userData.directorName = this.directorName;
-      userData.trainingAdmin = this.trainingAdmin;
-      userData.trainingAdminName = this.trainingAdminName;
-      Swal.fire({
-        title: 'Are you sure?',
-        text: 'Do you want to update!',
-        icon: 'warning',
-        confirmButtonText: 'Yes',
-        showCancelButton: true,
-        cancelButtonColor: '#d33',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.updateInstructor(userData);
-          Swal.close();
-        }
-      });
-    } else {
-      this.stdForm1.markAllAsTouched();
+    if (this.stdForm1.invalid) {
+      this.stdForm1.markAllAsTouched(); 
+      return;
     }
+  
+    const userData: any = this.stdForm1.value;
+    userData.avatar = this.avatar;
+    userData.type = this.editData.type;
+    userData.role = this.editData.role;
+    userData.ro = this.ro;
+    userData.roName = this.roName;
+    userData.director = this.director;
+    userData.directorName = this.directorName;
+    userData.trainingAdmin = this.trainingAdmin;
+    userData.trainingAdminName = this.trainingAdminName;
+  
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to update!',
+      icon: 'warning',
+      confirmButtonText: 'Yes',
+      showCancelButton: true,
+      cancelButtonColor: '#d33',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.updateInstructor(userData);
+        Swal.close();
+      }
+    });
   }
+  
+  
+  
 
   private updateInstructor(userData: Student): void {
     this.studentService.updateStudent(this.studentId, userData).subscribe(
