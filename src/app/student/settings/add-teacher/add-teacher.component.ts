@@ -3,6 +3,7 @@ import {
   FormGroup,
   UntypedFormBuilder,
   UntypedFormGroup,
+  ValidationErrors,
   Validators,
 } from '@angular/forms';
 import { InstructorService } from '@core/service/instructor.service';
@@ -82,8 +83,8 @@ export class AddTeacherComponent {
       ],
       // dob: ['', [Validators.required]],
 
-      dob: ['', [Validators.required, this.minAgeValidator(20)]],  // Added minAgeValidator
-
+       dob: ['', [Validators.required, this.minAgeValidator(20)]],  // Added minAgeValidator
+      // dob: ['', [Validators.required,...this.utils.validators.dob]],
       
       joiningDate:['', [Validators.required]],
       qualifications: ['', [Validators.required,...this.utils.validators.designation]],
@@ -98,26 +99,40 @@ export class AddTeacherComponent {
     });
   }
 
-  minAgeValidator(minAge: number) {
-    return (control: AbstractControl) => {
-      if (!control.value) return null; // If no value, return null (valid)
+  // minAgeValidator(minAge: number) {
+  //   return (control: AbstractControl) => {
+  //     if (!control.value) return null; // If no value, return null (valid)
   
+  //     const birthDate = new Date(control.value);
+  //     const today = new Date();
+  
+  //     let age = today.getFullYear() - birthDate.getFullYear();
+  //     const monthDiff = today.getMonth() - birthDate.getMonth();
+  //     const dayDiff = today.getDate() - birthDate.getDate();
+  
+  //     // Adjust age if birthday hasn't occurred yet this year
+  //     if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+  //       age--;
+  //     }
+  
+  //     return age < minAge ? { minAge: true } : null;
+  //   };
+  // }
+  minAgeValidator(minAge: number) {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value) {
+        return null; 
+      }
       const birthDate = new Date(control.value);
       const today = new Date();
-  
-      let age = today.getFullYear() - birthDate.getFullYear();
-      const monthDiff = today.getMonth() - birthDate.getMonth();
-      const dayDiff = today.getDate() - birthDate.getDate();
-  
-      // Adjust age if birthday hasn't occurred yet this year
-      if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
-        age--;
+      const age = today.getFullYear() - birthDate.getFullYear();
+
+      if (age < minAge || (age === minAge && today < new Date(birthDate.setFullYear(birthDate.getFullYear() + minAge)))) {
+        return { minimumAge: true };
       }
-  
-      return age < minAge ? { minAge: true } : null;
+      return null;
     };
   }
-  
 
 
   onFileUpload(event:any) {
@@ -148,6 +163,11 @@ export class AddTeacherComponent {
      })
 
   }
+  // getMinDOB(): string {
+  //   const today = new Date();
+  //   const minDate = new Date(today.getFullYear() - 20, today.getMonth(), today.getDate());
+  //   return minDate.toISOString().split('T')[0]; // Format YYYY-MM-DD
+  // }
   onSubmit() {
     let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     let subdomain =localStorage.getItem('subdomain') || '';

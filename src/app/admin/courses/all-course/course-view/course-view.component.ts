@@ -32,6 +32,10 @@ export class CourseViewComponent {
   storedItems: string | null;
   selectedScenario: string = '';
   selectedOptionValue:any;
+  isExam:boolean=false;
+  isTutorial:boolean=false;
+  isOnlyExam:boolean=false;
+  isAssessment: boolean=false;
   constructor(
     public _courseService: CourseService,
     private classService: ClassService,
@@ -175,12 +179,31 @@ back() {
     this._courseService.getCourseById(id).subscribe((data) => {
       // console.log("response",data)
       if (data) {
+        // console.log("ddddd",data);
         this.sourceData = data;
+        this.getSourseData();
         this.coursekitData = data.course_kit;
         this.checkId = this.sourceData.id;
         this.selectedOptionValue=data.selectedOptionValue;
+        
       }
     });
+  }
+
+  getSourseData(){
+    if(this.sourceData?.selectedOptionValue==='AssessmentAndExam')
+    {
+      this.isExam=true;
+      this.isAssessment=true;
+
+    }
+   else if(this.sourceData?.selectedOptionValue==='LearningAndTutorial')
+    {
+      this.isTutorial=true;
+    }
+    else{
+      this.isExam=true;
+    }
   }
 
   delete(id: string) {
