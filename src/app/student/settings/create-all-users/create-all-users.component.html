@@ -228,7 +228,7 @@
                                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                     <mat-datepicker #picker></mat-datepicker>
                                     <mat-error *ngIf="userForm.get('dob')?.hasError('required')">
-                                      Date of Birth is required
+                                      Select Date
                                     </mat-error>
                                     <mat-error *ngIf="userForm.get('dob')?.hasError('minimumAge')">
                                       Minimum age should be 20 years

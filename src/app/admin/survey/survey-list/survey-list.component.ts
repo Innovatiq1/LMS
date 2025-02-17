@@ -61,6 +61,7 @@ export class SurveyListComponent
   searchTerm: string = '';
   pageSizeArr = [10, 25, 50, 100];
   coursePaginationModel: Partial<CoursePaginationModel>;
+  getSeryData: any;
   constructor(
     public httpClient: HttpClient,
     public dialog: MatDialog,
@@ -205,7 +206,8 @@ export class SurveyListComponent
     this.surveyService.getSurveyList(payload)
     .subscribe(response => {
       this.isLoading = false;
-      this.totalItems = response.data.totalDocs
+      this.totalItems = response.data.totalDocs;
+      this.getSeryData=response.data.docs;
 
       this.dataSource = response.data.docs;
       this.coursePaginationModel.docs = response.data.docs;

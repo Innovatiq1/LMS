@@ -14,7 +14,7 @@
                   <th>{{commonRoles?.INSTRUCTOR_ROLE}}</th>
                   <th>Department</th>
                   <th>Gender</th>
-                  <th>Education</th>
+                  <th>Qualification</th>
                   <th>Email</th>
                   <th>Mobile</th>
                   <th>Joining Date</th>
@@ -39,7 +39,7 @@
                       titlecase}}</span></td>
                   <td *ngIf="instructor.gender==='other'"><span class="badge badge-solid-orange">{{instructor?.gender |
                       titlecase}}</span></td>
-                  <td>{{instructor?.education}}</td>
+                  <td>{{instructor?.qualifications[0]?.description}}</td>
                   <td>{{instructor?.email}}</td>
                   <td>{{instructor?.mobile}}</td>
                   <td>{{instructor?.joiningDate | date}}</td>
