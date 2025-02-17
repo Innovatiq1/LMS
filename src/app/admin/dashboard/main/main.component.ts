@@ -862,9 +862,7 @@ export class MainComponent implements OnInit {
         if (response.data) {
           console.log("response Data",response.data);
           this.classesList = response.data.docs.slice(0, 5).sort();
-          console.log("classListSample", response.data.docs )
-          //this.classListSample= response.data.docs
-          this.classListSample = [];
+          this.classListSample= response.data.docs
           this.docs = response.data.totalDocs;
 
         }

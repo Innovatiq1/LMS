@@ -36,6 +36,7 @@
           </div>
           <div class="body overflow-auto">
             <div class="responsive_table">
+              <ng-container *ngIf="dataSource && dataSource.length > 0; else noDataTemplate">
               <table
                 mat-table
                 matSort
@@ -92,6 +93,11 @@
               </mat-row>
             
             </table>
+          </ng-container>
+
+          <ng-template #noDataTemplate>
+            <div class="no-data-message">No data found</div>
+          </ng-template>
 
             <!-- Loading spinner -->
             <div  *ngIf="isLoading" class="tbl-spinner">
