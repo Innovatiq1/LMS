@@ -192,7 +192,7 @@
                             (contextmenu)="onContextMenu($event, row)"
                           >
                             <span class="mobile-label">Qualification:</span
-                            >{{ row?.education }}
+                            >{{ row?.qualifications[0]?.description | capitalizeFirstLetter }}
                           </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="mobile">
@@ -330,6 +330,7 @@
                       aria-label="select pagination option">
                     </mat-paginator>
                     </div>
+                    
                   </div>
                 </div>
               </div>

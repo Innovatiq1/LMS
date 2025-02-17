@@ -292,7 +292,7 @@
                       <tr>
                         <th>#</th>
                         <th>{{commonRoles.STUDENT_ROLE}}</th>
-                        <th>Education</th>
+                        <th>Qualification</th>
                         <th>Joining Date</th>
                         <th>Mobile</th>
                       </tr>
@@ -306,7 +306,7 @@
                           <img src="{{student?.avatar || 'assets/profile.png'}}" alt="">
                         </td>
                         <td>{{student?.name | titlecase}}</td>
-                        <td>{{student?.education}}</td>
+                        <td>{{student?.qualifications[0]?.description}}</td>
                         <td>{{student?.createdAt | date}}</td>
                         <td>{{student?.mobile}}</td>
                       </tr>

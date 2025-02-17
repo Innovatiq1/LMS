@@ -159,7 +159,7 @@
                       </div>
 
                       <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
-                        <h6>Department Name</h6>
+                        <h6>Department</h6>
                       </div>
                       <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
                         <p>
@@ -167,39 +167,39 @@
                         </p>
                       </div>
 
-                      <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                      <div *ngIf="isExam" class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
                         <h6>Exam</h6>
                       </div>
-                      <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                      <div *ngIf="isExam" class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
                         <p>
-                          {{ sourceData?.exam_assessment }}
+                          {{ sourceData?.exam_assessment?.name}}
                         </p>
                       </div>
 
-                      <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                      <div *ngIf="isTutorial" class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
                         <h6>Tutorial</h6>
                       </div>
-                      <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                      <div *ngIf="isTutorial" class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
                         <p>
-                          {{ sourceData?.tutorial }}
+                          {{ sourceData?.tutorial?.name}}
                         </p>
                       </div>
 
-                      <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                      <!-- <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
                         <h6>Approval Required</h6>
                       </div>
                       <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
                         <p>
                           {{ sourceData?.approval }}
                         </p>
-                      </div>               
+                      </div>                -->
 
-                      <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                      <div *ngIf="isAssessment" class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
                         <h6>Assessment</h6>
                       </div>
-                      <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                      <div *ngIf="isAssessment" class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
                         <p>
-                          {{ sourceData?.assessment }}
+                          {{ sourceData?.assessment?.name}}
                         </p>
                       </div>
                     </div>

@@ -196,7 +196,7 @@
                         ] : null"
                         >
                           <span class="mobile-label">Qualification:</span
-                          >{{ row.education | capitalizeFirstLetter }}</mat-cell
+                          >{{ row?.qualifications[0]?.description | capitalizeFirstLetter }}</mat-cell
                         >
                       </ng-container>
                       <ng-container matColumnDef="Mobile">

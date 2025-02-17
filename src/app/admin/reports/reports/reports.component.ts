@@ -35,7 +35,8 @@ export class ReportsComponent implements OnInit{
   displayedColumns = [
     'name',
     'code',
-    'startDate',
+    // 'startDate',
+    'CourseType',
     'endDate',
     'Users'
   ];
