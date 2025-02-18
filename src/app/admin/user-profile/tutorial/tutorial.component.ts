@@ -81,7 +81,7 @@ ngOnInit(): void {
 
   if (tutorialData) {
     const { studentId, courseId, courseName } = tutorialData;
-    this.getTutorialAnswers(studentId, courseId);
+    this.getTutorialAnswers(studentId, courseId.id);
     this.courseName = courseName;
   } else {
     // Handle missing data case, possibly redirect or show an error message

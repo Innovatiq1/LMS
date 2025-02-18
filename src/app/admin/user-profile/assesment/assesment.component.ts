@@ -69,7 +69,7 @@ ngOnInit(): void {
   const tutorialData = this.dataService.getData('assesmentData');
   if (tutorialData) {
     const { studentId, courseId, courseName } = tutorialData;
-    this.getAssesmentAnswers(studentId, courseId);
+    this.getAssesmentAnswers(studentId, courseId.id);
     this.courseName = courseName;
   } else {
     console.log('No tutorial data found.');
