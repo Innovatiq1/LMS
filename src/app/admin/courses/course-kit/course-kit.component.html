@@ -91,10 +91,10 @@
                 <ng-container matColumnDef="Document Link">
                   <mat-header-cell *matHeaderCellDef >Document Link</mat-header-cell>
                   <mat-cell *matCellDef="let row">
-                    <div *ngIf="row.videoLink.length">
+                    <div *ngIf="row.videoLink && row.videoLink?.length">
                       <span class="mobile-label">Document Link:</span><a *ngFor="let doc of row.videoLink; let i = index" href="{{doc.document}}" target="_blank" class="dl-container">{{doc.doc_filename ? (doc.doc_filename |filename |truncate:10) : "--"}}</a>
                     </div>
-                    <div *ngIf="!row.videoLink.length && row.scormKit">
+                    <div *ngIf="!row.videoLink?.length && row.scormKit">
                       <span class="mobile-label">Scorm Link:</span><a [routerLink]="['/admin/courses/scorm-player/view/',row.scormKit.id]" class="dl-container">{{(row.scormKit.fileName||row.scormKit.title) |filename |truncate:10}}</a>
                     </div>
                   </mat-cell>
