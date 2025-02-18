@@ -30,8 +30,10 @@ export class ObjectDetectionComponent {
   @Output() FaceMatchDetect = new EventEmitter<void>();
   @Output() FaceMisMatchDetect = new EventEmitter<void>();
   @Output() FaceMatchError = new EventEmitter<void>();
+  @Output() FaceMatchMsg = new EventEmitter<string>();
 
   count: number = 0;
+  isPendingFaceMatch:boolean=false;
 
 constructor(private faceMatchService:FaceMatchService){}
   async ngOnInit() {;
@@ -60,6 +62,7 @@ constructor(private faceMatchService:FaceMatchService){}
         video.srcObject = stream;
         video.onloadedmetadata = () => video.play();
         // this.loadCocoSsdModel();
+        this.FaceMatchMsg.emit("Processing... Keep looking at the camera.");
         setTimeout(() => {
           this.detectFace(video, canvas);
         }, 2000);
@@ -86,6 +89,12 @@ constructor(private faceMatchService:FaceMatchService){}
 
   // Detect face and match with given image URL
   async detectFace(video: HTMLVideoElement, canvas: HTMLCanvasElement) {
+
+    if(this.isPendingFaceMatch){
+      return;
+    }
+    this.FaceMatchMsg.emit("Capturing image...");
+    this.isPendingFaceMatch= true;
     const context = canvas.getContext('2d');
     if(context){
     // Draw the current video frame on the canvas
@@ -97,6 +106,8 @@ constructor(private faceMatchService:FaceMatchService){}
         this.sendImageToBackend(blob);
       } else {
         console.error('Failed to create image blob.');
+      this.isPendingFaceMatch= false;
+
       }
     }, 'image/png');
    
@@ -104,12 +115,15 @@ constructor(private faceMatchService:FaceMatchService){}
   }
 
   sendImageToBackend(imageBlob: Blob){
+    this.FaceMatchMsg.emit("Face comparison in progress. Please wait...");
+    this.isPendingFaceMatch= true;
     const formData = new FormData();
     formData.append('profileImage', imageBlob, 'captured-image.png'); // Append the Blob with a file name
     formData.append('imageUrl', this.profilePic);
 
-    this.faceMatchService.checkFaceMatch(formData).subscribe( {
+    this.faceMatchService.checkFaceMatch(formData).subscribe({
         next:(res)=>{
+          this.isPendingFaceMatch= false;
           if(res.data.isMatch){
             clearInterval(this.captureInterval);
             this.FaceMatchDetect.emit();
@@ -124,6 +138,7 @@ constructor(private faceMatchService:FaceMatchService){}
           console.error(error);
           clearInterval(this.captureInterval);
           this.FaceMatchError.emit();
+          this.isPendingFaceMatch= false;
       }
     }
       

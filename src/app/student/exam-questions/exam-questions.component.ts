@@ -86,6 +86,7 @@ export class ExamQuestionsComponent {
   checkFaceMatch: boolean = false;
   faceMatchCount: number = 0;
   faceMisMatchCount: number =0;
+  overLayMsg:string = 'Please wait...';
 
 
   @ViewChild('proctoringDiv', { static: true }) proctoringDiv!: ElementRef;
@@ -97,13 +98,14 @@ export class ExamQuestionsComponent {
   private visibilityChangeHandler!: () => void;
   private keyPressHandler!: (event: KeyboardEvent) => void;
   violationCount: number = 0;
-  maxViolations: number = 4;
+  maxViolations: number = 5;
   totalTimes: number = 60;
   timerSubscription!: Subscription;
 
   handleMobilePhoneDetected(): void {
     Swal.fire('Cell Phone Detected', 'Action has been recorded', 'error');
     this.sendWarning('Cell Phone Detected', this.analyzerId);
+    this.showViolationAlert();
   }
 
   handleProhibitedObjectDetected(): void {
@@ -113,16 +115,23 @@ export class ExamQuestionsComponent {
       'error'
     );
     this.sendWarning('Prohibited Object Detected', this.analyzerId);
+    this.showViolationAlert();
   }
 
   handleFaceNotVisible(): void {
     Swal.fire('Face Not Visible', 'Action has been recorded', 'error');
     this.sendWarning('Face Not Visible', this.analyzerId);
+    this.showViolationAlert();
   }
 
   handleMultipleFacesDetected(): void {
     Swal.fire('Multiple Faces Detected', 'Action has been recorded', 'error');
     this.sendWarning('Multiple Face Detected', this.analyzerId);
+    this.showViolationAlert();
+  }
+
+  handleMessage(msg:string):void {
+    this.overLayMsg = msg;
   }
 
   handleFaceMatchDetected(isMatch: boolean): void {
@@ -243,10 +252,10 @@ export class ExamQuestionsComponent {
     this.courseService.getCourseById(this.courseId).subscribe((response) => {
       this.courseDetails = response;
       const videoAnalyzerReq = response?.exam_assessment?.videoAnalyzerReq;
-      console.log(response)
       if (videoAnalyzerReq) {
         this.isEnableProtector = true;
         this.showOverlay = true;
+        this.overLayMsg = 'Opening Camera...'
         this.startVideoAnalyzer();
       }
     });
@@ -881,11 +890,10 @@ export class ExamQuestionsComponent {
 
   showViolationAlert() {
     this.violationCount++;
-    alert(
-      `You are violating the exam rules. If this happens again, the exam will be canceled and you will be terminated.`
-    );
     if (this.violationCount > this.maxViolations) {
-      this.cancelExam();
+      Swal.fire('Max violation reached', 'The Exam will be canceled and you will be terminated', 'error').then(res=>{
+        this.location.back()
+      });
     }
   }
 

@@ -89,7 +89,9 @@
                   class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
                   *ngIf="labelStatusCheck('Document')"
                 >
-                  <label>{{ isScormKit ? "Scorm Kit" : "Document" }}</label>
+                  <label>{{ isScormKit ? "Scorm Kit" : "Document" }}
+                    <span *ngIf="isScormKit" class="mandatory">&nbsp;*</span>
+                  </label>
                   <div class="file-drop-area1">
                     <mat-progress-spinner
                       *ngIf="isUploading"
@@ -106,6 +108,7 @@
                           (change)="onFileUpload($event, isScormKit)"
                           class="file-input"
                           type="file"
+                          [required]="isScormKit?true:false"
                         />
                       </button>
                       <span class="file-msg">
@@ -119,6 +122,14 @@
                       </span>
                     </div>
                   </div>
+                  <mat-error
+                  *ngIf="
+                    courseKitForm.get('documentLink')?.invalid &&
+                    courseKitForm.get('documentLink')?.touched
+                  "
+                >
+                  No file found
+                </mat-error>
                 </div>
 
                 <!-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
