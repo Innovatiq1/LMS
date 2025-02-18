@@ -657,6 +657,10 @@ private tpUrl=environment.Url;
         const apiUrl = `${this.prefix}uploadScorm/${id}`;
         return this._Http.put<ApiResponse>(apiUrl, payload);
       }
+      getScormKit(id:string) {
+        const apiUrl = `${this.prefix}uploadScorm/${id}`;
+        return this._Http.get<ApiResponse>(apiUrl);
+      }
       createStudentScorm(payload: any){
         const apiUrl = `${this.prefix}uploadScorm/studentClasses/scorm`;
         return this._Http.post<any>(apiUrl, payload).pipe(map((response) => response));

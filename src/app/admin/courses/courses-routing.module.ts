@@ -24,6 +24,7 @@ import { ViewClassComponent } from './class-view/view-class/view-class.component
 import { ClassListComponent } from './class-list/class-list.component';
 import { EnquiryListComponent } from './enquiry-list/enquiry-list.component';
 import { ScheduleMeetingComponent } from './schedule-meeting/schedule-meeting.component';
+import { ScormPlayerComponent } from './course-kit/scorm-player/scorm-player.component';
 const routes: Routes = [
   {
     path: 'course-name',
@@ -160,6 +161,10 @@ const routes: Routes = [
     path: 'submitted-courses/submitted-pending-courses/course-view',
     component: CourseViewComponent,
   },
+  {
+    path: 'scorm-player/view/:id',
+    component: ScormPlayerComponent
+  }
  
 ];
 

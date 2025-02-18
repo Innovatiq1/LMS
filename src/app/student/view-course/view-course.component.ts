@@ -1359,21 +1359,21 @@ export class ViewCourseComponent implements OnDestroy {
         (v) => v.kitType === 'scorm'
       )?.scormKit;
       console.log(this.studentClassDetails)
-      if (this.studentClassDetails.scormKit && this.scormModules.length > 0) {
-        const lastModuleId =
-          this.studentClassDetails.scormKit.currentScormModule;
-        const lastModule = this.scormModules.find(
-          (v) => v._id === lastModuleId
-        );
-        const launchUrl = lastModule?.launch;
-        this.lastcommit = this.studentClassDetails.scormKit.lastCommit;
-        const scormKit = this.scormKit;
-        const url = scormKit?.path + '/' + launchUrl;
-        this.currentScormModule = lastModule;
-        console.log('CurrentScormModule:',this.currentScormModule);
-        this.initScorm2004(url);
-        console.log('launchUrl==', this.scormModules);
+      let lastModuleId = this.scormModules[0]._id;
+      if (this.studentClassDetails.scormKit && this.scormModules.length > 0 && this.studentClassDetails.scormKit.currentScormModule) {
+        lastModuleId =
+          this.studentClassDetails.scormKit.currentScormModule ;
+          this.lastcommit = this.studentClassDetails.scormKit.lastCommit;
       }
+      const lastModule = this.scormModules.find(
+        (v) => v._id === lastModuleId
+      );
+      const launchUrl = lastModule?.launch;
+      const scormKit = this.scormKit;
+      const url = scormKit?.path + '/' + launchUrl;
+      this.currentScormModule = lastModule;
+      console.log('lastmodule==>',lastModuleId,lastModule, url )
+      this.initScorm2004(url);
 
       if (this.paidProgram) {
         this.classService
@@ -1491,19 +1491,23 @@ export class ViewCourseComponent implements OnDestroy {
         this.longDescription = this?.coursekitDetails[0]?.longDescription;
         let totalPlaybackTime = 0;
         let documentCount = 0;
+        let lastModuleId =  this.scormModules[0]?._id;
         if (this.studentClassDetails.scormKit && this.scormModules.length > 0) {
-          const lastModuleId =
+          lastModuleId =
             this.studentClassDetails.scormKit.currentScormModule;
-          const lastModule = this.scormModules.find(
-            (v) => v._id === lastModuleId
-          );
-          const launchUrl = lastModule?.launch;
-          this.lastcommit = this.studentClassDetails.scormKit.lastCommit;
-          const scormKit = this.scormKit;
-          const url = scormKit?.path + '/' + launchUrl;
-          // this.initScorm2004(url);
-          console.log('launchUrl==', this.scormModules);
+            this.lastcommit = this.studentClassDetails.scormKit.lastCommit;
         }
+
+        const lastModule = this.scormModules.find(
+          (v) => v._id === lastModuleId
+        );
+        const launchUrl = lastModule?.launch;
+        const scormKit = this.scormKit;
+        const url = scormKit?.path + '/' + launchUrl;
+        // this.initScorm2004(url);
+        console.log('launchUrl==', this.scormModules);
+
+
         this.coursekitDetails.forEach(
           (doc: { playbackTime: any }, index: number) => {
             const playbackTime = doc.playbackTime;
@@ -2063,6 +2067,7 @@ export class ViewCourseComponent implements OnDestroy {
   }
 
   initScorm2004(contentUrl: string) {
+    console.log('ContentUrl:',contentUrl)
     this.iframeUrl = contentUrl;
     const settings = {
       autocommit: true,
@@ -2091,7 +2096,7 @@ export class ViewCourseComponent implements OnDestroy {
   }
 
   receiveMessage(CMIElement: any, value: any): void {
-    if (CMIElement == 'cmi.completion_status' && value === 'completed') {
+    if (CMIElement == 'cmi.completion_status' && value === 'completed' && !this.isCompleted) {
       const studentId = localStorage.getItem('id');
       const percentagePerModule = 100 / this.scormModules.length;
       const playBackTime = this.playBackTime + percentagePerModule;

@@ -62,9 +62,8 @@
                                       </mat-progress-spinner>
                                         <div class="file1">
                                             <button mat-raised-button color="primary" class="btn">Choose file <input
-                                                    formControlName="documentLink" (change)="onFileUpload($event)"
+                                                    formControlName="documentLink" (change)="onFileUpload($event, isScormKit)"
                                                     class="file-input" type="file"
-                                                    accept=".pdf,.ppt,.pptx,.doc,.docx,.xls,.xlsx,.txt"
                                                     ></button>
                                             <span class="file-msg">
                                                 <h6>{{uploadedDocument ? uploadedDocument : 'Drag and Drop File Here' }}
@@ -89,9 +88,6 @@
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
-                            </div>
-
-                            <div class="row">
 
                                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                                     <label>Long Description</label>

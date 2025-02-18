@@ -62,6 +62,7 @@ export class EditCourseKitComponent {
     { code: 'scorm', label: 'Scorm' },
   ];
   isScormKit: boolean = false;
+  acceptedFormats: string=".pdf,.ppt,.pptx,.doc,.docx,.xls,.xlsx,.txt";
   constructor(
     private router: Router,
 
@@ -114,12 +115,14 @@ export class EditCourseKitComponent {
 
     this.courseKitForm.get('kitType')?.valueChanges.subscribe((value) => {
       if (value === 'scorm') {
+        this.acceptedFormats=".zip";
         this.isScormKit = true;
       this.courseKitForm.patchValue({
         videoLink: '',
         documentLink: '',
       });
       } else {
+        this.acceptedFormats='.pdf,.ppt,.pptx,.doc,.docx,.xls,.xlsx,.txt';
         this.isScormKit = false;
       }
     });
@@ -238,9 +241,12 @@ export class EditCourseKitComponent {
         this.videoId = courseKitDetails._id
         this.videoSrc = courseKitDetails.video_filename;
         this.uploadedDocument = courseKitDetails.doc_filename;
+        this.acceptedFormats='.pdf,.ppt,.pptx,.doc,.docx,.xls,.xlsx,.txt';
         }else {
+          this.acceptedFormats='.zip';
           this.scormId = response.course.scormKit._id;
           this.scormKit = response.course.scormKit;
+          this.uploadedDocument = response.course.scormKit.fileName;
         }
         this.kitType = response.course.kitType;
         this.courseKitForm.patchValue({
@@ -353,7 +359,7 @@ export class EditCourseKitComponent {
   //     }
   //   }
   // }
-  onFileUpload(event: any) {
+  onFileUpload(event: any, isScormKit:boolean=false) {
     const file = event.target.files[0];
     const allowedFileTypes = [
       'application/pdf',
@@ -365,6 +371,9 @@ export class EditCourseKitComponent {
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       'text/plain' 
     ];
+    if(isScormKit){
+      allowedFileTypes.push('application/x-zip-compressed')
+    }
   
     if (file) {
       if (allowedFileTypes.includes(file.type)) {
