@@ -147,6 +147,7 @@ export class ExamQuestionsComponent {
       this.checkFaceMatch = false;
       this.showOverlay = false;
       console.log('Face match detected...')
+      this.initializeEventListeners();
       this.calculateTotalTime();
     }
   }
@@ -176,7 +177,6 @@ export class ExamQuestionsComponent {
     this.assessmentService.createAnalyzerId(payload).subscribe((res) => {
       if (res?.response) {
         this.analyzerId = res?.response.id;
-        this.initializeEventListeners();
       }
     });
   }
@@ -890,6 +890,7 @@ export class ExamQuestionsComponent {
 
   showViolationAlert() {
     this.violationCount++;
+    console.log('Violation count:',this.violationCount);
     if (this.violationCount > this.maxViolations) {
       Swal.fire('Max violation reached', 'The Exam will be canceled and you will be terminated', 'error').then(res=>{
         this.location.back()

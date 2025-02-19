@@ -184,9 +184,13 @@ export class EditCourseKitComponent {
   submitCourseKit(): void {
       const formdata = new FormData();
       formdata.append('files', this.docs);
-      formdata.append('files', this.videoLink);
-      formdata.append('video_filename', this.videoSrc);
-      formdata.append('doc_filename', this.uploadedDocument);
+      if (this.videoLink && !this.isScormKit) {
+        formdata.append('files', this.videoLink);
+      }
+      if (!this.isScormKit) {
+        formdata.append('video_filename', this.videoSrc);
+        formdata.append('doc_filename', this.uploadedDocument);
+      }
       Swal.fire({
         title: 'Uploading...',
         text: 'Please wait...',
@@ -246,7 +250,7 @@ export class EditCourseKitComponent {
           this.acceptedFormats='.zip';
           this.scormId = response.course.scormKit._id;
           this.scormKit = response.course.scormKit;
-          this.uploadedDocument = response.course.scormKit.fileName;
+          this.uploadedDocument = response.course.scormKit.fileName || response.course.scormKit.title;
         }
         this.kitType = response.course.kitType;
         this.courseKitForm.patchValue({
