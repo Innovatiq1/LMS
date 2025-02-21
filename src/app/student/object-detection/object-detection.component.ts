@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnInit, OnDestroy, Output, ViewChild, ElementR
 import { FaceMatchService } from '@core/service/face-match.service';
 import * as cocoSsd from '@tensorflow-models/coco-ssd';
 import '@tensorflow/tfjs';
+import * as posenet from '@tensorflow-models/posenet';
 
 @Component({
   selector: 'app-object-detection',
@@ -20,6 +21,7 @@ export class ObjectDetectionComponent {
   isMobilePhoneAlerted: boolean = false;
   isProhibitedObjectAlerted: boolean = false;
   isMultipleFaceAlerted: boolean = false;
+  isLookingAwayAlert:boolean = false;
   captureInterval:any;
 
 
@@ -31,26 +33,29 @@ export class ObjectDetectionComponent {
   @Output() FaceMisMatchDetect = new EventEmitter<void>();
   @Output() FaceMatchError = new EventEmitter<void>();
   @Output() FaceMatchMsg = new EventEmitter<string>();
+  @Output() LookAway = new EventEmitter<void>();
 
   count: number = 0;
   isPendingFaceMatch:boolean=false;
 
+  private cocoModel: cocoSsd.ObjectDetection | null = null;
+  private posenetModel: posenet.PoseNet | null = null;
+
 constructor(private faceMatchService:FaceMatchService){}
   async ngOnInit() {;
+    await this.initializeModels();
     await this.startVideoStream();
-
-    // this.initializeWebcam();
   }
 
-
-
- 
-
-  // Load Coco SSD model
-  async loadCocoSsdModel() {
-    const cocoModel = await cocoSsd.load();
-    console.log('Coco SSD model loaded:', cocoModel);
+  async initializeModels(): Promise<void> {
+    this.cocoModel = await cocoSsd.load();
+    this.posenetModel = await posenet.load({
+      architecture: 'MobileNetV1', // Faster than ResNet
+      inputResolution: { width: 640, height: 480 },
+      outputStride: 16
+    });
   }
+  
 
   async startVideoStream() {
     const video = this.videoElement.nativeElement;
@@ -61,7 +66,6 @@ constructor(private faceMatchService:FaceMatchService){}
       .then((stream) => {
         video.srcObject = stream;
         video.onloadedmetadata = () => video.play();
-        // this.loadCocoSsdModel();
         this.FaceMatchMsg.emit("Processing... Keep looking at the camera.");
         setTimeout(() => {
           this.detectFace(video, canvas);
@@ -157,40 +161,55 @@ constructor(private faceMatchService:FaceMatchService){}
   }
 
   async detectObjects(video: HTMLVideoElement, canvas: HTMLCanvasElement) {
-    const cocoModel = await cocoSsd.load();
-    this.startDetection(video,cocoModel);
+    this.startDetection();
   }
 
   ngOnDestroy(): void {
     this.cleanupResources();
   }
 
-  initializeWebcam(): void {
-    const video = this.videoElement.nativeElement;
-
-    navigator.mediaDevices
-      .getUserMedia({ video: { facingMode: 'user' }, audio: false })
-      .then((stream) => {
-        video.srcObject = stream;
-        video.onloadedmetadata = () => video.play();
-        return cocoSsd.load();
-      })
-      .then((model) => this.startDetection(video, model))
-      .catch(console.error);
-  }
 
 
   startDetection(
-    video: HTMLVideoElement,
-    model: cocoSsd.ObjectDetection
   ): void {
-    const detectFrame = () => {
-      model.detect(video).then((predictions) => {
-        this.processPredictions(predictions);
-        requestAnimationFrame(detectFrame);
-      });
+    const video = this.videoElement.nativeElement;
+
+    const detectFrame = async () => {
+      if (this.cocoModel && this.posenetModel) {
+        const objectPredictions = await this.cocoModel.detect(video);
+        this.processPredictions(objectPredictions);
+
+        const posePredictions = await this.posenetModel.estimateSinglePose(video, { flipHorizontal: true });
+        this.detectLookingAway(posePredictions);
+      }
+
+      requestAnimationFrame(detectFrame);
     };
     detectFrame();
+  }
+
+  detectLookingAway(pose: posenet.Pose): void {
+    if (!pose || !pose.keypoints) return;
+    const keypoints = pose.keypoints;
+    const keypointEarR = keypoints[3];
+    const keypointEarL = keypoints[4];
+
+    const minConfidence = 0.8;
+
+    if( !this.isLookingAwayAlert){
+      this.isLookingAwayAlert= true;
+
+    if (keypointEarL.score < minConfidence) {
+      this.LookAway.emit();
+    }
+    if (keypointEarR.score < minConfidence) {
+      this.LookAway.emit();
+    }
+    setTimeout(() => {
+      this.isLookingAwayAlert= false;
+    }, 15000);
+  }
+    
   }
 
   processPredictions(predictions: cocoSsd.DetectedObject[]): void {
