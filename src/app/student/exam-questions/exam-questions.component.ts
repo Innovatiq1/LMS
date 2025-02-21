@@ -22,6 +22,7 @@ import {
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
+import { SpeechRecognitionService } from '@core/service/speech-recognition.service';
 
 @Component({
   selector: 'app-exam-questions',
@@ -73,6 +74,7 @@ export class ExamQuestionsComponent {
   isRecording: boolean = false;
   analyzerId: string = '';
 
+  isVoiceDetectionEnabled = false;
   tabChange: number = 0;
   keyPress: number = 0;
   mobilePhoneFound: boolean = false;
@@ -130,6 +132,18 @@ export class ExamQuestionsComponent {
     this.showViolationAlert();
   }
 
+  handleLookingAwayDetected():void {
+    Swal.fire('Looking Away Detected', 'Action has been recorded', 'error');
+    this.sendWarning('Looking Away Detected', this.analyzerId);
+    this.showViolationAlert();
+  }
+
+  handleHumanVoiceDetect():void {
+    Swal.fire('Human voice Detected', 'Action has been recorded', 'error');
+    this.sendWarning('Human voice Detected', this.analyzerId);
+    this.showViolationAlert();
+  }
+
   handleMessage(msg:string):void {
     this.overLayMsg = msg;
   }
@@ -148,6 +162,7 @@ export class ExamQuestionsComponent {
       this.showOverlay = false;
       console.log('Face match detected...')
       this.initializeEventListeners();
+      this.startVoiceMonitoring();
       this.calculateTotalTime();
     }
   }
@@ -208,7 +223,8 @@ export class ExamQuestionsComponent {
     private classService: ClassService,
     private location: Location,
     private snackBar: MatSnackBar,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private speechService: SpeechRecognitionService
   ) { }
 
   ngOnInit(): void {
@@ -225,6 +241,16 @@ export class ExamQuestionsComponent {
     // this.startVideoSession();
     // this.startMonitoringTabSwitch();
   }
+
+  startVoiceMonitoring() {
+    this.isVoiceDetectionEnabled = true;
+    this.speechService.startListening((detected) => {
+      if (detected) {
+        this.handleHumanVoiceDetect()
+      }
+    });
+  }
+
 
   getClassDetails(): void {
     let urlPath = this.router.url.split('/');
@@ -611,6 +637,8 @@ export class ExamQuestionsComponent {
       this.visibilityChangeHandler
     );
     document.removeEventListener('keydown', this.keyPressHandler);
+    this.isVoiceDetectionEnabled = false;
+    this.speechService.stopListening();
   }
 
   navigate() {
