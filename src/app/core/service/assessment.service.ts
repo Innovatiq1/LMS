@@ -151,6 +151,14 @@ import { ApiResponse } from '@core/models/general.response';
       });
     }
 
+    getExamBlocked( filter?: Partial<AssessmentQuestionsPaginationModel>): Observable<ApiResponse> {
+      console.log("filtere",filter)
+      const apiUrl = `${this.defaultUrl}admin/exam-assesment-answers/blocked`;
+      return this.http.get<any>(apiUrl, {
+        params: this.buildParams(filter),
+      });
+    }
+
     getLatestExamAnswers( filter?: Partial<AssessmentQuestionsPaginationModel>): Observable<ApiResponse> {
       const apiUrl = `${this.defaultUrl}admin/exam-assesment-answers/latest`;
       return this.http.get<any>(apiUrl, {

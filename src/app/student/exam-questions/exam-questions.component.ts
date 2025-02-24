@@ -185,9 +185,10 @@ export class ExamQuestionsComponent {
 
   startProtoring() {
     const studentId = localStorage.getItem('id') || '';
-    let payload = {
+    let payload:any = {
       studentId,
       status: 'connected',
+      examAssessmentId: this.examAssessmentId,
     };
     this.assessmentService.createAnalyzerId(payload).subscribe((res) => {
       if (res?.response) {
@@ -836,7 +837,6 @@ export class ExamQuestionsComponent {
     document.addEventListener('keydown', this.keyPressHandler);
   }
 
-  sendLogsToServer(): void {}
 
   handleVisibilityChange(): void {
     if (document.hidden && this.isEnableProtector) {

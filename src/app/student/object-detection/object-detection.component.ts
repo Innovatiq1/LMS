@@ -10,7 +10,7 @@ import * as posenet from '@tensorflow-models/posenet';
   styleUrls: ['./object-detection.component.scss'],
 })
 export class ObjectDetectionComponent {
-  @Input() profilePic:string = '';
+  @Input() profilePic: string = '';
 
   @ViewChild('videoElement', { static: true })
   videoElement!: ElementRef<HTMLVideoElement>;
@@ -21,8 +21,8 @@ export class ObjectDetectionComponent {
   isMobilePhoneAlerted: boolean = false;
   isProhibitedObjectAlerted: boolean = false;
   isMultipleFaceAlerted: boolean = false;
-  isLookingAwayAlert:boolean = false;
-  captureInterval:any;
+  isLookingAwayAlert: boolean = false;
+  captureInterval: any;
 
 
   @Output() MobilePhone = new EventEmitter<void>();
@@ -36,13 +36,14 @@ export class ObjectDetectionComponent {
   @Output() LookAway = new EventEmitter<void>();
 
   count: number = 0;
-  isPendingFaceMatch:boolean=false;
+  isPendingFaceMatch: boolean = false;
 
   private cocoModel: cocoSsd.ObjectDetection | null = null;
   private posenetModel: posenet.PoseNet | null = null;
 
-constructor(private faceMatchService:FaceMatchService){}
-  async ngOnInit() {;
+  constructor(private faceMatchService: FaceMatchService) { }
+  async ngOnInit() {
+    ;
     await this.initializeModels();
     await this.startVideoStream();
   }
@@ -55,7 +56,7 @@ constructor(private faceMatchService:FaceMatchService){}
       outputStride: 16
     });
   }
-  
+
 
   async startVideoStream() {
     const video = this.videoElement.nativeElement;
@@ -85,7 +86,7 @@ constructor(private faceMatchService:FaceMatchService){}
     // };
   }
 
-  captureAutoFaceMatch(video: HTMLVideoElement, canvas: HTMLCanvasElement){
+  captureAutoFaceMatch(video: HTMLVideoElement, canvas: HTMLCanvasElement) {
     this.captureInterval = setInterval(() => {
       this.detectFace(video, canvas)
     }, 5000);
@@ -94,70 +95,70 @@ constructor(private faceMatchService:FaceMatchService){}
   // Detect face and match with given image URL
   async detectFace(video: HTMLVideoElement, canvas: HTMLCanvasElement) {
 
-    if(this.isPendingFaceMatch){
+    if (this.isPendingFaceMatch) {
       return;
     }
     this.FaceMatchMsg.emit("Capturing image...");
-    this.isPendingFaceMatch= true;
+    this.isPendingFaceMatch = true;
     const context = canvas.getContext('2d');
-    if(context){
-    // Draw the current video frame on the canvas
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    if (context) {
+      // Draw the current video frame on the canvas
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-    canvas.toBlob((blob) => {
-      if (blob) {
-        // Send the Blob to the backend
-        this.sendImageToBackend(blob);
-      } else {
-        console.error('Failed to create image blob.');
-      this.isPendingFaceMatch= false;
+      canvas.toBlob((blob) => {
+        if (blob) {
+          // Send the Blob to the backend
+          this.sendImageToBackend(blob);
+        } else {
+          console.error('Failed to create image blob.');
+          this.isPendingFaceMatch = false;
 
-      }
-    }, 'image/png');
-   
-    } 
+        }
+      }, 'image/png');
+
+    }
   }
 
-  sendImageToBackend(imageBlob: Blob){
+  sendImageToBackend(imageBlob: Blob) {
     this.FaceMatchMsg.emit("Face comparison in progress. Please wait...");
-    this.isPendingFaceMatch= true;
+    this.isPendingFaceMatch = true;
     const formData = new FormData();
     formData.append('profileImage', imageBlob, 'captured-image.png'); // Append the Blob with a file name
     formData.append('imageUrl', this.profilePic);
 
     this.faceMatchService.checkFaceMatch(formData).subscribe({
-        next:(res)=>{
-          this.isPendingFaceMatch= false;
-          if(res.data.isMatch){
-            clearInterval(this.captureInterval);
-            this.FaceMatchDetect.emit();
-            const video = this.videoElement.nativeElement;
-            const canvas = this.canvasElement.nativeElement;
-            this.detectObjects(video, canvas);
-          }else {
-            this.FaceMisMatchDetect.emit();
-          }
-        },
-        error:(error)=>{    
-          console.error(error);
+      next: (res) => {
+        this.isPendingFaceMatch = false;
+        if (res.data.isMatch) {
           clearInterval(this.captureInterval);
-          this.FaceMatchError.emit();
-          this.isPendingFaceMatch= false;
+          this.FaceMatchDetect.emit();
+          const video = this.videoElement.nativeElement;
+          const canvas = this.canvasElement.nativeElement;
+          this.detectObjects(video, canvas);
+        } else {
+          this.FaceMisMatchDetect.emit();
+        }
+      },
+      error: (error) => {
+        console.error(error);
+        clearInterval(this.captureInterval);
+        this.FaceMatchError.emit();
+        this.isPendingFaceMatch = false;
       }
     }
-      
-    //   res=>{
-    //   if(res.data.isMatch){
-    //     clearInterval(this.captureInterval);
-    //     this.FaceMatchDetect.emit();
-    //     const video = this.videoElement.nativeElement;
-    //     const canvas = this.canvasElement.nativeElement;
-    //     this.detectObjects(video, canvas);
-    //   }else{
-    //     console.log(res);
-    //   }
-    // }
-  )
+
+      //   res=>{
+      //   if(res.data.isMatch){
+      //     clearInterval(this.captureInterval);
+      //     this.FaceMatchDetect.emit();
+      //     const video = this.videoElement.nativeElement;
+      //     const canvas = this.canvasElement.nativeElement;
+      //     this.detectObjects(video, canvas);
+      //   }else{
+      //     console.log(res);
+      //   }
+      // }
+    )
   }
 
   async detectObjects(video: HTMLVideoElement, canvas: HTMLCanvasElement) {
@@ -191,25 +192,44 @@ constructor(private faceMatchService:FaceMatchService){}
   detectLookingAway(pose: posenet.Pose): void {
     if (!pose || !pose.keypoints) return;
     const keypoints = pose.keypoints;
-    const keypointEarR = keypoints[3];
-    const keypointEarL = keypoints[4];
-
-    const minConfidence = 0.8;
-
-    if( !this.isLookingAwayAlert){
-      this.isLookingAwayAlert= true;
-
-    if (keypointEarL.score < minConfidence) {
-      this.LookAway.emit();
-    }
-    if (keypointEarR.score < minConfidence) {
-      this.LookAway.emit();
-    }
-    setTimeout(() => {
-      this.isLookingAwayAlert= false;
-    }, 15000);
-  }
     
+    const nose = keypoints.find((point) => point.part === 'nose');
+    const leftEye = keypoints.find((point) => point.part === 'leftEye');
+    const rightEye = keypoints.find((point) => point.part === 'rightEye');
+    const leftShoulder = keypoints.find((point) => point.part === 'leftShoulder');
+    const rightShoulder = keypoints.find((point) => point.part === 'rightShoulder');
+
+    if (nose && leftEye && rightEye && leftShoulder && rightShoulder) {
+      // Calculate horizontal distance between eyes
+      const eyeDistance = Math.abs(leftEye.position.x - rightEye.position.x);
+
+      // Calculate the offset of the nose from the midpoint of the eyes
+      const eyeMidpointX = (leftEye.position.x + rightEye.position.x) / 2;
+      const noseOffset = Math.abs(nose.position.x - eyeMidpointX);
+
+      const eyeMidpointY = (leftEye.position.y + rightEye.position.y) / 2;
+      const noseEyeDistanceY = eyeMidpointY - nose.position.y;
+      const shoulderMidpointY = (leftShoulder.position.y + rightShoulder.position.y) / 2;
+      const noseShoulderDistanceY = shoulderMidpointY - nose.position.y;
+
+      const faceTurnThreshold = eyeDistance * 0.5; // Looking away sensitivity
+      const tiltThreshold = 10; // Looking down sensitivity
+
+      const isLookingAwayAlert = noseOffset > faceTurnThreshold;
+      const isLookingDown = noseEyeDistanceY < tiltThreshold && noseShoulderDistanceY < 30;
+
+      if(isLookingAwayAlert || isLookingDown){
+        if (!this.isLookingAwayAlert) {
+          this.isLookingAwayAlert = true;
+          console.log(isLookingAwayAlert ? 'Looking Away!': 'Looking Down!')
+          this.LookAway.emit();
+          setTimeout(() => {
+            this.isLookingAwayAlert = false;
+          }, 5000);
+        }
+      }
+    }
+
   }
 
   processPredictions(predictions: cocoSsd.DetectedObject[]): void {
@@ -256,7 +276,7 @@ constructor(private faceMatchService:FaceMatchService){}
       //   setTimeout(() => (this.isMobilePhoneAlerted = false), 2000); // Reset after 2 seconds
       // }
       if (
-        ['book', 'laptop','cell phone'].includes(prediction.class) &&
+        ['book', 'laptop', 'cell phone'].includes(prediction.class) &&
         !this.isProhibitedObjectAlerted
       ) {
         this.isProhibitedObjectAlerted = true;

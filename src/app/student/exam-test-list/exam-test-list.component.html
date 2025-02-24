@@ -62,13 +62,16 @@
                 <mat-header-cell *matHeaderCellDef>Exam
                 </mat-header-cell>
                 <mat-cell *matCellDef="let row" class="name" (click)="view(row.id)">
-                    <button *ngIf="row.isAssigned && !row.isCompleted"
+                    <button *ngIf="row.isAssigned && !row.isCompleted && !row.hasAlerts"
                         [routerLink]="['/student/exam-questions/',studentClassId, row._id, row?.studentId, row?.courseId?._id, row?.examAssessmentId?._id]" [queryParams]="{ retake: true, submitted: false }" mat-raised-button  id="submit1" >
                       Take Exam
                     </button>
-                    <button *ngIf="!row.isAssigned && !row.isCompleted && getLabel(row) != 'Approval Pending'" (click)="navToExam(row)" mat-raised-button  id="submit1" >
+                    <button *ngIf="!row.isAssigned && !row.isCompleted && getLabel(row) != 'Approval Pending' && !row.hasAlerts" (click)="navToExam(row)" mat-raised-button  id="submit1" >
                       {{getLabel(row) }}
                     </button>
+                    <span class="badge badge-solid-red" *ngIf="row.hasAlerts">
+                      <span class="status-dot"></span>
+                      {{ 'Blocked' | titlecase}}</span>
                     <span class="badge badge-solid-red" *ngIf="!row.isAssigned && !row.isCompleted && getLabel(row) == 'Approval Pending'">
                       <span class="status-dot"></span>
                       {{ 'Pending' | titlecase}}</span>
