@@ -75,8 +75,6 @@ export class ExamQuestionsComponent {
   analyzerId: string = '';
 
   isVoiceDetectionEnabled = false;
-  tabChange: number = 0;
-  keyPress: number = 0;
   mobilePhoneFound: boolean = false;
   prohibitedObjectFound: boolean = false;
   faceNotVisible: boolean = false;
@@ -100,7 +98,7 @@ export class ExamQuestionsComponent {
   private visibilityChangeHandler!: () => void;
   private keyPressHandler!: (event: KeyboardEvent) => void;
   violationCount: number = 0;
-  maxViolations: number = 5;
+  maxViolations: number = 4;
   totalTimes: number = 60;
   timerSubscription!: Subscription;
 
@@ -847,19 +845,15 @@ export class ExamQuestionsComponent {
 
   handleVisibilityChange(): void {
     if (document.hidden && this.isEnableProtector) {
-      this.tabChange++;
-      Swal.fire('Changed Tab Detected', 'Action has been Recorded', 'error');
+      this.sendWarning('Changed Tab Detected', this.analyzerId);
+      this.showViolationAlert();
     }
   }
 
   handleKeyPress(event: KeyboardEvent): void {
     if ((event.altKey || event.ctrlKey) && this.isEnableProtector) {
-      this.keyPress++;
-      Swal.fire(
-        `${event.altKey ? 'Alt' : 'Ctrl'} Key Press Detected`,
-        'Action has been Recorded',
-        'error'
-      );
+      this.sendWarning( `${event.altKey ? 'Alt' : 'Ctrl'} Key Press Detected`, this.analyzerId);
+      this.showViolationAlert();
     }
   }
 
