@@ -16,6 +16,7 @@ export class SpeechRecognitionService {
   private isComponentActive = true; // Track component state
   voiceDetected = new Subject<boolean>(); 
   private isVoiceDetected:boolean=false;
+  private mediaStream!: MediaStream;
   
   async startListening(callback: (detected: boolean) => void) {
     if (this.isListening) return;
@@ -24,8 +25,8 @@ export class SpeechRecognitionService {
     this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
     
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      this.microphone = this.audioContext.createMediaStreamSource(stream);
+      this.mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      this.microphone = this.audioContext.createMediaStreamSource(this.mediaStream);
 
       this.analyser = this.audioContext.createAnalyser();
       this.analyser.fftSize = 512; // Smaller size for better voice detection
@@ -51,7 +52,7 @@ export class SpeechRecognitionService {
       this.isVoiceDetected=true;
       setTimeout(() => {
         this.isVoiceDetected=false;
-      }, 15000);
+      }, 5000);
       callback(true); // Notify component
     }
 
@@ -68,10 +69,18 @@ export class SpeechRecognitionService {
 
   stopListening() {
     this.isComponentActive = false;
+    this.isListening = false;
+
+    // Stop all microphone tracks
+    if (this.mediaStream) {
+      this.mediaStream.getTracks().forEach((track) => track.stop());
+    }
+
+    // Close the audio context
     if (this.audioContext) {
       this.audioContext.close();
-      this.isListening = false;
     }
+
     console.log('🛑 Voice detection stopped.');
   }
 }

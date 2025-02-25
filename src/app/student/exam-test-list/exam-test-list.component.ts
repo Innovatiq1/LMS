@@ -174,13 +174,13 @@ export class ExamTestListComponent {
     );
 
     if ((course.feeType == 'free' && course.approval == 'no') || isApproved) {
-      return 'Take Exam';
+      return data.hasAlerts ? 'Blocked': 'Take Exam';
     }
     if (course.feeType == 'free' && course.approval == 'yes' && isRegistered) {
       return 'Approval Pending';
     }
     if (course.feeType == 'free' && course.approval == 'yes' && !isRegistered) {
-      return 'Take Exam';
+      return data.hasAlerts ? 'Blocked':  'Take Exam';
     }
 
     return data.studentClassId?.length ? 'Approval Pending' : 'Pay';

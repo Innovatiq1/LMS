@@ -39,6 +39,7 @@ import { ScheduleMeetingComponent } from './schedule-meeting/schedule-meeting.co
 import { DivideBy60Pipe } from './pipes/divide-by60.pipe';
 import { ScormPlayerComponent } from './course-kit/scorm-player/scorm-player.component';
 import { SafePipeAdmin } from '../pipes/safe.pipe';
+import { BlockedExamsComponent } from './blocked-exams/blocked-exams.component';
 
 
 
@@ -70,7 +71,8 @@ import { SafePipeAdmin } from '../pipes/safe.pipe';
    EnquiryListComponent,
    DivideBy60Pipe,
    ScormPlayerComponent,
-    SafePipeAdmin
+    SafePipeAdmin,
+    BlockedExamsComponent
 
   ],
   imports: [
