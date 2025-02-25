@@ -190,9 +190,12 @@
                         </button>
                       </mat-menu>
                       <!-- context menu end -->
-                      <div *ngIf="!exampleDatabase?.isTblLoading" class="no-results"
+                      <!-- <div *ngIf="!exampleDatabase?.isTblLoading" class="no-results"
                         [style.display]="dataSource.length === 0 ? '' : 'none'">
-                        No results
+                        No results123
+                      </div> -->
+                      <div *ngIf="!dataSource || dataSource.length === 0" class="text-center py-3 no-data-text">
+                        No data found
                       </div>
                       <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems"
                       (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr"
