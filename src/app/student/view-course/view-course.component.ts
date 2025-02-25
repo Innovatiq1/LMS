@@ -2134,7 +2134,6 @@ export class ViewCourseComponent implements OnDestroy {
   }
 
   receiveMessage(CMIElement: any, value: any): void {
-    console.log('ReceiveMsg===========>', CMIElement, value);
     if ((CMIElement == 'cmi.completion_status' || CMIElement ==='cmi.core.lesson_status') && value === 'completed' && !this.isCompleted) {
       const studentId = localStorage.getItem('id');
       const percentagePerModule = 100 / this.scormModules.length;

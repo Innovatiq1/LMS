@@ -92,7 +92,7 @@ export class BlockedExamsComponent {
    openActivityLogModal(payload: any) {
       const dialogRef = this.dialog.open(ActivityLogComponent, {
         width: '800px',
-        data: payload,
+        data: [payload],
       });
     }
 

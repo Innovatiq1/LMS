@@ -62,7 +62,7 @@
                             </mat-header-cell>
                             <mat-cell *matCellDef="let row">
                               <span class="mobile-label">Activity Count:</span>
-                              <span (click)="openActivityLogModal(row.activityLogs)">
+                              <span (click)="openActivityLogModal(row)">
                                 {{ row.activityCount }}
                               </span>
                             </mat-cell>

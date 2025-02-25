@@ -161,6 +161,7 @@ export class ExamQuestionsComponent {
       this.checkFaceMatch = false;
       this.showOverlay = false;
       console.log('Face match detected...')
+      this.startProtoring();
       this.initializeEventListeners();
       this.startVoiceMonitoring();
       this.calculateTotalTime();
@@ -184,17 +185,23 @@ export class ExamQuestionsComponent {
   }
 
   startProtoring() {
+    if(!this.analyzerId){
     const studentId = localStorage.getItem('id') || '';
+    let companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+
     let payload:any = {
       studentId,
       status: 'connected',
       examAssessmentId: this.examAssessmentId,
+      companyId,
+      courseId:this.courseId
     };
     this.assessmentService.createAnalyzerId(payload).subscribe((res) => {
       if (res?.response) {
         this.analyzerId = res?.response.id;
       }
     });
+  }
   }
 
   sendWarning(message: string, analyzerId: string) {
@@ -409,7 +416,7 @@ export class ExamQuestionsComponent {
     this.studentService.getStudentById(studentId).subscribe(async (res: any) => {
       const userProfilePicture = res?.avatar;
       this.userProfilePic = userProfilePicture;
-      this.startProtoring();
+      // this.startProtoring();
     });
   }
 
