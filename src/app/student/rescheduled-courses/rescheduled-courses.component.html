@@ -27,35 +27,42 @@
 
                     <div class="body">
                         <div class="row">
-                            <div class="col-md-3" *ngFor="let data of studentApprovedClasses">
-                                <div class="course-card course-card-blog">
-                                    <div class="course-card-image"
-                                        style="cursor: pointer" [routerLink]="['/student/view-course/', data.classId.id ]">
-                                        <img class="img" [src]="  data?.courseId?.image_link || '../../../assets/noimage.jpg'" alt="Image" />
-                                    </div>
-                                    <!-- <div *ngIf="data.courseId.feeType == 'free'" class="course-card-image"
-                                        style="cursor: pointer" [routerLink]="['/student/view-freecourse/',data.courseId.id]">
-                                        <img class="img" [src]=" data?.courseId?.image_link ||'../../../assets/noimage.jpg' " alt="Image" />
-                                    </div> -->
-
-                                    <div class="blog-table">
-                                        <div class="post-user mt-3">
-
-                                            <h6 class="mb-xs mt-xs title">
-                                                {{ data.courseId.title | truncate : 45 }}
-                                            </h6>
-                                            <p class="text-muted">
-                                                <time>{{ data?.courseId?.courseCode }} </time>
-                                            </p>
+                            <div *ngIf="studentApprovedClasses?.length > 0; else noContent">
+                                <div class="col-md-3" *ngFor="let data of studentApprovedClasses">
+                                    <div class="course-card course-card-blog">
+                                        <div class="course-card-image"
+                                            style="cursor: pointer" [routerLink]="['/student/view-course/', data.classId.id ]">
+                                            <img class="img" [src]="  data?.courseId?.image_link || '../../../assets/noimage.jpg'" alt="Image" />
                                         </div>
-                                        <h6>{{ data?.courseId?.department }}Department</h6>
-                                        <p class="course-card-description" [innerHTML]=" data?.courseId?.course_detailed_description  | bulletPoints | truncate : 40 "></p>
-                                        <div class="text-center mb-3">
+                                        <!-- <div *ngIf="data.courseId.feeType == 'free'" class="course-card-image"
+                                            style="cursor: pointer" [routerLink]="['/student/view-freecourse/',data.courseId.id]">
+                                            <img class="img" [src]=" data?.courseId?.image_link ||'../../../assets/noimage.jpg' " alt="Image" />
+                                        </div> -->
 
+                                        <div class="blog-table">
+                                            <div class="post-user mt-3">
+
+                                                <h6 class="mb-xs mt-xs title">
+                                                    {{ data.courseId.title | truncate : 45 }}
+                                                </h6>
+                                                <p class="text-muted">
+                                                    <time>{{ data?.courseId?.courseCode }} </time>
+                                                </p>
+                                            </div>
+                                            <h6>{{ data?.courseId?.department }}Department</h6>
+                                            <p class="course-card-description" [innerHTML]=" data?.courseId?.course_detailed_description  | bulletPoints | truncate : 40 "></p>
+                                            <div class="text-center mb-3">
+
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <ng-template #noContent>
+                                <div class="col-md-12 text-center py-5">
+                                    <h4>No content found</h4>
+                                </div>
+                            </ng-template>
                         </div>
                     </div>
                     <mat-paginator class="paginator rounded-5" #paginator [length]="totalApprovedItems"

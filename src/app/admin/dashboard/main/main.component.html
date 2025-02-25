@@ -530,29 +530,33 @@
         </div>
   </ng-container>
   <ng-container *ngFor="let component of dashboard.components">
-        <!-- <div *ngIf="component.id === 'announcement-board'" class="col-xs-12 col-sm-12 col-md-4 col-lg-4"> -->
-          <div *ngIf="component.id === 'announcement-board'" class="col-xs-12 col-sm-12 col-md-6 col-lg-6 announcement-board">
-
-          <div class="card">
-            <div class="header">
-              <h2>Announcement Board</h2>
-            </div>
-            <div class="body">
-              <ng-scrollbar style="height: 350px" visibility="hover">
-                <div class="recent-comment">
-                  <div *ngFor="let announcement of announcements.reverse()" class="notice-board">
-                    <div class="notice-body">
-                      <h5 class="notice-heading col-green">{{announcement?.announcementBy?.name}}</h5>
-                      <p [innerHTML]="getSafeHtml(announcement?.details)"></p>
-                      <small class="text-muted float-end">{{announcement?.createdAt | date}}</small>
-                    </div>
+    <div *ngIf="component.id === 'announcement-board'" class="col-xs-12 col-sm-12 col-md-6 col-lg-6 announcement-board">
+      <div class="card">
+        <div class="header">
+          <h2>Announcement Board</h2>
+        </div>
+        <div class="body">
+          <ng-scrollbar style="height: 350px" visibility="hover">
+            <div class="recent-comment">
+              <!-- Corrected *ngIf with ng-template structure -->
+              <div *ngIf="announcements?.length > 0; else noContent">
+                <div *ngFor="let announcement of announcements.reverse()" class="notice-board">
+                  <div class="notice-body">
+                    <h5 class="notice-heading col-green">{{announcement?.announcementBy?.name}}</h5>
+                    <p [innerHTML]="getSafeHtml(announcement?.details)"></p>
+                    <small class="text-muted float-end">{{announcement?.createdAt | date}}</small>
                   </div>
                 </div>
-              </ng-scrollbar>
+              </div>
+              <ng-template #noContent>
+                <p class="text-center text-muted">No content found</p>
+              </ng-template>
             </div>
-          </div>
+          </ng-scrollbar>
         </div>
-        </ng-container>
+      </div>
+    </div>
+  </ng-container>
         <ng-container *ngFor="let component of dashboard.components">
         <!-- <div *ngIf="component.id === 'reschedule-list'"   class="col-xs-12 col-sm-12 col-md-8 col-lg-8"> -->
           <div *ngIf="component.id === 'reschedule-list'" class="col-xs-12 col-sm-12 col-md-6 col-lg-6 reschedule-list">
