@@ -1512,9 +1512,12 @@ export class ViewCourseComponent implements OnDestroy {
             this.lastcommit = this.studentClassDetails.scormKit.lastCommit;
         }
 
-        const lastModule = this.scormModules.find(
+        let lastModule:any = this.scormModules.find(
           (v) => v._id === lastModuleId
         );
+        if(!lastModule){
+          lastModule = this.scormModules[0];
+        }
         const launchUrl = lastModule?.launch;
         const scormKit = this.scormKit;
         const url = scormKit?.path + '/' + launchUrl;
@@ -2166,7 +2169,7 @@ export class ViewCourseComponent implements OnDestroy {
       ...module,
       launchUrl: scormKit.path + '/' + module.launch,
     };
-     if(scormKit.version === '1.2'){
+     if(module.version === '1.2'){
       this.initScorm12(this.currentScormModule.launchUrl);
     }else {
         this.initScorm2004(this.currentScormModule.launchUrl);
