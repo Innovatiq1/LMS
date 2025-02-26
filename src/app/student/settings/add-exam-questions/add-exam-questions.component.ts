@@ -16,6 +16,7 @@ import { SettingsService } from '@core/service/settings.service';
 import { MatDialog,MAT_DIALOG_DATA,MatDialogRef } from '@angular/material/dialog';
 import { TestPreviewComponent } from '@shared/components/test-preview/test-preview.component';
 import { CommonService } from '@core/service/common.service';
+import { AuthenService } from '@core/service/authen.service';
 
 
 @Component({
@@ -55,6 +56,7 @@ export class AddExamQuestionsComponent implements OnInit, OnDestroy{
   timerValues:any;
   draftId!: string;
   dialogStatus:boolean=false;
+  showVideoAnalyzer:boolean=false;
 
   constructor(
     @Optional() @Inject(MAT_DIALOG_DATA) public data11: any,
@@ -66,11 +68,11 @@ export class AddExamQuestionsComponent implements OnInit, OnDestroy{
     private SettingsService:SettingsService,
     private dialog: MatDialog,
     private commonService: CommonService,
-    @Optional() private dialogRef: MatDialogRef<AddExamQuestionsComponent>
+    @Optional() private dialogRef: MatDialogRef<AddExamQuestionsComponent>,
+    private authenService: AuthenService,
   ) {
     if (data11) {
       this.dialogStatus=true;
-      console.log("Received variable:", data11.variable);
     }
     let urlPath = this.router.url.split('/');
     this.editUrl = urlPath.includes('edit-questions');
@@ -80,6 +82,15 @@ export class AddExamQuestionsComponent implements OnInit, OnDestroy{
         this.questionId = params.id;
       }
     );
+
+    const roleDetails =this.authenService.getRoleDetails()[0].settingsMenuItems
+    const parentId = `student/settings/configuration`;
+    const childId =  "all-questions";
+
+    let parentData = roleDetails.filter((item: any) => item.id == parentId);
+    let childData = parentData[0].children.filter((item: any) => item.id == childId);
+    let actions = childData[0].actions
+    this.showVideoAnalyzer = actions.some((item:any) => item.title == 'Proctoring' && item.checked);
 
     this.questionFormTab2 = this.formBuilder.group({
       name: ['', Validators.required],
@@ -118,7 +129,6 @@ export class AddExamQuestionsComponent implements OnInit, OnDestroy{
    }
    startAutoSave() {
     setTimeout(() => {
-      console.log('draftSubscription')
       if (!this.draftSubscription) {
         this.draftSubscription = timer(0, 30000).subscribe(() => {
           this.saveDraft();
@@ -164,7 +174,7 @@ saveDraft(data?: string) {
           retake: this.questionFormTab2.value.retake,
           passingCriteria:this.questionFormTab2.value.passingCriteria,
           scoreAlgorithm: this.questionFormTab2.value.scoreAlgorithm,
-          videoAnalyzerReq: this.questionFormTab2.value.videoAnalyzerReq,
+          videoAnalyzerReq: this.showVideoAnalyzer ? this.questionFormTab2.value.videoAnalyzerReq:false,
           status: 'draft',
           companyId:userId,
           questions: this.questionFormTab2.value.questions.map((v: any) => ({
@@ -400,7 +410,7 @@ saveDraft(data?: string) {
         retake: this.questionFormTab2.value.retake,
         passingCriteria:this.questionFormTab2.value.passingCriteria,
         scoreAlgorithm: this.questionFormTab2.value.scoreAlgorithm,
-        videoAnalyzerReq: this.questionFormTab2.value.videoAnalyzerReq,
+        videoAnalyzerReq: this.showVideoAnalyzer ? this.questionFormTab2.value.videoAnalyzerReq:false,
         status:this.dialogStatus?'approved':'open',
         companyId:userId,
         questions: this.questionFormTab2.value.questions.map((v: any) => ({
@@ -515,6 +525,8 @@ saveDraft(data?: string) {
         return;
       }
       const payload = { ...formData, id: this.questionId };
+      if(!this.showVideoAnalyzer)
+        payload.videoAnalyzerReq = false; 
       Swal.fire({
         title: 'Are you sure?',
         text: 'Do you want to update!',

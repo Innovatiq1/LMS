@@ -135,9 +135,9 @@ export class CreateUserTypeComponent {
    menuItems.forEach((element:any) => {
     if(element.checked){
       this.changeMenuChecked(element.checked, element.id);
-    }else if(element.indeterminate&& element.children){
+    }else if(element.indeterminate&& element.children?.length){
       this.populateCheckbox(element.children);
-    }else if(element.indeterminate&& element.actions){
+    }else if(element.indeterminate&& element.actions?.length){
       this.populateCheckbox(element.actions);
     }
    });
@@ -147,10 +147,10 @@ export class CreateUserTypeComponent {
     settingsMenuItems.forEach((element:any) => {
      if(element.checked){
        this.changeSettingMenuChecked(element.checked, element.id);
-     }else if(element.indeterminate&& element.children){
+     }else if(element.indeterminate&& element.children?.length){
        this.populateSettingsMenuCheckbox(element.children);
-     }else if(element.indeterminate&& element.actions){
-      this.populateCheckbox(element.actions);
+     }else if(element.indeterminate&& element.actions?.length){
+      this.populateSettingsMenuCheckbox(element.actions);
     }
     });
    }

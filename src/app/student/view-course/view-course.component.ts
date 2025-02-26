@@ -188,6 +188,8 @@ export class ViewCourseComponent implements OnDestroy {
   approval: any;
   discount_Type: any;
   tpDiscountValue: any;
+  isScormKit:boolean = false;
+  isVideoKit:boolean=false;
 
   constructor(
     private classService: ClassService,
@@ -1409,6 +1411,9 @@ export class ViewCourseComponent implements OnDestroy {
   }
 
   scormKitInit(){
+    this.isScormKit =this.courseKit?.some((v) => v.kitType === 'scorm');
+    this.isVideoKit = !this.isScormKit
+
     if(this.scormModules.length&&!this.isScormKitInit){
     let lastModuleId = this.scormModules[0]._id;
     if (this.studentClassDetails.scormKit && this.scormModules.length > 0 && this.studentClassDetails.scormKit.currentScormModule) {
@@ -1747,8 +1752,8 @@ export class ViewCourseComponent implements OnDestroy {
       .getStudentFreeCourse(studentId, this.courseDetailsId)
       .subscribe((response) => {
         this.studentClassDetails = response?.data?.docs[0];
-                this.scormKitInit();
-                this.coursekitDetails = response?.data?.docs[0]?.coursekit;
+        this.scormKitInit();
+        this.coursekitDetails = response?.data?.docs[0]?.coursekit;
 
         this.longDescription = this?.coursekitDetails[0]?.longDescription;
         let totalPlaybackTime = 0;
