@@ -269,6 +269,12 @@ export class CreateSuperAdminComponent {
   private createUser(userData: Users): void {    
     this.userService.saveUsers(userData).subscribe(
       (response:any) => {
+
+        localStorage.setItem("rolesnew", JSON.stringify({
+          learner: this.userForm.value.learner,
+          trainer: this.userForm.value.trainer
+      }));
+        
             let payload = {
               company:this.userForm.value.company,
               companyId:response.companyId,
@@ -288,6 +294,8 @@ export class CreateSuperAdminComponent {
                 text: 'Company created successfully',
                 icon: 'success',
               });
+
+              
 
               const smtpPayload={
                 emailFrom:"support.learning@innovatiqconsulting.com",
@@ -338,13 +346,32 @@ export class CreateSuperAdminComponent {
               })
 
 
+              const roleDataString = localStorage.getItem("rolesnew") ?? "{}";  
+              const roleData = JSON.parse(roleDataString);
 
-
-              
+              // MENU_LIST.forEach((menu) => {
+              //   if (menu.settingsMenuItems) {
+              //     menu.settingsMenuItems.forEach((setting:any) => {
+              //       if (setting.children) {
+              //         setting.children.forEach((child: any) => {
+              //           if (child.title === "Trainees") {
+              //             child.title = roleData.learner; // Update Trainees title
+              //           }
+              //           if (child.title === "Trainers") {
+              //             child.title = roleData.trainer; // Update Trainers title
+              //           }
+              //         });
+              //       }
+              //     });
+              //   }
+              // });
               
               MENU_LIST[0].companyId = response.companyId
+              MENU_LIST[0].settingsMenuItems[0].children[3].children[1].title=roleData.learner;
+              MENU_LIST[0].settingsMenuItems[0].children[3].children[2].title=roleData.trainer;
               const payload =MENU_LIST[0]
               this.adminService.createUserType(payload).subscribe((response)=>{
+                //  console.log("menu_listttt",response)
               })
 
               
@@ -353,11 +380,32 @@ export class CreateSuperAdminComponent {
               this.logoService.createSidemenu(sideMenuPayload).subscribe((response)=>{
                 // console.log("respone of sideMenuPayload",response)
               })
+              
+              
+              // SETTING_SIDEMENU_LIST.forEach((menu) => {
+              //   menu.MENU_LIST.forEach((item: any) => {
+              //     if (item.children) {
+              //       item.children.forEach((child: any) => {
+              //         if (child.title === "Trainees") {
+              //           child.title = roleData.learner;  
+              //         }
+              //         if (child.title === "Trainers") {
+              //           child.title = roleData.learner; 
+              //         }
+              //       });
+              //     }
+              //   });
+              // });
+              
+            // const roleDataString = localStorage.getItem("rolesnew") ?? "{}";  
+            // const roleData = JSON.parse(roleDataString);
 
             SETTING_SIDEMENU_LIST[0].companyId = response.companyId;
+             SETTING_SIDEMENU_LIST[0].MENU_LIST[0].children[4].children[1].title=roleData.learner;
+             SETTING_SIDEMENU_LIST[0].MENU_LIST[0].children[4].children[2].title=roleData.trainer;
             const settingSidemenuPayload=SETTING_SIDEMENU_LIST[0];
             this.logoService.createSettingSidemenu(settingSidemenuPayload).subscribe((response)=>{
-              // console.log("settingSidemenuPayload response=",response)
+              //  console.log("settingSidemenuPayload response=",response)
             })
 
               

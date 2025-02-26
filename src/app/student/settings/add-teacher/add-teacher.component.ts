@@ -64,7 +64,7 @@ export class AddTeacherComponent {
         {
           title: '', 
           items: [this.storedItems],  
-          active: 'Create Trainer',  
+          active: `Create ${AppConstants.INSTRUCTOR_ROLE}`,  
         },
       ];
     }
@@ -184,7 +184,7 @@ export class AddTeacherComponent {
         {
           role: {
             id: 1,
-            description: "Trainer",
+            description: `${AppConstants.INSTRUCTOR_ROLE}`,
           },
         },
       ]
@@ -269,7 +269,7 @@ export class AddTeacherComponent {
 
     Swal.fire({
       title: 'Are you sure?',
-      text: 'Do You want to create a Trainer!',
+      text: `Do You want to create a ${AppConstants.INSTRUCTOR_ROLE}!`,
       icon: 'warning',
       confirmButtonText: 'Yes',
       showCancelButton: true,
@@ -282,7 +282,7 @@ export class AddTeacherComponent {
 
             Swal.fire({
               title: "Successful",
-              text: "Trainer created successfully",
+              text: `${AppConstants.INSTRUCTOR_ROLE} created successfully`,
               icon: "success",
             });
           this.proForm.reset();
