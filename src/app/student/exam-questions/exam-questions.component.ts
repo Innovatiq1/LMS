@@ -845,6 +845,7 @@ export class ExamQuestionsComponent {
 
   handleVisibilityChange(): void {
     if (document.hidden && this.isEnableProtector) {
+      Swal.fire('Changed Tab Detected', 'Action has been Recorded', 'error');
       this.sendWarning('Changed Tab Detected', this.analyzerId);
       this.showViolationAlert();
     }
@@ -852,6 +853,7 @@ export class ExamQuestionsComponent {
 
   handleKeyPress(event: KeyboardEvent): void {
     if ((event.altKey || event.ctrlKey) && this.isEnableProtector) {
+      Swal.fire(`${event.altKey ? 'Alt' : 'Ctrl'} Key Press Detected`, 'Action has been Recorded', 'error');
       this.sendWarning( `${event.altKey ? 'Alt' : 'Ctrl'} Key Press Detected`, this.analyzerId);
       this.showViolationAlert();
     }
