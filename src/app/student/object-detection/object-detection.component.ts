@@ -297,6 +297,7 @@ export class ObjectDetectionComponent {
     const stream = video.srcObject as MediaStream;
     if (stream) {
       stream.getTracks().forEach((track) => track.stop());
+      video.srcObject = null;
     }
   }
 
