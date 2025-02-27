@@ -415,6 +415,11 @@ SIDEMENU_LIST =[
                 "title": "Delete",
                 "id": "delete-coursekit",
                 "class": "ml-menu3"
+              },
+              {
+                "title": "SCORM Kit",
+                "id": "scorm-kit",
+                "class": "ml-menu3"
               }
             ],
             "children": []

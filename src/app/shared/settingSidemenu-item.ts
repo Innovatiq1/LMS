@@ -392,6 +392,11 @@ SETTING_SIDEMENU_LIST =[
                 "title": "View",
                 "id": "view-assess",
                 "class": "ml-menu3"
+              },
+              {
+                "title": "Proctoring",
+                "id": "proctoring",
+                "class": "ml-menu3"
               }
             ],
             "children": []
