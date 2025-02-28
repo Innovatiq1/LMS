@@ -11,17 +11,24 @@ import 'jspdf-autotable';
 import { formatDate } from '@angular/common';
 import { AppConstants } from '@shared/constants/app.constants';
 import { SettingsService } from '@core/service/settings.service';
+import { PageEvent } from '@angular/material/paginator';
+
 @Component({
   selector: 'app-view-e-attendance',
   templateUrl: './view-e-attendance.component.html',
   styleUrls: ['./view-e-attendance.component.scss']
 })
 export class ViewEAttendanceComponent {
-  displayedColumns: string[] = [
-    'img',
-    'User Type',
-    'Name',
-  ];
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  // displayedColumns: string[] = [
+  //   'img',
+  //   'User Type',
+  //   'Name',
+  // ];
+
+  displayedColumns: string[] = ['student', 'email', 'date', 'time', 'loginCount'];
+
   breadscrums = [
     {
       title: 'Users',
@@ -56,6 +63,12 @@ export class ViewEAttendanceComponent {
     });
     this.coursePaginationModel = {};
    
+}
+
+pageSizeChange(event: PageEvent) {
+  this.pageSizeArr = [5, 10, 25, 50]; // Define available page sizes
+  this.totalItems = event.length; // Set total items
+  this.dataSource.paginator = this.paginator; // Update paginator
 }
 
 
