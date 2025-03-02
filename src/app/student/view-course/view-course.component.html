@@ -78,6 +78,7 @@
                 <ul class="list-group list-group-unbordered">
                   <li class="list-group-item">
                     <b>Delivery </b>
+                    <p>help{{classDetails}}</p>
                     <div class="profile-desc-item float-end">
                       {{ classDetails?.classDeliveryType | titlecase }}
                     </div>
@@ -360,7 +361,7 @@
 
                       <ng-container matColumnDef=" Class Start Date ">
                         <th mat-header-cell *matHeaderCellDef>
-                          Class Start Dat
+                          Class Start Date
                         </th>
                         <td mat-cell *matCellDef="let element">
                           {{ element?.sessionStartDate | date }}

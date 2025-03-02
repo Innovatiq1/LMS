@@ -69,7 +69,8 @@ export class EditSuperAdminComponent {
     this.userForm = this._fb.group({
       name: new FormControl('', [Validators.required, Validators.pattern(/[a-zA-Z0-9]+/),...this.utils.validators.noLeadingSpace]),
       website:new FormControl('', []),
-      Active: new FormControl('true', [Validators.required]),
+      // Active: new FormControl('true', [Validators.required]),
+      attemptBlock: [''],
       company: new FormControl('', [Validators.required]),
       mobile: new FormControl('', [Validators.required,...this.utils.validators.mobile]),
       domain: new FormControl('', []),
@@ -263,6 +264,8 @@ export class EditSuperAdminComponent {
             courses:this.userForm.value.courses,
             uen: this.userForm.value.uen,
             code:this.userForm.value.code,
+            attemptBlock: false,
+            attemptCalculation: 1,
 
           }
           this.userService.updateCompany(payload, this.companyDataId).subscribe(
@@ -288,6 +291,7 @@ export class EditSuperAdminComponent {
   getBlogsList(filters?: any) {
     this.userService.getUserById(this.currentId).subscribe(
       (response: any) => {
+        // console.log("newww",response.data.data)
         this.data = response.data.data;
         this.avatar = this.data?.avatar;
         this.uploaded = this.avatar?.split('/');
@@ -309,6 +313,7 @@ export class EditSuperAdminComponent {
             mobile: this.data?.mobile,
             joiningDate: this.data?.joiningDate,
             expiryDate:this.data?.expiryDate,
+            attemptBlock:this.data.attemptBlock,
             domain: res[0]?.identifier,
             company:this.data?.company,
             learner:res[0]?.learner,
@@ -317,6 +322,7 @@ export class EditSuperAdminComponent {
             users:res[0]?.users,
             uen: res[0]?.uen,
             code:res[0]?.code,
+            
 
           });
         }

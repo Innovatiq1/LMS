@@ -50,3 +50,9 @@ svg {
     height: 100%;
     min-height: 400px; /* Adjust as needed */
 }
+
+@media (max-width: 768px) {
+  .reschedule-list {
+    margin-top: 25px; /* Add spacing between tables */
+  }
+}
