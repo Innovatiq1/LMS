@@ -358,6 +358,65 @@
           </div>
         </div>
       </div>
+      <div *ngIf="selectedComponents['EXAM LIST']" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="card">
+          <div class="header">
+            <h2>Exam List</h2>
+            <button mat-icon-button [matMenuTriggerFor]="menu" class="header-dropdown">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item>
+                <mat-icon>add_circle_outline</mat-icon>
+                <span>Add</span>
+              </button>
+              <button mat-menu-item disabled>
+                <mat-icon>delete_outline</mat-icon>
+                <span>Delete</span>
+              </button>
+              <button mat-menu-item>
+                <mat-icon>refresh</mat-icon>
+                <span>Refresh</span>
+              </button>
+            </mat-menu>
+          </div>
+          <div class="tableBody">
+            <div class="table-responsive">
+              <table class="table table-hover ">
+                <thead>
+                  <tr>
+                    <th>Course</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Test 1</td>
+                    <td>Jul 23 2024 </td>
+                    <td>Sep 23 2024 </td>
+                  </tr>
+                  <tr>
+                    <td>Test 1</td>
+                    <td> Jul 23 2024 </td>
+                    <td>Sep 23 2024 </td>
+                  </tr>
+                  <tr>
+                    <td>Test 1</td>
+                    <td> Jul 23 2024 </td>
+                    <td>Sep 23 2024 </td>
+                  </tr>
+                  <tr>
+                    <td>Test 1</td>
+                    <td> Jul 23 2024 </td>
+                    <td>Sep 23 2024 </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   
 </div>  

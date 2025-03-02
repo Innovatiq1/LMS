@@ -369,6 +369,42 @@
             </div>
           </div>
         </ng-container>
+
+        <ng-container *ngFor="let component of dashboard.components">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" *ngIf="component.checked && component.id === 'exam-list'">
+            <div class="card" style="border-radius: 31px;">
+              <div class="header mt-3">
+                <h2>Exam List</h2>
+              </div>
+              <div class="tableBody">
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Course</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngIf="coursExameData.length === 0">
+                        <td colspan="3" class="text-center py-3 no-data-text">No Data Found</td>
+                      </tr>
+                      <tr *ngFor="let course of coursExameData" style="cursor: pointer;" [routerLink]="['/admin/courses/exam/trainees/', course._id]">
+                        <td>{{course?.title | titlecase}}</td>
+                        <td>{{course?._sessionStart | date}}</td>
+                        <td>{{course?._sessionEnd | date}}</td>
+                      </tr>
+                      <tr *ngIf="coursExameData.length">
+                        <td colspan="3" class="text-center py-3 no-data-text cursor-pointer" routerLink="/admin/courses/student-courses/exam-scores">View more</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
         
     </div>
 
