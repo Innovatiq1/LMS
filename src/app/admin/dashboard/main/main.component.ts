@@ -329,6 +329,7 @@ export class MainComponent implements OnInit {
   classDataById: any;
   isSurveyDataAvailable: boolean=false;
   isUserDataAvailable: boolean=false;
+  coursExameData:any[]=[];
   constructor(
     private courseService: CourseService,
     private userService: UserService,
@@ -848,6 +849,7 @@ export class MainComponent implements OnInit {
     this.instructorData();
     this.getProgramList();
     this.getAllCourse();
+    this.getAllExamCourse();
     this.getCountIns();
 
     this.getCompletedClasses();
@@ -1996,6 +1998,10 @@ private attendanceBarChart() {
     });
   }
 
+  aboutCourse(id:any) {
+    this.router.navigate(['/admin/course/exam/trainees/', id]);
+  }
+
   aboutInstructor(id: any) {
     this.router.navigate(['/student/settings/all-user/all-instructors/view-instructor'], {
       queryParams: { data: id },
@@ -2370,6 +2376,21 @@ private attendanceBarChart() {
         });
     })
   }
+
+  getAllExamCourse(){
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.courseService.getAllExamCourses(userId,{status:'active',limit:5, page:1}).subscribe(response =>{
+          
+          const data = response.data;
+     this.coursExameData = data.map((v:any)=>({
+      ...v,
+      _sessionStart: v?.classId?.sessions[0]?.sessionStartDate||v.sessionStartDate,
+      _sessionEnd: v?.classId?.sessions[0]?.sessionEndDate||v.sessionEndDate,
+     }));
+     console.log("all exam:", data, this.coursExameData);
+    })
+  }
+
   getCoursesList() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
         this.courseService.getAllCourses(userId,{status:'active'})

@@ -40,6 +40,7 @@ import { DivideBy60Pipe } from './pipes/divide-by60.pipe';
 import { ScormPlayerComponent } from './course-kit/scorm-player/scorm-player.component';
 import { SafePipeAdmin } from '../pipes/safe.pipe';
 import { BlockedExamsComponent } from './blocked-exams/blocked-exams.component';
+import { ExamTrianeesComponent } from './exam-trianees/exam-trianees.component';
 
 
 
@@ -72,7 +73,8 @@ import { BlockedExamsComponent } from './blocked-exams/blocked-exams.component';
    DivideBy60Pipe,
    ScormPlayerComponent,
     SafePipeAdmin,
-    BlockedExamsComponent
+    BlockedExamsComponent,
+    ExamTrianeesComponent
 
   ],
   imports: [

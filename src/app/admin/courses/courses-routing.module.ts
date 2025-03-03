@@ -25,6 +25,7 @@ import { ClassListComponent } from './class-list/class-list.component';
 import { EnquiryListComponent } from './enquiry-list/enquiry-list.component';
 import { ScheduleMeetingComponent } from './schedule-meeting/schedule-meeting.component';
 import { ScormPlayerComponent } from './course-kit/scorm-player/scorm-player.component';
+import { ExamTrianeesComponent } from './exam-trianees/exam-trianees.component';
 const routes: Routes = [
   {
     path: 'course-name',
@@ -164,6 +165,10 @@ const routes: Routes = [
   {
     path: 'scorm-player/view/:id',
     component: ScormPlayerComponent
+  },
+  {
+    path:'exam/trainees/:courseId',
+    component: ExamTrianeesComponent
   }
  
 ];

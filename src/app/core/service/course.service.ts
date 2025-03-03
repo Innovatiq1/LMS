@@ -147,6 +147,21 @@ private tpUrl=environment.Url;
       params: this.buildParams(filter),
     });
   }
+
+  getAllExamCourses(id:any,filter?: Partial<CoursePaginationModel>
+  ): Observable<ApiResponse> {
+    const apiUrl = `${this.prefix}admin/courses-new/class?companyId=${id}`;
+    return this._Http.get<ApiResponse>(apiUrl, {
+      params: this.buildParams(filter),
+    });
+  }
+
+  getAllTraineesExam(courseId:any, filter?:Partial<CoursePaginationModel>):Observable<ApiResponse> {
+    const apiUrl = `${this.prefix}admin/courses-new/exam/trainees/${courseId}`;
+    return this._Http.get<ApiResponse>(apiUrl, {
+      params: this.buildParams(filter)
+    });
+  }
   
 
   getAllCoursesWithDepartment(id:any,department?: string,filter?: Partial<CoursePaginationModel>

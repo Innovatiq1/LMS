@@ -80,6 +80,7 @@ export class SettingsComponent {
       'CLASSES LIST',
       'TRAINERS LIST',
       'NEW TRAINEES LIST',
+      'EXAM LIST'
     ],
     'Trainer Analytics': ['TRAINER LIST', 'UPCOMING COURSES'],
     Support: ['Support Tickets'],
