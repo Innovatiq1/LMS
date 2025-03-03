@@ -100,7 +100,7 @@ export class CreateCourseKitComponent implements OnInit {
   ) {
     if (data11) {
       this.dialogStatus=true;
-      console.log("Received variable:", data11.variable);
+      // console.log("Received variable:", data11.variable);
     }
     this.currentDate = new Date();
     this.courseKitModel = {};
@@ -357,15 +357,16 @@ export class CreateCourseKitComponent implements OnInit {
   // }
   fileBrowseHandler(event: any) {
     const file = event.target.files[0];
+    // console.log("fileType==",file.type)
     
     // Check if the selected file is a video and its size is less than 10MB
-    if (file.type.startsWith('video/') && file.size <= 10000000) {
+    if ((file.type.startsWith('video/') || file.type.startsWith('audio/')) && file.size <= 10000000) {
       this.videoLink = file;
       this.videoSrc = this.videoLink.name;
-    } else if (!file.type.startsWith('video/')) {
+    } else if (!(file.type.startsWith('video/') || file.type === 'audio/mp3')) {
       Swal.fire({
         title: 'Oops...',
-        text: 'Selected format doesn\'t support. Only video formats are allowed!',
+        text: 'Selected format doesn\'t support. Only video and MP3 formats are allowed!',
         icon: 'error',
       });
     } else if (file.size > 10000000) {
@@ -389,14 +390,14 @@ export class CreateCourseKitComponent implements OnInit {
   prepareFilesList(files: Array<any>) {
     for (const item of files) {
       // Check if the file is a video format
-      if (item.type.startsWith('video/')) {
+      if (item.type.startsWith('video/')||item.type.startsWith('audio')) {
         item.progress = 0;
         this.files.push(item);
         this.model.vltitle = item.name;
       } else {
         Swal.fire({
           title: 'Oops...',
-          text: 'Selected format doesn\'t support. Only video formats are allowed!',
+          text: 'Selected format doesn\'t support. Only video and MP3 formats are allowed!',
           icon: 'error',
         });
       }
@@ -473,6 +474,7 @@ export class CreateCourseKitComponent implements OnInit {
   
           this.courseService.uploadFile(file).subscribe(
             (response) => {
+              // console.log("response123333",response)
               const byteCharacters = atob(response.fileContent);
               const byteNumbers = new Array(byteCharacters.length);
               for (let i = 0; i < byteCharacters.length; i++) {
