@@ -231,7 +231,7 @@ export class EditCourseKitComponent {
       course: this.courseService.getCourseKitById(this.courseId),
     }).subscribe((response: any) => {
       if (response) {
-        console.log(response);
+        // console.log(response);
         
         this.course = response.course;
         this.fileName = response?.course?.videoLink?.length > 0
@@ -300,11 +300,12 @@ export class EditCourseKitComponent {
   //   }
   fileBrowseHandler(event: any) {
     const file = event.target.files[0];
-    const allowedFormats = ['video/mp4', 'video/x-matroska', 'video/x-msvideo']; 
+    // console.log("ffile",file.type)
+    const allowedFormats = ['video/mp4', 'video/x-matroska', 'video/x-msvideo','audio/mp3','audio/wav','audio/aac','audio/mpeg']; 
     if (!allowedFormats.includes(file.type)) {
       Swal.fire({
         title: 'Oops...',
-        text: 'Selected format doesn\'t support. Only video formats are allowed!',
+        text: 'Selected format doesn\'t support. Only video and MP3 formats are allowed!',
         icon: 'error',
       });
       return; 

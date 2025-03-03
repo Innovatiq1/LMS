@@ -68,7 +68,7 @@
                                                 <h6  *ngIf="response.scormKit">Scorm Kit</h6>
                                             </div>
                                             <div class="col-xl-6 col-sm-12">
-                                                <p style="cursor: pointer;" *ngIf="response.videoLink?.length"><a *ngFor="let doc of response.videoLink; let i = index" href="{{doc.document}}" target="_blank" class="dl-container">{{doc.doc_filename |filename}}</a></p>
+                                                <p style="cursor: pointer;" *ngIf="response.videoLink?.length"><a *ngFor="let doc of response.videoLink; let i = index" href="{{doc.document}}" target="_blank" class="dl-container" [attr.download]="doc.doc_filename" >{{doc.doc_filename |filename}}</a></p>
                                                 <p style="cursor: pointer;" *ngIf="response.scormKit"><a [routerLink]="['/admin/courses/scorm-player/view/',response.scormKit.id]" class="dl-container">{{ (response.scormKit.fileName||response.scormKit.title) | filename | truncate:20 }}</a></p>
                                             </div>
                                         </div>
