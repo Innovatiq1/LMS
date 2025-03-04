@@ -26,19 +26,26 @@
           </select>
           <!-- <div *ngIf ="tmsUrl">          <br>
           </div> -->
-          <p  class="auth-signup-text text-muted">{{ 'Need an account?' | translate }}
+          <!-- <div class="signUpText">
+          <p *ngIf="superadminRegistration" class="auth-signup-text text-muted">{{ 'Need an account?' | translate }}
             <a (click)="signup()"
             class="sign-up-link pointer">{{ 'Sign up' | translate }}
           </a>
-
-
           </p>
+        </div> -->
+        <div class="signUpText">
+          <p *ngIf="superadminRegistration" class="auth-signup-text text-muted">
+            {{ 'Need an account?' | translate }}
+            <a (click)="signup()" class="sign-up-link pointer">{{ 'Sign up' | translate }}</a>
+          </p>
+          <p *ngIf="!superadminRegistration" class="empty-placeholder"></p> <!-- Placeholder to maintain space -->
+        </div>
           <h2 class="login-title">{{ 'Sign in' | translate }}</h2>
           <form class="validate-form" [formGroup]="authForm" (ngSubmit)="loginUser()" >
             <div class="row">
               <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2 custom-border-radius">
                 <label>
-                  {{ 'Email' | translate }} <span class="mandatory">*</span>
+                  {{ 'Email' | translate }}<span class="mandatory">*</span>
                 </label>
                 <mat-form-field class="example-full-width" appearance="outline">
                   <input matInput formControlName="email" />
@@ -88,7 +95,7 @@
                   </span>
                 </label>
               </div> -->
-              <div class="mb-4">
+              <div class="mb-4" *ngIf="superadminRegistration">
               <a class="txt1 pointer" (click)="forgotpassword()">{{"Forgot Password?" | translate}}</a>
             </div>
             <div class="container-auth-form-btn">

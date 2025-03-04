@@ -69,7 +69,7 @@ export class SigninComponent
   body: any;
   linkedinKeys: any;
   domain: any;
-
+  superadminRegistration:boolean=true;
   constructor(
     private formBuilder: UntypedFormBuilder,
     private route: ActivatedRoute,
@@ -126,6 +126,9 @@ export class SigninComponent
 
     const pathSegments = this.router.url.split('/');
     this.extractedName = pathSegments[1];
+    if(this.extractedName=='authentication'){
+      this.superadminRegistration=false;
+    }
   }
   listLang = [
     { text: 'English', flag: 'assets/images/flags/us.svg', lang: 'en' },
@@ -134,14 +137,15 @@ export class SigninComponent
   ];
 
   signup() {
-    this.commonService.navigateWithCompanyName(
-      this.extractedName,
-      'authentication/LMS/signup'
-    );
+         this.commonService.navigateWithCompanyName(
+          this.extractedName,
+          'authentication/LMS/signup'
+        );
+    
   }
 
   onCompanyChange(event: any): void {
-    console.log('Selected company:', this.selectedCompany);
+    // console.log('Selected company:', this.selectedCompany);
   }
 
   forgotpassword() {
@@ -162,7 +166,7 @@ export class SigninComponent
       .getCompanyByIdentifierWithoutToken(this.extractedName)
       .subscribe((resp: any) => {
         let companyId = resp[0]?.companyId;
-        this.domain = resp[0]?.company;
+        this.domain = resp[0]?.company||"TMS";
         this.settingsService
           .getKeysByCompanyId(companyId)
           .subscribe((res: any) => {
@@ -286,7 +290,7 @@ export class SigninComponent
                   }
                 },
                 (err: any) => {
-                  console.log('err', err);
+                  // console.log('err', err);
                   if (err == 'user not found!') {
                     this.userService
                       .getCompanyByIdentifierWithoutToken(this.extractedName)
@@ -522,7 +526,7 @@ export class SigninComponent
             .subscribe((res: any) => {
               (this.profileForm.value.companyId = res[0]?.companyId),
                 (this.profileForm.value.company = res[0]?.company),
-                (this.profileForm.value.domain = res[0]?.identifier);
+                (this.profileForm.value.domain = res[0]?.identifier||"TMS");
               this.profileForm.value.Active = true;
               this.profileForm.value.type = this.profileForm.value.role;
               this.profileForm.value.isLogin = true;
@@ -661,7 +665,16 @@ export class SigninComponent
         (res: any) => {
           console.log("1stres",res)
           this.companies = res.data
-          this.openCompanyDialog(this.companiesDialog,'signin')
+           if(this.companies.length>0){
+            this.openCompanyDialog(this.companiesDialog,'signin')
+           }else{
+            this.isSubmitted = true;
+            this.email = 'Looks like your login information is incorrect. Please enter valid details';
+            setTimeout(() => {
+              this.email = '';
+            }, 2500);
+           }
+          
         })
     } else {
     this.isLoading = true;
@@ -685,7 +698,7 @@ export class SigninComponent
           let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
           this.superadminservice.getAllCustomRoleById(userId).subscribe(
             (response: any) => {
-              console.log('res222',response)
+              // console.log('res222',response)
               localStorage.setItem('subdomain',response[0]?.identifier)
               this.commonService.setRoleDetails(response[0])
               this.updateRoleConstants();
@@ -694,7 +707,7 @@ export class SigninComponent
 
           this.adminService.getUserTypeList({ allRows: true }, userId).subscribe(
             (response: any) => {
-              console.log('res1212',response)
+              // console.log('res1212',response)
               let userType = localStorage.getItem('user_type');
               let data = response.filter((item: any) => item.typeName === userType);
 
@@ -812,7 +825,7 @@ export class SigninComponent
             }
           },
           (err: any) => {
-            console.log('err', err);
+            // console.log('err', err);
             if (err == 'user not found!') {
               this.userService
                 .getCompanyByIdentifierWithoutToken(this.extractedName)
