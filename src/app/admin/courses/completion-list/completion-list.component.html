@@ -213,7 +213,9 @@
                 <mat-row *matRowDef="let row; columns: displayedColumns;" [style.cursor]="'pointer'" matRipple>
                 </mat-row>
               </table>
-              
+              <div *ngIf="!isLoading && (!dataSource || dataSource.length === 0)" class="text-center py-3 no-data-text">
+                No data found
+              </div>
               <!-- Loading spinner -->
               <div *ngIf="isLoading" class="tbl-spinner">
                 <mat-progress-spinner color="primary" [diameter]="40" mode="indeterminate">

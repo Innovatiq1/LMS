@@ -46,6 +46,7 @@ import { environment } from 'environments/environment';
 import { HttpClient } from '@angular/common/http';
 
 declare var Scorm2004API: any;
+declare var Scorm12API: any;
 export interface PeriodicElement {
   name: string;
   position: number;
@@ -146,6 +147,8 @@ export class ViewCourseComponent implements OnDestroy {
   isInvoice: boolean = false;
   paidAmount: boolean = false;
 
+  isScormKitInit:boolean = false;
+
   pdfData: any = [];
   dafaultGenratepdf: boolean = false;
   element: any;
@@ -185,6 +188,8 @@ export class ViewCourseComponent implements OnDestroy {
   approval: any;
   discount_Type: any;
   tpDiscountValue: any;
+  isScormKit:boolean = false;
+  isVideoKit:boolean=false;
 
   constructor(
     private classService: ClassService,
@@ -380,6 +385,7 @@ export class ViewCourseComponent implements OnDestroy {
               .getStudentClass(studentId, this.classId)
               .subscribe((response) => {
                 this.studentClassDetails = response.data.docs[0];
+                this.scormKitInit();
                 // console.log("this.studentClassDetails",this.studentClassDetails)
                 // console.log("studentId",studentId)
                 // console.log("this.classId",this.classId)
@@ -1359,21 +1365,7 @@ export class ViewCourseComponent implements OnDestroy {
         (v) => v.kitType === 'scorm'
       )?.scormKit;
       console.log(this.studentClassDetails)
-      if (this.studentClassDetails.scormKit && this.scormModules.length > 0) {
-        const lastModuleId =
-          this.studentClassDetails.scormKit.currentScormModule;
-        const lastModule = this.scormModules.find(
-          (v) => v._id === lastModuleId
-        );
-        const launchUrl = lastModule?.launch;
-        this.lastcommit = this.studentClassDetails.scormKit.lastCommit;
-        const scormKit = this.scormKit;
-        const url = scormKit?.path + '/' + launchUrl;
-        this.currentScormModule = lastModule;
-        console.log('CurrentScormModule:',this.currentScormModule);
-        this.initScorm2004(url);
-        console.log('launchUrl==', this.scormModules);
-      }
+      this.scormKitInit();
 
       if (this.paidProgram) {
         this.classService
@@ -1416,6 +1408,32 @@ export class ViewCourseComponent implements OnDestroy {
         }
         : null;
     });
+  }
+
+  scormKitInit(){
+    this.isScormKit =this.courseKit?.some((v) => v.kitType === 'scorm');
+    this.isVideoKit = !this.isScormKit
+
+    if(this.scormModules.length&&!this.isScormKitInit){
+    let lastModuleId = this.scormModules[0]._id;
+    if (this.studentClassDetails.scormKit && this.scormModules.length > 0 && this.studentClassDetails.scormKit.currentScormModule) {
+      lastModuleId =
+        this.studentClassDetails.scormKit.currentScormModule ;
+        this.lastcommit = this.studentClassDetails.scormKit.lastCommit;
+    }
+    let lastModule = this.scormModules.find(
+      (v) => v._id === lastModuleId
+    );
+    if(!lastModule){
+      lastModule = this.scormModules[0];
+    }
+    const launchUrl = lastModule?.launch;
+    const scormKit = this.scormKit;
+    const url = scormKit?.path + '/' + launchUrl;
+    this.currentScormModule = lastModule;
+    this.openScormModule(lastModule, scormKit);
+    this.isScormKitInit = true;
+  }
   }
   getAttendanceDetails(getstudentClassDetails: any) {
     // console.log("this.courseDetails",getstudentClassDetails)
@@ -1477,6 +1495,7 @@ export class ViewCourseComponent implements OnDestroy {
 
 
         this.studentClassDetails = response?.data?.docs[0];
+        this.scormKitInit();
         this.registeredClassId = response?.data?.docs[0]?.id;
         if (response.data.docs[0].discount) {
           this.discountType = response?.data?.docs[0]?.discount.discountType;
@@ -1491,19 +1510,26 @@ export class ViewCourseComponent implements OnDestroy {
         this.longDescription = this?.coursekitDetails[0]?.longDescription;
         let totalPlaybackTime = 0;
         let documentCount = 0;
+        let lastModuleId =  this.scormModules[0]?._id;
         if (this.studentClassDetails.scormKit && this.scormModules.length > 0) {
-          const lastModuleId =
+          lastModuleId =
             this.studentClassDetails.scormKit.currentScormModule;
-          const lastModule = this.scormModules.find(
-            (v) => v._id === lastModuleId
-          );
-          const launchUrl = lastModule?.launch;
-          this.lastcommit = this.studentClassDetails.scormKit.lastCommit;
-          const scormKit = this.scormKit;
-          const url = scormKit?.path + '/' + launchUrl;
-          // this.initScorm2004(url);
-          console.log('launchUrl==', this.scormModules);
+            this.lastcommit = this.studentClassDetails.scormKit.lastCommit;
         }
+
+        let lastModule:any = this.scormModules.find(
+          (v) => v._id === lastModuleId
+        );
+        if(!lastModule){
+          lastModule = this.scormModules[0];
+        }
+        const launchUrl = lastModule?.launch;
+        const scormKit = this.scormKit;
+        const url = scormKit?.path + '/' + launchUrl;
+        // this.initScorm2004(url);
+        console.log('launchUrl==', this.scormModules);
+
+
         this.coursekitDetails.forEach(
           (doc: { playbackTime: any }, index: number) => {
             const playbackTime = doc.playbackTime;
@@ -1726,6 +1752,7 @@ export class ViewCourseComponent implements OnDestroy {
       .getStudentFreeCourse(studentId, this.courseDetailsId)
       .subscribe((response) => {
         this.studentClassDetails = response?.data?.docs[0];
+        this.scormKitInit();
         this.coursekitDetails = response?.data?.docs[0]?.coursekit;
 
         this.longDescription = this?.coursekitDetails[0]?.longDescription;
@@ -1810,6 +1837,7 @@ export class ViewCourseComponent implements OnDestroy {
               .subscribe((response) => {
                 // debugger
                 this.studentClassDetails = response.data.docs[0];
+                this.scormKitInit();
                 this.coursekitDetails = response.data.docs[0].coursekit;
                 let totalPlaybackTime = 0;
                 let documentCount = 0;
@@ -1855,6 +1883,7 @@ export class ViewCourseComponent implements OnDestroy {
               .getStudentFreeCourse(studentId, courseId)
               .subscribe((response) => {
                 this.studentClassDetails = response.data.docs[0];
+                this.scormKitInit();
                 this.coursekitDetails = response.data.docs[0].coursekit;
                 let totalPlaybackTime = 0;
                 let documentCount = 0;
@@ -2056,13 +2085,10 @@ export class ViewCourseComponent implements OnDestroy {
     this.updateShowAssessmentQuestions();
   }
 
-  initScorm(scormType: string) {
-    if (scormType == '2004') {
-      this.initScorm2004('');
-    }
-  }
+
 
   initScorm2004(contentUrl: string) {
+    console.log('ContentUrl:',contentUrl)
     this.iframeUrl = contentUrl;
     const settings = {
       autocommit: true,
@@ -2090,8 +2116,33 @@ export class ViewCourseComponent implements OnDestroy {
     }
   }
 
+  initScorm12(contentUrl:string){
+    this.iframeUrl = contentUrl;
+    const settings = {
+      autocommit: true,
+      autocommitSeconds: 5,
+      dataCommitFormat: 'json',
+      commitRequestDataType: 'application/json;charset=UTF-8',
+      autoProgress: true,
+      logLevel: 2,
+      mastery_override: false,
+      lmsCommitUrl: `${this.prefix}scorm/commit/${this.studentClassDetails?.scormKit?._id}`,
+    };
+    (window as any).API = new Scorm12API(settings);
+    (window as any).API.on(
+      'LMSSetValue.cmi.core.*',
+      this.receiveMessage.bind(this),
+      false
+    );
+    let studentId = localStorage.getItem('id');
+
+    (window as any).API.LMSSetValue("cmi.suspend_data", this.currentScormModule._id);
+    (window as any).API.LMSCommit("");
+    (window as any).API.cmi.core.student_id = studentId;
+  }
+
   receiveMessage(CMIElement: any, value: any): void {
-    if (CMIElement == 'cmi.completion_status' && value === 'completed') {
+    if ((CMIElement == 'cmi.completion_status' || CMIElement ==='cmi.core.lesson_status') && value === 'completed' && !this.isCompleted) {
       const studentId = localStorage.getItem('id');
       const percentagePerModule = 100 / this.scormModules.length;
       const playBackTime = this.playBackTime + percentagePerModule;
@@ -2119,12 +2170,15 @@ export class ViewCourseComponent implements OnDestroy {
   }
 
   openScormModule(module: any, scormKit: any) {
-    console.log(scormKit);
     this.currentScormModule = {
       ...module,
       launchUrl: scormKit.path + '/' + module.launch,
     };
-    this.initScorm2004(this.currentScormModule.launchUrl);
+     if(module.version === '1.2'){
+      this.initScorm12(this.currentScormModule.launchUrl);
+    }else {
+        this.initScorm2004(this.currentScormModule.launchUrl);
+    }
   }
 
   hasSessionEnded(): boolean {

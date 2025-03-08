@@ -2,7 +2,7 @@
 
 /* Chatbot */
 .botIcon {
-	bottom: 35px;
+	bottom: 80px;
 	right: 15px;
 	position: fixed;
 	z-index: 9999;
@@ -538,6 +538,18 @@ span.avtr figure {
 @media only screen and (max-width: 412px) {
 	.botSubject, .botIcon .messages {width: 280px;}
 } */
+
+@media (max-width: 768px) {
+	.botIcon {
+	  bottom: 60px; /* Reduce bottom spacing for smaller screens */
+	  right: 10px;
+	}
+	.Messenger_messenger {
+	  width: 90%; /* Ensure proper width on mobile */
+	  max-width: 350px;
+	}
+  }
+  
 
 
 .typing-loader{

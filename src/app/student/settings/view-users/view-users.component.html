@@ -73,7 +73,7 @@
                   <li class="list-group-item">
                     <b>Qualification</b>
                     <div class="profile-desc-item float-end">
-                      {{ aboutData?.education }}
+                      {{ aboutData?.qualifications[0]?.description | capitalizeFirstLetter }}
                     </div>
                   </li>
                   <li class="list-group-item">
@@ -422,7 +422,7 @@
                   <li class="list-group-item">
                     <b>Qualification</b>
                     <div class="profile-desc-item float-end">
-                      {{ aboutData1?.qualification }}
+                      {{ aboutData1?.qualifications[0]?.description | capitalizeFirstLetter}}
                     </div>
                   </li>
                   <li class="list-group-item">
@@ -898,7 +898,7 @@
                       <div class="col-md-4 col-6">
                         <strong>Qualification</strong>
                         <br />
-                        <p>{{ aboutData1?.education }}</p>
+                        <p>{{ aboutData1?.qualifications[0]?.description | capitalizeFirstLetter }}</p>
                       </div>
                       <div class="col-md-4 col-6 b-r">
                         <strong>Gender</strong>

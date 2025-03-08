@@ -8,6 +8,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { AssessmentService } from '@core/service/assessment.service';
 import { SettingsService } from '@core/service/settings.service';
 import Swal from 'sweetalert2';
+import { AppConstants } from '@shared/constants/app.constants';
 
 @Component({
   selector: 'app-exam-results',
@@ -60,7 +61,12 @@ export class ExamResultsComponent {
 
    getAllAnswers() {
     let studentId = localStorage.getItem('id')||'';
-    this.assessmentService.getLatestExamAnswers({ ...this.assessmentPaginationModel, studentId})
+    let role = localStorage.getItem('user_type');
+    let payload = {...this.assessmentPaginationModel}
+    if (role == AppConstants.STUDENT_ROLE) {
+          payload.studentId = studentId;
+    } 
+    this.assessmentService.getLatestExamAnswers( {...this.assessmentPaginationModel, studentId})
       .subscribe(res => {
         this.studentClassId=res?.data?.docs[0]?.studentClassId?._id;
         this.dataSource = res.data.docs;

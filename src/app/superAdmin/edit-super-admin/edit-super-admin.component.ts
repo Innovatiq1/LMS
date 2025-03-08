@@ -10,6 +10,8 @@ import { MenuItemModel, UserType, Users } from '@core/models/user.model';
 import { AdminService } from '@core/service/admin.service';
 import { UserService } from '@core/service/user.service';
 import { UtilsService } from '@core/service/utils.service';
+import { SETTING_SIDEMENU_LIST } from '@shared/settingSidemenu-item';
+import { MENU_LIST } from '@shared/userType-item';
 import { DepartmentModalComponent } from 'app/admin/departments/department-modal/department-modal.component';
 import { StudentsService } from 'app/admin/students/students.service';
 import { CreateRoleTypeComponent } from 'app/admin/users/create-role-type/create-role-type.component';
@@ -43,11 +45,18 @@ export class EditSuperAdminComponent {
   companyDataId: any;
   breadcrumbs:any[] = [];
   storedItems: string | null;
+  sidemenuId!: string;
+  CurrentUserCompanyId!:string;
+  userTypeMenuId!:string;
   constructor(
     public _fb: FormBuilder,
     public dialog: MatDialog, private router: Router,public activeRoute: ActivatedRoute,
     private StudentService: StudentsService,private logoService: LogoService,private adminService: AdminService,public utils: UtilsService, private userService: UserService,
   ) {
+    // let userId = JSON.parse(localStorage.getItem('role_data')!).companyId;
+    // console.log("userId",userId)
+    // this.getSettingsSidemenus()
+    
     this.activeRoute.queryParams.subscribe(params => {
       this.currentId = params['id'];
     })
@@ -69,7 +78,8 @@ export class EditSuperAdminComponent {
     this.userForm = this._fb.group({
       name: new FormControl('', [Validators.required, Validators.pattern(/[a-zA-Z0-9]+/),...this.utils.validators.noLeadingSpace]),
       website:new FormControl('', []),
-      Active: new FormControl('true', [Validators.required]),
+      // Active: new FormControl('true', [Validators.required]),
+      attemptBlock: [''],
       company: new FormControl('', [Validators.required]),
       mobile: new FormControl('', [Validators.required,...this.utils.validators.mobile]),
       domain: new FormControl('', []),
@@ -90,10 +100,35 @@ export class EditSuperAdminComponent {
       expiryDate:new FormControl('', [Validators.required])
      
     });
+    // this.getSettingsSidemenu();
+    // this.getUserTypeLists();
     this.getBlogsList();
     this.getDepartment();
     this.getUserTypeList();
+    // this.getSettingsSidemenus();
   }
+
+  getSettingsSidemenus(Id:any) {
+    // let userId = JSON.parse(localStorage.getItem('role_data')!).companyId;
+    this.logoService.getSettingsSidemenu(Id).subscribe((response) => {
+      this.sidemenuId = response?.data?.docs[0].id;
+      // this.getSettingsSidemenuById(this.sidemenuId);
+      //  console.log("this.settingsSidemenu",this.sidemenuId)
+    });
+  }
+
+  getUserTypeLists(id?:any){
+    // const id=JSON.parse(localStorage.getItem('role_data')!).companyId;
+    // console.log("companyId==",id)
+    const filter = {};
+    this.adminService.getUserTypeList(filter,id).subscribe((respone)=>{
+      // console.log("typeList Response",respone)
+      this.userTypeMenuId=respone?.docs[0]?.id;
+
+    })
+
+  }
+
   
   openDialog(): void {
     const dialogRef = this.dialog.open(DepartmentModalComponent, {
@@ -138,6 +173,7 @@ export class EditSuperAdminComponent {
   getUserTypeList(filters?: any, typeName?: any) {
     this.adminService.getUserTypeList({ allRows: true }).subscribe(
       (response: any) => {
+        // console.log("response--->",response,typeName)
         this.userTypes = response;
         if (typeName) {
           this.userForm.patchValue({
@@ -246,6 +282,11 @@ export class EditSuperAdminComponent {
     return new Promise((resolve, reject) => {
       this.userService.updateUsers(obj, this.currentId).subscribe(
         (response) => {
+          localStorage.setItem("rolesnew", JSON.stringify({
+            learner: this.userForm.value.learner,
+            trainer: this.userForm.value.trainer
+        }));
+
           this.isLoading = false;
           Swal.fire({
             title: 'Successful',
@@ -263,10 +304,39 @@ export class EditSuperAdminComponent {
             courses:this.userForm.value.courses,
             uen: this.userForm.value.uen,
             code:this.userForm.value.code,
+            attemptBlock: false,
+            attemptCalculation: 1,
 
           }
           this.userService.updateCompany(payload, this.companyDataId).subscribe(
 ()=>{
+  const roleDataString = localStorage.getItem("rolesnew") ?? "{}";  
+              const roleData = JSON.parse(roleDataString);
+              // console.log("userTypeMenuId",this.userTypeMenuId)
+              // console.log("this.sidemenuId;===============",this.sidemenuId)
+              // console.log("roleData.learner;==============",roleData.learner)
+              // console.log("roleData.trainer;==============",roleData.trainer)
+              // console.log("this=============",this.CurrentUserCompanyId)
+
+              MENU_LIST[0].companyId = this.CurrentUserCompanyId
+              MENU_LIST[0].settingsMenuItems[0].children[3].children[1].title=roleData.learner;
+              MENU_LIST[0].settingsMenuItems[0].children[3].children[2].title=roleData.trainer;
+              const payload =MENU_LIST[0]
+              this.adminService.updateUserType(payload,this.userTypeMenuId).subscribe((response)=>{
+                //  console.log("menu_listttt",response)
+              })
+
+
+  SETTING_SIDEMENU_LIST[0].companyId = this.CurrentUserCompanyId;
+  SETTING_SIDEMENU_LIST[0].id=this.sidemenuId;
+             SETTING_SIDEMENU_LIST[0].MENU_LIST[0].children[4].children[1].title=roleData.learner;
+             SETTING_SIDEMENU_LIST[0].MENU_LIST[0].children[4].children[2].title=roleData.trainer;
+            const settingSidemenuPayload=SETTING_SIDEMENU_LIST[0];
+            
+            this.logoService.updateSettingSidemenu(settingSidemenuPayload).subscribe((response)=>{
+                // console.log("settingSidemenuPayload response=",response)
+            })
+
   window.history.back();
 
 })
@@ -288,6 +358,9 @@ export class EditSuperAdminComponent {
   getBlogsList(filters?: any) {
     this.userService.getUserById(this.currentId).subscribe(
       (response: any) => {
+         this.CurrentUserCompanyId=response.data.data.companyId;
+         this.getSettingsSidemenus(this.CurrentUserCompanyId)
+         this.getUserTypeLists(this.CurrentUserCompanyId)
         this.data = response.data.data;
         this.avatar = this.data?.avatar;
         this.uploaded = this.avatar?.split('/');
@@ -309,6 +382,7 @@ export class EditSuperAdminComponent {
             mobile: this.data?.mobile,
             joiningDate: this.data?.joiningDate,
             expiryDate:this.data?.expiryDate,
+            attemptBlock:this.data.attemptBlock,
             domain: res[0]?.identifier,
             company:this.data?.company,
             learner:res[0]?.learner,
@@ -317,6 +391,7 @@ export class EditSuperAdminComponent {
             users:res[0]?.users,
             uen: res[0]?.uen,
             code:res[0]?.code,
+            
 
           });
         }

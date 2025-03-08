@@ -37,6 +37,10 @@ import { ClassListComponent } from './class-list/class-list.component';
 import { EnquiryListComponent } from './enquiry-list/enquiry-list.component';
 import { ScheduleMeetingComponent } from './schedule-meeting/schedule-meeting.component';
 import { DivideBy60Pipe } from './pipes/divide-by60.pipe';
+import { ScormPlayerComponent } from './course-kit/scorm-player/scorm-player.component';
+import { SafePipeAdmin } from '../pipes/safe.pipe';
+import { BlockedExamsComponent } from './blocked-exams/blocked-exams.component';
+import { ExamTrianeesComponent } from './exam-trianees/exam-trianees.component';
 
 
 
@@ -66,8 +70,11 @@ import { DivideBy60Pipe } from './pipes/divide-by60.pipe';
     ScheduleMeetingComponent,
     ClassListComponent,
    EnquiryListComponent,
-   DivideBy60Pipe
-    
+   DivideBy60Pipe,
+   ScormPlayerComponent,
+    SafePipeAdmin,
+    BlockedExamsComponent,
+    ExamTrianeesComponent
 
   ],
   imports: [

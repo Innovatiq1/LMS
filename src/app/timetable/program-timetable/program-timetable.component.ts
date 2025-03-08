@@ -212,6 +212,7 @@ export class ProgramTimetableComponent implements OnInit {
                     deliveryType: deliveryType,
                     id: id,
                     programName: programName,
+                    department: courseClass.department,
                   },
                 });
               }
@@ -271,6 +272,7 @@ export class ProgramTimetableComponent implements OnInit {
         instructorCost: event.extendedProps['instructorCost'],
         id: event.extendedProps['id'],
         programName: event.extendedProps['programName'],
+        department: event.extendedProps['department'],
       },
     });
   }
@@ -330,6 +332,7 @@ export class ProgramTimetableComponent implements OnInit {
                   sessionEndDate: endDate,
                   instructorCost: instructorCost,
                   deliveryType: deliveryType,
+                  department: courseClass.department,
                 },
               });
               currentDate.setDate(currentDate.getDate() + 1);

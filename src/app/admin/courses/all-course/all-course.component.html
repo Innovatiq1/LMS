@@ -231,13 +231,13 @@
                                 class="mobile-label">Fee Type:</span>{{row.feeType ? (row.feeType | titlecase) : "--"}}
                             </mat-cell>
                           </ng-container>
-                          <ng-container matColumnDef="Vendor">
+                          <!-- <ng-container matColumnDef="Vendor">
                             <mat-header-cell *matHeaderCellDef  class="compulsory-count-header">Expiry Date
                             </mat-header-cell>
                             <mat-cell *matCellDef="let row" (click)="view ? viewCourse(row.id) : null"> <span
                                 class="mobile-label">Expiry Date</span>{{row.sessionEndDate ? (row.sessionEndDate | date) : "--"}}
                             </mat-cell>
-                          </ng-container> -->
+                          </ng-container>  -->
                           <ng-container matColumnDef="approval">
                             <mat-header-cell *matHeaderCellDef  class="compulsory-count-header">Approval required
                             </mat-header-cell>
@@ -257,14 +257,14 @@
                               </button>
                             </mat-cell>
                           </ng-container>                          
-                          <ng-container matColumnDef="startDate">
+                          <!-- <ng-container matColumnDef="startDate">
                             <mat-header-cell *matHeaderCellDef  class="compulsory-count-header">Exam type
                             </mat-header-cell>
                             <mat-cell *matCellDef="let row" (click)="view ? viewCourse(row.id) : null"> <span
                                 class="mobile-label">Exam type:</span><span>{{row.examType ?
                                 (row.examType) : "--"}}</span>
                             </mat-cell>
-                          </ng-container> -->
+                          </ng-container>  -->
                           <!-- <ng-container matColumnDef="examType">
                             <mat-header-cell *matHeaderCellDef  class="compulsory-count-header">Exam Type
                             </mat-header-cell>
@@ -280,11 +280,10 @@
                             </mat-cell>
                           </ng-container>
                           <ng-container matColumnDef="endDate">
-                            <mat-header-cell *matHeaderCellDef  class="compulsory-count-header">Approval Required
+                            <mat-header-cell *matHeaderCellDef  class="compulsory-count-header">Expiry Date
                             </mat-header-cell>
                             <mat-cell *matCellDef="let row" (click)="view ? viewCourse(row.id) : null"> <span
-                                class="mobile-label">End Date:</span><span>{{ row.approval ?(row.approval
-                            ) : "--"}}</span>
+                                class="mobile-label">End Date:</span><span>{{row.sessionEndDate ? (row.sessionEndDate | date) : "--"}}</span>
                             </mat-cell>
                           </ng-container>
                           <ng-container matColumnDef="status">

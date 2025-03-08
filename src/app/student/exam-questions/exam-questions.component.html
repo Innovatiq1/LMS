@@ -32,6 +32,8 @@
                         (FaceMatchDetect)="handleFaceMatchDetected(true)"
                         (FaceMisMatchDetect)="handleFaceMatchDetected(false)"
                         (FaceMatchError)="handleFaceMatchError()"
+                        (FaceMatchMsg)="handleMessage($event)"
+                        (LookAway)="handleLookingAwayDetected()"
                         [profilePic]="userProfilePic"
                       ></app-object-detection>
                       <!-- <video #videoElement autoplay class="w-100 border rounded"></video> -->
@@ -123,7 +125,7 @@
             </ng-container>
             <div class="overlay" *ngIf="showOverlay">
                 <div class="overlay-content">
-                  <p class="h3">Waiting for Face Match...</p>
+                  <p class="h3">{{overLayMsg}}</p>
                 </div>
               </div>
         </div>

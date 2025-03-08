@@ -63,7 +63,7 @@ export class EditTeacherComponent {
         {
           title: '', 
           items: [this.storedItems],  
-          active: 'Edit Trainer',  
+          active: `Edit ${AppConstants.INSTRUCTOR_ROLE}`,  
         },
       ];
     } 
@@ -112,7 +112,7 @@ export class EditTeacherComponent {
         {
           role: {
             id: 1,
-            description: "Trainer",
+            description: `${AppConstants.INSTRUCTOR_ROLE}`,
           },
         },
       ]
@@ -159,7 +159,7 @@ export class EditTeacherComponent {
       // console.log("payLoad",payload)
       Swal.fire({
         title: 'Are you sure?',
-        text: 'Do You want to update this Trainer',
+        text: `Do You want to update this ${AppConstants.INSTRUCTOR_ROLE}`,
         icon: 'warning',
         confirmButtonText: 'Yes',
         showCancelButton: true,
@@ -177,7 +177,7 @@ export class EditTeacherComponent {
       () => {
         Swal.fire({
           title: 'Successful',
-          text: 'Trainer updated successfully',
+          text: `${AppConstants.INSTRUCTOR_ROLE} updated successfully`,
           icon: 'success',
         });
         this.proForm.reset();
@@ -185,7 +185,7 @@ export class EditTeacherComponent {
       },
       (error: { message: any; error: any }) => {
         Swal.fire(
-          'Failed to update Trainer',
+          `Failed to update ${AppConstants.INSTRUCTOR_ROLE}`,
           error.message || error.error,
           'error'
         );

@@ -292,7 +292,7 @@
                       <tr>
                         <th>#</th>
                         <th>{{commonRoles.STUDENT_ROLE}}</th>
-                        <th>Education</th>
+                        <th>Qualification</th>
                         <th>Joining Date</th>
                         <th>Mobile</th>
                       </tr>
@@ -306,7 +306,7 @@
                           <img src="{{student?.avatar || 'assets/profile.png'}}" alt="">
                         </td>
                         <td>{{student?.name | titlecase}}</td>
-                        <td>{{student?.education}}</td>
+                        <td>{{student?.qualifications[0]?.description}}</td>
                         <td>{{student?.createdAt | date}}</td>
                         <td>{{student?.mobile}}</td>
                       </tr>
@@ -364,6 +364,42 @@
                       </table>
                     </div>
                   </ng-scrollbar>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-container *ngFor="let component of dashboard.components">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" *ngIf="component.checked && component.id === 'exam-list'">
+            <div class="card" style="border-radius: 31px;">
+              <div class="header mt-3">
+                <h2>Exam List</h2>
+              </div>
+              <div class="tableBody">
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Course</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngIf="coursExameData.length === 0">
+                        <td colspan="3" class="text-center py-3 no-data-text">No Data Found</td>
+                      </tr>
+                      <tr *ngFor="let course of coursExameData" style="cursor: pointer;" [routerLink]="['/admin/courses/exam/trainees/', course._id]">
+                        <td>{{course?.title | titlecase}}</td>
+                        <td>{{course?._sessionStart | date}}</td>
+                        <td>{{course?._sessionEnd | date}}</td>
+                      </tr>
+                      <tr *ngIf="coursExameData.length">
+                        <td colspan="3" class="text-center py-3 no-data-text cursor-pointer" routerLink="/admin/courses/student-courses/exam-scores">View more</td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -464,7 +500,7 @@
                         <th>Completed</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <!-- <tbody>
                       <tr *ngFor="let course of studentApprovedClasses ">
                         <td>{{course?.classId?.courseId?.title}}</td>
                         <td>
@@ -491,7 +527,42 @@
                           {{course?.playbackTime?.toFixed(2) || 0}}%
                         </td>
                       </tr>
+                    </tbody> -->
+                    <tbody *ngIf="studentApprovedClasses && studentApprovedClasses.length > 0; else noData">
+                      <tr *ngFor="let course of studentApprovedClasses">
+                        <td>{{course?.classId?.courseId?.title}}</td>
+                        <td>
+                          {{ course?.classId?.occurrences.length > 0 ? course.classId.occurrences.length - 1 : 0 }} Days
+                        </td>
+                        <td>{{course?.classId?.sessions[0]?.sessionEndDate | date}}</td>
+                        <td>
+                          <ng-container *ngIf="course?.classId?.meetingUrl; else noUrl">
+                            <a [href]="course?.classId?.meetingUrl" target="_blank" style="color: rgb(7, 7, 7);">
+                              Join Meeting
+                            </a>
+                          </ng-container>
+                          <ng-template #noUrl>
+                            <span style="color: rgb(133, 127, 127);">No Meeting URL</span>
+                          </ng-template>
+                        </td>
+                        <td>
+                          <button (click)="showRecordings(course)" class="btn">Show Recordings</button>
+                        </td>
+                        <td [ngClass]="{'red-text': course?.playbackTime?.toFixed(2) < 50, 'green-text': course?.playbackTime?.toFixed(2) >= 50}">
+                          {{course?.playbackTime?.toFixed(2) || 0}}%
+                        </td>
+                      </tr>
                     </tbody>
+                    
+                    <ng-template #noData>
+                      <tbody>
+                        <tr>
+                          <td colspan="6" class="no-data-text">No data found</td>
+                        </tr>
+                      </tbody>
+                    </ng-template>
+                    
+
                   </table>
                 </div>
               </ng-scrollbar>
@@ -507,7 +578,7 @@
                 Upcoming Course Classes
               </h2>
             </div>
-            <div class="card-body">
+            <!-- <div class="card-body">
               <ng-scrollbar style="height: 270px" visibility="hover">
                 <ul class="list-unstyled user-progress list-unstyled-border list-unstyled-noborder">
                   <li *ngFor="let upcomingclass of upcomingCourseClasses" class="lecture-list">
@@ -520,22 +591,46 @@
                     <div class="ms-auto">
                       <div class="media-title font-16">{{upcomingclass?.classId?.sessions[0]?.sessionStartDate | date}}
                       </div>
-                      <!-- <div class="text-job text-muted mb-0">09:00-10:00</div> -->
+                     
                     </div>
                   </li>
                 </ul>
               </ng-scrollbar>
+            </div> -->
+            <div class="card-body">
+              <ng-scrollbar style="height: 270px" visibility="hover">
+                <ng-container *ngIf="upcomingCourseClasses && upcomingCourseClasses.length > 0; else noData">
+                  <ul class="list-unstyled user-progress list-unstyled-border list-unstyled-noborder">
+                    <li *ngFor="let upcomingclass of upcomingCourseClasses" class="lecture-list">
+                      <div class="set-flex">
+                        <div class="media-title font-16">{{upcomingclass?.classId?.courseName}}</div>
+                        <div class="text-job text-muted mb-0">{{upcomingclass?.classId?.courseId?.courseCode}}</div>
+                        <div class="text-job text-muted mb-0">{{upcomingclass?.classId?.courseId?.meetingUr}}</div>
+                      </div>
+                      <div class="ms-auto">
+                        <div class="media-title font-16">{{upcomingclass?.classId?.sessions[0]?.sessionStartDate | date}}</div>
+                      </div>
+                    </li>
+                  </ul>
+                </ng-container>
+                <ng-template #noData>
+                  <div class="no-data-text">No data found</div>
+                </ng-template>
+              </ng-scrollbar>
             </div>
+            
           </div>
         </div>
   </ng-container>
   <ng-container *ngFor="let component of dashboard.components">
-        <div *ngIf="component.id === 'announcement-board'" class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <!-- <div *ngIf="component.id === 'announcement-board'" class="col-xs-12 col-sm-12 col-md-4 col-lg-4"> -->
+          <div *ngIf="component.id === 'announcement-board'" class="col-xs-12 col-sm-12 col-md-6 col-lg-6 announcement-board">
+
           <div class="card">
             <div class="header">
               <h2>Announcement Board</h2>
             </div>
-            <div class="body">
+            <!-- <div class="body">
               <ng-scrollbar style="height: 350px" visibility="hover">
                 <div class="recent-comment">
                   <div *ngFor="let announcement of announcements.reverse()" class="notice-board">
@@ -547,12 +642,34 @@
                   </div>
                 </div>
               </ng-scrollbar>
+            </div> -->
+
+            <div class="body">
+              <ng-scrollbar style="height: 350px" visibility="hover">
+                <ng-container *ngIf="announcements && announcements.length > 0; else noData">
+                  <div class="recent-comment">
+                    <div *ngFor="let announcement of announcements.slice().reverse()" class="notice-board">
+                      <div class="notice-body">
+                        <h5 class="notice-heading col-green">{{announcement?.announcementBy?.name}}</h5>
+                        <p [innerHTML]="getSafeHtml(announcement?.details)"></p>
+                        <small class="text-muted float-end">{{announcement?.createdAt | date}}</small>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+                <ng-template #noData>
+                  <div class="no-data-text">No data found</div>
+                </ng-template>
+              </ng-scrollbar>
             </div>
+            
           </div>
         </div>
         </ng-container>
         <ng-container *ngFor="let component of dashboard.components">
-        <div *ngIf="component.id === 'reschedule-list'"   class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+        <!-- <div *ngIf="component.id === 'reschedule-list'"   class="col-xs-12 col-sm-12 col-md-8 col-lg-8"> -->
+          <div *ngIf="component.id === 'reschedule-list'" class="col-xs-12 col-sm-12 col-md-6 col-lg-6 reschedule-list">
+
           <div class="card">
             <div class="header">
               <h2>Reschedule list</h2>
@@ -570,7 +687,7 @@
                         <th>Status</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <!-- <tbody>
                       <tr *ngFor="let leave of approvedLeaves">
                         <td>{{leave?.className | titlecase}}</td>
                         <td>{{leave?.applyDate | date}}</td>
@@ -584,7 +701,34 @@
                           {{ leave?.status  | titlecase}}</span>
                         </td>
                       </tr>
+                    </tbody> -->
+
+                    <tbody *ngIf="approvedLeaves && approvedLeaves.length > 0; else noData">
+                      <tr *ngFor="let leave of approvedLeaves">
+                        <td>{{leave?.className | titlecase}}</td>
+                        <td>{{leave?.applyDate | date}}</td>
+                        <td>{{leave?.toDate | date}}</td>
+                        <td>{{leave?.reason | titlecase}}</td>
+                        <td>
+                          <span
+                            [class]=" leave?.status === 'approved' ? 'badge badge-solid-green' : leave?.status === 'applied' ? 'badge badge-solid-orange' : leave?.status === 'cancelled' ? 'badge badge-solid-red': ''">
+                            <span
+                              [class]=" leave?.status === 'approved' ? 'status-dot' : leave?.status === 'applied' ? 'status-orange' : leave?.status === 'cancelled' ? 'status-red' : ''">
+                            </span>
+                            {{ leave?.status  | titlecase}}
+                          </span>
+                        </td>
+                      </tr>
                     </tbody>
+                    
+                    <ng-template #noData>
+                      <tbody>
+                        <tr>
+                          <td colspan="5" class="no-data-text">No data found</td>
+                        </tr>
+                      </tbody>
+                    </ng-template>
+                    
                   </table>
                 </div>
               </ng-scrollbar>

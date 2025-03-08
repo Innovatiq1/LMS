@@ -21,14 +21,18 @@
                 <label>Name<span class="mandatory">&nbsp;*</span></label>
                 <mat-form-field class="example-full-width" appearance="outline">
                   <input matInput formControlName="name" />
-                  <mat-error
+                  <!-- <mat-error
                     *ngIf="
                       stdForm1.get('name')?.invalid &&
-                      stdForm1.get('name')?.touched
+                      (stdForm1.get('name')?.touched || stdForm1.dirty)
                     "
                   >
                     {{ utils.getErrorMessage1(stdForm1.get("name"), "name") }}
+                  </mat-error> -->
+                  <mat-error *ngIf="stdForm1.get('name')?.invalid && (stdForm1.get('name')?.touched || stdForm1.dirty)">
+                    {{ utils.getErrorMessage1(stdForm1.get("name"), "name") }}
                   </mat-error>
+                  
                 </mat-form-field>
               </div>
             </div>
@@ -45,7 +49,7 @@
               <label>Qualification<span class="mandatory">&nbsp;*</span></label>
               <mat-form-field class="example-full-width mb-3" appearance="outline">
                 <input matInput formControlName="qualifications">
-                <mat-error
+                <!-- <mat-error
                 *ngIf="
                 stdForm1.get('qualifications')?.invalid &&
                 stdForm1.get('qualifications')?.touched
@@ -54,43 +58,59 @@
                 {{
                   utils.getErrorMessage1(stdForm1.get("qualifications"), "qualification")
                 }}
+              </mat-error> -->
+              <mat-error *ngIf="stdForm1.get('qualifications')?.invalid && (stdForm1.get('qualifications')?.touched || stdForm1.dirty)">
+                {{ utils.getErrorMessage1(stdForm1.get("qualifications"), "qualification") }}
               </mat-error>
+              
               </mat-form-field>
             </div>
             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
               <label>ID Number<span class="mandatory">&nbsp;*</span></label>
               <mat-form-field class="example-full-width mb-3" appearance="outline">
                 <input matInput formControlName="idNumber">
-                <mat-error *ngIf="stdForm1.get('idNumber')?.hasError('required')">
+                <!-- <mat-error *ngIf="stdForm1.get('idNumber')?.hasError('required')">
                   Enter ID Number 
-                 </mat-error>
+                 </mat-error> -->
+                 <mat-error *ngIf="stdForm1.get('idNumber')?.invalid && (stdForm1.get('idNumber')?.touched || stdForm1.dirty)">
+                  Enter ID Number
+                </mat-error>
               </mat-form-field>
             </div> 
             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
               <label>ID Type<span class="mandatory">&nbsp;*</span></label>
               <mat-form-field class="example-full-width mb-3" appearance="outline">
                 <input matInput formControlName="idType">
-                <mat-error *ngIf="stdForm1.get('idType')?.hasError('required')">
+                <!-- <mat-error *ngIf="stdForm1.get('idType')?.hasError('required')">
                   Enter ID Type 
-                 </mat-error>
+                 </mat-error> -->
+                 <mat-error *ngIf="stdForm1.get('idType')?.invalid && (stdForm1.get('idType')?.touched || stdForm1.dirty)">
+                  Enter ID Type
+                </mat-error>
               </mat-form-field>
             </div> 
             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
               <label>ID Code<span class="mandatory">&nbsp;*</span></label>
               <mat-form-field class="example-full-width mb-3" appearance="outline">
                 <input matInput formControlName="code">
-                <mat-error *ngIf="stdForm1.get('code')?.hasError('required')">
+                <!-- <mat-error *ngIf="stdForm1.get('code')?.hasError('required')">
                   Enter ID Code 
-                 </mat-error>
+                 </mat-error> -->
+                 <mat-error *ngIf="stdForm1.get('code')?.invalid && (stdForm1.get('code')?.touched || stdForm1.dirty)">
+                  Enter ID Code
+                </mat-error>
               </mat-form-field>
             </div>
             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
               <label>Area of Practice<span class="mandatory">&nbsp;*</span></label>
               <mat-form-field class="example-full-width mb-3" appearance="outline">
                 <input matInput formControlName="domainAreaOfPractice">
-                <mat-error *ngIf="stdForm1.get('domainAreaOfPractice')?.hasError('required')">
+                <!-- <mat-error *ngIf="stdForm1.get('domainAreaOfPractice')?.hasError('required')">
                   Enter Area of Practice 
-                 </mat-error>
+                 </mat-error> -->
+                 <mat-error *ngIf="stdForm1.get('domainAreaOfPractice')?.invalid && (stdForm1.get('domainAreaOfPractice')?.touched || stdForm1.dirty)">
+                  Enter Area of Practice
+                </mat-error>
               </mat-form-field>
             </div>
             <div class="col-lg-4 col-md-4">
@@ -115,8 +135,11 @@
                     Other
                   </mat-option>
                 </mat-select>
-                <mat-error *ngIf="stdForm1.get('gender')?.hasError('required')">
+                <!-- <mat-error *ngIf="stdForm1.get('gender')?.hasError('required')">
                  Select gender
+                </mat-error> -->
+                <mat-error *ngIf="stdForm1.get('gender')?.invalid && (stdForm1.get('gender')?.touched || stdForm1.dirty)">
+                  Select Gender
                 </mat-error>
               </mat-form-field>
             </div>
@@ -134,7 +157,7 @@
                     {{ dept.department }}
                   </mat-option>
                 </mat-select>
-                <mat-error
+                <!-- <mat-error
                   *ngIf="
                     stdForm1.get('department')?.invalid &&
                     stdForm1.get('department')?.touched
@@ -146,7 +169,11 @@
                       "deptname"
                     )
                   }}
+                </mat-error> -->
+                <mat-error *ngIf="stdForm1.get('department')?.invalid && (stdForm1.get('department')?.touched || stdForm1.dirty)">
+                  {{ utils.getErrorMessage1(stdForm1.get("department"), "deptname") }}
                 </mat-error>
+                
               </mat-form-field>
             </div>
             <div class="col-lg-4 col-md-4">
@@ -154,7 +181,7 @@
                 <label>Mobile</label>
                 <mat-form-field class="example-full-width" appearance="outline">
                   <input matInput formControlName="mobile" />
-                  <mat-error
+                  <!-- <mat-error
                     *ngIf="
                       stdForm1.get('mobile')?.invalid &&
                       stdForm1.get('mobile')?.touched
@@ -163,7 +190,11 @@
                     {{
                       utils.getErrorMessage1(stdForm1.get("mobile"), "mobile")
                     }}
+                  </mat-error> -->
+                  <mat-error *ngIf="stdForm1.get('mobile')?.invalid && (stdForm1.get('mobile')?.touched || stdForm1.dirty)">
+                    {{ utils.getErrorMessage1(stdForm1.get("mobile"), "mobile") }}
                   </mat-error>
+                  
                 </mat-form-field>
               </div>
             </div>
@@ -173,7 +204,10 @@
                 <input matInput [matDatepicker]="picker" formControlName="dob" required>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
-                <mat-error *ngIf="stdForm1.get('dob')?.hasError('required')">
+                <!-- <mat-error *ngIf="stdForm1.get('dob')?.hasError('required')">
+                  Select date
+                </mat-error> -->
+                <mat-error *ngIf="stdForm1.get('dob')?.invalid && (stdForm1.get('dob')?.touched || stdForm1.dirty)">
                   Select date
                 </mat-error>
               </mat-form-field>
@@ -196,7 +230,7 @@
                 <label>City<span class="mandatory">&nbsp;*</span></label>
                 <mat-form-field class="example-full-width" appearance="outline">
                   <input matInput formControlName="city_name" />
-                  <mat-error
+                  <!-- <mat-error
                     *ngIf="
                       stdForm1.get('city_name')?.invalid &&
                       stdForm1.get('city_name')?.touched
@@ -205,7 +239,11 @@
                     {{
                       utils.getErrorMessage1(stdForm1.get("city_name"), "city")
                     }}
+                  </mat-error> -->
+                  <mat-error *ngIf="stdForm1.get('city_name')?.invalid && (stdForm1.get('city_name')?.touched || stdForm1.dirty)">
+                    {{ utils.getErrorMessage1(stdForm1.get("city_name"), "city") }}
                   </mat-error>
+                  
                 </mat-form-field>
               </div>
             </div>
@@ -214,7 +252,7 @@
                 <label>Country<span class="mandatory">&nbsp;*</span></label>
                 <mat-form-field class="example-full-width" appearance="outline">
                   <input matInput formControlName="country_name" />
-                  <mat-error
+                  <!-- <mat-error
                     *ngIf="
                       stdForm1.get('country_name')?.invalid &&
                       stdForm1.get('country_name')?.touched
@@ -226,7 +264,11 @@
                         "country"
                       )
                     }}
+                  </mat-error> -->
+                  <mat-error *ngIf="stdForm1.get('country_name')?.invalid && (stdForm1.get('country_name')?.touched || stdForm1.dirty)">
+                    {{ utils.getErrorMessage1(stdForm1.get("country_name"), "country") }}
                   </mat-error>
+                  
                 </mat-form-field>
               </div>
             </div>
@@ -235,7 +277,7 @@
                 <label>Address<span class="mandatory">&nbsp;*</span></label>
                 <mat-form-field class="example-full-width" appearance="outline">
                   <textarea matInput formControlName="address"></textarea>
-                  <mat-error
+                  <!-- <mat-error
                     *ngIf="
                       stdForm1.get('address')?.invalid &&
                       stdForm1.get('address')?.touched
@@ -244,7 +286,11 @@
                     {{
                       utils.getErrorMessage1(stdForm1.get("address"), "address")
                     }}
+                  </mat-error> -->
+                  <mat-error *ngIf="stdForm1.get('address')?.invalid && (stdForm1.get('address')?.touched || stdForm1.dirty)">
+                    {{ utils.getErrorMessage1(stdForm1.get("address"), "address") }}
                   </mat-error>
+                  
                 </mat-form-field>
               </div>
             </div>

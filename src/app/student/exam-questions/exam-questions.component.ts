@@ -22,6 +22,7 @@ import {
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
+import { SpeechRecognitionService } from '@core/service/speech-recognition.service';
 
 @Component({
   selector: 'app-exam-questions',
@@ -73,8 +74,7 @@ export class ExamQuestionsComponent {
   isRecording: boolean = false;
   analyzerId: string = '';
 
-  tabChange: number = 0;
-  keyPress: number = 0;
+  isVoiceDetectionEnabled = false;
   mobilePhoneFound: boolean = false;
   prohibitedObjectFound: boolean = false;
   faceNotVisible: boolean = false;
@@ -86,6 +86,7 @@ export class ExamQuestionsComponent {
   checkFaceMatch: boolean = false;
   faceMatchCount: number = 0;
   faceMisMatchCount: number =0;
+  overLayMsg:string = 'Please wait...';
 
 
   @ViewChild('proctoringDiv', { static: true }) proctoringDiv!: ElementRef;
@@ -104,6 +105,7 @@ export class ExamQuestionsComponent {
   handleMobilePhoneDetected(): void {
     Swal.fire('Cell Phone Detected', 'Action has been recorded', 'error');
     this.sendWarning('Cell Phone Detected', this.analyzerId);
+    this.showViolationAlert();
   }
 
   handleProhibitedObjectDetected(): void {
@@ -113,16 +115,35 @@ export class ExamQuestionsComponent {
       'error'
     );
     this.sendWarning('Prohibited Object Detected', this.analyzerId);
+    this.showViolationAlert();
   }
 
   handleFaceNotVisible(): void {
     Swal.fire('Face Not Visible', 'Action has been recorded', 'error');
     this.sendWarning('Face Not Visible', this.analyzerId);
+    this.showViolationAlert();
   }
 
   handleMultipleFacesDetected(): void {
     Swal.fire('Multiple Faces Detected', 'Action has been recorded', 'error');
     this.sendWarning('Multiple Face Detected', this.analyzerId);
+    this.showViolationAlert();
+  }
+
+  handleLookingAwayDetected():void {
+    Swal.fire('Looking Away Detected', 'Action has been recorded', 'error');
+    this.sendWarning('Looking Away Detected', this.analyzerId);
+    this.showViolationAlert();
+  }
+
+  handleHumanVoiceDetect():void {
+    Swal.fire('Human voice Detected', 'Action has been recorded', 'error');
+    this.sendWarning('Human voice Detected', this.analyzerId);
+    this.showViolationAlert();
+  }
+
+  handleMessage(msg:string):void {
+    this.overLayMsg = msg;
   }
 
   handleFaceMatchDetected(isMatch: boolean): void {
@@ -138,6 +159,9 @@ export class ExamQuestionsComponent {
       this.checkFaceMatch = false;
       this.showOverlay = false;
       console.log('Face match detected...')
+      this.startProtoring();
+      this.initializeEventListeners();
+      this.startVoiceMonitoring();
       this.calculateTotalTime();
     }
   }
@@ -159,17 +183,23 @@ export class ExamQuestionsComponent {
   }
 
   startProtoring() {
+    if(!this.analyzerId){
     const studentId = localStorage.getItem('id') || '';
-    let payload = {
+    let companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+
+    let payload:any = {
       studentId,
       status: 'connected',
+      examAssessmentId: this.examAssessmentId,
+      companyId,
+      courseId:this.courseId
     };
     this.assessmentService.createAnalyzerId(payload).subscribe((res) => {
       if (res?.response) {
         this.analyzerId = res?.response.id;
-        this.initializeEventListeners();
       }
     });
+  }
   }
 
   sendWarning(message: string, analyzerId: string) {
@@ -199,7 +229,8 @@ export class ExamQuestionsComponent {
     private classService: ClassService,
     private location: Location,
     private snackBar: MatSnackBar,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private speechService: SpeechRecognitionService
   ) { }
 
   ngOnInit(): void {
@@ -216,6 +247,16 @@ export class ExamQuestionsComponent {
     // this.startVideoSession();
     // this.startMonitoringTabSwitch();
   }
+
+  startVoiceMonitoring() {
+    this.isVoiceDetectionEnabled = true;
+    this.speechService.startListening((detected) => {
+      if (detected) {
+        this.handleHumanVoiceDetect()
+      }
+    });
+  }
+
 
   getClassDetails(): void {
     let urlPath = this.router.url.split('/');
@@ -243,10 +284,10 @@ export class ExamQuestionsComponent {
     this.courseService.getCourseById(this.courseId).subscribe((response) => {
       this.courseDetails = response;
       const videoAnalyzerReq = response?.exam_assessment?.videoAnalyzerReq;
-      console.log(response)
       if (videoAnalyzerReq) {
         this.isEnableProtector = true;
         this.showOverlay = true;
+        this.overLayMsg = 'Opening Camera...'
         this.startVideoAnalyzer();
       }
     });
@@ -373,7 +414,7 @@ export class ExamQuestionsComponent {
     this.studentService.getStudentById(studentId).subscribe(async (res: any) => {
       const userProfilePicture = res?.avatar;
       this.userProfilePic = userProfilePicture;
-      this.startProtoring();
+      // this.startProtoring();
     });
   }
 
@@ -602,6 +643,8 @@ export class ExamQuestionsComponent {
       this.visibilityChangeHandler
     );
     document.removeEventListener('keydown', this.keyPressHandler);
+    this.isVoiceDetectionEnabled = false;
+    this.speechService.stopListening();
   }
 
   navigate() {
@@ -799,23 +842,20 @@ export class ExamQuestionsComponent {
     document.addEventListener('keydown', this.keyPressHandler);
   }
 
-  sendLogsToServer(): void {}
 
   handleVisibilityChange(): void {
     if (document.hidden && this.isEnableProtector) {
-      this.tabChange++;
       Swal.fire('Changed Tab Detected', 'Action has been Recorded', 'error');
+      this.sendWarning('Changed Tab Detected', this.analyzerId);
+      this.showViolationAlert();
     }
   }
 
   handleKeyPress(event: KeyboardEvent): void {
     if ((event.altKey || event.ctrlKey) && this.isEnableProtector) {
-      this.keyPress++;
-      Swal.fire(
-        `${event.altKey ? 'Alt' : 'Ctrl'} Key Press Detected`,
-        'Action has been Recorded',
-        'error'
-      );
+      Swal.fire(`${event.altKey ? 'Alt' : 'Ctrl'} Key Press Detected`, 'Action has been Recorded', 'error');
+      this.sendWarning( `${event.altKey ? 'Alt' : 'Ctrl'} Key Press Detected`, this.analyzerId);
+      this.showViolationAlert();
     }
   }
 
@@ -881,11 +921,11 @@ export class ExamQuestionsComponent {
 
   showViolationAlert() {
     this.violationCount++;
-    alert(
-      `You are violating the exam rules. If this happens again, the exam will be canceled and you will be terminated.`
-    );
+    console.log('Violation count:',this.violationCount);
     if (this.violationCount > this.maxViolations) {
-      this.cancelExam();
+      Swal.fire('Max violation reached', 'The Exam will be canceled and you will be terminated', 'error').then(res=>{
+        this.location.back()
+      });
     }
   }
 

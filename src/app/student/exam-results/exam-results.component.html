@@ -24,6 +24,7 @@
                     </div> -->
                     <div class="body overflow-auto">
                         <div class="responsive_table">
+                          <ng-container *ngIf="dataSource && dataSource.length > 0; else noDataTemplate">
                           <table mat-table matSort [dataSource]="dataSource" class="mat-cell advance-table">
                             <!-- Course Code -->
                             <ng-container matColumnDef="Course Title">
@@ -86,11 +87,17 @@
                                     Request Retake
                                   </button>
                                 </mat-cell>
-                              </ng-container>
+                              </ng-container>  
+
                               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                               <mat-row *matRowDef="let row; columns: displayedColumns;" [style.cursor]="'pointer'" matRipple>
                               </mat-row>
                           </table>
+                        </ng-container>
+
+                        <ng-template #noDataTemplate>
+                          <div class="no-data-text">No data found</div>
+                        </ng-template>
           
                           <mat-paginator #paginator [length]="totalItems" (page)="pageSizeChange($event)"
                           [pageSizeOptions]="pageSizeArr" aria-label="select pagination option">

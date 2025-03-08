@@ -62,6 +62,7 @@ export class EditCourseKitComponent {
     { code: 'scorm', label: 'Scorm' },
   ];
   isScormKit: boolean = false;
+  acceptedFormats: string=".pdf,.ppt,.pptx,.doc,.docx,.xls,.xlsx,.txt";
   constructor(
     private router: Router,
 
@@ -114,12 +115,14 @@ export class EditCourseKitComponent {
 
     this.courseKitForm.get('kitType')?.valueChanges.subscribe((value) => {
       if (value === 'scorm') {
+        this.acceptedFormats=".zip";
         this.isScormKit = true;
       this.courseKitForm.patchValue({
         videoLink: '',
         documentLink: '',
       });
       } else {
+        this.acceptedFormats='.pdf,.ppt,.pptx,.doc,.docx,.xls,.xlsx,.txt';
         this.isScormKit = false;
       }
     });
@@ -181,9 +184,13 @@ export class EditCourseKitComponent {
   submitCourseKit(): void {
       const formdata = new FormData();
       formdata.append('files', this.docs);
-      formdata.append('files', this.videoLink);
-      formdata.append('video_filename', this.videoSrc);
-      formdata.append('doc_filename', this.uploadedDocument);
+      if (this.videoLink && !this.isScormKit) {
+        formdata.append('files', this.videoLink);
+      }
+      if (!this.isScormKit) {
+        formdata.append('video_filename', this.videoSrc);
+        formdata.append('doc_filename', this.uploadedDocument);
+      }
       Swal.fire({
         title: 'Uploading...',
         text: 'Please wait...',
@@ -224,7 +231,7 @@ export class EditCourseKitComponent {
       course: this.courseService.getCourseKitById(this.courseId),
     }).subscribe((response: any) => {
       if (response) {
-        console.log(response);
+        // console.log(response);
         
         this.course = response.course;
         this.fileName = response?.course?.videoLink?.length > 0
@@ -238,9 +245,12 @@ export class EditCourseKitComponent {
         this.videoId = courseKitDetails._id
         this.videoSrc = courseKitDetails.video_filename;
         this.uploadedDocument = courseKitDetails.doc_filename;
+        this.acceptedFormats='.pdf,.ppt,.pptx,.doc,.docx,.xls,.xlsx,.txt';
         }else {
+          this.acceptedFormats='.zip';
           this.scormId = response.course.scormKit._id;
           this.scormKit = response.course.scormKit;
+          this.uploadedDocument = response.course.scormKit.fileName || response.course.scormKit.title;
         }
         this.kitType = response.course.kitType;
         this.courseKitForm.patchValue({
@@ -290,11 +300,12 @@ export class EditCourseKitComponent {
   //   }
   fileBrowseHandler(event: any) {
     const file = event.target.files[0];
-    const allowedFormats = ['video/mp4', 'video/x-matroska', 'video/x-msvideo']; 
+    // console.log("ffile",file.type)
+    const allowedFormats = ['video/mp4', 'video/x-matroska', 'video/x-msvideo','audio/mp3','audio/wav','audio/aac','audio/mpeg']; 
     if (!allowedFormats.includes(file.type)) {
       Swal.fire({
         title: 'Oops...',
-        text: 'Selected format doesn\'t support. Only video formats are allowed!',
+        text: 'Selected format doesn\'t support. Only video and MP3 formats are allowed!',
         icon: 'error',
       });
       return; 
@@ -353,7 +364,7 @@ export class EditCourseKitComponent {
   //     }
   //   }
   // }
-  onFileUpload(event: any) {
+  onFileUpload(event: any, isScormKit:boolean=false) {
     const file = event.target.files[0];
     const allowedFileTypes = [
       'application/pdf',
@@ -365,6 +376,9 @@ export class EditCourseKitComponent {
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       'text/plain' 
     ];
+    if(isScormKit){
+      allowedFileTypes.push('application/x-zip-compressed')
+    }
   
     if (file) {
       if (allowedFileTypes.includes(file.type)) {

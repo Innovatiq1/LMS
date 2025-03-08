@@ -37,11 +37,22 @@
     cursor: pointer;
     opacity: 0;
   }
+  // .file-msg {
+  //   margin-left: 20px;
+  //   vertical-align: middle;
+  //   font-size: 12px;
+  //   font-weight: 500;
+  // }
   .file-msg {
     margin-left: 20px;
     vertical-align: middle;
     font-size: 12px;
     font-weight: 500;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+    display: inline-block;
   }
   h5{
     padding-top: 10px;
@@ -74,13 +85,19 @@
   cursor: pointer;
   opacity: 0;
 }
+// .file-msg1 {
+//   margin-left: 20px;
+//   vertical-align: middle;
+//   font-size: 12px;
+//   font-weight: 500;
+// }
 .file-msg1 {
+  display: inline-block;
   margin-left: 20px;
   vertical-align: middle;
   font-size: 12px;
   font-weight: 500;
 }
-
 
 .file-drop-area1 {
   position: relative;
