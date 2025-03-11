@@ -53,3 +53,17 @@ svg {
 .request{
   width: 27vw;
 }
+
+.mat-header-cell, .mat-cell {
+  width: 14.2%; /* Adjust based on the number of columns */
+  text-align: center; /* Ensure text is aligned */
+}
+
+.mat-header-cell:first-child, .mat-cell:first-child {
+  width: 20%; /* Give more space to 'Course Title' if needed */
+}
+
+.mat-table {
+  width: 100%;
+  table-layout: fixed;
+}

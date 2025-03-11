@@ -5,41 +5,38 @@
       <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
       </app-breadcrumb>
     </div>
-    <div class="row">
-      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: -50px;margin-top: -25px;">
-        <div class="card">
-          <div class="body overflow-auto">
-            <div class="responsive_table">
-              <div class="straight-line-table">
-                <div class="row">
-                  <div class="col-md-12">
-                    <div *ngFor="let row of dataSource" class="log-item">
-                      <span class="name">{{ row.name | titlecase }} {{ row.last_name ? row.last_name : '' | titlecase }}</span>
-                      <span class="user-type">{{ row.type | titlecase }}</span>
-                      <!-- <div class="user-updated-container">
-                        
-                        <span class="updated-time">{{ row.updatedAt | date:'medium' }}</span>
-                      </div> -->
-                      <span class="login-time"><span class="text_bold">Logged in</span> at {{ row.loginTime | date:'medium' }}</span>
-                      <span *ngIf="row.logoutTime" class="and-separator">&</span>
-                      <span *ngIf="row.logoutTime" class="logout-time"> <span class="text_bold">Logged out</span> at   {{ row.logoutTime | date:'medium' }}</span>
-                    </div>
-                    
-
-                  </div>
+ <div class="row">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 responsive-card">
+    <div class="card">
+      <div class="body overflow-auto">
+        <div class="responsive_table">
+          <div class="straight-line-table">
+            <div class="row">
+              <div class="col-md-12">
+                <div *ngFor="let row of dataSource" class="log-item">
+                  <span class="name">{{ row.name | titlecase }} {{ row.last_name ? row.last_name : '' | titlecase }}</span>
+                  <span class="user-type">{{ row.type | titlecase }}</span>
+                  <span class="login-time"><span class="text_bold">Logged in</span> at {{ row.loginTime | date:'medium' }}</span>
+                  <span *ngIf="row.logoutTime" class="and-separator">&</span>
+                  <span *ngIf="row.logoutTime" class="logout-time"> 
+                    <span class="text_bold">Logged out</span> at {{ row.logoutTime | date:'medium' }}
+                  </span>
                 </div>
               </div>
-              <!-- Loading spinner -->
-              <div class="tbl-spinner">
-                <mat-progress-spinner *ngIf="isLoading" color="primary" [diameter]="40"
-                  mode="indeterminate"></mat-progress-spinner>
-              </div>
-              <mat-paginator #paginator [length]="totalItems" (page)="pageSizeChange($event)"
-                [pageSizeOptions]="pageSizeArr" aria-label="select pagination option"></mat-paginator>
             </div>
           </div>
+          <!-- Loading spinner -->
+          <div class="tbl-spinner">
+            <mat-progress-spinner *ngIf="isLoading" color="primary" [diameter]="40" mode="indeterminate"></mat-progress-spinner>
+          </div>
+          <mat-paginator #paginator [length]="totalItems" (page)="pageSizeChange($event)" 
+            [pageSizeOptions]="pageSizeArr" aria-label="select pagination option">
+          </mat-paginator>
         </div>
       </div>
     </div>
+  </div>
+</div>
+
   </div>
 </section>
