@@ -366,6 +366,7 @@ export class EditCourseKitComponent {
   // }
   onFileUpload(event: any, isScormKit:boolean=false) {
     const file = event.target.files[0];
+    // console.log("Selected file:", file.name, "Type:", file.type);
     const allowedFileTypes = [
       'application/pdf',
       'application/vnd.ms-powerpoint', 
