@@ -448,6 +448,7 @@ export class CreateCourseKitComponent implements OnInit {
   // }
   onFileUpload(event: any, isScormKit:boolean=false) {
     const file = event.target.files[0];
+    // console.log("Selected file:", file.name, "Type:", file.type);
     let allowedFileTypes = [
       'application/pdf',
       'application/vnd.ms-powerpoint',
@@ -500,6 +501,7 @@ export class CreateCourseKitComponent implements OnInit {
             }
           );
         } else {
+          // console.log("filesss",file.name,"this.docs",file)
           this.uploadedDocument = file.name;
           this.docs = file;
         }
