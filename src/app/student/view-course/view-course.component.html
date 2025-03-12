@@ -456,6 +456,11 @@
                         Click here
                       </button>
                     </div>
+                    <div *ngIf="classDetails?.meetingPlatform === 'teams'">
+                      <label>Microsoft Teams Meeting</label>
+                      <a [href]="classDetails.meetingUrl" target="_blank">Join Teams Meeting</a>
+                    </div>
+                    
                     <p *ngIf="hasSessionEnded()">
                       The session has ended, and the meeting link is no longer available.
                     </p>

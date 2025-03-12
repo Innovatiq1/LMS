@@ -30,12 +30,18 @@ import { FormService } from '@core/service/customization.service';
 import { AppConstants } from '@shared/constants/app.constants';
 import { environment } from 'environments/environment';
 
+import { HttpClient } from '@angular/common/http';
+
+
+
 @Component({
   selector: 'app-create-class',
   templateUrl: './create-class.component.html',
   styleUrls: ['./create-class.component.scss'],
 })
 export class CreateClassComponent {
+
+  
   item: any;
   dept: any;
   @ViewChild('allSelected') private allSelected!: MatOption;
@@ -44,6 +50,8 @@ export class CreateClassComponent {
   trainerId:any;
   idNumber:any;
   @HostListener('document:keypress', ['$event'])
+
+  
   keyPressNumbers(event: KeyboardEvent) {
     const charCode = event.which ? event.which : event.keyCode;
     if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57)) {
@@ -128,6 +136,7 @@ export class CreateClassComponent {
     private studentsService: StudentsService,
     private userService: UserService,
     private formService: FormService,
+    private http: HttpClient
 
   ) {
     this._activeRoute.queryParams.subscribe((params) => {
@@ -845,24 +854,66 @@ getTPCourse(classForm:any){
       return encodeURIComponent(url); // Return the original URL if it's invalid
     }
   }
+  // scheduleMeet() {
+  //   const formData = this.classForm.value;
+  //   localStorage.setItem('classFormData', JSON.stringify(formData));
+  //   localStorage.setItem('courseCode', this.courseCode);
+  //   localStorage.setItem('expiryDate', this.expiryDate);
+  //   localStorage.setItem('courseTitle', this.courseTitle);
+  //   if (this.classForm.get('meetingPlatform')?.value === 'zoom') {
+  //     const zoomKey = JSON.parse(localStorage.getItem('user_data')!)?.user?.zoomKey;
+
+  //     const clientId = zoomKey.clientId || '';
+  //     const redirectUri = this.updateHost(zoomKey.redirectUri) 
+  //     const zoomURL = `https://zoom.us/oauth/authorize?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}`
+  //     const zoomAuthUrl = zoomURL;
+  //     localStorage.setItem('zoomSessionCreated', 'true');
+  //     window.location.href = zoomAuthUrl;
+  //   }
+  // }
+
+
   scheduleMeet() {
     const formData = this.classForm.value;
     localStorage.setItem('classFormData', JSON.stringify(formData));
     localStorage.setItem('courseCode', this.courseCode);
     localStorage.setItem('expiryDate', this.expiryDate);
     localStorage.setItem('courseTitle', this.courseTitle);
-    if (this.classForm.get('meetingPlatform')?.value === 'zoom') {
+  
+    const meetingPlatform = this.classForm.get('meetingPlatform')?.value;
+  
+    if (meetingPlatform === 'zoom') {
+      // Existing Zoom OAuth Authentication Flow
       const zoomKey = JSON.parse(localStorage.getItem('user_data')!)?.user?.zoomKey;
-
+  
       const clientId = zoomKey.clientId || '';
-      const redirectUri = this.updateHost(zoomKey.redirectUri) 
-      const zoomURL = `https://zoom.us/oauth/authorize?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}`
-      const zoomAuthUrl = zoomURL;
+      const redirectUri = this.updateHost(zoomKey.redirectUri);
+      const zoomURL = `https://zoom.us/oauth/authorize?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}`;
       localStorage.setItem('zoomSessionCreated', 'true');
-      window.location.href = zoomAuthUrl;
+      window.location.href = zoomURL;
+  
+    } else if (meetingPlatform === 'teams') {
+      // New Microsoft Teams Meeting Integration
+      const meetingData = {
+        title: formData.title,
+        startTime: formData.startTime,
+        endTime: formData.endTime,
+        attendees: formData.attendees,
+      };
+  
+      this.http.post('/api/teams/scheduleMeeting', meetingData).subscribe(
+        (res: any) => {
+          console.log('Teams meeting scheduled:', res);
+          alert('Microsoft Teams meeting created successfully!');
+        },
+        (error) => {
+          console.error('Error scheduling Teams meeting:', error);
+          alert('Failed to create Microsoft Teams meeting.');
+        }
+      );
     }
   }
-
+  
   onDurationChange() {
     const duration = this.classForm.get('duration')?.value;
     if (duration && duration.length === 5) {
