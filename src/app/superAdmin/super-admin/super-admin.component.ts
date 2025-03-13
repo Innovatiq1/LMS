@@ -77,6 +77,7 @@ export class SuperAdminComponent extends UnsubscribeOnDestroyAdapter {
     this.resetData()
     this.alluserService
       .getAdminsList({
+        type:'admin',
         page,
         limit: this.coursePaginationModel.limit,
       })
@@ -84,7 +85,7 @@ export class SuperAdminComponent extends UnsubscribeOnDestroyAdapter {
         (response: any) => {
           this.dataSource = [...this.dataSource, ...response.data.data.docs];
           this.totalItems = this.dataSource.length;
-          console.log("this.dataSource",this.dataSource)
+          // console.log("this.dataSource",this.dataSource)
 
           if (this.dataSource.length < this.totalItems) {
             this.coursePaginationModel.page += 1;
@@ -135,6 +136,8 @@ export class SuperAdminComponent extends UnsubscribeOnDestroyAdapter {
     this.filteredData = this.dataSource.filter(
       (data) => data.type === 'Admin' || data.type === 'admin'
     );
+
+    // console.log("filterdata",this.filteredData)
   
     this.activeCount = this.filteredData.filter(data => data.Active === true).length;
     this.inactiveCount = this.filteredData.filter(data => data.Active === false).length;

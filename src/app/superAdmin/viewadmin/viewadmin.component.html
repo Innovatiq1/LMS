@@ -66,12 +66,30 @@
                 <button class="icons" alt="Delete" mat-menu-item (click)="deleteItem(aboutData1)">
                   <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
               </button>
+              <div *ngIf="!aboutData1?.Active">
+                <button
+                  mat-menu-item
+                  (click)="confirmItem(aboutData1)"
+                  class="align-items-center"
+                >
+                  <img class="img-w" src="/assets/approve.svg" alt="approve" />
+                </button>
+              </div>
+              <div class="mt-1" *ngIf="aboutData1?.Active">
+                <button
+                  mat-menu-item
+                  (click)="deactiveconfirmItem(aboutData1)"
+                  class="align-items-center"
+                >
+                  <img class="img-w" src="/assets/deactivate.png" alt="deactivate"/>
+                </button>
+              </div>
             </div>
             <mat-tab-group>
               <mat-tab>
                 <ng-template mat-tab-label>
                   <!-- <mat-icon class="example-tab-icon msr-2">face</mat-icon> -->
-                  Details
+                  Details123
                 </ng-template>
                 <div class="col-lg-12 col-md-12 col-sm-12">
                   <div class="project_widget">
