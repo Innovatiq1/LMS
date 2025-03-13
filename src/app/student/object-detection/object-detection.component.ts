@@ -37,13 +37,16 @@ export class ObjectDetectionComponent {
 
   count: number = 0;
   isPendingFaceMatch: boolean = false;
+  previousNosePosition: any = null;
+  isLivePerson: boolean = false;
+  livenessTimer: any;
+  isFaceMatched: boolean = false;
 
   private cocoModel: cocoSsd.ObjectDetection | null = null;
   private posenetModel: posenet.PoseNet | null = null;
 
   constructor(private faceMatchService: FaceMatchService) { }
   async ngOnInit() {
-    ;
     await this.initializeModels();
     await this.startVideoStream();
   }
@@ -56,6 +59,79 @@ export class ObjectDetectionComponent {
       outputStride: 16
     });
   }
+
+  async detectLiveness(pose: any) {
+    if (this.isLivePerson) return;
+
+    const movedHead = this.checkHeadMovement(pose);
+    const tiltedHead = this.checkHeadTilt(pose);
+    const movedBody = this.checkBodyMovement(pose);
+
+    if (movedHead || tiltedHead || movedBody) {
+      this.isLivePerson = true;
+      console.log('Live person detected ✅');
+    } else {
+      this.isLivePerson = false;
+      this.FaceMatchMsg.emit("Please move your head or body to continue.");
+      console.log('Possible static photo ❌');
+    }
+
+    if (this.isLivePerson && this.isFaceMatched) {
+      this.FaceMatchDetect.emit();
+    }
+  }
+
+  checkHeadTilt(pose: any) {
+    const leftEar = pose.keypoints.find((kp: any) => kp.part === 'leftEar');
+    const rightEar = pose.keypoints.find((kp: any) => kp.part === 'rightEar');
+
+    if (!leftEar || !rightEar || leftEar.score < 0.5 || rightEar.score < 0.5) return false;
+
+    const tiltAngle = Math.abs(leftEar.position.y - rightEar.position.y);
+
+    if (tiltAngle > 10) {  // Adjust threshold as needed
+      console.log('Head tilt detected');
+      return true;
+    }
+
+    return false;
+  }
+
+  checkBodyMovement(pose: any) {
+    const leftShoulder = pose.keypoints.find((kp: any) => kp.part === 'leftShoulder');
+    const rightShoulder = pose.keypoints.find((kp: any) => kp.part === 'rightShoulder');
+
+    if (!leftShoulder || !rightShoulder || leftShoulder.score < 0.5 || rightShoulder.score < 0.5) return false;
+
+    const movement = Math.abs(leftShoulder.position.y - rightShoulder.position.y);
+
+    if (movement > 5) {  // Adjust threshold based on testing
+      console.log('Body movement detected');
+      return true;
+    }
+
+    return false;
+  }
+
+  checkHeadMovement(pose: any) {
+    const nose = pose.keypoints.find((kp: any) => kp.part === 'nose');
+
+    if (!nose || nose.score < 0.5) return false; // Ensure nose is detected
+
+    if (this.previousNosePosition) {
+      const dx = Math.abs(nose.position.x - this.previousNosePosition.x);
+      const dy = Math.abs(nose.position.y - this.previousNosePosition.y);
+
+      if (dx > 5 || dy > 5) {
+        console.log('Head movement detected');
+        return true;
+      }
+    }
+
+    this.previousNosePosition = { x: nose.position.x, y: nose.position.y };
+    return false;
+  }
+
 
 
   async startVideoStream() {
@@ -74,16 +150,6 @@ export class ObjectDetectionComponent {
         this.captureAutoFaceMatch(video, canvas);
         return;
       })
-
-    // // Get user media (video)
-    // const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-    // video.srcObject = stream;
-
-    // // Set up canvas for faceapi detection
-    // faceapi.matchDimensions(canvas, { width: video.width, height: video.height });
-    // video.onplay = async () => {
-    //   this.detectFace(video, canvas);
-    // };
   }
 
   captureAutoFaceMatch(video: HTMLVideoElement, canvas: HTMLCanvasElement) {
@@ -130,8 +196,9 @@ export class ObjectDetectionComponent {
       next: (res) => {
         this.isPendingFaceMatch = false;
         if (res.data.isMatch) {
+          this.isFaceMatched = true;
           clearInterval(this.captureInterval);
-          this.FaceMatchDetect.emit();
+          // this.FaceMatchDetect.emit();
           const video = this.videoElement.nativeElement;
           const canvas = this.canvasElement.nativeElement;
           this.detectObjects(video, canvas);
@@ -145,20 +212,7 @@ export class ObjectDetectionComponent {
         this.FaceMatchError.emit();
         this.isPendingFaceMatch = false;
       }
-    }
-
-      //   res=>{
-      //   if(res.data.isMatch){
-      //     clearInterval(this.captureInterval);
-      //     this.FaceMatchDetect.emit();
-      //     const video = this.videoElement.nativeElement;
-      //     const canvas = this.canvasElement.nativeElement;
-      //     this.detectObjects(video, canvas);
-      //   }else{
-      //     console.log(res);
-      //   }
-      // }
-    )
+    })
   }
 
   async detectObjects(video: HTMLVideoElement, canvas: HTMLCanvasElement) {
@@ -182,6 +236,7 @@ export class ObjectDetectionComponent {
 
         const posePredictions = await this.posenetModel.estimateSinglePose(video, { flipHorizontal: true });
         this.detectLookingAway(posePredictions);
+        this.detectLiveness(posePredictions);
       }
 
       requestAnimationFrame(detectFrame);
@@ -190,9 +245,9 @@ export class ObjectDetectionComponent {
   }
 
   detectLookingAway(pose: posenet.Pose): void {
+    if (!this.isLivePerson) return;
     if (!pose || !pose.keypoints) return;
     const keypoints = pose.keypoints;
-    
     const nose = keypoints.find((point) => point.part === 'nose');
     const leftEye = keypoints.find((point) => point.part === 'leftEye');
     const rightEye = keypoints.find((point) => point.part === 'rightEye');
@@ -218,10 +273,10 @@ export class ObjectDetectionComponent {
       const isLookingAwayAlert = noseOffset > faceTurnThreshold;
       const isLookingDown = noseEyeDistanceY < tiltThreshold && noseShoulderDistanceY < 30;
 
-      if(isLookingAwayAlert || isLookingDown){
+      if (isLookingAwayAlert || isLookingDown) {
         if (!this.isLookingAwayAlert) {
           this.isLookingAwayAlert = true;
-          console.log(isLookingAwayAlert ? 'Looking Away!': 'Looking Down!')
+          console.log(isLookingAwayAlert ? 'Looking Away!' : 'Looking Down!')
           this.LookAway.emit();
           setTimeout(() => {
             this.isLookingAwayAlert = false;
@@ -233,30 +288,7 @@ export class ObjectDetectionComponent {
   }
 
   processPredictions(predictions: cocoSsd.DetectedObject[]): void {
-    // const canvas = this.canvasElement.nativeElement;
-    // const ctx = canvas.getContext('2d');
-    // if (!ctx) {
-    //   console.error('Canvas context not available');
-    //   return;
-    // }
-
-    // // Clear canvas
-    // ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // predictions.forEach((prediction) => {
-    //   const [x, y, width, height] = prediction.bbox;
-
-    //   // Draw bounding box
-    //   ctx.strokeStyle = '#00FFFF';
-    //   ctx.lineWidth = 2;
-    //   ctx.strokeRect(x, y, width, height);
-
-    //   // Draw label
-    //   ctx.font = '16px sans-serif';
-    //   ctx.fillStyle = '#000000';
-    //   ctx.fillText(prediction.class, x, y);
-    // });
-
+    if (!this.isLivePerson) return;
     if (predictions.length === 0) {
       if (this.count >= 50) {
         this.FaceNotVisible.emit();
@@ -270,11 +302,6 @@ export class ObjectDetectionComponent {
 
     predictions.forEach((prediction) => {
       if (prediction.class === 'person') faces++;
-      // if (prediction.class === 'cell phone' && !this.isMobilePhoneAlerted) {
-      //   this.isMobilePhoneAlerted = true;
-      //   this.MobilePhone.emit();
-      //   setTimeout(() => (this.isMobilePhoneAlerted = false), 2000); // Reset after 2 seconds
-      // }
       if (
         ['book', 'laptop', 'cell phone'].includes(prediction.class) &&
         !this.isProhibitedObjectAlerted
