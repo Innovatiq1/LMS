@@ -44,14 +44,27 @@ export class ForgotPasswordComponent implements OnInit {
 
   }
   ngOnInit() {
+    // this.startSlideshow();
+    // this.authForm = this.formBuilder.group({
+    //   email: [
+    //     '',
+    //     [Validators.required, Validators.email, Validators.minLength(5)],
+    //   ],
+    // });
+    // this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     this.startSlideshow();
-    this.authForm = this.formBuilder.group({
-      email: [
-        '',
-        [Validators.required, Validators.email, Validators.minLength(5)],
+  this.authForm = this.formBuilder.group({
+    email: [
+      '',
+      [
+        Validators.required,
+        Validators.email,
+        Validators.minLength(5),
+        Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{3,}$/)
       ],
-    });
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    ],
+  });
+  this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
   setLanguage(event: any) {  
     this.langStoreValue = event.target.value;
