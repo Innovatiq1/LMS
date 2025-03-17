@@ -1,0 +1,28 @@
+<mat-dialog-content>
+    <div class="container">
+        <h4>Terms and Conditions</h4>
+        <ul class="terms-list">
+          <li>Access to unauthorized materials, such as textbooks, notes, or online resources, is forbidden during the exam.</li>
+          <li>Trainees/Students are required to be alone in a quiet, well-lit room, free from disruptions.</li>
+          <li>Candidates should avoid any form of communication with others during the exam.</li>
+          <li>A functioning webcam should be used while taking up the exam.</li>
+          <li>After maximum violations of terms and conditions, the exam will be blocked.</li>
+        </ul>
+        <p><strong>Note:</strong> Exam will be enabled only after the approval of the admin.</p>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <div class="m-auto">
+      <button
+        mat-button
+        mat-dialog-close
+        cdkFocusInitial
+        mat-flat-button
+        color="primary"
+        (click)="closeDialog()"
+      >
+      I Agree
+      </button>
+    </div>
+  </mat-dialog-actions>

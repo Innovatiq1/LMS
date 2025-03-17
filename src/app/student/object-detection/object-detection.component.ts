@@ -24,6 +24,9 @@ export class ObjectDetectionComponent {
   isLookingAwayAlert: boolean = false;
   captureInterval: any;
 
+  livenessTimer: any;
+  livenessCheckStarted: boolean = false;
+
 
   @Output() MobilePhone = new EventEmitter<void>();
   @Output() ProhibitedObject = new EventEmitter<void>();
@@ -37,6 +40,9 @@ export class ObjectDetectionComponent {
 
   count: number = 0;
   isPendingFaceMatch: boolean = false;
+  previousPosition: any = {};
+  isLivePerson: boolean = false;
+  isFaceMatched: boolean = false;
 
   private cocoModel: cocoSsd.ObjectDetection | null = null;
   private posenetModel: posenet.PoseNet | null = null;
@@ -56,6 +62,103 @@ export class ObjectDetectionComponent {
       outputStride: 16
     });
   }
+
+  async detectLiveness(pose: any) {
+    if (this.isLivePerson) return;
+
+
+    const keypoints = ['nose', 'leftEye', 'rightEye', 'leftEar', 'rightEar', 'leftShoulder', 'rightShoulder'];
+    let totalMovement = 0;
+
+    keypoints.forEach((part) => {
+      const keypoint = pose.keypoints.find((kp: any) => kp.part === part);
+      if (keypoint && keypoint.score > 0.5) {
+        if (this.previousPosition[part]) {
+          const dx = Math.abs(keypoint.position.x - this.previousPosition[part].x);
+          const dy = Math.abs(keypoint.position.y - this.previousPosition[part].y);
+          totalMovement += dx + dy;
+        }
+        this.previousPosition[part] = { x: keypoint.position.x, y: keypoint.position.y };
+      }
+    });
+
+    // Define a threshold for natural movement (adjust based on testing)
+    const minMovementThreshold = 10;  // Ignore micro-movements from shaking
+    const maxShakeThreshold = 50;     // Ignore excessive fast movements
+
+    if (totalMovement > minMovementThreshold && totalMovement < maxShakeThreshold) {
+      this.isLivePerson = true;
+    }
+
+    if (!this.livenessCheckStarted) {
+      this.livenessCheckStarted = true;
+      this.isLivePerson = false;
+      this.FaceMatchMsg.emit("Please move your head or body to continue.");
+      this.livenessTimer = setTimeout(() => {
+        if (this.isLivePerson) {
+          console.log('Live person detected ✅');
+          if (this.isLivePerson && this.isFaceMatched) {
+            this.FaceMatchDetect.emit();
+          }
+        } else {
+          console.log('Static photo detected ❌');
+        }
+        this.livenessCheckStarted = false;
+      }, 10000);
+    }
+  }
+
+  checkHeadTilt(pose: any) {
+    const leftEar = pose.keypoints.find((kp: any) => kp.part === 'leftEar');
+    const rightEar = pose.keypoints.find((kp: any) => kp.part === 'rightEar');
+
+    if (!leftEar || !rightEar || leftEar.score < 0.5 || rightEar.score < 0.5) return false;
+
+    const tiltAngle = Math.abs(leftEar.position.y - rightEar.position.y);
+
+    if (tiltAngle > 10) {  // Adjust threshold as needed
+      console.log('Head tilt detected');
+      return true;
+    }
+
+    return false;
+  }
+
+  checkBodyMovement(pose: any) {
+    const leftShoulder = pose.keypoints.find((kp: any) => kp.part === 'leftShoulder');
+    const rightShoulder = pose.keypoints.find((kp: any) => kp.part === 'rightShoulder');
+
+    if (!leftShoulder || !rightShoulder || leftShoulder.score < 0.5 || rightShoulder.score < 0.5) return false;
+
+    const movement = Math.abs(leftShoulder.position.y - rightShoulder.position.y);
+
+    if (movement > 5) {  // Adjust threshold based on testing
+      console.log('Body movement detected');
+      return true;
+    }
+
+    return false;
+  }
+
+  checkHeadMovement(pose: any) {
+    const nose = pose.keypoints.find((kp: any) => kp.part === 'nose');
+
+    if (!nose || nose.score < 0.5) return false; // Ensure nose is detected
+
+    if (this.previousPosition) {
+      const dx = Math.abs(nose.position.x - this.previousPosition.x);
+      const dy = Math.abs(nose.position.y - this.previousPosition.y);
+
+      if (dx > 5 || dy > 5) {
+        console.log('Head movement detected');
+        return true;
+      }
+    }
+
+    this.previousPosition = { x: nose.position.x, y: nose.position.y };
+    return false;
+  }
+
 
 
   async startVideoStream() {
@@ -162,7 +265,15 @@ export class ObjectDetectionComponent {
   }
 
   async detectObjects(video: HTMLVideoElement, canvas: HTMLCanvasElement) {
-    this.startDetection();
+    video.onloadedmetadata = async () => {
+      this.startDetection();
+    };
+
+    if (video.readyState >= 2) { // ReadyState 2 = "HAVE_CURRENT_DATA"
+      this.startDetection();
+    } else {
+      console.warn('Waiting for video to load...');
+    }
   }
 
   ngOnDestroy(): void {
@@ -199,37 +310,65 @@ export class ObjectDetectionComponent {
     const leftShoulder = keypoints.find((point) => point.part === 'leftShoulder');
     const rightShoulder = keypoints.find((point) => point.part === 'rightShoulder');
 
-    if (nose && leftEye && rightEye && leftShoulder && rightShoulder) {
-      // Calculate horizontal distance between eyes
-      const eyeDistance = Math.abs(leftEye.position.x - rightEye.position.x);
+    // if (nose && leftEye && rightEye && leftShoulder && rightShoulder) {
+    //   // Calculate horizontal distance between eyes
+    //   const eyeDistance = Math.abs(leftEye.position.x - rightEye.position.x);
 
-      // Calculate the offset of the nose from the midpoint of the eyes
-      const eyeMidpointX = (leftEye.position.x + rightEye.position.x) / 2;
-      const noseOffset = Math.abs(nose.position.x - eyeMidpointX);
+    //   // Calculate the offset of the nose from the midpoint of the eyes
+    //   const eyeMidpointX = (leftEye.position.x + rightEye.position.x) / 2;
+    //   const noseOffset = Math.abs(nose.position.x - eyeMidpointX);
 
-      const eyeMidpointY = (leftEye.position.y + rightEye.position.y) / 2;
-      const noseEyeDistanceY = eyeMidpointY - nose.position.y;
-      const shoulderMidpointY = (leftShoulder.position.y + rightShoulder.position.y) / 2;
-      const noseShoulderDistanceY = shoulderMidpointY - nose.position.y;
+    //   const eyeMidpointY = (leftEye.position.y + rightEye.position.y) / 2;
+    //   const noseEyeDistanceY = eyeMidpointY - nose.position.y;
+    //   const shoulderMidpointY = (leftShoulder.position.y + rightShoulder.position.y) / 2;
+    //   const noseShoulderDistanceY = shoulderMidpointY - nose.position.y;
 
-      const faceTurnThreshold = eyeDistance * 0.5; // Looking away sensitivity
-      const tiltThreshold = 10; // Looking down sensitivity
+    //   const faceTurnThreshold = eyeDistance * 0.5; // Looking away sensitivity
+    //   const tiltThreshold = 10; // Looking down sensitivity
 
-      const isLookingAwayAlert = noseOffset > faceTurnThreshold;
-      const isLookingDown = noseEyeDistanceY < tiltThreshold && noseShoulderDistanceY < 30;
+    //   const isLookingAwayAlert = noseOffset > faceTurnThreshold;
+    //   const isLookingDown = noseEyeDistanceY < tiltThreshold && noseShoulderDistanceY < 30;
 
-      if(isLookingAwayAlert || isLookingDown){
+    //   if (isLookingAwayAlert || isLookingDown) {
+    //     if (!this.isLookingAwayAlert) {
+    //       this.isLookingAwayAlert = true;
+    //       console.log(isLookingAwayAlert ? 'Looking Away!' : 'Looking Down!')
+    //       this.LookAway.emit();
+    //       setTimeout(() => {
+    //         this.isLookingAwayAlert = false;
+    //       }, 5000);
+    //     }
+    //   }
+    // }
+
+    if (nose && leftEye && rightEye) {
+      // Calculate horizontal movement of the nose
+      const eyeCenterX = (leftEye.position.x + rightEye.position.x) / 2;
+      const noseOffsetX = Math.abs(nose.position.x - eyeCenterX);
+
+      // Calculate vertical movement of the nose
+      const eyeCenterY = (leftEye.position.y + rightEye.position.y) / 2;
+      const noseOffsetY = Math.abs(nose.position.y - eyeCenterY);
+
+      // Define thresholds for looking away
+      const horizontalThreshold = 40; // Side-to-side movement
+      const verticalThreshold = 30;   // Up/down movement
+
+      if (noseOffsetX > horizontalThreshold || noseOffsetY > verticalThreshold) {
+
         if (!this.isLookingAwayAlert) {
           this.isLookingAwayAlert = true;
-          console.log(isLookingAwayAlert ? 'Looking Away!': 'Looking Down!')
+          console.log("Looking Away ❌");
           this.LookAway.emit();
           setTimeout(() => {
             this.isLookingAwayAlert = false;
           }, 5000);
+        } else {
+          this.isLookingAwayAlert = false;
         }
       }
-    }
 
+    }
   }
 
   processPredictions(predictions: cocoSsd.DetectedObject[]): void {

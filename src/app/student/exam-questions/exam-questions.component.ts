@@ -98,7 +98,7 @@ export class ExamQuestionsComponent {
   private visibilityChangeHandler!: () => void;
   private keyPressHandler!: (event: KeyboardEvent) => void;
   violationCount: number = 0;
-  maxViolations: number = 4;
+  maxViolations: number =5;
   totalTimes: number = 60;
   timerSubscription!: Subscription;
 
@@ -285,6 +285,8 @@ export class ExamQuestionsComponent {
       this.courseDetails = response;
       const videoAnalyzerReq = response?.exam_assessment?.videoAnalyzerReq;
       if (videoAnalyzerReq) {
+        const maxViolations = response?.exam_assessment?.violoation_limit;
+        this.maxViolations = maxViolations || 5;
         this.isEnableProtector = true;
         this.showOverlay = true;
         this.overLayMsg = 'Opening Camera...'
@@ -922,7 +924,7 @@ export class ExamQuestionsComponent {
   showViolationAlert() {
     this.violationCount++;
     console.log('Violation count:',this.violationCount);
-    if (this.violationCount > this.maxViolations) {
+    if (this.violationCount >= this.maxViolations) {
       Swal.fire('Max violation reached', 'The Exam will be canceled and you will be terminated', 'error').then(res=>{
         this.location.back()
       });
