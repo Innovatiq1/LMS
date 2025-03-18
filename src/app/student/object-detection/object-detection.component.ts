@@ -49,7 +49,6 @@ export class ObjectDetectionComponent {
 
   constructor(private faceMatchService: FaceMatchService) { }
   async ngOnInit() {
-    ;
     await this.initializeModels();
     await this.startVideoStream();
   }
@@ -177,16 +176,6 @@ export class ObjectDetectionComponent {
         this.captureAutoFaceMatch(video, canvas);
         return;
       })
-
-    // // Get user media (video)
-    // const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-    // video.srcObject = stream;
-
-    // // Set up canvas for faceapi detection
-    // faceapi.matchDimensions(canvas, { width: video.width, height: video.height });
-    // video.onplay = async () => {
-    //   this.detectFace(video, canvas);
-    // };
   }
 
   captureAutoFaceMatch(video: HTMLVideoElement, canvas: HTMLCanvasElement) {
@@ -233,8 +222,9 @@ export class ObjectDetectionComponent {
       next: (res) => {
         this.isPendingFaceMatch = false;
         if (res.data.isMatch) {
+          this.isFaceMatched = true;
           clearInterval(this.captureInterval);
-          this.FaceMatchDetect.emit();
+          // this.FaceMatchDetect.emit();
           const video = this.videoElement.nativeElement;
           const canvas = this.canvasElement.nativeElement;
           this.detectObjects(video, canvas);
@@ -248,20 +238,7 @@ export class ObjectDetectionComponent {
         this.FaceMatchError.emit();
         this.isPendingFaceMatch = false;
       }
-    }
-
-      //   res=>{
-      //   if(res.data.isMatch){
-      //     clearInterval(this.captureInterval);
-      //     this.FaceMatchDetect.emit();
-      //     const video = this.videoElement.nativeElement;
-      //     const canvas = this.canvasElement.nativeElement;
-      //     this.detectObjects(video, canvas);
-      //   }else{
-      //     console.log(res);
-      //   }
-      // }
-    )
+    })
   }
 
   async detectObjects(video: HTMLVideoElement, canvas: HTMLCanvasElement) {
@@ -293,6 +270,7 @@ export class ObjectDetectionComponent {
 
         const posePredictions = await this.posenetModel.estimateSinglePose(video, { flipHorizontal: true });
         this.detectLookingAway(posePredictions);
+        this.detectLiveness(posePredictions);
       }
 
       requestAnimationFrame(detectFrame);
@@ -301,9 +279,9 @@ export class ObjectDetectionComponent {
   }
 
   detectLookingAway(pose: posenet.Pose): void {
+    if (!this.isLivePerson) return;
     if (!pose || !pose.keypoints) return;
     const keypoints = pose.keypoints;
-    
     const nose = keypoints.find((point) => point.part === 'nose');
     const leftEye = keypoints.find((point) => point.part === 'leftEye');
     const rightEye = keypoints.find((point) => point.part === 'rightEye');
@@ -372,30 +350,7 @@ export class ObjectDetectionComponent {
   }
 
   processPredictions(predictions: cocoSsd.DetectedObject[]): void {
-    // const canvas = this.canvasElement.nativeElement;
-    // const ctx = canvas.getContext('2d');
-    // if (!ctx) {
-    //   console.error('Canvas context not available');
-    //   return;
-    // }
-
-    // // Clear canvas
-    // ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // predictions.forEach((prediction) => {
-    //   const [x, y, width, height] = prediction.bbox;
-
-    //   // Draw bounding box
-    //   ctx.strokeStyle = '#00FFFF';
-    //   ctx.lineWidth = 2;
-    //   ctx.strokeRect(x, y, width, height);
-
-    //   // Draw label
-    //   ctx.font = '16px sans-serif';
-    //   ctx.fillStyle = '#000000';
-    //   ctx.fillText(prediction.class, x, y);
-    // });
-
+    if (!this.isLivePerson) return;
     if (predictions.length === 0) {
       if (this.count >= 50) {
         this.FaceNotVisible.emit();
@@ -409,11 +364,6 @@ export class ObjectDetectionComponent {
 
     predictions.forEach((prediction) => {
       if (prediction.class === 'person') faces++;
-      // if (prediction.class === 'cell phone' && !this.isMobilePhoneAlerted) {
-      //   this.isMobilePhoneAlerted = true;
-      //   this.MobilePhone.emit();
-      //   setTimeout(() => (this.isMobilePhoneAlerted = false), 2000); // Reset after 2 seconds
-      // }
       if (
         ['book', 'laptop', 'cell phone'].includes(prediction.class) &&
         !this.isProhibitedObjectAlerted

@@ -187,7 +187,7 @@
                             {{ data?.sessions[0]?.sessionStartDate | date: 'MMM dd, yyyy' }} - {{ data?.sessions[0]?.sessionEndDate | date: 'MMM dd, yyyy' }}
                           </p>
                         </div>
-                        <p class="text-default">
+                        <p class="text-default1">
                           {{ data?.courseId?.course_detailed_description | truncate: 40 }}
                         </p>
                         <!-- <p class="text-default" [innerHTML]="(data?.courseId?.course_detailed_description | truncate: 40)"></p> -->
@@ -254,7 +254,7 @@
                         </div>
                         <h6>{{ data?.courseId?.training_hours }}Hours</h6>
                         <p
-                          class="course-card-description"
+                          class="text-default1"
                           [innerHTML]="
                             data?.courseId?.course_detailed_description
                               | bulletPoints
@@ -322,7 +322,7 @@
                         </div>
                         <h6>{{ data?.courseId?.training_hours }}Hours</h6>
                         <p
-                          class="course-card-description"
+                          class="text-default1"
                           [innerHTML]="
                             data?.courseId?.course_detailed_description
                               | bulletPoints
@@ -389,7 +389,7 @@
                         </div>
                         <h6>{{ data?.courseId?.training_hours }}Hours</h6>
                         <p
-                          class="course-card-description"
+                          class="text-default1"
                           [innerHTML]="
                             data?.courseId?.course_detailed_description
                               | bulletPoints

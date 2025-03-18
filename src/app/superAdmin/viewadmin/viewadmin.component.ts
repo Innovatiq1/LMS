@@ -129,6 +129,76 @@ ngOnInit(){
       }
     });
   }
+  confirmItem(row: any) {
+  row.Active=true;
+    Swal.fire({
+      title: "Confirm Active",
+      text: `Are you sure you want to activate this ${row.role}?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Active",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.userService.updateUsers(row, this.currentId).subscribe(
+          (response) => {
+            Swal.fire({
+              title: "Active",
+              text: `${row.role} Activated successfully`,
+              icon: "success",
+            });
+            this.loadData();
+            window.history.back();
+          },
+          (error: { message: any; error: any; }) => {
+            Swal.fire(
+              `Failed to Activate ${row.role}`,
+              error.message || error.error,
+              "error"
+            );
+          }
+        );
+      }
+    });
+ 
+  }
+  deactiveconfirmItem(row: any) {
+    // console.log("deactiveconfirmItem",row)
+    row.Active=false;
+   Swal.fire({
+     title: "Confirm InActive",
+     text: "Are you sure you want to in-active?",
+     icon: "warning",
+     showCancelButton: true,
+     confirmButtonColor: "#d33",
+     cancelButtonColor: "#3085d6",
+     confirmButtonText: "In-Active",
+     cancelButtonText: "Cancel",
+   }).then((result) => {
+     if (result.isConfirmed) {
+      this.userService.updateUsers(row, this.currentId).subscribe(
+        (response) => {
+           Swal.fire({
+             title: "Active",
+             text: "In-Active successfully",
+             icon: "success",
+           });
+           this.loadData()
+         },
+         (error: { message: any; error: any; }) => {
+           Swal.fire(
+             "Failed to In-Active",
+             error.message || error.error,
+             "error"
+           );
+         }
+       );
+     }
+   });
+ 
+ }
   edit(){
     this.router.navigate(['/super-admin/edit-admin'], {
       queryParams: {

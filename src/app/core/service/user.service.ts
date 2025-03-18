@@ -62,6 +62,12 @@ export class UserService {
       if (filter.title) {
         params = params.set("title", filter.title?.toString());
       }
+      if (filter.type) {
+        params = params.set("type", filter.type?.toString());
+      }
+      if (filter.company) {
+        params = params.set("company", filter.company?.toString());
+      }
       if (filter.status && filter.status === "active") {
         params = params.set("status", "active");
       } else if (filter.status && filter.status === "inactive") {
