@@ -123,6 +123,7 @@
                   controlsList="nodownload"
                   (timeupdate)="onTimeUpdate($event)"
                   controls
+                  controlsList="nodownload"
                   (pause)="destroyModal()"
                   (play)="onPlay()"
                   style="border-radius: 12px; box-shadow: rgb(23, 23, 24)"
@@ -243,7 +244,7 @@
                     [ngClass]="{ 'show active': defaultTab === 'home' }"
                   >
                     <h5 class="py-2" *ngIf="isDocument">
-                      Course Completed :
+                      Course Completed:
                       <span
                         [ngClass]="{
                           'red-text': playBackTime < 50,
