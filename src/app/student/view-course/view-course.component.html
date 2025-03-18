@@ -120,6 +120,7 @@
                 <video
                   #videoPlayer
                   width="100%"
+                  controlsList="nodownload"
                   (timeupdate)="onTimeUpdate($event)"
                   controls
                   (pause)="destroyModal()"
