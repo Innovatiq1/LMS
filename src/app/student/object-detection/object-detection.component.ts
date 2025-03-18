@@ -329,8 +329,8 @@ export class ObjectDetectionComponent {
       const noseOffsetY = Math.abs(nose.position.y - eyeCenterY);
 
       // Define thresholds for looking away
-      const horizontalThreshold = 40; // Side-to-side movement
-      const verticalThreshold = 30;   // Up/down movement
+      const horizontalThreshold = 15; // Side-to-side movement
+      const verticalThreshold = 25;   // Up/down movement
 
       if (noseOffsetX > horizontalThreshold || noseOffsetY > verticalThreshold) {
 
