@@ -1,156 +1,161 @@
 <section class="content">
   <div class="content-block">
     <div class="block-header" *ngFor="let breadscrum of breadscrums">
-      <app-breadcrumb
-       
-      >
+      <app-breadcrumb>
       </app-breadcrumb>
     </div>
-    <div class="row">
-      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <div class="card">
-          <div class="materialTableHeader">
-            <div class="right">
-              <ul class="tbl-export-btn ">
-                <li  class="tbl-header-btn">
-                  <ul class="header-buttons-left ms-0">
-                    <li>
+    <mat-tab-group>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          Assessment Requests
+        </ng-template>
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+              <div class="materialTableHeader">
+                <div class="right">
+                  <ul class="tbl-export-btn ">
+                    <li class="tbl-header-btn">
                       <ul class="header-buttons-left ms-0">
-                        <li class="tbl-search-box">
-                          <label for="search-input"><i class="material-icons search-icon">search</i></label>
-                          <input
-                          placeholder="Search"
-                          type="text"
-                          #filter
-                          class="browser-default search-field"
-                          aria-label="Search box"
-                          [(ngModel)]="searchTerm" (input)="performSearch()"
-      
-                        />
+                        <li>
+                          <ul class="header-buttons-left ms-0">
+                            <li class="tbl-search-box">
+                              <label for="search-input"><i class="material-icons search-icon">search</i></label>
+                              <input placeholder="Search" type="text" #filter class="browser-default search-field"
+                                aria-label="Search box" [(ngModel)]="searchTerm" (input)="performSearch()" />
+                            </li>
+                          </ul>
                         </li>
+
                       </ul>
                     </li>
+                    <li>
+                      <div *ngIf="!selection.isEmpty()" matTooltip="APPROVE">
+                        <button mat-raised-button color="primary" (click)="bulkApprove()">
+                          Approve
+                        </button>
+                      </div>
 
+                    </li>
                   </ul>
-                </li>
-                <li>
-                  <div  *ngIf="!selection.isEmpty()" matTooltip="APPROVE">
-                    <button mat-raised-button  color="primary" (click)="bulkApprove()" >
-                      Approve
-                    </button>
-                  </div>
-
-                </li>
-                </ul>
                 </div>
-          </div>
-          <div class="body overflow-auto">
-            <div class="responsive_table">
-              
-              <table mat-table [dataSource]="dataSource" matSort class="mat-cell advance-table">
-                <ng-container matColumnDef="select">
-                  <mat-header-cell *matHeaderCellDef>
-                    <mat-checkbox
-                      (change)="$event ? masterToggle() : null"
-                      [checked]="selection.hasValue() && isAllSelected()"
-                      [indeterminate]="selection.hasValue() && !isAllSelected()"
-                    ></mat-checkbox>
-                  </mat-header-cell>
-                  <mat-cell *matCellDef="let row">
-                    <mat-checkbox
-                      (click)="$event.stopPropagation()"
-                      (change)="$event ? selection.toggle(row) : null"
-                      [checked]="selection.isSelected(row)"
-                    ></mat-checkbox>
-                  </mat-cell>
-                </ng-container>
+              </div>
+              <div class="body overflow-auto">
+                <div class="responsive_table">
 
-                  <ng-container matColumnDef="studentname">
-                    <mat-header-cell *matHeaderCellDef >
-                      {{commonRoles.STUDENT_ROLE}}
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
-                      <span class="mobile-label">{{commonRoles.STUDENT_ROLE}}:</span>
-                      <span class="name" >{{ row.studentName }}</span>
-                    </mat-cell>
-                  </ng-container>
-                
-                  <ng-container matColumnDef="coursename">
-                    <mat-header-cell *matHeaderCellDef >
-                      Course
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
-                      <span class="mobile-label">Course:</span>
-                      <span>{{ row.courseName |titlecase}}</span> 
-                    </mat-cell>
-                  </ng-container>
-                
-                  <ng-container matColumnDef="registeredDate">
-                    <mat-header-cell *matHeaderCellDef >
-                      Registered Date
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
-                      <span class="mobile-label">Registered Date:</span>
-                      <span>{{ row.createdAt |date }}</span> 
-                    </mat-cell>
-                  </ng-container>
-                  <ng-container matColumnDef="examType">
-                    <mat-header-cell *matHeaderCellDef >
-                      Exam Type
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
-                      <span class="mobile-label">Exam Type:</span>
-                      <span>{{ row.examType |titlecase }}</span> 
-                    </mat-cell>
-                  </ng-container>
-                  <ng-container matColumnDef="action">
-                    <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
-                    <mat-cell *matCellDef="let row">
-                      <span class="mobile-label">Actions:</span>
-                      <!-- Conditionally display buttons or status text based on requestStatus -->
-                      <ng-container *ngIf="row.requestStatus === 'requested'; else statusText">
-                        <button mat-raised-button class="btn1" color="primary" id="submit1" (click)="approve(row)">Approve</button>
-                        <button mat-raised-button class="reject m-l-10" color="warn" (click)="reject(row)">Reject</button>
-                      </ng-container>
-                      <ng-template #statusText>
-              
-                          
-                        <span *ngIf="row.requestStatus === 'approved'" class="badge badge-solid-green"><span class="status-dot"></span>Approved</span>
-                        <span *ngIf="row.requestStatus === 'rejected'" class="badge badge-solid-red"><span class="status-red"></span>Rejected</span>
-                      </ng-template>
-                    </mat-cell>
-                  </ng-container>
-                  
-                  <!-- <ng-container matColumnDef="action">
+                  <table mat-table [dataSource]="dataSource" matSort class="mat-cell advance-table">
+                    <ng-container matColumnDef="select">
+                      <mat-header-cell *matHeaderCellDef>
+                        <mat-checkbox (change)="$event ? masterToggle() : null"
+                          [checked]="selection.hasValue() && isAllSelected()"
+                          [indeterminate]="selection.hasValue() && !isAllSelected()"></mat-checkbox>
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let row">
+                        <mat-checkbox (click)="$event.stopPropagation()"
+                          (change)="$event ? selection.toggle(row) : null"
+                          [checked]="selection.isSelected(row)"></mat-checkbox>
+                      </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="studentname">
+                      <mat-header-cell *matHeaderCellDef>
+                        {{commonRoles.STUDENT_ROLE}}
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
+                        <span class="mobile-label">{{commonRoles.STUDENT_ROLE}}:</span>
+                        <span class="name">{{ row.studentName }}</span>
+                      </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="coursename">
+                      <mat-header-cell *matHeaderCellDef>
+                        Course
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
+                        <span class="mobile-label">Course:</span>
+                        <span>{{ row.courseName |titlecase}}</span>
+                      </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="registeredDate">
+                      <mat-header-cell *matHeaderCellDef>
+                        Registered Date
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
+                        <span class="mobile-label">Registered Date:</span>
+                        <span>{{ row.createdAt |date }}</span>
+                      </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="examType">
+                      <mat-header-cell *matHeaderCellDef>
+                        Exam Type
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
+                        <span class="mobile-label">Exam Type:</span>
+                        <span>{{ row.examType |titlecase }}</span>
+                      </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="action">
+                      <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+                      <mat-cell *matCellDef="let row">
+                        <span class="mobile-label">Actions:</span>
+                        <!-- Conditionally display buttons or status text based on requestStatus -->
+                        <ng-container *ngIf="row.requestStatus === 'requested'; else statusText">
+                          <button mat-raised-button class="btn1" color="primary" id="submit1"
+                            (click)="approve(row)">Approve</button>
+                          <button mat-raised-button class="reject m-l-10" color="warn"
+                            (click)="reject(row)">Reject</button>
+                        </ng-container>
+                        <ng-template #statusText>
+
+
+                          <span *ngIf="row.requestStatus === 'approved'" class="badge badge-solid-green"><span
+                              class="status-dot"></span>Approved</span>
+                          <span *ngIf="row.requestStatus === 'rejected'" class="badge badge-solid-red"><span
+                              class="status-red"></span>Rejected</span>
+                        </ng-template>
+                      </mat-cell>
+                    </ng-container>
+
+                    <!-- <ng-container matColumnDef="action">
                     <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
                     <mat-cell *matCellDef="let row">
                       <button mat-raised-button color="primary" (click)="approve(row)">Approve</button>
                       <button mat-raised-button color="warn" (click)="reject(row)">Reject</button>
                     </mat-cell>
                   </ng-container> -->
-                  
-                  
-                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                  <mat-row *matRowDef="let row; columns: displayedColumns" [style.cursor]="'pointer'" matRipple></mat-row>
-                </table> 
 
-                <!-- <div *ngIf=" dataSource?.data?.length===0" class="text-center py-3 no-data-text">
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns" [style.cursor]="'pointer'"
+                      matRipple></mat-row>
+                  </table>
+
+                  <!-- <div *ngIf=" dataSource?.data?.length===0" class="text-center py-3 no-data-text">
                   No data found {{dataSource?.data?.length}}
                 </div> -->
-                <div *ngIf="isDataEmpty" class="text-center py-3 no-data-text">
-                  No data found
+                  <div *ngIf="isDataEmpty" class="text-center py-3 no-data-text">
+                    No data found
+                  </div>
+
+
+
+
+                  <mat-paginator #paginator [length]="totalItems" (page)="pageSizeChange($event)"
+                    [pageSizeOptions]="pageSizeArr" aria-label="select pagination option">
+                  </mat-paginator>
                 </div>
-                                              
-                
-
-
-              <mat-paginator #paginator [length]="totalItems" (page)="pageSizeChange($event)"
-              [pageSizeOptions]="pageSizeArr" aria-label="select pagination option">
-          </mat-paginator>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          Exam Requests
+        </ng-template>
+        <app-blocked-exams />
+      </mat-tab>
+    </mat-tab-group>
   </div>
 </section>
