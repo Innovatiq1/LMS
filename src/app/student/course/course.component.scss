@@ -67,3 +67,17 @@
   width: 100% !important;
 
 }
+
+.text-default1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Standard equivalent does not exist yet */
+  -webkit-box-orient: vertical;
+  word-break: break-word;
+  max-height: 3rem; /* Adjust based on font size */
+  
+  /* Standard property (currently not widely supported but added for future compatibility) */
+  line-clamp: 2;
+}
+
