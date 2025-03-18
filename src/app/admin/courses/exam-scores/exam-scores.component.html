@@ -4,160 +4,144 @@
       <app-breadcrumb>
       </app-breadcrumb>
     </div>
-    <mat-tab-group>
-      <mat-tab>
-        <ng-template mat-tab-label>
-          Exam Score
-        </ng-template>
-        <div class="row">
-          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="card">
-              <div class="materialTableHeader">
-                <div class="right">
-                  <ul class="tbl-export-btn">
-                    <li>
-                      <ul class="header-buttons-left ms-0">
-                        <li class="tbl-search-box">
-                          <label for="search-input"><i class="material-icons search-icon">search</i></label>
-                          <input placeholder="Search" type="text" #filter class="browser-default search-field"
-                            aria-label="Search box" class="browser-default search-field" (keyup)="onKeyup($event)" />
-                        </li>
-                      </ul>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+          <div class="materialTableHeader">
+            <div class="right">
+              <ul class="tbl-export-btn">
+                <li>
+                  <ul class="header-buttons-left ms-0">
+                    <li class="tbl-search-box">
+                      <label for="search-input"><i class="material-icons search-icon">search</i></label>
+                      <input placeholder="Search" type="text" #filter class="browser-default search-field"
+                        aria-label="Search box" class="browser-default search-field" (keyup)="onKeyup($event)" />
                     </li>
                   </ul>
-                </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="body overflow-auto">
+            <div class="responsive_table">
+              <table mat-table matSort [dataSource]="dataSource" class="mat-cell advance-table">
+                <ng-container matColumnDef="img">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef [ngClass]="'tbl-col-width-per-6'">
+                    Image
+                  </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let row" class="table-img tbl-col-width-per-6">
+                    <span class="mobile-label">Image:</span><img [src]="row.studentId.avatar || 'assets/profile.png'" />
+                  </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="Student Name">
+                  <mat-header-cell *matHeaderCellDef>{{commonRoles.STUDENT_ROLE}}</mat-header-cell>
+                  <mat-cell *matCellDef="let row">
+                    <span class="mobile-label">{{commonRoles.STUDENT_ROLE}}:</span> <span class="name">{{
+                      row?.studentId.name | capitalizeFirstLetter }}
+                      {{ row?.studentId?.last_name | capitalizeFirstLetter }}</span>
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Email">
+                  <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
+                  <mat-cell *matCellDef="let row">
+                    <span class="mobile-label">Email:</span>
+                    <img src="assets/images/gmail.png" alt="Email Icon" class="email-icon" />
+                    <span class="email-address">
+                      {{ row?.studentId?.email }}</span>
+                  </mat-cell>
+                </ng-container>
+                <!-- Course Code -->
+                <ng-container matColumnDef="Course Title">
+                  <mat-header-cell *matHeaderCellDef>Course
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let row">
+                    <span class="mobile-label">Course:</span>{{ row?.courseId?.title | titlecase }}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Exam Name">
+                  <mat-header-cell *matHeaderCellDef>
+                    Exam
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let row">
+                    <span class="mobile-label">Exam Name:</span>{{ row?.examAssessmentAnswer?.examAssessmentId?.name
+                    ? (row?.examAssessmentAnswer?.examAssessmentId?.name | capitalizeFirstLetter ) : "--"}}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Assessment Score">
+                  <mat-header-cell *matHeaderCellDef class="assessment-header">
+                    Assessment Score
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let row"
+                    [routerLink]="row.assessmentAnswer?._id ? ['/student/test/preview', row.assessmentAnswer?._id, 'student', row.studentId._id] : null"
+                    [queryParams]="{ assessmentType: 'assessment' }">
+                    <span class="mobile-label">Assessment Score:</span>
+                    <span
+                      *ngIf="row?.assessmentAnswer?.score != null && row?.assessmentAnswer?.totalScore != null; else noScore">
+                      {{ row.assessmentAnswer.score }} / {{ row.assessmentAnswer.totalScore }}
+                    </span>
+                    <ng-template #noScore>--</ng-template>
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Exam Assessment Score">
+                  <mat-header-cell *matHeaderCellDef>
+                    Exam Score
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let row"
+                    [routerLink]="row?.examAssessmentAnswer?._id ? ['/student/test/preview', row.examAssessmentAnswer?._id, 'student', row.studentId._id] : null"
+                    [queryParams]="{ assessmentType: 'exam' }">
+                    <span class="mobile-label">Exam Score:</span>
+                    <span
+                      *ngIf="row?.examAssessmentAnswer?.score != null && row?.examAssessmentAnswer?.totalScore != null; else noExamScore">
+                      {{ row.examAssessmentAnswer.score }} / {{ row.examAssessmentAnswer.totalScore }}
+                    </span>
+                    <ng-template #noExamScore>--</ng-template>
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Activity">
+                  <mat-header-cell *matHeaderCellDef>
+                    Activity
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let row">
+                    <span class="mobile-label">Activity Count:</span>
+                    <span (click)="openActivityLogModal(row.activityLogs)">
+                      {{ row.activityCount }}
+                    </span>
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Action">
+                  <mat-header-cell *matHeaderCellDef>Actions
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let row">
+                    <span class="mobile-label">Actions:</span>
+                    <div *ngIf="!row?.examAssessmentAnswer?.studentView && row?.examAssessmentAnswer?.score != null">
+                      <button class="student-view" mat-flat-button color="primary" id="submit"
+                        (click)="enableStudentView(row)">
+                        <span>Enable Student View</span>
+                      </button>
+                    </div>
+                  </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns" [style.cursor]="'pointer'" matRipple>
+                </mat-row>
+              </table>
+
+              <div *ngIf="!dataSource?.length" class="text-center py-3 no-data-text">
+                No data found
               </div>
-              <div class="body overflow-auto">
-                <div class="responsive_table">
-                  <table mat-table matSort [dataSource]="dataSource" class="mat-cell advance-table">
-                    <ng-container matColumnDef="img">
-                      <mat-header-cell mat-header-cell *matHeaderCellDef [ngClass]="'tbl-col-width-per-6'">
-                        Image
-                      </mat-header-cell>
-                      <mat-cell mat-cell *matCellDef="let row" class="table-img tbl-col-width-per-6">
-                        <span class="mobile-label">Image:</span><img
-                          [src]="row.studentId.avatar || 'assets/profile.png'" />
-                      </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="Student Name">
-                      <mat-header-cell *matHeaderCellDef>{{commonRoles.STUDENT_ROLE}}</mat-header-cell>
-                      <mat-cell *matCellDef="let row">
-                        <span class="mobile-label">{{commonRoles.STUDENT_ROLE}}:</span> <span class="name">{{
-                          row?.studentId.name | capitalizeFirstLetter }}
-                          {{ row?.studentId?.last_name | capitalizeFirstLetter }}</span>
-                      </mat-cell>
-                    </ng-container>
-
-                    <ng-container matColumnDef="Email">
-                      <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
-                      <mat-cell *matCellDef="let row">
-                        <span class="mobile-label">Email:</span>
-                        <img src="assets/images/gmail.png" alt="Email Icon" class="email-icon" />
-                        <span class="email-address">
-                          {{ row?.studentId?.email }}</span>
-                      </mat-cell>
-                    </ng-container>
-                    <!-- Course Code -->
-                    <ng-container matColumnDef="Course Title">
-                      <mat-header-cell *matHeaderCellDef>Course
-                      </mat-header-cell>
-                      <mat-cell *matCellDef="let row">
-                        <span class="mobile-label">Course:</span>{{ row?.courseId?.title | titlecase }}</mat-cell>
-                    </ng-container>
-
-                    <ng-container matColumnDef="Exam Name">
-                      <mat-header-cell *matHeaderCellDef>
-                        Exam
-                      </mat-header-cell>
-                      <mat-cell *matCellDef="let row">
-                        <span class="mobile-label">Exam Name:</span>{{ row?.examAssessmentAnswer?.examAssessmentId?.name
-                        ? (row?.examAssessmentAnswer?.examAssessmentId?.name | capitalizeFirstLetter ) : "--"}}
-                      </mat-cell>
-                    </ng-container>
-
-                    <ng-container matColumnDef="Assessment Score">
-                      <mat-header-cell *matHeaderCellDef class="assessment-header">
-                        Assessment Score
-                      </mat-header-cell>
-                      <mat-cell *matCellDef="let row"
-                        [routerLink]="row.assessmentAnswer?._id ? ['/student/test/preview', row.assessmentAnswer?._id, 'student', row.studentId._id] : null"
-                        [queryParams]="{ assessmentType: 'assessment' }">
-                        <span class="mobile-label">Assessment Score:</span>
-                        <span
-                          *ngIf="row?.assessmentAnswer?.score != null && row?.assessmentAnswer?.totalScore != null; else noScore">
-                          {{ row.assessmentAnswer.score }} / {{ row.assessmentAnswer.totalScore }}
-                        </span>
-                        <ng-template #noScore>--</ng-template>
-                      </mat-cell>
-                    </ng-container>
-
-                    <ng-container matColumnDef="Exam Assessment Score">
-                      <mat-header-cell *matHeaderCellDef>
-                        Exam Score
-                      </mat-header-cell>
-                      <mat-cell *matCellDef="let row"
-                        [routerLink]="row?.examAssessmentAnswer?._id ? ['/student/test/preview', row.examAssessmentAnswer?._id, 'student', row.studentId._id] : null"
-                        [queryParams]="{ assessmentType: 'exam' }">
-                        <span class="mobile-label">Exam Score:</span>
-                        <span
-                          *ngIf="row?.examAssessmentAnswer?.score != null && row?.examAssessmentAnswer?.totalScore != null; else noExamScore">
-                          {{ row.examAssessmentAnswer.score }} / {{ row.examAssessmentAnswer.totalScore }}
-                        </span>
-                        <ng-template #noExamScore>--</ng-template>
-                      </mat-cell>
-                    </ng-container>
-
-                    <ng-container matColumnDef="Activity">
-                      <mat-header-cell *matHeaderCellDef>
-                        Activity
-                      </mat-header-cell>
-                      <mat-cell *matCellDef="let row">
-                        <span class="mobile-label">Activity Count:</span>
-                        <span (click)="openActivityLogModal(row.activityLogs)">
-                          {{ row.activityCount }}
-                        </span>
-                      </mat-cell>
-                    </ng-container>
-
-                    <ng-container matColumnDef="Action">
-                      <mat-header-cell *matHeaderCellDef>Actions
-                      </mat-header-cell>
-                      <mat-cell *matCellDef="let row">
-                        <span class="mobile-label">Actions:</span>
-                        <div
-                          *ngIf="!row?.examAssessmentAnswer?.studentView && row?.examAssessmentAnswer?.score != null">
-                          <button class="student-view" mat-flat-button color="primary" id="submit"
-                            (click)="enableStudentView(row)">
-                            <span>Enable Student View</span>
-                          </button>
-                        </div>
-                      </mat-cell>
-                    </ng-container>
-
-                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                    <mat-row *matRowDef="let row; columns: displayedColumns" [style.cursor]="'pointer'" matRipple>
-                    </mat-row>
-                  </table>
-
-                  <div *ngIf="!dataSource?.data?.length" class="text-center py-3 no-data-text">
-                    No data found
-                  </div>
-                  <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems"
-                    (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr"
-                    aria-label="select pagination option">
-                  </mat-paginator>
-                </div>
-              </div>
+              <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems"
+                (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr" aria-label="select pagination option">
+              </mat-paginator>
             </div>
           </div>
         </div>
-      </mat-tab>
-      <mat-tab>
-        <ng-template mat-tab-label>
-          Blocked Exam
-        </ng-template>
-        <app-blocked-exams/>
-      </mat-tab>
-    </mat-tab-group>
+      </div>
+    </div>
   </div>
 </section>

@@ -128,6 +128,7 @@ import { ZoomKeysComponent } from './settings/zoom-keys/zoom-keys.component';
 import { ObjectDetectionComponent } from './object-detection/object-detection.component';
 import { MeetingPlatformComponent } from './settings/meeting-platform/meeting-platform.component';
 import { UpdateMeetingPlatformComponent } from './settings/meeting-platform/update-meeting-platform/update-meeting-platform.component';
+import { TermsDialogComponent } from './terms-dialog/terms-dialog.component';
 
 
 @NgModule({
@@ -231,7 +232,7 @@ import { UpdateMeetingPlatformComponent } from './settings/meeting-platform/upda
     TutorialQuestionsComponent,
     DocumentViewComponent,
     SocialLoginComponent,    
-    SafePipe, ZoomKeysComponent, ObjectDetectionComponent, MeetingPlatformComponent, UpdateMeetingPlatformComponent,
+    SafePipe, ZoomKeysComponent, ObjectDetectionComponent, MeetingPlatformComponent, UpdateMeetingPlatformComponent, TermsDialogComponent,
    // SafeUrlPipe,
   ],
   imports: [

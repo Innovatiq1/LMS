@@ -30,7 +30,7 @@
                                 #filter
                                 class="browser-default search-field text"
                                 aria-label="Search box"
-                                [(ngModel)]="searchTerm"
+                                [(ngModel)]="filterName"
                                 (input)="performSearch()"
                               />
                             </li>
@@ -91,7 +91,7 @@
                       <table
                         mat-table
                         matSort
-                        [dataSource]="filteredData"
+                        [dataSource]="dataSource"
                         class="mat-cell advance-table"
                       >
                         <ng-container matColumnDef="Company">
@@ -206,7 +206,7 @@
                         >
                         </mat-row>
                       </table>
-                      <div *ngIf="!isLoading && (!filteredData || filteredData.length === 0)" class="text-center py-3 no-data-text">
+                      <div *ngIf="!isLoading && (!dataSource || dataSource.length === 0)" class="text-center py-3 no-data-text">
                         No data found
                       </div>
                       <!-- Loading spinner -->
@@ -220,14 +220,22 @@
                         </mat-progress-spinner>
                       </div>
   
-                      <mat-paginator
+                      <!-- <mat-paginator
                         #paginator
                         [length]="totalItems"
                         (page)="pageSizeChange($event)"
                         [pageSizeOptions]="pageSizeArr"
                         aria-label="select pagination option"
                       >
-                      </mat-paginator>
+                      </mat-paginator> -->
+                      <mat-paginator
+                #paginator
+                [length]="totalItems"
+                (page)="pageSizeChange($event)"
+                [pageSizeOptions]="pageSizeArr"
+                aria-label="select pagination option"
+              >
+              </mat-paginator>
 
                     </div>
 

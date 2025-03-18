@@ -99,7 +99,16 @@
                     <mat-option  [value]="false">Disable</mat-option>
                   </mat-select>
                 </mat-form-field>
-
+              </div>
+              <div class="col-md-4" *ngIf="showVideoAnalyzer&&questionFormTab2.get('videoAnalyzerReq')?.value">
+                <h6>
+                  Max. Number Violoation <span class="mandatory">&nbsp;*</span>
+                </h6>
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-select formControlName="violoation_limit">
+                    <mat-option *ngFor="let violation of violation_list" [value]="violation">{{violation}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
               </div>
             </div>
           </div>
