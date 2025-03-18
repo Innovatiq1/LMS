@@ -230,5 +230,90 @@ svg {
     letter-spacing: 1px;
 }
 
+  @media screen and (max-width: 400px) {
+    .responsive_table {
+        overflow-x: auto;
+        width: 100%;
+    }
+
+    .log-item {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+        width: 100%;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        white-space: normal; /* Ensures proper text wrapping */
+    }
+
+   .log-item span {
+    display: block;
+    width: 100%;
+    font-size: 14px;
+    line-height: 1.4;
+    overflow-wrap: normal;
+    word-break: normal;
+    white-space: normal;
+    }
+
+    .log-item {
+        flex-wrap: wrap; 
+    }
+
+
+    .log-item .name {
+        font-weight: 700;
+        font-size: 15px;
+        color: deepskyblue;
+        display: block;
+    }
+
+    .log-item .user-type {
+        background-color: #f3f3f3;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-weight: bold;
+        display: inline-block;
+    }
+
+    .log-item .login-time,
+    .log-item .logout-time {
+        font-size: 14px;
+        color: #333;
+        display: block;
+    }
+
+    .log-item .and-separator {
+        display: block;
+        font-weight: bold;
+        margin-top: 4px;
+    }
+
+    .block-header {
+        margin-bottom: 10px;
+    }
+
   
+    .straight-line-table {
+        width: 100%;
+        overflow-x: auto;
+        display: block;
+    }
+
+
+    .mat-paginator {
+        width: 100%;
+        text-align: center;
+    }
+
+    .text_bold {
+        font-weight: bold;
+        display: inline-block;
+        margin-right: 5px;
+    }
+}
+
   
