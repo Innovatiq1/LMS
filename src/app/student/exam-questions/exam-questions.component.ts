@@ -924,7 +924,7 @@ export class ExamQuestionsComponent {
   showViolationAlert() {
     this.violationCount++;
     console.log('Violation count:',this.violationCount);
-    if (this.violationCount >= this.maxViolations) {
+    if (this.violationCount >= this.maxViolations-1) {
       Swal.fire('Max violation reached', 'The Exam will be canceled and you will be terminated', 'error').then(res=>{
         this.location.back()
       });
