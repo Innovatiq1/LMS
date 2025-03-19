@@ -100,6 +100,14 @@ p {
     color: #9A9A9A;
 }
 
+.user-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  max-width: 100%; /* Adjust according to layout */
+}
+
 body {
     color: #2c2c2c;
     font-size: 14px;
