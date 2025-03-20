@@ -203,6 +203,9 @@ export class ExamQuestionsComponent {
   }
 
   sendWarning(message: string, analyzerId: string) {
+    if(this.violationCount > this.maxViolations){
+     return 
+    }
     const payload = {
       warning_type: message,
     };

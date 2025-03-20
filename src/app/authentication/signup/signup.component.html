@@ -106,7 +106,7 @@
           </div>
           
           <!-- Confirm Password field -->
-          <div class="row mt-2" [ngClass]="{'password-error-shown': authForm.get('password')?.hasError('passwordStrength')}">
+          <div class="row mt-2" class="password-error-shown" [ngClass]="{'error-visible': isPasswordWeak}">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
               <label>{{ "Confirm Password" | translate }} <span class="mandatory">*</span></label>
               <mat-form-field class="example-full-width" appearance="outline">

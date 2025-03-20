@@ -39,6 +39,7 @@ export class ObjectDetectionComponent {
   @Output() LookAway = new EventEmitter<void>();
 
   count: number = 0;
+  faceMisMatchCount: number = 0;
   isPendingFaceMatch: boolean = false;
   previousPosition: any = {};
   isLivePerson: boolean = false;
@@ -180,7 +181,13 @@ export class ObjectDetectionComponent {
 
   captureAutoFaceMatch(video: HTMLVideoElement, canvas: HTMLCanvasElement) {
     this.captureInterval = setInterval(() => {
-      this.detectFace(video, canvas)
+      if(!this.captureInterval)
+        return;
+      if(this.faceMisMatchCount < 6){
+        this.detectFace(video, canvas)
+      }else {
+        clearInterval(this.captureInterval)
+      }
     }, 5000);
   }
 
@@ -228,7 +235,8 @@ export class ObjectDetectionComponent {
           const video = this.videoElement.nativeElement;
           const canvas = this.canvasElement.nativeElement;
           this.detectObjects(video, canvas);
-        } else {
+        } else {       
+          this.faceMisMatchCount ++;
           this.FaceMisMatchDetect.emit();
         }
       },
@@ -288,38 +296,9 @@ export class ObjectDetectionComponent {
     const leftShoulder = keypoints.find((point) => point.part === 'leftShoulder');
     const rightShoulder = keypoints.find((point) => point.part === 'rightShoulder');
 
-    // if (nose && leftEye && rightEye && leftShoulder && rightShoulder) {
-    //   // Calculate horizontal distance between eyes
-    //   const eyeDistance = Math.abs(leftEye.position.x - rightEye.position.x);
-
-    //   // Calculate the offset of the nose from the midpoint of the eyes
-    //   const eyeMidpointX = (leftEye.position.x + rightEye.position.x) / 2;
-    //   const noseOffset = Math.abs(nose.position.x - eyeMidpointX);
-
-    //   const eyeMidpointY = (leftEye.position.y + rightEye.position.y) / 2;
-    //   const noseEyeDistanceY = eyeMidpointY - nose.position.y;
-    //   const shoulderMidpointY = (leftShoulder.position.y + rightShoulder.position.y) / 2;
-    //   const noseShoulderDistanceY = shoulderMidpointY - nose.position.y;
-
-    //   const faceTurnThreshold = eyeDistance * 0.5; // Looking away sensitivity
-    //   const tiltThreshold = 10; // Looking down sensitivity
-
-    //   const isLookingAwayAlert = noseOffset > faceTurnThreshold;
-    //   const isLookingDown = noseEyeDistanceY < tiltThreshold && noseShoulderDistanceY < 30;
-
-    //   if (isLookingAwayAlert || isLookingDown) {
-    //     if (!this.isLookingAwayAlert) {
-    //       this.isLookingAwayAlert = true;
-    //       console.log(isLookingAwayAlert ? 'Looking Away!' : 'Looking Down!')
-    //       this.LookAway.emit();
-    //       setTimeout(() => {
-    //         this.isLookingAwayAlert = false;
-    //       }, 5000);
-    //     }
-    //   }
-    // }
-
-    if (nose && leftEye && rightEye) {
+    if (!nose || !leftEye || !rightEye) {
+      console.log("Face Not Visible ❌");
+    }else if (nose && leftEye && rightEye) {
       // Calculate horizontal movement of the nose
       const eyeCenterX = (leftEye.position.x + rightEye.position.x) / 2;
       const noseOffsetX = Math.abs(nose.position.x - eyeCenterX);
@@ -341,8 +320,6 @@ export class ObjectDetectionComponent {
           setTimeout(() => {
             this.isLookingAwayAlert = false;
           }, 5000);
-        } else {
-          this.isLookingAwayAlert = false;
         }
       }
 

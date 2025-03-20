@@ -190,7 +190,7 @@ export class ViewCourseComponent implements OnDestroy {
   tpDiscountValue: any;
   isScormKit:boolean = false;
   isVideoKit:boolean=false;
-
+  isLoading:boolean = true;
   constructor(
     private classService: ClassService,
     private activatedRoute: ActivatedRoute,
@@ -251,6 +251,10 @@ export class ViewCourseComponent implements OnDestroy {
       }
     });
     this.commonRoles = AppConstants;
+
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 3000);
   }
   // openDocumentDialog(documentLink: string, filename: string): void {
   //   this.dialog.open(DocumentViewComponent, {

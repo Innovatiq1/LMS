@@ -17,6 +17,7 @@ export class SpeechRecognitionService {
   voiceDetected = new Subject<boolean>(); 
   private isVoiceDetected:boolean=false;
   private mediaStream!: MediaStream;
+  private dynamicThreshold = 35;
   
   async startListening(callback: (detected: boolean) => void) {
     if (this.isListening) return;
@@ -29,14 +30,43 @@ export class SpeechRecognitionService {
       this.microphone = this.audioContext.createMediaStreamSource(this.mediaStream);
 
       this.analyser = this.audioContext.createAnalyser();
-      this.analyser.fftSize = 512; // Smaller size for better voice detection
+      this.analyser.fftSize = 256; // Smaller size for better voice detection
       this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
       this.microphone.connect(this.analyser);
-
+      await this.measureBackgroundNoise();
       this.detectVoice(callback);
     } catch (err) {
       console.error('Microphone access denied:', err);
     }
+  }
+
+  private async measureBackgroundNoise() {
+    if (!this.analyser) return;
+    this.analyser.fftSize = 256;
+    const bufferLength = this.analyser.frequencyBinCount;
+    this.dataArray = new Uint8Array(bufferLength);
+
+    let noiseLevels: number[] = [];
+    console.log('⏳ Measuring background noise...');
+
+    return new Promise<void>((resolve) => {
+      const measure = () => {
+        if (!this.analyser) return;
+        this.analyser.getByteFrequencyData(this.dataArray);
+        const avgNoise = this.dataArray.reduce((sum, val) => sum + val, 0) / bufferLength;
+        noiseLevels.push(avgNoise);
+
+        if (noiseLevels.length < 50) {
+          requestAnimationFrame(measure);
+        } else {
+          const backgroundNoise = noiseLevels.reduce((sum, val) => sum + val, 0) / noiseLevels.length;
+          this.dynamicThreshold = Math.max(10, backgroundNoise + 10); // Add buffer to avoid false positives
+          console.log(`✅ Dynamic Threshold Set: ${this.dynamicThreshold}`);
+          resolve();
+        }
+      };
+      measure();
+    });
   }
 
   private detectVoice(callback: (detected: boolean) => void) {
@@ -46,7 +76,7 @@ export class SpeechRecognitionService {
     const avgVolume = this.getAverageVolume(this.dataArray);
 
     // Adjust threshold based on testing
-    const isVoiceDetected = avgVolume > 30; // Higher value = more strict detection
+    const isVoiceDetected = avgVolume > this.dynamicThreshold; // Higher value = more strict detection
 
     if (isVoiceDetected && !this.isVoiceDetected) {
       this.isVoiceDetected=true;

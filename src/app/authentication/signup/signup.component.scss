@@ -54,9 +54,9 @@
  .text-center{
   margin-top: -30px;
  }
-.password-error-shown {
-  padding-top: 110px; 
-}
+// .password-error-shown {
+//   padding-top: 110px; 
+// }
 
 .error-list {
   padding-left: 20px;
@@ -73,3 +73,16 @@ mat-error {
   display: block; 
   margin-bottom: 16px; 
 }
+.password-error-shown {
+  margin-top: 0; /* Default spacing */
+  transition: margin 0.3s ease-in-out;
+}
+
+.password-error-shown.error-visible {
+  margin-top: 110px ; 
+  transition: margin 0.3s ease-in-out;
+}
+// .error-visible {
+//   margin-top: 100px; /* Increase spacing only when password strength error appears */
+//   transition: margin 0.3s ease-in-out;
+// }
