@@ -63,6 +63,7 @@
               matInput
               [matDatepicker]="picker1"
               formControlName="applyDate"
+              [min]="currentDate"
               required
             />
             <mat-datepicker-toggle
@@ -85,6 +86,7 @@
               matInput
               [matDatepicker]="picker3"
               formControlName="toDate"
+              [min]="currentDate"
               required
             />
             <mat-datepicker-toggle

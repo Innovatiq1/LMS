@@ -5,6 +5,7 @@ import {
   FormGroup,
   UntypedFormBuilder,
   UntypedFormGroup,
+  ValidationErrors,
   Validators,
 } from '@angular/forms';
 import { LanguageService } from '@core/service/language.service';
@@ -72,11 +73,13 @@ export class SignupComponent implements OnInit {
     this.authForm = this.formBuilder.group({
       name: ['', Validators.required],
       email: ['',[Validators.required,Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)] ],
-      password: ['', Validators.required],
+      password: ['', [Validators.required,this.passwordStrengthValidator]],
       cpassword: [''],
       gender: ['', Validators.required]
       
     },{
+
+
       validator: ConfirmedValidator('password', 'cpassword')
     
     });
@@ -89,6 +92,19 @@ export class SignupComponent implements OnInit {
     { text: 'Chinese', flag: 'assets/images/flags/spain.svg', lang: 'ch' },
     { text: 'Tamil', flag: 'assets/images/flags/germany.svg', lang: 'ts' },
   ];
+
+  // passwordStrengthValidator(control: AbstractControl): ValidationErrors | null {
+  //   const value = control.value || '';
+
+  //   if (!value) {
+  //     return null; // If the field is empty, return null (required validation will handle it)
+  //   }
+
+  //   // Regular expression for strong password
+  //   const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+  //   return strongPasswordRegex.test(value) ? null : { passwordStrength: true };
+  // }
 
   signin(){
 
@@ -168,6 +184,22 @@ export class SignupComponent implements OnInit {
     this.submitted = true;
     
   }
+  get isPasswordWeak(): boolean {
+    console.log("ggggg",this.authForm.get('password')?.hasError('passwordStrength') ?? false)
+    return this.authForm.get('password')?.hasError('passwordStrength') ?? false;
+  }
+  passwordStrengthValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value || '';
+
+    if (!value) {
+      return null; // If the field is empty, return null (required validation will handle it)
+    }
+
+    // Regular expression for strong password
+    const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+    return strongPasswordRegex.test(value) ? null : { passwordStrength: true };
+  }
   passwordValidator(control: AbstractControl) {
     const value = control.value;
     if (!value) {
@@ -218,21 +250,21 @@ export class SignupComponent implements OnInit {
     }, 4000);
   }
 
-  passwordStrengthValidator(control: AbstractControl) {
-    const value = control.value || '';
-    const hasUpperCase = /[A-Z]+/.test(value);
-    const hasLowerCase = /[a-z]+/.test(value);
-    const hasNumeric = /[0-9]+/.test(value);
-    const hasSpecialChar = /[@$!%*?&]+/.test(value);
-    const hasValidLength = value.length >= 8;
+  // passwordStrengthValidator(control: AbstractControl) {
+  //   const value = control.value || '';
+  //   const hasUpperCase = /[A-Z]+/.test(value);
+  //   const hasLowerCase = /[a-z]+/.test(value);
+  //   const hasNumeric = /[0-9]+/.test(value);
+  //   const hasSpecialChar = /[@$!%*?&]+/.test(value);
+  //   const hasValidLength = value.length >= 8;
 
-    const passwordValid = hasUpperCase && hasLowerCase && hasNumeric && hasSpecialChar && hasValidLength;
+  //   const passwordValid = hasUpperCase && hasLowerCase && hasNumeric && hasSpecialChar && hasValidLength;
 
-    if (!passwordValid) {
-      return { passwordStrength: true };
-    }
-    return null;
-  }
+  //   if (!passwordValid) {
+  //     return { passwordStrength: true };
+  //   }
+  //   return null;
+  // }
 
   // Confirm password validator
   confirmPasswordValidator(control: AbstractControl) {
