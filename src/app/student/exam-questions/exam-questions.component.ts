@@ -203,6 +203,9 @@ export class ExamQuestionsComponent {
   }
 
   sendWarning(message: string, analyzerId: string) {
+    if(this.violationCount > this.maxViolations){
+     return 
+    }
     const payload = {
       warning_type: message,
     };
@@ -924,7 +927,7 @@ export class ExamQuestionsComponent {
   showViolationAlert() {
     this.violationCount++;
     console.log('Violation count:',this.violationCount);
-    if (this.violationCount >= this.maxViolations-1) {
+    if (this.violationCount >= this.maxViolations) {
       Swal.fire('Max violation reached', 'The Exam will be canceled and you will be terminated', 'error').then(res=>{
         this.location.back()
       });

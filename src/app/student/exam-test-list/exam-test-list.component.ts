@@ -36,6 +36,7 @@ export class ExamTestListComponent {
     'Course Title',
     'Exam Name',
     'Exam',
+    'Request',
     'Download',
   ];
   dataSource: any;
@@ -131,29 +132,29 @@ export class ExamTestListComponent {
       let alertMessage = 'You want to take exam ?'
       if (data.examAssessmentId?.videoAnalyzerReq) {
         this.openTermsDialog(data);
-      }else {
-      Swal.fire({
-        title: 'Are you sure?',
-        text: alertMessage,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Yes, Start Exam!',
-        cancelButtonText: 'Cancel',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.triggerStartExam(data);
-        } else {
-          console.log('Exam start was canceled by the user.');
-        }
-      });
-    }
+      } else {
+        Swal.fire({
+          title: 'Are you sure?',
+          text: alertMessage,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, Start Exam!',
+          cancelButtonText: 'Cancel',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.triggerStartExam(data);
+          } else {
+            console.log('Exam start was canceled by the user.');
+          }
+        });
+      }
     }
   }
 
-  openTermsDialog(data:any){
-    const dialogRef=this.dialog.open(TermsDialogComponent, {
+  openTermsDialog(data: any) {
+    const dialogRef = this.dialog.open(TermsDialogComponent, {
       width: '600px',
-      disableClose: true 
+      disableClose: true
     });
     dialogRef.afterClosed().subscribe(result => {
       Swal.fire({
@@ -209,6 +210,17 @@ export class ExamTestListComponent {
     }
 
     return data.studentClassId?.length ? 'Approval Pending' : 'Pay';
+  }
+
+  getVideoAnalyzerLabel(data: any): string {
+    const hasAlerts = data.hasAlerts;
+    const hasRetakeRequest = data.hasRetakeRequest;
+    const latestAnalyzer = data.latestAnalyzer;
+    const labels:any = {
+      'requested':'Requestd',
+      'reqRejected': 'Rejected',
+    }
+    return hasAlerts ? latestAnalyzer.status == 'connected' ? 'Blocked': labels[latestAnalyzer.status]: 'Take Exam';
   }
 
   paidDirectExamFlow(data: any) {
@@ -668,5 +680,28 @@ export class ExamTestListComponent {
         );
       }
     });
+  }
+
+  requestRetake(row: any) {
+    if (!row.hasRetakeRequest && row.latestAnalyzer) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'Do you want to Request Enable this exam!',
+        icon: 'warning',
+        confirmButtonText: 'Yes',
+        showCancelButton: true,
+        cancelButtonColor: '#d33',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const _id = row.latestAnalyzer._id;
+          this.assessmentService
+            .updateAnalyzer(_id, {
+              status: 'requested',
+            }).subscribe((res) => {
+              this.getEnabledExams();
+            });
+        }
+      });
+    }
   }
 }
