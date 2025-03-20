@@ -96,11 +96,11 @@ export class BlockedExamsComponent {
       });
     }
 
-    enableStudentExam(data: any) {
-
+    enableStudentExam(data: any, status: boolean) {
+      const msg = status ? 'Approve' : 'Reject';
       Swal.fire({
             title: 'Are you sure?',
-            text: 'Do you want to Enable this exam!',
+            text: `Do you want to ${msg} this exam!`,
             icon: 'warning',
             confirmButtonText: 'Yes',
             showCancelButton: true,
@@ -110,7 +110,7 @@ export class BlockedExamsComponent {
               const _id=data._id;
               this.assessmentService
               .updateAnalyzer(_id, {
-                status: 'approved',
+                status: status ? 'approved' : 'reqRejected',
               }).subscribe((res) => {
                 this.getAllBlockedExams();
               });
