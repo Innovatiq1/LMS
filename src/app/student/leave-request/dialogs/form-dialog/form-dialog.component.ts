@@ -31,6 +31,7 @@ export class FormDialogComponent {
   leaveRequestForm: UntypedFormGroup;
   leaveRequest: LeaveRequest;
   studentApprovedClasses: any;
+   currentDate: Date;
   id!: number;
   isEdit = false;
   constructor(
@@ -41,6 +42,7 @@ export class FormDialogComponent {
     private classService: ClassService,
     public router: Router
   ) {
+    this.currentDate = new Date(); 
     this.getApprovedCourse();
     // Set the defaults
     this.action = data.action;
@@ -59,6 +61,7 @@ export class FormDialogComponent {
   formControl = new UntypedFormControl('', [
     Validators.required,
   ]);
+ 
   getErrorMessage() {
     return this.formControl.hasError('required')
       ? 'Required field'

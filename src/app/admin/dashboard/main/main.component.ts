@@ -1895,7 +1895,9 @@ private attendanceBarChart() {
 
 
   private studentPieChart() {
+    console.log("this.registeredCourses",this.registeredCourses,"this.approvedCourses",this.approvedCourses,"this.completedCourses",this.completedCourses)
     this.studentPieChartOptions = {
+    
       series: [this.registeredCourses, this.approvedCourses, this.completedCourses],
      
       chart: {
