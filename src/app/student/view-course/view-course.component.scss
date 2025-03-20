@@ -148,24 +148,26 @@ body {
         font-size: 18px;
         font-weight: bold;
     }
-    .course-content {
-        font-size: 16px;
-        padding: 15px;
-        text-align: left;
-    }
-
-    .course-title {
-        font-weight: bold;
-        font-size: 20px;
-        margin-bottom: 10px;
-    }
-
-    .course-box {
-        width: 100%;
-        margin: auto;
-        padding: 10px;
-        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-        background-color: #fff;
-    }
 }
+
+iframe {
+    overflow-y: clip;
+    border: none;
+    background: white;
+}
+
+.meeting-link {
+    color: #f96332;
+    text-decoration: none;
+}
+
+.text-green{
+    color: #008000;
+}
+.spinner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Adjust as needed */
+  }
+  

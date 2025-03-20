@@ -1,4 +1,6 @@
-
+<div *ngIf="isLoading" class="spinner-container">
+  <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
+</div>
 <section *ngIf="paid || program" class="content">
   <div class="content-block">
     <div class="block-header" *ngFor="let breadscrum of breadscrums">
