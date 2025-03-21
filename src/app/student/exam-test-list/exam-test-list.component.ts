@@ -217,7 +217,7 @@ export class ExamTestListComponent {
     const hasRetakeRequest = data.hasRetakeRequest;
     const latestAnalyzer = data.latestAnalyzer;
     const labels:any = {
-      'requested':'Requestd',
+      'requested':'Requested',
       'reqRejected': 'Rejected',
     }
     return hasAlerts ? latestAnalyzer.status == 'connected' ? 'Blocked': labels[latestAnalyzer.status]: 'Take Exam';
