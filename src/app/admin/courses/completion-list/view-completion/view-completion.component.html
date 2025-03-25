@@ -178,7 +178,7 @@
                                   </div>
                                   <div class="col-xl-6 col-md-12">
                                     <p>
-                                      {{ response.studentId?.qualification }}
+                                      {{ response.studentId?.education |titlecase}}
                                     </p>
                                   </div>
                                 </div>
@@ -289,7 +289,7 @@
                                     <h6>Course Type</h6>
                                   </div>
                                   <div class="col-xl-5 col-md-12">
-                                    <p>{{ response.courseType }}</p>
+                                    <p>{{ response.courseId?.selectedOptionValue.replace('And', ' & ') |titlecase}}</p>
                                   </div>
                                 </div>
                               </div>
