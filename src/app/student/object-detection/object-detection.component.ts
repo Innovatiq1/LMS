@@ -25,6 +25,7 @@ export class ObjectDetectionComponent {
   captureInterval: any;
 
   livenessTimer: any;
+  livenessInterval: any;
   livenessCheckStarted: boolean = false;
 
 
@@ -37,6 +38,7 @@ export class ObjectDetectionComponent {
   @Output() FaceMatchError = new EventEmitter<void>();
   @Output() FaceMatchMsg = new EventEmitter<string>();
   @Output() LookAway = new EventEmitter<void>();
+  @Output() StopExam = new EventEmitter<void>();
 
   count: number = 0;
   faceMisMatchCount: number = 0;
@@ -83,28 +85,59 @@ export class ObjectDetectionComponent {
     });
 
     // Define a threshold for natural movement (adjust based on testing)
-    const minMovementThreshold = 10;  // Ignore micro-movements from shaking
+    const minMovementThreshold = 15;  // Ignore micro-movements from shaking
     const maxShakeThreshold = 50;     // Ignore excessive fast movements
-
     if (totalMovement > minMovementThreshold && totalMovement < maxShakeThreshold) {
       this.isLivePerson = true;
     }
 
     if (!this.livenessCheckStarted) {
+      console.log("Liveness check started");
       this.livenessCheckStarted = true;
       this.isLivePerson = false;
       this.FaceMatchMsg.emit("Please move your head or body to continue.");
-      this.livenessTimer = setTimeout(() => {
+      this.livenessInterval = setInterval(() => {
+        if(this.livenessInterval){
         if (this.isLivePerson) {
           console.log('Live person detected ✅');
           if (this.isLivePerson && this.isFaceMatched) {
-            this.FaceMatchDetect.emit();
+            this.triggerStartExam(true)
           }
         } else {
           console.log('Static photo detected ❌');
         }
+      }
+      }, 5000)
+      this.livenessTimer = setTimeout(() => {
+        if (this.livenessTimer) {
+          if (this.isLivePerson) {
+            console.log('Live person detected ✅');
+            if (this.isLivePerson && this.isFaceMatched) {
+              this.triggerStartExam(true)
+            }
+          } else {
+            console.log('Static photo detected ❌');
+            this.triggerStartExam(false);
+          }
+        }
         this.livenessCheckStarted = false;
-      }, 10000);
+      }, 30000);
+      if (this.isLivePerson && this.isFaceMatched) {
+        this.triggerStartExam(true)
+      }
+    }
+  }
+
+  triggerStartExam(status: boolean) {    
+    clearInterval(this.livenessInterval);
+    clearTimeout(this.livenessTimer);
+    this.livenessInterval = null;
+    this.livenessTimer = null;
+    this.livenessCheckStarted = false;
+    if (status) {
+      this.FaceMatchDetect.emit();
+    } else {
+      this.StopExam.emit();
     }
   }
 
@@ -181,11 +214,11 @@ export class ObjectDetectionComponent {
 
   captureAutoFaceMatch(video: HTMLVideoElement, canvas: HTMLCanvasElement) {
     this.captureInterval = setInterval(() => {
-      if(!this.captureInterval)
+      if (!this.captureInterval)
         return;
-      if(this.faceMisMatchCount < 6){
+      if (this.faceMisMatchCount < 6) {
         this.detectFace(video, canvas)
-      }else {
+      } else {
         clearInterval(this.captureInterval)
       }
     }, 5000);
@@ -235,8 +268,8 @@ export class ObjectDetectionComponent {
           const video = this.videoElement.nativeElement;
           const canvas = this.canvasElement.nativeElement;
           this.detectObjects(video, canvas);
-        } else {       
-          this.faceMisMatchCount ++;
+        } else {
+          this.faceMisMatchCount++;
           this.FaceMisMatchDetect.emit();
         }
       },
@@ -298,7 +331,7 @@ export class ObjectDetectionComponent {
 
     if (!nose || !leftEye || !rightEye) {
       console.log("Face Not Visible ❌");
-    }else if (nose && leftEye && rightEye) {
+    } else if (nose && leftEye && rightEye) {
       // Calculate horizontal movement of the nose
       const eyeCenterX = (leftEye.position.x + rightEye.position.x) / 2;
       const noseOffsetX = Math.abs(nose.position.x - eyeCenterX);
@@ -313,7 +346,7 @@ export class ObjectDetectionComponent {
 
       if (noseOffsetX > horizontalThreshold || noseOffsetY > verticalThreshold) {
 
-        if (!this.isLookingAwayAlert) {
+        if (!this.isLookingAwayAlert && !this.livenessCheckStarted) {
           this.isLookingAwayAlert = true;
           console.log("Looking Away ❌");
           this.LookAway.emit();
