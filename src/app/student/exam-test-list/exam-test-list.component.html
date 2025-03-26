@@ -1,11 +1,7 @@
 <section class="content">
   <div class="content-block">
     <div class="block-header" *ngFor="let breadscrum of breadscrums">
-      <app-breadcrumb
-        [title]="breadscrum.title"
-        [items]="breadscrum.items"
-        [active_item]="breadscrum.active"
-      >
+      <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
       </app-breadcrumb>
     </div>
     <div class="row">
@@ -17,17 +13,9 @@
                 <li>
                   <ul class="header-buttons-left ms-0">
                     <li class="tbl-search-box">
-                      <label for="search-input"
-                        ><i class="material-icons search-icon">search</i></label
-                      >
-                      <input
-                        placeholder="Search"
-                        type="text"
-                        #filter
-                        class="browser-default search-field"
-                        aria-label="Search box"
-                        class="browser-default search-field"
-                      />
+                      <label for="search-input"><i class="material-icons search-icon">search</i></label>
+                      <input placeholder="Search" type="text" #filter class="browser-default search-field"
+                        aria-label="Search box" class="browser-default search-field" />
                     </li>
                   </ul>
                 </li>
@@ -37,79 +25,90 @@
           <div class="body overflow-auto">
             <div class="responsive_table">
               <ng-container *ngIf="dataSource && dataSource.length > 0; else noDataTemplate">
-              <table
-                mat-table
-                matSort
-                [dataSource]="dataSource"
-                class="mat-cell advance-table"
-              >
+                <table mat-table matSort [dataSource]="dataSource" class="mat-cell advance-table">
 
-              <ng-container matColumnDef="Course Title">
-                <mat-header-cell *matHeaderCellDef>Course Title
-                </mat-header-cell>
-                <mat-cell *matCellDef="let row" class="name" (click)="view(row.id)">
-                  <span class="mobile-label">Course Title:</span> {{row.courseId?.title }}</mat-cell>
-              </ng-container>
+                  <ng-container matColumnDef="Course Title">
+                    <mat-header-cell *matHeaderCellDef>Course Title
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row" class="name" (click)="view(row.id)">
+                      <span class="mobile-label">Course Title:</span> {{row.courseId?.title }}</mat-cell>
+                  </ng-container>
 
-              <ng-container matColumnDef="Exam Name">
-                <mat-header-cell *matHeaderCellDef>Exam Name
-                </mat-header-cell>
-                <mat-cell *matCellDef="let row" class="name" (click)="view(row.id)">
-                  <span class="mobile-label">Exam Name:</span> {{row.examAssessmentId.name }}</mat-cell>
-              </ng-container>
+                  <ng-container matColumnDef="Exam Name">
+                    <mat-header-cell *matHeaderCellDef>Exam Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row" class="name" (click)="view(row.id)">
+                      <span class="mobile-label">Exam Name:</span> {{row.examAssessmentId.name }}</mat-cell>
+                  </ng-container>
 
-              <ng-container matColumnDef="Exam">
-                <mat-header-cell *matHeaderCellDef>Exam
-                </mat-header-cell>
-                <mat-cell *matCellDef="let row" class="name" (click)="view(row.id)">
-                    <button *ngIf="row.isAssigned && !row.isCompleted && !row.hasAlerts"
-                        [routerLink]="['/student/exam-questions/',studentClassId, row._id, row?.studentId, row?.courseId?._id, row?.examAssessmentId?._id]" [queryParams]="{ retake: true, submitted: false }" mat-raised-button  id="submit1" >
-                      Take Exam
-                    </button>
-                    <button *ngIf="!row.isAssigned && !row.isCompleted && getLabel(row) != 'Approval Pending' && !row.hasAlerts" (click)="navToExam(row)" mat-raised-button  id="submit1" >
-                      {{getLabel(row) }}
-                    </button>
-                    <span class="badge badge-solid-red" *ngIf="row.hasAlerts">
-                      <span class="status-dot"></span>
-                      {{ 'Blocked' | titlecase}}</span>
-                    <span class="badge badge-solid-red" *ngIf="!row.isAssigned && !row.isCompleted && getLabel(row) == 'Approval Pending'">
-                      <span class="status-dot"></span>
-                      {{ 'Pending' | titlecase}}</span>
-                    <span class="badge badge-solid-green" *ngIf="row.isCompleted">
-                      <span class="success-dot"></span>
-                      {{ 'Completed' | titlecase}}</span>
+                  <ng-container matColumnDef="Exam">
+                    <mat-header-cell *matHeaderCellDef>Exam
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row" class="name" (click)="view(row.id)">
+                      <button *ngIf="row.isAssigned && !row.isCompleted && !row.hasAlerts"
+                        [routerLink]="['/student/exam-questions/',studentClassId, row._id, row?.studentId, row?.courseId?._id, row?.examAssessmentId?._id]"
+                        [queryParams]="{ retake: true, submitted: false }" mat-raised-button id="submit1">
+                        Take Exam
+                      </button>
+                      <button
+                        *ngIf="!row.isAssigned && !row.isCompleted && getLabel(row) != 'Approval Pending' && !row.hasAlerts"
+                        (click)="navToExam(row)" mat-raised-button id="submit1">
+                        {{getLabel(row) }}
+                      </button>
+                      <span class="badge badge-solid-red" *ngIf="row.hasAlerts">
+                        <span class="status-dot"></span>
+                        {{ getVideoAnalyzerLabel(row)|titlecase}}</span>
+                      <span class="badge badge-solid-red"
+                        *ngIf="!row.isAssigned && !row.isCompleted && getLabel(row) == 'Approval Pending'">
+                        <span class="status-dot"></span>
+                        {{ 'Pending' | titlecase}}</span>
+                      <span class="badge badge-solid-green" *ngIf="row.isCompleted">
+                        <span class="success-dot"></span>
+                        {{ 'Completed' | titlecase}}</span>
                     </mat-cell>
-              </ng-container>
-              
-              <ng-container matColumnDef="Download">
-                <mat-header-cell *matHeaderCellDef>Download
-                </mat-header-cell>
-                <mat-cell *matCellDef="let row" class="name">
-                    <button class="download" *ngIf="row.studentClassId.certificate == true">
-                        <a  href="{{row.studentClassId.certifiacteUrl}}"target="_blank"> <mat-icon>download</mat-icon></a>
-                    </button>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Request">
+                    <mat-header-cell *matHeaderCellDef>Request Retake
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row" class="name">
+                      <button [disabled]="!(row.hasAlerts && !row.hasRetakeRequest)" (click)="requestRetake(row)"  mat-flat-button color="accent"
+                        class="request fs-15 text-nowrap">
+                        Request for unblock
+                      </button>
                     </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Download">
+                    <mat-header-cell *matHeaderCellDef>Download
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row" class="name">
+                      <button class="download" *ngIf="row.studentClassId.certificate == true">
+                        <a href="{{row.studentClassId.certifiacteUrl}}" target="_blank">
+                          <mat-icon>download</mat-icon></a>
+                      </button>
+                    </mat-cell>
+                  </ng-container>
+
+                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumns;" [style.cursor]="'pointer'" matRipple>
+                  </mat-row>
+
+                </table>
               </ng-container>
 
-              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-              <mat-row *matRowDef="let row; columns: displayedColumns;" [style.cursor]="'pointer'" matRipple>
-              </mat-row>
-            
-            </table>
-          </ng-container>
+              <ng-template #noDataTemplate>
+                <div class="no-data-text">No data found</div>
+              </ng-template>
 
-          <ng-template #noDataTemplate>
-            <div class="no-data-text">No data found</div>
-          </ng-template>
-
-            <!-- Loading spinner -->
-            <div  *ngIf="isLoading" class="tbl-spinner">
+              <!-- Loading spinner -->
+              <div *ngIf="isLoading" class="tbl-spinner">
                 <mat-progress-spinner color="primary" [diameter]="40" mode="indeterminate">
                 </mat-progress-spinner>
               </div>
-              <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems" (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr"
-              aria-label="select pagination option">
-            </mat-paginator>
+              <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems"
+                (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr" aria-label="select pagination option">
+              </mat-paginator>
             </div>
           </div>
         </div>
@@ -123,87 +122,88 @@
     <div *ngIf="isInvoice" id="contentToConvert">
       <div class="container-fluid"
         style="cursor: pointer; height: 700px;width: 70%;margin: auto;background-color: rgb(255, 248, 238);border-radius: 10px;">
-      
-      <div class="row my-3">
-        <div class="col-5 m-3">
-          <img src="/assets/images/logo/innovatiq-logo-index.png" style="height: 80px; width: 80px" />
+
+        <div class="row my-3">
+          <div class="col-5 m-3">
+            <img src="/assets/images/logo/innovatiq-logo-index.png" style="height: 80px; width: 80px" />
+          </div>
+          <div class="col-6">
+            <h3 style="justify-content: end; display: flex; margin-top: 40px">
+              INVOICE SUMMARY
+            </h3>
+          </div>
         </div>
-        <div class="col-6">
-          <h3 style="justify-content: end; display: flex; margin-top: 40px">
-            INVOICE SUMMARY
-          </h3>
+
+        <div class="row">
+          <div class="col-11 mt-4">
+            <h6 style="justify-content: end; display: flex">
+              {{ listpdfData?.invoiceDate }}
+            </h6>
+          </div>
         </div>
-      </div>
-  
-      <div class="row">
-        <div class="col-11 mt-4">
-          <h6 style="justify-content: end; display: flex">
-            {{ listpdfData?.invoiceDate }}
-          </h6>
-        </div>
-      </div>
-  
-      <div class="row">
-        <div class="col-10 mx-auto">
-          <div class="table-wrapper" >
-            <div class="table-responsive" style="margin-bottom: 40px;margin-top: 40px;max-height: 260px;overflow: hidden;">
-              <table class="table table-hover">
-                <thead>
-                  <tr>
-                    <th>Item</th>
-                    <th style="text-align: center;">Quantity</th>
-                    <th style="text-align: right;">Unit Price</th>
-                    <th style="text-align: right; padding-right: 15px">Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr style="cursor: pointer">
-                    <td style="width: 45%;">{{listpdfData?.title | titlecase}}</td>
-                    <td style="text-align: center;">1</td>
-                    <td style=" text-align: right">${{listpdfData.courseFee}}.00</td>
-                    <td style=" text-align: right;">${{listpdfData.courseFee}}.00</td>
-                  </tr>
-                  <tr></tr>
-                  <tr>
-                    <td>
-                      <h6>Subtotal</h6>
-                    </td>
-                    <td colspan="4" style=" text-align: right" class="price">
-                      ${{listpdfData.courseFee}}.00
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <h6>Discount({{discountValue}}{{discountType =='percentage'? '%':''}})</h6>
-                    </td>
-                    <td colspan="4" style=" text-align: right" *ngIf="discountType == 'fixed'" class="price">
-                      - ${{(discountValue) | number : '1.2-2'}}
-                    </td>
-                    <td colspan="4" style=" text-align: right" *ngIf="discountType == 'percentage'" class="price">
-                      - ${{(listpdfData.courseFee * discountValue / 100) | number : '1.2-2'}}
-                    </td>
-  
-                  </tr>
-                  <tr>
-                    <td>
-                      <h6>Total</h6>
-                    </td>
-                    <td colspan="4" style=" text-align: right; padding-right: 15px" *ngIf="discountType == 'fixed'"
-                      class="price">
-                      ${{listpdfData.courseFee - discountValue | number : '1.2-2'}}
-                    </td>
-                    <td colspan="4" style=" text-align: right; padding-right: 15px" *ngIf="discountType == 'percentage'"
-                      class="price">
-                      ${{listpdfData.courseFee - (listpdfData.courseFee * discountValue / 100) | number : '1.2-2'}}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+
+        <div class="row">
+          <div class="col-10 mx-auto">
+            <div class="table-wrapper">
+              <div class="table-responsive"
+                style="margin-bottom: 40px;margin-top: 40px;max-height: 260px;overflow: hidden;">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Item</th>
+                      <th style="text-align: center;">Quantity</th>
+                      <th style="text-align: right;">Unit Price</th>
+                      <th style="text-align: right; padding-right: 15px">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr style="cursor: pointer">
+                      <td style="width: 45%;">{{listpdfData?.title | titlecase}}</td>
+                      <td style="text-align: center;">1</td>
+                      <td style=" text-align: right">${{listpdfData.courseFee}}.00</td>
+                      <td style=" text-align: right;">${{listpdfData.courseFee}}.00</td>
+                    </tr>
+                    <tr></tr>
+                    <tr>
+                      <td>
+                        <h6>Subtotal</h6>
+                      </td>
+                      <td colspan="4" style=" text-align: right" class="price">
+                        ${{listpdfData.courseFee}}.00
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <h6>Discount({{discountValue}}{{discountType =='percentage'? '%':''}})</h6>
+                      </td>
+                      <td colspan="4" style=" text-align: right" *ngIf="discountType == 'fixed'" class="price">
+                        - ${{(discountValue) | number : '1.2-2'}}
+                      </td>
+                      <td colspan="4" style=" text-align: right" *ngIf="discountType == 'percentage'" class="price">
+                        - ${{(listpdfData.courseFee * discountValue / 100) | number : '1.2-2'}}
+                      </td>
+
+                    </tr>
+                    <tr>
+                      <td>
+                        <h6>Total</h6>
+                      </td>
+                      <td colspan="4" style=" text-align: right; padding-right: 15px" *ngIf="discountType == 'fixed'"
+                        class="price">
+                        ${{listpdfData.courseFee - discountValue | number : '1.2-2'}}
+                      </td>
+                      <td colspan="4" style=" text-align: right; padding-right: 15px"
+                        *ngIf="discountType == 'percentage'" class="price">
+                        ${{listpdfData.courseFee - (listpdfData.courseFee * discountValue / 100) | number : '1.2-2'}}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
   </div>
 </section>

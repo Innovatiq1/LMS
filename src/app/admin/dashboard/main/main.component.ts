@@ -865,6 +865,7 @@ export class MainComponent implements OnInit {
           console.log("response Data",response.data);
           this.classesList = response.data.docs.slice(0, 5).sort();
           this.classListSample= response.data.docs
+          console.log("classListSample",this.classListSample)
           this.docs = response.data.totalDocs;
 
         }
@@ -1894,7 +1895,9 @@ private attendanceBarChart() {
 
 
   private studentPieChart() {
+    console.log("this.registeredCourses",this.registeredCourses,"this.approvedCourses",this.approvedCourses,"this.completedCourses",this.completedCourses)
     this.studentPieChartOptions = {
+    
       series: [this.registeredCourses, this.approvedCourses, this.completedCourses],
      
       chart: {

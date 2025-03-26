@@ -173,15 +173,20 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
       const passingCriteria=this.answersResult.assessmentId.passingCriteria;
        if (score >= passingCriteria) {
       this.isQuizCompleted = true;
+      const classIdRaw = this.classId;
+      const getclassId = classIdRaw.split('?')[0];
+      // console.log("getclassId",getclassId)
       const studentId = localStorage.getItem('id') || '';
       let payload = {
         status:"completed",
         studentId: studentId,
-        classId: this.classId,
+        classId: getclassId,
         playbackTime: 100,
       };
+
+      // console.log("classsssss",this.classId)
       this.classService
-        .saveApprovedClasses(this.classId, payload)
+        .saveApprovedClasses(getclassId, payload)
         .subscribe((response) => {
           if(data){
           Swal.fire({

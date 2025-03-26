@@ -76,8 +76,8 @@
                           Retake
                         </button>
                         <button *ngIf="!row.is_tutorial"
-                          [disabled]="row.is_exam_completed || calculateRetaks(row) <= 0"
-                          (click)="openTest(row, true)" mat-raised-button  id="submit">
+                          [disabled]="calculateRetaks(row)<=0 || row.is_exam_completed"
+                          (click)="openTest(row, true)" mat-raised-button color="primary" >
                           Retake
                         </button>
                       </mat-cell>

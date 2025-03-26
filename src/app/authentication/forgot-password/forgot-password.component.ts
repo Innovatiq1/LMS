@@ -1,16 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import {
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { LanguageService } from '@core/service/language.service';
 import { AuthService } from '@core';
 import Swal from 'sweetalert2';
 import { CommonService } from '@core/service/common.service';
 import { AuthenService } from '@core/service/authen.service';
 import { UserService } from '@core/service/user.service';
+
 @Component({
   selector: 'app-forgot-password',
   templateUrl: './forgot-password.component.html',
@@ -25,122 +22,95 @@ export class ForgotPasswordComponent implements OnInit {
   tmsUrl: boolean;
   lmsUrl: boolean;
   extractedName: string;
- // resetLink: boolean;
-  constructor(
-    private formBuilder: UntypedFormBuilder,
-    private route: ActivatedRoute,
-    private router: Router,
-    private translate: LanguageService,
-    private authService:AuthService,
-    private commonService: CommonService,
-    private authenticationService: AuthenService,
-    private userService:UserService
-  ) {
 
-    let urlPath = this.router.url.split('/')
-    this.tmsUrl = urlPath.includes('TMS');
-    this.lmsUrl = urlPath.includes('LMS');
-    this.extractedName = urlPath[1];
-
-  }
-  ngOnInit() {
-    this.startSlideshow();
-    this.authForm = this.formBuilder.group({
-      email: [
-        '',
-        [Validators.required, Validators.email, Validators.minLength(5)],
-      ],
-    });
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-  }
-  setLanguage(event: any) {  
-    this.langStoreValue = event.target.value;
-    this.translate.setLanguage(event.target.value);
-  }
   listLang = [
     { text: 'English', flag: 'assets/images/flags/us.svg', lang: 'en' },
     { text: 'Chinese', flag: 'assets/images/flags/spain.svg', lang: 'ch' },
     { text: 'Tamil', flag: 'assets/images/flags/germany.svg', lang: 'ts' },
   ];
 
+  constructor(
+    private formBuilder: UntypedFormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    private translate: LanguageService,
+    private authService: AuthService,
+    private commonService: CommonService,
+    private authenticationService: AuthenService,
+    private userService: UserService
+  ) {
+    let urlPath = this.router.url.split('/');
+    this.tmsUrl = urlPath.includes('TMS');
+    this.lmsUrl = urlPath.includes('LMS');
+    this.extractedName = urlPath[1];
+  }
+
+  ngOnInit() {
+    // this.startSlideshow();
+    // this.authForm = this.formBuilder.group({
+    //   email: [
+    //     '',
+    //     [Validators.required, Validators.email, Validators.minLength(5)],
+    //   ],
+    // });
+    // this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    this.startSlideshow();
+
+    this.authForm = this.formBuilder.group({
+      email: [
+        '',
+        [
+          Validators.required,
+          Validators.email,
+          Validators.minLength(5),
+          Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{3,}$/)
+        ],
+      ],
+    });
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+  }
+
+  setLanguage(event: any) {  
+    this.langStoreValue = event.target.value;
+    this.translate.setLanguage(event.target.value);
+  }
+
   get f() {
     return this.authForm.controls;
   }
 
-  signin(){
-
-    if(this.tmsUrl){
-      this.commonService.navigateWithCompanyName(this.extractedName,'authentication/TMS/signin')
-    } else if(this.lmsUrl){
-      this.commonService.navigateWithCompanyName(this.extractedName,'authentication/LMS/signin')
-
+  signin() {
+    if (this.tmsUrl) {
+      this.commonService.navigateWithCompanyName(this.extractedName, 'authentication/TMS/signin');
+    } else if (this.lmsUrl) {
+      this.commonService.navigateWithCompanyName(this.extractedName, 'authentication/LMS/signin');
     }
   }
-  // onSubmit() {
-  //   this.submitted = true;
-  //   if (this.authForm.invalid) {
-
-  //     return;
-  //   } else {
-  //     this.authService.forgotPassword(this.authForm.value).subscribe({next: (res) => {
-  //       if (res) {
-  //         Swal.fire({
-  //           title: 'Email Send Successful',
-  //           text: "We have sent new password to your email successfully.",
-  //           icon: 'success',
-  //         });
-  //         if(this.tmsUrl){
-  //         this.router.navigate(['/authentication/TMS/signin']);
-  //         } else if(this.lmsUrl){
-  //           this.router.navigate(['/authentication/LMS/signin']);
-  //           }
-          
-          
-  //       } else {
-  //       }
-  //     },
-  //     error: (error) => {
-  //       this.error = error;
-  //       this.submitted = false;
-  //     },
-  //   });
-      
-  //   }
-  // }
 
   onSubmit() {
     this.submitted = true;
-  
     if (this.authForm.invalid) {
       return;
     } else {
       let formData = this.authForm.getRawValue();
-      this.userService
-      .getCompanyByIdentifierWithoutToken(this.extractedName)
-      .subscribe((res: any) => {
+      this.userService.getCompanyByIdentifierWithoutToken(this.extractedName).subscribe((res: any) => {
         let companyId = res[0]?.companyId;
-      this.authenticationService
-        .getUsersByEmail(formData.email.trim(),companyId)
-        .subscribe(
+        this.authenticationService.getUsersByEmail(formData.email.trim(), companyId).subscribe(
           (user: any) => {
-            console.log("User fetched:", user);
-  
             if (user && user.data && user.data[0].isLogin) {
-              let body ={
-                email:this.authForm.value.email,
-                companyId:companyId,
-                subdomain:this.extractedName
-              }
-              
+              let body = {
+                email: this.authForm.value.email,
+                companyId: companyId,
+                subdomain: this.extractedName
+              };
               this.authService.forgotPassword(body).subscribe({
                 next: (res) => {
                   if (res) {
                     Swal.fire({
-                      title: 'Email Send Successful',
+                      title: 'Email Sent Successfully',
                       text: "We have sent a new password to your email successfully.",
                       icon: 'success',
                     });
-                    
                     if (this.tmsUrl) {
                       this.router.navigate([`${this.extractedName}/authentication/TMS/signin`]);
                     } else if (this.lmsUrl) {
@@ -155,11 +125,6 @@ export class ForgotPasswordComponent implements OnInit {
                 }
               });
             } else {
-              // Swal.fire({
-              //   title: 'Action Not Allowed',
-              //   text: "Your account is not yet activated.",
-              //   icon: 'error',
-              // });
               this.error = "Your account is not yet activated.";
               this.submitted = false;
             }
@@ -170,20 +135,20 @@ export class ForgotPasswordComponent implements OnInit {
             this.submitted = false;
           }
         );
-      })
+      });
     }
   }
-  
 
-  
-  
-  images: string[] = ['/assets/images/login/Learning.jpeg', '/assets/images/login/learning2.jpg', '/assets/images/login/learning4.jpg'];
-    currentIndex = 0;
+  images: string[] = [
+    '/assets/images/login/Learning.jpeg',
+    '/assets/images/login/learning2.jpg',
+    '/assets/images/login/learning4.jpg'
+  ];
+  currentIndex = 0;
 
   startSlideshow() {
     setInterval(() => {
       this.currentIndex = (this.currentIndex + 1) % this.images.length;
     }, 4000);
   }
- 
 }

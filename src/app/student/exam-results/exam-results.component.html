@@ -27,20 +27,19 @@
                           <ng-container *ngIf="dataSource && dataSource.length > 0; else noDataTemplate">
                           <table mat-table matSort [dataSource]="dataSource" class="mat-cell advance-table">
                             <!-- Course Code -->
-                            <ng-container matColumnDef="Course Title">
-                              <mat-header-cell *matHeaderCellDef>Course
-                              </mat-header-cell>
-                              <mat-cell *matCellDef="let row">
-                                <span class="mobile-label">Course Title:</span>{{row?.courseId?.title | titlecase}}</mat-cell>
-                            </ng-container>
+                          <ng-container matColumnDef="Course Title">
+                            <mat-header-cell *matHeaderCellDef style="width: 20%;">Course</mat-header-cell>
+                            <mat-cell *matCellDef="let row" style="width: 20%;">
+                              <span class="mobile-label">Course Title:</span>{{row?.courseId?.title | titlecase}}
+                            </mat-cell>
+                          </ng-container>
 
-                            <ng-container matColumnDef="Exam Name">
-                                <mat-header-cell *matHeaderCellDef> Exam
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let row">
-                                  <span class="mobile-label">Exam Name:</span>{{ row?.examAssessmentId?.name | capitalizeFirstLetter }}
-                                </mat-cell>
-                              </ng-container>
+                           <ng-container matColumnDef="Exam Name">
+                            <mat-header-cell *matHeaderCellDef style="width: 15%;"> Exam</mat-header-cell>
+                            <mat-cell *matCellDef="let row" style="width: 15%;">
+                              <span class="mobile-label">Exam Name:</span>{{ row?.examAssessmentId?.name | capitalizeFirstLetter }}
+                            </mat-cell>
+                          </ng-container>
                             <ng-container matColumnDef="Exam Score">
                                 <mat-header-cell *matHeaderCellDef>Exam Score
                                 </mat-header-cell>
@@ -71,7 +70,7 @@
                                   <button 
                                     [disabled]="(row.retakeLeft <= 0||row.studentClassId.certificate)"
                                     (click)="handleRetakeTest(row)"
-                                    mat-raised-button  id="submit1">
+                                    mat-raised-button  color="primary">
                                     Retake Exam
                                   </button>
                                 </mat-cell>

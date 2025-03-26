@@ -53,7 +53,13 @@ export class ChatbotComponent {
 
   onMessengerSubmit(event: any) {
     const inputValue = this.msgInput.nativeElement.value.trim();
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!this.emailId) {
+      if (!emailPattern.test(inputValue)) {
+        this.messages.push({ type: 'bot', text: 'Please enter valid email' });
+        this.msgInput.nativeElement.value = '';
+        return; 
+      }
       this.emailId = inputValue.trim(); 
 
     }

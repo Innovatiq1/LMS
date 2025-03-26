@@ -58,16 +58,19 @@ export class AdminService {
     return params;
   }
 
-  getAdminList(filter: any): Observable<any> {
-    const apiUrl =
-      this.defaultUrl +
-      'admin/adminUserListing?type=admin,courseAdmin,feeAdmin';
-    return this.http
-      .get<ApiResponse>(apiUrl, {
-        params: filter,
-      })
-      .pipe(map((response) => response));
-  }
+getAdminList(filter: any): Observable<any> {
+  const params = new HttpParams()
+    .set('limit', filter.limit ? filter.limit.toString() : '10')
+    .set('page', filter.page ? filter.page.toString() : '1')
+    .set('type', 'admin,courseAdmin,feeAdmin'); // Ensuring correct types
+  
+  const apiUrl = `${this.defaultUrl}admin/adminUserListing`;
+
+  return this.http.get<ApiResponse>(apiUrl, { params }).pipe(
+    tap(response => console.log("API Response:", response)), // Debugging response
+    map(response => response)
+  );
+}
 
   saveAdmin(formData: any): Observable<Mentor> {
     const apiUrl = this.defaultUrl + 'admin/adminUserListing/admin';

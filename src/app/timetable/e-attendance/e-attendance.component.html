@@ -208,13 +208,11 @@
                         <mat-header-cell *matHeaderCellDef 
                             class="compulsory-count-header">Attendance
                         </mat-header-cell>
-                        <mat-cell *matCellDef="let row"
-                            [routerLink]="['/timetable/view-e-attendance',row.title,row.id]">
-                            <span class="mobile-label">Users:</span>
-                            <button mat-icon-button class="tbl-action-btn">
-                                <app-feather-icons [icon]="'eye'"
-                                    [class]="'tbl-fav-view'"></app-feather-icons>
-                            </button>
+                       <mat-cell *matCellDef="let row">
+                          <span class="mobile-label">Users:</span>
+                          <button mat-icon-button class="tbl-action-btn">
+                            <app-feather-icons [icon]="'eye'" class="tbl-fav-view"></app-feather-icons>
+                          </button>
                         </mat-cell>
                     </ng-container>
 
