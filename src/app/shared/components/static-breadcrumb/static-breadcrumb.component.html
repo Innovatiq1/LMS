@@ -11,7 +11,12 @@
                     <i-feather name="home" class="breadcrumb-icon"></i-feather>
                 </a>
             </li>
-            <li class="breadcrumb-item" *ngFor="let item of items">{{item}}</li>
+            <!-- <li class="breadcrumb-item" *ngFor="let item of items">{{item}}</li> -->
+            <li class="breadcrumb-item" *ngFor="let item of items; let i = index" 
+            (click)="onBreadcrumbClick(i)" 
+            style="cursor: pointer;"> 
+            {{ item }}
+        </li>
             <li class="breadcrumb-item active">{{active_item}}</li>
         </ul>
         <!-- <div class="d-flex align-items-center">
