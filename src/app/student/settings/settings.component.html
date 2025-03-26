@@ -1304,12 +1304,22 @@
             </div>
           </div>
         </mat-tab> -->
+     
+      
         <mat-tab label="Content">
           <div *ngIf="isCreate" class="content-block">
             <div class="card" style="min-height: 745px">
               <div class="header">
                 <h2>Content Customization</h2>
+
+          <button mat-icon-button class="delete-button" matTooltip="Delete" >
+            <mat-icon>delete</mat-icon>
+            
+          </button>
+     
               </div>
+
+
               <div class="body">
                 <div class="row">
                   <div class="col-3">
@@ -1329,6 +1339,8 @@
                           }}</i>
                         </div>
                       </div>
+
+
                       <div *ngIf="dropdownVisible">
                         <form [formGroup]="roleForm">
                           <mat-form-field class="example-full-width" appearance="outline">
@@ -1419,6 +1431,7 @@
                 >
                   Cancel
                 </button>
+
                 <button
                    mat-raised-button
                   id="submit"
