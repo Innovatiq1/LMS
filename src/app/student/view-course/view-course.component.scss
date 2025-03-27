@@ -383,6 +383,11 @@ footer p a:hover {
     .nav-tabs .nav-item>.nav-link {
         margin-bottom: 5px;
     }
+
+     .btn-primary {
+        font-size: 12px;
+        padding: 4px 8px;
+    }
 }
 
 iframe {
@@ -398,4 +403,10 @@ iframe {
 
 .text-green{
     color: #008000;
+}
+@media (max-width: 400px) {
+  .btn btn-primary {
+    width: 100%;
+    text-align: center;
+  }
 }
