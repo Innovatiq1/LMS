@@ -495,7 +495,12 @@ export class UtilsService {
       {
         type:'required', message:'Enter Meeting Platform Name'
       }
-    ]
+    ],
+    'scormPkgName': [
+      { type: 'required', message: 'Enter SCORM Package Name' },
+      { type: 'minlength', message: 'Enter minimum 2 characters' },
+      { type: 'maxlength', message: 'Enter maximum 255 characters' },
+    ],
   };
 
 

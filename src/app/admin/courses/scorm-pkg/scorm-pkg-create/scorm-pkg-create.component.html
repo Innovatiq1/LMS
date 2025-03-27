@@ -1,0 +1,87 @@
+<section [ngClass]="{'full-width': dialogStatus, 'content': true}">
+  <div *ngIf="dialogStatus" class="dialog-header">
+    <button mat-raised-button color="warn" (click)="closeDialog()">Cancel</button>
+  </div>
+  <div class="content-block">
+    <ng-container *ngIf="!dialogStatus">
+      <div class="block-header" *ngFor="let breadscrum of breadscrums">
+        <!-- breadcrumb -->
+        <app-static-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
+        </app-static-breadcrumb>
+      </div>
+    </ng-container>
+    <div class="row clearfix">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+        <div class="card">
+          <div class="header"></div>
+          <form [formGroup]="pkgForm">
+            <div class="body m-4">
+              <div class="row">
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                  <label>SCORM Package Title
+                    <span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <input matInput type="text" id="name" formControlName="title" class="form-control" required />
+                    <mat-error
+                                        *ngIf="
+                                        pkgForm?.get('title')?.invalid &&
+                                        pkgForm?.get('title')?.touched
+                                        "
+                                      >
+                                        {{
+                                          utils.getErrorMessage1(
+                                            pkgForm.get("title"),
+                                            "scormPkgName"
+                                          )
+                                        }}
+                                      </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 mb-2">
+                  <div class="label-container">
+                    <label>Document
+                      <span class="mandatory">&nbsp;*</span>
+                    </label>
+                  </div>
+                  <div class="file-drop-area1">
+                    <mat-progress-spinner *ngIf="isUploading" mode="indeterminate" diameter="40" color="accent">
+                    </mat-progress-spinner>
+                    <div class="file1">
+                      <button mat-raised-button color="primary" class="btn">
+                        Choose file
+                        <input formControlName="documentLink" (change)="onFileUpload($event)" class="file-input"
+                          type="file" accept=".pdf, .zip" [required]="true" />
+                      </button>
+                      <span class="file-msg">
+                        <h6>{{
+                          uploadedDocument
+                          ? uploadedDocument
+                          : "Drag and Drop File Here"
+                          }}</h6>
+                      </span>
+                    </div>
+                  </div>
+                  <mat-error *ngIf="
+                                    pkgForm?.get('documentLink')?.invalid &&
+                                    pkgForm?.get('documentLink')?.touched
+                  ">
+                                        No file found
+                                    </mat-error>
+                </div>
+              </div>
+            </div>
+          </form>
+          <div class="row body">
+            <div class="col-md-10">
+              <button mat-raised-button id="back" *ngIf="!dialogStatus"
+                [routerLink]="['/admin/courses/course-kit']">Back</button>
+            </div>
+            <div class="col-md-2">
+              <button mat-raised-button id="submit" (click)="submitSCORMKit()">Create</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
