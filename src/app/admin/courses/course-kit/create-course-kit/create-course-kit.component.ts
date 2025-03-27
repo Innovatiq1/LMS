@@ -19,6 +19,7 @@ import { FormService } from '@core/service/customization.service';
 // import { MatDialogRef } from '@angular/material/dialog';
 import { MatDialog,MAT_DIALOG_DATA,MatDialogRef } from '@angular/material/dialog';
 import { AuthenService } from '@core/service/authen.service';
+import { ScormPkgCreateComponent } from '@shared/components/scorm-pkg-create/scorm-pkg-create.component';
 
 @Component({
   selector: 'app-create-course-kit',
@@ -81,6 +82,7 @@ export class CreateCourseKitComponent implements OnInit {
   kitType: any[] = [];
   isScormKit: boolean = false;
   SCORM_KIT:boolean = false;
+  
 
   constructor(
     @Optional() @Inject(MAT_DIALOG_DATA) public data11: any,
@@ -97,6 +99,7 @@ export class CreateCourseKitComponent implements OnInit {
     @Optional() private dialogRef: MatDialogRef<CreateCourseKitComponent>,
     private authenService: AuthenService,
     private _router: Router,
+    private dialog: MatDialog
   ) {
     if (data11) {
       this.dialogStatus=true;
@@ -513,5 +516,18 @@ export class CreateCourseKitComponent implements OnInit {
         });
       }
     }
+  }
+
+  openCreateScormPackage(){
+    const dialogRef = this.dialog.open(ScormPkgCreateComponent, {
+        width: '120%',
+        height: '80%',
+        maxHeight: '90vh',
+        autoFocus: false,
+        disableClose: false,
+      });
+    
+      dialogRef.afterClosed().subscribe((result) => {
+      });
   }
 }

@@ -89,9 +89,14 @@
                   class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2"
                   *ngIf="labelStatusCheck('Document')"
                 >
+                <div class="label-container">
                   <label>{{ isScormKit ? "Scorm Kit" : "Document" }}
                     <span *ngIf="isScormKit" class="mandatory">&nbsp;*</span>
                   </label>
+                  <button *ngIf="isScormKit" class="btn" (click)="openCreateScormPackage()">
+                    <img src="/assets/Close.svg" alt="plus" />
+                  </button>
+                </div>
                   <div class="file-drop-area1">
                     <mat-progress-spinner
                       *ngIf="isUploading"
