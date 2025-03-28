@@ -5,6 +5,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseKit, CourseKitModel } from '@core/models/course.model';
 import { CertificateService } from '@core/service/certificate.service';
@@ -14,6 +15,7 @@ import { UtilsService } from '@core/service/utils.service';
 import * as moment from 'moment';
 import { forkJoin } from 'rxjs';
 import Swal from 'sweetalert2';
+import { ScormPkgCreateComponent } from '../../scorm-pkg/scorm-pkg-create/scorm-pkg-create.component';
 
 @Component({
   selector: 'app-edit-course-kit',
@@ -63,9 +65,11 @@ export class EditCourseKitComponent {
   ];
   isScormKit: boolean = false;
   acceptedFormats: string = ".pdf,.ppt,.pptx,.doc,.docx,.xls,.xlsx,.txt";
+  scorm_kit_list: any[] = [];
+
   constructor(
     private router: Router,
-
+    private dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
     public utils: UtilsService,
@@ -105,6 +109,7 @@ export class EditCourseKitComponent {
         ...this.utils.validators.noLeadingSpace,]),
       kitType: new FormControl('', [...this.utils.validators.descripton,
       ...this.utils.validators.noLeadingSpace]),
+      scormKit: new FormControl(null, [])
     });
 
     this.subscribeParams = this.activatedRoute.params.subscribe(
@@ -120,12 +125,19 @@ export class EditCourseKitComponent {
         this.courseKitForm.patchValue({
           videoLink: '',
           documentLink: '',
+          scormKit: null,
         });
       } else {
         this.acceptedFormats = '.pdf,.ppt,.pptx,.doc,.docx,.xls,.xlsx,.txt';
         this.isScormKit = false;
       }
     });
+  }
+  fetchScormKits() {
+    var companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    this.courseService.getScormKits(companyId).subscribe((res: any) => {
+      this.scorm_kit_list = res.data;
+    })
   }
   dateValidator(group: FormGroup) {
     const startDate = group.get('startDate')?.value;
@@ -191,27 +203,26 @@ export class EditCourseKitComponent {
       formdata.append('video_filename', this.videoSrc);
       formdata.append('doc_filename', this.uploadedDocument);
     }
-    Swal.fire({
-      title: 'Uploading...',
-      text: 'Please wait...',
-      allowOutsideClick: false,
-      timer: 90000,
-      timerProgressBar: true,
-    });
-    if (!this.docs) {
+    if (this.isScormKit) {
       const courseKitData: CourseKit = this.courseKitForm.value;
       delete courseKitData.videoLink;
       delete courseKitData.documentLink;
-      this.editCourseKit(courseKitData);
+      if (courseKitData) {
+        this.editCourseKit(courseKitData);
+      }
     } else {
-      if (this.isScormKit) {
-        this.courseService.updateScormKit(this.scormId, formdata).subscribe((data) => {
-          const courseKitData: CourseKit = this.courseKitForm.value;
-          delete courseKitData.videoLink;
-          delete courseKitData.documentLink;
-          courseKitData.scormKit = data.data._id;
-          this.editCourseKit(courseKitData);
-        });
+      Swal.fire({
+        title: 'Uploading...',
+        text: 'Please wait...',
+        allowOutsideClick: false,
+        timer: 90000,
+        timerProgressBar: true,
+      });
+      if (!this.docs) {
+        const courseKitData: CourseKit = this.courseKitForm.value;
+        delete courseKitData.videoLink;
+        delete courseKitData.documentLink;
+        this.editCourseKit(courseKitData);
       } else {
         this.courseService.updateVideo(this.videoId, formdata).subscribe((data) => {
           const courseKitData: CourseKit = this.courseKitForm.value;
@@ -265,7 +276,11 @@ export class EditCourseKitComponent {
           shortDescription: response?.course?.shortDescription,
           longDescription: response?.course?.longDescription,
           kitType: response?.course?.kitType,
+          scormKit: response?.course?.scormKit?.id
         });
+        if (this.kitType === 'scorm') {
+          this.fetchScormKits();
+        }
       }
     });
   }
@@ -435,6 +450,21 @@ export class EditCourseKitComponent {
         });
       }
     }
+  }
+
+  openCreateScormPackage() {
+    const dialogRef = this.dialog.open(ScormPkgCreateComponent, {
+      width: '70%',
+      height: '80%',
+      maxHeight: '90vh',
+      autoFocus: false,
+      disableClose: false,
+      data: true
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.fetchScormKits();
+    });
   }
 
 }

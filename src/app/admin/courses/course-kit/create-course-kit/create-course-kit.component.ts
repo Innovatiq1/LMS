@@ -539,7 +539,4 @@ export class CreateCourseKitComponent implements OnInit {
       this.fetchScormKits();
     });
   }
-  clearDocumentLink() {
-
-  }
 }
