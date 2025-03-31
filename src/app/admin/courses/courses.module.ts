@@ -41,6 +41,7 @@ import { ScormPlayerComponent } from './course-kit/scorm-player/scorm-player.com
 import { SafePipeAdmin } from '../pipes/safe.pipe';
 import { BlockedExamsComponent } from './blocked-exams/blocked-exams.component';
 import { ExamTrianeesComponent } from './exam-trianees/exam-trianees.component';
+import { ScormPkgCreateComponent } from './scorm-pkg/scorm-pkg-create/scorm-pkg-create.component';
 
 
 
@@ -74,7 +75,8 @@ import { ExamTrianeesComponent } from './exam-trianees/exam-trianees.component';
    ScormPlayerComponent,
     SafePipeAdmin,
     BlockedExamsComponent,
-    ExamTrianeesComponent
+    ExamTrianeesComponent,
+    ScormPkgCreateComponent
 
   ],
   imports: [

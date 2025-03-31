@@ -662,6 +662,18 @@ private tpUrl=environment.Url;
       return this._Http.post<any>(apiUrl, payload).pipe(map((response) => response));
     }
 
+    createScormPkg(payload:any) {
+      const apiUrl = `${this.prefix}uploadScorm/create/v2`;
+      return this._Http.post<any>(apiUrl, payload).pipe(map((response) => response));
+    }
+
+    getScormKits(companyId:string){
+      const apiUrl = `${this.prefix}uploadScorm`;
+      return this._Http.get<any>(apiUrl, {
+        params: this.buildParams({companyId}),
+      }).pipe(map((response) => response));
+    }
+
 
     updateVideo(id:string,payload: any){
         const apiUrl = `${this.prefix}uploadVideo/${id}`;
