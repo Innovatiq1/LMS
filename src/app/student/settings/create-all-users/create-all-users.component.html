@@ -52,8 +52,8 @@
                                      </mat-error>
                                   </mat-form-field>
                                 </div>
-                                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                                  <label>ID Number<span class="mandatory">&nbsp;*</span></label>
+                                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('ID Number')">
+                                  <label>ID Number</label>
                                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                                     <input matInput formControlName="idNumber">
                                     <mat-error *ngIf="userForm.get('idNumber')?.hasError('required')">
@@ -61,8 +61,8 @@
                                      </mat-error>
                                   </mat-form-field>
                                 </div> 
-                                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                                  <label>ID Type<span class="mandatory">&nbsp;*</span></label>
+                                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('ID Type')">
+                                  <label>ID Type</label>
                                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                                     <input matInput formControlName="idType">
                                     <mat-error *ngIf="userForm.get('idType')?.hasError('required')">
@@ -70,8 +70,8 @@
                                      </mat-error>
                                   </mat-form-field>
                                 </div> 
-                                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                                  <label>ID Code<span class="mandatory">&nbsp;*</span></label>
+                                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('ID Code')">
+                                  <label>ID Code</label>
                                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                                     <input matInput formControlName="code">
                                     <mat-error *ngIf="userForm.get('code')?.hasError('required')">

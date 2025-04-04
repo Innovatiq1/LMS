@@ -90,9 +90,9 @@ export class AddTeacherComponent {
       qualifications: ['', [Validators.required,...this.utils.validators.designation]],
       avatar: ['',],
       domainAreaOfPractice: ['', [Validators.required]],
-      idType: ['', [Validators.required]],
-      idNumber: ['', [Validators.required]],
-      code: ['', [Validators.required]],
+      idType: ['', []],
+      idNumber: ['', []],
+      code: ['', []],
       linkedInURL: ['',],
       experience: ['',],
     },{
