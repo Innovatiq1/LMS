@@ -19,7 +19,7 @@ import { FormService } from '@core/service/customization.service';
 // import { MatDialogRef } from '@angular/material/dialog';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuthenService } from '@core/service/authen.service';
-import { ScormPkgCreateComponent } from 'app/admin/courses/scorm-pkg/scorm-pkg-create/scorm-pkg-create.component';
+import { ScormPkgCreateComponent } from 'app/student/settings/scorm-pkg/scorm-pkg-create/scorm-pkg-create.component';
 
 @Component({
   selector: 'app-create-course-kit',

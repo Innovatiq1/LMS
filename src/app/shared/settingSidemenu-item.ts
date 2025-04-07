@@ -523,6 +523,29 @@ SETTING_SIDEMENU_LIST =[
             ],
             "children": []
           },
+          {
+            "title": "Scorm Kit",
+            "id": "scorm-kit",
+            "class": "ml-menu",
+            "actions": [
+              {
+                "title": "Create",
+                "id": "create-scorm-kit",
+                "class": "ml-menu3"
+              },
+              {
+                "title": "Edit",
+                "id": "edit-scorm-kit",
+                "class": "ml-menu3"
+              },
+              {
+                "title": "Delete",
+                "id": "delete-scorm-kit",
+                "class": "ml-menu3"
+              }
+            ],
+            "children": []
+          },
         ]
       },
       {
