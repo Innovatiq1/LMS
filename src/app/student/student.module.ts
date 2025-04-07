@@ -129,6 +129,8 @@ import { ObjectDetectionComponent } from './object-detection/object-detection.co
 import { MeetingPlatformComponent } from './settings/meeting-platform/meeting-platform.component';
 import { UpdateMeetingPlatformComponent } from './settings/meeting-platform/update-meeting-platform/update-meeting-platform.component';
 import { TermsDialogComponent } from './terms-dialog/terms-dialog.component';
+import { ScormPkgComponent } from './settings/scorm-pkg/scorm-pkg.component';
+import { ScormPkgCreateComponent } from './settings/scorm-pkg/scorm-pkg-create/scorm-pkg-create.component';
 
 
 @NgModule({
@@ -232,7 +234,7 @@ import { TermsDialogComponent } from './terms-dialog/terms-dialog.component';
     TutorialQuestionsComponent,
     DocumentViewComponent,
     SocialLoginComponent,    
-    SafePipe, ZoomKeysComponent, ObjectDetectionComponent, MeetingPlatformComponent, UpdateMeetingPlatformComponent, TermsDialogComponent,
+    SafePipe, ZoomKeysComponent, ObjectDetectionComponent, MeetingPlatformComponent, UpdateMeetingPlatformComponent, TermsDialogComponent, ScormPkgComponent, ScormPkgCreateComponent
    // SafeUrlPipe,
   ],
   imports: [

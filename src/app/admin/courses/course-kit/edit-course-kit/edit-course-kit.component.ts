@@ -15,7 +15,7 @@ import { UtilsService } from '@core/service/utils.service';
 import * as moment from 'moment';
 import { forkJoin } from 'rxjs';
 import Swal from 'sweetalert2';
-import { ScormPkgCreateComponent } from '../../scorm-pkg/scorm-pkg-create/scorm-pkg-create.component';
+import { ScormPkgCreateComponent } from '../../../../student/settings/scorm-pkg/scorm-pkg-create/scorm-pkg-create.component';
 
 @Component({
   selector: 'app-edit-course-kit',

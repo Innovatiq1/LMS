@@ -1754,6 +1754,42 @@ MENU_LIST =[
             }
           ],
         },
+        {
+          "title": "Scorm Kit",
+          "id": "scorm-kit",
+          "children": [],
+          "isAction": false,
+          "checked": true,
+          "indeterminate": false,
+          "class": "ml-menu",
+          "isLeaf": true,
+          "actions": [
+            {
+              "title": "Create",
+              "id": "create-scorm-kit",
+              "checked": true,
+              "indeterminate": false,
+              "isLeaf": true,
+              "isAction": true
+            },
+            {
+              "title": "Edit",
+              "id": "edit-scorm-kit",
+              "checked": true,
+              "indeterminate": false,
+              "isLeaf": true,
+              "isAction": true
+            },
+            {
+              "title": "Delete",
+              "id": "delete-scorm-kit",
+              "checked": true,
+              "indeterminate": false,
+              "isLeaf": true,
+              "isAction": true
+            }
+          ],
+        },
       ],
       "actions": [],
       "isAction": false,
