@@ -26,11 +26,16 @@
         <div *ngIf="!isEdit" class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-2">
           <label>Class Name<span class="mandatory">&nbsp;*</span></label>
           <mat-form-field class="example-full-width" appearance="outline">
-            <mat-select formControlName="className" required>
+            <!-- <mat-select formControlName="className" required>
               <mat-option
                 *ngFor="let data of studentApprovedClasses"
                 [value]="data"
               >
+                {{ data?.classId?.courseId?.title }}
+              </mat-option>
+            </mat-select> -->
+            <mat-select formControlName="className" required (selectionChange)="onClassChange($event)">
+              <mat-option *ngFor="let data of studentApprovedClasses" [value]="data">
                 {{ data?.classId?.courseId?.title }}
               </mat-option>
             </mat-select>
@@ -64,6 +69,7 @@
               [matDatepicker]="picker1"
               formControlName="applyDate"
               [min]="currentDate"
+              [max]="sessionEndDate"
               required
             />
             <mat-datepicker-toggle
