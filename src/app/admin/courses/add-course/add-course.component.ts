@@ -749,8 +749,10 @@ this.exam_assessments=res?.data.reverse();
         );
         if (config) {
           this.defaultCurrency = config.value;
+          // console.log("this.defaultCurrency",this.firstFormGroup.value.feeType)
           this.firstFormGroup.patchValue({
-            currency_code: this.firstFormGroup.value.feeType?this.defaultCurrency:'',
+            // currency_code: this.firstFormGroup.value.feeType?this.defaultCurrency:'',
+            currency_code:this.defaultCurrency
           });
         }
       });
