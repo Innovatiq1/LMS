@@ -14,6 +14,7 @@ import { StudentsService } from 'app/admin/students/students.service';
 import { TeachersService } from 'app/admin/teachers/teachers.service';
 import { UtilsService } from '@core/service/utils.service';
 import { AppConstants } from '@shared/constants/app.constants';
+import { FormService } from '@core/service/customization.service';
 
 @Component({
   selector: 'app-edit-teacher',
@@ -44,7 +45,7 @@ export class EditTeacherComponent {
   trainerId:any;
   breadcrumbs:any[] = [];
   storedItems: string | null;
-
+  forms!: any[];
   constructor(
     private fb: UntypedFormBuilder,
     private courseService: CourseService,
@@ -53,6 +54,7 @@ export class EditTeacherComponent {
     private StudentService: StudentsService,
     public utils: UtilsService,
     private instructor: InstructorService,
+    private formService: FormService,
     private router: Router
   ) {
 
@@ -93,9 +95,9 @@ export class EditTeacherComponent {
       attemptBlock: [''],
       qualifications: ['',[Validators.required]],
       domainAreaOfPractice: ['', [Validators.required]],
-      idType: ['', [Validators.required]],
-      idNumber: ['', [Validators.required]],
-      code: ['', [Validators.required]],
+      idType: ['', []],
+      idNumber: ['', []],
+      code: ['', []],
       linkedInURL: ['',],
       experience: ['',],
     });
@@ -194,6 +196,7 @@ export class EditTeacherComponent {
   }
   ngOnInit(): void {
     this.getData();
+    this.getForms();
     this.getDepartment();
     this.commonRoles = AppConstants
   }
@@ -236,6 +239,26 @@ export class EditTeacherComponent {
         });
       }
     });
+  }
+  getForms(): void {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        this.formService
+      .getAllForms(userId,'Instructor Creation Form')
+      .subscribe((forms) => {
+        this.forms = forms;
+      });
+  }
+
+  labelStatusCheck(labelName: string): any {
+    if (this.forms && this.forms.length > 0) {
+      const status = this.forms[0]?.labels?.filter(
+        (v: any) => v?.name === labelName
+      );
+      if (status && status.length > 0) {
+        return status[0]?.checked;
+      }
+    }
+    return false;
   }
   onFileUpload(event: any) {
     const file = event.target.files[0];
