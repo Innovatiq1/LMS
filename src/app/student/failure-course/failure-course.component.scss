@@ -1,0 +1,12 @@
+.table-responsive {
+  overflow-x: auto;
+}
+
+@media screen and (max-width: 600px) {
+  .table-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}

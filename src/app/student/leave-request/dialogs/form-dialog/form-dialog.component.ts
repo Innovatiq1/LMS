@@ -12,6 +12,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { ClassService } from 'app/admin/schedule-class/class.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { MatSelectChange } from '@angular/material/select';
 
 export interface DialogData {
   id: number;
@@ -31,6 +32,9 @@ export class FormDialogComponent {
   leaveRequestForm: UntypedFormGroup;
   leaveRequest: LeaveRequest;
   studentApprovedClasses: any;
+   currentDate: Date;
+   classData: any;
+   sessionEndDate:any;
   id!: number;
   isEdit = false;
   constructor(
@@ -41,6 +45,7 @@ export class FormDialogComponent {
     private classService: ClassService,
     public router: Router
   ) {
+    this.currentDate = new Date(); 
     this.getApprovedCourse();
     // Set the defaults
     this.action = data.action;
@@ -59,6 +64,15 @@ export class FormDialogComponent {
   formControl = new UntypedFormControl('', [
     Validators.required,
   ]);
+  onClassChange(event: MatSelectChange): void {
+    this.classData = event.value;
+    // console.log('Selected class:', this.classData);
+    this.sessionEndDate=this.classData?.classId?.sessions[0]?.sessionEndDate;
+    // console.log("this.sessionEndDate",this.sessionEndDate)
+
+
+
+  }
   getErrorMessage() {
     return this.formControl.hasError('required')
       ? 'Required field'
@@ -72,7 +86,12 @@ export class FormDialogComponent {
     this.classService
       .getStudentRegisteredClasses(payload)
       .subscribe((response) => {
-        this.studentApprovedClasses = response.data.docs;
+        console.log("response data",response.data.docs)
+        // this.studentApprovedClasses = response.data.docs;
+        this.studentApprovedClasses = response.data.docs.filter((data: any) => {
+          const sessionEndDate = new Date(data?.classId?.sessions[0]?.sessionEndDate);
+          return sessionEndDate > this.currentDate;
+        });
       });
   }
 

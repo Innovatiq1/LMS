@@ -34,4 +34,9 @@ export class StaticBreadcrumbComponent {
   backClicked() {
     this._location.back();
   }
+  onBreadcrumbClick(index: number) {
+    if (index === 0) {
+      this.backClicked();
+    }
+  }
 }

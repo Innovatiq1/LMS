@@ -103,18 +103,34 @@
               </ng-container> -->
                 <!-- Class start date -->
 
-                <ng-container matColumnDef="classstartDate">
+                <!-- <ng-container matColumnDef="classstartDate">
                   <mat-header-cell *matHeaderCellDef 
                     >Start Date
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
                     <span class="mobile-label">Start Date:</span>{{row?.classId?.sessions[0]?.sessionStartDate ? (row?.classId?.sessions[0]?.sessionStartDate | date) : "--" }}
                   </mat-cell>
+                </ng-container> -->
+                <ng-container matColumnDef="CourseType">
+                  <mat-header-cell *matHeaderCellDef 
+                    >Course Type
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
+                    <span class="mobile-label">CourseType:</span> {{ row?.courseId?.selectedOptionValue ? (row?.courseId?.selectedOptionValue.replace('And', ' & ') | titlecase) : '--' }}
+                  </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="Approval">
+                  <mat-header-cell *matHeaderCellDef 
+                    >Approval required
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
+                    <span class="mobile-label">Approval required:</span> {{ row?.courseId?.approval ? (row.courseId.approval | titlecase) : '--' }}
+                  </mat-cell>
                 </ng-container>
                 <!--Class Enddate -->
                 <ng-container matColumnDef="classendDate">
                   <mat-header-cell *matHeaderCellDef 
-                    >End Date
+                    >Expiry Date
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null">
                     <span class="mobile-label">End Date:</span>{{row?.classId?.sessions[0]?.sessionEndDate ? (row?.classId?.sessions[0]?.sessionEndDate | date) : "--" }}

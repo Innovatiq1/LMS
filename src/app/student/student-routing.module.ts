@@ -94,6 +94,8 @@ import { SocialLoginComponent } from './settings/social-login/social-login.compo
 import { ZoomKeysComponent } from './settings/zoom-keys/zoom-keys.component';
 import { MeetingPlatformComponent } from './settings/meeting-platform/meeting-platform.component';
 import { UpdateMeetingPlatformComponent } from './settings/meeting-platform/update-meeting-platform/update-meeting-platform.component';
+import { ScormPkgComponent } from './settings/scorm-pkg/scorm-pkg.component';
+import { ScormPkgCreateComponent } from 'app/student/settings/scorm-pkg/scorm-pkg-create/scorm-pkg-create.component';
 const routes: Routes = [
   {
     path: 'enrollment/course',
@@ -638,6 +640,18 @@ const routes: Routes = [
   {
     path: 'settings/configuration/meeting-platform/update',
     component: UpdateMeetingPlatformComponent
+  },
+  {
+    path:'settings/configuration/scorm-kit',
+    component: ScormPkgComponent
+  },
+  {
+    path:'settings/configuration/scorm-kit/create',
+    component: ScormPkgCreateComponent
+  },
+  {
+    path:'settings/configuration/scorm-kit/update',
+    component: ScormPkgCreateComponent
   }
 
   

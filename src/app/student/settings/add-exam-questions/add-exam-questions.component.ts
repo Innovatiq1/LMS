@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit ,Inject,Optional} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, Inject, Optional } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -13,7 +13,7 @@ import { Subscription, timer } from 'rxjs';
 import * as XLSX from 'xlsx';
 import { StudentsService } from 'app/admin/students/students.service';
 import { SettingsService } from '@core/service/settings.service';
-import { MatDialog,MAT_DIALOG_DATA,MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TestPreviewComponent } from '@shared/components/test-preview/test-preview.component';
 import { CommonService } from '@core/service/common.service';
 import { AuthenService } from '@core/service/authen.service';
@@ -24,7 +24,7 @@ import { AuthenService } from '@core/service/authen.service';
   templateUrl: './add-exam-questions.component.html',
   styleUrls: ['./add-exam-questions.component.scss']
 })
-export class AddExamQuestionsComponent implements OnInit, OnDestroy{
+export class AddExamQuestionsComponent implements OnInit, OnDestroy {
   draftSubscription: Subscription | null = null;
   @Input() formType: string = '';
   @Input() approved: boolean = false;
@@ -34,7 +34,7 @@ export class AddExamQuestionsComponent implements OnInit, OnDestroy{
   questionId!: string;
   subscribeParams: any;
   studentId: any;
-  dataSource:any;
+  dataSource: any;
   configuration: any;
   configurationSubscription!: Subscription;
   defaultTimer: string = '';
@@ -52,11 +52,13 @@ export class AddExamQuestionsComponent implements OnInit, OnDestroy{
     'AUD',
   ];
   retakeCodesAssessment: string[] = ['1', '2', '3', '4', '5'];
-  scoreAlgo:any;
-  timerValues:any;
+  scoreAlgo: any;
+  timerValues: any;
   draftId!: string;
-  dialogStatus:boolean=false;
-  showVideoAnalyzer:boolean=false;
+  dialogStatus: boolean = false;
+  showVideoAnalyzer: boolean = false;
+
+  violation_list: number[] = Array.from({ length: 20 }, (_, i) => i + 1);
 
   constructor(
     @Optional() @Inject(MAT_DIALOG_DATA) public data11: any,
@@ -65,14 +67,14 @@ export class AddExamQuestionsComponent implements OnInit, OnDestroy{
     private activatedRoute: ActivatedRoute,
     private questionService: QuestionService,
     private studentsService: StudentsService,
-    private SettingsService:SettingsService,
+    private SettingsService: SettingsService,
     private dialog: MatDialog,
     private commonService: CommonService,
     @Optional() private dialogRef: MatDialogRef<AddExamQuestionsComponent>,
     private authenService: AuthenService,
   ) {
     if (data11) {
-      this.dialogStatus=true;
+      this.dialogStatus = true;
     }
     let urlPath = this.router.url.split('/');
     this.editUrl = urlPath.includes('edit-questions');
@@ -83,22 +85,23 @@ export class AddExamQuestionsComponent implements OnInit, OnDestroy{
       }
     );
 
-    const roleDetails =this.authenService.getRoleDetails()[0].settingsMenuItems
+    const roleDetails = this.authenService.getRoleDetails()[0].settingsMenuItems
     const parentId = `student/settings/configuration`;
-    const childId =  "all-questions";
+    const childId = "all-questions";
 
     let parentData = roleDetails.filter((item: any) => item.id == parentId);
     let childData = parentData[0].children.filter((item: any) => item.id == childId);
     let actions = childData[0].actions
-    this.showVideoAnalyzer = actions.some((item:any) => item.title == 'Proctoring' && item.checked);
+    this.showVideoAnalyzer = actions.some((item: any) => item.title == 'Proctoring' && item.checked);
 
     this.questionFormTab2 = this.formBuilder.group({
       name: ['', Validators.required],
       timer: [],
-      retake:[],
-      passingCriteria:['', Validators.required],
+      retake: [],
+      passingCriteria: ['', Validators.required],
       videoAnalyzerReq: [false, Validators.required],
-      scoreAlgorithm:[, [Validators.required,Validators.min(0.1)]],
+      violoation_limit: [5, Validators.required],
+      scoreAlgorithm: [, [Validators.required, Validators.min(0.1)]],
       questions: this.formBuilder.array([]),
     });
     if (!this.editUrl) {
@@ -108,13 +111,13 @@ export class AddExamQuestionsComponent implements OnInit, OnDestroy{
       }
     } else {
       this.getData();
-          this.getTimer()
-    this.getRetakes()
+      this.getTimer()
+      this.getRetakes()
 
     }
   }
 
-  ngOnInit(): void { 
+  ngOnInit(): void {
     this.getAllPassingCriteria();
     this.getAllscoreAlgo();
     this.getAllTimesAlgo();
@@ -126,15 +129,15 @@ export class AddExamQuestionsComponent implements OnInit, OnDestroy{
       this.draftId = this.commonService.generate4DigitId();
     }
     this.loadData()
-   }
-   startAutoSave() {
+  }
+  startAutoSave() {
     setTimeout(() => {
       if (!this.draftSubscription) {
         this.draftSubscription = timer(0, 30000).subscribe(() => {
           this.saveDraft();
         });
       }
-    }, 30000); 
+    }, 30000);
   }
   closeDialog(): void {
     if (this.dialogRef) {
@@ -147,79 +150,81 @@ export class AddExamQuestionsComponent implements OnInit, OnDestroy{
       this.draftSubscription = null;
     }
   }
-saveDraft(data?: string) {
-  const formValues = this.questionFormTab2.value;
+  saveDraft(data?: string) {
+    const formValues = this.questionFormTab2.value;
     const isFormEmpty = !formValues.name &&
-    !formValues.timer &&
-    !formValues.retake &&
-    !formValues.passingCriteria &&
-    !formValues.scoreAlgorithm
-    
-                  if (isFormEmpty && data) {
-                        // If the form is empty, do not make the API call
-                        Swal.fire({
-                          title: 'Warning',
-                          text: 'Please fill in at least one field to save as draft.',
-                          icon: 'warning',
-                        });
-                        return; // Exit the function early
-                      }
+      !formValues.timer &&
+      !formValues.retake &&
+      !formValues.passingCriteria &&
+      !formValues.scoreAlgorithm
 
-  if (!isFormEmpty) {
-  let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-        const payload = {
-          draftId: this.draftId,
-          name: this.questionFormTab2.value.name,
-          timer: this.questionFormTab2.value.timer,
-          retake: this.questionFormTab2.value.retake,
-          passingCriteria:this.questionFormTab2.value.passingCriteria,
-          scoreAlgorithm: this.questionFormTab2.value.scoreAlgorithm,
-          videoAnalyzerReq: this.showVideoAnalyzer ? this.questionFormTab2.value.videoAnalyzerReq:false,
-          status: 'draft',
-          companyId:userId,
-          questions: this.questionFormTab2.value.questions.map((v: any) => ({
+    if (isFormEmpty && data) {
+      // If the form is empty, do not make the API call
+      Swal.fire({
+        title: 'Warning',
+        text: 'Please fill in at least one field to save as draft.',
+        icon: 'warning',
+      });
+      return; // Exit the function early
+    }
+
+    if (!isFormEmpty) {
+      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+      const payload = {
+        draftId: this.draftId,
+        name: this.questionFormTab2.value.name,
+        timer: this.questionFormTab2.value.timer,
+        retake: this.questionFormTab2.value.retake,
+        passingCriteria: this.questionFormTab2.value.passingCriteria,
+        scoreAlgorithm: this.questionFormTab2.value.scoreAlgorithm,
+        videoAnalyzerReq: this.showVideoAnalyzer ? this.questionFormTab2.value.videoAnalyzerReq : false,
+        violoation_limit: this.showVideoAnalyzer ? this.questionFormTab2.value.violoation_limit : null,
+        status: 'draft',
+        companyId: userId,
+        questions: this.questionFormTab2.value.questions.map((v: any) => ({
           options: v.options,
           questionText: v.questionText,
-      })),
+        })),
       };
       this.questionService.createAnswerQuestion(payload).subscribe(
-              (res: any) => {
-                if (data) {
-                  Swal.fire({
-                    title: 'Successful',
-                    text: 'Exam Questions drafted successfully',
-                    icon: 'success',
-                  });
-                  window.history.back();
-                }
-              },
-            );
-  }}
-   loadData(){
+        (res: any) => {
+          if (data) {
+            Swal.fire({
+              title: 'Successful',
+              text: 'Exam Questions drafted successfully',
+              icon: 'success',
+            });
+            window.history.back();
+          }
+        },
+      );
+    }
+  }
+  loadData() {
     this.studentId = localStorage.getItem('id')
     this.studentsService.getStudentById(this.studentId).subscribe(res => {
     })
   }
-  getAllPassingCriteria(){
-    this.SettingsService.getPassingCriteria().subscribe((response:any) =>{
-      this.dataSource=response.data.docs;
+  getAllPassingCriteria() {
+    this.SettingsService.getPassingCriteria().subscribe((response: any) => {
+      this.dataSource = response.data.docs;
     })
   }
-  getAllscoreAlgo(){
-    this.SettingsService.getScoreAlgorithm().subscribe((response:any) =>{
-      this.scoreAlgo=response.data.docs;
+  getAllscoreAlgo() {
+    this.SettingsService.getScoreAlgorithm().subscribe((response: any) => {
+      this.scoreAlgo = response.data.docs;
     })
   }
 
-  getAllTimesAlgo(){
-    this.SettingsService.getTimeAlgorithm().subscribe((response:any) =>{
-      this.timerValues=response.data.docs;
+  getAllTimesAlgo() {
+    this.SettingsService.getTimeAlgorithm().subscribe((response: any) => {
+      this.timerValues = response.data.docs;
     })
   }
-  getTimer() : any {
+  getTimer(): any {
     this.configurationSubscription = this.studentsService.configuration$.subscribe(configuration => {
       this.configuration = configuration;
-      const examTimerConfig = this.configuration.find((v:any)=>v.field === 'examTimer')
+      const examTimerConfig = this.configuration.find((v: any) => v.field === 'examTimer')
       if (examTimerConfig) {
         this.defaultTimer = examTimerConfig.value;
         this.questionFormTab2.patchValue({
@@ -229,10 +234,10 @@ saveDraft(data?: string) {
     });
   }
 
-  getRetakes() : any {
+  getRetakes(): any {
     this.configurationSubscription = this.studentsService.configuration$.subscribe(configuration => {
       this.configuration = configuration;
-      const config = this.configuration.find((v:any)=>v.field === 'examAssessment')
+      const config = this.configuration.find((v: any) => v.field === 'examAssessment')
       if (config) {
         this.defaultRetake = config.value;
         this.questionFormTab2.patchValue({
@@ -249,11 +254,12 @@ saveDraft(data?: string) {
           if (response && response.questions) {
             this.questionFormTab2.patchValue({
               name: response.name,
-              passingCriteria:String(response?.passingCriteria),
-              retake:String(response?.retake),
-              scoreAlgorithm:response?.scoreAlgorithm,
+              passingCriteria: String(response?.passingCriteria),
+              retake: String(response?.retake),
+              scoreAlgorithm: response?.scoreAlgorithm,
               videoAnalyzerReq: response?.videoAnalyzerReq,
-              timer:response?.timer
+              violoation_limit: response?.violoation_limit,
+              timer: response?.timer
             });
 
             const questionsArray = this.questionFormTab2.get(
@@ -404,15 +410,16 @@ saveDraft(data?: string) {
   save() {
     if (this.questionFormTab2.valid) {
       let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-            const payload = {
+      const payload = {
         name: this.questionFormTab2.value.name,
         timer: this.questionFormTab2.value.timer,
         retake: this.questionFormTab2.value.retake,
-        passingCriteria:this.questionFormTab2.value.passingCriteria,
+        passingCriteria: this.questionFormTab2.value.passingCriteria,
         scoreAlgorithm: this.questionFormTab2.value.scoreAlgorithm,
-        videoAnalyzerReq: this.showVideoAnalyzer ? this.questionFormTab2.value.videoAnalyzerReq:false,
-        status:this.dialogStatus?'approved':'open',
-        companyId:userId,
+        videoAnalyzerReq: this.showVideoAnalyzer ? this.questionFormTab2.value.videoAnalyzerReq : false,
+        violoation_limit: this.showVideoAnalyzer ? this.questionFormTab2.value.violoation_limit : null,
+        status: this.dialogStatus ? 'approved' : 'open',
+        companyId: userId,
         questions: this.questionFormTab2.value.questions.map((v: any) => ({
           options: v.options,
           questionText: v.questionText,
@@ -444,7 +451,7 @@ saveDraft(data?: string) {
           this.openPreviewModal(payload);
         }
       });
-    }else{
+    } else {
       Swal.fire('Please fill all mandatory fields', 'error');
     }
   }
@@ -455,15 +462,15 @@ saveDraft(data?: string) {
       data: payload,
     });
     dialogRef.afterClosed().subscribe(() => {
-      if(!isEdit){
+      if (!isEdit) {
         this.createAssesment(payload);
-      }else{
+      } else {
         this.updateAssessmentAction(payload);
       }
     });
   }
 
-  updateAssessmentAction(payload:any){
+  updateAssessmentAction(payload: any) {
     this.questionService.updateAnswerQuestions(payload).subscribe(
       (res: any) => {
         Swal.fire({
@@ -490,9 +497,9 @@ saveDraft(data?: string) {
           icon: 'success',
         });
         if (this.dialogRef) {
-          this.dialogRef.close();  
+          this.dialogRef.close();
         }
-        if(!this.dialogStatus){
+        if (!this.dialogStatus) {
           window.history.back();
         }
       },
@@ -510,7 +517,7 @@ saveDraft(data?: string) {
         this.save();
       }
     } else {
-      this.questionFormTab2.markAllAsTouched(); 
+      this.questionFormTab2.markAllAsTouched();
     }
   }
 
@@ -525,8 +532,10 @@ saveDraft(data?: string) {
         return;
       }
       const payload = { ...formData, id: this.questionId };
-      if(!this.showVideoAnalyzer)
-        payload.videoAnalyzerReq = false; 
+      if (!this.showVideoAnalyzer) {
+        payload.videoAnalyzerReq = false;
+        payload.violoation_limit = null;
+      }
       Swal.fire({
         title: 'Are you sure?',
         text: 'Do you want to update!',
@@ -536,7 +545,7 @@ saveDraft(data?: string) {
         cancelButtonColor: '#d33',
       }).then((result) => {
         if (result.isConfirmed) {
-            this.openPreviewModal(payload, true)
+          this.openPreviewModal(payload, true)
         }
       });
     }
@@ -544,9 +553,9 @@ saveDraft(data?: string) {
 
   approve() {
     const payload = {
-      status : 'approved',
+      status: 'approved',
       id: this.questionId,
-    } 
+    }
     this.questionService.updateExamQuestions(payload).subscribe(
       (res: any) => {
         Swal.fire({
@@ -580,7 +589,7 @@ saveDraft(data?: string) {
       const workbook: XLSX.WorkBook = XLSX.read(data, { type: 'binary' });
 
       const worksheet: XLSX.WorkSheet = workbook.Sheets[workbook.SheetNames[0]];
-      
+
       const excelData: any[] = XLSX.utils.sheet_to_json(worksheet, { raw: true });
       this.processExcelData(excelData);
     };
@@ -604,7 +613,7 @@ saveDraft(data?: string) {
       question.patchValue({
         questionText: row["Question Text"],
       });
-  
+
       const optionsArray = question.get('options') as FormArray;
       while (optionsArray.length !== 0) {
         optionsArray.removeAt(0);
@@ -624,7 +633,7 @@ saveDraft(data?: string) {
           break;
         }
       }
-  
+
       this.questions.push(question);
     });
   }

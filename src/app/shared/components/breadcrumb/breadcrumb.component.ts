@@ -54,7 +54,11 @@ export class BreadcrumbComponent {
     this._location.back();
   }
 
-
+  onBreadcrumbClick(index: number) {
+    if (index === 0) {
+      this.backClicked();
+    }
+  }
   ngAfterViewInit(): void {
     const storedItems = localStorage.getItem('breadcrumbs');
     const storedActiveItem = localStorage.getItem('activeBreadcrumb');

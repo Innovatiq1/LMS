@@ -17,6 +17,7 @@ import jsPDF from 'jspdf';
 import DomToImage from 'dom-to-image';
 import { firstValueFrom } from 'rxjs';
 import { DOCUMENT, Location } from '@angular/common';
+import { TermsDialogComponent } from '../terms-dialog/terms-dialog.component';
 
 @Component({
   selector: 'app-exam-test-list',
@@ -35,6 +36,7 @@ export class ExamTestListComponent {
     'Course Title',
     'Exam Name',
     'Exam',
+    'Request',
     'Download',
   ];
   dataSource: any;
@@ -113,55 +115,79 @@ export class ExamTestListComponent {
     console.log(data);
     const isApprovalRequired = data?.courseId?.approval == 'yes' && !data.studentClassId?.length;
     const studentId = localStorage.getItem('id') || '';
-    if(isApprovalRequired){
+    if (isApprovalRequired) {
       const studentClasses = data.studentClassId || [];
-        if (
-          studentClasses.length &&
-          studentClasses.some((v: any) => v.status == 'approved')
-        ) {
-          const courseDetails = data.courseId;
-          this.studentClassId = studentClasses[0]?._id;
-          const examAssessment = data.courseId.exam_assessment._id;
-          this.redirectToExam(courseDetails, studentId, null);
-        } else {
-          this.paidDirectExamFlow(data);
-        }
-    }else{
-      let alertMessage = 'You want to take exam ?'
-      if(data.examAssessmentId?.videoAnalyzerReq){
-        alertMessage = 'Please ensure to allow your camera and microphone while taking the exam.';
-      }
-    Swal.fire({
-      title: 'Are you sure?',
-      text: alertMessage,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, Start Exam!',
-      cancelButtonText: 'Cancel',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.triggerStartExam(data);
+      if (
+        studentClasses.length &&
+        studentClasses.some((v: any) => v.status == 'approved')
+      ) {
+        const courseDetails = data.courseId;
+        this.studentClassId = studentClasses[0]?._id;
+        const examAssessment = data.courseId.exam_assessment._id;
+        this.redirectToExam(courseDetails, studentId, null);
       } else {
-        console.log('Exam start was canceled by the user.');
+        this.paidDirectExamFlow(data);
       }
-    });
-  }
+    } else {
+      let alertMessage = 'You want to take exam ?'
+      if (data.examAssessmentId?.videoAnalyzerReq) {
+        this.openTermsDialog(data);
+      } else {
+        Swal.fire({
+          title: 'Are you sure?',
+          text: alertMessage,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, Start Exam!',
+          cancelButtonText: 'Cancel',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.triggerStartExam(data);
+          } else {
+            console.log('Exam start was canceled by the user.');
+          }
+        });
+      }
+    }
   }
 
-  triggerStartExam(data:any){
+  openTermsDialog(data: any) {
+    const dialogRef = this.dialog.open(TermsDialogComponent, {
+      width: '600px',
+      disableClose: true
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'Please ensure to allow your camera and microphone while taking the exam.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, Start Exam!',
+        cancelButtonText: 'Cancel',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.triggerStartExam(data);
+        } else {
+          console.log('Exam start was canceled by the user.');
+        }
+      });
+    });
+  }
+
+  triggerStartExam(data: any) {
     const studentId = localStorage.getItem('id') || '';
     const studentClasses = data.studentClassId || [];
-        if (
-          studentClasses.length &&
-          studentClasses.some((v: any) => v.status == 'approved')
-        ) {
-          const courseDetails = data.courseId;
-          this.studentClassId = studentClasses[0]?._id;
-          const examAssessment = data.courseId.exam_assessment._id;
-          this.redirectToExam(courseDetails, studentId, null);
-        } else {
-          this.paidDirectExamFlow(data);
-        }
+    if (
+      studentClasses.length &&
+      studentClasses.some((v: any) => v.status == 'approved')
+    ) {
+      const courseDetails = data.courseId;
+      this.studentClassId = studentClasses[0]?._id;
+      const examAssessment = data.courseId.exam_assessment._id;
+      this.redirectToExam(courseDetails, studentId, null);
+    } else {
+      this.paidDirectExamFlow(data);
+    }
   }
 
   getLabel(data: any): string {
@@ -174,16 +200,27 @@ export class ExamTestListComponent {
     );
 
     if ((course.feeType == 'free' && course.approval == 'no') || isApproved) {
-      return data.hasAlerts ? 'Blocked': 'Take Exam';
+      return data.hasAlerts ? 'Blocked' : 'Take Exam';
     }
     if (course.feeType == 'free' && course.approval == 'yes' && isRegistered) {
       return 'Approval Pending';
     }
     if (course.feeType == 'free' && course.approval == 'yes' && !isRegistered) {
-      return data.hasAlerts ? 'Blocked':  'Take Exam';
+      return data.hasAlerts ? 'Blocked' : 'Take Exam';
     }
 
     return data.studentClassId?.length ? 'Approval Pending' : 'Pay';
+  }
+
+  getVideoAnalyzerLabel(data: any): string {
+    const hasAlerts = data.hasAlerts;
+    const hasRetakeRequest = data.hasRetakeRequest;
+    const latestAnalyzer = data.latestAnalyzer;
+    const labels:any = {
+      'requested':'Requested',
+      'reqRejected': 'Rejected',
+    }
+    return hasAlerts ? latestAnalyzer.status == 'connected' ? 'Blocked': labels[latestAnalyzer.status]: 'Take Exam';
   }
 
   paidDirectExamFlow(data: any) {
@@ -523,7 +560,7 @@ export class ExamTestListComponent {
               (data: any) => {
                 this.invoiceUrl = data.inputUrl;
               },
-              (err) => {}
+              (err) => { }
             );
           });
           this.isInvoice = false;
@@ -643,5 +680,28 @@ export class ExamTestListComponent {
         );
       }
     });
+  }
+
+  requestRetake(row: any) {
+    if (!row.hasRetakeRequest && row.latestAnalyzer) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'Do you want to Request Enable this exam!',
+        icon: 'warning',
+        confirmButtonText: 'Yes',
+        showCancelButton: true,
+        cancelButtonColor: '#d33',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const _id = row.latestAnalyzer._id;
+          this.assessmentService
+            .updateAnalyzer(_id, {
+              status: 'requested',
+            }).subscribe((res) => {
+              this.getEnabledExams();
+            });
+        }
+      });
+    }
   }
 }

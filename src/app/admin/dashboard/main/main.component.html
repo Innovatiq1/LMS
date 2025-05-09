@@ -252,7 +252,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngIf="classesList.length === 0">
+                      <tr *ngIf="classesList?.length == 0">
                         <td colspan="5" class="text-center py-3 no-data-text">No Data Found</td>
                       </tr>
                       <tr *ngFor="let class of classesList " style="cursor: pointer;"
@@ -660,6 +660,7 @@
                 <ng-template #noData>
                   <div class="no-data-text">No data found</div>
                 </ng-template>
+ 
               </ng-scrollbar>
             </div>
             

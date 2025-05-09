@@ -148,6 +148,172 @@ svg {
   }
   
   
+  /* Fix card layout on smaller screens */
+@media screen and (max-width: 768px) {
+  .responsive_table {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .straight-line-table {
+    display: block;
+    min-width: 600px; /* Ensure table does not shrink too much */
+    overflow-x: scroll;
+  }
+
+  .log-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 8px 0;
+  }
+
+  .log-item span {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  /* Responsive pagination alignment */
+  .mat-paginator {
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+}
+
+/* Fix action button size for small screens */
+@media screen and (max-width: 600px) {
+  .tbl-action-btn {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+/* Fix SVG icons in responsive mode */
+svg {
+    position: absolute;
+    fill: #000;
+    background-color: #d3cdcd;
+    margin-top: -10px;
+    margin-left: -10px;
+    border-radius: 10px;
+    padding: 3px;
+}
+
+/* Adjust modal menu styling */
+::ng-deep .mat-mdc-menu-content {
+    padding: 8px 15px;
+    border-radius: 10px;
+}
+
+::ng-deep .mat-mdc-menu-panel {
+    --mat-menu-container-shape: 12px;
+}
+
+/* Standardized log-item display */
+.log-item span {
+    margin-right: 10px;
+    white-space: nowrap;
+}
+
+.log-item .name {
+    font-weight: 700;
+    font-size: 15px;
+    color: deepskyblue;
+}
+
+.log-item .user-type {
+    background-color: #e0e0e0;
+    padding: 2px 10px;
+    border-radius: 3px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+  @media screen and (max-width: 400px) {
+    .responsive_table {
+        overflow-x: auto;
+        width: 100%;
+    }
+
+    .log-item {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+        width: 100%;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        white-space: normal; /* Ensures proper text wrapping */
+    }
+
+   .log-item span {
+    display: block;
+    width: 100%;
+    font-size: 14px;
+    line-height: 1.4;
+    overflow-wrap: normal;
+    word-break: normal;
+    white-space: normal;
+    }
+
+    .log-item {
+        flex-wrap: wrap; 
+    }
+
+
+    .log-item .name {
+        font-weight: 700;
+        font-size: 15px;
+        color: deepskyblue;
+        display: block;
+    }
+
+    .log-item .user-type {
+        background-color: #f3f3f3;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-weight: bold;
+        display: inline-block;
+    }
+
+    .log-item .login-time,
+    .log-item .logout-time {
+        font-size: 14px;
+        color: #333;
+        display: block;
+    }
+
+    .log-item .and-separator {
+        display: block;
+        font-weight: bold;
+        margin-top: 4px;
+    }
+
+    .block-header {
+        margin-bottom: 10px;
+    }
+
   
-  
+    .straight-line-table {
+        width: 100%;
+        overflow-x: auto;
+        display: block;
+    }
+
+
+    .mat-paginator {
+        width: 100%;
+        text-align: center;
+    }
+
+    .text_bold {
+        font-weight: bold;
+        display: inline-block;
+        margin-right: 5px;
+    }
+}
+
   

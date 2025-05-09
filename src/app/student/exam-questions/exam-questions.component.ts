@@ -85,8 +85,8 @@ export class ExamQuestionsComponent {
   showOverlay: boolean = false;
   checkFaceMatch: boolean = false;
   faceMatchCount: number = 0;
-  faceMisMatchCount: number =0;
-  overLayMsg:string = 'Please wait...';
+  faceMisMatchCount: number = 0;
+  overLayMsg: string = 'Please wait...';
 
 
   @ViewChild('proctoringDiv', { static: true }) proctoringDiv!: ElementRef;
@@ -98,7 +98,7 @@ export class ExamQuestionsComponent {
   private visibilityChangeHandler!: () => void;
   private keyPressHandler!: (event: KeyboardEvent) => void;
   violationCount: number = 0;
-  maxViolations: number = 4;
+  maxViolations: number = 5;
   totalTimes: number = 60;
   timerSubscription!: Subscription;
 
@@ -130,26 +130,26 @@ export class ExamQuestionsComponent {
     this.showViolationAlert();
   }
 
-  handleLookingAwayDetected():void {
+  handleLookingAwayDetected(): void {
     Swal.fire('Looking Away Detected', 'Action has been recorded', 'error');
     this.sendWarning('Looking Away Detected', this.analyzerId);
     this.showViolationAlert();
   }
 
-  handleHumanVoiceDetect():void {
+  handleHumanVoiceDetect(): void {
     Swal.fire('Human voice Detected', 'Action has been recorded', 'error');
     this.sendWarning('Human voice Detected', this.analyzerId);
     this.showViolationAlert();
   }
 
-  handleMessage(msg:string):void {
+  handleMessage(msg: string): void {
     this.overLayMsg = msg;
   }
 
   handleFaceMatchDetected(isMatch: boolean): void {
-    if(isMatch)
+    if (isMatch)
       this.faceMatchCount++;
-    else{
+    else {
       this.faceMisMatchCount++;
       this.countingFaceMisMatch();
     }
@@ -166,43 +166,46 @@ export class ExamQuestionsComponent {
     }
   }
 
-  countingFaceMisMatch(){
-    if(this.faceMatchCount ==0 && this.faceMisMatchCount == 5){
-      Swal.fire('Face Not Match', 'The Exam has been canceled due to Face Not Matched', 'error').then(res=>{
+  countingFaceMisMatch() {
+    if (this.faceMatchCount == 0 && this.faceMisMatchCount == 5) {
+      Swal.fire('Face Not Match', 'The Exam has been canceled due to Face Not Matched', 'error').then(res => {
         this.location.back()
       });
-    }else if(this.faceMatchCount<5) {
+    } else if (this.faceMatchCount < 5) {
       Swal.fire('Face Not Match', 'Action has been recorded', 'error')
     }
   }
 
-  handleFaceMatchError():void {
-    Swal.fire('Face Match Error', 'Please Upload the Profile Picture', 'error').then(res=>{
+  handleFaceMatchError(): void {
+    Swal.fire('Face Match Error', 'Please Upload the Profile Picture', 'error').then(res => {
       this.location.back()
     });
   }
 
   startProtoring() {
-    if(!this.analyzerId){
-    const studentId = localStorage.getItem('id') || '';
-    let companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    if (!this.analyzerId) {
+      const studentId = localStorage.getItem('id') || '';
+      let companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
 
-    let payload:any = {
-      studentId,
-      status: 'connected',
-      examAssessmentId: this.examAssessmentId,
-      companyId,
-      courseId:this.courseId
-    };
-    this.assessmentService.createAnalyzerId(payload).subscribe((res) => {
-      if (res?.response) {
-        this.analyzerId = res?.response.id;
-      }
-    });
-  }
+      let payload: any = {
+        studentId,
+        status: 'connected',
+        examAssessmentId: this.examAssessmentId,
+        companyId,
+        courseId: this.courseId
+      };
+      this.assessmentService.createAnalyzerId(payload).subscribe((res) => {
+        if (res?.response) {
+          this.analyzerId = res?.response.id;
+        }
+      });
+    }
   }
 
   sendWarning(message: string, analyzerId: string) {
+    if (this.violationCount > this.maxViolations) {
+      return
+    }
     const payload = {
       warning_type: message,
     };
@@ -285,6 +288,8 @@ export class ExamQuestionsComponent {
       this.courseDetails = response;
       const videoAnalyzerReq = response?.exam_assessment?.videoAnalyzerReq;
       if (videoAnalyzerReq) {
+        const maxViolations = response?.exam_assessment?.violoation_limit;
+        this.maxViolations = maxViolations || 5;
         this.isEnableProtector = true;
         this.showOverlay = true;
         this.overLayMsg = 'Opening Camera...'
@@ -854,7 +859,7 @@ export class ExamQuestionsComponent {
   handleKeyPress(event: KeyboardEvent): void {
     if ((event.altKey || event.ctrlKey) && this.isEnableProtector) {
       Swal.fire(`${event.altKey ? 'Alt' : 'Ctrl'} Key Press Detected`, 'Action has been Recorded', 'error');
-      this.sendWarning( `${event.altKey ? 'Alt' : 'Ctrl'} Key Press Detected`, this.analyzerId);
+      this.sendWarning(`${event.altKey ? 'Alt' : 'Ctrl'} Key Press Detected`, this.analyzerId);
       this.showViolationAlert();
     }
   }
@@ -921,12 +926,18 @@ export class ExamQuestionsComponent {
 
   showViolationAlert() {
     this.violationCount++;
-    console.log('Violation count:',this.violationCount);
-    if (this.violationCount > this.maxViolations) {
-      Swal.fire('Max violation reached', 'The Exam will be canceled and you will be terminated', 'error').then(res=>{
+    console.log('Violation count:', this.violationCount);
+    if (this.violationCount >= this.maxViolations) {
+      Swal.fire('Max violation reached', 'The Exam will be canceled and you will be terminated', 'error').then(res => {
         this.location.back()
       });
     }
+  }
+
+  handleStopExam() {
+    Swal.fire('Live Person Detection failed', 'The Exam will be canceled due to no face movement detected', 'error').then(res => {
+      this.location.back()
+    });
   }
 
   cancelExam() {

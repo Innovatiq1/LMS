@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import {
+  AbstractControl,
   UntypedFormBuilder,
   UntypedFormGroup,
+  ValidationErrors,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -89,7 +92,7 @@ export class AddStudentComponent {
       rollNo: ['', [Validators.required, ...this.utils.validators.noLeadingSpace,...this.utils.validators.roll_no]],
       gender: ['', [Validators.required]],
       mobile: ['', [Validators.required,...this.utils.validators.mobile]],
-      password: [''],
+      password: ['',[Validators.required]],
       department: [''],
       address: [''],
       email: [
@@ -98,21 +101,29 @@ export class AddStudentComponent {
       ],
       parentsName: [''],
       parentsPhone: [''],
-      dob: ['', [Validators.required,...this.utils.validators.dob]],
+      // dob: ['', [Validators.required,...this.utils.validators.dob]],
+      // dob: ['', [Validators.required, this.minAgeValidator(18)]],
+      above18: [false],
+      dob: ['', [Validators.required, this.dynamicAgeValidator()]],
       joiningDate: ['', [Validators.required]],
       avatar: [''],
       blood_group: [''],
-      conformPassword: ['', []],
+      conformPassword: ['', [Validators.required]],
       attemptBlock: ['', []],
       qualifications: ['', [Validators.required]],
       domainAreaOfPractice: ['', [Validators.required]],
-      idType: ['', [Validators.required]],
-      idNumber: ['', [Validators.required]],
-      code: ['', [Validators.required]],
+      idType: ['', []],
+      // idNumber: ['', [Validators.required]],
+      idNumber: ['', []],
+      code: ['', []],
       linkedInURL: ['',],
       experience: ['',],
 
     },{
+      validators: this.passwordMatchValidator,
+    });
+    this.stdForm.get('above18')?.valueChanges.subscribe(() => {
+      this.stdForm.get('dob')?.updateValueAndValidity();
     });
   }
 
@@ -122,8 +133,31 @@ export class AddStudentComponent {
   //   this.getForms();
 
   // }
-
-
+  // passwordMatchValidator(formGroup: UntypedFormGroup) {
+  //   const password = formGroup.get('password')?.value;
+  //   const confirmPassword = formGroup.get('conformPassword')?.value;
+  //   console.log("password",password,"confirmPassword",confirmPassword)
+  //   console.log(password === confirmPassword ? null : { mismatch: true })
+  //   return password === confirmPassword ? null : { mismatch: true };
+  // }
+  passwordMatchValidator(formGroup: UntypedFormGroup) {
+    const passwordControl = formGroup.get('password');
+    const confirmPasswordControl = formGroup.get('conformPassword');
+  
+    if (!passwordControl || !confirmPasswordControl) return null;
+    if (confirmPasswordControl.pristine) {
+      return null;
+    }
+  
+    if (passwordControl.value !== confirmPasswordControl.value) {
+      confirmPasswordControl.setErrors({ mismatch: true });
+      return { mismatch: true };
+    } else {
+      confirmPasswordControl.setErrors(null);
+      return null;
+    }
+  }
+  
   ngOnInit() {
     this.breadscrums = [
       {
@@ -139,6 +173,56 @@ export class AddStudentComponent {
     this.commonRoles = AppConstants;
     this.getDepartment();
     this.getForms();
+  }
+
+  // minAgeValidator(minAge: number) {
+  //   return (control: AbstractControl): ValidationErrors | null => {
+  //     if (!control.value) {
+  //       return null; 
+  //     }
+  //     const birthDate = new Date(control.value);
+  //     const today = new Date();
+  //     const age = today.getFullYear() - birthDate.getFullYear();
+
+  //     if (age < minAge || (age === minAge && today < new Date(birthDate.setFullYear(birthDate.getFullYear() + minAge)))) {
+  //       return { minimumAge: true };
+  //     }
+  //     return null;
+  //   };
+  // }
+  dynamicAgeValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value) {
+        return null;
+      }
+
+      const birthDate = new Date(control.value);
+      const today = new Date();
+      let age = today.getFullYear() - birthDate.getFullYear();
+
+      if (
+        today < new Date(birthDate.setFullYear(birthDate.getFullYear() + age))
+      ) {
+        age--; 
+      }
+
+      const isAbove18Checked = this.stdForm?.get('above18')?.value;
+
+      if (isAbove18Checked) {
+        if (age < 18) {
+          return { ageTooLow18: true };
+        }
+      } else {
+        if (age < 5) {
+          return { ageTooLow: true };
+        }
+        if (age > 18) {
+          return { ageTooHigh: true };
+        }
+      }
+
+      return null;
+    };
   }
   
   getForms(): void {
@@ -476,24 +560,24 @@ getDepartment(){
     return minDate.toISOString().split('T')[0]; // Format YYYY-MM-DD
   }
 
-  passwordMatchValidator(group: UntypedFormGroup): { [key: string]: boolean } | null {
-  const password = group.get('password')?.value;
-  const confirmPassword = group.get('conformPassword')?.value;
-  return password === confirmPassword ? null : { mismatch: true };
-}
+//   passwordMatchValidator(group: UntypedFormGroup): { [key: string]: boolean } | null {
+//   const password = group.get('password')?.value;
+//   const confirmPassword = group.get('conformPassword')?.value;
+//   return password === confirmPassword ? null : { mismatch: true };
+// }
 
 
-  minAgeValidator(minAge: number) {
-    return (control: any) => {
-      if (!control.value) {
-        return null;
-      }
-      const birthDate = new Date(control.value);
-      const today = new Date();
-      const age = today.getFullYear() - birthDate.getFullYear();
-      const hasBirthdayPassed = (today.getMonth() > birthDate.getMonth()) ||
-                                (today.getMonth() === birthDate.getMonth() && today.getDate() >= birthDate.getDate());
-      return (age > minAge || (age === minAge && hasBirthdayPassed)) ? null : { minAge: true };
-    };
-  }
+  // minAgeValidator(minAge: number) {
+  //   return (control: any) => {
+  //     if (!control.value) {
+  //       return null;
+  //     }
+  //     const birthDate = new Date(control.value);
+  //     const today = new Date();
+  //     const age = today.getFullYear() - birthDate.getFullYear();
+  //     const hasBirthdayPassed = (today.getMonth() > birthDate.getMonth()) ||
+  //                               (today.getMonth() === birthDate.getMonth() && today.getDate() >= birthDate.getDate());
+  //     return (age > minAge || (age === minAge && hasBirthdayPassed)) ? null : { minAge: true };
+  //   };
+  // }
 }

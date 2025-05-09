@@ -1,4 +1,6 @@
-
+<div *ngIf="isLoading" class="spinner-container">
+  <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
+</div>
 <section *ngIf="paid || program" class="content">
   <div class="content-block">
     <div class="block-header" *ngFor="let breadscrum of breadscrums">
@@ -15,7 +17,9 @@
           <div class="m-b-20">
             <div class="contact-grid">
               <div class="profile-header bg-dark">
-                <div class="user-name">{{ classDetails?.courseId?.title }}</div>
+                <div class="user-name" title="{{ classDetails?.courseId?.title }}">
+                  {{ classDetails?.courseId?.title }}
+                </div>
                 <div class="name-center">
                   {{ classDetails?.courseId?.courseCode }}
                 </div>
@@ -120,8 +124,10 @@
                 <video
                   #videoPlayer
                   width="100%"
+                  controlsList="nodownload"
                   (timeupdate)="onTimeUpdate($event)"
                   controls
+                  controlsList="nodownload"
                   (pause)="destroyModal()"
                   (play)="onPlay()"
                   style="border-radius: 12px; box-shadow: rgb(23, 23, 24)"
@@ -242,7 +248,7 @@
                     [ngClass]="{ 'show active': defaultTab === 'home' }"
                   >
                     <h5 class="py-2" *ngIf="isDocument">
-                      Course Completed :
+                      Course Completed:
                       <span
                         [ngClass]="{
                           'red-text': playBackTime < 50,

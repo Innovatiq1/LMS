@@ -47,31 +47,31 @@
                      </mat-error>
                   </mat-form-field>
                 </div>
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                  <label>ID Number<span class="mandatory">&nbsp;*</span></label>
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('ID Number')">
+                  <label>ID Number</label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <input matInput formControlName="idNumber">
-                    <mat-error *ngIf="stdForm.get('idNumber')?.hasError('required')">
+                    <!-- <mat-error *ngIf="stdForm.get('idNumber')?.hasError('required')">
                       Enter ID Number 
-                     </mat-error>
+                     </mat-error> -->
                   </mat-form-field>
                 </div> 
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                  <label>ID Type<span class="mandatory">&nbsp;*</span></label>
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('ID Number')">
+                  <label>ID Type</label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <input matInput formControlName="idType">
-                    <mat-error *ngIf="stdForm.get('idType')?.hasError('required')">
+                    <!-- <mat-error *ngIf="stdForm.get('idType')?.hasError('required')">
                       Enter ID Type 
-                     </mat-error>
+                     </mat-error> -->
                   </mat-form-field>
                 </div> 
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                  <label>ID Code<span class="mandatory">&nbsp;*</span></label>
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2" *ngIf="labelStatusCheck('ID Number')">
+                  <label>ID Code</label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <input matInput formControlName="code">
-                    <mat-error *ngIf="stdForm.get('code')?.hasError('required')">
+                    <!-- <mat-error *ngIf="stdForm.get('code')?.hasError('required')">
                       Enter ID Code 
-                     </mat-error>
+                     </mat-error> -->
                   </mat-form-field>
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
@@ -127,7 +127,7 @@
                   </mat-form-field>
                 </div>
                 
-               <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+               <!-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                 <label>Password <span class="mandatory">&nbsp;*</span></label>
                 <mat-form-field class="example-full-width mb-3" appearance="outline">
                   <input matInput formControlName="password" type="password" required />
@@ -150,7 +150,31 @@
                     Password and Re-Enter Password must match
                   </mat-error>
                 </mat-form-field>
+              </div> -->
+
+              <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                <label>Password <span class="mandatory">*</span></label>
+                <mat-form-field class="example-full-width mb-3" appearance="outline">
+                  <input matInput formControlName="password" type="password" required />
+                  <mat-error *ngIf="stdForm.get('password')?.hasError('required')">
+                    Enter Password
+                  </mat-error>
+                </mat-form-field>
               </div>
+              
+              <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                <label>Re-Enter Password <span class="mandatory">*</span></label>
+                <mat-form-field class="example-full-width mb-3" appearance="outline">
+                  <input matInput formControlName="conformPassword" type="password" required />
+                  <mat-error *ngIf="stdForm.get('conformPassword')?.hasError('required')">
+                    Re-Enter Password is required
+                  </mat-error>
+                  <mat-error *ngIf="stdForm.get('conformPassword')?.hasError('mismatch')">
+                    Password & Re-enter Password should match
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              
 
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <label>Mobile<span class="mandatory">&nbsp;*</span></label>
@@ -196,24 +220,44 @@
                   </mat-form-field>
                 </div>
               
-               <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                  <label>Date of Birth<span class="mandatory">&nbsp;*</span></label>
+               
+                <!-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                  <label>Date of Birth <span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
-                    <input 
-                      matInput 
-                      [matDatepicker]="picker" 
-                      formControlName="dob" 
-                      [max]="getMinDOB()" 
-                      />
-
+                    <input matInput [matDatepicker]="picker" formControlName="dob" />
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
-
                     <mat-error *ngIf="stdForm.get('dob')?.hasError('required')">
-                      Date of Birth is required.
+                      Select Date
                     </mat-error>
-                    <mat-error *ngIf="stdForm.get('dob')?.hasError('minAge')">
-                      You must be at least 20 years old.
+                    <mat-error *ngIf="stdForm.get('dob')?.hasError('minimumAge')">
+                      Minimum age should be 18 years
+                    </mat-error>
+                  </mat-form-field>
+                </div> -->
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                  <mat-checkbox formControlName="above18">Above 18 years</mat-checkbox>
+                </div>
+            
+                <!-- Date of Birth Field -->
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                  <label>Date of Birth <span class="mandatory">&nbsp;*</span></label>
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <input matInput [matDatepicker]="picker" formControlName="dob" />
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+            
+                    <mat-error *ngIf="stdForm.get('dob')?.hasError('required')">
+                      Select Date
+                    </mat-error>
+                    <mat-error *ngIf="stdForm.get('dob')?.hasError('ageTooLow')">
+                      Age should be more than 5 years
+                    </mat-error>
+                    <mat-error *ngIf="stdForm.get('dob')?.hasError('ageTooLow18')">
+                      Age should be more than 18 years
+                    </mat-error>
+                    <mat-error *ngIf="stdForm.get('dob')?.hasError('ageTooHigh')">
+                      Age should not be more than 18 years
                     </mat-error>
                   </mat-form-field>
                 </div>
