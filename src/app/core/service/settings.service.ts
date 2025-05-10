@@ -351,6 +351,11 @@ export class SettingsService {
     return this._Http.get<ApiResponse>(apiUrl, {
     });
   }
+
+  getTeamsKeysByCompanyId(companyId: string): Observable<ApiResponse> {
+    const apiUrl = `${this.prefix}admin/teams/getkeys?companyId=${companyId}`;
+    return this._Http.get<ApiResponse>(apiUrl);
+  }
   saveKey(data: any) {
     const apiUrl = `${this.prefix}admin/social-keys`;
     return this._Http
@@ -371,6 +376,13 @@ export class SettingsService {
       .pipe(map((response) => {response}));
   }
 
+  
+ createTeamsKey(data: any) {
+    const apiUrl = `${this.prefix}admin/teams/storeCredentials`;
+    return this._Http
+      .post<ApiResponse>(apiUrl, data)
+      .pipe(map((response) => {response}));
+  }
   createZoomKey(data:any) {
     const apiUrl = `${this.prefix}admin/zoom-keys`;
     return this._Http

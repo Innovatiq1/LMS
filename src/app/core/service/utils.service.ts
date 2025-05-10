@@ -476,6 +476,12 @@ export class UtilsService {
     'clientId':[
       {type:'required', message: 'Enter Client ID'}
     ],
+    'objectId':[
+      {type:'required', message: 'Enter Object ID'}
+    ],
+    'tenantId':[
+      {type:'required', message: 'Enter Tenant ID'}
+    ],
     'clientSecret':[
       {type:'required', message: 'Enter Client Secret'}
     ],

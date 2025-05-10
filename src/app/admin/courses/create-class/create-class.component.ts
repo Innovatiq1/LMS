@@ -1,5 +1,10 @@
 import { map } from 'rxjs';
-import { ChangeDetectorRef, Component, HostListener, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  HostListener,
+  ViewChild,
+} from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -8,7 +13,17 @@ import {
   UntypedFormControl,
   Validators,
 } from '@angular/forms';
-import { ClassModel, CourseTitleModel, DataSourceModel, InstructorList, LabListModel, Session, Student, StudentApproval, StudentPaginationModel } from 'app/admin/schedule-class/class.model';
+import {
+  ClassModel,
+  CourseTitleModel,
+  DataSourceModel,
+  InstructorList,
+  LabListModel,
+  Session,
+  Student,
+  StudentApproval,
+  StudentPaginationModel,
+} from 'app/admin/schedule-class/class.model';
 import { ClassService } from 'app/admin/schedule-class/class.service';
 import { forkJoin } from 'rxjs';
 import * as moment from 'moment';
@@ -30,6 +45,8 @@ import { FormService } from '@core/service/customization.service';
 import { AppConstants } from '@shared/constants/app.constants';
 import { environment } from 'environments/environment';
 
+import { HttpClient } from '@angular/common/http';
+
 @Component({
   selector: 'app-create-class',
   templateUrl: './create-class.component.html',
@@ -41,8 +58,8 @@ export class CreateClassComponent {
   @ViewChild('allSelected') private allSelected!: MatOption;
   commonRoles: any;
   breadscrums: any;
-  trainerId:any;
-  idNumber:any;
+  trainerId: any;
+  idNumber: any;
   @HostListener('document:keypress', ['$event'])
   keyPressNumbers(event: KeyboardEvent) {
     const charCode = event.which ? event.which : event.keyCode;
@@ -64,11 +81,10 @@ export class CreateClassComponent {
   user_id: any;
   courseCode: any;
   courseCode1: any;
-  expiryDate:any;
+  expiryDate: any;
   classId!: string;
   forms!: any[];
   title: boolean = false;
-
 
   startDate = new Date(1990, 0, 1);
   date = new UntypedFormControl(new Date());
@@ -95,15 +111,16 @@ export class CreateClassComponent {
   configurationSubscription!: Subscription;
   defaultCurrency: string = '';
   userGroups!: any[];
-  courseTPRunId!:any;
-  courseReferenceNumber!:any;  instructorCost:string='';
+  courseTPRunId!: any;
+  courseReferenceNumber!: any;
+  instructorCost: string = '';
   codeExists: boolean = false;
   code: string | null = null;
   minDates: Date = new Date();
   zoomSessionCreated: boolean = false;
   isValidDuration: boolean = true;
   totalMinutes: number | null = null;
-  meetingPlatforms:any[] = [];
+  meetingPlatforms: any[] = [];
   addNewRow() {
     if (this.isInstructorFailed != 1) {
       this.isInstructorFailed = 0;
@@ -128,7 +145,7 @@ export class CreateClassComponent {
     private studentsService: StudentsService,
     private userService: UserService,
     private formService: FormService,
-
+    private http: HttpClient
   ) {
     this._activeRoute.queryParams.subscribe((params) => {
       this.classId = params['id'];
@@ -139,52 +156,48 @@ export class CreateClassComponent {
     const currentYear = new Date().getFullYear();
     this.minDate = new Date(currentYear - 5, 0, 1);
     this.maxDate = new Date(currentYear + 1, 11, 31);
-    
-    this.commonRoles = {
 
+    this.commonRoles = {
       INSTRUCTOR_ROLE: 'Instructor',
 
       STUDENT_ROLE: 'Student',
 
-      DURATION_LABEL:'Duration'
-
+      DURATION_LABEL: 'Duration',
     };
 
     this.loadForm();
   }
   ngOnInit(): void {
-    this._activeRoute.queryParams.subscribe(params => {
+    this._activeRoute.queryParams.subscribe((params) => {
       this.code = params['code'] || null;
       this.codeExists = !!params['code'];
-  });
-  const storedZoomSessionCreated = localStorage.getItem('zoomSessionCreated');
-  this.zoomSessionCreated = storedZoomSessionCreated === 'true';
-  const savedCourseCode = localStorage.getItem('courseCode');
-  const savedCourseTitle = localStorage.getItem('courseTitle');
-  const savedExpiryDate=localStorage.getItem('expiryDate')
-  if (savedCourseCode && savedCourseTitle) {
-    this.courseCode = savedCourseCode;
-    this.courseTitle = savedCourseTitle;
-    this.expiryDate=savedExpiryDate;
-  }
+    });
+    const storedZoomSessionCreated = localStorage.getItem('zoomSessionCreated');
+    this.zoomSessionCreated = storedZoomSessionCreated === 'true';
+    const savedCourseCode = localStorage.getItem('courseCode');
+    const savedCourseTitle = localStorage.getItem('courseTitle');
+    const savedExpiryDate = localStorage.getItem('expiryDate');
+    if (savedCourseCode && savedCourseTitle) {
+      this.courseCode = savedCourseCode;
+      this.courseTitle = savedCourseTitle;
+      this.expiryDate = savedExpiryDate;
+    }
     this.loadSavedFormData();
 
-
-    this.commonRoles = AppConstants
+    this.commonRoles = AppConstants;
     if (this.classId != undefined) {
       this.loadClassList(this.classId);
     }
-    if(this.classId == undefined){
+    if (this.classId == undefined) {
       this.addNewRow();
     }
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-        let payload = {
+    let payload = {
       type: AppConstants.INSTRUCTOR_ROLE,
-      companyId:userId
-
+      companyId: userId,
     };
 
-    if(this.classId){
+    if (this.classId) {
       this.breadscrums = [
         {
           title: 'Edit Course Batch',
@@ -192,7 +205,7 @@ export class CreateClassComponent {
           active: 'Edit Course Batch',
         },
       ];
-    }else{
+    } else {
       this.breadscrums = [
         {
           title: 'Create Course Batch',
@@ -202,14 +215,13 @@ export class CreateClassComponent {
       ];
     }
 
-
     this.instructorService.getInstructorLists(payload).subscribe((res) => {
       this.instructorList = res;
     });
 
     forkJoin({
       courses: this._classService.getAllCoursesTitle('active'),
-      dropDowns: this._classService.getDropDowns(userId, "meetingPlatform")
+      dropDowns: this._classService.getDropDowns(userId, 'meetingPlatform'),
     }).subscribe((response) => {
       this.courseList = response.courses.reverse();
       this.meetingPlatforms = response.dropDowns?.data?.meetingPlatform;
@@ -217,27 +229,29 @@ export class CreateClassComponent {
       this.cd.detectChanges();
     });
 
-    this.configurationSubscription = this.studentsService.configuration$.subscribe(configuration => {
-      this.configuration = configuration;
-      const config = this.configuration.find((v:any)=>v.field === 'currency')
-      if (config) {
-        this.defaultCurrency = config.value;
-        this.classForm.patchValue({
-        currency: this.defaultCurrency,
-        })
-      }
-    });
-   this.loadData();
-   this.getForms();
-   this.getDepartments();
-   this.getUserGroups()
+    this.configurationSubscription =
+      this.studentsService.configuration$.subscribe((configuration) => {
+        this.configuration = configuration;
+        const config = this.configuration.find(
+          (v: any) => v.field === 'currency'
+        );
+        if (config) {
+          this.defaultCurrency = config.value;
+          this.classForm.patchValue({
+            currency: this.defaultCurrency,
+          });
+        }
+      });
+
+    this.loadData();
+    this.getForms();
+    this.getDepartments();
+    this.getUserGroups();
   }
-  
+
   get registrationStartDate() {
     return this.classForm.get('registrationStartDate')?.value;
   }
-  
-
 
   loadSavedFormData() {
     const savedFormData = localStorage.getItem('classFormData');
@@ -246,24 +260,24 @@ export class CreateClassComponent {
       // console.log("parsedFormData",parsedFormData)
       this.classForm.patchValue({
         courseId: parsedFormData?.courseId,
-        classType: parsedFormData?.classType, 
+        classType: parsedFormData?.classType,
         classDeliveryType: parsedFormData?.classDeliveryType,
         instructorCost: parsedFormData?.instructorCost,
         instructorCostCurrency: parsedFormData?.instructorCostCurrency || 'USD',
-        department: parsedFormData?.department, 
+        department: parsedFormData?.department,
         currency: parsedFormData?.currency || '',
-        isGuaranteedToRun: parsedFormData?.isGuaranteedToRun || false, 
-        externalRoom: parsedFormData?.externalRoom || false, 
+        isGuaranteedToRun: parsedFormData?.isGuaranteedToRun || false,
+        externalRoom: parsedFormData?.externalRoom || false,
         minimumEnrollment: parsedFormData?.minimumEnrollment,
         maximumEnrollment: parsedFormData?.maximumEnrollment,
-        meetingPlatform: parsedFormData?.meetingPlatform || '', 
-        classStartDate: parsedFormData?.classStartDate || '2023-05-20', 
-        classEndDate: parsedFormData?.classEndDate || '2023-06-10', 
-        userGroupId: parsedFormData?.userGroupId || null, 
-        duration: parsedFormData?.duration || null ,
+        meetingPlatform: parsedFormData?.meetingPlatform || '',
+        classStartDate: parsedFormData?.classStartDate || '2023-05-20',
+        classEndDate: parsedFormData?.classEndDate || '2023-06-10',
+        userGroupId: parsedFormData?.userGroupId || null,
+        duration: parsedFormData?.duration || null,
         registrationStartDate: parsedFormData?.registrationStartDate,
-        registrationEndDate: parsedFormData?.registrationEndDate
-      });      
+        registrationEndDate: parsedFormData?.registrationEndDate,
+      });
     }
   }
 
@@ -275,62 +289,66 @@ export class CreateClassComponent {
 
   getForms(): void {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-        this.formService
-      .getAllForms(userId,'Course Class Creation Form')
+    this.formService
+      .getAllForms(userId, 'Course Class Creation Form')
       .subscribe((forms) => {
         this.forms = forms;
       });
   }
 
-  loadData(){
-    this.studentId = localStorage.getItem('id')
-    this.studentsService.getStudentById(this.studentId).subscribe(res => {
-    })
-}
+  loadData() {
+    this.studentId = localStorage.getItem('id');
+    this.studentsService.getStudentById(this.studentId).subscribe((res) => {});
+  }
 
-loadForm() {
-  this.classForm = this._fb.group({
-    courseId: ['', [Validators.required]],
-    classType: ['public'],
-    classDeliveryType: ['', Validators.required],
-    instructorCost: ['', Validators.required],
-    instructorCostCurrency: ['USD'],
-    department: ['', Validators.required],
-    userGroupId: ['', [Validators.required]],
-    currency: [''],
-    isGuaranteedToRun: [false, Validators.required],
-    externalRoom: [false],
-    minimumEnrollment: ['', Validators.required],
-    maximumEnrollment: ['', Validators.required],
-    meetingPlatform: ['', Validators.required], 
-    classStartDate: [''],
-    classEndDate: [''],
+  loadForm() {
+    this.classForm = this._fb.group({
+      courseId: ['', [Validators.required]],
+      classType: ['public'],
+      classDeliveryType: ['', Validators.required],
+      instructorCost: ['', Validators.required],
+      instructorCostCurrency: ['USD'],
+      department: ['', Validators.required],
+      userGroupId: ['', [Validators.required]],
+      currency: [''],
+      isGuaranteedToRun: [false, Validators.required],
+      externalRoom: [false],
+      minimumEnrollment: ['', Validators.required],
+      maximumEnrollment: ['', Validators.required],
+      meetingPlatform: ['', Validators.required],
+      classStartDate: [''],
+      classEndDate: [''],
       registrationStartDate: ['', Validators.required], // New field
-      registrationEndDate: ['', Validators.required],   // New field
-    duration: ['', [Validators.required,Validators.pattern('^[0-9]{1,2}[:][0-9]{1,2}$')]], 
-    code: ''
-  });
+      registrationEndDate: ['', Validators.required], // New field
+      duration: [
+        '',
+        [Validators.required, Validators.pattern('^[0-9]{1,2}[:][0-9]{1,2}$')],
+      ],
+      code: '',
+    });
 
-  this.secondFormGroup = this._fb.group({
-    sessions: ['', Validators.required],
-  });
-  this.classForm.get('classDeliveryType')!.valueChanges.subscribe((deliveryType) => {
-    const meetingPlatformControl = this.classForm.get('meetingPlatform')!;
-    const durationControl = this.classForm.get('duration')!;
-    if (deliveryType === 'online') {
-      meetingPlatformControl.setValidators([Validators.required]);
-      durationControl.setValidators([Validators.required]);
-    } else {
-      meetingPlatformControl.clearValidators();
-      durationControl.clearValidators();
-    }
-    meetingPlatformControl.updateValueAndValidity();
-    durationControl.updateValueAndValidity();
-  });
-  this.classForm.get('duration')!.valueChanges.subscribe(()=>{
-    this.onDurationChange();
-  })
-}
+    this.secondFormGroup = this._fb.group({
+      sessions: ['', Validators.required],
+    });
+    this.classForm
+      .get('classDeliveryType')!
+      .valueChanges.subscribe((deliveryType) => {
+        const meetingPlatformControl = this.classForm.get('meetingPlatform')!;
+        const durationControl = this.classForm.get('duration')!;
+        if (deliveryType === 'online') {
+          meetingPlatformControl.setValidators([Validators.required]);
+          durationControl.setValidators([Validators.required]);
+        } else {
+          meetingPlatformControl.clearValidators();
+          durationControl.clearValidators();
+        }
+        meetingPlatformControl.updateValueAndValidity();
+        durationControl.updateValueAndValidity();
+      });
+    this.classForm.get('duration')!.valueChanges.subscribe(() => {
+      this.onDurationChange();
+    });
+  }
 
   getDepartments() {
     this.studentsService.getAllDepartments().subscribe((response: any) => {
@@ -338,17 +356,18 @@ loadForm() {
     });
   }
 
-
   loadClassList(id: string) {
     this._classService.getClassById(id).subscribe((response) => {
       const item = response;
-      this.courseTPRunId=item?.courseTPRunId;
-      this.courseReferenceNumber=item?.courseReferenceNumber;
-      this.idNumber=item?.course?.runs[0]?.linkCourseRunTrainer[0]?.trainer?.idNumber;
-      this.trainerId=item?.course?.runs[0]?.linkCourseRunTrainer[0]?.trainer?.id;
-      this.courseTitle=item?.courseName;
-      this.courseCode=item?.courseReferenceNumber;
-      this.expiryDate=item?.courseExpiryDate;
+      this.courseTPRunId = item?.courseTPRunId;
+      this.courseReferenceNumber = item?.courseReferenceNumber;
+      this.idNumber =
+        item?.course?.runs[0]?.linkCourseRunTrainer[0]?.trainer?.idNumber;
+      this.trainerId =
+        item?.course?.runs[0]?.linkCourseRunTrainer[0]?.trainer?.id;
+      this.courseTitle = item?.courseName;
+      this.courseCode = item?.courseReferenceNumber;
+      this.expiryDate = item?.courseExpiryDate;
       // console.log("getrrr",response);
       this.classForm.patchValue({
         courseId: item?.courseId?.id,
@@ -361,29 +380,37 @@ loadForm() {
         externalRoom: item?.externalRoom,
         minimumEnrollment: item?.minimumEnrollment,
         maximumEnrollment: item?.maximumEnrollment,
-        department:item?.department,
+        department: item?.department,
         sessions: item?.sessions,
         userGroupId: item?.userGroupId,
         duration: item?.duration,
         meetingPlatform: item?.meetingPlatform,
-        registrationStartDate:item.registrationStartDate,
-        registrationEndDate:item.registrationEndDate,
-        
+        registrationStartDate: item.registrationStartDate,
+        registrationEndDate: item.registrationEndDate,
+
         // courseReferenceNumber:item.courseReferenceNumber,
         // courseTPRunId:item.courseTPRunId
       });
-      
+
       item.sessions.forEach((item: any) => {
-        const start = moment(`${moment(item.sessionStartDate).format('YYYY-MM-DD')}T${item.sessionStartTime}`).format();
-        const end = moment(`${moment(item.sessionEndDate).format('YYYY-MM-DD')}T${item.sessionEndTime}`).format();
-    
+        const start = moment(
+          `${moment(item.sessionStartDate).format('YYYY-MM-DD')}T${
+            item.sessionStartTime
+          }`
+        ).format();
+        const end = moment(
+          `${moment(item.sessionEndDate).format('YYYY-MM-DD')}T${
+            item.sessionEndTime
+          }`
+        ).format();
+
         this.dataSourceArray.push({
-            start: start,
-            end: end,
-            instructor: item.instructorId?.id,
+          start: start,
+          end: end,
+          instructor: item.instructorId?.id,
         });
-    });
-    
+      });
+
       this.dataSource = this.dataSourceArray;
       this.cd.detectChanges();
     });
@@ -455,7 +482,7 @@ loadForm() {
           sessionEndDate: moment(item.end).format('YYYY-MM-DD'),
           sessionStartTime: moment(item.start).format('HH:mm'),
           sessionEndTime: moment(item.end).format('HH:mm'),
-          instructorId: item.instructor ||'', // Allow null if instructor is not selected
+          instructorId: item.instructor || '', // Allow null if instructor is not selected
           courseName: this.courseTitle,
           courseCode: this.courseCode,
           // courseName:"TestTPnew123",
@@ -469,11 +496,12 @@ loadForm() {
     });
     return sessions;
   }
-  
+
   toggleAllSelection() {
     if (this.allSelected.selected) {
-      this.classForm.controls['userGroupId']
-        .patchValue([...this.userGroups.map(item => item.id)]);
+      this.classForm.controls['userGroupId'].patchValue([
+        ...this.userGroups.map((item) => item.id),
+      ]);
     } else {
       this.classForm.controls['userGroupId'].patchValue([]);
     }
@@ -483,119 +511,130 @@ loadForm() {
       (item: { _id: string }) =>
         item._id === this.classForm.controls['courseId'].value
     );
-    this.courseTitle=filteredData[0].title
-    this.courseCode=filteredData[0].courseCode
-    this.expiryDate=filteredData[0].sessionEndDate
+    this.courseTitle = filteredData[0].title;
+    this.courseCode = filteredData[0].courseCode;
+    this.expiryDate = filteredData[0].sessionEndDate;
 
     // console.log("this.expiry",this.expiryDate)
-
   }
 
-  onSelectChange1(event :any,element:any) {
-    const filteredData = this.instructorList.filter((item: { id: string; }) => item.id === element.instructor);
-     this.user_id = filteredData[0].id;
-     this.trainerId=filteredData[0].trainerId;
-     this.idNumber=filteredData[0].idNumber;
-
-
+  onSelectChange1(event: any, element: any) {
+    const filteredData = this.instructorList.filter(
+      (item: { id: string }) => item.id === element.instructor
+    );
+    this.user_id = filteredData[0].id;
+    this.trainerId = filteredData[0].trainerId;
+    this.idNumber = filteredData[0].idNumber;
   }
 
-getTPCourse(classForm:any){
-  let uen =localStorage.getItem('uen') || '';
-  // console.log("classForm",classForm.value)
-  // console.log("classForm",JSON.parse(localStorage.getItem('user_data')!).user.adminEmail)
-  // console.log("classForm",classForm.value.registrationEndDate)
-  // console.log("classForm this.trainerId",this.trainerId)
-  // console.log("classForm this.idNumber",this.idNumber)
-  // console.log("classForm ssd",classForm.value.sessions[0].sessionStartDate.replace(/-/g, ''));
-  // console.log("moment(date).format('YYYYMMDD')",moment(classForm.value.registrationEndDate).format('YYYYMMDD'))
-  let course={
-        "courseReferenceNumber": classForm.value.courseReferenceNumber||this.courseReferenceNumber,
-        "trainingProvider": {
-            "uen": uen
-        },
-        "runs": [
+  getTPCourse(classForm: any) {
+    let uen = localStorage.getItem('uen') || '';
+    // console.log("classForm",classForm.value)
+    // console.log("classForm",JSON.parse(localStorage.getItem('user_data')!).user.adminEmail)
+    // console.log("classForm",classForm.value.registrationEndDate)
+    // console.log("classForm this.trainerId",this.trainerId)
+    // console.log("classForm this.idNumber",this.idNumber)
+    // console.log("classForm ssd",classForm.value.sessions[0].sessionStartDate.replace(/-/g, ''));
+    // console.log("moment(date).format('YYYYMMDD')",moment(classForm.value.registrationEndDate).format('YYYYMMDD'))
+    let course = {
+      courseReferenceNumber:
+        classForm.value.courseReferenceNumber || this.courseReferenceNumber,
+      trainingProvider: {
+        uen: uen,
+      },
+      runs: [
+        {
+          sequenceNumber: 0,
+          registrationDates: {
+            opening: moment(classForm.value.registrationStartDate).format(
+              'YYYYMMDD'
+            ),
+            closing: moment(classForm.value.registrationEndDate).format(
+              'YYYYMMDD'
+            ),
+          },
+          courseDates: {
+            start: classForm.value.sessions[0].sessionStartDate.replace(
+              /-/g,
+              ''
+            ),
+            end: classForm.value.sessions[0].sessionEndDate.replace(/-/g, ''),
+          },
+          scheduleInfoType: {
+            code: '01',
+            description: 'Description',
+          },
+          scheduleInfo: 'Sat / 5 Sats / 9am - 6pm',
+
+          intakeSize: classForm.value.maximumEnrollment,
+          modeOfTraining: '2',
+          courseAdminEmail: JSON.parse(localStorage.getItem('user_data')!).user
+            .email,
+          courseVacancy: {
+            code: 'L',
+            description: 'Limited Vacancy',
+          },
+
+          sessions: [
             {
-                "sequenceNumber": 0,
-                "registrationDates": {
-                    "opening": moment(classForm.value.registrationStartDate).format('YYYYMMDD'),
-                    "closing": moment(classForm.value.registrationEndDate).format('YYYYMMDD')
+              startDate: classForm.value.sessions[0].sessionStartDate.replace(
+                /-/g,
+                ''
+              ),
+              endDate: classForm.value.sessions[0].sessionEndDate.replace(
+                /-/g,
+                ''
+              ),
+              startTime: classForm.value.sessions[0].sessionStartTime,
+              endTime: classForm.value.sessions[0].sessionEndTime,
+              modeOfTraining: '2',
+            },
+          ],
+          linkCourseRunTrainer: [
+            {
+              trainer: {
+                indexNumber: 0,
+                id: this.trainerId,
+                name: '',
+                inTrainingProviderProfile: true,
+                domainAreaOfPractice: '',
+                experience: '',
+                linkedInURL: '',
+                salutationId: '',
+                photo: {
+                  name: '',
+                  content: '',
                 },
-                "courseDates": {
-                    "start": classForm.value.sessions[0].sessionStartDate.replace(/-/g, ''),
-                    "end": classForm.value.sessions[0].sessionEndDate.replace(/-/g, '')
+                email: '',
+                trainerType: {
+                  code: '1',
+                  description: 'Existing',
                 },
-                "scheduleInfoType": {
-                    "code": "01",
-                    "description": "Description"
+
+                idNumber: this.idNumber,
+                idType: {
+                  code: '',
+                  description: '',
                 },
-                "scheduleInfo": "Sat / 5 Sats / 9am - 6pm",
-               
-                "intakeSize": classForm.value.maximumEnrollment,
-                "modeOfTraining": "2",
-                "courseAdminEmail": JSON.parse(localStorage.getItem('user_data')!).user.email,
-                "courseVacancy": {
-                    "code": "L",
-                    "description": "Limited Vacancy"
-                },
-               
-                "sessions": [
-                    {
-                        "startDate": classForm.value.sessions[0].sessionStartDate.replace(/-/g, ''),
-                        "endDate": classForm.value.sessions[0].sessionEndDate.replace(/-/g, ''),
-                        "startTime": classForm.value.sessions[0].sessionStartTime,
-                        "endTime": classForm.value.sessions[0].sessionEndTime,
-                        "modeOfTraining": "2"
-                       
-                    }
+                roles: [
+                  {
+                    role: {
+                      id: 1,
+                      description: 'Trainer',
+                    },
+                  },
                 ],
-                "linkCourseRunTrainer": [
-                    {
-                        "trainer": {
-                            "indexNumber": 0,
-                            "id": this.trainerId,
-                            "name": "",
-                            "inTrainingProviderProfile": true,
-                            "domainAreaOfPractice": "",
-                            "experience": "",
-                            "linkedInURL": "",
-                            "salutationId": "",
-                            "photo": {
-                                "name": "",
-                                "content": ""
-                            },
-                            "email": "",
-                            "trainerType": {
-                                "code": "1",
-                                "description": "Existing"
-                            },
-                           
-                            "idNumber": this.idNumber,
-                            "idType": {
-                                "code": "",
-                                "description": ""
-                            },
-                            "roles": [
-                                {
-                                    "role": {
-                                        "id": 1,
-                                        "description": "Trainer"
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                ]
-            }
-        ]
-    }
+              },
+            },
+          ],
+        },
+      ],
+    };
     return course;
-// console.log("course",course)
-
-}
-
-  data() {
+    // console.log("course",course)
   }
+
+  data() {}
 
   submit() {
     const deliveryType = this.classForm.get('classDeliveryType')?.value;
@@ -604,126 +643,153 @@ getTPCourse(classForm:any){
     //   alert('Please create the Zoom session before submitting the form.');
     //   return;
     // }
-    if(this.classForm.valid){
-      
-    const sessions = this.getSession();
-    if (this.classId) {
-      this.sessions = this.getSession();
-      if (this.sessions) {
-        this.classForm.value.sessions = sessions;
-        this.classForm.value.courseName = this.courseTitle
-        this.classForm.value.course= this.getTPCourse(this.classForm);
-        this.classForm.value.courseTPRunId=this.courseTPRunId;
-        this.classForm.value.courseReferenceNumber=this.courseReferenceNumber;
+    if (this.classForm.valid) {
+      const sessions = this.getSession();
+      if (this.classId) {
+        this.sessions = this.getSession();
+        if (this.sessions) {
+          this.classForm.value.sessions = sessions;
+          this.classForm.value.courseName = this.courseTitle;
+          this.classForm.value.course = this.getTPCourse(this.classForm);
+          this.classForm.value.courseTPRunId = this.courseTPRunId;
+          this.classForm.value.courseReferenceNumber =
+            this.courseReferenceNumber;
+            const usergrpIds = this.classForm.value.userGroupId;
 
-        Swal.fire({
-          title: 'Are you sure?',
-          text: 'Do you want to update this batch!',
-          icon: 'warning',
-          confirmButtonText: 'Yes',
-          showCancelButton: true,
-          cancelButtonColor: '#d33',
-        }).then((result) => {
-          if (result.isConfirmed) {
+            const selectedGroups = this.userGroups.filter((item: any) =>
+              usergrpIds.includes(item.id)
+            );
+  
+            const allEmails = selectedGroups
+              .flatMap((group) => group.userId)
+              .map((user) => user.email)
+              .filter((email) => !!email); 
+              allEmails.push("ganesh.masilamani@innovatiqconsulting.com");
+            // this.classForm.patchValue({ attendees: allEmails });
+            this.classForm.value.attendees = allEmails
+          Swal.fire({
+            title: 'Are you sure?',
+            text: 'Do you want to update this batch!',
+            icon: 'warning',
+            confirmButtonText: 'Yes',
+            showCancelButton: true,
+            cancelButtonColor: '#d33',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Swal.fire({
+                title: 'Please wait',
+                text: 'Updating the class...',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                  Swal.showLoading();
+                },
+              });
+              this._classService
+                .updateClass(this.classId, this.classForm.value)
+                .subscribe(
+                  (response) => {
+                    if (response) {
+                      Swal.fire({
+                        title: 'Success',
+                        text: 'Class Updated Successfully.',
+                        icon: 'success',
+                      });
+                      window.history.back();
+                    }
+                  },
+                  (error) => {
+                    Swal.fire({
+                      title: 'Error',
+                      text: 'Something went wrong. Please try again.',
+                      icon: 'error',
+                    });
+                  }
+                );
+            }
+          });
+        }
+      } else {
+        if (sessions) {
+          this.classForm.value.sessions = sessions;
+          this.classForm.value.courseName = this.courseTitle;
+          // this.classForm.value.courseName ="TestTPnew123"
+          const userData = localStorage.getItem('user_data');
+          if (userData) {
+            let userId = JSON.parse(userData).user.companyId;
+            this.classForm.value.companyId = userId;
+          }
+          if (this.code) {
+            this.classForm.value.code = this.code;
+          }
+          const usergrpIds = this.classForm.value.userGroupId;
+
+          const selectedGroups = this.userGroups.filter((item: any) =>
+            usergrpIds.includes(item.id)
+          );
+
+          const allEmails = selectedGroups
+            .flatMap((group) => group.userId)
+            .map((user) => user.email)
+            .filter((email) => !!email); 
+            allEmails.push("ganesh.masilamani@innovatiqconsulting.com");
+          // this.classForm.patchValue({ attendees: allEmails });
+          this.classForm.value.attendees = allEmails
+          this.classForm.value.courseReferenceNumber = this.courseCode;
+          this.classForm.value.trainingProvider = {
+            uen: localStorage.getItem('uen') || '',
+          };
+          this.classForm.value.course = this.getTPCourse(this.classForm);
+          this.classForm.value.courseExpiryDate = this.expiryDate;
+          if (!this.classForm.valid) {
             Swal.fire({
-              title: 'Please wait',
-              text: 'Updating the class...',
-              allowOutsideClick: false,
-              showConfirmButton: false,
-              didOpen: () => {
-                Swal.showLoading(); 
-              },
+              title: 'Error',
+              text: 'Please fill out all required fields before submitting.',
+              icon: 'error',
             });
-    
-            this._classService.updateClass(this.classId, this.classForm.value)
-              .subscribe((response) => {
-                if (response) {
+            return;
+          }
+          Swal.fire({
+            title: 'Are you sure?',
+            text: 'Do you want to create a batch!',
+            icon: 'warning',
+            confirmButtonText: 'Yes',
+            showCancelButton: true,
+            cancelButtonColor: '#d33',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Swal.fire({
+                title: 'Please wait',
+                text: 'Scheduling your class...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                  Swal.showLoading();
+                },
+              });
+              this._classService
+                .saveClass(this.classForm.value)
+                .subscribe((response) => {
                   Swal.fire({
                     title: 'Success',
-                    text: 'Class Updated Successfully.',
+                    text: 'Batch Created Successfully.',
                     icon: 'success',
                   });
-                  window.history.back();
-                }
-              }, (error) => {
-                Swal.fire({
-                  title: 'Error',
-                  text: 'Something went wrong. Please try again.',
-                  icon: 'error',
+                  localStorage.removeItem('zoomSessionCreated');
+                  localStorage.removeItem('classFormData');
+                  this.zoomSessionCreated = false;
+                  this.router.navigate(['/admin/courses/class-list'], {
+                    state: { newClass: response },
+                  });
                 });
-              });
-          }
-        });
-      }
-    }
-    
-     else {
-      if (sessions) {
-        this.classForm.value.sessions = sessions;
-         this.classForm.value.courseName = this.courseTitle;  
-        // this.classForm.value.courseName ="TestTPnew123" 
-        const userData = localStorage.getItem('user_data');
-        if (userData) {
-          let userId = JSON.parse(userData).user.companyId;
-          this.classForm.value.companyId = userId;
-        }
-              if (this.code) {
-          this.classForm.value.code = this.code;
-        }
-         this.classForm.value.courseReferenceNumber=this.courseCode;
-                this.classForm.value.trainingProvider = {
-                  uen:localStorage.getItem('uen') || ''
-                };
-        this.classForm.value.course= this.getTPCourse(this.classForm);
-        this.classForm.value.courseExpiryDate=this.expiryDate;
-              if (!this.classForm.valid) {
-          Swal.fire({
-            title: 'Error',
-            text: 'Please fill out all required fields before submitting.',
-            icon: 'error',
+            }
           });
-          return;
+        } else {
+          this.classForm.markAllAsTouched();
         }
-              Swal.fire({
-          title: 'Are you sure?',
-          text: 'Do you want to create a batch!',
-          icon: 'warning',
-          confirmButtonText: 'Yes',
-          showCancelButton: true,
-          cancelButtonColor: '#d33',
-        }).then((result) => {
-          if (result.isConfirmed) {
-            Swal.fire({
-              title: 'Please wait',
-              text: 'Scheduling your class...',
-              allowOutsideClick: false,
-              didOpen: () => {
-                Swal.showLoading();
-              },
-            });
-            this._classService.saveClass(this.classForm.value).subscribe(
-              (response) => {
-                Swal.fire({
-                  title: 'Success',
-                  text: 'Batch Created Successfully.',
-                  icon: 'success',
-                });
-                localStorage.removeItem('zoomSessionCreated');
-                localStorage.removeItem('classFormData');
-                this.zoomSessionCreated = false;
-                this.router.navigate(['/admin/courses/class-list'], {
-                  state: { newClass: response },
-                });
-              })
-            }});
-
-  }else{
-    this.classForm.markAllAsTouched();
-  }
-  }
-} else{
-  this.classForm.markAllAsTouched();
-}
+      }
+    } else {
+      this.classForm.markAllAsTouched();
+    }
   }
   startDateChange(element: { end: any; start: any }) {
     element.end = element.start;
@@ -764,8 +830,7 @@ getTPCourse(classForm:any){
         new DatePipe('en-US').transform(new Date(element.start), 'HH:MM')!,
         new DatePipe('en-US').transform(new Date(element.end), 'HH:MM')!
       )
-      .subscribe((response) => {
-      });
+      .subscribe((response) => {});
   }
 
   setCourseNameControlState(): void {
@@ -814,7 +879,6 @@ getTPCourse(classForm:any){
     });
   }
   cancel() {
-
     window.history.back();
     localStorage.removeItem('classFormData');
   }
@@ -845,21 +909,61 @@ getTPCourse(classForm:any){
       return encodeURIComponent(url); // Return the original URL if it's invalid
     }
   }
+  // scheduleMeet() {
+  //   const formData = this.classForm.value;
+  //   localStorage.setItem('classFormData', JSON.stringify(formData));
+  //   localStorage.setItem('courseCode', this.courseCode);
+  //   localStorage.setItem('expiryDate', this.expiryDate);
+  //   localStorage.setItem('courseTitle', this.courseTitle);
+  //   if (this.classForm.get('meetingPlatform')?.value === 'zoom') {
+  //     const zoomKey = JSON.parse(localStorage.getItem('user_data')!)?.user?.zoomKey;
+
+  //     const clientId = zoomKey.clientId || '';
+  //     const redirectUri = this.updateHost(zoomKey.redirectUri)
+  //     const zoomURL = `https://zoom.us/oauth/authorize?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}`
+  //     const zoomAuthUrl = zoomURL;
+  //     localStorage.setItem('zoomSessionCreated', 'true');
+  //     window.location.href = zoomAuthUrl;
+  //   }
+  // }
+
   scheduleMeet() {
     const formData = this.classForm.value;
     localStorage.setItem('classFormData', JSON.stringify(formData));
     localStorage.setItem('courseCode', this.courseCode);
     localStorage.setItem('expiryDate', this.expiryDate);
     localStorage.setItem('courseTitle', this.courseTitle);
-    if (this.classForm.get('meetingPlatform')?.value === 'zoom') {
-      const zoomKey = JSON.parse(localStorage.getItem('user_data')!)?.user?.zoomKey;
+
+    const meetingPlatform = this.classForm.get('meetingPlatform')?.value;
+
+    if (meetingPlatform === 'zoom') {
+      // Existing Zoom OAuth Authentication Flow
+      const zoomKey = JSON.parse(localStorage.getItem('user_data')!)?.user
+        ?.zoomKey;
 
       const clientId = zoomKey.clientId || '';
-      const redirectUri = this.updateHost(zoomKey.redirectUri) 
-      const zoomURL = `https://zoom.us/oauth/authorize?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}`
-      const zoomAuthUrl = zoomURL;
+      const redirectUri = this.updateHost(zoomKey.redirectUri);
+      const zoomURL = `https://zoom.us/oauth/authorize?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}`;
       localStorage.setItem('zoomSessionCreated', 'true');
-      window.location.href = zoomAuthUrl;
+      window.location.href = zoomURL;
+    } else if (meetingPlatform === 'teams') {
+      console.log('meetingPlatform', meetingPlatform);
+      // Teams OAuth Authentication Flow
+      const meetingData = {
+        title: formData.title,
+        startTime: formData.startTime,
+        endTime: formData.endTime,
+        attendees: formData.attendees,
+      };
+
+      localStorage.setItem('teamsMeetingData', JSON.stringify(meetingData));
+      const clientId = '636b351f-0248-4a2a-a67b-e0e65e183bea';
+      const redirectUri = 'http://localhost:3001/api/admin/teams/getToken';
+      const scope = 'User.Read OnlineMeetings.ReadWrite openid profile email';
+      const authUrl = `https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}&scope=${encodeURIComponent(
+        scope
+      )}`;
+      window.location.href = authUrl;
     }
   }
 
@@ -868,7 +972,14 @@ getTPCourse(classForm:any){
     if (duration && duration.length === 5) {
       const [hours, minutes] = duration.split(':').map(Number);
 
-      if (!isNaN(hours) && !isNaN(minutes) && hours >= 0 && hours <= 23 && minutes >= 0 && minutes <= 59) {
+      if (
+        !isNaN(hours) &&
+        !isNaN(minutes) &&
+        hours >= 0 &&
+        hours <= 23 &&
+        minutes >= 0 &&
+        minutes <= 59
+      ) {
         this.totalMinutes = hours * 60 + minutes;
       } else {
         this.totalMinutes = null;
@@ -880,7 +991,7 @@ getTPCourse(classForm:any){
 
   formatDuration() {
     let value = this.classForm.get('duration')?.value || '';
-    
+
     // Remove all non-numeric characters
     const cleaned = value.replace(/[^0-9]/g, '');
 
@@ -893,21 +1004,21 @@ getTPCourse(classForm:any){
       this.classForm.get('duration')?.setValue(`${hours}:${minutes}`);
     }
   }
-  endDateChange(event:any, element:any){
+  endDateChange(event: any, element: any) {
     const duration = this.classForm.get('duration')?.value;
     const startDateTime = element.start;
     const endDateTime = event;
     if (duration && startDateTime && endDateTime) {
       const [hours, minutes] = duration.split(':').map(Number);
-      const startDateObj =  moment(startDateTime);
+      const startDateObj = moment(startDateTime);
       const st_hour = startDateObj.get('hours');
       const st_min = startDateObj.get('minutes');
       const updatedendDateTime = moment(endDateTime)
-        .hour(st_hour+hours)
-        .minute(st_min+minutes)
-        .second(0).toDate();
-        element.end =  updatedendDateTime;
+        .hour(st_hour + hours)
+        .minute(st_min + minutes)
+        .second(0)
+        .toDate();
+      element.end = updatedendDateTime;
     }
   }
-  
 }

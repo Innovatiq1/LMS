@@ -1858,8 +1858,8 @@ MENU_LIST =[
           "isLeaf": true
         },
         {
-          "title": "zoom credentials",
-          "id": "zoom-credentials",
+          "title": "Virtual Meetings",
+          "id": "virtual-meetings",
           "children": [],
           "actions": [],
           "isAction": false,

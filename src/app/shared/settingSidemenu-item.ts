@@ -591,8 +591,8 @@ SETTING_SIDEMENU_LIST =[
             "children": []
           },
           {
-            "title": "Zoom Credentials",
-            "id": "zoom-credentials",
+            "title": "Virtual Meetings",
+            "id": "virtual-meetings",
             "class": "ml-menu",
             "actions": [],
             "children": []

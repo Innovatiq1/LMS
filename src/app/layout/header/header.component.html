@@ -25,13 +25,18 @@
       <ul class="nav navbar-nav navbar-right">
         <li class="gmail">
           <a routerLink="/email/inbox" title="Inbox" routerLinkActive="active">
-            <button mat-button class="nav-notification-icons" style="margin-top: 6px;
-          margin-bottom: -8px;"> <i class="material-icons-outlined icon-color">
-                email
-              </i></button>
+            <button mat-button class="nav-notification-icons email-button" >
+              <div class="icon-wrapper">
+                <i class="material-icons-outlined icon-color">email</i>
+                <span class="dot">
+                  <span class="ping"></span> 
+                </span>
+              </div>
+            </button>
           </a>
-
         </li>
+        
+        
         <!-- Full Screen Button -->
         <li class="fullscreen">
           <button mat-button class="nav-notification-icons" (click)="callFullscreen()"> <i
