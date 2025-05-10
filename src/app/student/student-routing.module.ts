@@ -570,7 +570,7 @@ const routes: Routes = [
     component: SocialLoginComponent,
   },
   {
-    path: 'settings/integration/zoom-credentials',
+    path: 'settings/integration/virtual-meetings',
     component: ZoomKeysComponent,
   },
   {
