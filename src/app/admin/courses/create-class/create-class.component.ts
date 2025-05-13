@@ -1,4 +1,4 @@
-import { map } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import {
   ChangeDetectorRef,
   Component,
@@ -46,6 +46,7 @@ import { AppConstants } from '@shared/constants/app.constants';
 import { environment } from 'environments/environment';
 
 import { HttpClient } from '@angular/common/http';
+import { AdminService } from '@core/service/admin.service';
 
 @Component({
   selector: 'app-create-class',
@@ -60,6 +61,7 @@ export class CreateClassComponent {
   breadscrums: any;
   trainerId: any;
   idNumber: any;
+  userTypes: any;
   @HostListener('document:keypress', ['$event'])
   keyPressNumbers(event: KeyboardEvent) {
     const charCode = event.which ? event.which : event.keyCode;
@@ -145,7 +147,7 @@ export class CreateClassComponent {
     private studentsService: StudentsService,
     private userService: UserService,
     private formService: FormService,
-    private http: HttpClient
+    private http: HttpClient,  private adminService: AdminService,
   ) {
     this._activeRoute.queryParams.subscribe((params) => {
       this.classId = params['id'];
@@ -219,15 +221,33 @@ export class CreateClassComponent {
       this.instructorList = res;
     });
 
+    // forkJoin({
+    //   courses: this._classService.getAllCoursesTitle('active'),
+    //   dropDowns: this._classService.getDropDowns(userId, 'meetingPlatform'),
+    // }).subscribe((response) => {
+    //   this.courseList = response.courses.reverse();
+    //   this.meetingPlatforms = response.dropDowns?.data?.meetingPlatform;
+    //   console.log(response.dropDowns);
+    //   this.cd.detectChanges();
+    // });
+
     forkJoin({
       courses: this._classService.getAllCoursesTitle('active'),
       dropDowns: this._classService.getDropDowns(userId, 'meetingPlatform'),
+      checkedActions: this.getCheckedMeetingActions(userId),
     }).subscribe((response) => {
       this.courseList = response.courses.reverse();
-      this.meetingPlatforms = response.dropDowns?.data?.meetingPlatform;
-      // console.log(response.dropDowns);
+    
+      const allowedTitles = response.checkedActions.map((a: any) => a.title);
+    
+      this.meetingPlatforms = response.dropDowns?.data?.meetingPlatform?.filter(
+        (platform: any) => allowedTitles.includes(platform.name)
+      );
+    
+      console.log('Filtered Meeting Platforms:', this.meetingPlatforms);
       this.cd.detectChanges();
     });
+    
 
     this.configurationSubscription =
       this.studentsService.configuration$.subscribe((configuration) => {
@@ -247,11 +267,49 @@ export class CreateClassComponent {
     this.getForms();
     this.getDepartments();
     this.getUserGroups();
+    // this.getCheckedMeetingActions();
   }
 
   get registrationStartDate() {
     return this.classForm.get('registrationStartDate')?.value;
   }
+
+
+  getCheckedMeetingActions(userId: string): Observable<any[]> {
+    return this.adminService.getUserTypeList({ allRows: true }, userId).pipe(
+      map((response: any) => {
+        const userType = localStorage.getItem('user_type');
+        const data = response.filter((item: any) => item.typeName === userType);
+  
+        const settingsItems = data[0].settingsMenuItems?.filter(
+          (item: any) => item.title === 'Integration'
+        );
+  
+        const checkedActions: any[] = [];
+  
+        function extractCheckedActions(items: any[]) {
+          items.forEach((item) => {
+            if (item.actions?.length) {
+              const checked = item.actions.filter((a: any) => a.checked === true);
+              checkedActions.push(...checked);
+            }
+            if (item.children?.length) {
+              extractCheckedActions(item.children);
+            }
+          });
+        }
+  
+        if (settingsItems?.length) {
+          extractCheckedActions(settingsItems);
+        }
+  
+        return checkedActions;
+      })
+    );
+  }
+  
+  
+  
 
   loadSavedFormData() {
     const savedFormData = localStorage.getItem('classFormData');

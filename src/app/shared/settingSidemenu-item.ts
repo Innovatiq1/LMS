@@ -594,7 +594,18 @@ SETTING_SIDEMENU_LIST =[
             "title": "Virtual Meetings",
             "id": "virtual-meetings",
             "class": "ml-menu",
-            "actions": [],
+            "actions": [
+              {
+              "title": "Zoom",
+              "id": "zoom",
+              "class": "ml-menu3"
+            },
+            {
+              "title": "Teams",
+              "id": "teams",
+              "class": "ml-menu3"
+            },
+          ],
             "children": []
           }
         ]

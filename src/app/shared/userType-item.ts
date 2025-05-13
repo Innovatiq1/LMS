@@ -1861,7 +1861,18 @@ MENU_LIST =[
           "title": "Virtual Meetings",
           "id": "virtual-meetings",
           "children": [],
-          "actions": [],
+          "actions": [
+            {
+              "title": "Zoom",
+              "id": "zoom",
+              "class": "ml-menu3"
+            },
+            {
+              "title": "Teams",
+              "id": "teams",
+              "class": "ml-menu3"
+            },
+          ],
           "isAction": false,
           "checked": true,
           "indeterminate": false,
