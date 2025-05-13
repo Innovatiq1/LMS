@@ -1,0 +1,83 @@
+:host {
+    display: block;
+    min-height: 600px;
+    padding: 60px;
+  }
+
+.form-card {
+  width: 150%;
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+mat-label {
+  display: none;
+}
+.button-wrapper {
+  margin-top: 20px;
+}
+
+.is-invalid{
+  border-color: red;
+}
+
+.text-danger{
+  color: red;
+  font-weight: bold;
+}
+
+hr {
+  margin: 30px 0;
+}
+
+.preview-field {
+  margin-bottom: 20px;
+}
+
+.preview-field label {
+  font-weight: 500;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.form-control {
+  width: 85%;
+  min-width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.preview-field {
+  padding-bottom: 8px;
+  border-bottom: 1px dashed #ccc;
+  margin-bottom: 10px;
+}
+
+.field-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.ms-3 {
+  margin-left: 1rem;
+}
+
+.mt-4 {
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 600px) {
+  .form-card {
+    width: 95%;
+    padding: 16px;
+  }
+}

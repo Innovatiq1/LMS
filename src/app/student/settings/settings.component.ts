@@ -851,6 +851,9 @@ export class SettingsComponent {
       this.studentDb = response?.data?.docs;
     });
   }
+  goToRegistrationForm() {
+    this.router.navigate(['/student/registration-form']);
+  }
   getDepartments() {
     this.studentService.getAllDepartments().subscribe((response: any) => {
       this.dept = response.data.docs;

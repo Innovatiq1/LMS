@@ -1719,6 +1719,18 @@ MENU_LIST =[
           "isLeaf": true
         },
         {
+          "title": "Registration List",
+          "id": "all-survey",
+          "children": [],
+          "actions": [
+          ],
+          "isAction": false,
+          "checked": true,
+          "indeterminate": false,
+          "class": "ml-menu",
+          "isLeaf": true
+        },
+        {
           "title": "Meeting Platform",
           "id": "meeting-platform",
           "children": [],

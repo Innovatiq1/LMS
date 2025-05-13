@@ -1,0 +1,182 @@
+<mat-tab-group [(selectedIndex)]="selectedTabIndex" class="mt-4">
+  <mat-tab label="Site Registration">
+    <div class="mt-4">
+    </div>
+  </mat-tab>
+
+  <mat-tab label="3rd Party Website Integration">
+    <div class="mt-4">
+    </div>
+  </mat-tab>
+</mat-tab-group>
+
+<mat-card class="form-card">
+  <form (ngSubmit)="addField()" #fieldForm="ngForm">
+    <!-- <mat-form-field appearearance="outline" class="w-100">
+      <mat-label>Company</mat-label>
+      <mat-select [(ngModel)]="selectedCompanyId" name="selectedCompanyId" required>
+        <mat-option value="" disabled>Select a company</mat-option>
+        <mat-option *ngFor="let company of activeCompanies" [value]="company._id">{{ company.company }}</mat-option>
+        <mat-option *ngFor="let company of activeCompanies" [value]="company._id">{{ company._id }}</mat-option>
+      </mat-select>
+    </mat-form-field> -->
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Company</mat-label>
+      <mat-select
+        [(ngModel)]="selectedCompanyId"
+        name="selectedCompanyId"
+        required>
+        
+        <mat-option value="" disabled>
+          Select a company
+        </mat-option>
+        
+        <mat-option
+          *ngFor="let company of activeCompanies"
+          [value]="company._id">
+          {{ company.company }} ({{ company._id }})
+        </mat-option>
+        
+      </mat-select>
+    </mat-form-field>
+    
+
+    <mat-form-field appearance="outline">
+      <mat-label>Label</mat-label>
+      <!-- <span *ngIf="field.required" class="text-danger">*</span> -->
+      <input matInput type="text" [(ngModel)]="newField.label" name="label" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Field Type</mat-label>
+      <mat-select [(ngModel)]="newField.type" name="type" (selectionChange)="onFieldTypeChange()">
+        <mat-option *ngFor="let t of fieldTypes" [value]="t">{{ t }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+
+    <div *ngIf="newField.type === 'Password'" class="password-settings mt-3">
+
+      <label>Password strength:</label>
+      <mat-radio-group [(ngModel)]="newField.strength" name="strength" required>
+        <mat-radio-button value="normal">Normal</mat-radio-button>
+        <mat-radio-button value="strong">Strong</mat-radio-button>
+      </mat-radio-group>
+
+
+      <div class="d-flex gap-3 mt-2">
+        <mat-form-field appearance="outline">
+          <mat-label>Min length</mat-label>
+          <input matInput type="number" [(ngModel)]="newField.minLength" name="minLength" required [min]="1" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Max length</mat-label>
+          <input matInput type="number" [(ngModel)]="newField.maxLength" name="maxLength" required
+            [min]="newField.minLength || 1" />
+        </mat-form-field>
+      </div>
+    </div>
+
+
+    <div *ngIf="showOptions()">
+      <label>Options:</label>
+
+      <div *ngIf="newField.options">
+        <div *ngFor="let opt of newField.options; let i = index" class="d-flex align-items-center mb-2">
+          <mat-form-field appearance="outline" class="flex-grow-1">
+            <input matInput [(ngModel)]="newField.options[i]" [name]="'option' + i" />
+          </mat-form-field>
+          <button mat-icon-button color="warn" type="button" (click)="removeNewOption(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <button mat-button color="primary" type="button" (click)="addOption()">+ Add Option</button>
+    </div>
+
+    <mat-slide-toggle [(ngModel)]="newField.required" name="required">Required</mat-slide-toggle>
+
+    <div class="button-wrapper">
+      <button mat-raised-button color="primary" type="submit">Add Field</button>
+    </div>
+  </form>
+
+  <hr />
+
+  <h3 class="mt-4">Preview:</h3>
+  <ul>
+    <div *ngFor="let field of fields; let i = index" class="preview-field mb-3">
+      <div class="form-group row align-items-center">
+        <label class="col-sm-3 col-form-label">{{ field.label }}<span *ngIf="field.required"
+            class="text-danger">*</span>
+        </label>
+        <div class="col-sm-7">
+          <ng-container [ngSwitch]="field.type.trim().toLowerCase()">
+            <input *ngSwitchCase="'text'" type="text" class="form-control" />
+            <input *ngSwitchCase="'password'" type="password" class="form-control" />
+            <textarea *ngSwitchCase="'textarea'" class="form-control"></textarea>
+            <input *ngSwitchCase="'number'" type="number" class="form-control" />
+            <input *ngSwitchCase="'email'" type="email" class="form-control" />
+            <input *ngSwitchCase="'date'" type="date" class="form-control" />
+            <input *ngSwitchCase="'upload'" type="file" class="form-control" />
+
+            <select *ngSwitchCase="'dropdown'" class="form-control">
+              <option *ngFor="let opt of field.options">{{ opt }}</option>
+            </select>
+
+            <div *ngSwitchCase="'checkbox'" class="form-check">
+              <div *ngFor="let opt of field.options">
+                <input type="checkbox" /> {{ opt }}
+              </div>
+            </div>
+
+            <div *ngSwitchCase="'radio'">
+              <mat-radio-group [(ngModel)]="field.value" [name]="'radio' + i">
+                <mat-radio-button *ngFor="let opt of field.options" [value]="opt">
+                  {{ opt }}
+                </mat-radio-button>
+              </mat-radio-group>
+            </div>
+
+            <p *ngSwitchDefault class="text-muted">Unsupported field type: {{ field.type }}</p>
+          </ng-container>
+        </div>
+
+        <div class="col-sm-2 text-end">
+          <button mat-icon-button color="warn" (click)="removeField(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <button mat-icon-button color="primary" (click)="editField(i)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </ul>
+
+  <div class="d-flex justify-content-end body sticky-save">
+    <button class="btn-space" mat-raised-button color="primary" type="submit" id="submit" (click)="saveSurvey()">
+      Save
+    </button>
+  </div>
+</mat-card>
+
+<!-- <mat-card *ngIf="generatedCode || generatedApiEndpoint" class="mt-4">
+  <mat-card-title>Integration Details</mat-card-title>
+  <mat-card-content>
+    <h4>  Generate Code</h4>
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Copy the code below to your website</mat-label>
+      <textarea matInput [value]="generatedCode" readonly rows="8">{{ generatedCode }}</textarea>
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="copyText(generatedCode)">Copy Generate Code</button>
+    <h4 class="mt-4">API Endpoint</h4>
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>API Endpoint</mat-label>
+      <input matInput [value]="generatedApiEndpoint" readonly />
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="copyText(generatedApiEndpoint)">Copy API Endpoint</button>
+  </mat-card-content>
+</mat-card>  -->

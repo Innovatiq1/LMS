@@ -1,0 +1,73 @@
+<section class="content">
+    <div class="content-block">
+      <div class="block-header">
+        <app-breadcrumb></app-breadcrumb>
+      </div>
+      <mat-tab-group >
+        <mat-tab label="Registration list"></mat-tab>
+        <mat-tab label="Third party registration list"></mat-tab>
+      </mat-tab-group>
+      <div class="card">
+        <div class="materialTableHeader">
+          <div class="right">
+            <ul class="tbl-export-btn">
+              <li>
+                <div class="m-l-10" matTooltip="ADD">
+                  <button mat-raised-button id="submit" [routerLink]="['/student/survey-form/survey-registration']">
+                    Create
+                  </button>
+                </div>
+              </li>
+              <li class="tbl-search-box">
+                <label for="search-input"><i class="material-icons search-icon">search</i></label>
+                <input placeholder="Search" type="text" #filter class="browser-default search-field"
+                  aria-label="Search box" [(ngModel)]="searchTerm" (input)="performSearch()" />
+              </li>        
+            </ul>
+          </div>
+        </div>
+       
+        <div class="body overflow-auto">
+          <table mat-table [dataSource]="dataSource" class="mat-cell advance-table">
+  
+          <ng-container matColumnDef="companyName">
+            <mat-header-cell *matHeaderCellDef> Company </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{ row.company?.name }} </mat-cell>
+          </ng-container>
+
+  
+            <ng-container matColumnDef="title">
+              <mat-header-cell *matHeaderCellDef> Title </mat-header-cell>
+              <mat-cell *matCellDef="let row"> {{ row.title }} </mat-cell>
+            </ng-container>
+  
+            <ng-container matColumnDef="fieldCount">
+              <mat-header-cell *matHeaderCellDef> Fields </mat-header-cell>
+              <mat-cell *matCellDef="let row"> {{ getFieldCount(row.fields) }} </mat-cell>
+            </ng-container>
+  
+            <ng-container matColumnDef="actions">
+              <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+              <mat-cell *matCellDef="let row">
+                <button mat-icon-button color="primary" (click)="editSurvey(row)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="confirmDelete(row)">
+                  <mat-icon>delete</mat-icon>
+                </button>   
+              </mat-cell>
+            </ng-container>
+  
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </table>
+            <div *ngIf="dataSource.data.length === 0" class="text-center py-3 no-data-text">
+            No surveys found.
+          </div>
+        </div>
+      </div>
+  
+    
+    </div>
+  </section>
+  

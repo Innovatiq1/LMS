@@ -2,151 +2,139 @@
   <div class="row auth-main">
     <div class="col-sm-6 px-0 d-none d-sm-block">
       <div class="slideshow">
-        <img *ngFor="let image of images; let i = index" [src]="'' + image" [alt]="'Psa-login' + (i + 1)"
-          [class.active]="i === currentIndex">
-      </div>
-    </div>
-    <div class="col-sm-6 auth-form-section">
-      <div class="form-section">
-        <div class="auth-wrapper">
-          <h2 class="welcome-msg mt-4">  {{ 'Register with ' + (domain | translate) }} 
-            <!-- <span *ngIf="tmsUrl">TMS</span>
-            <span *ngIf="lmsUrl">LMS</span> -->
- </h2>
-          <select (change)="setLanguage($event)">
-            <option *ngFor="let item of listLang" [value]="item.lang">
-              {{item.text}}
-            </option>
-          </select>
-          <p class="auth-signup-text text-muted">{{"Enter details to create your account" | translate}}</p>
-          <div class="flex-sb-m w-full text-center mb-3">
-            <div>
-              <span style="font-style: italic;">{{"Already Registered?" | translate}} 
-                <a (click)="signin()"
-                class="sign-up-link pointer">{{"Sign in" | translate}}
-              </a>
-              </span>
-            </div>
-          </div>
-          <form class="validate-form" [formGroup]="authForm" (ngSubmit)="onSubmit()">
-            <div class="row mt-2">
-              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
-                <label>{{"Name" | translate}} <span class="mandatory">*</span></label>
-                <mat-form-field class="example-full-width" appearance="outline">
-                  <input matInput formControlName="name" required>
-                  <mat-icon class="material-icons-two-tone color-icon p-3" matSuffix>face</mat-icon>
-                  <mat-error *ngIf="authForm.get('name')?.hasError('required')">
-                    {{"Enter Name " | translate}}
-                  </mat-error>
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="row mt-2">
-              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
-                <label>{{ "Email" | translate }} <span class="mandatory">*</span></label>
-                <mat-form-field class="example-full-width" appearance="outline">
-                  <input matInput formControlName="email" required>
-                  <mat-icon class="material-icons-two-tone color-icon p-3" matSuffix>mail</mat-icon>
-                  <mat-error *ngIf="authForm.get('email')?.hasError('required') && authForm.get('email')?.touched">
-                    {{ "Enter email" | translate }}
-                  </mat-error>
-                  <mat-error *ngIf="authForm.get('email')?.hasError('email') && authForm.get('email')?.touched">
-                    {{ "Enter a valid email" | translate }}
-                  </mat-error>
-                </mat-form-field>
-              </div>
-            </div>
-           <div class="row mt-2">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
-              <label>{{"Gender" | translate}} <span class="mandatory">*</span></label>
-              <mat-form-field
-                class="example-full-width"
-                appearance="outline"
-              >
-                <mat-select formControlName="gender" required>
-                  <mat-option [value]="'male'">{{"Male" | translate}}</mat-option>
-                  <mat-option [value]="'female'"> {{"Female" | translate}} </mat-option>
-                  <mat-option [value]="'other'"> {{"Other" | translate}} </mat-option>
-                </mat-select>
-                <mat-error
-                  *ngIf="authForm.get('gender')?.hasError('required')"
-                >
-                  {{"Select Gender" | translate}}
-                </mat-error>
-              </mat-form-field>
-            </div>
-           </div>
-           
-           <div class="row mt-2">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
-              <label>{{ "Password" | translate }} <span class="mandatory">*</span></label>
-              <mat-form-field class="example-full-width" appearance="outline">
-                <input matInput formControlName="password" [type]="hide ? 'password' : 'text'" required>
-                <mat-icon matSuffix (click)="hide = !hide">
-                  {{ hide ? 'visibility_off' : 'visibility' }}
-                </mat-icon>
-          
-                <mat-error *ngIf="authForm.get('password')?.hasError('required')">
-                  {{ "Enter Password" | translate }}
-                </mat-error>
-          
-                <!-- Custom error message for password strength -->
-                <mat-error *ngIf="authForm.get('password')?.hasError('passwordStrength')">
-                  <div>Password does not meet the requirements:</div>
-                  <ul class="error-list">
-                    <li>Minimum 8 characters</li>
-                    <li>At least one uppercase letter (A-Z)</li>
-                    <li>At least one lowercase letter (a-z)</li>
-                    <li>At least one digit (0-9)</li>
-                    <li>At least one special character (&#64;$!%*?&)</li>
-                  </ul>
-                </mat-error>
-              </mat-form-field>
-            </div>
-          </div>
-          
-          <!-- Confirm Password field -->
-          <div class="row mt-2" class="password-error-shown" [ngClass]="{'error-visible': isPasswordWeak}">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
-              <label>{{ "Confirm Password" | translate }} <span class="mandatory">*</span></label>
-              <mat-form-field class="example-full-width" appearance="outline">
-                <input matInput formControlName="cpassword" [type]="chide ? 'password' : 'text'" required>
-                <mat-icon matSuffix (click)="chide = !chide">
-                  {{ chide ? 'visibility_off' : 'visibility' }}
-                </mat-icon>
-          
-                <mat-error *ngIf="authForm.get('cpassword')?.hasError('required')">
-                  {{ "Enter Confirm Password" | translate }}
-                </mat-error>
-          
-                <!-- Custom error message for password mismatch -->
-                <mat-error *ngIf="authForm.get('cpassword')?.hasError('confirmedValidator')">
-                  Password and Re-Enter Password should match.
-                </mat-error>
-              </mat-form-field>
-            </div>
-          </div>
-          
-          
-          
-          
-          
-          
-          
-          
-            <div  class="invalid-text"*ngIf="submitted" >
-              {{email}}
-                </div>
-            <div class="container-auth-form-btn">
-              <button mat-raised-button color="primary" class="auth-form-btn" [disabled]="!authForm.valid "
-                type="submit">
-                {{"Register" | translate}}
-              </button>
-            </div>
-          </form>
-        </div>
+  <img *ngFor="let image of images; let i = index" 
+       [src]="image" 
+       [alt]="'Slide ' + i" 
+       [class.active]="i === currentIndex">
       </div>
     </div>
 
+    <div class="col-sm-6 auth-form-section">
+      <div class="form-section">
+        <div class="auth-wrapper">
+          <h2 class="welcome-msg mt-4">Register with UAT</h2>
+          <p class="auth-signup-text text-muted">Enter details to create your account</p>
+
+          <div class="text-center mt-3">
+            <p class="text-muted">
+              Already have an account? <a routerLink="/authentication/TMS/signin">Signin</a>
+            </p>
+          </div>
+
+          <form [formGroup]="signupForm" (ngSubmit)="submitForm()">
+            <div *ngFor="let field of fields" class="mb-3">
+              <label>{{ field.label }} <span class="mandatory" *ngIf="field.required">*</span></label>
+          
+              <ng-container [ngSwitch]="field.type">
+            
+                <mat-form-field *ngSwitchCase="'Text'" appearance="outline" class="example-full-width">
+                  <input matInput type="text" [formControlName]="field.label" [placeholder]="field.placeholder || ''">
+                </mat-form-field>
+          
+            
+                <mat-form-field *ngSwitchCase="'Email'" appearance="outline" class="example-full-width">
+                  <input matInput type="email" [formControlName]="field.label" [placeholder]="field.placeholder || ''">
+                </mat-form-field>
+          
+   
+                <mat-form-field *ngSwitchCase="'Number'" appearance="outline" class="example-full-width">
+                  <input matInput type="number" [formControlName]="field.label" [placeholder]="field.placeholder || ''">
+                </mat-form-field>
+
+                <mat-form-field *ngSwitchCase="'Password'" appearance="outline" class="example-full-width">
+                  <input matInput type="password" [formControlName]="field.label" [placeholder]="field.placeholder || ''">
+                </mat-form-field>
+   
+                <mat-form-field *ngSwitchCase="'Date'" appearance="outline" class="example-full-width">
+                  <input matInput
+                         [matDatepicker]="picker"
+                         [formControlName]="field.label"
+                         [max]="maxDate"
+                         (dateChange)="checkDobValidation(field, $event)"
+                         [ngClass]="{'is-invalid': field.isInvalidDob}"
+                         [placeholder]="field.placeholder || ''">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+          
+                <div *ngIf="field.isInvalidDob" class="text-danger mt-1" style="font-size: 13px;">
+                  Invalid date. Please select a past date.
+                </div>
+       
+                <mat-form-field *ngSwitchCase="'Dropdown'" appearance="outline" class="example-full-width">
+                  <mat-select [formControlName]="field.label" [placeholder]="field.placeholder || ''">
+                    <mat-option *ngFor="let option of field.options" [value]="option">{{ option }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+          
+  
+                <div *ngSwitchCase="'radio'" class="radio-group">
+                  <mat-radio-group [formControlName]="field.label">
+                    <mat-radio-button *ngFor="let option of field.options" [value]="option">
+                      {{ option }}
+                    </mat-radio-button>
+                  </mat-radio-group>
+                </div>
+          
+    
+                <div *ngSwitchCase="'Checkbox'" class="checkbox-group">
+                  <div *ngFor="let option of field.options">
+                    <mat-checkbox (change)="onCheckboxChange($event, field.label)" [value]="option">{{ option }}</mat-checkbox>
+                  </div>
+                </div>
+
+                <div *ngSwitchCase="'Upload'" class="example-full-width">
+                  <mat-form-field appearance="outline" class="example-full-width">
+                    <input matInput type="text" [value]="signupForm.get(field.label)?.value?.name || ''" disabled placeholder="No file chosen">
+                  </mat-form-field>
+                  <input type="file" (change)="onFileChange($event, field.label)" hidden #fileInput>
+                  <button mat-raised-button type="button" (click)="fileInput.click()">Choose File</button>
+                </div>  
+       
+                <mat-form-field *ngSwitchDefault appearance="outline" class="example-full-width">
+                  <input matInput type="text" [formControlName]="field.label" [placeholder]="field.placeholder || ''">
+                </mat-form-field>
+              </ng-container>
+          
+              <mat-error *ngIf="signupForm.get(field.label)?.hasError('required') && signupForm.get(field.label)?.touched">
+                {{ field.label }} is required.
+              </mat-error>
+          
+              <mat-error *ngIf="signupForm.get(field.label)?.hasError('email') && signupForm.get(field.label)?.touched">
+                Enter a valid email.
+              </mat-error>
+          
+              <mat-error *ngIf="signupForm.get(field.label)?.hasError('pattern') && signupForm.get(field.label)?.touched">
+                Enter a valid value.
+              </mat-error>
+          
+              <mat-error *ngIf="signupForm.get(field.label)?.hasError('minlength') && signupForm.get(field.label)?.touched">
+                {{ field.label }} must be at least {{ field.minLength }} characters.
+              </mat-error>
+          
+              <mat-error *ngIf="signupForm.get(field.label)?.hasError('maxlength') && signupForm.get(field.label)?.touched">
+                {{ field.label }} must be no more than {{ field.maxLength }} characters.
+              </mat-error>
+          
+              <mat-error *ngIf="signupForm.get(field.label)?.hasError('strongPassword') && signupForm.get(field.label)?.touched">
+                Password must contain uppercase, lowercase, number, and special character.
+              </mat-error>
+ 
+              <mat-error *ngIf="field.label === 'Confirm Password' && signupForm.get(field.label)?.hasError('mismatch') && signupForm.get(field.label)?.touched">
+                Passwords do not match.
+              </mat-error>
+            </div>
+          
+            <div class="container-auth-form-btn">
+              <button mat-raised-button color="primary" type="submit" [disabled]="signupForm.invalid">
+                Sign Up
+              </button>
+            </div>
+          </form>
+          
+          
+        </div>
+      </div>
+    </div>
   </div>
 </div>
