@@ -273,6 +273,13 @@ SETTING_SIDEMENU_LIST =[
             "children": []
           },
           {
+            "title": "SurveyForm",
+            "id": "create-feedback",
+            "class": "ml-menu",
+            "actions": [],
+            "children": []
+          },
+          {
             "title": "Logo",
             "id": "logo-customization",
             "class": "ml-menu",
@@ -498,6 +505,14 @@ SETTING_SIDEMENU_LIST =[
                 "class": "ml-menu3"
               }
             ],
+            "children": []
+          },
+          {
+            "title": "Registration List",
+            "id": "all-survey",
+            // "id": "forms",
+            "class": "ml-menu",
+            "actions": [],
             "children": []
           },
           {

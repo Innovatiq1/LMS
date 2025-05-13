@@ -1,284 +1,198 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import {
-  AbstractControl,
-  FormGroup,
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  ValidationErrors,
-  Validators,
-} from '@angular/forms';
-import { LanguageService } from '@core/service/language.service';
-import { RegistrationService } from '@core/service/registration.service';
-import { Users } from '@core/models/user.model';
+import { FormBuilder, FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
+import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import {
-  SearchCountryField,
-  //TooltipLabel,
-  CountryISO
-} from "ngx-intl-tel-input";
-import { ConfirmedValidator } from '@shared/password.validator';
-import { CommonService } from '@core/service/common.service';
-import { UserService } from '@core/service/user.service';
+import { SurveyService } from '@core/service/survey.service';
+import { passwordStrengthValidator } from '@core/customvalidator';
+import {passwordValidator} from '@core/validators/password-validator'
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.scss'],
+  styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent implements OnInit {
-  phoneNumber: any;
-  SearchCountryField = SearchCountryField;
-  //TooltipLabel = TooltipLabel;
-  CountryISO = CountryISO;
-  preferredCountries: CountryISO[] = [CountryISO.Qatar];
-  
-  userData = { username: '', email: '', password: '', cpassword: '', type:'',role:''};
-  message = '';
-  loading = false;
-  isLoading = false;
-  error = '';
-  isSubmitted = false;
-  email: any;
-  authForm!: UntypedFormGroup;
-  langStoreValue?: string;
-  submitted = false;
-  returnUrl!: string;
-  hide = true;
-  chide = true;
-  user: any;
-  passwordMatchValidator: any;
-  tmsUrl: boolean;
-  lmsUrl: boolean;
-  extractedName: string;
-  domain: any;
-  
-  constructor(
-    private formBuilder: UntypedFormBuilder,
-    private route: ActivatedRoute,
-    private router: Router,
-    private translate: LanguageService,
-    private registration: RegistrationService,
-    private commonService: CommonService,
-    private userService: UserService
-  ) { 
-    let urlPath = this.router.url.split('/')
-    this.tmsUrl = urlPath.includes('TMS');
-    this.lmsUrl = urlPath.includes('LMS');
-    this.extractedName = urlPath[1];
-    this.userService.getCompanyByIdentifierWithoutToken(this.extractedName).subscribe(
-      (res: any) => {
-        this.domain = res[0]?.company;
-     
-    this.authForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      email: ['',[Validators.required,Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)] ],
-      password: ['', [Validators.required,this.passwordStrengthValidator]],
-      cpassword: [''],
-      gender: ['', Validators.required]
-      
-    },{
-
-
-      validator: ConfirmedValidator('password', 'cpassword')
-    
-    });
-  })
-  }
-
-
-  listLang = [
-    { text: 'English', flag: 'assets/images/flags/us.svg', lang: 'en' },
-    { text: 'Chinese', flag: 'assets/images/flags/spain.svg', lang: 'ch' },
-    { text: 'Tamil', flag: 'assets/images/flags/germany.svg', lang: 'ts' },
+  signupForm!: FormGroup;
+  maxDate!: Date;
+  fields: any[] = [];
+  submittedData: any = null;
+  images: string[] = [
+    'assets/images/login/Learning.jpeg',
+    // 'assets/images/login/learning2.jpg',
+    // 'assets/images/login/learning4.jpg',
   ];
+  currentIndex = 0;
 
-  // passwordStrengthValidator(control: AbstractControl): ValidationErrors | null {
-  //   const value = control.value || '';
+  constructor(
+    private fb: FormBuilder,
+    private surveyService: SurveyService,
+    private router: Router
+  ) { }
 
-  //   if (!value) {
-  //     return null; // If the field is empty, return null (required validation will handle it)
-  //   }
-
-  //   // Regular expression for strong password
-  //   const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-
-  //   return strongPasswordRegex.test(value) ? null : { passwordStrength: true };
-  // }
-
-  signin(){
-
-    if(this.tmsUrl){
-      this.commonService.navigateWithCompanyName(this.extractedName,'authentication/TMS/signin')
-    } else if(this.lmsUrl){
-      this.commonService.navigateWithCompanyName(this.extractedName,'authentication/LMS/signin')
-
-    }
+  ngOnInit(): void {
+    this.fetchSignupFields();
+    setInterval(() => {
+      this.currentIndex = (this.currentIndex + 1) % this.images.length;
+    }, 3000); 
+    const today = new Date();
+    this.maxDate = new Date(today.setDate(today.getDate() - 1));
   }
-  ngOnInit() {
-    
-    this.startSlideshow()
-    this.authForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      email: [
-        '',
-        [Validators.required, Validators.email, Validators.minLength(5)],
-      ],
-      gender:['', Validators.required],
-      //phone: ['', [Validators.required]],
-      //phone:[Validators.required, Validators.minLength(10)],
-      password: ['', [Validators.required, this.passwordValidator]],
-      cpassword: ['']
-    },{ 
-      validator: this.confirmedValidator('password', 'cpassword') 
-      // validators: this.passwordMatchValidator,
-      
+
+  fetchSignupFields() {
+    this.surveyService.getLatestSurvey().subscribe({
+      next: (res) => {
+        console.log('dataaaa',res)
+        this.fields = res.fields || [];
+        this.buildForm();
+      },
+      error: (err) => {
+        console.error('Failed to fetch signup fields:', err);
+      }
     });
-    // get return url from route parameters or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-    
+  }
+
+  buildForm() {
+    const group: any = {};
+
+    this.fields.forEach(field => {
+      const validators = [];
+      const controlName = this.sanitizeControlName(field.label);
+
+      if (field.required) validators.push(Validators.required);
+      if (field.type === 'Text') validators.push(Validators.minLength(3));
+      if (field.type === 'Dropdown') validators.push(Validators.required);
+      if (field.type === 'radio') validators.push(Validators.required);
+      if (field.type === 'Password') {
+        validators.push(Validators.minLength(8));
+        validators.push(Validators.maxLength(20));
+        validators.push(passwordValidator(field));  // Apply the custom password validator
+      }
+      if (field.type === 'Email') validators.push(Validators.email);
+      if (field.type === 'Number') validators.push(Validators.pattern(/^\d+$/));
+      if (field.type === 'Phone') validators.push(Validators.pattern(/^\d{10}$/));
+      if (field.type === 'TextArea') validators.push(Validators.maxLength(500));
+      if (field.type === 'File' || field.type === 'Date') validators.push(Validators.required);
+
+      if (field.type === 'Checkbox') {
+        validators.push((control: AbstractControl) => {
+          return control.value && control.value.length > 0 ? null : { required: true };
+        });
+        group[controlName] = new FormControl([], validators);
+      } else {
+        group[controlName] = new FormControl('', validators);
+      }
+    });
+
+    // Create form with validator
+    this.signupForm = new FormGroup(group, { validators: this.passwordMatchValidator.bind(this) });
+  }
+
+  sanitizeControlName(label: string): string {
+    return label.toLowerCase().replace(/\s+/g, '');
+  }
+
+  passwordMatchValidator(form: AbstractControl): { [key: string]: any } | null {
+    const passwordCtrl = form.get('password');
+    const confirmCtrl = form.get('confirmpassword');
+
+    if (!passwordCtrl || !confirmCtrl) return null;
+
+    const password = passwordCtrl.value;
+    const confirmPassword = confirmCtrl.value;
+
+    return password === confirmPassword ? null : { mismatch: true };
+  }
+
+  getErrorMessage(controlName: string): string {
+    const control = this.signupForm.get(controlName);
+    if (!control) return '';
+    if (control.hasError('required')) return `${controlName} is required`;
+    if (control.hasError('email')) return `Please enter a valid email`;
+    if (control.hasError('passwordStrength')) return `Password must be stronger`;
+    if (control.hasError('mismatch')) return `Passwords do not match`;
+    if (control.hasError('pattern')) return `Invalid input for ${controlName}`;
+    return 'Invalid input';
+  }
+
+  submitForm() {
+    if (this.signupForm.invalid) {
+      this.signupForm.markAllAsTouched();
+      Swal.fire('Error', 'Please fill all required fields correctly.', 'error');
+      return;
+    }
+
+    const data = this.signupForm.value;
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to create your account?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.surveyService.createUser(data).subscribe({
+          next: (res) => {
+            this.submittedData = data;
+            Swal.fire({
+              title: 'Registration Successful',
+              text: "Our team will verify and contact you shortly",
+              icon: 'success',
+              timer: 5000,
+              showConfirmButton: false
+            }).then(() => {
+              this.router.navigate(['/authentication/LMS/signin']);
+            });
+          },
+          error: (err) => {
+            Swal.fire({
+              title: 'Registration Failed',
+              text: "You have exceeded your limit, please contact Admin to upgrade",
+              icon: 'error',
+            });
+          }
+        });
+      }
+    });
+  }
+  checkDobValidation(field: any, event: any): void {
+    const selectedDate = new Date(event.value);
+    const maxAllowedDate = new Date();
+    maxAllowedDate.setHours(0, 0, 0, 0);
+    maxAllowedDate.setDate(maxAllowedDate.getDate() - 1); // yesterday
+  
+    selectedDate.setHours(0, 0, 0, 0);
+  
+    field.isInvalidDob = selectedDate > maxAllowedDate;
   }
   
-  get f() {
-    return this.authForm.controls;
-  }
-  onSubmit() {
-    
-    if (this.authForm.valid) {
-      const userData: Users = this.authForm.value;
-      this.userService.getCompanyByIdentifierWithoutToken(this.extractedName).subscribe(
-        (res: any) => {
-
-            userData.type = res[0]?.learner;
-            userData.users = res[0]?.users;
-            userData.companyId = res[0]?.companyId;
-            userData.company = res[0]?.company;
-            userData.domain = res[0]?.identifier;
-
-
-      userData.role = res[0]?.learner;
-      this.registration.registerUser(userData).subscribe(
-        (response: any) => {
-          if(response.status === 'success' && !response.data.status ){
-          Swal.fire({
-            title: 'Registration Successful',
-            text: "We have sent an email to you, check your email,to  know the status of your acount",
-            icon: 'success',
-          });
-          this.commonService.navigateWithCompanyName(this.extractedName,'authentication/LMS/signin')
-        } else {
-          Swal.fire({
-            title: 'Registration Failed',
-            text: "You have exceeded your limit, please contact Admin to upgrade",
-            icon: 'error',
-          });
-        }
-        },
-        (error: any) => {
-          this.submitted = true;
-          this.email=error
-        }
-      );
-    })
-    }
-    this.submitted = true;
-    
-  }
-  get isPasswordWeak(): boolean {
-    console.log("ggggg",this.authForm.get('password')?.hasError('passwordStrength') ?? false)
-    return this.authForm.get('password')?.hasError('passwordStrength') ?? false;
-  }
-  passwordStrengthValidator(control: AbstractControl): ValidationErrors | null {
-    const value = control.value || '';
-
-    if (!value) {
-      return null; // If the field is empty, return null (required validation will handle it)
-    }
-
-    // Regular expression for strong password
-    const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-
-    return strongPasswordRegex.test(value) ? null : { passwordStrength: true };
-  }
-  passwordValidator(control: AbstractControl) {
-    const value = control.value;
-    if (!value) {
-      return null;  // Return null if no value (empty input)
-    }
-
-    const hasUpperCase = /[A-Z]/.test(value);
-    const hasLowerCase = /[a-z]/.test(value);
-    const hasNumber = /\d/.test(value);
-    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(value);
-    const isValidLength = value.length >= 8;
-
-    const passwordValid = hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar && isValidLength;
-
-    return !passwordValid ? { passwordStrength: true } : null;  // Return error if not valid
-  }
-
-  // Validator for confirming passwords match
-  confirmedValidator(password: string, cpassword: string) {
-    return (formGroup: FormGroup) => {
-      const passwordControl = formGroup.controls[password];
-      const confirmPasswordControl = formGroup.controls[cpassword];
-
-      if (confirmPasswordControl.errors && !confirmPasswordControl.errors['confirmedValidator']) {
-        return;
-      }
-
-      if (passwordControl.value !== confirmPasswordControl.value) {
-        confirmPasswordControl.setErrors({ confirmedValidator: true });
-      } else {
-        confirmPasswordControl.setErrors(null);
-      }
-    };
-  }
-
-
-  setLanguage(event: any) {
-    // this.countryName = text;
-    // this.flagvalue = flag;
-    this.langStoreValue = event.target.value;
-    this.translate.setLanguage(event.target.value);
-  }
-  images: string[] = ['/assets/images/login/Learning.jpeg', '/assets/images/login/learning2.jpg', '/assets/images/login/learning4.jpg'];
-  currentIndex = 0;
   startSlideshow() {
     setInterval(() => {
       this.currentIndex = (this.currentIndex + 1) % this.images.length;
-    }, 4000);
+    }, 3000);
   }
 
-  // passwordStrengthValidator(control: AbstractControl) {
-  //   const value = control.value || '';
-  //   const hasUpperCase = /[A-Z]+/.test(value);
-  //   const hasLowerCase = /[a-z]+/.test(value);
-  //   const hasNumeric = /[0-9]+/.test(value);
-  //   const hasSpecialChar = /[@$!%*?&]+/.test(value);
-  //   const hasValidLength = value.length >= 8;
+  onFileChange(event: any, controlName: string) {
+    const file = event.target.files[0];
+    if (file) {
+      const control = this.signupForm.get(controlName);
+      control?.setValue(file);
+      control?.markAsTouched();
+    }
+  }
 
-  //   const passwordValid = hasUpperCase && hasLowerCase && hasNumeric && hasSpecialChar && hasValidLength;
+  onCheckboxChange(event: any, controlName: string) {
+    const control = this.signupForm.get(controlName);
+    let currentValue = control?.value || [];
 
-  //   if (!passwordValid) {
-  //     return { passwordStrength: true };
-  //   }
-  //   return null;
-  // }
-
-  // Confirm password validator
-  confirmPasswordValidator(control: AbstractControl) {
-    if (!control || !control.parent) {
-      return null;
+    if (event.checked) {
+      currentValue.push(event.source.value);
+    } else {
+      currentValue = currentValue.filter((val: string) => val !== event.source.value);
     }
 
-    const password = control.parent.get('password');
-    const confirmPassword = control;
-
-    if (password && confirmPassword && password.value !== confirmPassword.value) {
-      return { confirmedValidator: true };
-    }
-
-    return null;
+    control?.setValue(currentValue);
+    control?.markAsTouched();
   }
 }

@@ -9,7 +9,8 @@ import { InstructorLeaveRequestComponent } from './teacher/leave-request/leave-r
 import { LoginGuard } from '@core/guard/login.guard';
 import { ViewComponent } from './student/leave-request/view/view.component';
 import { RescheduledCoursesComponent } from './student/rescheduled-courses/rescheduled-courses.component';
-
+import { SurveyRegistrationComponent } from './student/settings/survey-registration/survey-registration.component';
+import { AllSurveyComponent } from './student/settings/all-survey/all-survey.component';
 const routes: Routes = [
  
   {
@@ -31,11 +32,20 @@ const routes: Routes = [
         canActivate: [LoginGuard],
       },
       {
+        path: 'student/registration-form',
+        component: SurveyRegistrationComponent
+      },      
+      {
         path: 'instructor',
         loadChildren: () =>
           import('./teacher/teacher.module').then((m) => m.TeacherModule),
         canActivate: [LoginGuard],
       },
+      {
+       path: 'student/all-survey',
+       component: AllSurveyComponent,
+      },
+
       {
         path: 'student',
         loadChildren: () =>

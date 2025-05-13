@@ -94,8 +94,12 @@ import { SocialLoginComponent } from './settings/social-login/social-login.compo
 import { ZoomKeysComponent } from './settings/zoom-keys/zoom-keys.component';
 import { MeetingPlatformComponent } from './settings/meeting-platform/meeting-platform.component';
 import { UpdateMeetingPlatformComponent } from './settings/meeting-platform/update-meeting-platform/update-meeting-platform.component';
+
 import { ScormPkgComponent } from './settings/scorm-pkg/scorm-pkg.component';
 import { ScormPkgCreateComponent } from 'app/student/settings/scorm-pkg/scorm-pkg-create/scorm-pkg-create.component';
+
+import { SurveyRegistrationComponent } from './settings/survey-registration/survey-registration.component';
+import { AllSurveyComponent } from './settings/all-survey/all-survey.component';
 const routes: Routes = [
   {
     path: 'enrollment/course',
@@ -319,13 +323,14 @@ const routes: Routes = [
     path: 'settings/configuration/time-algorithm',
     component: TimeComponent
   },
-
+  {
+    path: 'settings/configuration/all-survey',
+    component: AllSurveyComponent
+  },
   {
     path: 'settings/configuration/discount',
     component: DiscountComponent
   },
-
-
   {
     path: 'settings/customize/certificate/template',
     component: CertificateTemplateComponent
