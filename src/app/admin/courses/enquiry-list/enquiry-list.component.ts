@@ -203,13 +203,13 @@ export class EnquiryListComponent {
       .subscribe({
         next: (res: any) => {
           console.log('Conversion result:', res);
-  
+          let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
           const adminUserPayload = {
             name: enquiry.name,
             email: enquiry.email,
-            gender: enquiry.gender,
-            password: 'Default@123',
-            companyId: enquiry.companyId || "acd2934b-0924-4d5c-8ca5-96bab0d2895f",
+            gender: enquiry.gender || '',
+            password: enquiry.gender||'',
+            companyId: userId ,
             superAdmin: false,
             type: 'Trainee',
             traineeStatus: 'Converted',
@@ -339,12 +339,14 @@ export class EnquiryListComponent {
       this.siteDataSource = res;
       console.log('Fetched registration data:', this.siteDataSource);
       if (res.length > 0 && res[0].responses) {
+        console.log('Dynamic columns:', res[0].responses);
         this.dynamicColumns = Object.keys(res[0].responses);
+        
         const excludedColumns = ['password', 'Confirmpassword', 'type'];
         this.dynamicColumns = this.dynamicColumns.filter(
           (column) => !excludedColumns.includes(column)
         );
-        console.log('Dynamic columns:', this.dynamicColumns);
+        // console.log('Dynamic columns:', this.dynamicColumns);
         this.dynamicColumns.push('actions');
       }
     });
