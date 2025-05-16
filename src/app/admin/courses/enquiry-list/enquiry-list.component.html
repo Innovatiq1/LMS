@@ -80,7 +80,7 @@
                 <ng-container matColumnDef="Fee Type">
                   <mat-header-cell *matHeaderCellDef class="compulsory-count-header">Fee Type
                   </mat-header-cell>
-                  <mat-cell *matCellDef="let row"> <span class="mobile-label">Fee Type:</span>{{row.courseId.feeType |
+                  <mat-cell *matCellDef="let row"> <span class="mobile-label">Fee Type:</span>{{row?.courseId?.feeType |
                     titlecase}}
                   </mat-cell>
                 </ng-container>
@@ -193,12 +193,12 @@
                   <ng-container [ngSwitch]="col">
 
                     <ng-container *ngSwitchCase="'picture'">
-                      <img [src]="element.responses[col]?.url || element.responses[col]" alt="Picture" width="40"
+                      <img [src]="element?.responses[col]?.url || element?.responses[col]" alt="Picture" width="40"
                         height="40" style="border-radius: 50%; object-fit: cover;" />
                     </ng-container>
 
                     <ng-container *ngSwitchCase="'dob'">
-                      {{ element.responses[col] | date:'dd/MM/yyyy' }}
+                      {{ element?.responses[col] | date:'dd/MM/yyyy' }}
                     </ng-container>
 
                     <ng-container *ngSwitchCase="'actions'">

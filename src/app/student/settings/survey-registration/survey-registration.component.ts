@@ -39,10 +39,9 @@ export class SurveyRegistrationComponent {
   options: any;
   isThirdParty: any;
   activeCompanies: any[] = [];
-  // selectedCompany: any;
-  selectedCompanyId: string = '';
-  currentCompanyId: string = '';
-
+  selectedCompanyId!: string;
+companyName:string='';
+  dialogStatus:boolean=false;
   fieldTypes = ['radio', 'Text', 'Textarea', 'Password', 'Checkbox', 'Upload', 'Dropdown', 'Date', 'Email', 'Number'];
 
   newField: FormField = {
@@ -59,7 +58,13 @@ export class SurveyRegistrationComponent {
   };
 
   editIndex: number | null = null;
-
+  breadscrums = [
+    {
+      title: 'Registration Form',
+      items: [''],
+      active: 'Site Registration',
+    },
+  ];
   constructor(
     private surveyService: SurveyService,
     private router: Router,
@@ -68,38 +73,32 @@ export class SurveyRegistrationComponent {
   ) { }
 
   ngOnInit() {
+    const userData = JSON.parse(localStorage.getItem('user_data')!);
+  this.companyName = userData.user.company;
     this.route.queryParams.subscribe(params => {
       const surveyId = params['surveyId'];
       if (surveyId) {
         this.loadSurveyById(surveyId);
       }
     });
+    this.fetchSignupFields();
     // this.getCurrentUserAndLoadCompany();
 
-    this.loadActiveCompanies();
+    // this.loadActiveCompanies();
   }
-  loadActiveCompanies() {
-    this.surveyService.getActiveCompanies().subscribe({
-      next: (data) => {
-        console.log('Active companies:', data);
-        this.activeCompanies = data;
-      },
-      error: (err) => {
-        console.error('Error fetching active companies:', err);
-      }
-    });
-  }
- 
-  // checkDobValidation(field: any) {
-  //   if (field.type.toLowerCase() === 'date') { 
-  //   const selectedDate = new Date(field.value);
-  //   const today = new Date();
-
-  //   selectedDate.setHours(0, 0, 0, 0);
-  //   today.setHours(0, 0, 0, 0);
-  //   field.isInvalidDob = selectedDate >= today;
-  //  }
+  // loadActiveCompanies() {
+  //   this.surveyService.getActiveCompanies(this.alwaysSelectedCompanyId).subscribe({
+  //     next: (data) => {
+      
+  //       this.activeCompanies = data;
+      
+  //     },
+  //     error: (err) => {
+  //       console.error('Error fetching active companies:', err);
+  //     }
+  //   });
   // }
+ 
 
 loadSurveyById(id: string) {
   const isThirdParty = this.selectedTabIndex === 1;
@@ -294,7 +293,7 @@ saveSurvey() {
           next: () => {
             console.log('resultss');
             Swal.fire('Saved!', 'Your survey has been saved.', 'success');
-            this.router.navigate(['student/all-survey']);
+            // this.router.navigate(['student/all-survey']);
           },
           error: err => {
             console.error(err);
@@ -304,6 +303,19 @@ saveSurvey() {
       }
     });
   }
+}
+
+fetchSignupFields() {
+  this.surveyService.getLatestSurvey().subscribe({
+    next: (res) => {
+      console.log('dataaaa',res)
+      this.fields = res.fields || [];
+      // this.buildForm();
+    },
+    error: (err) => {
+      console.error('Failed to fetch signup fields:', err);
+    }
+  });
 }
   
 }
