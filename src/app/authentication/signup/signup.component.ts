@@ -22,7 +22,7 @@ export class SignupComponent implements OnInit {
     // 'assets/images/login/learning4.jpg',
   ];
   currentIndex = 0;
-
+  CompanyId!: string;
   constructor(
     private fb: FormBuilder,
     private surveyService: SurveyService,
@@ -30,6 +30,8 @@ export class SignupComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    const userData = JSON.parse(localStorage.getItem('user_data')!);
+    this.CompanyId = userData.user.companyId;
     this.fetchSignupFields();
     setInterval(() => {
       this.currentIndex = (this.currentIndex + 1) % this.images.length;
@@ -39,9 +41,8 @@ export class SignupComponent implements OnInit {
   }
 
   fetchSignupFields() {
-    this.surveyService.getLatestSurvey().subscribe({
+    this.surveyService.getLatestSurvey(this.CompanyId).subscribe({
       next: (res) => {
-        console.log('dataaaa',res)
         this.fields = res.fields || [];
         this.buildForm();
       },

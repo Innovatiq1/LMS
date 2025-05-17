@@ -3,6 +3,7 @@ import { Component, NgZone } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SurveyService } from '@core/service/survey.service';
 import { co } from '@fullcalendar/core/internal-common';
+import { environment } from 'environments/environment.development';
 import Swal from 'sweetalert2';
 
 interface FormField {
@@ -27,6 +28,7 @@ export class SurveyRegistrationComponent {
     { label: 'Email', key: 'email', type: 'email', placeholder: 'Enter your email' },
     { label: 'Phone', key: 'phone', type: 'tel', placeholder: 'Enter your phone' }
   ];
+   private baseUrl = environment.apiEndpointNew
   surveyList: any[] = [];
   selectedTabIndex = 0;
   generatedCode: string = '';
@@ -41,6 +43,7 @@ export class SurveyRegistrationComponent {
   activeCompanies: any[] = [];
   selectedCompanyId!: string;
 companyName:string='';
+surveyId: string = '';
   dialogStatus:boolean=false;
   fieldTypes = ['radio', 'Text', 'Textarea', 'Password', 'Checkbox', 'Upload', 'Dropdown', 'Date', 'Email', 'Number'];
 
@@ -74,6 +77,7 @@ companyName:string='';
 
   ngOnInit() {
     const userData = JSON.parse(localStorage.getItem('user_data')!);
+    this.selectedCompanyId = userData.user.companyId;
   this.companyName = userData.user.company;
     this.route.queryParams.subscribe(params => {
       const surveyId = params['surveyId'];
@@ -201,6 +205,12 @@ showIntegrationOptions(embedCode: string, apiEndpoint: string) {
   });
 }
 
+sendBtn(){
+  const surveyId =  this.selectedCompanyId;
+  console.log("surrrr",surveyId);
+  this.router.navigate(['/student/thirdparty/form'], { queryParams: { surveyId } });
+}
+
 generateEmbeddedCode() {
   const surveyId = this.editingSurveyId;
   if (!surveyId) {
@@ -208,8 +218,9 @@ generateEmbeddedCode() {
     return;
   }
 
-  const embedCode = `<iframe src="http://localhost:3001/thirdParty/thirdparty/${surveyId}" width="100%" height="400px" frameborder="0"></iframe>`;
-  const apiEndpoint = `http://localhost:3001/thirdParty/thirdparty/${surveyId}`;
+  const formUrl = `${this.baseUrl}thirdparty/form/${surveyId}`;
+  const embedCode = `<iframe src="${formUrl}" width="100%" height="500px" frameborder="0"></iframe>`;
+  const apiEndpoint = `${this.baseUrl}x-api/v1/thirdparty/url/${surveyId}`;
 
   this.generatedCode = embedCode;
   this.generatedApiEndpoint = apiEndpoint;
@@ -306,9 +317,10 @@ saveSurvey() {
 }
 
 fetchSignupFields() {
-  this.surveyService.getLatestSurvey().subscribe({
+  this.surveyService.getLatestSurvey(this.selectedCompanyId).subscribe({
     next: (res) => {
-      console.log('dataaaa',res)
+      console.log('dataaaa',res._id)
+      this.surveyId = res._id;
       this.fields = res.fields || [];
       // this.buildForm();
     },
