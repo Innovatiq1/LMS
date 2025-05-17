@@ -1,0 +1,44 @@
+
+<section class="content mt-5">
+  <div class="content-block">
+    <div class="block-header mt-5" >
+    
+    
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+              <h3>Survey Form</h3>
+            </div>
+            <div class="card-body">
+              <div *ngIf="surveyData">
+                <form #surveyForm="ngForm" (ngSubmit)="submitForm(surveyForm)">
+                  <div *ngFor="let field of surveyData.fields">
+                    <label>{{ field.label }}</label>
+                    <input
+                      [type]="field.type.toLowerCase()"
+                      [name]="field.label.toLowerCase()"
+                      [(ngModel)]="field.value"
+                      [required]="field.required"
+                      class="form-control"
+                    />
+                  </div>
+                  <button type="submit">Submit</button>
+                </form>
+              </div>
+              </div>
+             
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+</section>
+
+
+
+
+
+  

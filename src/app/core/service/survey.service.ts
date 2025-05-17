@@ -8,7 +8,7 @@ import { environment } from 'environments/environment.development';
 export class SurveyService {
   
   // private baseUrl = '${this.baseUrl}form/survey';
-  private baseUrl = environment.Url
+  private baseUrl = environment.apiEndpointNew
 
   constructor(private http: HttpClient) {}
 
@@ -18,15 +18,14 @@ export class SurveyService {
     //  return resultss
   }
   createthirdpartySurvey(data: any): Observable<any> {
-    console.log('Creating survey with data:', data);  
    return this.http.post<any>(`${this.baseUrl}thirdParty/thirdparty`, data);
   }
  
-  getLatestSurvey() {
-    console.log('fetching with data:');
 
-    return this.http.get<any>(`${this.baseUrl}form/last`);
+  getLatestSurvey(companyId: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}form/last/${companyId}`);
   }
+
 
   getAllSurveys(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}form/survey`);

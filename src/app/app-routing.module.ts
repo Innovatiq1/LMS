@@ -11,6 +11,7 @@ import { ViewComponent } from './student/leave-request/view/view.component';
 import { RescheduledCoursesComponent } from './student/rescheduled-courses/rescheduled-courses.component';
 import { SurveyRegistrationComponent } from './student/settings/survey-registration/survey-registration.component';
 import { AllSurveyComponent } from './student/settings/all-survey/all-survey.component';
+import { ThridPartyFormComponent } from './student/settings/thrid-party-form/thrid-party-form.component';
 const routes: Routes = [
  
   {
@@ -34,7 +35,11 @@ const routes: Routes = [
       {
         path: 'student/registration-form',
         component: SurveyRegistrationComponent
-      },      
+      },    
+      {
+        path: 'student/thirdparty/form',
+        component: ThridPartyFormComponent
+      },  
       {
         path: 'instructor',
         loadChildren: () =>

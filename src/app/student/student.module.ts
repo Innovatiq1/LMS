@@ -135,6 +135,7 @@ import { ScormPkgCreateComponent } from './settings/scorm-pkg/scorm-pkg-create/s
 
 import { SurveyRegistrationComponent } from './settings/survey-registration/survey-registration.component';
 import { AllSurveyComponent } from './settings/all-survey/all-survey.component';
+import { ThridPartyFormComponent } from './settings/thrid-party-form/thrid-party-form.component';
 
 @NgModule({
   declarations: [
@@ -237,7 +238,7 @@ import { AllSurveyComponent } from './settings/all-survey/all-survey.component';
     TutorialQuestionsComponent,
     DocumentViewComponent,
     SocialLoginComponent,    
-    SafePipe, ZoomKeysComponent, ObjectDetectionComponent, MeetingPlatformComponent, UpdateMeetingPlatformComponent, TermsDialogComponent, ScormPkgComponent, ScormPkgCreateComponent,SurveyRegistrationComponent, AllSurveyComponent
+    SafePipe, ZoomKeysComponent, ObjectDetectionComponent, MeetingPlatformComponent, UpdateMeetingPlatformComponent, TermsDialogComponent, ScormPkgComponent, ScormPkgCreateComponent,SurveyRegistrationComponent, AllSurveyComponent, ThridPartyFormComponent
    // SafeUrlPipe,
   ],
   imports: [
