@@ -49,6 +49,7 @@ import {
 
 import { SurveyService } from '@core/service/survey.service';
 import { el } from '@fullcalendar/core/internal-common';
+import { environment } from 'environments/environment.development';
 
 @Component({
   selector: 'app-enquiry-list',
@@ -68,6 +69,15 @@ export class EnquiryListComponent {
     // 'instructorFee',
   ];
 
+  // Fixed columns for site and third party tables
+  fixedColumns = [
+    'name',
+    'email',
+    'gender',
+    'mobile',
+    'qualification',
+    'actions'
+  ];
   
   sitePaginationModel: SitePaginationModel = {
     page: 1,
@@ -94,6 +104,7 @@ export class EnquiryListComponent {
   filteredDataSource: any[] = []; // Data filtered based on search input
 
   siteDataSource: any[] = [];
+  externalSiteDataSource: any[] = [];
   dynamicColumns: string[] = [];
   userRegistrationData: any[] = [];
   isConverting = false;
@@ -122,6 +133,7 @@ export class EnquiryListComponent {
   userGroupIds: any;
   dispalyedColumns: string[] = [];
   enquiryList: any;
+  public apiurl = environment.apiEndpointNew;
   constructor(
     public _classService: ClassService,
     private snackBar: MatSnackBar,
@@ -136,24 +148,11 @@ export class EnquiryListComponent {
   }
 
   ngOnInit(): void {
-    // const roleDetails =this.authenService.getRoleDetails()[0].menuItems
-    // let urlPath = this.router.url.split('/');
-    // const parentId = `${urlPath[1]}/${urlPath[2]}`;
-    // const childId =  urlPath[urlPath.length - 2];
-    // const subChildId =  urlPath[urlPath.length - 1];
-    // let parentData = roleDetails.filter((item: any) => item.id == parentId);
-    // let childData = parentData[0].children.filter((item: any) => item.id == childId);
-    // let subChildData = childData[0].children.filter((item: any) => item.id == subChildId);
-    // let actions = subChildData[0].actions
-    // let viewAction = actions.filter((item:any) => item.title == 'View')
-
-    // if(viewAction.length >0){
-    //   this.isView = true;
-    // }
+   
     this.surveyService.getAllSurveys().subscribe(
       (data: any[]) => {
-        this.dataSource = data;  // All surveys or data
-        this.filteredDataSource = [...this.dataSource];  // Initialize filtered data
+        this.dataSource = data;  
+        this.filteredDataSource = [...this.dataSource];  
       },
       (error) => {
         console.error('Error fetching data:', error);
@@ -190,130 +189,109 @@ export class EnquiryListComponent {
  
   convertToTrainee(enquiry: any) {
     if (this.isConverting) return;
-  
     this.isConverting = true;
-  
-    const payload = {
-      name: enquiry.name,
-      email: enquiry.email,
-      gender: enquiry.gender
+
+    const adminUserPayload: any = {
+      superAdmin: false,
+      type: 'Trainee',
+      traineeStatus: 'Converted',
+      users: 1000
     };
-  
-    this.http.post('http://localhost:3001/x-api/v1/admin/convert-to-trainee', payload)
+    
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    
+    // Match common fields by attr
+    const commonFields = ['name', 'email', 'gender', 'mobile', 'qualification'];
+    commonFields.forEach(field => {
+      const value = this.findFieldValueByAttr(enquiry, field);
+      if (value) {
+        adminUserPayload[field] = value;
+      }
+    });
+
+    // Handle profile image/avatar
+    for (const key in enquiry.responses) {
+      const field = enquiry.responses[key];
+      if (field && field.type === 'Upload') {
+        if (field.value && field.value.path) {
+          adminUserPayload.avatar = field.value.path;
+          break;
+        }
+      }
+    }
+
+    // If no Upload type found, try looking for profile image specifically
+    if (!adminUserPayload.avatar) {
+      for (const key in enquiry.responses) {
+        if (key.toLowerCase().includes('profile') && 
+           (key.toLowerCase().includes('image') || key.toLowerCase().includes('photo'))) {
+          const img = enquiry.responses[key];
+          if (img.value && typeof img.value === 'object' && img.value.path) {
+            adminUserPayload.avatar = img.value.path;
+            break;
+          }
+        }
+      }
+    }
+
+    // Handle password which can come in various forms
+    const password = this.findFieldValueByAttr(enquiry, 'password');
+    if (password) {
+      adminUserPayload.password = password;
+    }
+
+    // Add company ID
+    adminUserPayload.companyId = userId;
+
+    // Handle special case for qualifications
+    if (adminUserPayload.qualification) {
+      adminUserPayload.qualifications = [{
+        description: adminUserPayload.qualification
+      }];
+      delete adminUserPayload.qualification;
+    }
+
+    console.log('Payload with avatar:', adminUserPayload); // Debug log
+
+    this.http.post(`${environment.apiUrl}admin/adminUserListing`, adminUserPayload)
       .subscribe({
-        next: (res: any) => {
-          console.log('Conversion result:', res);
-          let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-          const adminUserPayload = {
-            name: enquiry.name,
-            email: enquiry.email,
-            gender: enquiry.gender || '',
-            password: enquiry.gender||'',
-            companyId: userId ,
-            superAdmin: false,
-            type: 'Trainee',
-            traineeStatus: 'Converted',
-            users: 1000
+        next: (saveRes: any) => {
+          // After successful user save, call convert-to-trainee
+          const convertPayload = {
+            companyId: adminUserPayload.companyId,
+            email: adminUserPayload.email
           };
-  
-          this.http.post('http://localhost:3001/api/admin/adminUserListing', adminUserPayload)
+
+          this.http.post(`${this.apiurl}admin/convert-to-trainee`, convertPayload)
             .subscribe({
-              next: (saveRes: any) => {
-                console.log('User data saved successfully:', saveRes);
-  
-                this.http.delete(`http://localhost:3001/x-api/v1/admin/delete-enquiry/${enquiry.email}`)
-                  .subscribe({
-                    next: () => {
-                      // this.enquiryList = this.enquiryList.filter((item: { email: any; }) => item.email !== enquiry.email);
-                      Swal.fire({
-                        title: 'Success!',
-                        text: 'User converted to Trainee',
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                      }).then(() => {
-                        this.router.navigate(['/student/settings/all-user/all-students']);
-                      });
-  
-                      this.isConverting = false;
-                    },
-                    error: (deleteErr) => {
-                      console.error('Delete Error:', deleteErr);
-                      Swal.fire('Error', 'Converted but failed to delete enquiry.', 'warning');
-                      this.isConverting = false;
-                    }
-                  });
+              next: (convertRes: any) => {
+                Swal.fire({
+                  title: 'Success!',
+                  text: 'User converted to Trainee',
+                  icon: 'success',
+                  confirmButtonText: 'OK'
+                }).then(() => {
+                  this.router.navigate(['/student/settings/all-user/all-students']);
+                });
+                this.isConverting = false;
               },
-              error: (saveErr) => {
-                console.error('Error saving user data:', saveErr);
-                Swal.fire('Error', 'Failed to save user data!', 'error');
+              error: (convertErr) => {
+                console.error('Convert Error:', convertErr);
+                Swal.fire('Warning', 'User saved but conversion failed', 'warning');
                 this.isConverting = false;
               }
             });
         },
-        error: (err) => {
-          console.error('Conversion Error:', err);
-          Swal.fire('Error', 'Conversion failed or no match found.', 'error');
+        error: (saveErr) => {
+          console.error('Error saving user data:', saveErr);
+          Swal.fire('Error', 'Failed to save user data!', 'error');
           this.isConverting = false;
         }
       });
   }
   
 
-  // convertToTrainee(enquiry: any) {
-  //   if (this.isConverting) return;
-
-  //   this.isConverting = true;
-  //   const payload = {
-  //     name: enquiry.name,
-  //     email: enquiry.email,
-  //     gender: enquiry.gender
-  //   };
-  //     this.http.post('http://localhost:3001/x-api/v1/admin/convert-to-trainee', payload)
-  //     .subscribe({
-  //       next: (res: any) => {
-  //         console.log('Conversion result:', res);
-          
-  //         const adminUserPayload = {
-  //           name: enquiry.name,
-  //           email: enquiry.email,
-  //           gender: enquiry.gender,
-  //           password: 'Default@123',              
-  //           companyId: enquiry.companyId || "acd2934b-0924-4d5c-8ca5-96bab0d2895f",
-  //           superAdmin: false,
-  //           type: 'Trainee' ,
-  //           traineeStatus: 'Converted' , 
-  //           users: 1000           
-  //         };
-  //         this.http.post('http://localhost:3001/api/admin/adminUserListing', adminUserPayload)
-          
-  //           .subscribe({
-  //             next: (saveRes: any) => {
-  //               console.log('User data saved successfully:', saveRes);
-  //               this.showNotification('bg-success', 'User data saved and converted to Trainee!', 'top', 'right');
-  //               this.router.navigate(['/student/settings/all-user/all-students']);
-  //             },
-  //             error: (saveErr) => {
-  //               this.showNotification('bg-danger', 'Failed to save user data!', 'top', 'right');
-  //               console.error('Error saving user data:', saveErr);
-  //               this.isConverting = false;
-  //             }
-  //           });
-  //       },
-  //       error: (err) => {
-  //         this.showNotification('bg-danger', 'Conversion failed or no match.', 'top', 'right');
-  //         console.error('Conversion Error:', err);
-  //         this.isConverting = false;
-  //       }
-  //     });
-  // }
-
-  // convertToTrainee(enquiry: any) {
-  //   const payload = {
-  //     name: enquiry.name,
-  //     email: enquiry.email,
-  //     gender: enquiry.gender
-  //   };
-
+ 
     showNotification(
     colorName: string,
     text: string,
@@ -336,19 +314,20 @@ export class EnquiryListComponent {
   
   getSiteRegistrationData() {
     this.surveyService.getUserRegistration().subscribe((res: any) => {
-      this.siteDataSource = res;
-      console.log('Fetched registration data:', this.siteDataSource);
-      if (res.length > 0 && res[0].responses) {
-        console.log('Dynamic columns:', res[0].responses);
-        this.dynamicColumns = Object.keys(res[0].responses);
-        
-        const excludedColumns = ['password', 'Confirmpassword', 'type'];
-        this.dynamicColumns = this.dynamicColumns.filter(
-          (column) => !excludedColumns.includes(column)
-        );
-        // console.log('Dynamic columns:', this.dynamicColumns);
-        this.dynamicColumns.push('actions');
-      }
+      // Sort data based on type
+      const siteData = res.filter((item: any) => 
+        item.responses && item.responses.type && item.responses.type.value === 'site'
+      );
+      
+      const externalData = res.filter((item: any) => 
+        item.responses && item.responses.type && item.responses.type.value === 'thirdparty'
+      );
+      
+      this.siteDataSource = siteData;
+      this.externalSiteDataSource = externalData;
+      
+      this.userRegistrationData = res;
+      this.changeDetectorRef.detectChanges();
     });
   }
 
@@ -548,8 +527,7 @@ export class EnquiryListComponent {
       sortByDirection: this.sitePaginationModel.sortByDirection,
     };
   
-
-    this.http.get<SitePaginationModel>('http://localhost:3001/x-api/v1/admin/responses/site', { params })
+    this.http.get<SitePaginationModel>(`${this.apiurl}admin/responses/site`, { params })
       .subscribe(
         (response) => {
           this.sitePaginationModel.docs = response.docs;
@@ -609,7 +587,6 @@ export class EnquiryListComponent {
         'Status    ',
         'Course',
         'Course Fee',
-        // [`${AppConstants.INSTRUCTOR_ROLE} Fee`],
         'Start Date  ',
         'End date    ',
         'Registered Date',
@@ -619,13 +596,12 @@ export class EnquiryListComponent {
       user.studentId?.name,
       user?.status,
       user.classId?.courseId?.title,
-     '$ '+ user.classId?.courseId?.fee,
-      // '$ '+user.classId?.instructorCost,
+      '$ '+ user.classId?.courseId?.fee,
       user.classStartDate,
       user.classEndDate,
       formatDate(new Date(user.registeredOn), 'yyyy-MM-dd', 'en') || '',
     ]);
-    const columnWidths = [20, 20, 20, 20, 20, 20, 20, 20, 20, 20];
+
     (doc as any).autoTable({
       head: headers,
       body: data,
@@ -638,6 +614,94 @@ export class EnquiryListComponent {
     doc.save('Student-Approve-list.pdf');
   }
 
+  // Helper to find field values by matching the attr property from the registration data
+  findFieldValueByAttr(formData: any, attrToFind: string): any {
+    if (!formData || !formData.responses) return null;
+    
+    // Special case for email which is stored directly
+    if (attrToFind.toLowerCase() === 'email' && formData.responses.email) {
+      return formData.responses.email;
+    }
 
+    // Special case for qualification - check both direct and nested values
+    if (attrToFind.toLowerCase() === 'qualification') {
+      // First check if there's a direct qualification field
+      for (const key in formData.responses) {
+        const field = formData.responses[key];
+        if (field?.attr?.toLowerCase() === 'qualification') {
+          return field.value;
+        }
+      }
+      // Then check for fields with qualification in their name
+      for (const key in formData.responses) {
+        if (key.toLowerCase() === 'qualification') {
+          return formData.responses[key].value;
+        }
+      }
+    }
+    
+    // Loop through all form fields in responses
+    for (const key in formData.responses) {
+      if (formData.responses.hasOwnProperty(key)) {
+        const field = formData.responses[key];
+        
+        // Check if field's attr matches or the key/field name matches
+        if (
+          (field?.attr && field.attr.toString().toLowerCase() === attrToFind.toLowerCase()) ||
+          key.toLowerCase() === attrToFind.toLowerCase()
+        ) {
+          return field.value;
+        }
+      }
+    }
+    
+    return null;
+  }
 
+  getImageUrl(response: any): string {
+    if (!response || !response.responses) {
+      return '../assets/login/sign-up.jpg';
+    }
+    
+    try {
+      for (const key in response.responses) {
+        const field = response.responses[key];
+        
+        if (field && field.type && field.type === 'Upload') {
+          if (field.value && field.value.path) {
+            return field.value.path;
+          } else if (field.value && field.value.filename) {
+            return `${environment.apiEndpointNew}/uploads/register-image/${field.value.filename}`;
+          }
+        }
+      }
+      
+      for (const key in response.responses) {
+        if (key.toLowerCase().includes('profile') && 
+           (key.toLowerCase().includes('image') || key.toLowerCase().includes('photo'))) {
+          const img = response.responses[key];
+          if (img.value && typeof img.value === 'object') {
+            if (img.value.path) {
+              return img.value.path;
+            }
+            if (img.value.filename) {
+              return `${environment.apiEndpointNew}/uploads/register-image/${img.value.filename}`;
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Error accessing image path:', error);
+    }
+    
+    return 'assets/login/sign-up.jpg';
+  }
+
+  // Handle image loading errors with TypeScript type safety
+  handleImageError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    if (img) {
+      img.src = 'assets/login/sign-up.jpg';
+    }
+  }
 }

@@ -13,7 +13,7 @@
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <div class="card" style="height: fit-content">
           <div class="body">
-            <mat-tab-group [(selectedIndex)]="selectedTabIndex" class="mt-4">
+            <mat-tab-group [(selectedIndex)]="selectedTabIndex" (selectedTabChange)="onTabChange($event)" class="mt-4">
               <mat-tab label="Site Registration">
                 <div class="mt-4"></div>
               </mat-tab>
@@ -24,24 +24,14 @@
             </mat-tab-group>
 
             <div class="form-card">
-              <form (ngSubmit)="addField()" #fieldForm="ngForm">
+              <form (ngSubmit)="$event.preventDefault(); addField()" #fieldForm="ngForm">
                 <div class="row">
                   <div class="col-12">
                     <mat-form-field appearance="outline" class="w-100">
                       <mat-label>Company</mat-label>
                       <input matInput [value]="companyName" readonly />
                     </mat-form-field>
-                    <!-- <mat-form-field appearance="outline" class="w-100">
-                      <mat-label>Company</mat-label>
-                      <mat-select [(ngModel)]="selectedCompanyId" name="selectedCompanyId" required>
-                        <mat-option
-                          *ngFor="let company of activeCompanies"
-                          [value]="company._id"
-                        >
-                          {{ company.company }} ({{ company._id }})
-                        </mat-option>
-                      </mat-select>
-                    </mat-form-field> -->
+                   
                   </div>
                   <div class="row">
                     <div class="col-3">
@@ -73,6 +63,21 @@
                         </mat-select>
                       </mat-form-field>
                     </div>
+                    <div class="col-3">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Attributes</mat-label>
+                        <mat-select
+                          [(ngModel)]="newField.attr"
+                          name="attr"
+                        >
+                          <mat-option
+                            *ngFor="let t of attr"
+                            [value]="t"
+                            >{{ t }}</mat-option
+                          >
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
 
                     <div class="col-3 mt-3">
                       <mat-slide-toggle
@@ -86,7 +91,6 @@
                   <div class="row">
                     <div class="col-8" *ngIf="newField.type === 'Password'">
                       <div>
-                        <!-- <label>Password strength:</label> -->
                         <mat-radio-group
                           [(ngModel)]="newField.strength"
                           name="strength"
@@ -99,7 +103,7 @@
                             >Strong</mat-radio-button
                           >
                         </mat-radio-group>
-                        <div class="d-flex gap-3">
+                        <div class="d-flex gap-3" *ngIf="newField.type === 'Password'">
                           <mat-form-field appearance="outline">
                             <mat-label>Min length</mat-label>
                             <input
@@ -141,6 +145,7 @@
                           matInput
                           [(ngModel)]="newField.options[i]"
                           [name]="'option' + i"
+                          (keydown.enter)="$event.preventDefault()"
                         />
                       </mat-form-field>
                       <button
@@ -166,8 +171,16 @@
 
                 <div class="button-wrapper">
                   <button mat-raised-button color="primary" type="submit">
-                    Add Field
+                    {{ editIndex !== null ? 'Update Field' : 'Add Field' }}
                   </button>
+                  <div *ngIf="getRestrictedFieldMessage()" class="restricted-field-warning mt-2">
+                    <mat-icon class="warning-icon">info</mat-icon>
+                    <span [innerHTML]="getRestrictedFieldMessage()"></span>
+                  </div>
+                  <div *ngIf="getAttributeValidationMessage()" class="restricted-field-warning mt-2">
+                    <mat-icon class="warning-icon">info</mat-icon>
+                    <span [innerHTML]="getAttributeValidationMessage()"></span>
+                  </div>
                 </div>
               </form>
 
@@ -187,64 +200,84 @@
                       >
                     </label>
                     <div class="col-sm-7">
-                      <ng-container
-                        [ngSwitch]="field.type.trim().toLowerCase()"
-                      >
+                      <ng-container [ngSwitch]="field.type.trim().toLowerCase()">
                         <input
                           *ngSwitchCase="'text'"
                           type="text"
                           class="form-control"
+                          [(ngModel)]="field.value"
+                          [name]="'field_' + i"
                         />
                         <input
                           *ngSwitchCase="'password'"
                           type="password"
                           class="form-control"
+                          [(ngModel)]="field.value"
+                          [name]="'field_' + i"
                         />
                         <textarea
                           *ngSwitchCase="'textarea'"
                           class="form-control"
+                          [(ngModel)]="field.value"
+                          [name]="'field_' + i"
                         ></textarea>
                         <input
                           *ngSwitchCase="'number'"
                           type="number"
                           class="form-control"
+                          [(ngModel)]="field.value"
+                          [name]="'field_' + i"
                         />
                         <input
                           *ngSwitchCase="'email'"
                           type="email"
                           class="form-control"
+                          [(ngModel)]="field.value"
+                          [name]="'field_' + i"
                         />
                         <input
                           *ngSwitchCase="'date'"
                           type="date"
                           class="form-control"
+                          [(ngModel)]="field.value"
+                          [name]="'field_' + i"
                         />
                         <input
                           *ngSwitchCase="'upload'"
                           type="file"
                           class="form-control"
+                          (change)="onFileSelected($event, field)"
+                          [name]="'field_' + i"
                         />
 
-                        <select *ngSwitchCase="'dropdown'" class="form-control">
-                          <option *ngFor="let opt of field.options">
+                        <select *ngSwitchCase="'dropdown'" class="form-control" [(ngModel)]="field.value" [name]="'field_' + i">
+                          <option value="">Select an option</option>
+                          <option *ngFor="let opt of field.options" [value]="opt">
                             {{ opt }}
                           </option>
                         </select>
 
                         <div *ngSwitchCase="'checkbox'" class="form-check">
                           <div *ngFor="let opt of field.options">
-                            <input type="checkbox" /> {{ opt }}
+                            <mat-checkbox
+                              [(ngModel)]="field.value"
+                              [value]="opt"
+                              [name]="opt"
+                            >
+                              {{ opt }}
+                            </mat-checkbox>
                           </div>
                         </div>
 
                         <div *ngSwitchCase="'radio'">
                           <mat-radio-group
                             [(ngModel)]="field.value"
-                            [name]="'radio' + i"
+                            [name]="'field_' + i"
                           >
                             <mat-radio-button
                               *ngFor="let opt of field.options"
                               [value]="opt"
+                              class="d-block mb-2"
                             >
                               {{ opt }}
                             </mat-radio-button>
@@ -276,9 +309,6 @@
                   </div>
                 </div>
               </ul>
-              <button  mat-icon-button
-              color="primary"
-              (click)="sendBtn()">test</button>
 
               <div class="d-flex justify-content-end body sticky-save">
                 <button

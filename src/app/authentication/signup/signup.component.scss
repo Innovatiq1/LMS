@@ -1,86 +1,204 @@
-auth-container {
-  display: flex;
-  min-height: 100vh;
-  flex-direction: row;
-  flex-wrap: wrap;
+// Modern registration form styling
+.auth-container {
+  height: 100%;
+}
 
+.auth-main {
+  height: 100%;
+  overflow: hidden;
+}
+
+// Signup-specific styles
+.signup-container {
+  height: 100vh;
+  overflow: hidden;
+  
   .auth-main {
-    width: 100%;
+    height: 100vh;
+    overflow: hidden;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: row;
   }
-
-  .auth-form-section {
-    flex: 1 1 50%;
-    padding: 2rem;
+  
+  .col-sm-6.px-0 {
+    height: 100vh;
+    position: fixed;
+    width: 50%;
+    left: 0;
+    top: 0;
+  }
+  
+  .slideshow {
+    height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e9f0f7 100%);
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 2;
-    background-color: #ffffff;
-
-    .form-section {
-      width: 100%;
-      max-width: 500px;
-    }
-
-    mat-form-field {
-      width: 100%;
-    }
-
-    .container-auth-form-btn {
-      display: flex;
-      justify-content: center;
-      margin-top: 20px;
+    position: relative;
+    overflow: hidden;
+    
+    img {
+      max-width: 100%;
+      height: auto;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      position: absolute;
+      object-fit: contain;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      
+      &.active {
+        opacity: 1;
+        z-index: 1;
+      }
     }
   }
-
-  .slideshow img {
+  
+  .auth-form-section {
     position: absolute;
+    right: 0;
+    width: 50%;
+    // height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    background-color: #fff;
+  }
+}
+
+.slideshow {
+  background: linear-gradient(135deg, #f5f7fa 0%, #e9f0f7 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-form-section {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+}
+
+.form-section {
+  width: 100%;
+  padding: 30px;
+}
+
+.auth-wrapper {
+  max-width: 450px;
+  margin: 0 auto;
+  padding: 20px 0;
+  
+  .welcome-msg {
+    font-size: 24px;
+    font-weight: 600;
+    color: #202124;
+    margin-bottom: 8px;
+  }
+  
+  .auth-signup-text {
+    color: #5f6368;
+    font-size: 16px;
+    margin-bottom: 30px;
+  }
+}
+
+// Form fields styling
+.form-field {
+  margin-bottom: 20px;
+  
+  .field-label {
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #202124;
+  }
+  
+  .mandatory {
+    color: #d93025;
+    margin-left: 4px;
+  }
+  
+  mat-form-field {
     width: 100%;
-    height: 100vh;
-    object-fit: cover;
-    opacity: 0;
-    transition: opacity 1s ease-in-out;
-    top: 0;
-    left: 0;
-    z-index: 1;
+    
+    ::ng-deep .mat-form-field-wrapper {
+      margin-bottom: 0;
+    }
+    
+    ::ng-deep .mat-form-field-flex {
+      background-color: #f8f9fa;
+      border-radius: 4px;
+    }
+    
+    ::ng-deep .mat-form-field-outline {
+      color: #dadce0;
+    }
+    
+    ::ng-deep .mat-form-field-infix {
+      padding: 0.5em 0;
+    }
+    
+    ::ng-deep .mat-form-field-label-wrapper {
+      top: -1.5em;
+    }
+    
+    ::ng-deep .mat-form-field-appearance-outline .mat-form-field-label {
+      margin-top: 0.4em;
+    }
+    
+    ::ng-deep .mat-icon {
+      color: #5f6368;
+    }
   }
   
-  .slideshow img.active {
-    opacity: 1;
-    z-index: 2;
+  // Radio and checkbox styling
+  .radio-group, .checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
+}
+
+// Submit button styling
+.container-auth-form-btn {
+  margin-top: 30px;
   
+  button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #1a73e8;
+    color: white;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    
+    &:disabled {
+      background-color: rgba(26, 115, 232, 0.5);
+    }
+    
+    &:hover:not(:disabled) {
+      background-color: #0d65d9;
+    }
+  }
+}
 
-  // .slideshow {
-  //   flex: 1 1 50%;
-  //   height: 100vh;
-  //   width: 100%;
-  //   background-repeat: no-repeat;
-  //   background-position: center center;
-  //   background-size: cover;
-  //   display: flex;
-  //   align-items: center;
-  //   justify-content: center;
-  //   padding: 30px 15px;
-  //   position: relative;
-  //   z-index: 1;
-  //   background-color: #f0f0f0;
+// Login link
+.login-link {
+  color: #1a73e8;
+  text-decoration: none;
+  font-weight: 500;
+  
+  &:hover {
+    text-decoration: underline;
+  }
+}
 
-    // img {
-    //   width: 100%;
-    //   height: 100vh;
-    //   object-fit: cover;
-    //   position: absolute;
-    //   opacity: 0;
-    //   transition: opacity 1s ease-in-out;
-
-    //   &.active {
-    //     opacity: 1;
-    //   }
-    // }
-  // }
+// Error messages
+mat-error {
+  font-size: 12px;
+  margin-top: 4px;
 }
 
 select {
@@ -135,10 +253,6 @@ ngx-intl-tel-input {
   }
 }
 
-mat-error {
-  display: block;
-  margin-bottom: 16px;
-}
 
 /* Responsive layout - stack form and slideshow on smaller screens */
 @media (max-width: 768px) {
@@ -156,6 +270,254 @@ mat-error {
         height: auto;
         max-height: 300px;
       }
+    }
+  }
+}
+
+// Modern input fields with left icons
+.modern-input-container {
+  margin-bottom: 20px;
+  
+  .field-label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #202124;
+    font-size: 14px;
+  }
+  
+  .mandatory {
+    color: #d93025;
+    margin-left: 4px;
+  }
+  
+  .input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border: 1px solid #dadce0;
+    border-radius: 4px;
+    overflow: hidden;
+    
+    &.filled {
+      background-color: #edf5ff;
+    }
+    
+    .field-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      color: #5f6368;
+      
+      mat-icon {
+        font-size: 20px;
+        height: 20px;
+        width: 20px;
+      }
+    }
+    
+    .modern-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 12px 12px 12px 0;
+      font-size: 16px;
+      background: transparent;
+      
+      &:focus {
+        border-color: #1a73e8;
+      }
+      
+      &::placeholder {
+        color: #80868b;
+      }
+    }
+    
+    .modern-select {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 12px 24px 12px 0;
+      font-size: 16px;
+      background: transparent;
+      color: #202124;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      cursor: pointer;
+      z-index: 1;
+      
+      &:focus {
+        border-color: #1a73e8;
+      }
+      
+      option {
+        background-color: white;
+        color: #202124;
+        padding: 16px;
+        font-size: 16px;
+      }
+    }
+    
+    // Modern dropdown arrow approach that works across browsers
+    &.dropdown-container {
+      position: relative;
+      
+      .dropdown-arrow {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        
+        mat-icon {
+          color: #5f6368;
+          font-size: 20px;
+        }
+      }
+    }
+    
+    .mat-datepicker-toggle {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+  
+  .error-message {
+    color: #d93025;
+    font-size: 12px;
+    margin-top: 4px;
+  }
+}
+
+// File upload button styling
+.upload-btn {
+  background-color: #f1f3f4;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  color: #202124;
+  font-size: 14px;
+  font-weight: 500;
+  margin-right: 12px;
+  cursor: pointer;
+  
+  &:hover {
+    background-color: #e8eaed;
+  }
+}
+
+// Improved checkbox styling
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  margin-top: 8px;
+  
+  .mat-checkbox {
+    margin: 6px 0;
+    
+    ::ng-deep .mat-checkbox-layout {
+      display: flex;
+      align-items: center;
+    }
+    
+    ::ng-deep .mat-checkbox-inner-container {
+      margin-right: 10px;
+      height: 20px;
+      width: 20px;
+    }
+    
+    ::ng-deep .mat-checkbox-frame {
+      border-color: #5f6368;
+      border-width: 2px;
+      border-radius: 3px;
+    }
+    
+    ::ng-deep .mat-checkbox-background {
+      background-color: #1a73e8;
+    }
+
+    ::ng-deep .mat-checkbox-label {
+      font-size: 15px;
+      color: #202124;
+    }
+  }
+}
+
+// Modern radio buttons
+.radio-group {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 8px;
+  
+  .mat-radio-button {
+    margin: 6px 24px 6px 0;
+    
+    ::ng-deep .mat-radio-container {
+      height: 20px;
+      width: 20px;
+    }
+    
+    ::ng-deep .mat-radio-outer-circle {
+      border-color: #5f6368;
+      border-width: 2px;
+    }
+    
+    ::ng-deep .mat-radio-inner-circle {
+      background-color: #1a73e8;
+    }
+    
+    ::ng-deep .mat-radio-label-content {
+      padding-left: 10px;
+      font-size: 15px;
+      color: #202124;
+    }
+  }
+}
+
+// Modern checkbox styling specific for city options
+.modern-checkbox-group {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 10px 0;
+  
+  .modern-checkbox-item {
+    margin-right: 30px;
+    margin-bottom: 10px;
+  }
+  
+  .modern-checkbox {
+    ::ng-deep .mat-checkbox-layout {
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+    }
+    
+    ::ng-deep .mat-checkbox-inner-container {
+      height: 20px;
+      width: 20px;
+      margin-right: 8px;
+    }
+    
+    ::ng-deep .mat-checkbox-frame {
+      border-color: #5f6368;
+      border-width: 2px;
+      border-radius: 3px;
+    }
+    
+    ::ng-deep .mat-checkbox-background {
+      background-color: #1a73e8;
+    }
+    
+    ::ng-deep .mat-checkbox-label {
+      font-size: 16px;
+      font-weight: 500;
+      color: #202124;
     }
   }
 }
