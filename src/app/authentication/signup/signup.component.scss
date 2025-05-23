@@ -253,6 +253,13 @@ ngx-intl-tel-input {
   }
 }
 
+.file-size-note {
+  display: block;
+  color: #666;
+  font-size: 11px;
+  margin-top: 4px;
+  font-style: italic;
+}
 
 /* Responsive layout - stack form and slideshow on smaller screens */
 @media (max-width: 768px) {
