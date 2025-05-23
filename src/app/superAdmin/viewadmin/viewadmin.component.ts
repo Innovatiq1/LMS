@@ -133,7 +133,7 @@ ngOnInit(){
   row.Active=true;
     Swal.fire({
       title: "Confirm Active",
-      text: `Are you sure you want to activate this ${row.role}?`,
+      text: `Are you sure you want to activate`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",
@@ -146,7 +146,7 @@ ngOnInit(){
           (response) => {
             Swal.fire({
               title: "Active",
-              text: `${row.role} Activated successfully`,
+              text: `Activated successfully`,
               icon: "success",
             });
             this.loadData();

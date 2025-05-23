@@ -54,6 +54,8 @@ export class SignupComponent implements OnInit {
       maxLength: 20
     }
   ];
+  readonly MAX_FILE_SIZE_MB = 5;
+  readonly MAX_FILE_SIZE_BYTES = this.MAX_FILE_SIZE_MB * 1024 * 1024; 
   constructor(
     private fb: FormBuilder,
     private surveyService: SurveyService,
@@ -111,6 +113,9 @@ export class SignupComponent implements OnInit {
       if (field.type === 'Phone') validators.push(Validators.pattern(/^\d{10}$/));
       if (field.type === 'TextArea') validators.push(Validators.maxLength(500));
       if (field.type === 'File' || field.type === 'Date') validators.push(Validators.required);
+      if (field.type === 'Upload' || field.type === 'File') {
+        validators.push(this.fileSizeValidator.bind(this));
+      }
 
       if (field.type === 'Checkbox') {
         validators.push((control: AbstractControl) => {
@@ -173,23 +178,21 @@ export class SignupComponent implements OnInit {
     }
   }
 
-  getErrorMessage(field: any): string {
-    const control = this.signupForm.get(this.sanitizeControlName(field.label));
-    if (!control?.errors || !control.touched) return '';
-
-    const errors = control.errors;
-    
-    if (errors['required']) return `${field.label} is required`;
-    if (errors['email']) return 'Invalid email format';
-    if (errors['pattern']) return `Invalid ${this.sanitizeControlName(field.label)} format`;
-    if (field.type === 'Password') {
-      if (errors['minlength']) return `${field.label} must be at least ${field.minLength} characters`;
-      if (errors['maxlength']) return `${field.label} must be no more than ${field.maxLength} characters`;
-      if (errors['strongPassword']) return 'Password must contain uppercase, lowercase, number, and special character';
-      if (errors['mismatch']) return 'Passwords do not match';
+  getErrorMessage(fieldName: string): string {
+    const control = this.signupForm.get(fieldName);
+    if (control?.errors) {
+      if (control.errors['required']) return 'This field is required';
+      if (control.errors['email']) return 'Invalid email format';
+      if (control.errors['pattern']) return 'Invalid format';
+      if (control.errors['fileSize']) {
+        return `File size must be less than ${this.MAX_FILE_SIZE_MB}MB. Selected file is ${control.errors['fileSize'].actualSize}MB`;
+      }
+      if (control.errors['minlength']) return `${fieldName} must be at least ${control.errors['minlength'].requiredLength} characters`;
+      if (control.errors['maxlength']) return `${fieldName} must be no more than ${control.errors['maxlength'].requiredLength} characters`;
+      if (control.errors['strongPassword']) return 'Password must contain uppercase, lowercase, number, and special character';
+      if (control.errors['mismatch']) return 'Passwords do not match';
     }
-    
-    return 'Invalid input';
+    return '';
   }
 
   submitForm() {
@@ -280,18 +283,23 @@ export class SignupComponent implements OnInit {
   onFileChange(event: any, controlName: string) {
     const file = event.target.files[0];
     if (file) {
-      // Store the file directly for FormData submission
+      if (file.size > this.MAX_FILE_SIZE_BYTES) {
+        Swal.fire({
+          title: 'Error',
+          text: `File size must be less than ${this.MAX_FILE_SIZE_MB}MB. Selected file is ${Math.round(file.size / (1024 * 1024))}MB`,
+          icon: 'error'
+        });
+        event.target.value = '';
+        return;
+      }
+
       const control = this.signupForm.get(controlName);
       control?.setValue(file);
       control?.markAsTouched();
 
-      // For profile image, you can preview it if needed
       if (controlName.toLowerCase().includes('profile') || controlName.toLowerCase().includes('image')) {
-        // Create a preview URL for the image
         const reader = new FileReader();
         reader.onload = () => {
-          // You can store the preview URL in a component property if needed
-          // this.imagePreview = reader.result as string;
           console.log('Image loaded for preview');
         };
         reader.readAsDataURL(file);
@@ -311,5 +319,20 @@ export class SignupComponent implements OnInit {
 
     control?.setValue(currentValue);
     control?.markAsTouched();
+  }
+
+  fileSizeValidator(control: AbstractControl): {[key: string]: any} | null {
+    if (control.value instanceof File) {
+      const file = control.value;
+      if (file.size > this.MAX_FILE_SIZE_BYTES) {
+        return {
+          fileSize: {
+            requiredSize: this.MAX_FILE_SIZE_MB,
+            actualSize: Math.round(file.size / (1024 * 1024))
+          }
+        };
+      }
+    }
+    return null;
   }
 }
