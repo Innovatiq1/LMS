@@ -209,14 +209,11 @@
               <ng-container matColumnDef="email">
                 <th mat-header-cell *matHeaderCellDef>Email</th>
                 <td mat-cell *matCellDef="let element">
-                  <div class="d-flex align-items-center">
-                    <mat-icon class="email-icon me-1" style="color: #e44; font-size: 20px; height: 20px; width: 20px;">email</mat-icon>
-                    <span 
-                      [matTooltip]="findFieldValueByAttr(element, 'email') || ''" 
-                      matTooltipPosition="above">
-                      {{ (findFieldValueByAttr(element, 'email') || '--') | slice:0:12 }}{{ findFieldValueByAttr(element, 'email')?.length > 12 ? '...' : '' }}
-                    </span>
-                  </div>
+                  <span 
+                    [matTooltip]="findFieldValueByAttr(element, 'email') || ''" 
+                    matTooltipPosition="above">
+                    {{ (findFieldValueByAttr(element, 'email') || '--') | slice:0:12 }}{{ findFieldValueByAttr(element, 'email')?.length > 12 ? '...' : '' }}
+                  </span>
                 </td>
               </ng-container>
 
@@ -224,12 +221,7 @@
               <ng-container matColumnDef="gender">
                 <th mat-header-cell *matHeaderCellDef>Gender</th>
                 <td mat-cell *matCellDef="let element">
-                  <div class="d-flex align-items-center">
-                    <mat-icon class="gender-icon me-1" style="color: #9C27B0; font-size: 20px; height: 20px; width: 20px;">
-                      {{ findFieldValueByAttr(element, 'gender') === 'Male' ? 'male' : 'female' }}
-                    </mat-icon>
-                    <span>{{ findFieldValueByAttr(element, 'gender') || '--' }}</span>
-                  </div>
+                  <span>{{ findFieldValueByAttr(element, 'gender') || '--' }}</span>
                 </td>
               </ng-container>
 
@@ -237,12 +229,9 @@
               <ng-container matColumnDef="mobile">
                 <th mat-header-cell *matHeaderCellDef>Mobile</th>
                 <td mat-cell *matCellDef="let element">
-                  <div class="d-flex align-items-center">
-                    <mat-icon class="mobile-icon me-1" style="color: #4CAF50; font-size: 20px; height: 20px; width: 20px;">phone</mat-icon>
-                    <span [matTooltip]="findFieldValueByAttr(element, 'mobile') || ''" matTooltipPosition="above">
-                      {{ findFieldValueByAttr(element, 'mobile') || '--' }}
-                    </span>
-                  </div>
+                  <span [matTooltip]="findFieldValueByAttr(element, 'mobile') || ''" matTooltipPosition="above">
+                    {{ findFieldValueByAttr(element, 'mobile') || '--' }}
+                  </span>
                 </td>
               </ng-container>
 
@@ -250,12 +239,9 @@
               <ng-container matColumnDef="qualification">
                 <th mat-header-cell *matHeaderCellDef>Qualification</th>
                 <td mat-cell *matCellDef="let element">
-                  <div class="d-flex align-items-center">
-                    <mat-icon class="qualification-icon me-1" style="color: #FF9800; font-size: 20px; height: 20px; width: 20px;">school</mat-icon>
-                    <span [matTooltip]="findFieldValueByAttr(element, 'qualification') || ''" matTooltipPosition="above">
-                      {{ (findFieldValueByAttr(element, 'qualification') || '--') | slice:0:15 }}{{ findFieldValueByAttr(element, 'education')?.length > 15 ? '...' : '' }}
-                    </span>
-                  </div>
+                  <span [matTooltip]="findFieldValueByAttr(element, 'qualification') || ''" matTooltipPosition="above">
+                    {{ (findFieldValueByAttr(element, 'qualification') || '--') | slice:0:15 }}{{ findFieldValueByAttr(element, 'education')?.length > 15 ? '...' : '' }}
+                  </span>
                 </td>
               </ng-container>
 
@@ -299,53 +285,39 @@
               <ng-container matColumnDef="email">
                 <th mat-header-cell *matHeaderCellDef>Email</th>
                 <td mat-cell *matCellDef="let element">
-                  <div class="d-flex align-items-center">
-                    <mat-icon class="email-icon me-1" style="color: #e44; font-size: 20px; height: 20px; width: 20px;">email</mat-icon>
-                    <span 
-                      [matTooltip]="findFieldValueByAttr(element, 'email') || ''" 
-                      matTooltipPosition="above">
-                      {{ (findFieldValueByAttr(element, 'email') || '--') | slice:0:12 }}{{ findFieldValueByAttr(element, 'email')?.length > 12 ? '...' : '' }}
-                    </span>
-                  </div>
+                  <span 
+                    [matTooltip]="findFieldValueByAttr(element, 'email') || ''" 
+                    matTooltipPosition="above">
+                    {{ (findFieldValueByAttr(element, 'email') || '--') | slice:0:12 }}{{ findFieldValueByAttr(element, 'email')?.length > 12 ? '...' : '' }}
+                  </span>
                 </td>
               </ng-container>
 
-              <!-- Gender Column -->
+              <!-- Gender Column for Third Party -->
               <ng-container matColumnDef="gender">
                 <th mat-header-cell *matHeaderCellDef>Gender</th>
                 <td mat-cell *matCellDef="let element">
-                  <div class="d-flex align-items-center">
-                    <mat-icon class="gender-icon me-1" style="color: #9C27B0; font-size: 20px; height: 20px; width: 20px;">
-                      {{ findFieldValueByAttr(element, 'gender') === 'Male' ? 'male' : 'female' }}
-                    </mat-icon>
-                    <span>{{ findFieldValueByAttr(element, 'gender') || '--' }}</span>
-                  </div>
+                  <span>{{ findFieldValueByAttr(element, 'gender') || '--' }}</span>
                 </td>
               </ng-container>
 
-              <!-- Mobile Column -->
+              <!-- Mobile Column for Third Party -->
               <ng-container matColumnDef="mobile">
                 <th mat-header-cell *matHeaderCellDef>Mobile</th>
                 <td mat-cell *matCellDef="let element">
-                  <div class="d-flex align-items-center">
-                    <mat-icon class="mobile-icon me-1" style="color: #4CAF50; font-size: 20px; height: 20px; width: 20px;">phone</mat-icon>
-                    <span [matTooltip]="findFieldValueByAttr(element, 'mobile') || ''" matTooltipPosition="above">
-                      {{ findFieldValueByAttr(element, 'mobile') || '--' }}
-                    </span>
-                  </div>
+                  <span [matTooltip]="findFieldValueByAttr(element, 'mobile') || ''" matTooltipPosition="above">
+                    {{ findFieldValueByAttr(element, 'mobile') || '--' }}
+                  </span>
                 </td>
               </ng-container>
 
-              <!-- Qualification Column -->
+              <!-- Qualification Column for Third Party -->
               <ng-container matColumnDef="qualification">
                 <th mat-header-cell *matHeaderCellDef>Qualification</th>
                 <td mat-cell *matCellDef="let element">
-                  <div class="d-flex align-items-center">
-                    <mat-icon class="qualification-icon me-1" style="color: #FF9800; font-size: 20px; height: 20px; width: 20px;">school</mat-icon>
-                    <span [matTooltip]="findFieldValueByAttr(element, 'qualification') || ''" matTooltipPosition="above">
-                      {{ (findFieldValueByAttr(element, 'qualification') || '--') | slice:0:15 }}{{ findFieldValueByAttr(element, 'education')?.length > 15 ? '...' : '' }}
-                    </span>
-                  </div>
+                  <span [matTooltip]="findFieldValueByAttr(element, 'qualification') || ''" matTooltipPosition="above">
+                    {{ (findFieldValueByAttr(element, 'qualification') || '--') | slice:0:15 }}{{ findFieldValueByAttr(element, 'education')?.length > 15 ? '...' : '' }}
+                  </span>
                 </td>
               </ng-container>
 

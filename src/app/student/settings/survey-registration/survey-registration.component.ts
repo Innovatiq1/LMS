@@ -73,6 +73,9 @@ surveyId: string = '';
     ]
   };
 
+  // Add this after the fieldTypes array
+  genderOptions = ['Male', 'Female', 'Other'];
+
   onTabChange(event: any) {
     this.selectedTabIndex = event.index;
     this.fields = this.selectedTabIndex === 1 ? this.thirdPartyFields : this.siteRegistrationFields;
@@ -163,13 +166,25 @@ removeField(index: number) {
     confirmButtonText: 'Yes'
   }).then((result) => {
     if (result.isConfirmed) {
+      // Store current fields in a new array to trigger change detection properly
+      const updatedFields = [...(this.selectedTabIndex === 1 ? this.thirdPartyFields : this.siteRegistrationFields)];
+      updatedFields.splice(index, 1);
+      
+      // Update the appropriate array based on selected tab
       if (this.selectedTabIndex === 1) {
-        this.thirdPartyFields.splice(index, 1);
+        this.thirdPartyFields = [...updatedFields];
         this.fields = this.thirdPartyFields;
       } else {
-        this.siteRegistrationFields.splice(index, 1);
+        this.siteRegistrationFields = [...updatedFields];
         this.fields = this.siteRegistrationFields;
       }
+
+      // Use NgZone to ensure change detection runs properly
+      this.ngZone.run(() => {
+        // Force change detection by triggering a state update
+        this.fields = [...this.fields];
+      });
+
       Swal.fire('Removed!', 'The field has been removed.', 'success');
     }
   });
@@ -209,7 +224,7 @@ showIntegrationOptions(embedCode: string, apiEndpoint: string) {
         <textarea readonly style="width:100%; height:100px">${embedCode}</textarea>
         <h4>API Endpoint:</h4>
         <textarea readonly style="width:100%; height:100px">${apiEndpoint}</textarea>
-        <p style="font-size: 12px; color: gray;">Use the above code to integrate the survey into your application.</p>
+        <p style="font-size: 12px; color: gray;">Use the above code to integrate the registration form into your application.</p>
       `,
     width: 600,
     showDenyButton: true,
@@ -359,8 +374,23 @@ onFieldTypeChange() {
     if (!this.newField.options) {
       this.newField.options = [''];
     }
+    
+    // If it's a gender/sex field, automatically set the options
+    if ((this.newField.label?.toLowerCase() === 'gender' || this.newField.label?.toLowerCase() === 'sex') 
+        && this.newField.type?.toLowerCase() === 'dropdown') {
+      this.newField.options = [...this.genderOptions];
+    }
   } else {
     this.newField.options = [];
+  }
+}
+
+// Add this new method to watch for label changes
+onLabelChange() {
+  const label = this.newField.label?.toLowerCase();
+  if (label === 'gender' || label === 'sex') {
+    this.newField.type = 'Dropdown';
+    this.newField.options = [...this.genderOptions];
   }
 }
 
@@ -432,10 +462,13 @@ saveSurvey() {
 
   // Show confirmation dialog first
   Swal.fire({
-    title: 'Form Usage',
-    text: isThirdParty ? 
-      'Do you want to use this form for site registration as well?' :
-      'Do you want to use this form for third party registration as well?',
+    title: 'Confirm',
+    html: `
+      ${isThirdParty ? 
+        'Do you want use this same third party form for site registration too?' : 
+        'Do you want use this same site details form for third party too?'}<br><br>
+      <small style="color: #ff6b6b; font-size: 10px; font-style: italic; display: block; margin-top: 8px;">Please note: Once you save, old field values cannot be reverted back</small>
+    `,
     icon: 'question',
     showCancelButton: true,
     confirmButtonText: 'Yes',

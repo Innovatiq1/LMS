@@ -42,6 +42,7 @@
                           matInput
                           type="text"
                           [(ngModel)]="newField.label"
+                          (ngModelChange)="onLabelChange()"
                           name="label"
                           required
                         />
@@ -58,6 +59,7 @@
                           <mat-option
                             *ngFor="let t of fieldTypes"
                             [value]="t"
+                            [disabled]="(newField.label.toLowerCase() === 'gender' || newField.label.toLowerCase() === 'sex') && t !== 'Dropdown'"
                             >{{ t }}</mat-option
                           >
                         </mat-select>
@@ -173,6 +175,10 @@
                   <button mat-raised-button color="primary" type="submit">
                     {{ editIndex !== null ? 'Update Field' : 'Add Field' }}
                   </button>
+                  <div class="note-text mt-2" style="font-size: 12px; color: #666;">
+                    <mat-icon style="font-size: 16px; height: 16px; width: 16px; vertical-align: text-bottom;">info</mat-icon>
+                    <span>Note: Department, Country, City labels names cannot be created. Administrator can assign these information from Trainee module.</span>
+                  </div>
                   <div *ngIf="getRestrictedFieldMessage()" class="restricted-field-warning mt-2">
                     <mat-icon class="warning-icon">info</mat-icon>
                     <span [innerHTML]="getRestrictedFieldMessage()"></span>

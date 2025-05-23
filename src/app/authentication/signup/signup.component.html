@@ -139,6 +139,7 @@
                     <input type="file" (change)="onFileChange($event, sanitizeControlName(field.label))" hidden #fileInput>
                     <button class="upload-btn" type="button" (click)="fileInput.click()">Browse</button>
                   </div>
+                  <small class="file-size-note">Maximum file size: 5MB</small>
                   <div *ngIf="field.required && signupForm.get(sanitizeControlName(field.label))?.errors && 
                               signupForm.get(sanitizeControlName(field.label))?.touched" class="error-message">
                     {{ getErrorMessage(field) }}

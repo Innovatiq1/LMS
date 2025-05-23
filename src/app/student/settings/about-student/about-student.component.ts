@@ -201,7 +201,7 @@ deleteItem(row: any) {
   
    Swal.fire({
      title: "Confirm Active",
-     text: `Are you sure you want to activate this ${row.role}?`,
+     text: `Are you sure you want to activate ?`,
      icon: "warning",
      showCancelButton: true,
      confirmButtonColor: "#d33",
