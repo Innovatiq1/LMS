@@ -17,12 +17,43 @@ export class SignupComponent implements OnInit {
   fields: any[] = [];
   submittedData: any = null;
   images: string[] = [
-    'assets/images/login/Learning.jpeg',
+    'assets/images/login/sign-up.png',
     // 'assets/images/login/learning2.jpg',
     // 'assets/images/login/learning4.jpg',
   ];
   currentIndex = 0;
   CompanyId!: string;
+  extractedName!: string;
+  defaultFields = [
+    {
+      label: 'Username',
+      type: 'Text',
+      required: true,
+      attr: 'Name'
+    },
+    {
+      label: 'Email',
+      type: 'Email',
+      required: true,
+      attr: 'email'
+    },
+    {
+      label: 'Password',
+      type: 'Password',
+      required: true,
+      attr: 'password',
+      minLength: 8,
+      maxLength: 20
+    },
+    {
+      label: 'Confirm Password',
+      type: 'Password',
+      required: true,
+      attr: 'Password',
+      minLength: 8,
+      maxLength: 20
+    }
+  ];
   constructor(
     private fb: FormBuilder,
     private surveyService: SurveyService,
@@ -30,8 +61,7 @@ export class SignupComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const userData = JSON.parse(localStorage.getItem('user_data')!);
-    this.CompanyId = userData.user.companyId;
+    this.CompanyId = localStorage.getItem('companyId')||'';
     this.fetchSignupFields();
     setInterval(() => {
       this.currentIndex = (this.currentIndex + 1) % this.images.length;
@@ -43,11 +73,20 @@ export class SignupComponent implements OnInit {
   fetchSignupFields() {
     this.surveyService.getLatestSurvey(this.CompanyId).subscribe({
       next: (res) => {
-        this.fields = res.fields || [];
-        this.buildForm();
+        // If config form fields are empty or not available, use default fields
+        if (!res.fields || res.fields.length === 0) {
+          this.fields = this.defaultFields;
+          this.buildForm();
+        } else {
+          this.fields = res.fields;
+          this.buildForm();
+        }
       },
       error: (err) => {
         console.error('Failed to fetch signup fields:', err);
+        // On error, fallback to default fields
+        this.fields = this.defaultFields;
+        this.buildForm();
       }
     });
   }
@@ -60,13 +99,12 @@ export class SignupComponent implements OnInit {
       const controlName = this.sanitizeControlName(field.label);
 
       if (field.required) validators.push(Validators.required);
-      if (field.type === 'Text') validators.push(Validators.minLength(3));
       if (field.type === 'Dropdown') validators.push(Validators.required);
       if (field.type === 'radio') validators.push(Validators.required);
       if (field.type === 'Password') {
-        validators.push(Validators.minLength(8));
-        validators.push(Validators.maxLength(20));
-        validators.push(passwordValidator(field));  // Apply the custom password validator
+        if (field.minLength) validators.push(Validators.minLength(field.minLength));
+        if (field.maxLength) validators.push(Validators.maxLength(field.maxLength));
+        validators.push(passwordValidator(field));  
       }
       if (field.type === 'Email') validators.push(Validators.email);
       if (field.type === 'Number') validators.push(Validators.pattern(/^\d+$/));
@@ -93,25 +131,64 @@ export class SignupComponent implements OnInit {
   }
 
   passwordMatchValidator(form: AbstractControl): { [key: string]: any } | null {
-    const passwordCtrl = form.get('password');
-    const confirmCtrl = form.get('confirmpassword');
+    const passwordField = this.fields.find(f => f.type?.toLowerCase() === 'password' && !f.label?.toLowerCase().includes('confirm'));
+    const confirmPasswordField = this.fields.find(f => 
+      f.type?.toLowerCase() === 'password' && 
+      (f.label?.toLowerCase().includes('confirm') || f.label?.toLowerCase().includes('verify'))
+    );
+    
+    if (!passwordField || !confirmPasswordField) return null;
+    
+    const passwordCtrl = form.get(this.sanitizeControlName(passwordField.label));
+    const confirmCtrl = form.get(this.sanitizeControlName(confirmPasswordField.label));
 
     if (!passwordCtrl || !confirmCtrl) return null;
 
-    const password = passwordCtrl.value;
-    const confirmPassword = confirmCtrl.value;
+    if (passwordCtrl.value !== confirmCtrl.value) {
+      confirmCtrl.setErrors({ mismatch: true });
+      return { mismatch: true };
+    }
 
-    return password === confirmPassword ? null : { mismatch: true };
+    // Clear the mismatch error if passwords match
+    if (confirmCtrl.errors?.['mismatch']) {
+      const errors = { ...confirmCtrl.errors };
+      delete errors['mismatch'];
+      confirmCtrl.setErrors(Object.keys(errors).length ? errors : null);
+    }
+
+    return null;
   }
 
-  getErrorMessage(controlName: string): string {
-    const control = this.signupForm.get(controlName);
-    if (!control) return '';
-    if (control.hasError('required')) return `${controlName} is required`;
-    if (control.hasError('email')) return `Please enter a valid email`;
-    if (control.hasError('passwordStrength')) return `Password must be stronger`;
-    if (control.hasError('mismatch')) return `Passwords do not match`;
-    if (control.hasError('pattern')) return `Invalid input for ${controlName}`;
+  getInputType(fieldType: string | undefined): string {
+    if (!fieldType) return 'text';
+    
+    const type = fieldType.toLowerCase();
+    switch (type) {
+      case 'email': return 'email';
+      case 'number': return 'number';
+      case 'password': return 'password';
+      case 'tel': return 'tel';
+      case 'url': return 'url';
+      default: return 'text';
+    }
+  }
+
+  getErrorMessage(field: any): string {
+    const control = this.signupForm.get(this.sanitizeControlName(field.label));
+    if (!control?.errors || !control.touched) return '';
+
+    const errors = control.errors;
+    
+    if (errors['required']) return `${field.label} is required`;
+    if (errors['email']) return 'Invalid email format';
+    if (errors['pattern']) return `Invalid ${this.sanitizeControlName(field.label)} format`;
+    if (field.type === 'Password') {
+      if (errors['minlength']) return `${field.label} must be at least ${field.minLength} characters`;
+      if (errors['maxlength']) return `${field.label} must be no more than ${field.maxLength} characters`;
+      if (errors['strongPassword']) return 'Password must contain uppercase, lowercase, number, and special character';
+      if (errors['mismatch']) return 'Passwords do not match';
+    }
+    
     return 'Invalid input';
   }
 
@@ -122,8 +199,33 @@ export class SignupComponent implements OnInit {
       return;
     }
 
-    const data = this.signupForm.value;
-
+    const formValues = this.signupForm.value;
+    const formData = new FormData();
+    
+    // Add the companyId directly to the FormData
+    formData.append('companyId', this.CompanyId);
+    
+    // Add formtype if using default form
+    if (this.fields === this.defaultFields) {
+      formData.append('formtype', 'default');
+    }
+    
+    // Process each field
+    this.fields.forEach(field => {
+      const controlName = this.sanitizeControlName(field.label);
+      const fieldValue = formValues[controlName];
+      
+      // Handle file fields
+      if ((field.type === 'upload' || field.type === 'Upload' || field.type === 'file' || field.type === 'File') && fieldValue instanceof File) {
+        // Append the file directly with the field's label as the key
+        formData.append(field.label, fieldValue);
+      } else {
+        // Append regular field values directly to the FormData
+        formData.append(field.label, fieldValue);
+      }
+    });
+    
+    // Confirm and submit with files
     Swal.fire({
       title: 'Are you sure?',
       text: 'Do you want to create your account?',
@@ -133,9 +235,9 @@ export class SignupComponent implements OnInit {
       cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.surveyService.createUser(data).subscribe({
+        console.log('Submitting form with files');
+        this.surveyService.createUserWithFiles(formData).subscribe({
           next: (res) => {
-            this.submittedData = data;
             Swal.fire({
               title: 'Registration Successful',
               text: "Our team will verify and contact you shortly",
@@ -147,9 +249,10 @@ export class SignupComponent implements OnInit {
             });
           },
           error: (err) => {
+            console.error('Registration error:', err);
             Swal.fire({
               title: 'Registration Failed',
-              text: "You have exceeded your limit, please contact Admin to upgrade",
+              text: err,
               icon: 'error',
             });
           }
@@ -177,9 +280,22 @@ export class SignupComponent implements OnInit {
   onFileChange(event: any, controlName: string) {
     const file = event.target.files[0];
     if (file) {
+      // Store the file directly for FormData submission
       const control = this.signupForm.get(controlName);
       control?.setValue(file);
       control?.markAsTouched();
+
+      // For profile image, you can preview it if needed
+      if (controlName.toLowerCase().includes('profile') || controlName.toLowerCase().includes('image')) {
+        // Create a preview URL for the image
+        const reader = new FileReader();
+        reader.onload = () => {
+          // You can store the preview URL in a component property if needed
+          // this.imagePreview = reader.result as string;
+          console.log('Image loaded for preview');
+        };
+        reader.readAsDataURL(file);
+      }
     }
   }
 

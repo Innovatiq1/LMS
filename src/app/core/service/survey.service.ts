@@ -1,4 +1,3 @@
-
 import { Injectable } from '@angular/core';
 import { HttpClient }   from '@angular/common/http';
 import { Observable }   from 'rxjs';
@@ -37,7 +36,7 @@ export class SurveyService {
   }
 
   convertToTrainee(data: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}x-api/v1/admin/convert-to-trainee`, data); // Use your actual API endpoint here
+    return this.http.post(`${this.baseUrl}x-api/v1/admin/convert-to-trainee`, data); 
   }
 
   getActiveCompanies(id: string){
@@ -45,7 +44,7 @@ export class SurveyService {
   }
 
   getthirdpartySurvey(id: string): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}thirdParty/thirdparty/${id}`);
+    return this.http.get<any>(`${this.baseUrl}thirdparty/${id}`);
   }
   getCurrentUser(): Observable<any> {
     return this.http.get(`${this.baseUrl}form/current-user`);
@@ -55,11 +54,15 @@ export class SurveyService {
   }
   
   createUser(data: any) {
-    return this.http.post(`${this.baseUrl}x-api/v1/admin/response`, data); 
+    return this.http.post(`${this.baseUrl}admin/response`, data); 
+  }
+
+  createUserWithFiles(formData: FormData) {
+    return this.http.post(`${this.baseUrl}admin/submit-form`, formData);
   }
 
   getUserRegistration(): Observable<any> {
-    return this.http.get(`${this.baseUrl}x-api/v1/admin/responses`);
+    return this.http.get(`${this.baseUrl}admin/responses`);
   }
 
   deleteSurvey(id: string) {

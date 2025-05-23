@@ -7,5 +7,38 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     border-left: 4px solid #6d7cf0;
     padding-left: 8px;
+}
+
+.file-upload-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  
+  button {
+    min-width: 120px;
   }
+
+  span {
+    color: #666;
+    font-size: 0.9rem;
+  }
+}
+
+.restricted-field-warning {
+  display: flex;
+  align-items: center;
+  color: #f44336;
+  font-size: 14px;
+  padding: 8px;
+  border-radius: 4px;
+  background-color: #ffebee;
+  margin-top: 8px;
+
+  .warning-icon {
+    margin-right: 8px;
+    font-size: 20px;
+    height: 20px;
+    width: 20px;
+  }
+}
   

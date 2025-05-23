@@ -237,9 +237,9 @@ export class CreateClassComponent {
       checkedActions: this.getCheckedMeetingActions(userId),
     }).subscribe((response) => {
       this.courseList = response.courses.reverse();
-    
+    console.log("reee",response)
       const allowedTitles = response.checkedActions.map((a: any) => a.title);
-    
+      console.log("reee1212",allowedTitles)
       this.meetingPlatforms = response.dropDowns?.data?.meetingPlatform?.filter(
         (platform: any) => allowedTitles.includes(platform.name)
       );

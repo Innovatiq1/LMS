@@ -12,7 +12,13 @@ import { RescheduledCoursesComponent } from './student/rescheduled-courses/resch
 import { SurveyRegistrationComponent } from './student/settings/survey-registration/survey-registration.component';
 import { AllSurveyComponent } from './student/settings/all-survey/all-survey.component';
 import { ThridPartyFormComponent } from './student/settings/thrid-party-form/thrid-party-form.component';
+import { EmbedIframeComponent } from './embed-iframe/embed-iframe.component';
 const routes: Routes = [
+
+  {
+    path: 'embed/form',
+    component: EmbedIframeComponent,
+  },
  
   {
     path: '',

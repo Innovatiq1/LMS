@@ -1,4 +1,3 @@
-
 import { Component, NgZone } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SurveyService } from '@core/service/survey.service';
@@ -11,6 +10,7 @@ interface FormField {
   type: string;
   options?: string[];
   required: boolean;
+  attr?: string;
   name: string;
   strength?: 'normal' | 'strong';
   minLength?: number;
@@ -23,11 +23,7 @@ interface FormField {
   styleUrls: ['./survey-registration.component.scss']
 })
 export class SurveyRegistrationComponent {
-  formFields = [
-    { label: 'Name', key: 'name', type: 'text', placeholder: 'Enter your name' },
-    { label: 'Email', key: 'email', type: 'email', placeholder: 'Enter your email' },
-    { label: 'Phone', key: 'phone', type: 'tel', placeholder: 'Enter your phone' }
-  ];
+ 
    private baseUrl = environment.apiEndpointNew
   surveyList: any[] = [];
   selectedTabIndex = 0;
@@ -38,6 +34,8 @@ export class SurveyRegistrationComponent {
   field: any[] = [];
   showSurveyTable: boolean = false;
   fields: any[] = [];
+  thirdPartyFields: any[] = [];
+  siteRegistrationFields: any[] = [];
   options: any;
   isThirdParty: any;
   activeCompanies: any[] = [];
@@ -45,18 +43,54 @@ export class SurveyRegistrationComponent {
 companyName:string='';
 surveyId: string = '';
   dialogStatus:boolean=false;
-  fieldTypes = ['radio', 'Text', 'Textarea', 'Password', 'Checkbox', 'Upload', 'Dropdown', 'Date', 'Email', 'Number'];
+  fieldTypes = ['Radio', 'Text', 'Textarea', 'Password', 'Checkbox', 'Upload', 'Dropdown', 'Date', 'Email', 'Number'];
+  attr = ['Name', 'Gender', 'Qualification', 'Mobile', 'Email', 'Password', 'Upload'];
+  restrictedLabelPatterns: { [key: string]: string[] } = {
+    'department': ['department', 'dept', 'dep'],
+    'country': ['country', 'nation', 'countries'],
+    'city': ['city', 'cities', 'town']
+  };
+
+  attributePatterns: { [key: string]: string[] } = {
+    'Name': ['name', 'fullname', 'firstname', 'lastname', 'surname'],
+    'Email': ['email', 'e-mail', 'mail'],
+    'Upload': ['upload', 'file', 'document', 'attachment', 'image'],
+    'Gender': ['gender', 'sex'],
+    'Mobile': ['mobile', 'phone', 'contact', 'cell'],
+    'Password': ['password', 'pwd', 'pass'],
+    'Qualification': [
+      'qualification', 
+      'education',
+      'degree',
+      'academic',
+      'study',
+      'course',
+      'educational',
+      'academics',
+      'studies',
+      'graduate',
+      'graduation'
+    ]
+  };
+
+  onTabChange(event: any) {
+    this.selectedTabIndex = event.index;
+    this.fields = this.selectedTabIndex === 1 ? this.thirdPartyFields : this.siteRegistrationFields;
+    if (this.selectedCompanyId) {
+      this.loadSurveyById(this.selectedCompanyId);
+    }
+  }
 
   newField: FormField = {
     label: '',
     type: 'text',
     required: false,
-    
+    attr:'',
     name: '',
     options: [],
     strength:  'normal',
-    minLength: 8,
-    maxLength: 20
+    minLength: 0,
+    maxLength: 0
 
   };
 
@@ -78,41 +112,24 @@ surveyId: string = '';
   ngOnInit() {
     const userData = JSON.parse(localStorage.getItem('user_data')!);
     this.selectedCompanyId = userData.user.companyId;
-  this.companyName = userData.user.company;
-    this.route.queryParams.subscribe(params => {
-      const surveyId = params['surveyId'];
-      if (surveyId) {
-        this.loadSurveyById(surveyId);
-      }
-    });
-    this.fetchSignupFields();
-    // this.getCurrentUserAndLoadCompany();
-
-    // this.loadActiveCompanies();
+    this.companyName = userData.user.company;
+    if (this.selectedCompanyId) {
+      this.loadSurveyById(this.selectedCompanyId);
+    }
+    // this.fetchSignupFields();
   }
-  // loadActiveCompanies() {
-  //   this.surveyService.getActiveCompanies(this.alwaysSelectedCompanyId).subscribe({
-  //     next: (data) => {
-      
-  //       this.activeCompanies = data;
-      
-  //     },
-  //     error: (err) => {
-  //       console.error('Error fetching active companies:', err);
-  //     }
-  //   });
-  // }
+
  
 
 loadSurveyById(id: string) {
   const isThirdParty = this.selectedTabIndex === 1;
-
   if (isThirdParty) {
     this.surveyService.getthirdpartySurvey(id).subscribe({
       next: (data) => {
         this.editingSurveyId = data._id;
         this.title = data.title;
-        this.fields = data.fields;
+        this.thirdPartyFields = data.fields || [];
+        this.fields = this.thirdPartyFields;
       },
       error: (err) => {
         console.error('Error fetching third-party survey:', err);
@@ -123,7 +140,8 @@ loadSurveyById(id: string) {
       next: (data) => {
         this.editingSurveyId = data._id;
         this.title = data.title;
-        this.fields = data.fields;
+        this.siteRegistrationFields = data.fields || [];
+        this.fields = this.siteRegistrationFields;
       },
       error: (err) => {
         console.error('Error fetching site registration survey:', err);
@@ -145,7 +163,13 @@ removeField(index: number) {
     confirmButtonText: 'Yes'
   }).then((result) => {
     if (result.isConfirmed) {
-      this.fields.splice(index, 1);
+      if (this.selectedTabIndex === 1) {
+        this.thirdPartyFields.splice(index, 1);
+        this.fields = this.thirdPartyFields;
+      } else {
+        this.siteRegistrationFields.splice(index, 1);
+        this.fields = this.siteRegistrationFields;
+      }
       Swal.fire('Removed!', 'The field has been removed.', 'success');
     }
   });
@@ -153,7 +177,8 @@ removeField(index: number) {
 
 
 editField(index: number) {
-  this.newField = { ...this.fields[index] };
+  const currentFields = this.selectedTabIndex === 1 ? this.thirdPartyFields : this.siteRegistrationFields;
+  this.newField = { ...currentFields[index] };
   this.editIndex = index;
 }
 
@@ -205,22 +230,16 @@ showIntegrationOptions(embedCode: string, apiEndpoint: string) {
   });
 }
 
-sendBtn(){
-  const surveyId =  this.selectedCompanyId;
-  console.log("surrrr",surveyId);
-  this.router.navigate(['/student/thirdparty/form'], { queryParams: { surveyId } });
-}
-
 generateEmbeddedCode() {
-  const surveyId = this.editingSurveyId;
+  const surveyId = this.selectedCompanyId;
   if (!surveyId) {
     Swal.fire('Error', 'Survey ID not found. Cannot generate code.', 'error');
     return;
   }
 
-  const formUrl = `${this.baseUrl}thirdparty/form/${surveyId}`;
+  const formUrl = `${this.baseUrl}thirdparty/url/${surveyId}`;
   const embedCode = `<iframe src="${formUrl}" width="100%" height="500px" frameborder="0"></iframe>`;
-  const apiEndpoint = `${this.baseUrl}x-api/v1/thirdparty/url/${surveyId}`;
+  const apiEndpoint = `${this.baseUrl}thirdparty/${surveyId}`;
 
   this.generatedCode = embedCode;
   this.generatedApiEndpoint = apiEndpoint;
@@ -228,28 +247,110 @@ generateEmbeddedCode() {
   this.showIntegrationOptions(embedCode, apiEndpoint);
 }
 
+isRestrictedLabel(label: string): boolean {
+  const normalizedLabel = label.trim().toLowerCase();
+  return Object.entries(this.restrictedLabelPatterns).some(([key, variations]) => {
+    return variations.some((pattern: string) => 
+      normalizedLabel === pattern || 
+      normalizedLabel.includes(pattern + ' ') || 
+      normalizedLabel.includes(' ' + pattern) ||
+      normalizedLabel === pattern + 's' ||
+      normalizedLabel === pattern + 'ment'
+    );
+  });
+}
+
+// Helper method to detect attribute from label
+detectAttributeFromLabel(label: string): string | null {
+  const normalizedLabel = label.trim().toLowerCase();
+  
+  for (const [attr, patterns] of Object.entries(this.attributePatterns)) {
+    if (patterns.some(pattern => 
+      normalizedLabel === pattern || 
+      normalizedLabel.includes(pattern + ' ') || 
+      normalizedLabel.includes(' ' + pattern) ||
+      normalizedLabel.startsWith(pattern) ||
+      normalizedLabel.endsWith(pattern) ||
+      // Special case for qualification to catch degree names
+      (attr === 'Qualification' && (
+        normalizedLabel.includes('b.') ||
+        normalizedLabel.includes('m.') ||
+        normalizedLabel.includes('ph.d') ||
+        normalizedLabel.includes('bachelor') ||
+        normalizedLabel.includes('master') ||
+        normalizedLabel.includes('diploma')
+      ))
+    )) {
+      return attr;
+    }
+  }
+  return null;
+}
+
 addField() {
   if (!this.newField.label || !this.newField.type) return;
-  const fieldToAdd = {
+  
+  // Check if the label is restricted using the new method
+  if (this.isRestrictedLabel(this.newField.label)) {
+    return; // Don't show popup, message will be shown by getRestrictedFieldMessage()
+  }
+
+  // Check for attribute validation
+  if (this.getAttributeValidationMessage()) {
+    return; // Don't proceed if attribute validation fails
+  }
+  
+  console.log('Adding field with attr:', this.newField.attr);
+  
+  // Initialize the field with base properties
+  const fieldToAdd: any = {
     ...this.newField,
-    value: '' 
+    value: '',
+    selectedOptions: [],
+    options: [...(this.newField.options || [])]
   };
+
+  // Only include minLength and maxLength for password fields
+  if (this.newField.type.toLowerCase() !== 'password') {
+    delete fieldToAdd.minLength;
+    delete fieldToAdd.maxLength;
+  }
+
+  // Initialize selectedOptions array for checkbox type
+  if (this.newField.type.toLowerCase() === 'checkbox') {
+    fieldToAdd.selectedOptions = new Array(fieldToAdd.options.length).fill(false);
+  }
+
   if (this.editIndex !== null) {
-    this.fields[this.editIndex] = fieldToAdd;
+    if (this.selectedTabIndex === 1) {
+      this.thirdPartyFields[this.editIndex] = fieldToAdd;
+      this.fields = this.thirdPartyFields;
+    } else {
+      this.siteRegistrationFields[this.editIndex] = fieldToAdd;
+      this.fields = this.siteRegistrationFields;
+    }
     this.editIndex = null;
   } else {
-    this.fields.push(fieldToAdd);
+    if (this.selectedTabIndex === 1) {
+      this.thirdPartyFields.push(fieldToAdd);
+      this.fields = this.thirdPartyFields;
+    } else {
+      this.siteRegistrationFields.push(fieldToAdd);
+      this.fields = this.siteRegistrationFields;
+    }
   }
-  // this.newField = { label: '', type: '', required: false, name: '', options: [] };
+
+  // Reset the newField
   this.newField = {
-    label:     '',
-    type:      'text',
-    required:  false,
-    name:      '',
-    options:   [],
-    strength:  'normal',
-    minLength: 8,
-    maxLength: 20
+    label: '',
+    type: 'text',
+    required: false,
+    attr: '',
+    name: '',
+    options: [],
+    strength: 'normal',
+    minLength: 0,
+    maxLength: 0
   };
 }
 
@@ -263,71 +364,273 @@ onFieldTypeChange() {
   }
 }
 
-saveSurvey() {
-  const isThirdParty = this.selectedTabIndex === 1;
-  const payload = {
-    title: isThirdParty ? 'Third Party Survey' : 'Site Registration',
-    fields: this.fields,
-    companyId: this.selectedCompanyId,
-  };
-
-  if (isThirdParty) {
-    this.surveyService.createthirdpartySurvey(payload).subscribe({
-      next: (res) => {
-        const surveyId = res?.surveyForm?._id;
-        if (!surveyId) {
-          Swal.fire('Error', 'Survey saved, but ID is missing. Cannot generate code.', 'error');
-          return;
-        }
-
-        this.editingSurveyId = surveyId;
-
-        Swal.fire('Success', 'Third party form saved successfully!', 'success').then(() => {
-          this.generateEmbeddedCode();
-        });
-      },
-      error: () => {
-        Swal.fire('Error', 'Failed to save survey', 'error');
-      }
-    });
-
-  } else {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'This will save your survey form to the database.',
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, save it!'
-    }).then(result => {
-      if (result.isConfirmed) {
-        this.surveyService.createSurvey(payload).subscribe({
-          next: () => {
-            console.log('resultss');
-            Swal.fire('Saved!', 'Your survey has been saved.', 'success');
-            // this.router.navigate(['student/all-survey']);
-          },
-          error: err => {
-            console.error(err);
-            Swal.fire('Error', 'Something went wrong while saving.', 'error');
-          }
-        });
-      }
-    });
+onFileSelected(event: any, field: any) {
+  const file = event.target.files[0];
+  if (file) {
+    field.file = file;
+    field.value = file.name;
   }
 }
 
-fetchSignupFields() {
-  this.surveyService.getLatestSurvey(this.selectedCompanyId).subscribe({
-    next: (res) => {
-      console.log('dataaaa',res._id)
-      this.surveyId = res._id;
-      this.fields = res.fields || [];
-      // this.buildForm();
-    },
-    error: (err) => {
-      console.error('Failed to fetch signup fields:', err);
+// Helper method to get form values for submission
+getFormValues() {
+  console.log('Getting form values from fields:', this.fields);
+  
+  return this.fields.map(field => {
+    // Ensure the attr is properly set with a priority:
+    // 1. Use existing attr if available
+    // 2. Fall back to empty string if undefined
+    const fieldAttr = field.attr !== undefined ? field.attr : '';
+    
+    const fieldData: any = {
+      label: field.label,
+      type: field.type,
+      required: field.required,
+      attr: fieldAttr,  // Ensure attr is included with a default value
+      name: field.name || '',
+      strength: field.type.toLowerCase() === 'password' ? field.strength : undefined
+    };
+
+    if (field.type.toLowerCase() === 'password') {
+      fieldData.minLength = field.minLength;
+      fieldData.maxLength = field.maxLength;
+    }
+
+    switch (field.type.toLowerCase()) {
+      case 'checkbox':
+        if (field.selectedOptions && field.options) {
+          fieldData.value = field.options.filter((_: string, index: number) => field.selectedOptions[index]);
+          fieldData.options = field.options;
+        }
+        break;
+      case 'radio':
+      case 'dropdown':
+        fieldData.value = field.value;
+        fieldData.options = field.options;
+        break;
+      case 'upload':
+        if (field.file) {
+          fieldData.value = field.file.name;
+          fieldData.file = field.file;
+        }
+        break;
+      default:
+        fieldData.value = field.value;
+    }
+
+    // Log each field to confirm attr is included
+    console.log('Field data being saved:', fieldData);
+    
+    return fieldData;
+  });
+}
+
+saveSurvey() {
+  const isThirdParty = this.selectedTabIndex === 1;
+  const isSiteRegistration = this.selectedTabIndex === 0;
+  const formValues = this.getFormValues();
+
+  // Show confirmation dialog first
+  Swal.fire({
+    title: 'Form Usage',
+    text: isThirdParty ? 
+      'Do you want to use this form for site registration as well?' :
+      'Do you want to use this form for third party registration as well?',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Yes',
+    cancelButtonText: 'No'
+  }).then((result) => {
+    const useBothForms = result.isConfirmed;
+    
+    if (useBothForms) {
+      const fieldsWithAttr = formValues.map(field => {
+        const fieldCopy = { ...field };
+        if (!fieldCopy.attr && fieldCopy.attr !== '') {
+          fieldCopy.attr = '';
+        }
+        return fieldCopy;
+      });
+      
+      const siteRegistrationPayload = {
+        title: 'Site Registration',
+        fields: fieldsWithAttr,
+        companyId: this.selectedCompanyId
+      };
+
+      const thirdPartyPayload = {
+        title: 'Third Party Survey', 
+        fields: fieldsWithAttr,
+        companyId: this.selectedCompanyId
+      };
+
+      if (isThirdParty) {
+        this.surveyService.createthirdpartySurvey(thirdPartyPayload).subscribe({
+          next: (res) => {
+            console.log('Saved as third party form');
+            const surveyId = res?.surveyForm?._id;
+            if (surveyId) {
+              this.editingSurveyId = surveyId;
+            }
+            
+            this.surveyService.createSurvey(siteRegistrationPayload).subscribe({
+              next: () => {
+                console.log('Saved as site registration form');
+                Swal.fire('Success', 'Form saved for both third party and site registration!', 'success').then(() => {
+                  if (surveyId) {
+                    this.generateEmbeddedCode();
+                  }
+                });
+              },
+              error: (err) => {
+                console.error('Error saving site registration:', err);
+                if (surveyId) {
+                  this.generateEmbeddedCode();
+                }
+              }
+            });
+          },
+          error: (err) => {
+            console.error('Error saving third party form:', err);
+            Swal.fire('Error', 'Failed to save third party form', 'error');
+          }
+        });
+      } else {
+        // If current form is site registration, save to both
+        this.surveyService.createSurvey(siteRegistrationPayload).subscribe({
+          next: () => {
+            console.log('Saved as site registration form');
+            
+            // Also save as third party
+            this.surveyService.createthirdpartySurvey(thirdPartyPayload).subscribe({
+              next: (res) => {
+                console.log('Saved as third party form');
+                const surveyId = res?.surveyForm?._id;
+                Swal.fire('Success', 'Form saved for both site registration and third party!', 'success').then(() => {
+                  if (surveyId) {
+                    this.editingSurveyId = surveyId;
+                    this.generateEmbeddedCode();
+                  }
+                });
+              },
+              error: (err) => {
+                console.error('Error saving third party form:', err);
+              }
+            });
+          },
+          error: (err) => {
+            console.error('Error saving site registration:', err);
+            Swal.fire('Error', 'Failed to save site registration form', 'error');
+          }
+        });
+      }
+    } else {
+      // Same approach for single form submission - ensure attrs are set
+      const fieldsWithAttr = formValues.map(field => {
+        const fieldCopy = { ...field };
+        if (!fieldCopy.attr && fieldCopy.attr !== '') {
+          fieldCopy.attr = '';
+        }
+        return fieldCopy;
+      });
+      
+      // Create the payload for single form type
+      const payload = {
+        title: isThirdParty ? 'Third Party Survey' : 'Site Registration',
+        fields: fieldsWithAttr,
+        companyId: this.selectedCompanyId
+      };
+      
+      console.log('Saving survey with payload:', JSON.stringify(payload, null, 2));
+
+      if (isThirdParty) {
+        this.surveyService.createthirdpartySurvey(payload).subscribe({
+          next: (res) => {
+            const surveyId = res?.surveyForm?._id;
+            if (!surveyId) {
+              Swal.fire('Error', 'Form saved, but ID is missing. Cannot generate code.', 'error');
+              return;
+            }
+
+            this.editingSurveyId = surveyId;
+            Swal.fire('Success', 'Third party form saved successfully!', 'success').then(() => {
+              this.generateEmbeddedCode();
+            });
+          },
+          error: (err) => {
+            console.error('Error saving form:', err);
+            Swal.fire('Error', 'Failed to save form', 'error');
+          }
+        });
+      } else {
+        Swal.fire({
+          title: 'Are you sure?',
+          text: 'This will save your site registration form to the database.',
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, save it!'
+        }).then(confirmResult => {
+          if (confirmResult.isConfirmed) {
+            this.surveyService.createSurvey(payload).subscribe({
+              next: () => {
+                console.log('SITE REGISTRATION SAVE COMPLETE');
+                Swal.fire('Saved!', 'Your survey has been saved.', 'success');
+              },
+              error: err => {
+                console.error('Error saving form:', err);
+                Swal.fire('Error', 'Something went wrong while saving.', 'error');
+              }
+            });
+          }
+        });
+      }
     }
   });
 }
+
+getRestrictedFieldMessage(): string | null {
+  if (!this.newField.label) return null;
+  
+  const fieldType = Object.entries(this.restrictedLabelPatterns).find(([key, patterns]) => 
+    patterns.some(pattern => this.newField.label.toLowerCase().includes(pattern))
+  );
+
+  if (fieldType) {
+    return `The field "<strong>${this.newField.label}</strong>" cannot be created as it appears to be a <strong>${fieldType[0]}</strong> field. This information will be managed by administrators in the Trainee module.`;
+  }
+
+  return null;
+}
+
+getAttributeValidationMessage(): string | null {
+  if (!this.newField.label) return null;
+
+  // Detect required attribute based on label
+  const detectedAttr = this.detectAttributeFromLabel(this.newField.label);
+  
+  if (detectedAttr) {
+    if (!this.newField.attr) {
+      return `This field appears to be a <strong>${detectedAttr}</strong> field. Please select <strong>${detectedAttr}</strong> from the Attributes dropdown before creating the field.`;
+    } else if (this.newField.attr !== detectedAttr) {
+      return `This field appears to be a <strong>${detectedAttr}</strong> field but you selected <strong>${this.newField.attr}</strong>. Please select <strong>${detectedAttr}</strong> from the Attributes dropdown.`;
+    }
+  }
+
+  return null;
+}
+
+// fetchSignupFields() {
+//   this.surveyService.getLatestSurvey(this.selectedCompanyId).subscribe({
+//     next: (res) => {
+//       console.log('dataaaa',res._id)
+//       this.surveyId = res._id;
+//       this.fields = res.fields || [];
+//       // this.buildForm();
+//     },
+//     error: (err) => {
+//       console.error('Failed to fetch signup fields:', err);
+//     }
+//   });
+// }
   
 }

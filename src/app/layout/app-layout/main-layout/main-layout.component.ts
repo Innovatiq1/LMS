@@ -3,6 +3,7 @@ import { AfterViewInit, Component, Inject, Renderer2 } from '@angular/core';
 import { DirectionService, InConfiguration } from '@core';
 import { ConfigService } from '@config';
 import { DOCUMENT } from '@angular/common';
+import { NavigationStart, Router } from '@angular/router';
 
 @Component({
   selector: 'app-main-layout',
@@ -12,9 +13,10 @@ import { DOCUMENT } from '@angular/common';
 export class MainLayoutComponent implements AfterViewInit {
   direction!: Direction;
   public config!: InConfiguration;
+  public showLayout = true;
   constructor(
     private directoryService: DirectionService,
-    private configService: ConfigService,
+    private configService: ConfigService,private router: Router,
     @Inject(DOCUMENT) private document: Document,
     private renderer: Renderer2
   ) {
@@ -40,6 +42,17 @@ export class MainLayoutComponent implements AfterViewInit {
             }
           }
         }
+      }
+    });
+
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        const layoutlessRoutes = [
+          '/student/thirdparty/form', // add more if needed
+        ];
+        this.showLayout = !layoutlessRoutes.some(route =>
+          event.url.startsWith(route)
+        );
       }
     });
   }

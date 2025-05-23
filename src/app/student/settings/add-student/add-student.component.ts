@@ -419,7 +419,7 @@ getDepartment(){
           name: this.editData.name,
           last_name: this.editData.last_name,
           rollNo: this.editData.rollNo,
-          gender: this.editData.gender,
+          gender: this.editData.gender.toLowerCase(),
           mobile: this.editData.mobile,
           joiningDate: this.editData.joiningDate,
           email: this.editData.email,
