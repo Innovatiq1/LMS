@@ -1731,6 +1731,42 @@ MENU_LIST =[
           "isLeaf": true
         },
         {
+          "title": "FileSize Algorithm",
+          "id": "fileSize-algorithm",
+          "children": [],
+          "actions": [
+            {
+              "title": "Create",
+              "id": "create-fileSize",
+              "checked": true,
+              "indeterminate": false,
+              "isLeaf": true,
+              "isAction": true
+            },
+            {
+              "title": "Edit",
+              "id": "edit-fileSize",
+              "checked": true,
+              "indeterminate": false,
+              "isLeaf": true,
+              "isAction": true
+            },
+            {
+              "title": "Delete",
+              "id": "delete-fileSize",
+              "checked": true,
+              "indeterminate": false,
+              "isLeaf": true,
+              "isAction": true
+            }
+          ],
+          "isAction": false,
+          "checked": true,
+          "indeterminate": false,
+          "class": "ml-menu",
+          "isLeaf": true
+        },
+        {
           "title": "Meeting Platform",
           "id": "meeting-platform",
           "children": [],

@@ -1,0 +1,68 @@
+<section class="content">
+    <div class="content-block">
+      <div class="block-header" *ngFor="let breadscrum of breadscrums">
+        <!-- breadcrumb -->
+        <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
+        </app-breadcrumb>
+      </div>
+      <div class="row clearfix">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <div class="card" style="height: fit-content;">
+            <div class="header">
+              <h2>Create fileSize Limit</h2>
+            </div>
+            <div class="body">
+          
+                <form [formGroup]="scoreAlgorithmForm">
+  
+                <div class="row">
+                  <div class="col-3">
+                    <label>FileSize Limit  <span class="mandatory">&nbsp;*</span></label>
+                        <mat-form-field class="example-full-width " appearance="outline">
+                            <input matInput type="text" formControlName="fileSize"
+                            class="form-control" placeholder="Enter New FileSize in MB"
+                            >      
+                            <mat-error *ngIf="scoreAlgorithmForm.get('fileSize')?.invalid ||scoreAlgorithmForm.get('fileSize')?.touched">
+                              {{ utils.getErrorMessage1(scoreAlgorithmForm.get('fileSize'), 'fileSize') }}
+                            </mat-error>
+                                      
+                        </mat-form-field>
+                  </div>
+                </div>
+                </form>
+                <hr/>
+                <div class="float-end">
+                    <div class="d-grid gap-3 d-md-flex">
+                    <button  mat-raised-button  id="submit" (click)="onSubmit()" > Create </button>
+                    </div>
+                  </div>
+                  <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
+                      <div class="header mt-3">
+                        <h2>FileSize Algorithm Listing</h2>
+                      </div>
+                      <div class="table-wrapper">
+                        <div class="table-responsive">
+                          <table class="table table-hover ">
+                            <thead>
+                              <tr>
+                                <th>FileSize Algorithm</th>
+                               
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr style="cursor: pointer;" *ngFor="let row of dataSource">
+                                <td (click)="isEdit ? update(row) : null">{{row.fileSize}} MB</td>                         
+                                <!-- <td (click)="update(row)">{{row.fileSize}} MB</td>   -->
+                              </tr>
+    
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                  </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

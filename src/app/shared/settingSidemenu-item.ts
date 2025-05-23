@@ -516,6 +516,29 @@ SETTING_SIDEMENU_LIST =[
             "children": []
           },
           {
+            "title": "FileSize Algorithm",
+            "id": "fileSize-algorithm",
+            "class": "ml-menu",
+            "actions": [
+              {
+                "title": "Create",
+                "id": "create-fileSize",
+                "class": "ml-menu3"
+              },
+              {
+                "title": "Edit",
+                "id": "edit-fileSize",
+                "class": "ml-menu3"
+              },
+              {
+                "title": "Delete",
+                "id": "delete-fileSize",
+                "class": "ml-menu3"
+              }
+            ],
+            "children": []
+          },
+          {
             "title": "Meeting Platform",
             "id": "meeting-platform",
             "class": "ml-menu",

@@ -165,6 +165,38 @@ export class SettingsService {
       .delete<CourseModel>(apiUrl)
       .pipe(map((response) => response));
   }
+  saveFileSizeAlgorithm(data: any) {
+    const apiUrl = `${this.prefix}admin/fileSize`;
+    return this._Http
+      .post<ApiResponse>(apiUrl, data)
+      .pipe(map((response) => {}));
+  }
+  getFileSizeAlgorithm(filter?: Partial<CoursePaginationModel>): Observable<ApiResponse> {
+    //let userId = localStorage.getItem('id');
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    const apiUrl = this.defaultUrl + `admin/fileSize?companyId=${userId}`;
+   // const apiUrl = this.defaultUrl + 'admin/passingCriteria';
+    return this._Http.get<ApiResponse>(apiUrl, {
+      params: this.buildParams(filter),
+    });
+  }
+  getFileSizeAlgorithmById(id: string) {
+    const apiUrl = `${this.prefix}admin/fileSize/${id}`;
+    return this._Http.get<any>(apiUrl).pipe(map((response) => response));
+  }
+  updateFileSizeAlgorithm(id: string, data: any) {
+    // console.log("id",id,"data",data)
+    const apiUrl = `${this.prefix}admin/fileSize/${id}`;
+    return this._Http
+      .put<ApiResponse>(apiUrl, data)
+      .pipe(map((response) => {}));
+  }
+  deleteFileSizeAlgorithm(id: string) {
+    const apiUrl = `${this.prefix}admin/fileSize/${id}`;
+    return this._Http
+      .delete<CourseModel>(apiUrl)
+      .pipe(map((response) => response));
+  }
   saveScoreAlgorithm(score: any) {
     const apiUrl = `${this.prefix}admin/score`;
     return this._Http

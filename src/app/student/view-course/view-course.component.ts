@@ -147,7 +147,7 @@ export class ViewCourseComponent implements OnDestroy {
   isInvoice: boolean = false;
   paidAmount: boolean = false;
 
-  isScormKitInit:boolean = false;
+  isScormKitInit: boolean = false;
 
   pdfData: any = [];
   dafaultGenratepdf: boolean = false;
@@ -188,9 +188,9 @@ export class ViewCourseComponent implements OnDestroy {
   approval: any;
   discount_Type: any;
   tpDiscountValue: any;
-  isScormKit:boolean = false;
-  isVideoKit:boolean=false;
-  isLoading:boolean = true;
+  isScormKit: boolean = false;
+  isVideoKit: boolean = false;
+  isLoading: boolean = true;
   constructor(
     private classService: ClassService,
     private activatedRoute: ActivatedRoute,
@@ -277,8 +277,6 @@ export class ViewCourseComponent implements OnDestroy {
   getClassDetails() {
     this.classService.getClassById(this.classId).subscribe((response) => {
       this.classDetails = response;
-      console.log('classRes', this.classDetails);
-
       this.feeType = this.classDetails.courseId.feeType;
       this.approval = this.classDetails?.courseId?.approval;
       this.courseReferenceNumber = this.classDetails?.courseReferenceNumber;
@@ -390,9 +388,6 @@ export class ViewCourseComponent implements OnDestroy {
               .subscribe((response) => {
                 this.studentClassDetails = response.data.docs[0];
                 this.scormKitInit();
-                // console.log("this.studentClassDetails",this.studentClassDetails)
-                // console.log("studentId",studentId)
-                // console.log("this.classId",this.classId)
                 const issueCertificate =
                   this.studentClassDetails.classId.courseId.issueCertificate;
                 const learningTutorial =
@@ -695,7 +690,7 @@ export class ViewCourseComponent implements OnDestroy {
         },
       ],
     };
-    console.log('Payload:', payload);
+    // console.log('Payload:', payload);
 
     this.http.post('http://localhost:3001/getGrantCalculations', payload).subscribe(
       (response: any) => {
@@ -806,7 +801,7 @@ export class ViewCourseComponent implements OnDestroy {
     }
   }
   registerClass(classId?: string) {
-    console.log("regis", this.discountValue)
+    // console.log("regis", this.discountValue)
     var userdata = JSON.parse(localStorage.getItem('currentUser')!);
     var studentId = localStorage.getItem('id');
     if (this.paid) {
@@ -1336,9 +1331,9 @@ export class ViewCourseComponent implements OnDestroy {
     this.courseService.getCourseById(id).subscribe((response) => {
       this.courseKitDetails = response?.course_kit;
       this.courseDetails = response;
-
+      // console.log('this.courseDetails', this.courseDetails);
       this.discount_Type = this.courseDetails.discount_type;
-      console.log('this.courseDetails', this.discount_Type);
+      // console.log('this.courseDetails', this.discount_Type);
       this.courseKitDetails.map((item: any) => {
         this.url = item?.videoLink[0]?.video_url;
       });
@@ -1360,7 +1355,7 @@ export class ViewCourseComponent implements OnDestroy {
       }));
 
       this.isScormCourseKit = this.courseKit.some((v) => v.kitType === 'scorm');
-      console.log('courseKit:',this.courseKit);
+      // console.log('courseKit:',this.courseKit);
 
       this.scormModules =
         this.courseKit.find((v) => v.kitType === 'scorm')?.scormKit?.modules ||
@@ -1368,7 +1363,7 @@ export class ViewCourseComponent implements OnDestroy {
       this.scormKit = this.courseKit.find(
         (v) => v.kitType === 'scorm'
       )?.scormKit;
-      console.log(this.studentClassDetails)
+      // console.log(this.studentClassDetails)
       this.scormKitInit();
 
       if (this.paidProgram) {
@@ -1414,30 +1409,30 @@ export class ViewCourseComponent implements OnDestroy {
     });
   }
 
-  scormKitInit(){
-    this.isScormKit =this.courseKit?.some((v) => v.kitType === 'scorm');
+  scormKitInit() {
+    this.isScormKit = this.courseKit?.some((v) => v.kitType === 'scorm');
     this.isVideoKit = !this.isScormKit
 
-    if(this.scormModules.length&&!this.isScormKitInit){
-    let lastModuleId = this.scormModules[0]._id;
-    if (this.studentClassDetails.scormKit && this.scormModules.length > 0 && this.studentClassDetails.scormKit.currentScormModule) {
-      lastModuleId =
-        this.studentClassDetails.scormKit.currentScormModule ;
+    if (this.scormModules.length && !this.isScormKitInit) {
+      let lastModuleId = this.scormModules[0]._id;
+      if (this.studentClassDetails.scormKit && this.scormModules.length > 0 && this.studentClassDetails.scormKit.currentScormModule) {
+        lastModuleId =
+          this.studentClassDetails.scormKit.currentScormModule;
         this.lastcommit = this.studentClassDetails.scormKit.lastCommit;
+      }
+      let lastModule = this.scormModules.find(
+        (v) => v._id === lastModuleId
+      );
+      if (!lastModule) {
+        lastModule = this.scormModules[0];
+      }
+      const launchUrl = lastModule?.launch;
+      const scormKit = this.scormKit;
+      const url = scormKit?.path + '/' + launchUrl;
+      this.currentScormModule = lastModule;
+      this.openScormModule(lastModule, scormKit);
+      this.isScormKitInit = true;
     }
-    let lastModule = this.scormModules.find(
-      (v) => v._id === lastModuleId
-    );
-    if(!lastModule){
-      lastModule = this.scormModules[0];
-    }
-    const launchUrl = lastModule?.launch;
-    const scormKit = this.scormKit;
-    const url = scormKit?.path + '/' + launchUrl;
-    this.currentScormModule = lastModule;
-    this.openScormModule(lastModule, scormKit);
-    this.isScormKitInit = true;
-  }
   }
   getAttendanceDetails(getstudentClassDetails: any) {
     // console.log("this.courseDetails",getstudentClassDetails)
@@ -1505,7 +1500,7 @@ export class ViewCourseComponent implements OnDestroy {
           this.discountType = response?.data?.docs[0]?.discount.discountType;
           this.discountValue = response?.data?.docs[0]?.discount.value;
 
-        }else{
+        } else {
 
           this.discountType = '';
           this.discountValue = response?.data?.docs[0]?.discount_type;
@@ -1514,24 +1509,24 @@ export class ViewCourseComponent implements OnDestroy {
         this.longDescription = this?.coursekitDetails[0]?.longDescription;
         let totalPlaybackTime = 0;
         let documentCount = 0;
-        let lastModuleId =  this.scormModules[0]?._id;
+        let lastModuleId = this.scormModules[0]?._id;
         if (this.studentClassDetails.scormKit && this.scormModules.length > 0) {
           lastModuleId =
             this.studentClassDetails.scormKit.currentScormModule;
-            this.lastcommit = this.studentClassDetails.scormKit.lastCommit;
+          this.lastcommit = this.studentClassDetails.scormKit.lastCommit;
         }
 
-        let lastModule:any = this.scormModules.find(
+        let lastModule: any = this.scormModules.find(
           (v) => v._id === lastModuleId
         );
-        if(!lastModule){
+        if (!lastModule) {
           lastModule = this.scormModules[0];
         }
         const launchUrl = lastModule?.launch;
         const scormKit = this.scormKit;
         const url = scormKit?.path + '/' + launchUrl;
         // this.initScorm2004(url);
-        console.log('launchUrl==', this.scormModules);
+        // console.log('launchUrl==', this.scormModules);
 
 
         this.coursekitDetails.forEach(
@@ -1583,7 +1578,7 @@ export class ViewCourseComponent implements OnDestroy {
 
         if (this.studentClassDetails.status == 'approved') {
           this.getAttendanceDetails(this.studentClassDetails);
-          console.log("this is the approved==", this.studentClassDetails)
+          // console.log("this is the approved==", this.studentClassDetails)
           this.isTest =
             issueCertificate === 'test' && playBackTimes === 100 ? true : false;
           this.isDocument = issueCertificate === 'document' ? false : true;
@@ -1640,7 +1635,7 @@ export class ViewCourseComponent implements OnDestroy {
         // this.assessmentTaken = response['count']-this.RetakeRequestCount;
         this.assessmentTaken = response['count'];
         // const retakeRequestCount=this.getRetakeRequests(studentId,courseId);
-        console.log('assessmentTake=', this.assessmentTaken);
+        // console.log('assessmentTake=', this.assessmentTaken);
         if (this.RetakeRequestCount == 1) {
           this.updateRetakeRequest(courseId);
         }
@@ -1658,7 +1653,7 @@ export class ViewCourseComponent implements OnDestroy {
     this.settingsService
       .putRetakeRequestByStudentIdCourseId(studentId, courseId, payload)
       .subscribe((response) => {
-        console.log('response updateRetakeRequest=', response);
+        // console.log('response updateRetakeRequest=', response);
       });
   }
   getRetakeRequests(courseId: any) {
@@ -1687,8 +1682,8 @@ export class ViewCourseComponent implements OnDestroy {
     if (this.RetakeRequestCount === 1) {
       this.assessmentTaken = 1;
     }
-    console.log('this.assessmentTaken', this.assessmentTaken);
-    console.log('this.assessmentInfo.retake', this.assessmentInfo.retake);
+    // console.log('this.assessmentTaken', this.assessmentTaken);
+    // console.log('this.assessmentInfo.retake', this.assessmentInfo.retake);
     // if(this.assessmentTaken == this.assessmentInfo.retake){
     //   // this.isShowAssessmentQuestions =  false;
     //   this.isRetakeOver=false;
@@ -1822,7 +1817,7 @@ export class ViewCourseComponent implements OnDestroy {
     let classId = localStorage.getItem('classId');
     let courseId = this.courseDetailsId;
     let studentId = localStorage.getItem('id');
-    console.log('lastButOneValue', lastButOneValue);
+    // console.log('lastButOneValue', lastButOneValue);
     if (this.paid) {
       let payload = {
         studentId: studentId,
@@ -1923,16 +1918,8 @@ export class ViewCourseComponent implements OnDestroy {
     this.unsubscribe$.complete();
   }
   getTPAssessmentData() {
-    // console.log("TpDetails", this.classDetails)
-    // console.log("this.courseDetails",this.courseDetails)
-    // console.log("this.courseDetails",this.courseDetails?.assessment?.passingCriteria)
     let uen = localStorage.getItem('uen') || '';
     const userData = JSON.parse(localStorage.getItem('user_data') || '');
-    // console.log("uen",uen)
-    // console.log("courseReferenceNumber",this.classDetails.course.courseReferenceNumber)
-    // console.log("courseTPRunId",this.classDetails.courseTPRunId);
-    // console.log("userNmae",userData.user.name)
-    // console.log("userNmae",userData.user.id)
     const currentDate = new Date().toISOString().split('T')[0];
     let TPAssessment = {
       assessment: {
@@ -1971,16 +1958,28 @@ export class ViewCourseComponent implements OnDestroy {
       answers: payload.answers,
       is_tutorial: payload.is_tutorial,
       tpAssessment: TpAassment1,
+      assessmentEvaluationType: this.courseDetails?.assessment?.assessmentEvaluationType,
+      evaluationStatus: "pending",
     };
 
-    console.log('helo', requestBody);
+    // console.log('helo', requestBody);
     this.studentService.submitAssessment(requestBody).subscribe(
       (response: any) => {
         Swal.fire({
           title: 'Submitted!',
           text: 'Your answers were submitted.',
           icon: 'success',
-        });
+        })
+        // .then(() => {
+        //   // Show second popup if evaluation type is Manual
+        //   if (requestBody.assessmentEvaluationType === 'Manual') {
+        //     Swal.fire({
+        //       title: 'Please wait!',
+        //       text: 'Your answers will be evaluated manually. You will be notified once the evaluation is complete.',
+        //       icon: 'info',
+        //     });
+        //   }
+        // });
         this.isAnswersSubmitted = true;
         this.assessmentTempInfo = requestBody;
         this.getAssessmentAnswerCount(payload.courseId);
@@ -2092,7 +2091,7 @@ export class ViewCourseComponent implements OnDestroy {
 
 
   initScorm2004(contentUrl: string) {
-    console.log('ContentUrl:',contentUrl)
+    // console.log('ContentUrl:',contentUrl)
     this.iframeUrl = contentUrl;
     const settings = {
       autocommit: true,
@@ -2120,7 +2119,7 @@ export class ViewCourseComponent implements OnDestroy {
     }
   }
 
-  initScorm12(contentUrl:string){
+  initScorm12(contentUrl: string) {
     this.iframeUrl = contentUrl;
     const settings = {
       autocommit: true,
@@ -2146,7 +2145,7 @@ export class ViewCourseComponent implements OnDestroy {
   }
 
   receiveMessage(CMIElement: any, value: any): void {
-    if ((CMIElement == 'cmi.completion_status' || CMIElement ==='cmi.core.lesson_status') && value === 'completed' && !this.isCompleted) {
+    if ((CMIElement == 'cmi.completion_status' || CMIElement === 'cmi.core.lesson_status') && value === 'completed' && !this.isCompleted) {
       const studentId = localStorage.getItem('id');
       const percentagePerModule = 100 / this.scormModules.length;
       const playBackTime = this.playBackTime + percentagePerModule;
@@ -2178,10 +2177,10 @@ export class ViewCourseComponent implements OnDestroy {
       ...module,
       launchUrl: scormKit.path + '/' + module.launch,
     };
-     if(module.version === '1.2'){
+    if (module.version === '1.2') {
       this.initScorm12(this.currentScormModule.launchUrl);
-    }else {
-        this.initScorm2004(this.currentScormModule.launchUrl);
+    } else {
+      this.initScorm2004(this.currentScormModule.launchUrl);
     }
   }
 
@@ -2209,8 +2208,8 @@ export class ViewCourseComponent implements OnDestroy {
 
   isSameDate(date1: Date, date2: Date) {
     return (date1.getFullYear() === date2.getFullYear() &&
-    date1.getMonth() === date2.getMonth() &&
-    date1.getDate() === date2.getDate())
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate())
   }
 
   openMeeting(link: any) {

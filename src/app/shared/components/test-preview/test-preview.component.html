@@ -33,18 +33,61 @@
       >
         <div class="p-2">
           <h6>{{ i + 1 }}. {{ row.questionText }}</h6>
-          <mat-radio-group>
+    
+          <!-- MCQ / Radio Button -->
+          <mat-radio-group *ngIf="row.questionType === 'mcq' || row.questionType === 'radio'">
             <div *ngFor="let option of row.options; let k = index">
-              <mat-radio-button
-                class="example-margin option-text"
-                [value]="option.text"
-                >{{ optionsLabel[k] }} {{ option.text }}</mat-radio-button
-              >
+              <mat-radio-button class="example-margin option-text" [value]="option.text">
+                {{ optionsLabel[k] }} {{ option.text }}
+              </mat-radio-button>
             </div>
           </mat-radio-group>
+    
+          <!-- True/False -->
+          <mat-radio-group *ngIf="row.questionType === 'trueFalse'">
+            <mat-radio-button class="example-margin" value="true">True</mat-radio-button>
+            <mat-radio-button class="example-margin" value="false">False</mat-radio-button>
+          </mat-radio-group>
+    
+          <!-- Fill in the Blanks -->
+          <input
+            *ngIf="row.questionType === 'fillBlanks'"
+            type="text"
+            class="form-control mt-2"
+            placeholder="Enter your answer"
+            [(ngModel)]="row.textAnswer"
+          />
+    
+          <!-- One Word Answer -->
+          <input
+            *ngIf="row.questionType === 'text'"
+            type="text"
+            class="form-control mt-2"
+            placeholder="Enter your answer"
+            [(ngModel)]="row.textAnswer"
+          />
+    
+          <!-- Textarea Answer -->
+          <textarea
+            *ngIf="row.questionType === 'textarea'"
+            class="form-control mt-2"
+            rows="3"
+            placeholder="Enter your answer"
+            [(ngModel)]="row.textareaAnswer"
+          ></textarea>
+    
+          <!-- Number Input -->
+          <input
+            *ngIf="row.questionType === 'number'"
+            type="number"
+            class="form-control mt-2"
+            placeholder="Enter a number"
+            [(ngModel)]="row.textAnswer"
+          />
         </div>
       </div>
     </div>
+    
   </div>
 </mat-dialog-content>
 <mat-dialog-actions>
