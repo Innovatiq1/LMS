@@ -96,6 +96,10 @@ export class UtilsService {
       { type: 'required', message: 'Enter Score' },
       { type: 'min', message: 'Score must be at least 1' },
     ],
+    fileSize: [
+      { type: 'required', message: 'Enter FileSize ' },
+      { type: 'min', message: 'FileSize must be at least 1' },
+    ],
     times: [
       { type: 'required', message: 'Enter Score' },
       { type: 'min', message: 'Score must be at least 1' },

@@ -225,6 +225,30 @@ export class StudentsService extends UnsubscribeOnDestroyAdapter {
     return this.httpClient.get<ApiResponse>(apiUrl);
   }
 
+  submitManualAssessmentAnswer(data: any): Observable<ApiResponse> {
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    data.companyId = userId;
+    const apiUrl = `${this.defaultUrl}admin/manualEvaluation`;
+
+    return this.httpClient
+      .post<ApiResponse>(apiUrl, data)
+      .pipe(map((response) => response));
+  }
+
+  getManualAssessmentAnswerById(id: string): Observable<any> {
+    const apiUrl = `${this.defaultUrl}admin/manualEvaluation/assessmentAnswer/${id}`;
+    return this.httpClient.get<any>(apiUrl).pipe(
+      map((response) => {
+        return response;
+      })
+    );
+  }
+
+  updateManualAssessmentAnswerById(id: string, payload: any): Observable<ApiResponse> {
+    const apiUrl = `${this.defaultUrl}admin/manualEvaluation/${id}`;
+    return this.httpClient.put<ApiResponse>(apiUrl, payload);
+  }
+
   submitAssessment(data: any): Observable<ApiResponse> {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     data.companyId = userId;
@@ -252,6 +276,13 @@ export class StudentsService extends UnsubscribeOnDestroyAdapter {
       })
     );
   }
+
+  updateSubmittedAssessment(id: string, payload: any): Observable<ApiResponse> {
+    const apiUrl = `${this.defaultUrl}admin/assesment-answers/update-submission/${id}`;
+    return this.httpClient.put<ApiResponse>(apiUrl, payload);
+  }
+  
+
   getTutorialAnswerById(id: string): Observable<any> {
     const apiUrl = `${this.defaultUrl}admin/tutorial-answers/${id}`;
     return this.httpClient.get<any>(apiUrl).pipe(

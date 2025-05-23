@@ -651,6 +651,14 @@ private tpUrl=environment.Url;
       );
     }
     
+    uploadDocument(file:any) {
+      const apiUrl = `${this.prefix}admin/documentUpload/`;
+      return this._Http.post<any>(apiUrl, file).pipe(
+        map((response) => {
+          return response
+        })
+      );
+    }
   
     saveVideo(payload: any){
       const apiUrl = `${this.prefix}uploadVideo/`;

@@ -87,7 +87,9 @@ import { UpdateDiscountComponent } from './settings/discount/update-discount/upd
 import { PassingCriteriaComponent } from './settings/passing-criteria/passing-criteria.component';
 import { UpdatePassingCriteriaComponent } from './settings/passing-criteria/update-passing-criteria/update-passing-criteria.component';
 import { ScoreComponent } from './settings/score/score.component';
+import { FileSizeComponent } from './settings/file-size/file-size.component';
 import { UpdateScoreAlgorithmComponent } from './settings/score/update-score-algorithm/update-score-algorithm.component';
+import { UpdateFileSizeComponent } from './settings/file-size/update-file-size/update-file-size.component';
 import { TimeComponent } from './settings/time/time.component';
 import { UpdateTimeAlgorithmComponent } from './settings/time/update-time-algorithm/update-time-algorithm.component';
 import { SocialLoginComponent } from './settings/social-login/social-login.component';
@@ -318,6 +320,10 @@ const routes: Routes = [
   {
     path: 'settings/configuration/score-algorithm',
     component: ScoreComponent
+  },
+  {
+    path: 'settings/configuration/fileSize-algorithm',
+    component: FileSizeComponent
   },
   {
     path: 'settings/configuration/time-algorithm',
@@ -629,6 +635,10 @@ const routes: Routes = [
   {
     path: 'settings/configuration/score-algorithm/update-score-algorithm',
     component: UpdateScoreAlgorithmComponent
+  },
+  {
+    path: 'settings/configuration/fileSize-algorithm/update-filesize-algorithm',
+    component: UpdateFileSizeComponent
   },
   {
     path: 'settings/configuration/time-algorithm/update-time-algorithm',

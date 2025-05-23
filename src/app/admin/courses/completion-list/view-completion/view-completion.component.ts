@@ -150,6 +150,8 @@ export class ViewCompletionComponent implements OnInit {
      this.courseService.getStudentClassById(id).subscribe((response: any) => {
       this.classDataById = response?._id;
       this.response = response;
+      console.log("id",id)
+      console.log("response Data",this.response)
       if(response.discount){
         this.isDiscount = true;
         this.courseService.getDiscountById(response.discount).subscribe(discountResponse => {

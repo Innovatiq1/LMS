@@ -16,6 +16,7 @@ export class TestPreviewComponent {
     public dialogRef: MatDialogRef<TestPreviewComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
+    console.log("daaaa",data)
     this.questionList = data?.questions || [];
     if (data.timer) {
       this.totalTime = this.questionList.length * data.timer;
