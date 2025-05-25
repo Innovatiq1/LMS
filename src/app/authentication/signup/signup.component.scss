@@ -283,7 +283,8 @@ ngx-intl-tel-input {
 
 // Modern input fields with left icons
 .modern-input-container {
-  margin-bottom: 20px;
+  position: relative;
+  margin-bottom: 16px;
   
   .field-label {
     display: block;
@@ -316,6 +317,27 @@ ngx-intl-tel-input {
       justify-content: center;
       width: 40px;
       color: #5f6368;
+      
+      mat-icon {
+        font-size: 20px;
+        height: 20px;
+        width: 20px;
+      }
+    }
+    
+    .password-visibility-btn {
+      background: none;
+      border: none;
+      padding: 0 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #5f6368;
+      
+      &:hover {
+        color: #1a73e8;
+      }
       
       mat-icon {
         font-size: 20px;
@@ -397,6 +419,8 @@ ngx-intl-tel-input {
     color: #d93025;
     font-size: 12px;
     margin-top: 4px;
+    min-height: 16px;
+    display: block;
   }
 }
 

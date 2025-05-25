@@ -54,10 +54,10 @@ surveyId: string = '';
   attributePatterns: { [key: string]: string[] } = {
     'Name': ['name', 'fullname', 'firstname', 'lastname', 'surname'],
     'Email': ['email', 'e-mail', 'mail'],
-    'Upload': ['upload', 'file', 'document', 'attachment', 'image'],
+    'Upload': ['upload', 'file', 'document', 'attachment', 'image', 'photo', 'picture' ],
     'Gender': ['gender', 'sex'],
     'Mobile': ['mobile', 'phone', 'contact', 'cell'],
-    'Password': ['password', 'pwd', 'pass'],
+    'Password': ['password', 'pwd'],
     'Qualification': [
       'qualification', 
       'education',
