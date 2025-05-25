@@ -24,6 +24,7 @@ export class SignupComponent implements OnInit {
   currentIndex = 0;
   CompanyId!: string;
   extractedName!: string;
+  hidePassword: { [key: string]: boolean } = {};
   defaultFields = [
     {
       label: 'Username',
@@ -70,6 +71,13 @@ export class SignupComponent implements OnInit {
     }, 3000); 
     const today = new Date();
     this.maxDate = new Date(today.setDate(today.getDate() - 1));
+
+    // Initialize password visibility state for all password fields
+    this.fields.forEach(field => {
+      if (field.type?.toLowerCase() === 'password') {
+        this.hidePassword[this.sanitizeControlName(field.label)] = true;
+      }
+    });
   }
 
   fetchSignupFields() {
@@ -103,12 +111,20 @@ export class SignupComponent implements OnInit {
       if (field.required) validators.push(Validators.required);
       if (field.type === 'Dropdown') validators.push(Validators.required);
       if (field.type === 'radio') validators.push(Validators.required);
-      if (field.type === 'Password') {
-        if (field.minLength) validators.push(Validators.minLength(field.minLength));
-        if (field.maxLength) validators.push(Validators.maxLength(field.maxLength));
-        validators.push(passwordValidator(field));  
+      if (field.type?.toLowerCase() === 'password') {
+        const minLen = field.minLength || 8;  // Default to 8 if not specified
+        const maxLen = field.maxLength || 20; // Default to 20 if not specified
+        validators.push(Validators.minLength(minLen));
+        validators.push(Validators.maxLength(maxLen));
+        // Updated pattern to use dynamic length
+        validators.push(Validators.pattern(
+          new RegExp(`^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&#])[A-Za-z\\d@$!%*?&#]{${minLen},${maxLen}}$`)
+        ));
       }
-      if (field.type === 'Email') validators.push(Validators.email);
+      if (field.type === 'Email') {
+        validators.push(Validators.email);
+        validators.push(Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/));
+      }
       if (field.type === 'Number') validators.push(Validators.pattern(/^\d+$/));
       if (field.type === 'Phone') validators.push(Validators.pattern(/^\d{10}$/));
       if (field.type === 'TextArea') validators.push(Validators.maxLength(500));
@@ -152,13 +168,13 @@ export class SignupComponent implements OnInit {
     if (passwordCtrl.value !== confirmCtrl.value) {
       confirmCtrl.setErrors({ mismatch: true });
       return { mismatch: true };
-    }
-
-    // Clear the mismatch error if passwords match
-    if (confirmCtrl.errors?.['mismatch']) {
-      const errors = { ...confirmCtrl.errors };
-      delete errors['mismatch'];
-      confirmCtrl.setErrors(Object.keys(errors).length ? errors : null);
+    } else {
+      // Only clear mismatch error, preserve other errors if any
+      if (confirmCtrl.errors?.['mismatch']) {
+        const errors = { ...confirmCtrl.errors };
+        delete errors['mismatch'];
+        confirmCtrl.setErrors(Object.keys(errors).length ? errors : null);
+      }
     }
 
     return null;
@@ -178,18 +194,28 @@ export class SignupComponent implements OnInit {
     }
   }
 
-  getErrorMessage(fieldName: string): string {
-    const control = this.signupForm.get(fieldName);
+  getErrorMessage(field: any): string {
+    const controlName = this.sanitizeControlName(field.label);
+    const control = this.signupForm.get(controlName);
     if (control?.errors) {
       if (control.errors['required']) return 'This field is required';
       if (control.errors['email']) return 'Invalid email format';
-      if (control.errors['pattern']) return 'Invalid format';
+      if (control.errors['pattern']) {
+        if (field.type?.toLowerCase() === 'password') {
+          const minLen = field.minLength || 8;
+          const maxLen = field.maxLength || 20;
+          return `Password must be ${minLen}-${maxLen} characters long and contain at least one uppercase letter, one lowercase letter, one number and one special character`;
+        }
+        if (field.type === 'Email') {
+          return 'Please enter a valid email address';
+        }
+        return 'Invalid format';
+      }
       if (control.errors['fileSize']) {
         return `File size must be less than ${this.MAX_FILE_SIZE_MB}MB. Selected file is ${control.errors['fileSize'].actualSize}MB`;
       }
-      if (control.errors['minlength']) return `${fieldName} must be at least ${control.errors['minlength'].requiredLength} characters`;
-      if (control.errors['maxlength']) return `${fieldName} must be no more than ${control.errors['maxlength'].requiredLength} characters`;
-      if (control.errors['strongPassword']) return 'Password must contain uppercase, lowercase, number, and special character';
+      if (control.errors['minlength']) return `${field.label} must be at least ${control.errors['minlength'].requiredLength} characters`;
+      if (control.errors['maxlength']) return `${field.label} must be no more than ${control.errors['maxlength'].requiredLength} characters`;
       if (control.errors['mismatch']) return 'Passwords do not match';
     }
     return '';
@@ -334,5 +360,23 @@ export class SignupComponent implements OnInit {
       }
     }
     return null;
+  }
+
+  onFieldBlur(fieldName: string) {
+    const control = this.signupForm.get(fieldName);
+    if (control) {
+      control.markAsTouched();
+    }
+  }
+
+  onFieldInput(fieldName: string) {
+    const control = this.signupForm.get(fieldName);
+    if (control) {
+      control.markAsDirty();
+    }
+  }
+
+  togglePasswordVisibility(fieldName: string): void {
+    this.hidePassword[fieldName] = !this.hidePassword[fieldName];
   }
 }

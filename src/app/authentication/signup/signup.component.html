@@ -62,7 +62,9 @@
                             [formControlName]="sanitizeControlName(field.label)"
                             [placeholder]="field.placeholder || ''"
                             [attr.maxlength]="field.maxLength"
-                            [attr.minlength]="field.minLength">
+                            [attr.minlength]="field.minLength"
+                            (blur)="onFieldBlur(sanitizeControlName(field.label))"
+                            (input)="onFieldInput(sanitizeControlName(field.label))">
                     </ng-container>
 
                     <!-- Email Input -->
@@ -73,18 +75,28 @@
                             [formControlName]="sanitizeControlName(field.label)"
                             [placeholder]="field.placeholder || ''"
                             [attr.maxlength]="field.maxLength"
-                            [attr.minlength]="field.minLength">
+                            [attr.minlength]="field.minLength"
+                            (blur)="onFieldBlur(sanitizeControlName(field.label))"
+                            (input)="onFieldInput(sanitizeControlName(field.label))">
                     </ng-container>
 
                     <!-- Password Input -->
                     <ng-container *ngIf="field.type?.toLowerCase() === 'password' || field.attr === 'Password'">
                       <span class="field-icon"><mat-icon>lock</mat-icon></span>
                       <input class="modern-input"
-                            type="password"
+                            [type]="hidePassword[sanitizeControlName(field.label)] ? 'password' : 'text'"
                             [formControlName]="sanitizeControlName(field.label)"
                             [placeholder]="field.placeholder || ''"
                             [attr.maxlength]="field.maxLength"
-                            [attr.minlength]="field.minLength">
+                            [attr.minlength]="field.minLength"
+                            (blur)="onFieldBlur(sanitizeControlName(field.label))"
+                            (input)="onFieldInput(sanitizeControlName(field.label))">
+                      <button type="button" 
+                              class="password-visibility-btn" 
+                              (click)="togglePasswordVisibility(sanitizeControlName(field.label))"
+                              [attr.aria-label]="'Hide password'">
+                        <mat-icon>{{ hidePassword[sanitizeControlName(field.label)] ? 'visibility_off' : 'visibility' }}</mat-icon>
+                      </button>
                     </ng-container>
 
                     <!-- Other Text Inputs -->
@@ -96,13 +108,16 @@
                             [formControlName]="sanitizeControlName(field.label)"
                             [placeholder]="field.placeholder || ''"
                             [attr.maxlength]="field.maxLength"
-                            [attr.minlength]="field.minLength">
+                            [attr.minlength]="field.minLength"
+                            (blur)="onFieldBlur(sanitizeControlName(field.label))"
+                            (input)="onFieldInput(sanitizeControlName(field.label))">
                     </ng-container>
                   </div>
 
                   <!-- Error Messages - Only for required fields -->
                   <div *ngIf="field.required && signupForm.get(sanitizeControlName(field.label))?.errors && 
-                              signupForm.get(sanitizeControlName(field.label))?.touched" class="error-message">
+                              (signupForm.get(sanitizeControlName(field.label))?.touched || 
+                               signupForm.get(sanitizeControlName(field.label))?.dirty)" class="error-message">
                     {{ getErrorMessage(field) }}
                   </div>
                 </div>
@@ -119,7 +134,9 @@
                           [formControlName]="sanitizeControlName(field.label)"
                           [placeholder]="field.placeholder || ''"
                           [attr.maxlength]="field.maxLength"
-                          [attr.minlength]="field.minLength">
+                          [attr.minlength]="field.minLength"
+                          (blur)="onFieldBlur(sanitizeControlName(field.label))"
+                          (input)="onFieldInput(sanitizeControlName(field.label))">
                   </div>
                   <div *ngIf="field.required && signupForm.get(sanitizeControlName(field.label))?.errors && 
                               signupForm.get(sanitizeControlName(field.label))?.touched" class="error-message">
@@ -157,7 +174,9 @@
                            [formControlName]="sanitizeControlName(field.label)"
                            [max]="maxDate"
                            (dateChange)="checkDobValidation(field, $event)"
-                           [placeholder]="field.placeholder || ''">
+                           [placeholder]="field.placeholder || ''"
+                           (blur)="onFieldBlur(sanitizeControlName(field.label))"
+                           (input)="onFieldInput(sanitizeControlName(field.label))">
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
                   </div>
@@ -176,7 +195,9 @@
                   <label class="field-label">{{ field.label }} <span class="mandatory" *ngIf="field.required">*</span></label>
                   <div class="input-with-icon dropdown-container" [class.filled]="signupForm.get(sanitizeControlName(field.label))?.value">
                     <span class="field-icon"><mat-icon>arrow_drop_down</mat-icon></span>
-                    <select class="modern-select" [formControlName]="sanitizeControlName(field.label)">
+                    <select class="modern-select" [formControlName]="sanitizeControlName(field.label)"
+                            (blur)="onFieldBlur(sanitizeControlName(field.label))"
+                            (input)="onFieldInput(sanitizeControlName(field.label))">
                       <option value="" disabled selected>{{ field.placeholder }}</option>
                       <option *ngFor="let option of field.options" [value]="option">{{ option }}</option>
                     </select>
