@@ -76,7 +76,7 @@ export class CourseComponent {
 
   ngOnInit(){
     this.userData = JSON.parse(localStorage.getItem('currentUser')!);
-    console.log("this.userData",this.userData)
+    // console.log("this.userData",this.userData)
     const roleDetails =this.authenService.getRoleDetails()[0].menuItems
     let urlPath = this.router.url.split('/');
     const parentId = `${urlPath[1]}/${urlPath[2]}`;
@@ -134,7 +134,7 @@ getAllCourse(){
   }
   let companyId= JSON.parse(localStorage.getItem('user_data')!).user.companyId;
   this.classService.getClassListWithPagination(payload,companyId).subscribe(response =>{
-    console.log("respons",response);
+    // console.log("respons",response);
    this.classesData = response.data.docs;
    this.totalItems = response.data.totalDocs
    this.coursePaginationModel.docs = response.data.docs;
