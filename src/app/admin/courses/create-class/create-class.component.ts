@@ -237,14 +237,14 @@ export class CreateClassComponent {
       checkedActions: this.getCheckedMeetingActions(userId),
     }).subscribe((response) => {
       this.courseList = response.courses.reverse();
-    console.log("reee",response)
+    // console.log("reee",response)
       const allowedTitles = response.checkedActions.map((a: any) => a.title);
-      console.log("reee1212",allowedTitles)
+      // console.log("reee1212",allowedTitles)
       this.meetingPlatforms = response.dropDowns?.data?.meetingPlatform?.filter(
         (platform: any) => allowedTitles.includes(platform.name)
       );
     
-      console.log('Filtered Meeting Platforms:', this.meetingPlatforms);
+      // console.log('Filtered Meeting Platforms:', this.meetingPlatforms);
       this.cd.detectChanges();
     });
     
@@ -322,7 +322,8 @@ export class CreateClassComponent {
         classDeliveryType: parsedFormData?.classDeliveryType,
         instructorCost: parsedFormData?.instructorCost,
         instructorCostCurrency: parsedFormData?.instructorCostCurrency || 'USD',
-        department: parsedFormData?.department,
+        // department: parsedFormData?.department,
+        department: parsedFormData?.department || [],
         currency: parsedFormData?.currency || '',
         isGuaranteedToRun: parsedFormData?.isGuaranteedToRun || false,
         externalRoom: parsedFormData?.externalRoom || false,
@@ -366,7 +367,7 @@ export class CreateClassComponent {
       classDeliveryType: ['', Validators.required],
       instructorCost: ['', Validators.required],
       instructorCostCurrency: ['USD'],
-      department: ['', Validators.required],
+       department: [[], Validators.required],
       userGroupId: ['', [Validators.required]],
       currency: [''],
       isGuaranteedToRun: [false, Validators.required],
@@ -438,7 +439,8 @@ export class CreateClassComponent {
         externalRoom: item?.externalRoom,
         minimumEnrollment: item?.minimumEnrollment,
         maximumEnrollment: item?.maximumEnrollment,
-        department: item?.department,
+        // department: item?.department,
+        department: Array.isArray(item?.department) ? item.department : [item.department],
         sessions: item?.sessions,
         userGroupId: item?.userGroupId,
         duration: item?.duration,
@@ -1005,7 +1007,7 @@ export class CreateClassComponent {
       localStorage.setItem('zoomSessionCreated', 'true');
       window.location.href = zoomURL;
     } else if (meetingPlatform === 'teams') {
-      console.log('meetingPlatform', meetingPlatform);
+      // console.log('meetingPlatform', meetingPlatform);
       // Teams OAuth Authentication Flow
       const meetingData = {
         title: formData.title,

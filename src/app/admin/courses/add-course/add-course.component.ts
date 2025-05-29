@@ -223,7 +223,8 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       training_hours: new FormControl('', [
         Validators.pattern(/^\d+(\.\d+)?$/),
       ]),
-      department:['',[Validators.required]],
+      // department:['',[Validators.required]],
+      department: [[], [Validators.required]],
       skill_connect_code: new FormControl('', [
         Validators.pattern(/^[a-zA-Z0-9]/),
       ]),
