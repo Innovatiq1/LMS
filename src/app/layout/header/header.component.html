@@ -4,14 +4,15 @@
       <a href="#" onClick="return false;" class="navbar-toggle collapsed"
         (click)="isNavbarCollapsed = !isNavbarCollapsed" aria-expanded="false"></a>
       <a href="#" onClick="return false;" class="bars" (click)="mobileMenuSidebarOpen($event,'overlay-open')"></a>
-      <a class="navbar-brand" routerLink={{homePage}}>
+      <a class="navbar-brand" [routerLink]="homePage">
         <div class="logo-container">
-          <img src="{{logoImage}}" alt="" /> 
-          <p class="media-title font-16" [ngClass]="{'show-title': isOpenSidebar}">
-          {{logoTitle}}
-        </p>
+          <img [src]="logoImage" alt="" />
+          <p class="media-title font-16" [ngClass]="{'show-title': isOpenSidebar}" (click)="$event.stopPropagation()">
+            {{logoTitle}}
+          </p>
         </div>
       </a>
+      
     </div>
     <div class="collapse navbar-collapse" [ngClass]="isNavbarCollapsed ? '' : 'show'">
       <ul class="float-start collapse-menu-icon">
