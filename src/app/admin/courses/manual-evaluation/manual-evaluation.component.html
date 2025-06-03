@@ -41,7 +41,7 @@
               </div>
         
               
-              <div class="control-item">
+              <!-- <div class="control-item">
                 <label for="marks-{{ i }}"><strong>Assign Marks</strong></label>
                 <input
                   type="number"
@@ -51,7 +51,23 @@
                   [max]="item.questionscore"
                   step="0.01"
                 />
+              </div> -->
+              <div class="control-item">
+                <label for="marks-{{ i }}"><strong>Assign Marks</strong></label>
+                <input
+                  type="number"
+                  id="marks-{{ i }}"
+                  [(ngModel)]="item.assignedMarks"
+                  name="marks-{{ i }}"
+                  min="0"
+                  [max]="item.questionscore"
+                  step="0.01"
+                />
+                <div class="error-message" *ngIf="item.assignedMarks > item.questionscore">
+                  <small style="color: red;">Assigned marks should be less than or equal to allotted marks</small>
+                </div>
               </div>
+              
         
               <div class="control-item">
                 <label for="remarks-{{ i }}"><strong>Remarks</strong></label>
@@ -69,7 +85,7 @@
         
       </div>
       <div class="action-buttons">
-        <button mat-raised-button color="primary" id="submit" (click)="saveAnswers()">Save</button>
+        <button mat-raised-button color="primary" id="submit" (click)="saveAnswers()" [disabled]="hasInvalidMarks()">Save</button>
         <button mat-raised-button color="warn" (click)="cancelChanges()">Cancel</button>
       </div>
     </div>

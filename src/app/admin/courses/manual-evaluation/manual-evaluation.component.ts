@@ -148,6 +148,12 @@ combineAnswers() {
   this.originalAnswers = JSON.parse(JSON.stringify(this.combinedAnswers));
 }
 
+hasInvalidMarks(): boolean {
+  return this.combinedAnswers.some(
+    (item: any) => item.assignedMarks > item.questionscore
+  );
+}
+
 
 saveAnswers() {
   this.savedAnswers = this.combinedAnswers.map(answer => ({
