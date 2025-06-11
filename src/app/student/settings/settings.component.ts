@@ -626,8 +626,8 @@ export class SettingsComponent {
        idType: ['', Validators.required],
        code: ['', Validators.required],
        dob: ['', Validators.required],
-       
-      
+       experience:['', []],
+       linkedInURL:['',[]]
     });
 
     this.roleForm = this.fb.group({
@@ -912,6 +912,7 @@ export class SettingsComponent {
   patchValues() {
     this.studentId = localStorage.getItem('id');
     this.studentService.getStudentById(this.studentId).subscribe((res: any) => {
+      console.log("patchValue",res)
       this.editData = res;
       this.avatar = this.editData.avatar;
       this.uploaded = this.avatar?.split('/');
@@ -964,6 +965,14 @@ export class SettingsComponent {
         name: this.editData?.name,
         last_name: this.editData?.last_name,
         rollNo: this.editData?.rollNo,
+        idNumber:this.editData?.idNumber,
+        idType:this.editData?.idType?.description,
+        code:this.editData?.idType?.code,
+        qualifications:this.editData?.qualifications[0]?.description,
+        domainAreaOfPractice:this.editData?.domainAreaOfPractice,
+        dob:this.editData?.dob,
+        experience:this.editData?.experience,
+        linkedInURL:this.editData?.linkedInURL,
         gender: this.editData?.gender,
         mobile: this.editData?.mobile,
         department: this.editData?.department,
@@ -1101,6 +1110,19 @@ export class SettingsComponent {
     }
   
     const userData: any = this.stdForm1.value;
+    console.log("heloo",userData);
+    let idType = {
+      code: this.stdForm1.value.code,
+      description: this.stdForm1.value.idType,
+    }
+    let qualifications = [{
+      description: this.stdForm1.value.qualifications,
+      level: {
+        code: "21",
+      }
+    }]
+    userData.idType=idType;
+    userData.qualifications=qualifications;
     userData.avatar = this.avatar;
     userData.type = this.editData.type;
     userData.role = this.editData.role;
