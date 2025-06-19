@@ -91,6 +91,7 @@ fetchData(){
   // let filterText = this.filterName;
   this.alluserService.getAdminsList({...this.coursePaginationModel,type:"admin",company:this.filterName}).subscribe((response:any)=>{
     this.isLoading = false;
+    console.log("response",response)
     this.dataSource = response.data.data.docs;
     this.totalItems = response.data.data.totalDocs;
     this.coursePaginationModel.docs = response.data.data.docs;

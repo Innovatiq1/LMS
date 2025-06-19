@@ -134,7 +134,7 @@ export class AddExamQuestionsComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       if (!this.draftSubscription) {
         this.draftSubscription = timer(0, 30000).subscribe(() => {
-          this.saveDraft();
+          // this.saveDraft();
         });
       }
     }, 30000);
