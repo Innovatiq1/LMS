@@ -1,284 +1,382 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import {
-  AbstractControl,
-  FormGroup,
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  ValidationErrors,
-  Validators,
-} from '@angular/forms';
-import { LanguageService } from '@core/service/language.service';
-import { RegistrationService } from '@core/service/registration.service';
-import { Users } from '@core/models/user.model';
+import { FormBuilder, FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
+import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import {
-  SearchCountryField,
-  //TooltipLabel,
-  CountryISO
-} from "ngx-intl-tel-input";
-import { ConfirmedValidator } from '@shared/password.validator';
-import { CommonService } from '@core/service/common.service';
-import { UserService } from '@core/service/user.service';
+import { SurveyService } from '@core/service/survey.service';
+import { passwordStrengthValidator } from '@core/customvalidator';
+import {passwordValidator} from '@core/validators/password-validator'
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.scss'],
+  styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent implements OnInit {
-  phoneNumber: any;
-  SearchCountryField = SearchCountryField;
-  //TooltipLabel = TooltipLabel;
-  CountryISO = CountryISO;
-  preferredCountries: CountryISO[] = [CountryISO.Qatar];
-  
-  userData = { username: '', email: '', password: '', cpassword: '', type:'',role:''};
-  message = '';
-  loading = false;
-  isLoading = false;
-  error = '';
-  isSubmitted = false;
-  email: any;
-  authForm!: UntypedFormGroup;
-  langStoreValue?: string;
-  submitted = false;
-  returnUrl!: string;
-  hide = true;
-  chide = true;
-  user: any;
-  passwordMatchValidator: any;
-  tmsUrl: boolean;
-  lmsUrl: boolean;
-  extractedName: string;
-  domain: any;
-  
-  constructor(
-    private formBuilder: UntypedFormBuilder,
-    private route: ActivatedRoute,
-    private router: Router,
-    private translate: LanguageService,
-    private registration: RegistrationService,
-    private commonService: CommonService,
-    private userService: UserService
-  ) { 
-    let urlPath = this.router.url.split('/')
-    this.tmsUrl = urlPath.includes('TMS');
-    this.lmsUrl = urlPath.includes('LMS');
-    this.extractedName = urlPath[1];
-    this.userService.getCompanyByIdentifierWithoutToken(this.extractedName).subscribe(
-      (res: any) => {
-        this.domain = res[0]?.company;
-     
-    this.authForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      email: ['',[Validators.required,Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)] ],
-      password: ['', [Validators.required,this.passwordStrengthValidator]],
-      cpassword: [''],
-      gender: ['', Validators.required]
-      
-    },{
-
-
-      validator: ConfirmedValidator('password', 'cpassword')
-    
-    });
-  })
-  }
-
-
-  listLang = [
-    { text: 'English', flag: 'assets/images/flags/us.svg', lang: 'en' },
-    { text: 'Chinese', flag: 'assets/images/flags/spain.svg', lang: 'ch' },
-    { text: 'Tamil', flag: 'assets/images/flags/germany.svg', lang: 'ts' },
+  signupForm!: FormGroup;
+  maxDate!: Date;
+  fields: any[] = [];
+  submittedData: any = null;
+  images: string[] = [
+    'assets/images/login/sign-up.png',
+    // 'assets/images/login/learning2.jpg',
+    // 'assets/images/login/learning4.jpg',
   ];
-
-  // passwordStrengthValidator(control: AbstractControl): ValidationErrors | null {
-  //   const value = control.value || '';
-
-  //   if (!value) {
-  //     return null; // If the field is empty, return null (required validation will handle it)
-  //   }
-
-  //   // Regular expression for strong password
-  //   const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-
-  //   return strongPasswordRegex.test(value) ? null : { passwordStrength: true };
-  // }
-
-  signin(){
-
-    if(this.tmsUrl){
-      this.commonService.navigateWithCompanyName(this.extractedName,'authentication/TMS/signin')
-    } else if(this.lmsUrl){
-      this.commonService.navigateWithCompanyName(this.extractedName,'authentication/LMS/signin')
-
-    }
-  }
-  ngOnInit() {
-    
-    this.startSlideshow()
-    this.authForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      email: [
-        '',
-        [Validators.required, Validators.email, Validators.minLength(5)],
-      ],
-      gender:['', Validators.required],
-      //phone: ['', [Validators.required]],
-      //phone:[Validators.required, Validators.minLength(10)],
-      password: ['', [Validators.required, this.passwordValidator]],
-      cpassword: ['']
-    },{ 
-      validator: this.confirmedValidator('password', 'cpassword') 
-      // validators: this.passwordMatchValidator,
-      
-    });
-    // get return url from route parameters or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-    
-  }
-  
-  get f() {
-    return this.authForm.controls;
-  }
-  onSubmit() {
-    
-    if (this.authForm.valid) {
-      const userData: Users = this.authForm.value;
-      this.userService.getCompanyByIdentifierWithoutToken(this.extractedName).subscribe(
-        (res: any) => {
-
-            userData.type = res[0]?.learner;
-            userData.users = res[0]?.users;
-            userData.companyId = res[0]?.companyId;
-            userData.company = res[0]?.company;
-            userData.domain = res[0]?.identifier;
-
-
-      userData.role = res[0]?.learner;
-      this.registration.registerUser(userData).subscribe(
-        (response: any) => {
-          if(response.status === 'success' && !response.data.status ){
-          Swal.fire({
-            title: 'Registration Successful',
-            text: "We have sent an email to you, check your email,to  know the status of your acount",
-            icon: 'success',
-          });
-          this.commonService.navigateWithCompanyName(this.extractedName,'authentication/LMS/signin')
-        } else {
-          Swal.fire({
-            title: 'Registration Failed',
-            text: "You have exceeded your limit, please contact Admin to upgrade",
-            icon: 'error',
-          });
-        }
-        },
-        (error: any) => {
-          this.submitted = true;
-          this.email=error
-        }
-      );
-    })
-    }
-    this.submitted = true;
-    
-  }
-  get isPasswordWeak(): boolean {
-    console.log("ggggg",this.authForm.get('password')?.hasError('passwordStrength') ?? false)
-    return this.authForm.get('password')?.hasError('passwordStrength') ?? false;
-  }
-  passwordStrengthValidator(control: AbstractControl): ValidationErrors | null {
-    const value = control.value || '';
-
-    if (!value) {
-      return null; // If the field is empty, return null (required validation will handle it)
-    }
-
-    // Regular expression for strong password
-    const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-
-    return strongPasswordRegex.test(value) ? null : { passwordStrength: true };
-  }
-  passwordValidator(control: AbstractControl) {
-    const value = control.value;
-    if (!value) {
-      return null;  // Return null if no value (empty input)
-    }
-
-    const hasUpperCase = /[A-Z]/.test(value);
-    const hasLowerCase = /[a-z]/.test(value);
-    const hasNumber = /\d/.test(value);
-    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(value);
-    const isValidLength = value.length >= 8;
-
-    const passwordValid = hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar && isValidLength;
-
-    return !passwordValid ? { passwordStrength: true } : null;  // Return error if not valid
-  }
-
-  // Validator for confirming passwords match
-  confirmedValidator(password: string, cpassword: string) {
-    return (formGroup: FormGroup) => {
-      const passwordControl = formGroup.controls[password];
-      const confirmPasswordControl = formGroup.controls[cpassword];
-
-      if (confirmPasswordControl.errors && !confirmPasswordControl.errors['confirmedValidator']) {
-        return;
-      }
-
-      if (passwordControl.value !== confirmPasswordControl.value) {
-        confirmPasswordControl.setErrors({ confirmedValidator: true });
-      } else {
-        confirmPasswordControl.setErrors(null);
-      }
-    };
-  }
-
-
-  setLanguage(event: any) {
-    // this.countryName = text;
-    // this.flagvalue = flag;
-    this.langStoreValue = event.target.value;
-    this.translate.setLanguage(event.target.value);
-  }
-  images: string[] = ['/assets/images/login/Learning.jpeg', '/assets/images/login/learning2.jpg', '/assets/images/login/learning4.jpg'];
   currentIndex = 0;
-  startSlideshow() {
+  CompanyId!: string;
+  extractedName!: string;
+  hidePassword: { [key: string]: boolean } = {};
+  defaultFields = [
+    {
+      label: 'Username',
+      type: 'Text',
+      required: true,
+      attr: 'Name'
+    },
+    {
+      label: 'Email',
+      type: 'Email',
+      required: true,
+      attr: 'email'
+    },
+    {
+      label: 'Password',
+      type: 'Password',
+      required: true,
+      attr: 'password',
+      minLength: 8,
+      maxLength: 20
+    },
+    {
+      label: 'Confirm Password',
+      type: 'Password',
+      required: true,
+      attr: 'Password',
+      minLength: 8,
+      maxLength: 20
+    }
+  ];
+  readonly MAX_FILE_SIZE_MB = 5;
+  readonly MAX_FILE_SIZE_BYTES = this.MAX_FILE_SIZE_MB * 1024 * 1024; 
+  constructor(
+    private fb: FormBuilder,
+    private surveyService: SurveyService,
+    private router: Router
+  ) { }
+
+  ngOnInit(): void {
+    this.CompanyId = localStorage.getItem('companyId')||'';
+    this.fetchSignupFields();
     setInterval(() => {
       this.currentIndex = (this.currentIndex + 1) % this.images.length;
-    }, 4000);
+    }, 3000); 
+    const today = new Date();
+    this.maxDate = new Date(today.setDate(today.getDate() - 1));
+
+    // Initialize password visibility state for all password fields
+    this.fields.forEach(field => {
+      if (field.type?.toLowerCase() === 'password') {
+        this.hidePassword[this.sanitizeControlName(field.label)] = true;
+      }
+    });
   }
 
-  // passwordStrengthValidator(control: AbstractControl) {
-  //   const value = control.value || '';
-  //   const hasUpperCase = /[A-Z]+/.test(value);
-  //   const hasLowerCase = /[a-z]+/.test(value);
-  //   const hasNumeric = /[0-9]+/.test(value);
-  //   const hasSpecialChar = /[@$!%*?&]+/.test(value);
-  //   const hasValidLength = value.length >= 8;
+  fetchSignupFields() {
+    this.surveyService.getLatestSurvey(this.CompanyId).subscribe({
+      next: (res) => {
+        // If config form fields are empty or not available, use default fields
+        if (!res.fields || res.fields.length === 0) {
+          this.fields = this.defaultFields;
+          this.buildForm();
+        } else {
+          this.fields = res.fields;
+          this.buildForm();
+        }
+      },
+      error: (err) => {
+        console.error('Failed to fetch signup fields:', err);
+        // On error, fallback to default fields
+        this.fields = this.defaultFields;
+        this.buildForm();
+      }
+    });
+  }
 
-  //   const passwordValid = hasUpperCase && hasLowerCase && hasNumeric && hasSpecialChar && hasValidLength;
+  buildForm() {
+    const group: any = {};
 
-  //   if (!passwordValid) {
-  //     return { passwordStrength: true };
-  //   }
-  //   return null;
-  // }
+    this.fields.forEach(field => {
+      const validators = [];
+      const controlName = this.sanitizeControlName(field.label);
 
-  // Confirm password validator
-  confirmPasswordValidator(control: AbstractControl) {
-    if (!control || !control.parent) {
-      return null;
-    }
+      if (field.required) validators.push(Validators.required);
+      if (field.type === 'Dropdown') validators.push(Validators.required);
+      if (field.type === 'radio') validators.push(Validators.required);
+      if (field.type?.toLowerCase() === 'password') {
+        const minLen = field.minLength || 8;  // Default to 8 if not specified
+        const maxLen = field.maxLength || 20; // Default to 20 if not specified
+        validators.push(Validators.minLength(minLen));
+        validators.push(Validators.maxLength(maxLen));
+        // Updated pattern to use dynamic length
+        validators.push(Validators.pattern(
+          new RegExp(`^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&#])[A-Za-z\\d@$!%*?&#]{${minLen},${maxLen}}$`)
+        ));
+      }
+      if (field.type === 'Email') {
+        validators.push(Validators.email);
+        validators.push(Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/));
+      }
+      if (field.type === 'Number') validators.push(Validators.pattern(/^\d+$/));
+      if (field.type === 'Phone') validators.push(Validators.pattern(/^\d{10}$/));
+      if (field.type === 'TextArea') validators.push(Validators.maxLength(500));
+      if (field.type === 'File' || field.type === 'Date') validators.push(Validators.required);
+      if (field.type === 'Upload' || field.type === 'File') {
+        validators.push(this.fileSizeValidator.bind(this));
+      }
 
-    const password = control.parent.get('password');
-    const confirmPassword = control;
+      if (field.type === 'Checkbox') {
+        validators.push((control: AbstractControl) => {
+          return control.value && control.value.length > 0 ? null : { required: true };
+        });
+        group[controlName] = new FormControl([], validators);
+      } else {
+        group[controlName] = new FormControl('', validators);
+      }
+    });
 
-    if (password && confirmPassword && password.value !== confirmPassword.value) {
-      return { confirmedValidator: true };
+    // Create form with validator
+    this.signupForm = new FormGroup(group, { validators: this.passwordMatchValidator.bind(this) });
+  }
+
+  sanitizeControlName(label: string): string {
+    return label.toLowerCase().replace(/\s+/g, '');
+  }
+
+  passwordMatchValidator(form: AbstractControl): { [key: string]: any } | null {
+    const passwordField = this.fields.find(f => f.type?.toLowerCase() === 'password' && !f.label?.toLowerCase().includes('confirm'));
+    const confirmPasswordField = this.fields.find(f => 
+      f.type?.toLowerCase() === 'password' && 
+      (f.label?.toLowerCase().includes('confirm') || f.label?.toLowerCase().includes('verify'))
+    );
+    
+    if (!passwordField || !confirmPasswordField) return null;
+    
+    const passwordCtrl = form.get(this.sanitizeControlName(passwordField.label));
+    const confirmCtrl = form.get(this.sanitizeControlName(confirmPasswordField.label));
+
+    if (!passwordCtrl || !confirmCtrl) return null;
+
+    if (passwordCtrl.value !== confirmCtrl.value) {
+      confirmCtrl.setErrors({ mismatch: true });
+      return { mismatch: true };
+    } else {
+      // Only clear mismatch error, preserve other errors if any
+      if (confirmCtrl.errors?.['mismatch']) {
+        const errors = { ...confirmCtrl.errors };
+        delete errors['mismatch'];
+        confirmCtrl.setErrors(Object.keys(errors).length ? errors : null);
+      }
     }
 
     return null;
+  }
+
+  getInputType(fieldType: string | undefined): string {
+    if (!fieldType) return 'text';
+    
+    const type = fieldType.toLowerCase();
+    switch (type) {
+      case 'email': return 'email';
+      case 'number': return 'number';
+      case 'password': return 'password';
+      case 'tel': return 'tel';
+      case 'url': return 'url';
+      default: return 'text';
+    }
+  }
+
+  getErrorMessage(field: any): string {
+    const controlName = this.sanitizeControlName(field.label);
+    const control = this.signupForm.get(controlName);
+    if (control?.errors) {
+      if (control.errors['required']) return 'This field is required';
+      if (control.errors['email']) return 'Invalid email format';
+      if (control.errors['pattern']) {
+        if (field.type?.toLowerCase() === 'password') {
+          const minLen = field.minLength || 8;
+          const maxLen = field.maxLength || 20;
+          return `Password must be ${minLen}-${maxLen} characters long and contain at least one uppercase letter, one lowercase letter, one number and one special character`;
+        }
+        if (field.type === 'Email') {
+          return 'Please enter a valid email address';
+        }
+        return 'Invalid format';
+      }
+      if (control.errors['fileSize']) {
+        return `File size must be less than ${this.MAX_FILE_SIZE_MB}MB. Selected file is ${control.errors['fileSize'].actualSize}MB`;
+      }
+      if (control.errors['minlength']) return `${field.label} must be at least ${control.errors['minlength'].requiredLength} characters`;
+      if (control.errors['maxlength']) return `${field.label} must be no more than ${control.errors['maxlength'].requiredLength} characters`;
+      if (control.errors['mismatch']) return 'Passwords do not match';
+    }
+    return '';
+  }
+
+  submitForm() {
+    if (this.signupForm.invalid) {
+      this.signupForm.markAllAsTouched();
+      Swal.fire('Error', 'Please fill all required fields correctly.', 'error');
+      return;
+    }
+
+    const formValues = this.signupForm.value;
+    const formData = new FormData();
+    
+    // Add the companyId directly to the FormData
+    formData.append('companyId', this.CompanyId);
+    
+    // Add formtype if using default form
+    if (this.fields === this.defaultFields) {
+      formData.append('formtype', 'default');
+    }
+    
+    // Process each field
+    this.fields.forEach(field => {
+      const controlName = this.sanitizeControlName(field.label);
+      const fieldValue = formValues[controlName];
+      
+      // Handle file fields
+      if ((field.type === 'upload' || field.type === 'Upload' || field.type === 'file' || field.type === 'File') && fieldValue instanceof File) {
+        // Append the file directly with the field's label as the key
+        formData.append(field.label, fieldValue);
+      } else {
+        // Append regular field values directly to the FormData
+        formData.append(field.label, fieldValue);
+      }
+    });
+    
+    // Confirm and submit with files
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to create your account?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log('Submitting form with files');
+        this.surveyService.createUserWithFiles(formData).subscribe({
+          next: (res) => {
+            Swal.fire({
+              title: 'Registration Successful',
+              text: "Our team will verify and contact you shortly",
+              icon: 'success',
+              timer: 5000,
+              showConfirmButton: false
+            }).then(() => {
+              this.router.navigate(['/authentication/LMS/signin']);
+            });
+          },
+          error: (err) => {
+            console.error('Registration error:', err);
+            Swal.fire({
+              title: 'Registration Failed',
+              text: err,
+              icon: 'error',
+            });
+          }
+        });
+      }
+    });
+  }
+  checkDobValidation(field: any, event: any): void {
+    const selectedDate = new Date(event.value);
+    const maxAllowedDate = new Date();
+    maxAllowedDate.setHours(0, 0, 0, 0);
+    maxAllowedDate.setDate(maxAllowedDate.getDate() - 1); // yesterday
+  
+    selectedDate.setHours(0, 0, 0, 0);
+  
+    field.isInvalidDob = selectedDate > maxAllowedDate;
+  }
+  
+  startSlideshow() {
+    setInterval(() => {
+      this.currentIndex = (this.currentIndex + 1) % this.images.length;
+    }, 3000);
+  }
+
+  onFileChange(event: any, controlName: string) {
+    const file = event.target.files[0];
+    if (file) {
+      if (file.size > this.MAX_FILE_SIZE_BYTES) {
+        Swal.fire({
+          title: 'Error',
+          text: `File size must be less than ${this.MAX_FILE_SIZE_MB}MB. Selected file is ${Math.round(file.size / (1024 * 1024))}MB`,
+          icon: 'error'
+        });
+        event.target.value = '';
+        return;
+      }
+
+      const control = this.signupForm.get(controlName);
+      control?.setValue(file);
+      control?.markAsTouched();
+
+      if (controlName.toLowerCase().includes('profile') || controlName.toLowerCase().includes('image')) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          console.log('Image loaded for preview');
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+  }
+
+  onCheckboxChange(event: any, controlName: string) {
+    const control = this.signupForm.get(controlName);
+    let currentValue = control?.value || [];
+
+    if (event.checked) {
+      currentValue.push(event.source.value);
+    } else {
+      currentValue = currentValue.filter((val: string) => val !== event.source.value);
+    }
+
+    control?.setValue(currentValue);
+    control?.markAsTouched();
+  }
+
+  fileSizeValidator(control: AbstractControl): {[key: string]: any} | null {
+    if (control.value instanceof File) {
+      const file = control.value;
+      if (file.size > this.MAX_FILE_SIZE_BYTES) {
+        return {
+          fileSize: {
+            requiredSize: this.MAX_FILE_SIZE_MB,
+            actualSize: Math.round(file.size / (1024 * 1024))
+          }
+        };
+      }
+    }
+    return null;
+  }
+
+  onFieldBlur(fieldName: string) {
+    const control = this.signupForm.get(fieldName);
+    if (control) {
+      control.markAsTouched();
+    }
+  }
+
+  onFieldInput(fieldName: string) {
+    const control = this.signupForm.get(fieldName);
+    if (control) {
+      control.markAsDirty();
+    }
+  }
+
+  togglePasswordVisibility(fieldName: string): void {
+    this.hidePassword[fieldName] = !this.hidePassword[fieldName];
   }
 }

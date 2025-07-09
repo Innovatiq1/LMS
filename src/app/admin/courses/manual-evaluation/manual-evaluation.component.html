@@ -1,0 +1,94 @@
+  <section class="content">
+    <div class="content-block">
+      <div class="block-header" *ngFor="let breadscrum of breadscrums">
+        <app-static-breadcrumb 
+          [title]="breadscrum.title" 
+          [items]="breadscrum.items" 
+          [active_item]="breadscrum.active">
+        </app-static-breadcrumb>
+      </div>
+  
+      <div *ngFor="let item of combinedAnswers; let i = index" class="question-block">
+        <h3>{{ item.questionText }}</h3>
+        <div class="answer-container">
+          <div class="correct-answer">
+            <strong>Required Answer:</strong>
+            <div class="correct-box">
+              <ng-container *ngIf="item.correctFileLink; else correctText">
+                <a [href]="item.correctFileLink" target="_blank">{{ item.correctFileName }}</a>
+              </ng-container>
+              <ng-template #correctText>
+                {{ item.correctAnswer }}
+              </ng-template>
+            </div>
+          </div>
+        
+          <div class="student-answer">
+            <strong>Student/Trainee Answer:</strong>
+            <ng-container *ngIf="item.studentFileLink; else textAnswer">
+              <a [href]="item.studentFileLink" target="_blank">{{ item.studentFileName }}</a>
+            </ng-container>
+            <ng-template #textAnswer>
+              <p>{{ item.studentAnswer }}</p>
+            </ng-template>
+        
+            
+            <div class="correction-controls">
+              
+              <div class="control-item">
+                <label><strong>Allotted Marks</strong></label>
+                <div>{{ item.questionscore }}</div>
+              </div>
+        
+              
+              <!-- <div class="control-item">
+                <label for="marks-{{ i }}"><strong>Assign Marks</strong></label>
+                <input
+                  type="number"
+                  id="marks-{{ i }}"
+                  [(ngModel)]="item.assignedMarks"
+                  min="0"
+                  [max]="item.questionscore"
+                  step="0.01"
+                />
+              </div> -->
+              <div class="control-item">
+                <label for="marks-{{ i }}"><strong>Assign Marks</strong></label>
+                <input
+                  type="number"
+                  id="marks-{{ i }}"
+                  [(ngModel)]="item.assignedMarks"
+                  name="marks-{{ i }}"
+                  min="0"
+                  [max]="item.questionscore"
+                  step="0.01"
+                />
+                <div class="error-message" *ngIf="item.assignedMarks > item.questionscore">
+                  <small style="color: red;">Assigned marks should be less than or equal to allotted marks</small>
+                </div>
+              </div>
+              
+        
+              <div class="control-item">
+                <label for="remarks-{{ i }}"><strong>Remarks</strong></label>
+                <input
+                  type="text"
+                  id="remarks-{{ i }}"
+                  [(ngModel)]="item.remarks"
+                  placeholder="Enter remarks"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div>
+      <div class="action-buttons">
+        <button mat-raised-button color="primary" id="submit" (click)="saveAnswers()" [disabled]="hasInvalidMarks()">Save</button>
+        <button mat-raised-button color="warn" (click)="cancelChanges()">Cancel</button>
+      </div>
+    </div>
+  </section>
+  
+  

@@ -128,8 +128,16 @@ import { ZoomKeysComponent } from './settings/zoom-keys/zoom-keys.component';
 import { ObjectDetectionComponent } from './object-detection/object-detection.component';
 import { MeetingPlatformComponent } from './settings/meeting-platform/meeting-platform.component';
 import { UpdateMeetingPlatformComponent } from './settings/meeting-platform/update-meeting-platform/update-meeting-platform.component';
-import { TermsDialogComponent } from './terms-dialog/terms-dialog.component';
 
+import { TermsDialogComponent } from './terms-dialog/terms-dialog.component';
+import { ScormPkgComponent } from './settings/scorm-pkg/scorm-pkg.component';
+import { ScormPkgCreateComponent } from './settings/scorm-pkg/scorm-pkg-create/scorm-pkg-create.component';
+import { FileSizeComponent } from './settings/file-size/file-size.component';
+import { UpdateFileSizeComponent } from './settings/file-size/update-file-size/update-file-size.component';
+
+import { SurveyRegistrationComponent } from './settings/survey-registration/survey-registration.component';
+import { AllSurveyComponent } from './settings/all-survey/all-survey.component';
+import { ThridPartyFormComponent } from './settings/thrid-party-form/thrid-party-form.component';
 
 @NgModule({
   declarations: [
@@ -232,7 +240,7 @@ import { TermsDialogComponent } from './terms-dialog/terms-dialog.component';
     TutorialQuestionsComponent,
     DocumentViewComponent,
     SocialLoginComponent,    
-    SafePipe, ZoomKeysComponent, ObjectDetectionComponent, MeetingPlatformComponent, UpdateMeetingPlatformComponent, TermsDialogComponent,
+    SafePipe, ZoomKeysComponent, ObjectDetectionComponent, MeetingPlatformComponent, UpdateMeetingPlatformComponent, TermsDialogComponent, ScormPkgComponent, ScormPkgCreateComponent,SurveyRegistrationComponent, AllSurveyComponent, ThridPartyFormComponent, FileSizeComponent, UpdateFileSizeComponent
    // SafeUrlPipe,
   ],
   imports: [

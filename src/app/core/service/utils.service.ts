@@ -96,6 +96,10 @@ export class UtilsService {
       { type: 'required', message: 'Enter Score' },
       { type: 'min', message: 'Score must be at least 1' },
     ],
+    fileSize: [
+      { type: 'required', message: 'Enter FileSize ' },
+      { type: 'min', message: 'FileSize must be at least 1' },
+    ],
     times: [
       { type: 'required', message: 'Enter Score' },
       { type: 'min', message: 'Score must be at least 1' },
@@ -476,6 +480,12 @@ export class UtilsService {
     'clientId':[
       {type:'required', message: 'Enter Client ID'}
     ],
+    'objectId':[
+      {type:'required', message: 'Enter Object ID'}
+    ],
+    'tenantId':[
+      {type:'required', message: 'Enter Tenant ID'}
+    ],
     'clientSecret':[
       {type:'required', message: 'Enter Client Secret'}
     ],
@@ -495,7 +505,12 @@ export class UtilsService {
       {
         type:'required', message:'Enter Meeting Platform Name'
       }
-    ]
+    ],
+    'scormPkgName': [
+      { type: 'required', message: 'Enter SCORM Package Name' },
+      { type: 'minlength', message: 'Enter minimum 2 characters' },
+      { type: 'maxlength', message: 'Enter maximum 255 characters' },
+    ],
   };
 
 

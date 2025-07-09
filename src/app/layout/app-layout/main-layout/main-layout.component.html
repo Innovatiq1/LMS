@@ -1,6 +1,6 @@
-<app-header></app-header>
-<app-sidebar></app-sidebar>
-<app-right-sidebar></app-right-sidebar>
+<app-header *ngIf="showLayout"></app-header>
+<app-sidebar *ngIf="showLayout"></app-sidebar>
+<app-right-sidebar *ngIf="showLayout"></app-right-sidebar>
 <div [dir]="direction">
   <router-outlet></router-outlet>
 </div>

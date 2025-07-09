@@ -4,11 +4,17 @@
       <div class="row p-3 d-flex justify-content-between">
         <div class="col-lg-7 col-md-12 col-sm-12 col-12 flex-start">
           <div class="text-left font-weight-bold mt-3">
-            <div class="custom-style">Test: Assessment</div>
+            <!-- <div class="custom-style">Test: Assessment</div> -->
+            <div class="custom-style d-flex justify-content-between align-items-center">
+              <span>Test: Assessment</span>
+              <span class="text-success font-weight-bold" style="text-align: right; margin-left: auto;">Total Score: {{
+                getTotalScore() }}</span>
+            </div>
+
             <div class="text-primary mb-1">
               {{ user_name }}
             </div>
-            
+
             <div class="text-primary">
               Total Questions: {{ questionList?.length }}
             </div>
@@ -19,15 +25,10 @@
             </div>
           </div>
         </div>
-        <div
-          *ngIf="!isAnswersSubmitted && isExamStarted"
-          class="col-lg-5 col-md-12 col-sm-12 col-12 flex-end mt-sm-5 mt-md-5 mt-5"
-        >
-          <mat-icon
-            class="material-icons text-primary me-2"
-            style="font-size: 25px; margin-top: 5px"
-            >schedule</mat-icon
-          >
+        <div *ngIf="!isAnswersSubmitted && isExamStarted"
+          class="col-lg-5 col-md-12 col-sm-12 col-12 flex-end mt-sm-5 mt-md-5 mt-5">
+          <mat-icon class="material-icons text-primary me-2"
+            style="font-size: 25px; margin-top: 5px">schedule</mat-icon>
           <span class="m-0 h3" [style.color]="totalTime <= 10 ? 'red' : ''">
             {{ minutes > 9 ? minutes : "0" + minutes }} :
             {{ seconds > 9 ? seconds : "0" + seconds }}
@@ -40,63 +41,104 @@
         <div class="col-lg-12">
           <div *ngFor="let question of questionList; let i = index">
             <div class="text-black p-3 rounded bg-light mb-4">
-              <h6 class="ml-5">{{ i + 1 }}.{{ question.questionText }}</h6>
-              <mat-radio-group
-                [(ngModel)]="answers[i].selectedOptionText"
-                (change)="handleRadioChange(i)"
-              >
+              <!-- <h6 class="ml-5">{{ i + 1 }}. {{ question.questionText }}</h6> -->
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <h6 class="ml-5 m-0">{{ i + 1 }}. {{ question.questionText }}</h6>
+                <span class="text-muted font-weight-bold me-3">Score: {{ question.questionscore }}</span>
+              </div>
+              <div *ngIf="question.questionType === 'file' && question.fileAnswer?.length > 0" class="ml-5 mb-2">
+                <span class="text-primary font-weight-bold">Document: </span>
+                <a *ngFor="let file of question.fileAnswer" [href]="file.documentLink" target="_blank"
+                  class="text-decoration-none">
+                  <mat-icon class="ms-1" style="vertical-align: middle;">visibility</mat-icon>
+                  {{ file.documentName }}
+                </a>
+              </div>
+              <mat-radio-group *ngIf="question.questionType === 'mcq' || question.questionType === 'radio'"
+                [(ngModel)]="answers[i].selectedOptionText" (change)="handleRadioChange(i)">
                 <div *ngFor="let option of question.options; let k = index">
-                  <mat-radio-button
-                    class="example-margin option-text"
-                    [ngClass]="{
-                      'bg-success': question.selectedOptionText === option.text
-                    }"
-                    [value]="option.text"
-                    >{{ optionsLabel[k] }} {{ option.text }}</mat-radio-button
-                  >
-                  <span>
-                    <i
-                      *ngIf=" 
-                        question.status &&
-                        question.selectedOption === option.text
-                      "
-                      class="fa fa-check text-success"
-                    ></i>
-                    <i
-                      *ngIf="
-                        question.status === false &&
-                        question.selectedOption === option.text
-                      "
-                      class="fa fa-times text-danger"
-                    ></i>
-                  </span>
+                  <mat-radio-button [value]="option.text">
+                    {{ optionsLabel[k] }} {{ option.text }}
+                  </mat-radio-button>
                 </div>
+              </mat-radio-group>
+
+              <input
+                *ngIf="question.questionType === 'text' || question.questionType === 'fillBlanks' || question.questionType === 'number'"
+                type="{{ question.questionType === 'number' ? 'number' : 'text' }}" class="form-control mt-2"
+                [(ngModel)]="answers[i].selectedOptionText" (input)="handleRadioChange(i)" />
+
+              <textarea *ngIf="question.questionType === 'textarea'" class="form-control mt-2" rows="3"
+                [(ngModel)]="answers[i].selectedOptionText" (input)="handleRadioChange(i)"></textarea>
+
+              <!-- File Upload Questions -->
+              <!-- <div *ngIf="question.questionType === 'file'" class="mt-2">
+  <input
+    type="file"
+    accept=".pdf,.doc,.docx,.ppt,.pptx,.txt,.mp3,.mp4,.wav,.avi,image/*"
+    class="form-control"
+    (change)="handleFileChange($event, i)"
+  />
+  <div *ngIf="answers[i].fileName" class="mt-1 text-muted">
+    Selected File: {{ answers[i].fileName }}
+  </div>
+</div> -->
+              <div *ngIf="question.questionType === 'file'" class="mt-2">
+
+                <label class="form-label">Type your answer:</label>
+                <textarea class="form-control mb-2" rows="3" [(ngModel)]="answers[i].selectedOptionText"
+                  [disabled]="answers[i].fileName" (input)="handleTextChange(i)"></textarea>
+
+                <div class="text-center my-2 text-muted">— or —</div>
+
+
+                <label class="form-label">Upload your answer file: {{question.fileSize}} MB</label>
+                <input type="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.txt,.mp3,.mp4,.wav,.avi,image/*"
+                  class="form-control" [disabled]="answers[i].selectedOptionText"
+                  (change)="handleFileChange($event, i)" />
+                <div *ngIf="answers[i].fileName" class="mt-1 text-muted">
+                  Selected File: {{ answers[i].fileName }}
+                  <button class="btn btn-sm btn-link text-danger p-0" (click)="clearFileAnswer(i)">Remove</button>
+                </div>
+
+              </div>
+
+
+              <mat-radio-group *ngIf="question.questionType === 'trueFalse'" [(ngModel)]="answers[i].selectedOptionText"
+                (change)="handleRadioChange(i)">
+                <mat-radio-button value="true">True</mat-radio-button>
+                <mat-radio-button value="false">False</mat-radio-button>
               </mat-radio-group>
             </div>
           </div>
 
-          <div
-            class="border-dotted-bottom mt-3 mb-3 text-center"
-            *ngIf="!isAnswersSubmitted"
-          >
-            <button
-            mat-raised-button  id="submit"
-              (click)="confirmSubmit()"
-              class="me-2"
-            >
+
+          <div class="border-dotted-bottom mt-3 mb-3 text-center" *ngIf="!isAnswersSubmitted">
+            <button mat-raised-button id="submit" (click)="confirmSubmit()" class="me-2">
               Submit
             </button>
           </div>
-          <div
-            class="border-dotted-bottom mt-3 mb-3 text-center"
-            *ngIf="isAnswersSubmitted"
-          >
-            <button
-              mat-flat-button
-              color="accent"
-              class="mls-2"
-              (click)="navigateContinue(false)"
-            >
+          <div class="border-dotted-bottom mt-3 mb-3 text-center" *ngIf="isAnswersSubmitted">
+            <button mat-flat-button color="accent" class="mls-2" (click)="navigateContinue(false)">
+              Continue
+            </button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="isEvaluationSubmitted && isAnswersSubmitted">
+      <div class="row d-flex justify-content-between align-items-center">
+        <img style="width: 150px; height: 150px" class="img-fluid col-sm-12 mx-auto"
+          src="https://icon-library.com/images/celebration-icon-png/celebration-icon-png-7.jpg" alt="" />
+        <div class="result text-center col-md-6 col-sm-12 mt-3">
+          <h5 class="mb-5">
+            Congratulations!!
+            <span class="d-block">You Assessment Answer Submitted for Evalauation. You will be notified once the
+              evaluation is completed. </span>
+          </h5>
+          <div class="border-dotted-bottom mt-3 mb-3 text-center" *ngIf="isAnswersSubmitted">
+            <button mat-flat-button color="accent" class="mls-2" (click)="navigateContinue(true)">
               Continue
             </button>
           </div>
@@ -106,17 +148,13 @@
 
     <ng-container *ngIf="isQuizCompleted && isAnswersSubmitted">
       <div class="row d-flex justify-content-between align-items-center">
-        <img
-          style="width: 150px; height: 150px"
-          class="img-fluid col-sm-12 mx-auto"
-          src="https://icon-library.com/images/celebration-icon-png/celebration-icon-png-7.jpg"
-          alt=""
-        />
+        <img style="width: 150px; height: 150px" class="img-fluid col-sm-12 mx-auto"
+          src="https://icon-library.com/images/celebration-icon-png/celebration-icon-png-7.jpg" alt="" />
         <div class="result text-center col-md-6 col-sm-12 mt-3">
           <h5 class="mb-5">
             Congratulations!!
-            <span class="d-block">You have completed the assessment. </span
-            ><span class="d-block">Below is your result:</span>
+            <span class="d-block">You have completed the assessment. </span><span class="d-block">Below is your
+              result:</span>
           </h5>
           <p class="mb-1">
             Total Question Attempted : <b>{{ questionList.length }}</b>
@@ -129,18 +167,10 @@
           </p>
           <p class="mb-1">
             Your Score : <b>{{ answersResult.score }} Points </b>
-           
+
           </p>
-          <div
-            class="border-dotted-bottom mt-3 mb-3 text-center"
-            *ngIf="isAnswersSubmitted"
-          >
-            <button
-              mat-flat-button
-              color="accent"
-              class="mls-2"
-              (click)="navigateContinue(true)"
-            >
+          <div class="border-dotted-bottom mt-3 mb-3 text-center" *ngIf="isAnswersSubmitted">
+            <button mat-flat-button color="accent" class="mls-2" (click)="navigateContinue(true)">
               Continue
             </button>
           </div>
@@ -149,16 +179,12 @@
     </ng-container>
     <ng-container *ngIf="isQuizFailed">
       <div class="row d-flex justify-content-between align-items-center">
-        <img
-          style="width: 150px; height: 150px"
-          class="img-fluid col-sm-12 mx-auto"
-          src="/assets/images/failed3.jpg"
-          alt=""
-        />
+        <img style="width: 150px; height: 150px" class="img-fluid col-sm-12 mx-auto" src="/assets/images/failed3.jpg"
+          alt="" />
         <div class="result text-center col-md-6 col-sm-12 mt-3">
           <h5 class="mb-5">
             Sorry!!
-            <span class="d-block">You have failed the assessment.  </span>
+            <span class="d-block">You have failed the assessment. </span>
             <span class="d-block">Please retake the assessment.</span>
             <span class="d-block">Below is your result:</span>
           </h5>
@@ -174,38 +200,27 @@
           <p class="mb-1">
             Your Score : <b>{{ answersResult.score }} Points </b>
           </p>
-          <div
-          class="border-dotted-bottom mt-3 mb-3 text-center"
-          *ngIf="isAnswersSubmitted"
-        >
-          <button
-          mat-raised-button  id="submit"
-            class="mls-2"
-            [routerLink] = "['/student/enrollment/assessment-exam']"
-          >
-            Retake
-          </button>
-        </div>
+          <div class="border-dotted-bottom mt-3 mb-3 text-center" *ngIf="isAnswersSubmitted">
+            <button mat-raised-button id="submit" class="mls-2" [routerLink]="['/student/enrollment/assessment-exam']">
+              Retake
+            </button>
+          </div>
         </div>
       </div>
     </ng-container>
     <ng-container *ngIf="isCertIssued">
       <div class="row d-flex justify-content-between align-items-center">
-        <img
-          style="width: 150px; height: 150px"
-          class="img-fluid col-sm-12 mx-auto"
-          src="/assets/images/cancel.png"
-          alt=""
-        />
+        <img style="width: 150px; height: 150px" class="img-fluid col-sm-12 mx-auto" src="/assets/images/cancel.png"
+          alt="" />
         <div class="result text-center col-md-6 col-sm-12 mt-3">
           <h5 class="mb-5">
-            
-            <span class="d-block">Your certificate has been issued.  </span>
+
+            <span class="d-block">Your certificate has been issued. </span>
             <span class="d-block">Don't have access to take the assessment.</span>
           </h5>
         </div>
       </div>
     </ng-container>
-    
+
   </div>
 </div>

@@ -1,152 +1,232 @@
-<div class="auth-container">
+<div class="auth-container signup-container">
   <div class="row auth-main">
     <div class="col-sm-6 px-0 d-none d-sm-block">
       <div class="slideshow">
-        <img *ngFor="let image of images; let i = index" [src]="'' + image" [alt]="'Psa-login' + (i + 1)"
-          [class.active]="i === currentIndex">
+        <img *ngFor="let image of images; let i = index" 
+             [src]="image" 
+             [alt]="'Slide ' + i" 
+             [class.active]="i === currentIndex">
       </div>
     </div>
+
     <div class="col-sm-6 auth-form-section">
       <div class="form-section">
         <div class="auth-wrapper">
-          <h2 class="welcome-msg mt-4">  {{ 'Register with ' + (domain | translate) }} 
-            <!-- <span *ngIf="tmsUrl">TMS</span>
-            <span *ngIf="lmsUrl">LMS</span> -->
- </h2>
-          <select (change)="setLanguage($event)">
-            <option *ngFor="let item of listLang" [value]="item.lang">
-              {{item.text}}
-            </option>
-          </select>
-          <p class="auth-signup-text text-muted">{{"Enter details to create your account" | translate}}</p>
-          <div class="flex-sb-m w-full text-center mb-3">
-            <div>
-              <span style="font-style: italic;">{{"Already Registered?" | translate}} 
-                <a (click)="signin()"
-                class="sign-up-link pointer">{{"Sign in" | translate}}
-              </a>
-              </span>
-            </div>
-          </div>
-          <form class="validate-form" [formGroup]="authForm" (ngSubmit)="onSubmit()">
-            <div class="row mt-2">
-              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
-                <label>{{"Name" | translate}} <span class="mandatory">*</span></label>
-                <mat-form-field class="example-full-width" appearance="outline">
-                  <input matInput formControlName="name" required>
-                  <mat-icon class="material-icons-two-tone color-icon p-3" matSuffix>face</mat-icon>
-                  <mat-error *ngIf="authForm.get('name')?.hasError('required')">
-                    {{"Enter Name " | translate}}
-                  </mat-error>
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="row mt-2">
-              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
-                <label>{{ "Email" | translate }} <span class="mandatory">*</span></label>
-                <mat-form-field class="example-full-width" appearance="outline">
-                  <input matInput formControlName="email" required>
-                  <mat-icon class="material-icons-two-tone color-icon p-3" matSuffix>mail</mat-icon>
-                  <mat-error *ngIf="authForm.get('email')?.hasError('required') && authForm.get('email')?.touched">
-                    {{ "Enter email" | translate }}
-                  </mat-error>
-                  <mat-error *ngIf="authForm.get('email')?.hasError('email') && authForm.get('email')?.touched">
-                    {{ "Enter a valid email" | translate }}
-                  </mat-error>
-                </mat-form-field>
-              </div>
-            </div>
-           <div class="row mt-2">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
-              <label>{{"Gender" | translate}} <span class="mandatory">*</span></label>
-              <mat-form-field
-                class="example-full-width"
-                appearance="outline"
-              >
-                <mat-select formControlName="gender" required>
-                  <mat-option [value]="'male'">{{"Male" | translate}}</mat-option>
-                  <mat-option [value]="'female'"> {{"Female" | translate}} </mat-option>
-                  <mat-option [value]="'other'"> {{"Other" | translate}} </mat-option>
-                </mat-select>
-                <mat-error
-                  *ngIf="authForm.get('gender')?.hasError('required')"
-                >
-                  {{"Select Gender" | translate}}
-                </mat-error>
-              </mat-form-field>
-            </div>
-           </div>
-           
-           <div class="row mt-2">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
-              <label>{{ "Password" | translate }} <span class="mandatory">*</span></label>
-              <mat-form-field class="example-full-width" appearance="outline">
-                <input matInput formControlName="password" [type]="hide ? 'password' : 'text'" required>
-                <mat-icon matSuffix (click)="hide = !hide">
-                  {{ hide ? 'visibility_off' : 'visibility' }}
-                </mat-icon>
-          
-                <mat-error *ngIf="authForm.get('password')?.hasError('required')">
-                  {{ "Enter Password" | translate }}
-                </mat-error>
-          
-                <!-- Custom error message for password strength -->
-                <mat-error *ngIf="authForm.get('password')?.hasError('passwordStrength')">
-                  <div>Password does not meet the requirements:</div>
-                  <ul class="error-list">
-                    <li>Minimum 8 characters</li>
-                    <li>At least one uppercase letter (A-Z)</li>
-                    <li>At least one lowercase letter (a-z)</li>
-                    <li>At least one digit (0-9)</li>
-                    <li>At least one special character (&#64;$!%*?&)</li>
-                  </ul>
-                </mat-error>
-              </mat-form-field>
-            </div>
-          </div>
-          
-          <!-- Confirm Password field -->
-          <div class="row mt-2" class="password-error-shown" [ngClass]="{'error-visible': isPasswordWeak}">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
-              <label>{{ "Confirm Password" | translate }} <span class="mandatory">*</span></label>
-              <mat-form-field class="example-full-width" appearance="outline">
-                <input matInput formControlName="cpassword" [type]="chide ? 'password' : 'text'" required>
-                <mat-icon matSuffix (click)="chide = !chide">
-                  {{ chide ? 'visibility_off' : 'visibility' }}
-                </mat-icon>
-          
-                <mat-error *ngIf="authForm.get('cpassword')?.hasError('required')">
-                  {{ "Enter Confirm Password" | translate }}
-                </mat-error>
-          
-                <!-- Custom error message for password mismatch -->
-                <mat-error *ngIf="authForm.get('cpassword')?.hasError('confirmedValidator')">
-                  Password and Re-Enter Password should match.
-                </mat-error>
-              </mat-form-field>
-            </div>
-          </div>
-          
-          
-          
-          
-          
-          
-          
-          
-            <div  class="invalid-text"*ngIf="submitted" >
-              {{email}}
+          <h2 class="welcome-msg">Sign Up</h2>
+          <p class="auth-signup-text">Enter details to create your account</p>
+
+          <form [formGroup]="signupForm" (ngSubmit)="submitForm()">
+            <div *ngFor="let field of fields" class="form-field">
+              <!-- Radio buttons and Checkboxes -->
+              <ng-container *ngIf="['radio', 'checkbox'].includes(field.type?.toLowerCase())">
+                <div class="modern-input-container">
+                  <label class="field-label">{{ field.label }} <span class="mandatory" *ngIf="field.required">*</span></label>
+                  
+                  <!-- Radio buttons -->
+                  <div *ngIf="field.type?.toLowerCase() === 'radio'" class="radio-group">
+                    <mat-radio-group [formControlName]="sanitizeControlName(field.label)">
+                      <mat-radio-button *ngFor="let option of field.options" [value]="option">
+                        {{ option }}
+                      </mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+
+                  <!-- City checkboxes update -->
+                  <ng-container *ngIf="field.type?.toLowerCase() === 'checkbox'">
+                    <div class="modern-checkbox-group">
+                      <div *ngFor="let option of field.options" class="modern-checkbox-item">
+                        <mat-checkbox 
+                          (change)="onCheckboxChange($event, sanitizeControlName(field.label))" 
+                          [value]="option"
+                          class="modern-checkbox">
+                          {{ option }}
+                        </mat-checkbox>
+                      </div>
+                    </div>
+                  </ng-container>
                 </div>
+              </ng-container>
+
+              <!-- Text, Email, Password inputs -->
+              <ng-container *ngIf="['text', 'password', 'email'].includes(field.type?.toLowerCase()) || 
+                                  (field.type?.toLowerCase() === 'text' && ['Name', 'Email', 'Password'].includes(field.attr))">
+                <div class="modern-input-container">
+                  <label class="field-label">{{ field.label }} <span class="mandatory" *ngIf="field.required">*</span></label>
+                  
+                  <div class="input-with-icon" [class.filled]="signupForm.get(sanitizeControlName(field.label))?.value">
+                    <!-- Username/Name Input -->
+                    <ng-container *ngIf="field.attr === 'Name'">
+                      <span class="field-icon"><mat-icon>person</mat-icon></span>
+                      <input class="modern-input" 
+                            [type]="getInputType(field.type)"
+                            [formControlName]="sanitizeControlName(field.label)"
+                            [placeholder]="field.placeholder || ''"
+                            [attr.maxlength]="field.maxLength"
+                            [attr.minlength]="field.minLength"
+                            (blur)="onFieldBlur(sanitizeControlName(field.label))"
+                            (input)="onFieldInput(sanitizeControlName(field.label))">
+                    </ng-container>
+
+                    <!-- Email Input -->
+                    <ng-container *ngIf="field.type?.toLowerCase() === 'email' || field.attr === 'Email'">
+                      <span class="field-icon"><mat-icon>email</mat-icon></span>
+                      <input class="modern-input"
+                            type="email"
+                            [formControlName]="sanitizeControlName(field.label)"
+                            [placeholder]="field.placeholder || ''"
+                            [attr.maxlength]="field.maxLength"
+                            [attr.minlength]="field.minLength"
+                            (blur)="onFieldBlur(sanitizeControlName(field.label))"
+                            (input)="onFieldInput(sanitizeControlName(field.label))">
+                    </ng-container>
+
+                    <!-- Password Input -->
+                    <ng-container *ngIf="field.type?.toLowerCase() === 'password' || field.attr === 'Password'">
+                      <span class="field-icon"><mat-icon>lock</mat-icon></span>
+                      <input class="modern-input"
+                            [type]="hidePassword[sanitizeControlName(field.label)] ? 'password' : 'text'"
+                            [formControlName]="sanitizeControlName(field.label)"
+                            [placeholder]="field.placeholder || ''"
+                            [attr.maxlength]="field.maxLength"
+                            [attr.minlength]="field.minLength"
+                            (blur)="onFieldBlur(sanitizeControlName(field.label))"
+                            (input)="onFieldInput(sanitizeControlName(field.label))">
+                      <button type="button" 
+                              class="password-visibility-btn" 
+                              (click)="togglePasswordVisibility(sanitizeControlName(field.label))"
+                              [attr.aria-label]="'Hide password'">
+                        <mat-icon>{{ hidePassword[sanitizeControlName(field.label)] ? 'visibility_off' : 'visibility' }}</mat-icon>
+                      </button>
+                    </ng-container>
+
+                    <!-- Other Text Inputs -->
+                    <ng-container *ngIf="field.type?.toLowerCase() === 'text' && 
+                                        !['Name', 'Email', 'Password'].includes(field.attr)">
+                      <span class="field-icon"><mat-icon>text_fields</mat-icon></span>
+                      <input class="modern-input"
+                            type="text"
+                            [formControlName]="sanitizeControlName(field.label)"
+                            [placeholder]="field.placeholder || ''"
+                            [attr.maxlength]="field.maxLength"
+                            [attr.minlength]="field.minLength"
+                            (blur)="onFieldBlur(sanitizeControlName(field.label))"
+                            (input)="onFieldInput(sanitizeControlName(field.label))">
+                    </ng-container>
+                  </div>
+
+                  <!-- Error Messages - Only for required fields -->
+                  <div *ngIf="field.required && signupForm.get(sanitizeControlName(field.label))?.errors && 
+                              (signupForm.get(sanitizeControlName(field.label))?.touched || 
+                               signupForm.get(sanitizeControlName(field.label))?.dirty)" class="error-message">
+                    {{ getErrorMessage(field) }}
+                  </div>
+                </div>
+              </ng-container>
+
+              <!-- Numeric input -->
+              <ng-container *ngIf="field.type?.toLowerCase() === 'number'">
+                <div class="modern-input-container">
+                  <label class="field-label">{{ field.label }} <span class="mandatory" *ngIf="field.required">*</span></label>
+                  <div class="input-with-icon" [class.filled]="signupForm.get(sanitizeControlName(field.label))?.value">
+                    <span class="field-icon"><mat-icon>dialpad</mat-icon></span>
+                    <input class="modern-input"
+                          type="number"
+                          [formControlName]="sanitizeControlName(field.label)"
+                          [placeholder]="field.placeholder || ''"
+                          [attr.maxlength]="field.maxLength"
+                          [attr.minlength]="field.minLength"
+                          (blur)="onFieldBlur(sanitizeControlName(field.label))"
+                          (input)="onFieldInput(sanitizeControlName(field.label))">
+                  </div>
+                  <div *ngIf="field.required && signupForm.get(sanitizeControlName(field.label))?.errors && 
+                              signupForm.get(sanitizeControlName(field.label))?.touched" class="error-message">
+                    {{ getErrorMessage(field) }}
+                  </div>
+                </div>
+              </ng-container>
+
+              <!-- File Upload -->
+              <ng-container *ngIf="field.type?.toLowerCase() === 'upload'">
+                <div class="modern-input-container">
+                  <label class="field-label">{{ field.label }} <span class="mandatory" *ngIf="field.required">*</span></label>
+                  <div class="input-with-icon">
+                    <span class="field-icon"><mat-icon>attach_file</mat-icon></span>
+                    <input class="modern-input" type="text" [value]="signupForm.get(sanitizeControlName(field.label))?.value?.name || ''" 
+                           disabled [placeholder]="field.placeholder || 'No file chosen'">
+                    <input type="file" (change)="onFileChange($event, sanitizeControlName(field.label))" hidden #fileInput>
+                    <button class="upload-btn" type="button" (click)="fileInput.click()">Browse</button>
+                  </div>
+                  <small class="file-size-note">Maximum file size: 5MB</small>
+                  <div *ngIf="field.required && signupForm.get(sanitizeControlName(field.label))?.errors && 
+                              signupForm.get(sanitizeControlName(field.label))?.touched" class="error-message">
+                    {{ getErrorMessage(field) }}
+                  </div>
+                </div>
+              </ng-container>
+
+              <!-- Date Input -->
+              <ng-container *ngIf="field.type?.toLowerCase() === 'date'">
+                <div class="modern-input-container">
+                  <label class="field-label">{{ field.label }} <span class="mandatory" *ngIf="field.required">*</span></label>
+                  <div class="input-with-icon" [class.filled]="signupForm.get(sanitizeControlName(field.label))?.value">
+                    <span class="field-icon"><mat-icon>calendar_today</mat-icon></span>
+                    <input class="modern-input" [matDatepicker]="picker"
+                           [formControlName]="sanitizeControlName(field.label)"
+                           [max]="maxDate"
+                           (dateChange)="checkDobValidation(field, $event)"
+                           [placeholder]="field.placeholder || ''"
+                           (blur)="onFieldBlur(sanitizeControlName(field.label))"
+                           (input)="onFieldInput(sanitizeControlName(field.label))">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </div>
+                  <!-- Combine date validation and required field validation -->
+                  <div *ngIf="field.required && (field.isInvalidDob || 
+                            (signupForm.get(sanitizeControlName(field.label))?.errors && 
+                             signupForm.get(sanitizeControlName(field.label))?.touched))" class="error-message">
+                    {{ field.isInvalidDob ? 'Invalid date. Please select a past date.' : getErrorMessage(field) }}
+                  </div>
+                </div>
+              </ng-container>
+
+              <!-- Dropdown -->
+              <ng-container *ngIf="field.type?.toLowerCase() === 'dropdown'">
+                <div class="modern-input-container">
+                  <label class="field-label">{{ field.label }} <span class="mandatory" *ngIf="field.required">*</span></label>
+                  <div class="input-with-icon dropdown-container" [class.filled]="signupForm.get(sanitizeControlName(field.label))?.value">
+                    <span class="field-icon"><mat-icon>arrow_drop_down</mat-icon></span>
+                    <select class="modern-select" [formControlName]="sanitizeControlName(field.label)"
+                            (blur)="onFieldBlur(sanitizeControlName(field.label))"
+                            (input)="onFieldInput(sanitizeControlName(field.label))">
+                      <option value="" disabled selected>{{ field.placeholder }}</option>
+                      <option *ngFor="let option of field.options" [value]="option">{{ option }}</option>
+                    </select>
+                    <div class="dropdown-arrow">
+                      <mat-icon>expand_more</mat-icon>
+                    </div>
+                  </div>
+                  <div *ngIf="field.required && signupForm.get(sanitizeControlName(field.label))?.errors && 
+                              signupForm.get(sanitizeControlName(field.label))?.touched" class="error-message">
+                    {{ getErrorMessage(field) }}
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          
             <div class="container-auth-form-btn">
-              <button mat-raised-button color="primary" class="auth-form-btn" [disabled]="!authForm.valid "
-                type="submit">
-                {{"Register" | translate}}
+              <button mat-raised-button color="primary" type="submit" [disabled]="signupForm.invalid">
+                Register
               </button>
+            </div>
+
+            <div class="mt-4 text-center">
+              <p class="text-muted">
+                Already Registered? <a routerLink="/authentication/TMS/signin" class="login-link">Sign In</a>
+              </p>
             </div>
           </form>
         </div>
       </div>
     </div>
-
   </div>
 </div>

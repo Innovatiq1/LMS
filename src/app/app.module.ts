@@ -53,6 +53,7 @@ import { EditUpdateDashboardComponent } from './student/settings/dashboard-custo
 import { TraineesDashboardComponent } from './student/settings/trainees-dashboard/trainees-dashboard.component';
 import { SuperAdminService } from './superAdmin/super-admin.service';
 import { CorporateDashboardComponent } from './student/settings/corporate-dashboard/corporate-dashboard.component';
+import { EmbedIframeComponent } from './embed-iframe/embed-iframe.component';
 
 // import { ChangeBgDirective } from './change-bg.directive';
 
@@ -81,6 +82,7 @@ export function createTranslateLoader(http: HttpClient) {
     EditUpdateDashboardComponent,
     TraineesDashboardComponent,
     CorporateDashboardComponent,
+    EmbedIframeComponent,
     
 
     // ChangeBgDirective

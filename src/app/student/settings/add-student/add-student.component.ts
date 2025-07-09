@@ -4,6 +4,7 @@ import {
   UntypedFormBuilder,
   UntypedFormGroup,
   ValidationErrors,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -101,7 +102,9 @@ export class AddStudentComponent {
       parentsName: [''],
       parentsPhone: [''],
       // dob: ['', [Validators.required,...this.utils.validators.dob]],
-      dob: ['', [Validators.required, this.minAgeValidator(20)]],
+      // dob: ['', [Validators.required, this.minAgeValidator(18)]],
+      above18: [false],
+      dob: ['', [Validators.required, this.dynamicAgeValidator()]],
       joiningDate: ['', [Validators.required]],
       avatar: [''],
       blood_group: [''],
@@ -109,14 +112,18 @@ export class AddStudentComponent {
       attemptBlock: ['', []],
       qualifications: ['', [Validators.required]],
       domainAreaOfPractice: ['', [Validators.required]],
-      idType: ['', [Validators.required]],
-      idNumber: ['', [Validators.required]],
-      code: ['', [Validators.required]],
+      idType: ['', []],
+      // idNumber: ['', [Validators.required]],
+      idNumber: ['', []],
+      code: ['', []],
       linkedInURL: ['',],
       experience: ['',],
 
     },{
       validators: this.passwordMatchValidator,
+    });
+    this.stdForm.get('above18')?.valueChanges.subscribe(() => {
+      this.stdForm.get('dob')?.updateValueAndValidity();
     });
   }
 
@@ -168,18 +175,52 @@ export class AddStudentComponent {
     this.getForms();
   }
 
-  minAgeValidator(minAge: number) {
+  // minAgeValidator(minAge: number) {
+  //   return (control: AbstractControl): ValidationErrors | null => {
+  //     if (!control.value) {
+  //       return null; 
+  //     }
+  //     const birthDate = new Date(control.value);
+  //     const today = new Date();
+  //     const age = today.getFullYear() - birthDate.getFullYear();
+
+  //     if (age < minAge || (age === minAge && today < new Date(birthDate.setFullYear(birthDate.getFullYear() + minAge)))) {
+  //       return { minimumAge: true };
+  //     }
+  //     return null;
+  //   };
+  // }
+  dynamicAgeValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       if (!control.value) {
-        return null; 
+        return null;
       }
+
       const birthDate = new Date(control.value);
       const today = new Date();
-      const age = today.getFullYear() - birthDate.getFullYear();
+      let age = today.getFullYear() - birthDate.getFullYear();
 
-      if (age < minAge || (age === minAge && today < new Date(birthDate.setFullYear(birthDate.getFullYear() + minAge)))) {
-        return { minimumAge: true };
+      if (
+        today < new Date(birthDate.setFullYear(birthDate.getFullYear() + age))
+      ) {
+        age--; 
       }
+
+      const isAbove18Checked = this.stdForm?.get('above18')?.value;
+
+      if (isAbove18Checked) {
+        if (age < 18) {
+          return { ageTooLow18: true };
+        }
+      } else {
+        if (age < 5) {
+          return { ageTooLow: true };
+        }
+        if (age > 18) {
+          return { ageTooHigh: true };
+        }
+      }
+
       return null;
     };
   }
@@ -378,7 +419,7 @@ getDepartment(){
           name: this.editData.name,
           last_name: this.editData.last_name,
           rollNo: this.editData.rollNo,
-          gender: this.editData.gender,
+          gender: this.editData.gender.toLowerCase(),
           mobile: this.editData.mobile,
           joiningDate: this.editData.joiningDate,
           email: this.editData.email,

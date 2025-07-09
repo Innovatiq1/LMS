@@ -87,13 +87,21 @@ import { UpdateDiscountComponent } from './settings/discount/update-discount/upd
 import { PassingCriteriaComponent } from './settings/passing-criteria/passing-criteria.component';
 import { UpdatePassingCriteriaComponent } from './settings/passing-criteria/update-passing-criteria/update-passing-criteria.component';
 import { ScoreComponent } from './settings/score/score.component';
+import { FileSizeComponent } from './settings/file-size/file-size.component';
 import { UpdateScoreAlgorithmComponent } from './settings/score/update-score-algorithm/update-score-algorithm.component';
+import { UpdateFileSizeComponent } from './settings/file-size/update-file-size/update-file-size.component';
 import { TimeComponent } from './settings/time/time.component';
 import { UpdateTimeAlgorithmComponent } from './settings/time/update-time-algorithm/update-time-algorithm.component';
 import { SocialLoginComponent } from './settings/social-login/social-login.component';
 import { ZoomKeysComponent } from './settings/zoom-keys/zoom-keys.component';
 import { MeetingPlatformComponent } from './settings/meeting-platform/meeting-platform.component';
 import { UpdateMeetingPlatformComponent } from './settings/meeting-platform/update-meeting-platform/update-meeting-platform.component';
+
+import { ScormPkgComponent } from './settings/scorm-pkg/scorm-pkg.component';
+import { ScormPkgCreateComponent } from 'app/student/settings/scorm-pkg/scorm-pkg-create/scorm-pkg-create.component';
+
+import { SurveyRegistrationComponent } from './settings/survey-registration/survey-registration.component';
+import { AllSurveyComponent } from './settings/all-survey/all-survey.component';
 const routes: Routes = [
   {
     path: 'enrollment/course',
@@ -314,16 +322,21 @@ const routes: Routes = [
     component: ScoreComponent
   },
   {
+    path: 'settings/configuration/fileSize-algorithm',
+    component: FileSizeComponent
+  },
+  {
     path: 'settings/configuration/time-algorithm',
     component: TimeComponent
   },
-
+  {
+    path: 'settings/configuration/all-survey',
+    component: AllSurveyComponent
+  },
   {
     path: 'settings/configuration/discount',
     component: DiscountComponent
   },
-
-
   {
     path: 'settings/customize/certificate/template',
     component: CertificateTemplateComponent
@@ -568,7 +581,7 @@ const routes: Routes = [
     component: SocialLoginComponent,
   },
   {
-    path: 'settings/integration/zoom-credentials',
+    path: 'settings/integration/virtual-meetings',
     component: ZoomKeysComponent,
   },
   {
@@ -624,6 +637,10 @@ const routes: Routes = [
     component: UpdateScoreAlgorithmComponent
   },
   {
+    path: 'settings/configuration/fileSize-algorithm/update-filesize-algorithm',
+    component: UpdateFileSizeComponent
+  },
+  {
     path: 'settings/configuration/time-algorithm/update-time-algorithm',
     component: UpdateTimeAlgorithmComponent
   },
@@ -638,6 +655,18 @@ const routes: Routes = [
   {
     path: 'settings/configuration/meeting-platform/update',
     component: UpdateMeetingPlatformComponent
+  },
+  {
+    path:'settings/configuration/scorm-kit',
+    component: ScormPkgComponent
+  },
+  {
+    path:'settings/configuration/scorm-kit/create',
+    component: ScormPkgCreateComponent
+  },
+  {
+    path:'settings/configuration/scorm-kit/update',
+    component: ScormPkgCreateComponent
   }
 
   

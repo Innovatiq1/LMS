@@ -223,7 +223,8 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       training_hours: new FormControl('', [
         Validators.pattern(/^\d+(\.\d+)?$/),
       ]),
-      department:['',[Validators.required]],
+      // department:['',[Validators.required]],
+      department: [[], [Validators.required]],
       skill_connect_code: new FormControl('', [
         Validators.pattern(/^[a-zA-Z0-9]/),
       ]),
@@ -749,8 +750,10 @@ this.exam_assessments=res?.data.reverse();
         );
         if (config) {
           this.defaultCurrency = config.value;
+          // console.log("this.defaultCurrency",this.firstFormGroup.value.feeType)
           this.firstFormGroup.patchValue({
-            currency_code: this.firstFormGroup.value.feeType?this.defaultCurrency:'',
+            // currency_code: this.firstFormGroup.value.feeType?this.defaultCurrency:'',
+            currency_code:this.defaultCurrency
           });
         }
       });

@@ -165,17 +165,17 @@
                             (click)="isView ? aboutStudent(row.id) : null"
                           >
                             <span class="mobile-label">Gender:</span>
-                            <div *ngIf="row.gender === 'male'">
+                            <div *ngIf="row.gender === 'male' || row.gender === 'M' || row.gender === 'm' || row.gender === 'Male'">
                               <span class="badge badge-solid-green">
-                                {{ row.gender | titlecase }}</span
+                                {{ row.gender === 'm' || row.gender === 'M' ? 'Male' : row.gender | titlecase }}</span
                               >
                             </div>
-                            <div *ngIf="row.gender === 'female'">
+                            <div *ngIf="row.gender === 'female' || row.gender === 'F' || row.gender === 'f' || row.gender === 'Female'">
                               <span class="badge badge-solid-purple">
-                                {{ row.gender | titlecase }}</span
+                                {{ row.gender === 'f' || row.gender === 'F' ? 'Female' : row.gender | titlecase }}</span
                               >
                             </div>
-                            <div *ngIf="row.gender === 'other'">
+                            <div *ngIf="row.gender === 'other' || row.gender === 'O' || row.gender === 'o' || row.gender === 'Other'">
                               <span class="badge badge-solid-orange">
                                 {{ row.gender | titlecase }}</span
                               >

@@ -651,6 +651,14 @@ private tpUrl=environment.Url;
       );
     }
     
+    uploadDocument(file:any) {
+      const apiUrl = `${this.prefix}admin/documentUpload/`;
+      return this._Http.post<any>(apiUrl, file).pipe(
+        map((response) => {
+          return response
+        })
+      );
+    }
   
     saveVideo(payload: any){
       const apiUrl = `${this.prefix}uploadVideo/`;
@@ -662,6 +670,18 @@ private tpUrl=environment.Url;
       return this._Http.post<any>(apiUrl, payload).pipe(map((response) => response));
     }
 
+    createScormPkg(payload:any) {
+      const apiUrl = `${this.prefix}uploadScorm/create/v2`;
+      return this._Http.post<any>(apiUrl, payload).pipe(map((response) => response));
+    }
+
+    getScormKits(companyId:string){
+      const apiUrl = `${this.prefix}uploadScorm`;
+      return this._Http.get<any>(apiUrl, {
+        params: this.buildParams({companyId}),
+      }).pipe(map((response) => response));
+    }
+
 
     updateVideo(id:string,payload: any){
         const apiUrl = `${this.prefix}uploadVideo/${id}`;
@@ -671,19 +691,24 @@ private tpUrl=environment.Url;
     updateScormKit(id:string,payload: any){
         const apiUrl = `${this.prefix}uploadScorm/${id}`;
         return this._Http.put<ApiResponse>(apiUrl, payload);
-      }
-      getScormKit(id:string) {
-        const apiUrl = `${this.prefix}uploadScorm/${id}`;
-        return this._Http.get<ApiResponse>(apiUrl);
-      }
-      createStudentScorm(payload: any){
-        const apiUrl = `${this.prefix}uploadScorm/studentClasses/scorm`;
-        return this._Http.post<any>(apiUrl, payload).pipe(map((response) => response));
-      }
+    }
+    getScormKit(id:string) {
+      const apiUrl = `${this.prefix}uploadScorm/${id}`;
+      return this._Http.get<ApiResponse>(apiUrl);
+    }
+    createStudentScorm(payload: any){
+      const apiUrl = `${this.prefix}uploadScorm/studentClasses/scorm`;
+      return this._Http.post<any>(apiUrl, payload).pipe(map((response) => response));
+    }
     commitScormKit(id:string,payload: any){
-        const apiUrl = `${this.prefix}uploadScorm/${id}/commit`;
-        return this._Http.put<ApiResponse>(apiUrl, payload);
-      }
+      const apiUrl = `${this.prefix}uploadScorm/${id}/commit`;
+      return this._Http.put<ApiResponse>(apiUrl, payload);
+    }
+
+    deleteScormKit(id:string){
+      const apiUrl = `${this.prefix}uploadScorm/${id}`;
+      return this._Http.delete<ApiResponse>(apiUrl);
+    }
 
     getAllCourseKit(
       filter?: Partial<any>

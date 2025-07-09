@@ -273,6 +273,13 @@ SETTING_SIDEMENU_LIST =[
             "children": []
           },
           {
+            "title": "SurveyForm",
+            "id": "create-feedback",
+            "class": "ml-menu",
+            "actions": [],
+            "children": []
+          },
+          {
             "title": "Logo",
             "id": "logo-customization",
             "class": "ml-menu",
@@ -501,6 +508,37 @@ SETTING_SIDEMENU_LIST =[
             "children": []
           },
           {
+            "title": "Registration List",
+            "id": "all-survey",
+            // "id": "forms",
+            "class": "ml-menu",
+            "actions": [],
+            "children": []
+          },
+          {
+            "title": "FileSize Algorithm",
+            "id": "fileSize-algorithm",
+            "class": "ml-menu",
+            "actions": [
+              {
+                "title": "Create",
+                "id": "create-fileSize",
+                "class": "ml-menu3"
+              },
+              {
+                "title": "Edit",
+                "id": "edit-fileSize",
+                "class": "ml-menu3"
+              },
+              {
+                "title": "Delete",
+                "id": "delete-fileSize",
+                "class": "ml-menu3"
+              }
+            ],
+            "children": []
+          },
+          {
             "title": "Meeting Platform",
             "id": "meeting-platform",
             "class": "ml-menu",
@@ -518,6 +556,29 @@ SETTING_SIDEMENU_LIST =[
               {
                 "title": "Delete",
                 "id": "delete-meeting-platform",
+                "class": "ml-menu3"
+              }
+            ],
+            "children": []
+          },
+          {
+            "title": "Scorm Kit",
+            "id": "scorm-kit",
+            "class": "ml-menu",
+            "actions": [
+              {
+                "title": "Create",
+                "id": "create-scorm-kit",
+                "class": "ml-menu3"
+              },
+              {
+                "title": "Edit",
+                "id": "edit-scorm-kit",
+                "class": "ml-menu3"
+              },
+              {
+                "title": "Delete",
+                "id": "delete-scorm-kit",
                 "class": "ml-menu3"
               }
             ],
@@ -568,10 +629,21 @@ SETTING_SIDEMENU_LIST =[
             "children": []
           },
           {
-            "title": "Zoom Credentials",
-            "id": "zoom-credentials",
+            "title": "Virtual Meetings",
+            "id": "virtual-meetings",
             "class": "ml-menu",
-            "actions": [],
+            "actions": [
+              {
+              "title": "Zoom",
+              "id": "zoom",
+              "class": "ml-menu3"
+            },
+            {
+              "title": "Teams",
+              "id": "teams",
+              "class": "ml-menu3"
+            },
+          ],
             "children": []
           }
         ]
