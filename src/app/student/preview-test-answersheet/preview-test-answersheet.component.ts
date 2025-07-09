@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute } from '@angular/router';
 import { AssessmentService } from '@core/service/assessment.service';
+import { SettingsService } from '@core/service/settings.service';
 import { StudentsService } from 'app/admin/students/students.service';
 
 @Component({
@@ -12,7 +13,12 @@ import { StudentsService } from 'app/admin/students/students.service';
 export class PreviewTestAnswersheetComponent {
   public questionList: any = [];
   answerResult!: any;
-  studentInfo: any;
+  studentInfo: any; 
+    actualScore:number = 0; 
+  currentPercentage:number = 0;
+  totalScore:number = 0 
+  gradeDataset:any = [] 
+  gradeInfo:any =null
   pageSize: number = 10;
   currentPage: number = 0;
   totalQuestions: number = 0;
@@ -33,7 +39,8 @@ export class PreviewTestAnswersheetComponent {
   constructor(
     private studentService: StudentsService,
     private route: ActivatedRoute,
-    private assessmentService: AssessmentService
+    private assessmentService: AssessmentService, 
+     private SettingService:SettingsService
   ) {}
   ngOnInit() {
     const answerId = this.route.snapshot.paramMap.get('id') || '';
@@ -56,7 +63,10 @@ export class PreviewTestAnswersheetComponent {
   getAnswerById(answerId: string) {
     
     this.studentService.getAnswerById(answerId).subscribe((res: any) => {
-      this.answerResult = res.assessmentAnswer;
+      this.answerResult = res.assessmentAnswer; 
+       this.actualScore = res.assessmentAnswer.score
+      this.totalScore = res.assessmentAnswer.totalScore  
+      this.GradeCalculate()
       
       const assessmentAnswer = res.assessmentAnswer;
       this.getAssessmentName=assessmentAnswer.assessmentId.name;
@@ -88,7 +98,10 @@ export class PreviewTestAnswersheetComponent {
   }
 
   getExamAnswerById(answerId: string) {
-    this.assessmentService.getAnswerById(answerId).subscribe((res: any) => {
+    this.assessmentService.getAnswerById(answerId).subscribe((res: any) => { 
+       this.actualScore = res.assessmentAnswer.score
+      this.totalScore = res.assessmentAnswer.totalScore  
+      this.GradeCalculate()
       console.log("this.res",res.assessmentAnswer.examAssessmentId.name)
       this.getAssessmentName=res.assessmentAnswer.examAssessmentId.name;
       this.answerResult = res.assessmentAnswer;
@@ -152,6 +165,57 @@ export class PreviewTestAnswersheetComponent {
     return this.questionList.slice(
       this.getStartingIndex(),
       this.getEndingIndex()
-    );
+    ); 
+
+
+  } 
+
+     GradeCalculate(){  
+    let calculatePercent = this.actualScore / this.totalScore * 100;
+    this.currentPercentage = Number.isNaN(calculatePercent) ? 0 : Math.floor(calculatePercent);
+
+
+    const getCompanyId:any = localStorage.getItem('userLogs')
+    const parseid = JSON.parse(getCompanyId) 
+    this.SettingService.gradeFetch(parseid.companyId).subscribe({
+      next:(res:any)=>{
+       if(res.response != null ){ 
+         this.gradeDataset= []
+        this.gradeDataset.push(...res.response!.gradeList) 
+        let count = 0
+         for(let i = 0;  i < this.gradeDataset.length; i++ ){  
+         
+      const max = this.gradeDataset[i].PercentageRange.split('-')[0] 
+      const min = this.gradeDataset[i].PercentageRange.split('-')[1]
+      if(calculatePercent >= max &&  calculatePercent <=min){
+        this.gradeInfo =  this.gradeDataset[i]
+        break 
+        
+      } 
+      count +=1 
+    } 
+    console.log(count, this.gradeDataset.length)
+    if(count === this.gradeDataset.length){
+       const sorted = this.gradeDataset.sort((a:any, b:any) => {
+    const numA = parseInt(a.PercentageRange.split('-')[0]);
+    const numB = parseInt(b.PercentageRange.split('-')[0]);
+    return numA - numB; 
+    
+    }); 
+    this.gradeInfo = sorted[0]
+
+
+    }
+
+        
+       } 
+      },error:(err)=>{  
+        
+      }
+    })
+
+   
+    
+
   }
 }

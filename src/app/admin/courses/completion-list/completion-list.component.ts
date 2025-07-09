@@ -43,6 +43,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { AssessmentService } from '@core/service/assessment.service';
 import { CourseModel, CoursePaginationModel } from '@core/models/course.model';
 import { UtilsService } from '@core/service/utils.service';
+import { SettingsService } from '@core/service/settings.service';
 @Component({
   selector: 'app-completion-list',
   templateUrl: './completion-list.component.html',
@@ -99,7 +100,12 @@ export class CompletionListComponent {
   uploadedImage: any;
   certificateForm!: FormGroup;
   selection = new SelectionModel<any>(true, []);
-  selectedRows: any[] = [];
+  selectedRows: any[] = []; 
+    actualScore:number = 0; 
+  currentPercentage:number = 0;
+  totalScore:number = 0 
+  gradeDataset:any = [] 
+  gradeInfo:any =null
 
   config: AngularEditorConfig = {
     editable: true,
@@ -150,7 +156,8 @@ export class CompletionListComponent {
     private courseService: CourseService,
     private fb: FormBuilder,
     private authenService: AuthenService,
-    private assessmentService: AssessmentService,
+    private assessmentService: AssessmentService, 
+      private SettingService:SettingsService,
     public utils: UtilsService,
   ) {
     this.studentPaginationModel = {} as StudentPaginationModel;
@@ -465,10 +472,12 @@ export class CompletionListComponent {
           title: this.course.title,
         });
         // Update content based on type
-        this.course.elements.forEach((element: any) => {
+        this.course.elements.forEach((element: any) => { 
+            console.log(element,'===> <====')
           if (element.type === 'UserName') {
-            element.content =
-              this.studentData.studentId?.name || 'Default Name';
+              element.content =
+              this.studentData.studentId?.name || 'Default Name'; 
+
           } else if (element.type === 'Course') {
             element.content = this.studentData.title || this.studentData?.courseId?.title || 'Default Course';
           } else if (element.type === 'Date') {
@@ -490,7 +499,11 @@ export class CompletionListComponent {
   // end of displaying the certificate
 
   generateCertificate(element: Student) {
-    this.studentData = element;
+    this.studentData = element; 
+    
+      this.actualScore = this.studentData.assessmentanswers.score
+      this.totalScore = this.studentData.assessmentanswers.totalScore  
+      this.GradeCalculate()
     this.openDialog(this.certificateDialog);
     setTimeout(() => {
       this.copyPreviewToContentToConvert();
@@ -516,6 +529,56 @@ export class CompletionListComponent {
         certificatePreview.style.backgroundRepeat;
       contentToConvert.style.border = certificatePreview.style.border;
     }
+  } 
+
+  
+     GradeCalculate(){  
+    let calculatePercent = this.actualScore / this.totalScore * 100;
+    this.currentPercentage = Number.isNaN(calculatePercent) ? 0 : Math.floor(calculatePercent);
+
+
+    const getCompanyId:any = localStorage.getItem('userLogs')
+    const parseid = JSON.parse(getCompanyId) 
+    this.SettingService.gradeFetch(parseid.companyId).subscribe({
+      next:(res:any)=>{
+       if(res.response != null ){ 
+         this.gradeDataset= []
+        this.gradeDataset.push(...res.response!.gradeList) 
+        let count = 0
+         for(let i = 0;  i < this.gradeDataset.length; i++ ){  
+         
+      const max = this.gradeDataset[i].PercentageRange.split('-')[0] 
+      const min = this.gradeDataset[i].PercentageRange.split('-')[1]
+      if(calculatePercent >= max &&  calculatePercent <=min){
+        this.gradeInfo =  this.gradeDataset[i]
+        break 
+        
+      } 
+      count +=1 
+    } 
+    console.log(count, this.gradeDataset.length)
+    if(count === this.gradeDataset.length){
+       const sorted = this.gradeDataset.sort((a:any, b:any) => {
+    const numA = parseInt(a.PercentageRange.split('-')[0]);
+    const numB = parseInt(b.PercentageRange.split('-')[0]);
+    return numA - numB; 
+    
+    }); 
+    this.gradeInfo = sorted[0]
+
+
+    }
+
+        
+       } 
+      },error:(err)=>{  
+        
+      }
+    })
+
+   
+    
+
   }
 
   // generateCertificatePDF(): void {

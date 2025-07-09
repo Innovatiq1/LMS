@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CourseService } from '@core/service/course.service';
 import { QuestionService } from '@core/service/question.service';
+import { SettingsService } from '@core/service/settings.service';
 import { Any } from '@tensorflow/tfjs';
 import { StudentsService } from 'app/admin/students/students.service';
 import Swal from 'sweetalert2';
@@ -13,8 +14,13 @@ import Swal from 'sweetalert2';
 export class ManualEvaluationComponent {
   rowData: any;
   rowId: string = '';
-  response:any;
-  getAssessmentCorrectAns:any;
+  response:any; 
+  actualScore:number = 0; 
+  currentPercentage:number = 0;
+  totalScore:number = 0 
+  gradeDataset:any = [] 
+  gradeInfo:any =null
+  getAssessmentCorrectAns:any; 
   getAssessmentAnswer:any;
   combinedAnswers: any[] = [];
   savedAnswers: any[] = [];
@@ -30,7 +36,8 @@ export class ManualEvaluationComponent {
     private route: ActivatedRoute,
     private courseService: CourseService,
     private questionService: QuestionService,
-    private studentService: StudentsService,
+    private studentService: StudentsService, 
+       private SettingService:SettingsService
   ) {
     const storedItems = localStorage.getItem('activeBreadcrumb');
     if (storedItems) {
@@ -67,7 +74,11 @@ export class ManualEvaluationComponent {
       // this.classDataById = response?._id;
       this.response = response;
       this.getAssessmentAnswer=response?.assessmentAnswer?.answers;
-      this.assessmentAnswerId=response?.assessmentAnswer?._id;
+      this.assessmentAnswerId=response?.assessmentAnswer?._id; 
+      
+       this.actualScore = response.assessmentAnswer.score
+      this.totalScore = response.assessmentAnswer.totalScore  
+      this.GradeCalculate()
       
 
       // if(this.isEdit){
@@ -301,7 +312,55 @@ patchEvaluatedData() {
 cancelChanges() {
   this.combinedAnswers = JSON.parse(JSON.stringify(this.originalAnswers));
   window.history.back();
-}
+} 
+   GradeCalculate(){  
+    let calculatePercent = this.actualScore / this.totalScore * 100;
+    this.currentPercentage = Number.isNaN(calculatePercent) ? 0 : Math.floor(calculatePercent);
+
+
+    const getCompanyId:any = localStorage.getItem('userLogs')
+    const parseid = JSON.parse(getCompanyId) 
+    this.SettingService.gradeFetch(parseid.companyId).subscribe({
+      next:(res:any)=>{
+       if(res.response != null ){ 
+         this.gradeDataset= []
+        this.gradeDataset.push(...res.response!.gradeList) 
+        let count = 0
+         for(let i = 0;  i < this.gradeDataset.length; i++ ){  
+         
+      const max = this.gradeDataset[i].PercentageRange.split('-')[0] 
+      const min = this.gradeDataset[i].PercentageRange.split('-')[1]
+      if(calculatePercent >= max &&  calculatePercent <=min){
+        this.gradeInfo =  this.gradeDataset[i]
+        break 
+        
+      } 
+      count +=1 
+    } 
+    console.log(count, this.gradeDataset.length)
+    if(count === this.gradeDataset.length){
+       const sorted = this.gradeDataset.sort((a:any, b:any) => {
+    const numA = parseInt(a.PercentageRange.split('-')[0]);
+    const numB = parseInt(b.PercentageRange.split('-')[0]);
+    return numA - numB; 
+    
+    }); 
+    this.gradeInfo = sorted[0]
+
+
+    }
+
+        
+       } 
+      },error:(err)=>{  
+        
+      }
+    })
+
+   
+    
+
+  }
 
 }
 
