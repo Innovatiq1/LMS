@@ -464,5 +464,19 @@ export class SettingsService {
   createDropDown(data:any):Observable<any> {
     const apiUrl = `${this.prefix}admin/drop-down`;
     return this._Http.post<ApiResponse>(apiUrl, data);
+  } 
+    gradeFetch(data:any):Observable<any> {
+    const apiUrl = `${this.prefix}admin/grade/fetchGrade/${data}`;
+    return this._Http.get<ApiResponse>(apiUrl);
+  } 
+
+   gradeSave(data:any):Observable<any> {
+    const apiUrl = `${this.prefix}admin/grade/saveGrade`;
+    return this._Http.post<ApiResponse>(apiUrl,data);
+  } 
+
+   gradeUpdate(data:any):Observable<any> {
+    const apiUrl = `${this.prefix}admin/grade/updateGrade`;
+    return this._Http.post<ApiResponse>(apiUrl,data);
   }
 }

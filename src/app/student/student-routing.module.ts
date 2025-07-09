@@ -102,6 +102,7 @@ import { ScormPkgCreateComponent } from 'app/student/settings/scorm-pkg/scorm-pk
 
 import { SurveyRegistrationComponent } from './settings/survey-registration/survey-registration.component';
 import { AllSurveyComponent } from './settings/all-survey/all-survey.component';
+import { GradeComponent } from './settings/grade/grade/grade.component';
 const routes: Routes = [
   {
     path: 'enrollment/course',
@@ -249,6 +250,10 @@ const routes: Routes = [
   },
   {path: 'settings/configuration/currency',
   component: CustomizationCurrencyComponent},
+  {
+  path: 'settings/configuration/grade',
+  component: GradeComponent,
+  },
   {
     path: 'settings/timer',
     component: CustomizationTimerComponent

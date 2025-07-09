@@ -1573,6 +1573,17 @@ MENU_LIST =[
           "indeterminate": false,
           "class": "ml-menu",
           "isLeaf": true
+        }, 
+          {
+          "title": "Grade",
+          "id": "grade",
+          "children": [],
+          "actions": [],
+          "isAction": false,
+          "checked": true,
+          "indeterminate": false,
+          "class": "ml-menu",
+          "isLeaf": true
         },
         {
           "title": "Passing Criteria",

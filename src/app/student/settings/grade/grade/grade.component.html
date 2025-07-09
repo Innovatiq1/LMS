@@ -1,0 +1,109 @@
+ <section class="content">
+    <div class="content-block">
+      <div class="block-header" *ngFor="let breadscrum of breadscrums">
+        <!-- breadcrumb -->
+        <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
+        </app-breadcrumb>
+      </div>   
+
+      <div class="row clearfix">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <div class="card" style="height: fit-content;">
+            <div class="header d-flex justify-content-between">
+              <h2>Grade</h2>    
+                            <div class="mt-1  d-flex gap-3 justify-content-end " style="padding-right: 30px;"> 
+                      <button color="primary" *ngIf="saveButton" (click)="SaveGrade()"  mat-raised-button>Save</button> 
+                       <button color="primary" *ngIf="saveButton === false" (click)="updateGrade()"  mat-raised-button>Update</button>
+
+                        </div>
+              </div>     
+<form [formGroup]="GradeFromList">
+              <div formArrayName="gradeList">
+  <div *ngFor="let data of gradeList.controls; let i = index" [formGroupName]="i" class="d-flex gap-3 justify-content-center align-items-center flex-wrap">
+
+    
+    <mat-form-field appearance="outline" class="w-20">
+      <mat-label>Enter the Grade</mat-label>
+      <input matInput type="text"   formControlName="grade" placeholder="Enter the Grade"> 
+
+  <mat-error *ngIf="gradeList.at(i).get('grade')?.hasError('required')">
+    Grade is required
+  </mat-error>
+  <mat-error *ngIf="gradeList.at(i).get('grade')?.hasError('pattern')">
+    Enter valid grade (A, A+, A-, B, etc.)
+  </mat-error>
+
+    </mat-form-field>
+
+   
+    <mat-form-field appearance="outline" class="w-20">
+      <mat-label>Select Grade Term</mat-label>
+      <mat-select formControlName="gradeTerm">
+        <mat-option *ngFor="let grade of gradeTerm" [value]="grade.term">
+          {{ grade.term }}
+        </mat-option>
+      </mat-select> 
+        <mat-error *ngIf="gradeList.at(i).get('gradeTerm')?.hasError('required')">
+    Grade term is required
+  </mat-error>
+  
+
+    </mat-form-field>
+
+     
+  <mat-form-field appearance="outline" class="w-20">
+  <mat-label>Select Percentage Range</mat-label>
+  <mat-select formControlName="PercentageRange">
+    <mat-option *ngFor="let data of percentagelist" [value]="data.data">
+      {{ data.data }}
+    </mat-option>
+  </mat-select>
+  <mat-error *ngIf="gradeList.at(i).get('PercentageRange')?.hasError('required')">
+    Percentage range is required
+  </mat-error>
+</mat-form-field>
+
+  
+    <mat-form-field appearance="outline" class="w-20">
+      <mat-label>Enter the GPA</mat-label>
+      <input matInput type="text" formControlName="gpa" placeholder="Enter the GPA"> 
+      <mat-error *ngIf="gradeList.at(i).get('gpa')?.hasError('required')">
+    GPA is required
+  </mat-error>
+  <mat-error *ngIf="gradeList.at(i).get('gpa')?.hasError('min') || gradeList.at(i).get('gpa')?.hasError('max')">
+    GPA must be between 0 and 4
+  </mat-error>
+
+    </mat-form-field>  
+ 
+     <button color="danger" type="button" (click)="removeGrade(i)"  mat-raised-button>X</button>
+
+
+
+
+  </div>
+</div> 
+</form>
+
+ 
+            
+                        <div class="mt-2 d-flex gap-3 justify-content-center"> 
+                         <button
+              mat-icon-button
+             (click)="add_fields()"
+              type="button"
+            >
+              <mat-icon style="color: black; font-size: 24px">add</mat-icon>
+            </button>
+                        </div>
+              </div>
+              </div>
+              </div>
+
+
+
+
+
+      </div> 
+
+      </section>
