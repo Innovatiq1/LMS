@@ -320,10 +320,10 @@ checkDuplicate(payload:any):any{
         payload[i].PercentageRange == payload[j].PercentageRange ||
         payload[i].gradeTerm == payload[j].gradeTerm
       ) {
-        return true; 
+        return true;  
       }
     }
   }
-  return false;  
+  return false  
 }
 }
