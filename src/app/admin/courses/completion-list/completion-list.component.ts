@@ -480,7 +480,20 @@ export class CompletionListComponent {
 
           } else if (element.type === 'Course') {
             element.content = this.studentData.title || this.studentData?.courseId?.title || 'Default Course';
-          } else if (element.type === 'Date') {
+          } else if(element.type === "Grade"){ 
+            element.content =  this.gradeInfo!.grade
+
+          }else if(element.type === "GPA"){ 
+              element.content =  this.gradeInfo!.gpa
+
+          }else if(element.type === "Grade Term"){
+                element.content =  this.gradeInfo!.gradeTerm
+          }else if(element.type === "Percentage"){ 
+              element.content =  this.gradeInfo.PercentageRange
+
+          }
+          
+          else if (element.type === 'Date') {
             element.content = this.studentData.updatedAt
               ? new Date(this.studentData.updatedAt).toLocaleDateString()
               : '--';
@@ -1053,7 +1066,9 @@ export class CompletionListComponent {
         element.content = row.studentId?.name || 'Default Name';
       } else if (element.type === 'Course') {
         element.content = row.courseId.title || 'Default Course';
-      } else if (element.type === 'Date') {
+      }  
+      
+      else if (element.type === 'Date') {
         element.content = row.updatedAt
           ? new Date(row.updatedAt).toLocaleDateString()
           : '--';
