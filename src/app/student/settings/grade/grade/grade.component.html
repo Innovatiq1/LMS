@@ -81,8 +81,10 @@
   <mat-error *ngIf="gradeList.get('gpa')?.hasError('duplicate')">Duplicate</mat-error>
 
     </mat-form-field>  
- 
-     <button color="danger" type="button" (click)="removeGrade(i)"  mat-raised-button>X</button>
+                       <button mat-icon-button class="p-1" (click)="removeGrade(i)" type="button">
+                        <mat-icon style="color: black; font-size: 24px; width: 25px">delete</mat-icon>
+                      </button>
+     
 
 
 
