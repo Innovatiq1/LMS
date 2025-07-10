@@ -31,7 +31,9 @@
   </mat-error>
   <mat-error *ngIf="gradeList.at(i).get('grade')?.hasError('pattern')">
     Enter valid grade (A, A+, A-, B, etc.)
-  </mat-error>
+  </mat-error>  
+  <mat-error *ngIf="gradeList.get('grade')?.hasError('duplicate')">Duplicate</mat-error>
+  
 
     </mat-form-field>
 
@@ -43,9 +45,11 @@
           {{ grade.term }}
         </mat-option>
       </mat-select> 
-        <mat-error *ngIf="gradeList.at(i).get('gradeTerm')?.hasError('required')">
+        <mat-error *ngIf="gradeList.at(i).get('gradeTerm')?.hasError('required')"> 
     Grade term is required
-  </mat-error>
+  </mat-error>  
+   <mat-error *ngIf="gradeList.get('gradeTerm')?.hasError('duplicate')">Duplicate</mat-error>
+  
   
 
     </mat-form-field>
@@ -60,7 +64,8 @@
   </mat-select>
   <mat-error *ngIf="gradeList.at(i).get('PercentageRange')?.hasError('required')">
     Percentage range is required
-  </mat-error>
+  </mat-error> 
+   <mat-error *ngIf="gradeList.get('PercentageRange')?.hasError('duplicate')">Duplicate</mat-error>
 </mat-form-field>
 
   
@@ -72,7 +77,8 @@
   </mat-error>
   <mat-error *ngIf="gradeList.at(i).get('gpa')?.hasError('min') || gradeList.at(i).get('gpa')?.hasError('max')">
     GPA must be between 0 and 10
-  </mat-error>
+  </mat-error> 
+  <mat-error *ngIf="gradeList.get('gpa')?.hasError('duplicate')">Duplicate</mat-error>
 
     </mat-form-field>  
  

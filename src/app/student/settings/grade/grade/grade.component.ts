@@ -312,7 +312,9 @@ removeGrade(index:any){
 
 
 checkDuplicate(payload:any):any{  
-  
+  const values = this.gradeList.value;
+    const controls = this.gradeList.controls;
+
   for (let i = 0; i < payload.length; i++) {
     for (let j = i + 1; j < payload.length; j++) {
       if (
@@ -321,7 +323,12 @@ checkDuplicate(payload:any):any{
         payload[i].PercentageRange == payload[j].PercentageRange ||
         payload[i].gradeTerm == payload[j].gradeTerm
       ) { 
-        
+         ['PercentageRange', 'grade', 'gpa', 'gradeTerm'].forEach(field => {
+          if (values[i][field] && values[i][field] === values[j][field]) {
+           
+            controls[j].get(field)?.setErrors({ duplicate: true });
+          }
+        });
         return true;  
       }
     }
