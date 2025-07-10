@@ -114,10 +114,10 @@ add_fields(){
     this.gradeDataset.map((data)=>{
        this.gradeList.push(
      this.GradeForms.group({ 
-      PercentageRange:data.PercentageRange,
-      grade:data.grade, 
-      gpa:data.gpa, 
-      gradeTerm:data.gradeTerm, 
+      PercentageRange:[data.PercentageRange,Validators.required],
+      grade:[data.grade,[Validators.required, Validators.pattern(/^[A-F][+-]?$/i)]], 
+      gpa:[data.gpa,[Validators.required, Validators.min(0), Validators.max(10)]], 
+      gradeTerm:[data.gradeTerm,Validators.required], 
     }) 
   )
 
@@ -311,7 +311,8 @@ removeGrade(index:any){
   
 
 
-checkDuplicate(payload:any):any{ 
+checkDuplicate(payload:any):any{  
+  
   for (let i = 0; i < payload.length; i++) {
     for (let j = i + 1; j < payload.length; j++) {
       if (
@@ -319,11 +320,12 @@ checkDuplicate(payload:any):any{
         payload[i].gpa == payload[j].gpa ||
         payload[i].PercentageRange == payload[j].PercentageRange ||
         payload[i].gradeTerm == payload[j].gradeTerm
-      ) {
+      ) { 
+        
         return true;  
       }
     }
-  }
+  } 
   return false  
 }
 }
