@@ -11,17 +11,8 @@
               <div class="col-md-4">
                 <h6>Name <span class="mandatory">&nbsp;*</span></h6>
                 <mat-form-field appearance="outline" class="w-100">
-                  <input
-                    class="form-control"
-                    matInput
-                    type="text"
-                    formControlName="name"
-                    placeholder="Name"
-                    required
-                  />
-                  <mat-error
-                    *ngIf="questionFormTab3.get('name')?.hasError('required')"
-                  >
+                  <input class="form-control" matInput type="text" formControlName="name" placeholder="Name" required />
+                  <mat-error *ngIf="questionFormTab3.get('name')?.hasError('required')">
                     Name cannot be empty
                   </mat-error>
                 </mat-form-field>
@@ -33,39 +24,50 @@
                 </h6>
                 <mat-form-field appearance="outline" class="w-100">
                   <mat-select formControlName="timer">
-                    <mat-option *ngFor="let code of timerValues"[value]="code.times" >{{
+                    <mat-option *ngFor="let code of timerValues" [value]="code.times">{{
                       code.times
-                    }}Seconds</mat-option>
+                      }}Seconds</mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>
               <div class="col-md-4">
                 <h6>No of Retake's <span class="mandatory">&nbsp;*</span></h6>
-                <mat-form-field  appearance="outline" class="w-100">
+                <mat-form-field appearance="outline" class="w-100">
                   <mat-select formControlName="retake">
-                  <mat-option
-                  *ngFor="let code of retakeCodesAssessment"
-                  [value]="code"
-                  >{{ code }}</mat-option
-                >
-              </mat-select>
-                      </mat-form-field>
+                    <mat-option *ngFor="let code of retakeCodesAssessment" [value]="code">{{ code }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
               </div>
             </div>
             <div class="row">
               <div class="col-md-4">
-                <label>Bulk Upload <span ><a href="assets/Assessment Sheet.xlsx" target="_blank"> <img src="assets/excel.svg" alt="" /></a> </span></label>
+                <!-- <label>Bulk Upload <span><a href="assets/Assessment Sheet.xlsx" target="_blank"> <img
+                        src="assets/excel.svg" alt="" /></a> </span></label> -->
+                <label>
+                  Bulk Upload
+                  <span class="dropdown-wrapper">
+                    (Download Templates)
+                    <button class="dropdown-btn" (click)="showDropdown = !showDropdown">&#x25BC;</button>
+                    <div class="icon-dropdown" *ngIf="showDropdown" (click)="$event.stopPropagation()">
+                      <a href="assets/templatesFiles/xlsxSheet.xlsx" target="_blank" download>
+                        <img src="assets/excel.svg" alt="Excel" title="Excel" />
+                      </a>
+                      <a href="assets/templatesFiles/Question.docs" target="_blank" download>
+                        <img src="assets/word.png" alt="Word" title="Word" />
+                      </a>
+                      <!-- <a href="assets/templatesFiles/Questionpdf.pdf" target="_blank" download>
+                                <img src="assets/pdf.svg" alt="PDF" title="PDF" />
+                              </a> -->
+                    </div>
+                  </span>
+                </label>
+
                 <div class="file-drop-area">
                   <div class="file">
                     <button mat-raised-button color="primary" class="btn">
                       Choose file
-                      <input
-                        formControlName="image_link"
-                        (change)="onFileSelected($event)"
-                        accept=".xlsx, .xls"
-                        class="file-input"
-                        type="file"
-                      />
+                      <input formControlName="image_link" (change)="onFileSelected($event)"
+                        accept=".xlsx, .xls, .pdf, .docx" class="file-input" type="file" />
                     </button>
                     <span class="file-msg">
                       <h6>Drag and Drop File Here</h6>
@@ -73,39 +75,26 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-4">
-                <h6>
-                  Score (per question) <span class="mandatory">&nbsp;*</span>
-                </h6>
-                <mat-form-field appearance="outline" class="w-100">
-                  <mat-select formControlName="scoreAlgorithm">
-                    <mat-option *ngFor="let code of scoreDataAlgo" [value]="code.scores">{{
-                      code.scores
-                    }}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
+
               <div class="col-md-4">
                 <h6>
                   Passing Criteria <span class="mandatory">&nbsp;*</span>
                 </h6>
-               
+
                 <mat-form-field class="example-full-width mb-3" appearance="outline">
                   <mat-select formControlName="passingCriteria" required>
                     <mat-option [value]="row.value" *ngFor="let row of dataSource">
-                      
+
                       {{ row.value }}
-                       
+
                     </mat-option>
                   </mat-select>
-                  <mat-error  *ngIf="questionFormTab3.get('passingCriteria')?.hasError('required')">
-                    
+                  <mat-error *ngIf="questionFormTab3.get('passingCriteria')?.hasError('required')">
+
                     Select Passing Criteria
                   </mat-error>
                 </mat-form-field>
               </div>
-            </div>
-            <div class="row">
               <div class="col-md-4">
                 <h6>
                   Display Result <span class="mandatory">&nbsp;*</span>
@@ -116,145 +105,247 @@
                 </mat-radio-group>
               </div>
             </div>
+            <div class="row">
+              <div class="col-md-4">
+                <h6>Assessment Evaluation Type <span class="mandatory">&nbsp;*</span></h6>
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-select formControlName="assessmentEvaluationType" placeholder="Select Evaluation Type" required>
+                    <mat-option value="Manual">Manual</mat-option>
+                    <mat-option value="Systematic">Systematic</mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="questionFormTab3.get('assessmentEvaluationType')?.hasError('required')">
+                    Assessment Evaluation Type is required
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-4">
+                <h6>Total Marks <span class="mandatory">&nbsp;*</span></h6>
+                <mat-form-field appearance="outline" class="w-100">
+                  <input class="form-control" matInput type="text" formControlName="totalMarks" placeholder="totalMarks"
+                    required />
+                  <mat-error *ngIf="questionFormTab3.get('totalMarks')?.hasError('required')">
+                    Marks Field cannot be empty
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <h6>Allotted Marks</h6>
+                <mat-form-field appearance="outline" class="w-100">
+                  <input matInput type="text" formControlName="allottedMarks" placeholder="Allotted Marks" />
+                </mat-form-field>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <h6>Select Question Type</h6>
+                <mat-form-field appearance="outline" style="width: 100%">
+                  <mat-select formControlName="selectedQuestionType">
+                    <mat-option *ngFor="let type of questionTypes" [value]="type.value">
+                      {{ type.label }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <h6>Enter Question</h6>
+                <mat-form-field appearance="outline" style="width: 100%">
+                  <input matInput type="text" formControlName="newQuestionText" placeholder="Enter question" />
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <h6>
+                  Score (per question)
+                </h6>
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-select formControlName="scoreAlgorithm">
+                    <mat-option *ngFor="let code of scoreDataAlgo" [value]="code.scores">{{
+                      code.scores
+                      }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+            </div>
+            <div class="row">
+              <!-- <div class="col-md-4">
+                <h6>
+                  FileSize(In MB)
+                </h6>
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-select formControlName="fileSizeAlgorithm">
+                    <mat-option *ngFor="let code of fileSizeDataAlgo" [value]="code.fileSize">{{
+                      code.fileSize
+                      }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div> -->
+              <div class="col-md-4" *ngIf="questionFormTab3.get('selectedQuestionType')?.value === 'file'">
+                <h6>FileSize (In MB)</h6>
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-select formControlName="fileSizeAlgorithm">
+                    <mat-option *ngFor="let code of fileSizeDataAlgo" [value]="code.fileSize">
+                      {{ code.fileSize }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-4">
+                <button mat-raised-button color="primary" (click)="addAdditionalQuestion()">
+                  Add Question
+                </button>
+              </div>
+
+              <div *ngIf="hasSelectedQuestions()" class="col-md-4">
+                <button mat-raised-button color="warn" (click)="deleteSelectedQuestions()">
+                  Bulk Delete
+                </button>
+              </div>
+            </div>
+
           </div>
 
-          <div class="table-responsive">
+          <div class="table-responsive mt-3">
+
             <table class="table">
               <thead>
                 <tr>
-                  <th style="text-align: center">Question</th>
-                  <th style="text-align: center">Options</th>
+                  <th style="text-align: center"><span style="float: left;">Total: {{totalmarks}}</span>Question</th>
+                  <th style="text-align: center">Action</th>
                 </tr>
               </thead>
               <tbody formArrayName="questions">
-                <tr
-                  *ngFor="let question of questions.controls; let i = index"
-                  class="test"
-                  [formGroupName]="i"
-                >
+                <tr *ngFor="let question of questions.controls; let i = index" [formGroupName]="i">
                   <td>
-                    <div class="d-flex align-items-baseline">
-                      <mat-checkbox
-                        formControlName="isSelected"
-                        style="width: 35px"
-                      ></mat-checkbox>
-                      Q{{ i + 1 }}.
-                      <mat-form-field appearance="outline" style="width: 100%">
-                        <input
-                          matInput
-                          type="text"
-                          formControlName="questionText"
-                          placeholder="Enter question"
-                        />
-                        <mat-error
-                          *ngIf="
-                            question.get('questionText')?.hasError('required')
-                          "
-                        >
-                          Question cannot be empty
-                        </mat-error>
+                    <!-- <div class="d-flex align-items-baseline mb-2">
+                      <mat-checkbox formControlName="isSelected"></mat-checkbox>
+                      Question :{{ i + 1 }} - Marks {{ question.get('questionscore')?.value }}
+                    </div> -->
+                    <div class="d-flex align-items-baseline mb-2 gap-2">
+                      <mat-checkbox formControlName="isSelected" class="me-2"></mat-checkbox>
+                      <span>Question: {{ i + 1 }}</span>
+                      <mat-form-field appearance="outline" style="width: 100px; margin-left: 10px">
+                        <input matInput type="number" formControlName="questionscore" placeholder="Marks" min="0" />
                       </mat-form-field>
                     </div>
-                  </td>
-                  <td formArrayName="options">
-                    <div class="d-flex align-items-baseline">
-                      <ng-container
-                        *ngFor="
-                          let optionCtrl of getAnswers(i).controls;
-                          let j = index
-                        "
-                        [formGroupName]="j"
-                      >
-                        <mat-checkbox
-                          formControlName="correct"
-                          (change)="checkboxChange(i, j)"
-                          style="width: 35px"
-                        ></mat-checkbox>
-                        <mat-form-field
-                          appearance="outline"
-                          style="width: 175px"
-                        >
-                          <input
-                            matInput
-                            type="text"
-                            formControlName="text"
-                            placeholder="Enter option"
-                          />
-                          <mat-error
-                            *ngIf="optionCtrl.get('text')?.hasError('required')"
-                          >
-                            Option cannot be empty
-                          </mat-error>
+
+                    <mat-form-field appearance="outline" style="width: 100%">
+                      <input matInput type="text" formControlName="questionText" placeholder="Enter question" />
+                    </mat-form-field>
+
+
+                    <ng-container [ngSwitch]="question.get('questionType')?.value">
+                      <div *ngSwitchCase="'mcq'" class="mt-2">
+                        <div formArrayName="options" class="d-flex flex-wrap gap-2">
+                          <div *ngFor="let optionCtrl of getAnswers(i).controls; let j = index" [formGroupName]="j"
+                            class="d-flex align-items-center me-3">
+                            <mat-checkbox formControlName="correct" class="me-2"></mat-checkbox>
+                            <mat-form-field appearance="outline" style="width: 150px">
+                              <input matInput type="text" formControlName="text" placeholder="Enter option" />
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div *ngSwitchCase="'radio'" class="mt-2">
+                        <mat-radio-group [value]="getSelectedRadioOption(i)"
+                          (change)="updateRadioSelection(i, $event.value)">
+                          <div formArrayName="options" class="d-flex flex-wrap gap-2">
+                            <div *ngFor="let optionCtrl of getAnswers(i).controls; let j = index" [formGroupName]="j"
+                              class="d-flex align-items-center me-3">
+                              <mat-radio-button [value]="j" class="me-2"></mat-radio-button>
+                              <mat-form-field appearance="outline" style="width: 150px">
+                                <input matInput type="text" formControlName="text" placeholder="Enter option" />
+                              </mat-form-field>
+                            </div>
+                          </div>
+                        </mat-radio-group>
+                      </div>
+
+                      <div *ngSwitchCase="'text'" class="mt-2">
+                        <mat-form-field appearance="outline" style="width: 100%">
+                          <textarea matInput formControlName="textAnswer" placeholder="Enter answer"></textarea>
                         </mat-form-field>
-                      </ng-container>
-                      <button
-                        mat-icon-button
-                        class="p-1"
-                        (click)="deleteQuestion(i)"
-                        type="button"
-                      >
-                        <mat-icon
-                          style="color: black; font-size: 24px; width: 25px"
-                          >delete</mat-icon
-                        >
-                      </button>
-                    </div>
+                      </div>
+
+                      <div *ngSwitchCase="'trueFalse'" class="mt-2">
+                        <mat-radio-group formControlName="trueFalseAnswer">
+                          <mat-radio-button [value]="true">True</mat-radio-button>
+                          <mat-radio-button [value]="false">False</mat-radio-button>
+                        </mat-radio-group>
+                      </div>
+
+                      <div *ngSwitchCase="'number'" class="mt-2">
+                        <mat-form-field appearance="outline" style="width: 100%">
+                          <input matInput type="number" formControlName="numberAnswer" placeholder="Enter number" />
+                        </mat-form-field>
+                      </div>
+
+                      <div *ngSwitchCase="'fillBlanks'" class="mt-2">
+                        <mat-form-field appearance="outline" style="width: 100%">
+                          <input matInput type="text" formControlName="fillBlankAnswer"
+                            placeholder="Enter correct answer" />
+                        </mat-form-field>
+                      </div>
+
+                      <div *ngSwitchCase="'textarea'" class="mt-2">
+                        <mat-form-field appearance="outline" style="width: 100%">
+                          <textarea matInput formControlName="textareaAnswer" placeholder="Enter descriptive answer"
+                            rows="3"></textarea>
+                        </mat-form-field>
+                      </div>
+
+                      <div *ngSwitchCase="'file'" class="mt-2">
+                        <label for="fileInput-{{ i }}">Choose File</label>
+                        <input id="fileInput-{{ i }}" type="file"
+                          accept=".pdf,.doc,.docx,.ppt,.pptx,.txt,.mp3,.mp4,.wav,.avi,image/*"
+                          (change)="onFileChoosed($event, i)" class="form-control" />
+                        <div class="mt-2" *ngIf="question.get('fileAnswer')?.get('documentName')?.value">
+                          <strong>Uploaded File:</strong>
+                          <a [href]="question.get('fileAnswer')?.get('documentLink')?.value" target="_blank"
+                            rel="noopener noreferrer">
+                            {{ question.get('fileAnswer')?.get('documentName')?.value }}
+                          </a>
+                        </div>
+
+                      </div>
+
+                    </ng-container>
+                  </td>
+
+                  <td style="text-align: center">
+                    <button mat-icon-button color="warn" (click)="deleteQuestion(i)">
+                      <mat-icon>delete</mat-icon>
+                    </button>
                   </td>
                 </tr>
               </tbody>
+
             </table>
           </div>
-          <div style="text-align: center; margin-top: 20px">
-            <button
-              mat-icon-button
-              (click)="addAdditionalQuestion()"
-              type="button"
-            >
-              <mat-icon style="color: black; font-size: 24px">add</mat-icon>
-            </button>
-          </div>
+
         </form>
       </div>
       <div class="row body">
-        <div  class="col-md-6">
-          <button *ngIf="!dialogStatus"
-            mat-raised-button
-            id="back"
-            [routerLink]="['/student/settings/configuration/all-questions']"
-          >
+        <div class="col-md-6">
+          <button *ngIf="!dialogStatus" mat-raised-button id="back"
+            [routerLink]="['/student/settings/configuration/all-questions']">
             Back
           </button>
         </div>
 
         <div class="col-md-6">
           <div class="d-flex justify-content-between">
-            <button
-            class="btn-space"
-            id="draft"
-            mat-raised-button
-            color="warn"
-            (click)="saveDraft('draft')"
-          > Save as draft
-          </button>
-          <button
-          *ngIf="editUrl && approved"
-          mat-raised-button
-          color="success"
-          type="submit"
-          id="back"
-          style="margin-left: 10px; margin-right: 10px"
-          (click)="approve()"
-        >
-          Publish
-        </button>
-            <button
-              class="btn-space"
-              id="submit"
-              mat-raised-button
-              color="primary"
-              id="submit"
-              (click)="update()"
-            >
+            <button class="btn-space" id="draft" mat-raised-button color="warn" (click)="saveDraft('draft')"> Save as
+              draft
+            </button>
+            <button *ngIf="editUrl && approved" mat-raised-button color="success" type="submit" id="back"
+              style="margin-left: 10px; margin-right: 10px" (click)="approve()">
+              Publish
+            </button>
+            <button class="btn-space" id="submit" mat-raised-button color="primary" id="submit" (click)="update()">
               {{ editUrl ? "Update" : "Create" }}
             </button>
           </div>

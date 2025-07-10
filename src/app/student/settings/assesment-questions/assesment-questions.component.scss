@@ -89,3 +89,41 @@ h5{
   justify-content: flex-end;
   padding: 8px;
 }
+
+.d-flex.flex-wrap.gap-2 {
+  gap: 10px;
+}
+
+//new
+
+.dropdown-wrapper {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.dropdown-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  vertical-align: top;
+}
+
+.icon-dropdown {
+  position: absolute;
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 5px;
+  display: flex;
+  gap: 5px;
+  top: 20px;
+  left: 0;
+  z-index: 10;
+}
+
+.icon-dropdown img {
+  width: 20px;
+  height: 20px;
+}

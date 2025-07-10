@@ -117,6 +117,17 @@
                     <label>Select Department <span class="mandatory">&nbsp;*</span></label>
                   </div>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-select formControlName="department" required multiple>
+                      <mat-option [value]="dept.department" *ngFor="let dept of dept">
+                        {{ dept.department }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="classForm.get('department')?.hasError('required')">
+                      Select Department
+                    </mat-error>
+                  </mat-form-field>
+                  
+                  <!-- <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <mat-select formControlName="department" required>
                       <mat-option [value]="dept.department" *ngFor="let dept of dept">
                         {{dept.department }}
@@ -125,7 +136,7 @@
                     <mat-error *ngIf="classForm.get('department')?.hasError('required')">
                       Select Department
                     </mat-error>
-                  </mat-form-field>
+                  </mat-form-field> -->
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                   <div class="button-container">
@@ -147,17 +158,29 @@
                 <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-2"
                   *ngIf="classForm.get('classDeliveryType')?.value === 'online'">
                   <label>Select a Meeting Platform<span class="mandatory">&nbsp;*</span></label>
-                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                  <!-- <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <mat-select formControlName="meetingPlatform">
                       <mat-option *ngFor="let value of meetingPlatforms" [value]="value.code">{{value.name}}</mat-option>
-                      <!-- <mat-option [value]="'googlemeet'">Google Meet</mat-option>
-                      <mat-option [value]="'teams'">Microsoft Teams</mat-option> -->
+                    
                     </mat-select>
                     <mat-error *ngIf="classForm.get('meetingPlatform')?.hasError('required') || 
                           classForm.get('meetingPlatform')?.touched">
                     Select a Meeting Platform Type
                   </mat-error>
+                  </mat-form-field> -->
+
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-select formControlName="meetingPlatform">
+                      <mat-option *ngFor="let value of meetingPlatforms" [value]="value.code">
+                        {{ value.name }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="classForm.get('meetingPlatform')?.hasError('required') || 
+                            classForm.get('meetingPlatform')?.touched">
+                      Select a Meeting Platform Type
+                    </mat-error>
                   </mat-form-field>
+                  
                 </div>
 
                 <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-2"
@@ -219,63 +242,6 @@
               </div>
             </div>
           </form>
-          <!-- <form>
-          <div>
-            <h5 class="mx-3">Assign {{commonRoles.INSTRUCTOR_ROLE}}</h5>
-          </div>
-          <div class="body">
-            <div class="row " *ngFor="let element of dataSource; index as index">
-              <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 ">
-                <label>Start Date</label>
-                <mat-form-field class="example-full-width mb-3" appearance="outline">
-                  <mat-label>Choose a date</mat-label>
-                  <input matInput [owlDateTimeTrigger]="date" [owlDateTime]="date" [(ngModel)]="element.start"
-                    (change)="startDateChange(element)" [value]="element.start" name="start" />
-                  <mat-icon matSuffix [owlDateTimeTrigger]="date" class="date-icon">today</mat-icon>
-                  <owl-date-time #date></owl-date-time>
-                  <mat-error *ngIf="!element.start">enter</mat-error>
-                </mat-form-field>
-              </div>
-              <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 ">
-                <label>End Date</label>
-                <mat-form-field class="example-full-width mb-3" appearance="outline">
-                  <mat-label>Choose a date</mat-label>
-                  <input matInput [owlDateTimeTrigger]="date2" [owlDateTime]="date2" [(ngModel)]="element.end"
-                    [value]="element.end" name="end" />
-                  <mat-icon matSuffix [owlDateTimeTrigger]="date2" class="date-icon">today</mat-icon>
-                  <owl-date-time #date2></owl-date-time>
-                </mat-form-field>
-              </div>
-              <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 ">
-                <label>Select {{commonRoles.INSTRUCTOR_ROLE}}</label>
-                <mat-form-field class="example-full-width mb-3" appearance="outline">
-                  <mat-label>Choose {{commonRoles.INSTRUCTOR_ROLE}}</mat-label>
-                  <mat-select [(ngModel)]="element.instructor" name="instructor"
-                    (selectionChange)="onSelectChange1($event,element)" (change)="onChangeInstructor(element,index)">
-                    <mat-option *ngFor="let instructor of instructorList" [value]="instructor.id">
-                      {{ instructor?.name + " " + instructor?.last_name }}
-                    </mat-option>
-                  </mat-select>
-                  <mat-error> Enter Class Type </mat-error>
-                </mat-form-field>
-              </div>  
-  
-            </div>
-          </div>
-          <div class="row mt-4 mx-2" style="float: right;">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
-              <button class="btn-space" type="button" mat-raised-button color="warn" (click)="cancel()">
-                Cancel
-              </button>
-              <button *ngIf="!classId" mat-raised-button id="submit" (click)="submit()">
-                Create
-              </button>
-              <button *ngIf="classId" mat-raised-button id="submit" (click)="submit()">
-                  Update
-                </button>
-              </div>
-            </div>
-              </form> -->
           <form #form="ngForm">
             <div>
               <h5 class="mx-3">Assign {{commonRoles.INSTRUCTOR_ROLE}}</h5>

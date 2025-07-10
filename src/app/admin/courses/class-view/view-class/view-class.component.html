@@ -15,7 +15,7 @@
         <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
           <div class="card">
             <div class="p-4">
-              <!-- <div class="card-container">  
+              <div class="card-container">  
                 <button
                   class="icons"
                   alt="Edit"
@@ -40,7 +40,7 @@
                     [class]="'tbl-fav-delete'"
                   ></app-feather-icons>
                 </button>
-              </div> -->
+              </div>
               <div class="row">
                 <div class="col-xl-6 col-md-12 col-sm-12">
                   <img
@@ -162,6 +162,7 @@
                           <!-- Remove bottom margin for better alignment -->
                           <!-- Start Meeting Button -->
                           <ng-container *ngIf="!isDateExpired(response.sessions[0]?.sessionEndDate); else expiredMessage">
+                          <ng-container *ngIf="response?.meetingUrl !== null ; else expiredMessage" >
                             <div class="mb-1">
                             <a
                             href="{{ response?.meetingUrl }}"
@@ -171,6 +172,7 @@
                               display: inline-block;
                               background-color: white;
                               color: #28a745;
+                              font-size: 14px !important;
                               padding: 5px 10px;
                               text-align: center;
                               text-decoration: none;
@@ -190,10 +192,10 @@
                               background-color: white;
                               color: #28a745;
                               padding: 5px 10px;
+                              font-size: 14px !important;
                               text-align: center;
                               border: 0.5px solid #28a745;
                               border-radius: 5px;
-                              font-size: 14px;
                             "
                             class="mx-1"
                           >
@@ -203,7 +205,7 @@
                           </div>
                           <div>
                           <!-- Update Link Button -->
-                          <button
+                          <button *ngIf="response?.meetingPlatform !== 'teams'"
                             type="button"
                             (click)="toggleZoomMeetingForm()"
                             style="
@@ -214,7 +216,7 @@
                               text-align: center;
                               border: 0.5px solid #28a745;
                               border-radius: 5px;
-                              font-size: 14px;
+                              font-size: 14px !important;
                             "
                           >
                             <i class="fas fa-edit"></i>
@@ -222,7 +224,7 @@
                           </button>
 
                           <!-- Delete Button -->
-                          <button
+                          <button 
                             type="button"
                             (click)="toggleZoomMeetingFormDelete()"
                             style="
@@ -233,16 +235,35 @@
                               text-align: center;
                               border: 0.5px solid #dc3545;
                               border-radius: 5px;
-                              font-size: 14px;
+                              font-size: 14px !important;
                             "
                             class="mx-1"
                           >
                             <i class="fas fa-trash"></i>
                           </button>
                           </div>
+
                         </ng-container>
+                        </ng-container>
+
                         <ng-template #expiredMessage>
-                            <span>Link Expired</span>
+                          <span *ngIf="_meetingid == null">
+                            <button
+                              type="button"
+                              (click)="editClass(response.id)"
+                              style="
+                              display: inline-block;
+                              background-color: white;
+                              font-size:14px !important ;
+                              color: #28a745;
+                              text-align: center;
+                              border: 0.5px solid #28a745;
+                              border-radius: 5px;
+                            ">
+                               Create a Meeting </button>
+
+                          </span>
+                            <span *ngIf="_meetingid != null">Link Expired</span>
                           </ng-template>
                       </div>
                       </div>
@@ -314,13 +335,13 @@
                         <h6>Accessing Recordings</h6>
                       </div>
                       <div class="col-6">
-                        <button
+                        <button *ngIf="response?.meetingPlatform === 'zoom'"
                           type="button"
                           style="
                             display: inline-block;
                             background-color: white;
+                            font-size:14px !important ;
                             color: #28a745;
-                            padding: 5px 10px;
                             text-align: center;
                             border: 0.5px solid #28a745;
                             border-radius: 5px;
@@ -329,10 +350,28 @@
                         >
                           Click here
                         </button>
+
+
+                        <button *ngIf="response?.meetingPlatform === 'teams'"
+                        type="button"
+                        style="
+                          display: inline-block;
+                          background-color: white;
+                          font-size:14px !important ;
+                          color: #28a745;
+                          text-align: center;
+                          border: 0.5px solid #28a745;
+                          border-radius: 5px;
+                        "
+                        (click)="getTeamsRecording(response?.icalUID)" [disabled]="loading"
+                      >
+                      <span *ngIf="!loading">Click here</span>
+                      <span *ngIf="loading" class="spinner"></span>
+                      </button>
                       </div>
                     </div>
-                    <div class="col-12" *ngIf="isZoomMeetingFormVisible && response?.meetingPlatform === 'zoom'">
-                      <div class="zoom-meeting-box p-3">
+                    <div class="col-12" *ngIf="isZoomMeetingFormVisible">
+                      <div *ngIf="response?.meetingPlatform === 'teams' || response?.meetingPlatform === 'zoom' " class="zoom-meeting-box p-3">
                         <button
                         mat-icon-button
                         (click)="closeZoomMeetingForm()"
@@ -397,7 +436,7 @@
                           <button
                             *ngIf="isUpdateMode"
                             type="button"
-                            (click)="updateDateTime(startDate.value, duration)"
+                            (click)="updateDateTime(startDate.value, duration,response.meetingPlatform)"
                             style="
                               display: inline-block;
                               background-color: white;
@@ -416,7 +455,7 @@
                           <button
                             *ngIf="isDeleteMode"
                             type="button"
-                            (click)="deleteDateTime(startDate.value)"
+                            (click)="deleteDateTime(startDate.value,response?.meetingPlatform)"
                             style="
                               display: inline-block;
                               background-color: white;

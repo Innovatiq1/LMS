@@ -78,7 +78,7 @@ export class CreateCertificateComponent implements OnInit {
       ]
     ]
   };
-  elementOptions = ['H1', 'H2', 'H3', 'Paragraph', 'UserName', 'Signature', 'Logo','Course','Date'];
+  elementOptions = ['H1', 'H2', 'H3', 'Paragraph', 'UserName', 'Signature', 'Logo','Course','Date','Grade','GPA','Grade Term','Percentage'];
   selectedElement = 'H1';
   elements: any[] = [];
   currentElement: any = {
@@ -265,7 +265,15 @@ stopResizing() {
       case 'Course':
         return 'Course';
       case 'Date':
-          return 'Date';
+          return 'Date'; 
+      case 'Grade': 
+          return 'Grade'; 
+      case 'GPA':
+          return 'GPA'; 
+      case 'Grade Term':
+          return 'Grade Term'; 
+      case 'Percentage':
+          return 'Percentage'
       default:
         return '';
     }

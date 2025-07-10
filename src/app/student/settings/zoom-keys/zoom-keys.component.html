@@ -13,7 +13,7 @@
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
           <div class="card m-auto">
             <div class="header">
-              <h2>Zoom Credentials</h2>
+              <h2>Meeting platforms Credentials</h2>
             </div>
             <div class="body">
               <mat-tab-group>
@@ -143,6 +143,194 @@
                               mat-raised-button
                               id="submit"
                               (click)="updatezoomKeys()"
+                            >
+                              Update
+                            </button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </mat-tab>
+
+                <mat-tab>
+                  <ng-template mat-tab-label>Teams</ng-template>
+                  <div class="card mt-3">
+                    <div class="body overflow-auto">
+                      <form [formGroup]="teamsForm">
+                        <div class="example-container mt-3">
+                       
+                          <div class="row clearfix mt-3">
+                            <div class="col-6">
+                              <label
+                                >Tenant ID<span class="mandatory"
+                                  >&nbsp;*</span
+                                ></label
+                              >
+                              <mat-form-field
+                                class="example-full-width"
+                                appearance="outline"
+                              >
+                                <input
+                                  matInput
+                                  [type]="thide ? 'password' : 'text'"
+                                  type="text"
+                                  formControlName="tenantId"
+                                />
+                                <a
+                                      href="#"
+                                      onClick="return false;"
+                                      matSuffix
+                                      (click)="thide = !thide"
+                                      [attr.aria-label]="'Hide password'"
+                                      [attr.aria-pressed]="thide"
+                                    >
+                                      <mat-icon
+                                        class="material-icons-two-tone color-icon m-3"
+                                        matSuffix
+                                      >
+                                        {{
+                                          thide ? "visibility_off" : "visibility"
+                                        }}</mat-icon
+                                      >
+                                    </a>
+                                <mat-error
+                                  *ngIf="
+                                    teamsForm.get('tenantId')?.invalid &&
+                                    teamsForm.get('tenantId')?.touched
+                                  "
+                                >
+                                  {{
+                                    utils.getErrorMessage1(
+                                      teamsForm.get("tenantId"),
+                                      "tenantId"
+                                    )
+                                  }}
+                                </mat-error>
+                              </mat-form-field>
+                            </div>
+
+                              <div class="col-6">
+                                  <label
+                                    >Object ID<span class="mandatory"
+                                    >&nbsp;*</span
+                                  ></label
+                                  >
+                                  <mat-form-field
+                                    class="example-full-width"
+                                    appearance="outline"
+                                  >
+                                    <input
+                                      matInput
+                                      type="text'"
+                                      formControlName="objectId"
+                                    />
+                                 
+                                    <mat-error
+                                      *ngIf="
+                                        teamsForm.get('objectId')?.invalid &&
+                                        teamsForm.get('objectId')?.touched
+                                      "
+                                    >
+                                      {{
+                                        utils.getErrorMessage1(
+                                          teamsForm.get("objectId"),
+                                          "objectId"
+                                        )
+                                      }}
+                                    </mat-error>
+                                  </mat-form-field>
+                                </div>
+
+                                <div class="col-6">
+                                  <label
+                                    >Client ID<span class="mandatory"
+                                    >&nbsp;*</span
+                                  ></label
+                                  >
+                                  <mat-form-field
+                                    class="example-full-width"
+                                    appearance="outline"
+                                  >
+                                    <input
+                                      matInput
+                                      type="text'"
+                                      formControlName="clientId"
+                                    />
+                                 
+                                    <mat-error
+                                      *ngIf="
+                                        teamsForm.get('clientId')?.invalid &&
+                                        teamsForm.get('clientId')?.touched
+                                      "
+                                    >
+                                      {{
+                                        utils.getErrorMessage1(
+                                          teamsForm.get("clientId"),
+                                          "clientId"
+                                        )
+                                      }}
+                                    </mat-error>
+                                  </mat-form-field>
+                                </div>
+                                <div class="col-6">
+                                  <label
+                                    >Client Secret<span class="mandatory"
+                                    >&nbsp;*</span
+                                  ></label
+                                  >
+                                  <mat-form-field
+                                    class="example-full-width"
+                                    appearance="outline"
+                                  >
+                                    <input
+                                      matInput
+                                      [type]="shide ? 'password' : 'text'"
+                                      formControlName="clientSecret"
+                                    />
+                                    <a
+                                      href="#"
+                                      onClick="return false;"
+                                      matSuffix
+                                      (click)="shide = !shide"
+                                      [attr.aria-label]="'Hide password'"
+                                      [attr.aria-pressed]="shide"
+                                    >
+                                      <mat-icon
+                                        class="material-icons-two-tone color-icon m-3"
+                                        matSuffix
+                                      >
+                                        {{
+                                          shide ? "visibility_off" : "visibility"
+                                        }}</mat-icon
+                                      >
+                                    </a>
+                                    <mat-error
+                                      *ngIf="
+                                        teamsForm.get('clientSecret')?.invalid &&
+                                        teamsForm.get('clientSecret')?.touched
+                                      "
+                                    >
+                                      {{
+                                        utils.getErrorMessage1(
+                                          teamsForm.get("clientSecret"),
+                                          "clientSecret"
+                                        )
+                                      }}
+                                    </mat-error>
+                                  </mat-form-field>
+                                </div>
+                              
+                          </div>
+                        </div>
+                        <div class="row" style="float: right">
+                          <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2"
+                          >
+                            <button
+                              mat-raised-button
+                              id="submit"
+                              (click)="updateteamsKeys()"
                             >
                               Update
                             </button>

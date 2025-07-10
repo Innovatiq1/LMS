@@ -1573,6 +1573,17 @@ MENU_LIST =[
           "indeterminate": false,
           "class": "ml-menu",
           "isLeaf": true
+        }, 
+          {
+          "title": "Grade",
+          "id": "grade",
+          "children": [],
+          "actions": [],
+          "isAction": false,
+          "checked": true,
+          "indeterminate": false,
+          "class": "ml-menu",
+          "isLeaf": true
         },
         {
           "title": "Passing Criteria",
@@ -1719,6 +1730,54 @@ MENU_LIST =[
           "isLeaf": true
         },
         {
+          "title": "Registration List",
+          "id": "all-survey",
+          "children": [],
+          "actions": [
+          ],
+          "isAction": false,
+          "checked": true,
+          "indeterminate": false,
+          "class": "ml-menu",
+          "isLeaf": true
+        },
+        {
+          "title": "FileSize Algorithm",
+          "id": "fileSize-algorithm",
+          "children": [],
+          "actions": [
+            {
+              "title": "Create",
+              "id": "create-fileSize",
+              "checked": true,
+              "indeterminate": false,
+              "isLeaf": true,
+              "isAction": true
+            },
+            {
+              "title": "Edit",
+              "id": "edit-fileSize",
+              "checked": true,
+              "indeterminate": false,
+              "isLeaf": true,
+              "isAction": true
+            },
+            {
+              "title": "Delete",
+              "id": "delete-fileSize",
+              "checked": true,
+              "indeterminate": false,
+              "isLeaf": true,
+              "isAction": true
+            }
+          ],
+          "isAction": false,
+          "checked": true,
+          "indeterminate": false,
+          "class": "ml-menu",
+          "isLeaf": true
+        },
+        {
           "title": "Meeting Platform",
           "id": "meeting-platform",
           "children": [],
@@ -1747,6 +1806,42 @@ MENU_LIST =[
             {
               "title": "Delete",
               "id": "delete-meeting-platform",
+              "checked": true,
+              "indeterminate": false,
+              "isLeaf": true,
+              "isAction": true
+            }
+          ],
+        },
+        {
+          "title": "Scorm Kit",
+          "id": "scorm-kit",
+          "children": [],
+          "isAction": false,
+          "checked": true,
+          "indeterminate": false,
+          "class": "ml-menu",
+          "isLeaf": true,
+          "actions": [
+            {
+              "title": "Create",
+              "id": "create-scorm-kit",
+              "checked": true,
+              "indeterminate": false,
+              "isLeaf": true,
+              "isAction": true
+            },
+            {
+              "title": "Edit",
+              "id": "edit-scorm-kit",
+              "checked": true,
+              "indeterminate": false,
+              "isLeaf": true,
+              "isAction": true
+            },
+            {
+              "title": "Delete",
+              "id": "delete-scorm-kit",
               "checked": true,
               "indeterminate": false,
               "isLeaf": true,
@@ -1822,10 +1917,21 @@ MENU_LIST =[
           "isLeaf": true
         },
         {
-          "title": "zoom credentials",
-          "id": "zoom-credentials",
+          "title": "Virtual Meetings",
+          "id": "virtual-meetings",
           "children": [],
-          "actions": [],
+          "actions": [
+            {
+              "title": "Zoom",
+              "id": "zoom",
+              "class": "ml-menu3"
+            },
+            {
+              "title": "Teams",
+              "id": "teams",
+              "class": "ml-menu3"
+            },
+          ],
           "isAction": false,
           "checked": true,
           "indeterminate": false,

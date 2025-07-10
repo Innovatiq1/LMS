@@ -1,0 +1,22 @@
+.table-wrapper{
+    overflow-y: auto; 
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 40px;
+  }
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #198754;
+    border-radius: 50%; // To make it a circle
+    display: inline-block;
+    margin-right: 5px; // Space between dot and text
+  }
+  .status-red {
+    width: 8px;
+    height: 8px;
+    background-color: #f11541;
+    border-radius: 50%; // To make it a circle
+    display: inline-block;
+    margin-right: 5px; // Space between dot and text
+  }

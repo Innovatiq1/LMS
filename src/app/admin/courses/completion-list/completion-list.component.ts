@@ -43,6 +43,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { AssessmentService } from '@core/service/assessment.service';
 import { CourseModel, CoursePaginationModel } from '@core/models/course.model';
 import { UtilsService } from '@core/service/utils.service';
+import { SettingsService } from '@core/service/settings.service';
 @Component({
   selector: 'app-completion-list',
   templateUrl: './completion-list.component.html',
@@ -99,7 +100,12 @@ export class CompletionListComponent {
   uploadedImage: any;
   certificateForm!: FormGroup;
   selection = new SelectionModel<any>(true, []);
-  selectedRows: any[] = [];
+  selectedRows: any[] = []; 
+    actualScore:number = 0; 
+  currentPercentage:number = 0;
+  totalScore:number = 0 
+  gradeDataset:any = [] 
+  gradeInfo:any =null
 
   config: AngularEditorConfig = {
     editable: true,
@@ -150,11 +156,12 @@ export class CompletionListComponent {
     private courseService: CourseService,
     private fb: FormBuilder,
     private authenService: AuthenService,
-    private assessmentService: AssessmentService,
+    private assessmentService: AssessmentService, 
+      private SettingService:SettingsService,
     public utils: UtilsService,
   ) {
     this.studentPaginationModel = {} as StudentPaginationModel;
-    this.coursePaginationModel = {} ;
+    this.coursePaginationModel = {};
     let urlPath = this.router.url.split('/');
     this.certificateUrl = urlPath.includes('edit');
     this.isCertificate = this.certificateUrl;
@@ -209,9 +216,9 @@ export class CompletionListComponent {
   performSearch() {
     this.paginator.pageIndex = 0;
     this.coursePaginationModel.page = 1;
-    
+
     this.changeDetectorRef.detectChanges();
-    
+
     this.getCompletedClasses();
   }
   getCompletedClasses() {
@@ -226,6 +233,7 @@ export class CompletionListComponent {
       .getSessionsCompletedStudent(userId, payload)
       .subscribe(
         (response: { docs: any; page: any; limit: any; totalDocs: any }) => {
+          // console.log("dataSourseee",response)
           this.isLoading = false;
           this.dataSource = response.docs;
           this.coursePaginationModel.docs = response.docs;
@@ -418,7 +426,7 @@ export class CompletionListComponent {
         Email: user.studentId?.email,
         Course: user.courseId?.title,
         // [`${AppConstants.INSTRUCTOR_ROLE} Fee`]:
-          // '$ ' + user.classId?.instructorCost,
+        // '$ ' + user.classId?.instructorCost,
         'Start Date': user.classStartDate,
         'End date': user.classEndDate,
         'Registered Date': user.registeredOn,
@@ -464,13 +472,28 @@ export class CompletionListComponent {
           title: this.course.title,
         });
         // Update content based on type
-        this.course.elements.forEach((element: any) => {
+        this.course.elements.forEach((element: any) => { 
+            
           if (element.type === 'UserName') {
-            element.content =
-              this.studentData.studentId?.name || 'Default Name';
+              element.content =
+              this.studentData.studentId?.name || 'Default Name'; 
+
           } else if (element.type === 'Course') {
-            element.content = this.studentData.title || this.studentData?.courseId?.title||'Default Course';
-          } else if (element.type === 'Date') {
+            element.content = this.studentData.title || this.studentData?.courseId?.title || 'Default Course';
+          } else if(element.type === "Grade"){ 
+            element.content =  this.gradeInfo!.grade
+
+          }else if(element.type === "GPA"){ 
+              element.content =  this.gradeInfo!.gpa
+
+          }else if(element.type === "Grade Term"){
+                element.content =  this.gradeInfo!.gradeTerm
+          }else if(element.type === "Percentage"){ 
+              element.content =  this.gradeInfo.PercentageRange
+
+          }
+          
+          else if (element.type === 'Date') {
             element.content = this.studentData.updatedAt
               ? new Date(this.studentData.updatedAt).toLocaleDateString()
               : '--';
@@ -489,7 +512,11 @@ export class CompletionListComponent {
   // end of displaying the certificate
 
   generateCertificate(element: Student) {
-    this.studentData = element;
+    this.studentData = element; 
+    
+      this.actualScore = this.studentData.assessmentanswers.score
+      this.totalScore = this.studentData.assessmentanswers.totalScore  
+      this.GradeCalculate()
     this.openDialog(this.certificateDialog);
     setTimeout(() => {
       this.copyPreviewToContentToConvert();
@@ -515,6 +542,56 @@ export class CompletionListComponent {
         certificatePreview.style.backgroundRepeat;
       contentToConvert.style.border = certificatePreview.style.border;
     }
+  } 
+
+  
+     GradeCalculate(){  
+    let calculatePercent = this.actualScore / this.totalScore * 100;
+    this.currentPercentage = Number.isNaN(calculatePercent) ? 0 : Math.floor(calculatePercent);
+
+
+    const getCompanyId:any = localStorage.getItem('userLogs')
+    const parseid = JSON.parse(getCompanyId) 
+    this.SettingService.gradeFetch(parseid.companyId).subscribe({
+      next:(res:any)=>{
+       if(res.response != null ){ 
+         this.gradeDataset= []
+        this.gradeDataset.push(...res.response!.gradeList) 
+        let count = 0
+         for(let i = 0;  i < this.gradeDataset.length; i++ ){  
+         
+      const max = this.gradeDataset[i].PercentageRange.split('-')[0] 
+      const min = this.gradeDataset[i].PercentageRange.split('-')[1]
+      if(calculatePercent >= max &&  calculatePercent <=min){
+        this.gradeInfo =  this.gradeDataset[i]
+        break 
+        
+      } 
+      count +=1 
+    } 
+    console.log(count, this.gradeDataset.length)
+    if(count === this.gradeDataset.length){
+       const sorted = this.gradeDataset.sort((a:any, b:any) => {
+    const numA = parseInt(a.PercentageRange.split('-')[0]);
+    const numB = parseInt(b.PercentageRange.split('-')[0]);
+    return numA - numB; 
+    
+    }); 
+    this.gradeInfo = sorted[0]
+
+
+    }
+
+        
+       } 
+      },error:(err)=>{  
+        
+      }
+    })
+
+   
+    
+
   }
 
   // generateCertificatePDF(): void {
@@ -622,7 +699,7 @@ export class CompletionListComponent {
   // }
 
   update(pdfBlob: Blob) {
-    let countdown = 60; 
+    let countdown = 60;
 
     Swal.fire({
       title: 'Certificate Generating...',
@@ -728,7 +805,7 @@ export class CompletionListComponent {
               icon: 'success',
             });
           },
-          (err) => {}
+          (err) => { }
         );
       }
     });
@@ -743,8 +820,8 @@ export class CompletionListComponent {
     this.isAllSelected()
       ? this.selection.clear()
       : this.dataSource.forEach((row: CourseModel) =>
-          this.selection.select(row)
-        );
+        this.selection.select(row)
+      );
   }
 
   updateSelectedRows() {
@@ -760,196 +837,196 @@ export class CompletionListComponent {
     return this.selection.hasValue();
   }
 
-  
-  
-//   enableMultipleCertificates() {
-//   if (this.selectedRows.length === 0) {
-//     return;
-//   }
 
-//   // Show confirmation popup before starting the countdown
-//   Swal.fire({
-//     title: 'Are you sure?',
-//     text: 'Do you want to generate certificates for the selected students?',
-//     icon: 'warning',
-//     confirmButtonText: 'Yes',
-//     cancelButtonText: 'No',
-//     showCancelButton: true,
-//     cancelButtonColor: '#d33',
-//   }).then((result) => {
-//     if (result.isConfirmed) {
-//       // User confirmed, start countdown and certificate generation
-//       let countdown = 90; // Countdown time in seconds
 
-//       Swal.fire({
-//         title: 'Certificate Generating...',
-//         html: `<p>Please wait...<br>Time remaining: <strong>${countdown}</strong> seconds</p>`,
-//         allowOutsideClick: false,
-//         timer: countdown * 1000,
-//         timerProgressBar: true,
-//         didOpen: () => {
-//           const content = Swal.getHtmlContainer();
-//           const countdownElement = content?.querySelector('strong');
+  //   enableMultipleCertificates() {
+  //   if (this.selectedRows.length === 0) {
+  //     return;
+  //   }
 
-//           // Start countdown timer
-//           const interval = setInterval(() => {
-//             countdown--;
-//             if (countdownElement) {
-//               countdownElement.textContent = `${countdown}`;
-//             }
-//             if (countdown <= 0) {
-//               clearInterval(interval);
-//             }
-//           }, 1000);
-//         },
-//       });
+  //   // Show confirmation popup before starting the countdown
+  //   Swal.fire({
+  //     title: 'Are you sure?',
+  //     text: 'Do you want to generate certificates for the selected students?',
+  //     icon: 'warning',
+  //     confirmButtonText: 'Yes',
+  //     cancelButtonText: 'No',
+  //     showCancelButton: true,
+  //     cancelButtonColor: '#d33',
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       // User confirmed, start countdown and certificate generation
+  //       let countdown = 90; // Countdown time in seconds
 
-//       this.isGeneratingCertificates = true;
-//       let alreadyIssuedCount = 0;
-//       let successfulCount = 0;
+  //       Swal.fire({
+  //         title: 'Certificate Generating...',
+  //         html: `<p>Please wait...<br>Time remaining: <strong>${countdown}</strong> seconds</p>`,
+  //         allowOutsideClick: false,
+  //         timer: countdown * 1000,
+  //         timerProgressBar: true,
+  //         didOpen: () => {
+  //           const content = Swal.getHtmlContainer();
+  //           const countdownElement = content?.querySelector('strong');
 
-//       const promises = this.selectedRows.map((row: any) => {
-//         if (!row.certificate) {
-//           return this.generateCertificateForRow(row)
-//             .then(() => {
-//               successfulCount++;
-//             })
-//             .catch(() => {
-//               console.log(`Failed to generate certificate for student ID: ${row.studentId._id}`);
-//             });
-//         } else {
-//           alreadyIssuedCount++;
-//           console.log(`Certificate already issued for student ID: ${row.studentId._id}`);
-//           return Promise.resolve();
-//         }
-//       });
+  //           // Start countdown timer
+  //           const interval = setInterval(() => {
+  //             countdown--;
+  //             if (countdownElement) {
+  //               countdownElement.textContent = `${countdown}`;
+  //             }
+  //             if (countdown <= 0) {
+  //               clearInterval(interval);
+  //             }
+  //           }, 1000);
+  //         },
+  //       });
 
-//       Promise.all(promises)
-//         .then(() => {
-//           this.isGeneratingCertificates = false;
-//           const certificate = successfulCount > 1 ? 'certificates' : 'certificate';
-//           let message = '';
-//           if (successfulCount > 0) {
-//             message = `${successfulCount} ${certificate} generated successfully!`;
-//           }
+  //       this.isGeneratingCertificates = true;
+  //       let alreadyIssuedCount = 0;
+  //       let successfulCount = 0;
 
-//           if (alreadyIssuedCount > 0) {
-//             const alreadyCount = alreadyIssuedCount > 1 ? 'certificates are ' : 'certificate is';
-//             const text = successfulCount > 0 ? 'For other' : '';
-//             message += ` ${text} selected course ${alreadyCount} already Issued`;
-//           }
+  //       const promises = this.selectedRows.map((row: any) => {
+  //         if (!row.certificate) {
+  //           return this.generateCertificateForRow(row)
+  //             .then(() => {
+  //               successfulCount++;
+  //             })
+  //             .catch(() => {
+  //               console.log(`Failed to generate certificate for student ID: ${row.studentId._id}`);
+  //             });
+  //         } else {
+  //           alreadyIssuedCount++;
+  //           console.log(`Certificate already issued for student ID: ${row.studentId._id}`);
+  //           return Promise.resolve();
+  //         }
+  //       });
 
-//           Swal.fire({
-//             title: 'Certificate Generation',
-//             text: message,
-//             icon: successfulCount > 0 ? 'success' : 'warning',
-//           }).then(() => {
-//             this.clearSelection();
-//             this.getCompletedList();
-//           });
-//         })
-//         .catch(() => {
-//           this.isGeneratingCertificates = false; // Stop the spinner even if there's an error
-//         });
-//     }
-//   });
-// }
+  //       Promise.all(promises)
+  //         .then(() => {
+  //           this.isGeneratingCertificates = false;
+  //           const certificate = successfulCount > 1 ? 'certificates' : 'certificate';
+  //           let message = '';
+  //           if (successfulCount > 0) {
+  //             message = `${successfulCount} ${certificate} generated successfully!`;
+  //           }
 
-enableMultipleCertificates() {
-  if (this.selectedRows.length === 0) {
-    return;
-  }
+  //           if (alreadyIssuedCount > 0) {
+  //             const alreadyCount = alreadyIssuedCount > 1 ? 'certificates are ' : 'certificate is';
+  //             const text = successfulCount > 0 ? 'For other' : '';
+  //             message += ` ${text} selected course ${alreadyCount} already Issued`;
+  //           }
 
-  let countdown = 60;
+  //           Swal.fire({
+  //             title: 'Certificate Generation',
+  //             text: message,
+  //             icon: successfulCount > 0 ? 'success' : 'warning',
+  //           }).then(() => {
+  //             this.clearSelection();
+  //             this.getCompletedList();
+  //           });
+  //         })
+  //         .catch(() => {
+  //           this.isGeneratingCertificates = false; // Stop the spinner even if there's an error
+  //         });
+  //     }
+  //   });
+  // }
 
-  const SwalInstance = Swal.fire({
-    title: 'Certificate Generating...',
-    html: `<p>Please wait...<br>Time remaining: <strong>${countdown}</strong> seconds</p>`,
-    allowOutsideClick: false,
-    timer:countdown * 1000,
-    timerProgressBar: true,
-    didOpen: () => {
-      const content = Swal.getHtmlContainer();
-      const countdownElement = content?.querySelector('strong');
-      const interval = setInterval(() => {
-        countdown--;
-        if (countdownElement) {
-          countdownElement.textContent = `${countdown}`;
-        }
-        if (countdown <= 0) {
-          clearInterval(interval);
-        }
-      }, 1000);
-    },
-  });
-
-  let alreadyIssuedCount = 0;
-  let successfulCount = 0;
-
-  const promises = this.selectedRows.map((row: any) => {
-    if (!row.certificate) {
-      return this.generateCertificateForRow(row)
-        .then(() => {
-          successfulCount++;
-        })
-        .catch(() => {
-          console.log(
-            `Failed to generate certificate for student ID: ${row.studentId._id}`
-          );
-        });
-    } else {
-      alreadyIssuedCount++;
-      console.log(
-        `Certificate already issued for student ID: ${row.studentId._id}`
-      );
-      return Promise.resolve();
+  enableMultipleCertificates() {
+    if (this.selectedRows.length === 0) {
+      return;
     }
-  });
 
-  Promise.all(promises)
-    .then(() => {
-      Swal.close();
+    let countdown = 60;
 
-      const certificate = successfulCount > 1 ? 'certificates' : 'certificate';
-      let message = '';
-      if (successfulCount > 0) {
-        message = `${successfulCount} ${certificate} generated successfully!`;
-      }
-
-      if (alreadyIssuedCount > 0) {
-        const alreadyCount = alreadyIssuedCount > 1 ? 'certificates are ' : 'certificate is';
-        const text = successfulCount > 0 ? 'For other' : '';
-        message += ` ${text} selected course ${alreadyCount} already Issued`;
-      }
-
-      Swal.fire({
-        title: 'Are you sure?',
-        text: 'Do you want to generate certificates for the selected students?',
-        icon: 'warning',
-        confirmButtonText: 'Yes',
-        cancelButtonText: 'No',
-        showCancelButton: true,
-        cancelButtonColor: '#d33',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire({
-            title: 'Certificate Generation',
-            text: message,
-            icon: successfulCount > 0 ? 'success' : 'warning',
-          }).then(() => {
-            this.clearSelection();
-            this.getCompletedList();
-          });
-        } else {
-          Swal.fire('Cancelled', 'No certificates were generated.', 'info');
-        }
-      });
-    })
-    .catch(() => {
-      this.isGeneratingCertificates = false; 
-      Swal.fire('Error', 'Failed to generate some certificates. Please try again.', 'error');
+    const SwalInstance = Swal.fire({
+      title: 'Certificate Generating...',
+      html: `<p>Please wait...<br>Time remaining: <strong>${countdown}</strong> seconds</p>`,
+      allowOutsideClick: false,
+      timer: countdown * 1000,
+      timerProgressBar: true,
+      didOpen: () => {
+        const content = Swal.getHtmlContainer();
+        const countdownElement = content?.querySelector('strong');
+        const interval = setInterval(() => {
+          countdown--;
+          if (countdownElement) {
+            countdownElement.textContent = `${countdown}`;
+          }
+          if (countdown <= 0) {
+            clearInterval(interval);
+          }
+        }, 1000);
+      },
     });
-}
+
+    let alreadyIssuedCount = 0;
+    let successfulCount = 0;
+
+    const promises = this.selectedRows.map((row: any) => {
+      if (!row.certificate) {
+        return this.generateCertificateForRow(row)
+          .then(() => {
+            successfulCount++;
+          })
+          .catch(() => {
+            console.log(
+              `Failed to generate certificate for student ID: ${row.studentId._id}`
+            );
+          });
+      } else {
+        alreadyIssuedCount++;
+        console.log(
+          `Certificate already issued for student ID: ${row.studentId._id}`
+        );
+        return Promise.resolve();
+      }
+    });
+
+    Promise.all(promises)
+      .then(() => {
+        Swal.close();
+
+        const certificate = successfulCount > 1 ? 'certificates' : 'certificate';
+        let message = '';
+        if (successfulCount > 0) {
+          message = `${successfulCount} ${certificate} generated successfully!`;
+        }
+
+        if (alreadyIssuedCount > 0) {
+          const alreadyCount = alreadyIssuedCount > 1 ? 'certificates are ' : 'certificate is';
+          const text = successfulCount > 0 ? 'For other' : '';
+          message += ` ${text} selected course ${alreadyCount} already Issued`;
+        }
+
+        Swal.fire({
+          title: 'Are you sure?',
+          text: 'Do you want to generate certificates for the selected students?',
+          icon: 'warning',
+          confirmButtonText: 'Yes',
+          cancelButtonText: 'No',
+          showCancelButton: true,
+          cancelButtonColor: '#d33',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire({
+              title: 'Certificate Generation',
+              text: message,
+              icon: successfulCount > 0 ? 'success' : 'warning',
+            }).then(() => {
+              this.clearSelection();
+              this.getCompletedList();
+            });
+          } else {
+            Swal.fire('Cancelled', 'No certificates were generated.', 'info');
+          }
+        });
+      })
+      .catch(() => {
+        this.isGeneratingCertificates = false;
+        Swal.fire('Error', 'Failed to generate some certificates. Please try again.', 'error');
+      });
+  }
 
 
 
@@ -989,7 +1066,9 @@ enableMultipleCertificates() {
         element.content = row.studentId?.name || 'Default Name';
       } else if (element.type === 'Course') {
         element.content = row.courseId.title || 'Default Course';
-      } else if (element.type === 'Date') {
+      }  
+      
+      else if (element.type === 'Date') {
         element.content = row.updatedAt
           ? new Date(row.updatedAt).toLocaleDateString()
           : '--';
@@ -1033,28 +1112,24 @@ enableMultipleCertificates() {
                  justify-content: ${element.alignment}; 
                  position: absolute; 
                  top: ${element.top}px; 
-                 left: ${element.left+15}px;
+                 left: ${element.left + 15}px;
                  font-family: ${element.fontStyle}
                  "
         >
-          <div style="font-size: ${element.fontSize}px; color: ${
-            element.color
-          };">
-            ${
-              element.type === 'Logo'
-                ? `<img src="${element.imageUrl}" style="max-width: ${element.width}px; height: ${element.height}px;">`
-                : ''
+          <div style="font-size: ${element.fontSize}px; color: ${element.color
+            };">
+            ${element.type === 'Logo'
+              ? `<img src="${element.imageUrl}" style="max-width: ${element.width}px; height: ${element.height}px;">`
+              : ''
             }
            
           </div>
-          <div style="font-size: ${element.fontSize}px; color: ${
-            element.color
-          };">
+          <div style="font-size: ${element.fontSize}px; color: ${element.color
+            };">
              
-            ${
-              element.type === 'Signature'
-                ? `<img src="${element.imageUrl}" style="max-width: ${element.width}px; height: auto">`
-                : element.content
+            ${element.type === 'Signature'
+              ? `<img src="${element.imageUrl}" style="max-width: ${element.width}px; height: auto">`
+              : element.content
             }
           </div>
         </div>
@@ -1364,9 +1439,8 @@ enableMultipleCertificates() {
         if (alreadyAssignedCount > 0) {
           const alreadyText =
             alreadyAssignedCount > 1 ? 'exams are' : 'exam is';
-          message += `${
-            examsEnabledCount > 0 ? 'For other' : ''
-          } selected ${alreadyText} already enabled.`;
+          message += `${examsEnabledCount > 0 ? 'For other' : ''
+            } selected ${alreadyText} already enabled.`;
         }
 
         Swal.fire({
@@ -1392,4 +1466,16 @@ enableMultipleCertificates() {
     this.selection.clear();
     this.updateSelectedRows();
   }
+
+
+  evaluateRow(row: any, isEdit: boolean) {
+    console.log('Evaluating row:', row, 'isEdit:', isEdit);
+    this.router.navigate(['/admin/courses/manual-evaluation'], {
+      queryParams: {
+        id: row?._id,
+        isEdit: isEdit
+      }
+    });
+  }
+
 }

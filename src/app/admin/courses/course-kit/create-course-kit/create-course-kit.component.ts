@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit,EventEmitter, Output, ViewChild,Inject,Optional } from '@angular/core';
+import { Component, ElementRef, OnInit, EventEmitter, Output, ViewChild, Inject, Optional } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -17,8 +17,9 @@ import * as moment from 'moment';
 import { CertificateService } from '@core/service/certificate.service';
 import { FormService } from '@core/service/customization.service';
 // import { MatDialogRef } from '@angular/material/dialog';
-import { MatDialog,MAT_DIALOG_DATA,MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuthenService } from '@core/service/authen.service';
+import { ScormPkgCreateComponent } from 'app/student/settings/scorm-pkg/scorm-pkg-create/scorm-pkg-create.component';
 
 @Component({
   selector: 'app-create-course-kit',
@@ -73,14 +74,15 @@ export class CreateCourseKitComponent implements OnInit {
   videoLink: any;
   videoSrc: any;
   forms!: any[];
-  dialogStatus:boolean=false;
-  kitOpt:any[] = [
+  dialogStatus: boolean = false;
+  kitOpt: any[] = [
     { code: 'course', label: 'Course' },
     { code: 'scorm', label: 'Scorm' },
   ];
   kitType: any[] = [];
   isScormKit: boolean = false;
-  SCORM_KIT:boolean = false;
+  SCORM_KIT: boolean = false;
+  scorm_kit_list: any[] = [];
 
   constructor(
     @Optional() @Inject(MAT_DIALOG_DATA) public data11: any,
@@ -97,9 +99,10 @@ export class CreateCourseKitComponent implements OnInit {
     @Optional() private dialogRef: MatDialogRef<CreateCourseKitComponent>,
     private authenService: AuthenService,
     private _router: Router,
+    private dialog: MatDialog
   ) {
     if (data11) {
-      this.dialogStatus=true;
+      this.dialogStatus = true;
       // console.log("Received variable:", data11.variable);
     }
     this.currentDate = new Date();
@@ -125,6 +128,7 @@ export class CreateCourseKitComponent implements OnInit {
         ...this.utils.validators.longDescription,
         ...this.utils.validators.noLeadingSpace,
       ]),
+      scormKit: new FormControl(null, [])
     });
 
     this.subscribeParams = this.activatedRoute.params.subscribe(
@@ -136,14 +140,21 @@ export class CreateCourseKitComponent implements OnInit {
     this.courseKitForm.get('kitType')?.valueChanges.subscribe((value) => {
       if (value === 'scorm') {
         this.isScormKit = true;
-      this.courseKitForm.patchValue({
-        videoLink: '',
-        documentLink: '',
-      });
+        this.courseKitForm.patchValue({
+          videoLink: '',
+          documentLink: '',
+        });
+        this.fetchScormKits();
       } else {
         this.isScormKit = false;
       }
     });
+  }
+  fetchScormKits() {
+    var companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    this.courseService.getScormKits(companyId).subscribe((res: any) => {
+      this.scorm_kit_list = res.data;
+    })
   }
   dateValidator(group: FormGroup) {
     const startDate = group.get('startDate')?.value;
@@ -171,26 +182,26 @@ export class CreateCourseKitComponent implements OnInit {
     element.end = element.start;
   }
   ngOnInit(): void {
-    const roleDetails =this.authenService.getRoleDetails()[0].menuItems
+    const roleDetails = this.authenService.getRoleDetails()[0].menuItems
     let urlPath = this._router.url.split('/');
     const parentId = `${urlPath[1]}/${urlPath[2]}`;
-    const childId =  "course-kit";
+    const childId = "course-kit";
     let parentData = roleDetails.filter((item: any) => item.id == parentId);
     let childData = parentData[0].children.filter((item: any) => item.id == childId);
     let actions = childData[0].actions
-    let SCORM_KIT = actions.some((item:any) => item.title == 'SCORM Kit' && item.checked);
+    let SCORM_KIT = actions.some((item: any) => item.title == 'SCORM Kit' && item.checked);
 
     this.SCORM_KIT = SCORM_KIT;
-    if(!this.SCORM_KIT){
-    this.kitType = this.kitOpt.filter(v=>v.code!='scorm')
-    }else{
+    if (!this.SCORM_KIT) {
+      this.kitType = this.kitOpt.filter(v => v.code != 'scorm')
+    } else {
       this.kitType = this.kitOpt
     }
 
     this.getForms();
-    this.courseService.getAllCourseKit().subscribe((data) => {});
+    this.courseService.getAllCourseKit().subscribe((data) => { });
   }
-  
+
   submitCourseKit1() {
     if (this.courseKitForm.valid) {
       const formdata = new FormData();
@@ -204,26 +215,25 @@ export class CreateCourseKitComponent implements OnInit {
         formdata.append('video_filename', this.videoSrc || '');
         formdata.append('doc_filename', this.uploadedDocument || '');
       }
-      Swal.fire({
-        title: 'Uploading...',
-        text: 'Please wait...',
-        allowOutsideClick: false,
-        timer: 90000,
-        timerProgressBar: true,
-      });
-      setTimeout(() => {
-        if (formdata) {
-          if (this.isScormKit) {
-            this.courseService.saveScormKit(formdata).subscribe((data) => {
-              const courseKitData: CourseKit = this.courseKitForm.value;
-              delete courseKitData.videoLink;
-              delete courseKitData.documentLink;
-              courseKitData.scormKit = data.data._id;
-              if (courseKitData) {
-                this.createCourseKit(courseKitData);
-              }
-            });
-          } else {
+      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+      formdata.append('companyId', userId);
+      if (this.isScormKit) {
+        const courseKitData: CourseKit = this.courseKitForm.value;
+        delete courseKitData.videoLink;
+        delete courseKitData.documentLink;
+        if (courseKitData) {
+          this.createCourseKit(courseKitData);
+        }
+      } else {
+        Swal.fire({
+          title: 'Uploading...',
+          text: 'Please wait...',
+          allowOutsideClick: false,
+          timer: 90000,
+          timerProgressBar: true,
+        });
+        setTimeout(() => {
+          if (formdata) {
             this.courseService.saveVideo(formdata).subscribe((data) => {
               const courseKitData: CourseKit = this.courseKitForm.value;
               courseKitData.videoLink = data.data._id;
@@ -232,15 +242,16 @@ export class CreateCourseKitComponent implements OnInit {
                 this.createCourseKit(courseKitData);
               }
             });
+
           }
-        }
-      }, 5000);
+        }, 5000);
+      }
     } else {
       this.courseKitForm.markAllAsTouched();
     }
-  
-   
-    
+
+
+
   }
   // private createCourseKit(courseKitData: CourseKit): void {
   //   let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
@@ -301,13 +312,12 @@ export class CreateCourseKitComponent implements OnInit {
             });
             this.courseKitForm.reset();
             if (this.dialogRef) {
-              this.dialogRef.close();  
+              this.dialogRef.close();
             }
-            if(!this.dialogStatus)
-            {
+            if (!this.dialogStatus) {
               this.router.navigateByUrl('/admin/courses/course-kit');
             }
-            
+
           },
           (error) => {
             Swal.fire(
@@ -358,7 +368,7 @@ export class CreateCourseKitComponent implements OnInit {
   fileBrowseHandler(event: any) {
     const file = event.target.files[0];
     // console.log("fileType==",file.type)
-    
+
     // Check if the selected file is a video and its size is less than 10MB
     if ((file.type.startsWith('video/') || file.type.startsWith('audio/')) && file.size <= 10000000) {
       this.videoLink = file;
@@ -390,7 +400,7 @@ export class CreateCourseKitComponent implements OnInit {
   prepareFilesList(files: Array<any>) {
     for (const item of files) {
       // Check if the file is a video format
-      if (item.type.startsWith('video/')||item.type.startsWith('audio')) {
+      if (item.type.startsWith('video/') || item.type.startsWith('audio')) {
         item.progress = 0;
         this.files.push(item);
         this.model.vltitle = item.name;
@@ -407,14 +417,14 @@ export class CreateCourseKitComponent implements OnInit {
 
   // onFileUpload(event: any) {
   //   const file = event.target.files[0];
-  
+
   //   if (file) {
   //     if (
   //       file.type === 'application/vnd.ms-powerpoint' ||
   //       file.type === 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
   //     ) {
   //       this.isUploading = true;  
-  
+
   //       this.courseService.uploadFile(file).subscribe(
   //         (response) => {
   //           const byteCharacters = atob(response.fileContent);
@@ -446,33 +456,33 @@ export class CreateCourseKitComponent implements OnInit {
   //     }
   //   }
   // }
-  onFileUpload(event: any, isScormKit:boolean=false) {
+  onFileUpload(event: any, isScormKit: boolean = false) {
     const file = event.target.files[0];
     // console.log("Selected file:", file.name, "Type:", file.type);
     let allowedFileTypes = [
       'application/pdf',
       'application/vnd.ms-powerpoint',
-      'application/vnd.openxmlformats-officedocument.presentationml.presentation', 
-      'application/msword', 
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 
+      'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+      'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
       'application/vnd.ms-excel',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 
-      'text/plain' 
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'text/plain'
     ];
-    
-    if(isScormKit){
+
+    if (isScormKit) {
       allowedFileTypes.push('application/x-zip-compressed')
     }
-    
+
     if (file) {
       if (allowedFileTypes.includes(file.type)) {
-        
+
         if (
           file.type === 'application/vnd.ms-powerpoint' ||
           file.type === 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
         ) {
-          this.isUploading = true;  
-  
+          this.isUploading = true;
+
           this.courseService.uploadFile(file).subscribe(
             (response) => {
               // console.log("response123333",response)
@@ -486,17 +496,17 @@ export class CreateCourseKitComponent implements OnInit {
               const fileToUpload = new File([blob], response.filename, { type: 'application/pdf' });
               this.uploadedDocument = file.name;
               this.docs = fileToUpload;
-              
+
               const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
               if (fileInput) {
                 const dataTransfer = new DataTransfer();
                 dataTransfer.items.add(fileToUpload);
                 fileInput.files = dataTransfer.files;
               }
-              this.isUploading = false;  
+              this.isUploading = false;
             },
             (error) => {
-              this.isUploading = false; 
+              this.isUploading = false;
               Swal.fire('Upload Failed', 'Unable to convert the file.', 'error');
             }
           );
@@ -513,5 +523,20 @@ export class CreateCourseKitComponent implements OnInit {
         });
       }
     }
+  }
+
+  openCreateScormPackage() {
+    const dialogRef = this.dialog.open(ScormPkgCreateComponent, {
+      width: '70%',
+      height: '80%',
+      maxHeight: '90vh',
+      autoFocus: false,
+      disableClose: false,
+      data: true
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.fetchScormKits();
+    });
   }
 }

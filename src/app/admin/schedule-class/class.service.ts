@@ -374,11 +374,32 @@ getClassRecordings(id:any):Observable<any>{
   const apiUrl = `${this.prefix}admin/zoom/recording/list`;
   return this.http.get<ApiResponse>(apiUrl, {params: {classId: id}});
 }
+
+getTeamsRecordings(id:any):Observable<any>{
+  const apiUrl = `${this.prefix}admin/teams/mettingRecords`;
+  return this.http.get<ApiResponse>(apiUrl, {params: {icalUID: id}});
+}
 getDropDowns(companyId:string, dropDown:string):Observable<any> {
   const apiUrl = `${this.prefix}admin/drop-down`;
   return this.http.get<ApiResponse>(apiUrl, {params: {companyId:companyId,dropDown}})
 }
 
+updateTeamsMeetingForPurticularDays(startDate:string,endDate:string,id:string):Observable<any>{
+  const apiUrl = `${this.prefix}admin/teams/updateMeeting`;
+  return this.http.patch<ApiResponse>(apiUrl, {startDate,id,endDate});
+}
+
+// deleteTeamsMeetingForPurticularDay(id:any):Observable<any>{
+//   const apiUrl = `${this.prefix}admin/teams/deleteMeeting`;
+//   return this.http.delete<ApiResponse>(apiUrl, {id});
+// }
+
+deleteTeamsMeetingForPurticularDay(id: any): Observable<any> {
+  const apiUrl = `${this.prefix}admin/teams/deleteMeeting`;
+  return this.http.delete<ApiResponse>(apiUrl, {
+    body: { id }
+  });
+}
 }
 
 

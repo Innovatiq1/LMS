@@ -165,6 +165,38 @@ export class SettingsService {
       .delete<CourseModel>(apiUrl)
       .pipe(map((response) => response));
   }
+  saveFileSizeAlgorithm(data: any) {
+    const apiUrl = `${this.prefix}admin/fileSize`;
+    return this._Http
+      .post<ApiResponse>(apiUrl, data)
+      .pipe(map((response) => {}));
+  }
+  getFileSizeAlgorithm(filter?: Partial<CoursePaginationModel>): Observable<ApiResponse> {
+    //let userId = localStorage.getItem('id');
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    const apiUrl = this.defaultUrl + `admin/fileSize?companyId=${userId}`;
+   // const apiUrl = this.defaultUrl + 'admin/passingCriteria';
+    return this._Http.get<ApiResponse>(apiUrl, {
+      params: this.buildParams(filter),
+    });
+  }
+  getFileSizeAlgorithmById(id: string) {
+    const apiUrl = `${this.prefix}admin/fileSize/${id}`;
+    return this._Http.get<any>(apiUrl).pipe(map((response) => response));
+  }
+  updateFileSizeAlgorithm(id: string, data: any) {
+    // console.log("id",id,"data",data)
+    const apiUrl = `${this.prefix}admin/fileSize/${id}`;
+    return this._Http
+      .put<ApiResponse>(apiUrl, data)
+      .pipe(map((response) => {}));
+  }
+  deleteFileSizeAlgorithm(id: string) {
+    const apiUrl = `${this.prefix}admin/fileSize/${id}`;
+    return this._Http
+      .delete<CourseModel>(apiUrl)
+      .pipe(map((response) => response));
+  }
   saveScoreAlgorithm(score: any) {
     const apiUrl = `${this.prefix}admin/score`;
     return this._Http
@@ -351,6 +383,11 @@ export class SettingsService {
     return this._Http.get<ApiResponse>(apiUrl, {
     });
   }
+
+  getTeamsKeysByCompanyId(companyId: string): Observable<ApiResponse> {
+    const apiUrl = `${this.prefix}admin/teams/getkeys?companyId=${companyId}`;
+    return this._Http.get<ApiResponse>(apiUrl);
+  }
   saveKey(data: any) {
     const apiUrl = `${this.prefix}admin/social-keys`;
     return this._Http
@@ -371,6 +408,13 @@ export class SettingsService {
       .pipe(map((response) => {response}));
   }
 
+  
+ createTeamsKey(data: any) {
+    const apiUrl = `${this.prefix}admin/teams/storeCredentials`;
+    return this._Http
+      .post<ApiResponse>(apiUrl, data)
+      .pipe(map((response) => {response}));
+  }
   createZoomKey(data:any) {
     const apiUrl = `${this.prefix}admin/zoom-keys`;
     return this._Http
@@ -420,5 +464,19 @@ export class SettingsService {
   createDropDown(data:any):Observable<any> {
     const apiUrl = `${this.prefix}admin/drop-down`;
     return this._Http.post<ApiResponse>(apiUrl, data);
+  } 
+    gradeFetch(data:any):Observable<any> {
+    const apiUrl = `${this.prefix}admin/grade/fetchGrade/${data}`;
+    return this._Http.get<ApiResponse>(apiUrl);
+  } 
+
+   gradeSave(data:any):Observable<any> {
+    const apiUrl = `${this.prefix}admin/grade/saveGrade`;
+    return this._Http.post<ApiResponse>(apiUrl,data);
+  } 
+
+   gradeUpdate(data:any):Observable<any> {
+    const apiUrl = `${this.prefix}admin/grade/updateGrade`;
+    return this._Http.post<ApiResponse>(apiUrl,data);
   }
 }

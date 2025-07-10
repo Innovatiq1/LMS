@@ -11,6 +11,8 @@
 npm-debug.log
 yarn-error.log
 
+
+
 # IDEs and editors
 .idea/
 .project
@@ -42,3 +44,11 @@ testem.log
 Thumbs.db
 
 /src/assets/scorm
+
+
+/package.json
+/package-lock.json
+
+
+package.json
+package-lock.json

@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { DataSource } from '@angular/cdk/collections';
+import { ActivatedRoute } from '@angular/router';
 import {
   MatSnackBar,
   MatSnackBarHorizontalPosition,
@@ -53,6 +54,7 @@ export class AllStudentsComponent
     // 'date',
     'status',
   ];
+  convertedUserData: any[] = [];
   exampleDatabase?: StudentsService;
   dataSource!: any;
   selection = new SelectionModel<Students>(true, []);
@@ -74,6 +76,7 @@ export class AllStudentsComponent
   pageSizeArr = this.utils.pageSizeArr;
   filterName: any;
   dataSourceGrid: any;
+  studentData: any;
 
   constructor(
     public httpClient: HttpClient,
@@ -81,6 +84,8 @@ export class AllStudentsComponent
     public studentsService: StudentsService,
     private snackBar: MatSnackBar,
     private router: Router,
+    private route: ActivatedRoute,
+    private cdRef: ChangeDetectorRef,
     private authenService: AuthenService,
     private ref: ChangeDetectorRef,  public utils: UtilsService
   ) {
@@ -120,7 +125,48 @@ export class AllStudentsComponent
     }
     this.loadData();
     this.loadDataGridData();
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras.state) {
+      this.studentData = navigation.extras.state['data'];
+      console.log('Received Data:', this.studentData);
+    }
+    
   }
+  
+  ngAfterViewInit() {
+    this.cdRef.detectChanges(); 
+  }
+
+  convertToTrainee(data: any) {
+    console.log("Convert Triggered with:", data);
+  
+    if (!this.dataSource || !this.dataSource.length) {
+      console.warn('No students loaded yet.');
+      return;
+    }
+  
+    // Match by name or email from existing table data
+    const matchedStudent = this.dataSource.find((student: any) =>
+      student.email === data.email || student.name === data.name
+    );
+  
+    if (matchedStudent) {
+      const alreadyExists = this.convertedUserData.some(
+        s => s.email === matchedStudent.email || s.name === matchedStudent.name
+      );
+  
+      if (!alreadyExists) {
+        this.convertedUserData.push(matchedStudent);
+        this.showNotification('bg-success', 'Student matched and added!', 'top', 'right');
+      } else {
+        this.showNotification('bg-warning', 'Already added.', 'top', 'right');
+      }
+    } else {
+      this.showNotification('bg-danger', 'No match found.', 'top', 'right');
+    }
+  }
+  
+
   refresh() {
     this.loadData();
     this.loadDataGridData();
@@ -229,6 +275,7 @@ export class AllStudentsComponent
   }
 
   public loadData() {
+    
   const type = AppConstants.STUDENT_ROLE;
   let filterProgram = this.filterName;
   const payload = { ...this.usersPaginationModel,title:filterProgram };
@@ -377,99 +424,3 @@ export class AllStudentsComponent
     );
   }
 }
-// export class ExampleDataSource extends DataSource<Students> {
-//   filterChange = new BehaviorSubject('');
-//   get filter(): string {
-//     return this.filterChange.value;
-//   }
-//   set filter(filter: string) {
-//     this.filterChange.next(filter);
-//   }
-//   filteredData: Students[] = [];
-//   renderedData: Students[] = [];
-//   rowData: any;
-//   constructor(
-//     public exampleDatabase: StudentsService,
-//     public paginator: MatPaginator,
-//     public _sort: MatSort
-//   ) {
-//     super();
-//     this.filterChange.subscribe(() => (this.paginator.pageIndex = 0));
-//   }
-//   connect(): Observable<Students[]> {
-//     const displayDataChanges = [
-//       this.exampleDatabase.dataChange,
-//       this._sort.sortChange,
-//       this.filterChange,
-//       this.paginator.page,
-
-//     ];
-//     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-//     let payload = {
-//       type: AppConstants.STUDENT_ROLE,
-//       companyId:userId
-//     };
-//     this.exampleDatabase.getAllStudentss(payload);
-
-//     this.rowData = this.exampleDatabase.data;
-//     return merge(...displayDataChanges).pipe(
-//       map((x) => {
-//         this.filteredData = this.exampleDatabase.data
-//           .slice()
-//           .filter((students: Students) => {
-//             const searchStr = (
-//               students.rollNo +
-//               students.name +
-//               students.last_name +
-//               students.department +
-//               students.mobile
-//             ).toLowerCase();
-//             return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
-//           });
-//         const sortedData = this.sortData(this.filteredData.slice());
-//         const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
-//         this.renderedData = sortedData.splice(
-//           startIndex,
-//           this.paginator.pageSize
-//         );
-//         return this.renderedData;
-//       })
-//     );
-//   }
-//   disconnect() {
-//   }
-//   sortData(data: Students[]): Students[] {
-//     if (!this._sort.active || this._sort.direction === '') {
-//       return data;
-//     }
-//     return data.sort((a, b) => {
-//       let propertyA: number | string = '';
-//       let propertyB: number | string = '';
-//       switch (this._sort.active) {
-//         case 'id':
-//           [propertyA, propertyB] = [a.id, b.id];
-//           break;
-//         case 'name':
-//           [propertyA, propertyB] = [a.name, b.name];
-//           break;
-//         case 'email':
-//           [propertyA, propertyB] = [a.email, b.email];
-//           break;
-//         case 'date':
-//           [propertyA, propertyB] = [a.joiningDate, b.joiningDate];
-//           break;
-//         case 'time':
-//           [propertyA, propertyB] = [a.department, b.department];
-//           break;
-//         case 'mobile':
-//           [propertyA, propertyB] = [a.mobile, b.mobile];
-//           break;
-//       }
-//       const valueA = isNaN(+propertyA) ? propertyA : +propertyA;
-//       const valueB = isNaN(+propertyB) ? propertyB : +propertyB;
-//       return (
-//         (valueA < valueB ? -1 : 1) * (this._sort.direction === 'asc' ? 1 : -1)
-//       );
-//     });
-//   }
-// }

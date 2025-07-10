@@ -14,7 +14,7 @@
                             <div class="text-primary">Total Questions: {{ questionList?.length }}</div>
                             <div class="text-primary">Total Correct Answered : {{ correctAnswers(true) }} </div>
                                 <div class="text-primary">Total Wrong Answered : {{ correctAnswers(false) }} </div>
-                                    <div class="text-primary">Your Score : {{ answerResult?.score }} Points </div>
+                                    <div class="text-primary">Your Score  : {{ answerResult?.score }} Points </div>
                         </div>
                     </div>
                     <img style="width: 30%;" class="img-fluid col-sm-12 mx-auto" src="https://icon-library.com/images/celebration-icon-png/celebration-icon-png-7.jpg" alt="">
@@ -28,7 +28,14 @@
                         <div class="text-primary">Total Correct Answered : {{ correctAnswers(true) }} </div>
                             <div class="text-primary">Total Wrong Answered : {{ correctAnswers(false) }} </div>
                                 <div class="text-primary">Your Score : {{ answerResult?.score }} Points </div>
-                    </div>
+                    </div> 
+
+                         <div class="d-flex gap-3"> 
+                                    <span class="text-primary">Percentage: {{currentPercentage}}</span> 
+                                    <span class="text-primary">Grade: {{gradeInfo!.grade}}</span> 
+                                    <span class="text-primary">GPA: {{gradeInfo!.gpa}}</span>
+                                    <span class="text-primary">Outcome: {{gradeInfo!.gradeTerm}}</span>
+                                </div>
                 
                 </div>
                 

@@ -166,6 +166,7 @@ export class SigninComponent
       .getCompanyByIdentifierWithoutToken(this.extractedName)
       .subscribe((resp: any) => {
         let companyId = resp[0]?.companyId;
+        localStorage.setItem('companyId', companyId);
         this.domain = resp[0]?.company||"TMS";
         this.settingsService
           .getKeysByCompanyId(companyId)
