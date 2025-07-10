@@ -473,7 +473,7 @@ export class CompletionListComponent {
         });
         // Update content based on type
         this.course.elements.forEach((element: any) => { 
-            console.log(element,'===> <====')
+            
           if (element.type === 'UserName') {
               element.content =
               this.studentData.studentId?.name || 'Default Name'; 

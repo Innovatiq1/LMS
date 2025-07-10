@@ -203,7 +203,7 @@ if( this.gradeList.valid){
       this.gradeDataset.push(...this.gradeList.value)
       
     },error:(err)=>{
-      console.log(err)
+     
 
     }
 
@@ -254,11 +254,11 @@ removeGrade(index:any){
             timer: 2000,
             showConfirmButton: false
           });
-      console.log(res) 
+  
       this.saveButton = true 
       this.add_fields() 
     },error:(err)=>{
-      console.log(err)
+     
 
     }
 
@@ -283,9 +283,9 @@ removeGrade(index:any){
             timer: 2000,
             showConfirmButton: false
           });
-      console.log(res)
+   
     },error:(err)=>{
-      console.log(err)
+    
 
     }
 
