@@ -9,7 +9,7 @@ export const environment = {
   Url: 'http://localhost:3001/',
   companyUrl: 'http://localhost:3001/',
   publicApiUrl: 'http://localhost:3001/x-api/v1/public/',
-
+  apiEndpointNew: 'http://localhost:3000/x-api/v1/',
   // apiUrl:'http://13.212.97.97:3001/api/',
   awsUrl: 'https://collegey.s3.ap-southeast-1.amazonaws.com/',
   filesPath:'https://s3.ap-southeast-1.amazonaws.com/storage.collegey/',

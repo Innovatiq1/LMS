@@ -6,6 +6,7 @@ import { AuthenService } from '@core/service/authen.service';
 import { Router } from '@angular/router';
 import { ClassService } from 'app/admin/schedule-class/class.service';
 import { CourseService } from '@core/service/course.service';
+import { SettingsService } from '@core/service/settings.service';
 
 @Component({
   selector: 'app-questions',
@@ -44,7 +45,12 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
   assessmentId: any;
   isCertIssued: boolean = false;
   isEvaluationSubmitted: boolean = false;
-  answer: any[] = [];
+  answer: any[] = []; 
+    actualScore:number = 0; 
+  currentPercentage:number = 0;
+  totalScore:number = 0 
+  gradeDataset:any = [] 
+  gradeInfo:any =null
 
   constructor(
     private studentService: StudentsService,
@@ -52,7 +58,8 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
     private questionService: QuestionService,
     private router: Router,
     private classService: ClassService,
-    private courseService: CourseService,
+    private courseService: CourseService, 
+      private SettingService:SettingsService
 
   ) {
     let urlPath = this.router.url.split('/');
@@ -242,6 +249,9 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
 
   navigateContinue(data: boolean) {
     // console.log("this.answer",this.answersResult)
+    this.actualScore = this.answersResult.score 
+    this.totalScore = this.answersResult.totalScore  
+    this.GradeCalculate()
     const score = this.answersResult.score;
     const passingCriteria = this.answersResult.assessmentId.passingCriteria;
     const assessmentEvaluationType = this.answersResult.assessmentEvaluationType;
@@ -306,7 +316,54 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
     }
 
   }
+    GradeCalculate(){  
+    let calculatePercent = this.actualScore / this.totalScore * 100;
+    this.currentPercentage = Number.isNaN(calculatePercent) ? 0 : Math.floor(calculatePercent);
 
+
+    const getCompanyId:any = localStorage.getItem('userLogs')
+    const parseid = JSON.parse(getCompanyId) 
+    this.SettingService.gradeFetch(parseid.companyId).subscribe({
+      next:(res:any)=>{
+       if(res.response != null ){ 
+         this.gradeDataset= []
+        this.gradeDataset.push(...res.response!.gradeList) 
+        let count = 0
+         for(let i = 0;  i < this.gradeDataset.length; i++ ){  
+         
+      const max = this.gradeDataset[i].PercentageRange.split('-')[0] 
+      const min = this.gradeDataset[i].PercentageRange.split('-')[1]
+      if(calculatePercent >= max &&  calculatePercent <=min){
+        this.gradeInfo =  this.gradeDataset[i]
+        break 
+        
+      } 
+      count +=1 
+    } 
+    console.log(count, this.gradeDataset.length)
+    if(count === this.gradeDataset.length){
+       const sorted = this.gradeDataset.sort((a:any, b:any) => {
+    const numA = parseInt(a.PercentageRange.split('-')[0]);
+    const numB = parseInt(b.PercentageRange.split('-')[0]);
+    return numA - numB; 
+    
+    }); 
+    this.gradeInfo = sorted[0]
+
+
+    }
+
+        
+       } 
+      },error:(err)=>{  
+        
+      }
+    })
+
+   
+    
+
+  }
   correctAnswers(value: any) {
     // console.log("questionlist112233",this.questionList)
     return this.questionList.filter((v: any) => v.status === value).length;

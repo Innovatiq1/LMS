@@ -138,6 +138,7 @@ import { UpdateFileSizeComponent } from './settings/file-size/update-file-size/u
 import { SurveyRegistrationComponent } from './settings/survey-registration/survey-registration.component';
 import { AllSurveyComponent } from './settings/all-survey/all-survey.component';
 import { ThridPartyFormComponent } from './settings/thrid-party-form/thrid-party-form.component';
+import { GradeComponent } from './settings/grade/grade/grade.component';
 
 @NgModule({
   declarations: [
@@ -233,7 +234,8 @@ import { ThridPartyFormComponent } from './settings/thrid-party-form/thrid-party
     UpdatePassingCriteriaComponent,
     SettingsSidemenuComponent,
     RescheduledCoursesComponent,
-    ScoreComponent,
+    ScoreComponent, 
+    GradeComponent,
     UpdateScoreAlgorithmComponent,
     TimeComponent,
     UpdateTimeAlgorithmComponent,
