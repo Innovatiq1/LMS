@@ -27,6 +27,7 @@ import { ScheduleMeetingComponent } from './schedule-meeting/schedule-meeting.co
 import { ScormPlayerComponent } from './course-kit/scorm-player/scorm-player.component';
 import { ExamTrianeesComponent } from './exam-trianees/exam-trianees.component';
 import { ManualEvaluationComponent } from './manual-evaluation/manual-evaluation.component';
+import { ExamManualEvaluationComponent } from './exam-manual-evaluation/exam-manual-evaluation.component';
 const routes: Routes = [
   {
     path: 'course-name',
@@ -55,6 +56,10 @@ const routes: Routes = [
   {
     path: 'manual-evaluation',
     component: ManualEvaluationComponent,
+  },
+  {
+    path: 'exam-manual-evaluation',
+    component: ExamManualEvaluationComponent,
   },
   {
     path: 'class-list',

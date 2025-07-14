@@ -181,8 +181,20 @@ import { ApiResponse } from '@core/models/general.response';
       );
     }
 
+    // Service call (quesAssessmentService.ts or similar)
+manualScoreUpdate(id: string, payload: any) {
+  // return this.http.put(`/api/examAssessmentAnswers/manual-score-update/${id}`, payload);
+  const apiUrl = `${this.defaultUrl}admin/exam-assesment-answers/manual-score-update/${id}`;
+  return this.http.put<ApiResponse>(apiUrl, payload).pipe(
+    map(response => response)
+  );
+}
+
+
     submitAssessment(data: any): Observable<ApiResponse> {
       let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+
+
       data.companyId =userId
       const apiUrl = this.defaultUrl + 'admin/exam-assesment-answers';
       return this.http.post<ApiResponse>(apiUrl, data).pipe(

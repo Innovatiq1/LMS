@@ -87,6 +87,7 @@ export class ExamQuestionsComponent {
   faceMatchCount: number = 0;
   faceMisMatchCount: number = 0;
   overLayMsg: string = 'Please wait...';
+  assessmentEvaluationType:any;
 
 
   @ViewChild('proctoringDiv', { static: true }) proctoringDiv!: ElementRef;
@@ -376,6 +377,7 @@ export class ExamQuestionsComponent {
   }
 
   getPaginatedQuestions(): any[] {
+    // console.log("this.questionList",this.questionList)
     return this.questionList.slice(
       this.getStartingIndex(),
       this.getEndingIndex()
@@ -396,18 +398,111 @@ export class ExamQuestionsComponent {
     this.assessmentService
       .getAnswerQuestionById(this.examAssessmentId)
       .subscribe((response) => {
+        // console.log("response",response);
+        // console.log("this.questionList22 ",this.questionList)
         this.questionList = response?.questions;
+        this.assessmentEvaluationType=response?.assessmentEvaluationType;
         this.timerInSeconds = response?.timer;
         this.retakeNo = response?.retake;
-        this.answers = Array.from({ length: this.questionList.length }, () => ({
-          questionText: null,
+        // this.answers = Array.from({ length: this.questionList.length }, () => ({
+        //   questionText: null,
+        //   selectedOptionText: null,
+        // }));
+        this.answers = this.questionList.map((q:any) => ({
+          questionText: q.questionText,
           selectedOptionText: null,
+          questionType: q.questionType,
+          isCorrect: null,
+          fileAnswer: [],
+          fileName: null
         }));
+        
         this.totalQuestions = this.questionList.length;
         this.goToPage(0);
       });
   }
+  clearFileAnswer(index: number) {
+    this.answers[index].fileAnswer = null;
+    this.answers[index].fileName = null;
+  }
+  handleFileChange(event: any, index: number) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const question = this.questionList[index];
+    const maxSizeMB = question.fileSize || 50;
 
+    if (file.size > maxSizeMB * 1024 * 1024) {
+      Swal.fire({
+        icon: 'error',
+        title: 'File too large',
+        text: `File should be less than ${maxSizeMB}MB.`,
+      });
+      event.target.value = '';
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('files', file);
+
+    this.courseService.uploadDocument(formData).subscribe({
+      next: (res: any) => {
+        // console.log('Upload success:', res);
+
+        const { documentLink, documentName, uploadedFileName } = res.data || {};
+        // this.answers[index] = {
+        //   ...this.answers[index],
+        //   questionText: this.questionList[index].questionText,
+        //   fileAnswer: {
+        //     documentLink,
+        //     documentName,
+        //     uploadedFileName,
+        //   },
+        //   fileName: documentName || file.name
+        // };
+        this.answers[index] = {
+          ...this.answers[index],
+          questionText: this.questionList[index].questionText,
+          questionType: this.questionList[index].questionType,
+          fileAnswer: [{
+            documentLink,
+            documentName,
+            uploadedFileName,
+          }],
+          fileName: documentName || file.name,
+          isCorrect: this.questionList[index].status ?? null
+        };
+        
+      },
+      error: (err: any) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Upload failed',
+          text: 'Something went wrong while uploading the file.',
+        });
+      }
+    });
+  }
+  // handleTextChange(index: number) {
+  //   if (this.answers[index].selectedOptionText) {
+  //     this.answers[index].questionText = this.questionList[index]?.questionText;
+  //     this.answers[index].fileAnswer = null;
+  //     this.answers[index].fileName = null;
+  //   }
+  // }
+  handleTextChange(index: number) {
+    if (this.answers[index].selectedOptionText) {
+      const question = this.questionList[index];
+      this.answers[index] = {
+        ...this.answers[index],
+        questionText: question.questionText,
+        questionType: question.questionType,
+        isCorrect: question.status ?? null,
+        fileAnswer: null,
+        fileName: null
+      };
+    }
+  }
+  
   student() {
     this.studentService.getStudentById(this.studentId).subscribe((res: any) => {
       this.user_name = res.name;
@@ -423,19 +518,40 @@ export class ExamQuestionsComponent {
     });
   }
 
-  handleRadioChange(index: any) {
-    this.answers[index].questionText = this.questionList[index]?.questionText;
+  // handleRadioChange(index: any) {
+  //   this.answers[index].questionText = this.questionList[index]?.questionText;
+  //   this.selectedOption = '';
+  // }
+
+  handleRadioChange(index: number) {
+    const question = this.questionList[index];
+    const selected = this.answers[index].selectedOptionText;
+  
+    this.answers[index] = {
+      ...this.answers[index],
+      questionText: question.questionText,
+      questionType: question.questionType,
+      isCorrect: question.status ?? null
+    };
+  
     this.selectedOption = '';
   }
-
+  
   correctAnswers(value: any) {
     return this.questionList.filter((v: any) => v.status === value).length;
   }
 
   confirmSubmit() {
-    const nullOptionExists = this.answers.some(
-      (answer: any) => answer.selectedOptionText === null
-    );
+    // const nullOptionExists = this.answers.some(
+    //   (answer: any) => answer.selectedOptionText === null
+    // );
+    const nullOptionExists = this.answers.some((answer: any) => {
+      const isTextEmpty = answer.selectedOptionText === null || answer.selectedOptionText === '';
+      const isFileEmpty = !answer.fileAnswer || answer.fileAnswer.length === 0;
+      return isTextEmpty && isFileEmpty; 
+    });
+    
+    // console.log("answer",this.answers)
     if (nullOptionExists) {
       Swal.fire({
         title: 'Error!',
@@ -456,9 +572,11 @@ export class ExamQuestionsComponent {
     }).then((result) => {
       clearInterval(this.interval);
       this.stopRecording();
+      // console.log("this.retake--->",this.retake)
       if (this.retake && result.isConfirmed) {
         this.updateAnswers();
       } else if (result.isConfirmed) {
+        // console.log("subbbbbbbMit",true)
         this.submitAnswers();
       }
     });
@@ -475,9 +593,11 @@ export class ExamQuestionsComponent {
       answers: this.answers,
       companyId: userId,
       studentClassId: this.studentClassId,
+      assessmentEvaluationType:this.assessmentEvaluationType,
+      evaluationStatus:"pending"
     };
 
-    console.log('Submitting Answer...')
+    // console.log('Submitting Answer...>',requestBody)
 
     this.assessmentService.submitAssessment(requestBody).subscribe(
       (response: any) => {
@@ -486,6 +606,8 @@ export class ExamQuestionsComponent {
           text: 'Your answers were submitted.',
           icon: 'success',
         });
+        // console.log("requestBodysubmit",requestBody)
+        // console.log("this.retake",this.retake)
         if (!this.retake) {
           this.updateExamStatus();
         }
@@ -515,7 +637,11 @@ export class ExamQuestionsComponent {
       answers: this.answers,
       id: this.answerAssessmentId,
       companyId: userId,
+      assessmentEvaluationType:this.assessmentEvaluationType,
+      evaluationStatus:"pending",
+      
     };
+    // console.log("requestBody",requestBody)
     this.assessmentService.updateAssessment(requestBody).subscribe(
       (response: any) => {
         Swal.fire({
@@ -610,11 +736,18 @@ export class ExamQuestionsComponent {
       });
   }
 
+  // attendedQuestions() {
+  //   return this.answers.filter((v: any) => v.selectedOptionText !== null)
+  //     .length;
+  // }
   attendedQuestions() {
-    return this.answers.filter((v: any) => v.selectedOptionText !== null)
-      .length;
+    return this.answers.filter((answer: any) => {
+      const isTextAnswered = answer.selectedOptionText !== null && answer.selectedOptionText !== '';
+      const isFileAnswered = answer.fileAnswer?.length > 0;
+      return isTextAnswered || isFileAnswered;
+    }).length;
   }
-
+  
   calculateTotalTime() {
     this.totalTime = this.questionList.length * this.timerInSeconds;
     this.startTimer();
