@@ -8,7 +8,8 @@ import { Subject, debounceTime } from 'rxjs';
 import { AppConstants } from '@shared/constants/app.constants';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivityLogComponent } from '@shared/components/activity-log/activity-log.component';
-
+// import { ActivatedRoute,Route } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-exam-scores',
   templateUrl: './exam-scores.component.html',
@@ -24,6 +25,7 @@ export class ExamScoresComponent {
     'Assessment Score',
     'Exam Assessment Score',
     'Activity',
+    'Evaluate',
     'Action',
   ];
 
@@ -42,6 +44,7 @@ export class ExamScoresComponent {
 
   constructor(
     public utils: UtilsService,
+    public router: Router,
     private assessmentService: AssessmentService,
     private dialog: MatDialog
   ) {
@@ -55,20 +58,34 @@ export class ExamScoresComponent {
     this.commonRoles = AppConstants;
     this.getAllAnswers();
   }
-
+  EvaluateExam(row:any,isEdit:any){
+    // console.log("row",row)
+    
+      // console.log('Evaluating row:', row, 'isEdit:', isEdit);
+      this.router.navigate(['/admin/courses/exam-manual-evaluation'], {
+        queryParams: {
+          courseId: row?.courseId?._id,
+          examAssAnsId:row?.examAssessmentAnswer?._id,
+          examFirstAssAnsId:row?.examAssessmentAnswer?.assessmentAnswerId,
+          examQuestionId:row?.examAssessmentAnswer?.examAssessmentId?._id,
+          isEdit: isEdit
+        }
+      });
+    
+  }
   getAllAnswers() {
     let company = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
     this.assessmentService
       .getExamAnswersV2({ ...this.assessmentPaginationModel, company })
       .subscribe((res) => {
-        console.log('reeeee', res.data);
+        // console.log('reeeee', res.data);
         this.dataSource = res.data.docs.map((data: any) => ({
           ...data,
           activityCount: data.activityLogs.reduce((count: any, obj: any) => {
             return count + (obj.warnings ? obj.warnings.length : 0);
           }, 0),
         }));
-        console.log('dataSourse==', this.dataSource);
+        // console.log('dataSourse==', this.dataSource);
         this.examScores = res.data.docs;
         this.totalItems = res.data.totalDocs;
         this.assessmentPaginationModel.docs = res.data.docs;
