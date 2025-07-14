@@ -244,6 +244,15 @@ export class StudentsService extends UnsubscribeOnDestroyAdapter {
     );
   }
 
+  getManualExamAssessmentAnswerById(id: string): Observable<any> {
+    const apiUrl = `${this.defaultUrl}admin/manualEvaluation/examAssessmentAnswer/${id}`;
+    return this.httpClient.get<any>(apiUrl).pipe(
+      map((response) => {
+        return response;
+      })
+    );
+  }
+
   updateManualAssessmentAnswerById(id: string, payload: any): Observable<ApiResponse> {
     const apiUrl = `${this.defaultUrl}admin/manualEvaluation/${id}`;
     return this.httpClient.put<ApiResponse>(apiUrl, payload);

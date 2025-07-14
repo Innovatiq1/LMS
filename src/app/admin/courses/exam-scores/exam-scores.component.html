@@ -112,6 +112,38 @@
                     </span>
                   </mat-cell>
                 </ng-container>
+                <!-- <ng-container matColumnDef="Evaluate">
+                  <mat-header-cell *matHeaderCellDef>Evaluate
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let row">
+                    <span class="mobile-label">Evaluate:</span>
+                    <div *ngIf="!row?.examAssessmentAnswer?.studentView && row?.examAssessmentAnswer?.score == null">
+                      <button class="student-view" mat-flat-button color="primary" id="submit"
+                        (click)="EvaluateExam(row,false)">
+                        <span>Evaluate</span>
+                      </button>
+                    </div>
+                  </mat-cell>
+                </ng-container> -->
+                <ng-container matColumnDef="Evaluate">
+                  <mat-header-cell *matHeaderCellDef>Evaluate</mat-header-cell>
+                  <mat-cell *matCellDef="let row">
+                    <span class="mobile-label">Evaluate:</span>
+                
+                    <div *ngIf="!row?.examAssessmentAnswer?.studentView && row?.examAssessmentAnswer?.score == null">
+                      <button class="student-view" mat-flat-button color="primary" (click)="EvaluateExam(row, false)">
+                        <span>Evaluate</span>
+                      </button>
+                    </div>
+                
+                    <div *ngIf="!row?.examAssessmentAnswer?.studentView && row?.examAssessmentAnswer?.score !== null">
+                      <button class="student-view" mat-flat-button color="accent" (click)="EvaluateExam(row, true)">
+                        <span>Re-Evaluate</span>
+                      </button>
+                    </div>
+                  </mat-cell>
+                </ng-container>
+                
 
                 <ng-container matColumnDef="Action">
                   <mat-header-cell *matHeaderCellDef>Actions
@@ -126,6 +158,7 @@
                     </div>
                   </mat-cell>
                 </ng-container>
+
 
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayedColumns" [style.cursor]="'pointer'" matRipple>
