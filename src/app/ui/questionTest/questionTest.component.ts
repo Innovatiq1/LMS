@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { StudentsService } from 'app/admin/students/students.service';
 import { QuestionService } from '@core/service/question.service';
 import Swal from 'sweetalert2';
@@ -24,8 +31,6 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
   @Output() submitAnswers: EventEmitter<any> = new EventEmitter<any>();
   @Output() navigate: EventEmitter<any> = new EventEmitter<any>();
 
-
-
   public answers: any = [];
   user_name!: string;
   isQuizCompleted: boolean = false;
@@ -45,12 +50,13 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
   assessmentId: any;
   isCertIssued: boolean = false;
   isEvaluationSubmitted: boolean = false;
-  answer: any[] = []; 
-    actualScore:number = 0; 
-  currentPercentage:number = 0;
-  totalScore:number = 0 
-  gradeDataset:any = [] 
-  gradeInfo:any =null
+  answer: any[] = [];
+  actualScore: number = 0;
+  currentPercentage: number = 0;
+  totalScore: number = 0;
+  gradeDataset: any = [];
+  gradeInfo: any = null;
+  showGrade: boolean = false;
 
   constructor(
     private studentService: StudentsService,
@@ -58,12 +64,10 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
     private questionService: QuestionService,
     private router: Router,
     private classService: ClassService,
-    private courseService: CourseService, 
-      private SettingService:SettingsService
-
+    private courseService: CourseService,
+    private SettingService: SettingsService
   ) {
     let urlPath = this.router.url.split('/');
-
   }
 
   ngOnInit() {
@@ -74,7 +78,7 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
       fileName: null,
     }));
     // console.log("question lit",this.questionList)
-    this.user_name = this.authenService.currentUserValue.user.name
+    this.user_name = this.authenService.currentUserValue.user.name;
     let urlPath = this.router.url.split('/');
     this.classId = urlPath[urlPath.length - 1];
     this.getClassDetails();
@@ -86,10 +90,11 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
   }
 
   getTotalScore(): number {
-    return this.questionList?.reduce((sum: number, q: any) => sum + (q.questionscore || 0), 0);
+    return this.questionList?.reduce(
+      (sum: number, q: any) => sum + (q.questionscore || 0),
+      0
+    );
   }
-
-
 
   startTimer() {
     if (!this.totalTime) {
@@ -107,7 +112,7 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
             answers: this.answers,
             courseId: this.courseId,
             is_tutorial: false,
-            classId: this.classId
+            classId: this.classId,
           };
           this.submitAnswers.next(submissionPayload);
         }
@@ -133,7 +138,6 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
     // this.answers[index].selectedOptionText = this.selectedOption;
     this.selectedOption = '';
   }
-
 
   handleFileChange(event: any, index: number) {
     const file = event.target.files[0];
@@ -167,7 +171,7 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
             documentName,
             uploadedFileName,
           },
-          fileName: documentName || file.name
+          fileName: documentName || file.name,
         };
       },
       error: (err: any) => {
@@ -176,15 +180,15 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
           title: 'Upload failed',
           text: 'Something went wrong while uploading the file.',
         });
-      }
+      },
     });
   }
-
 
   confirmSubmit() {
     const unanswered = this.answers.some((answer: any, index: any) => {
       const question = this.questionList[index];
-      const textAnswerEmpty = !answer.selectedOptionText || answer.selectedOptionText.trim() === '';
+      const textAnswerEmpty =
+        !answer.selectedOptionText || answer.selectedOptionText.trim() === '';
 
       if (question.questionType === 'file') {
         if (!answer.fileAnswer && textAnswerEmpty) {
@@ -197,7 +201,6 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
       }
       return false;
     });
-
 
     if (unanswered) {
       Swal.fire({
@@ -218,20 +221,20 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
       cancelButtonText: 'Cancel',
     }).then((result) => {
       if (result.isConfirmed) {
-        let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+        let userId = JSON.parse(localStorage.getItem('user_data')!).user
+          .companyId;
         const submissionPayload = {
           answers: this.answers,
           courseId: this.courseId,
           is_tutorial: false,
           classId: this.classId,
-          companyId: userId
+          companyId: userId,
         };
         this.submitAnswers.next(submissionPayload);
         clearInterval(this.interval);
       }
     });
   }
-
 
   // getQuestionsById(){
   //   this.questionService.getQuestionsById("667bf7d5b0b47928d08d1360").subscribe((res:any)=>{
@@ -241,29 +244,27 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
   getClassDetails() {
     this.classService.getClassById(this.classId).subscribe((response) => {
       this.courseId = response.courseId.id;
-
-    })
+    });
   }
-
-
 
   navigateContinue(data: boolean) {
     // console.log("this.answer",this.answersResult)
-    this.actualScore = this.answersResult.score 
-    this.totalScore = this.answersResult.totalScore  
-    this.GradeCalculate()
+    this.actualScore = this.answersResult.score;
+    this.totalScore = this.answersResult.totalScore;
+    this.GradeCalculate();
     const score = this.answersResult.score;
     const passingCriteria = this.answersResult.assessmentId.passingCriteria;
-    const assessmentEvaluationType = this.answersResult.assessmentEvaluationType;
+    const assessmentEvaluationType =
+      this.answersResult.assessmentEvaluationType;
     const evaluationStatus = this.answersResult.evaluationStatus;
-    if (assessmentEvaluationType == 'Manual' && evaluationStatus == "pending") {
+    if (assessmentEvaluationType == 'Manual' && evaluationStatus == 'pending') {
       //  console.log("helopro")
       this.isEvaluationSubmitted = true;
       const classIdRaw = this.classId;
       const getclassId = classIdRaw.split('?')[0];
       const studentId = localStorage.getItem('id') || '';
       let payload = {
-        status: "completed",
+        status: 'completed',
         studentId: studentId,
         classId: getclassId,
         playbackTime: 100,
@@ -279,18 +280,16 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
               icon: 'info',
             });
           }
-          if (data)
-            this.navigate.next(true);
+          if (data) this.navigate.next(true);
         });
-    }
-    else if (score >= passingCriteria) {
+    } else if (score >= passingCriteria) {
       this.isQuizCompleted = true;
       const classIdRaw = this.classId;
       const getclassId = classIdRaw.split('?')[0];
       // console.log("getclassId",getclassId)
       const studentId = localStorage.getItem('id') || '';
       let payload = {
-        status: "completed",
+        status: 'completed',
         studentId: studentId,
         classId: getclassId,
         playbackTime: 100,
@@ -307,68 +306,58 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
               text: 'Please wait for The certificate.',
             });
           }
-          if (data)
-            this.navigate.next(true);
+          if (data) this.navigate.next(true);
         });
-
     } else {
       this.isQuizFailed = true;
     }
-
   }
-    GradeCalculate(){  
-    let calculatePercent = this.actualScore / this.totalScore * 100;
-    this.currentPercentage = Number.isNaN(calculatePercent) ? 0 : Math.floor(calculatePercent);
+  GradeCalculate() {
+    let calculatePercent = (this.actualScore / this.totalScore) * 100;
+    this.currentPercentage = Number.isNaN(calculatePercent)
+      ? 0
+      : Math.floor(calculatePercent);
 
-
-    const getCompanyId:any = localStorage.getItem('userLogs')
-    const parseid = JSON.parse(getCompanyId) 
+    const getCompanyId: any = localStorage.getItem('userLogs');
+    const parseid = JSON.parse(getCompanyId);
     this.SettingService.gradeFetch(parseid.companyId).subscribe({
-      next:(res:any)=>{
-       if(res.response != null ){ 
-         this.gradeDataset= []
-        this.gradeDataset.push(...res.response!.gradeList) 
-        let count = 0
-         for(let i = 0;  i < this.gradeDataset.length; i++ ){  
-         
-      const max = this.gradeDataset[i].PercentageRange.split('-')[0] 
-      const min = this.gradeDataset[i].PercentageRange.split('-')[1]
-      if(calculatePercent >= max &&  calculatePercent <=min){
-        this.gradeInfo =  this.gradeDataset[i]
-        break 
-        
-      } 
-      count +=1 
-    } 
-    console.log(count, this.gradeDataset.length)
-    if(count === this.gradeDataset.length){
-       const sorted = this.gradeDataset.sort((a:any, b:any) => {
-    const numA = parseInt(a.PercentageRange.split('-')[0]);
-    const numB = parseInt(b.PercentageRange.split('-')[0]);
-    return numA - numB; 
-    
-    }); 
-    this.gradeInfo = sorted[0]
-
-
-    }
-
-        
-       } 
-      },error:(err)=>{  
-        
-      }
-    })
-
-   
-    
-
+      next: (res: any) => {
+        if (res.response != null) {
+          if (res.response!.gradeList!.length != 0) {
+            this.gradeDataset = [];
+            this.gradeDataset.push(...res.response!.gradeList);
+            let count = 0;
+            for (let i = 0; i < this.gradeDataset.length; i++) {
+              const max = this.gradeDataset[i].PercentageRange.split('-')[0];
+              const min = this.gradeDataset[i].PercentageRange.split('-')[1];
+              if (calculatePercent >= max && calculatePercent <= min) {
+                this.gradeInfo = this.gradeDataset[i];
+                break;
+              }
+              count += 1;
+            }
+            console.log(count, this.gradeDataset.length);
+            if (count === this.gradeDataset.length) {
+              const sorted = this.gradeDataset.sort((a: any, b: any) => {
+                const numA = parseInt(a.PercentageRange.split('-')[0]);
+                const numB = parseInt(b.PercentageRange.split('-')[0]);
+                return numA - numB;
+              });
+              this.gradeInfo = sorted[0];
+            }
+            this.showGrade = true;
+          } else {
+            this.showGrade = false;
+          }
+        }
+      },
+      error: (err) => {},
+    });
   }
   correctAnswers(value: any) {
     // console.log("questionlist112233",this.questionList)
     return this.questionList.filter((v: any) => v.status === value).length;
   }
-
 
   handleTextChange(index: number) {
     if (this.answers[index].selectedOptionText) {
@@ -382,5 +371,4 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
     this.answers[index].fileAnswer = null;
     this.answers[index].fileName = null;
   }
-
 }
