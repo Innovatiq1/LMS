@@ -222,12 +222,7 @@ export class CreateCertificateComponent implements OnInit, AfterViewInit {
   }
 
   edit() {
-    this.router.navigate(
-      ['/student/settings/customize/certificate/template/edit/:id'],
-      {
-        queryParams: { id: this.classId },
-      }
-    );
+    this.editUrl = true;
   }
 
   insertElement() {
@@ -1089,7 +1084,6 @@ export class CreateCertificateComponent implements OnInit, AfterViewInit {
           cancelButtonColor: '#d33',
         }).then((result) => {
           if (result.isConfirmed) {
-            // this.certificateForm.value.image = this.image_link;
             // this.certificateService
             //   .updateCertificate(this.classId, formData)
             //   .subscribe((response: any) => {
@@ -1113,8 +1107,41 @@ export class CreateCertificateComponent implements OnInit, AfterViewInit {
     }
   }
 
-  patchCanvaObject(dataset: any) {}
-  getData() {
+  async patchCanvaBackgroundImage(imageurl: any) {
+    const imageDataUrl = imageurl;
+    this.image_link = imageDataUrl;
+
+    const imgElement = new Image();
+    imgElement.onload = () => {
+      const fabricImg = new fabric.Image(imgElement);
+      (fabricImg as any).customId = 'BACKGROUND_IMAGE';
+      const canvasWidth = this.canvas.getWidth();
+      const canvasHeight = this.canvas.getHeight();
+
+      fabricImg.set({
+        left: 0,
+        top: 0,
+        selectable: false,
+        evented: false,
+      });
+
+      fabricImg.scaleToWidth(canvasWidth);
+      fabricImg.scaleToHeight(canvasHeight);
+
+      try {
+        this.canvas.backgroundImage = fabricImg;
+        this.canvas.requestRenderAll();
+      } catch (error) {
+        (fabricImg as any).excludeFromExport = false;
+        this.canvas.add(fabricImg);
+        this.canvas.sendToBack(fabricImg);
+        this.canvas.requestRenderAll();
+      }
+    };
+
+    imgElement.src = imageDataUrl;
+  }
+  async getData() {
     forkJoin({
       course: this.certificateService.getCertificateById(this.classId),
     }).subscribe((response: any) => {
@@ -1122,17 +1149,23 @@ export class CreateCertificateComponent implements OnInit, AfterViewInit {
       this.certificateForm.patchValue({
         title: this.course.title,
       });
-      //  this.canvaObjectsclone.forEach((obj: any) => {
-      // this.canvas.add(obj);
-      console.log(fabric.version);
+      this.patchCanvaBackgroundImage(response.course.image);
       this.canvas.clear();
       const canvasJson = {
         version: '6.7.0',
         objects: response.course.elements,
       };
-
       this.canvas.loadFromJSON(canvasJson, () => {
+        const CanvaObjects = this.canvas.getObjects();
+        CanvaObjects.forEach((obj: any) => {
+          obj.visible = true;
+          obj.opacity = obj.opacity !== undefined ? obj.opacity : 1;
+          obj.selectable = obj.selectable !== undefined ? obj.selectable : true;
+          obj.evented = obj.evented !== undefined ? obj.evented : true;
+          obj.setCoords();
+        });
         this.canvas.renderAll();
+        this.canvas.requestRenderAll();
       });
     });
   }
