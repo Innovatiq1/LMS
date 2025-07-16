@@ -534,7 +534,10 @@ export class CreateCertificateComponent implements OnInit, AfterViewInit {
   }
 
   uploadImage(event: Event): void {
+    this.canvaObjectsclone = [...this.canvas.getObjects()];
     this.canvas.clear();
+    console.log(this.canvaObjectsclone, '===');
+
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
 
@@ -548,9 +551,7 @@ export class CreateCertificateComponent implements OnInit, AfterViewInit {
     if (!this.canvas) {
       return;
     }
-    if (this.canvas.getObjects().length !== 0) {
-      this.canvaObjectsclone = [...this.canvas.getObjects()];
-    }
+
     const reader = new FileReader();
     reader.onload = (e) => {
       const imageDataUrl = e.target?.result as string;
@@ -576,7 +577,13 @@ export class CreateCertificateComponent implements OnInit, AfterViewInit {
 
         try {
           this.canvas.backgroundImage = fabricImg;
-          this.canvas.requestRenderAll();
+          if (this.canvaObjectsclone != null) {
+            this.canvaObjectsclone.forEach((obj: any) => {
+              this.canvas.add(obj);
+            });
+            this.canvas.requestRenderAll();
+            this.canvaObjectsclone = null;
+          }
         } catch (error) {
           (fabricImg as any).excludeFromExport = false;
           this.canvas.add(fabricImg);
