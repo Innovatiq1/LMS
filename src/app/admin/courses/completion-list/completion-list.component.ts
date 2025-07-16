@@ -35,6 +35,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { CourseService } from '@core/service/course.service';
 import { AuthenService } from '@core/service/authen.service';
+import * as fabric from 'fabric';
 
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
@@ -44,6 +45,7 @@ import { AssessmentService } from '@core/service/assessment.service';
 import { CourseModel, CoursePaginationModel } from '@core/models/course.model';
 import { UtilsService } from '@core/service/utils.service';
 import { SettingsService } from '@core/service/settings.service';
+
 @Component({
   selector: 'app-completion-list',
   templateUrl: './completion-list.component.html',
@@ -82,6 +84,7 @@ export class CompletionListComponent {
   element: any;
   certifiacteUrl: boolean = false;
   isGeneratingCertificates = false;
+  canvas: any;
   dataSource: any;
   pageSizeArr = this.utils.pageSizeArr;
   totalItems: any;
@@ -105,6 +108,9 @@ export class CompletionListComponent {
   currentPercentage: number = 0;
   totalScore: number = 0;
   gradeDataset: any = [];
+  canvaObjectInfo: any = null;
+  cloneCanvaObjects: any = [];
+
   gradeInfo: any = null;
   showGrade: boolean = false;
 
@@ -199,7 +205,12 @@ export class CompletionListComponent {
       image_link: [''],
     });
   }
-
+  ngAfterViewInit(): void {
+    this.canvas = new fabric.Canvas('myCanvas', {
+      width: 789,
+      height: 555,
+    });
+  }
   pageSizeChange($event: any) {
     this.coursePaginationModel.page = $event?.pageIndex + 1;
     this.coursePaginationModel.limit = $event?.pageSize;
@@ -458,66 +469,140 @@ export class CompletionListComponent {
 
   imgUrl: any;
 
-  openDialog(templateRef: any): void {
+  patchCanvaBackgroundImage() {
+    this.image_link = null;
+    const imageDataUrl = this.canvaObjectInfo.image;
+    this.image_link = imageDataUrl;
+
+    const imgElement = new Image();
+    imgElement.onload = () => {
+      const fabricImg = new fabric.Image(imgElement);
+      (fabricImg as any).customId = 'BACKGROUND_IMAGE';
+      const canvasWidth = this.canvas.getWidth();
+      const canvasHeight = this.canvas.getHeight();
+
+      fabricImg.set({
+        left: 0,
+        top: 0,
+        selectable: false,
+        evented: false,
+      });
+
+      fabricImg.scaleToWidth(canvasWidth);
+      fabricImg.scaleToHeight(canvasHeight);
+
+      try {
+        this.canvas.backgroundImage = fabricImg;
+        this.canvas.requestRenderAll();
+      } catch (error) {
+        (fabricImg as any).excludeFromExport = false;
+        this.canvas.add(fabricImg);
+        this.canvas.sendToBack(fabricImg);
+        this.canvas.requestRenderAll();
+      }
+    };
+
+    imgElement.src = imageDataUrl;
+  }
+
+  loadCanvaContent() {
+    const canvasJson = {
+      version: '6.7.0',
+      objects: this.cloneCanvaObjects,
+    };
+
+    this.canvas.loadFromJSON(canvasJson, () => {
+      const allObjects = this.canvas.getObjects();
+
+      allObjects.forEach((obj: any) => {
+        obj.visible = true;
+        obj.opacity = obj.opacity !== undefined ? obj.opacity : 1;
+        obj.selectable = true;
+        obj.evented = obj.evented !== undefined ? obj.evented : true;
+        obj.setCoords();
+      });
+
+      this.canvas.requestRenderAll();
+      setTimeout(() => {
+        this.patchCanvaBackgroundImage();
+      });
+    });
+  }
+
+  CleanCanvaObject() {
+    const CleanData = this.canvaObjectInfo.elements.map(
+      (data: any, index: any) => {
+        if (data.text == 'User Name') {
+          this.canvaObjectInfo.elements[index].text =
+            this.studentData.studentId?.name;
+        } else if (data.text == 'Date') {
+          this.canvaObjectInfo.elements[index].text = this.studentData.updatedAt
+            ? new Date(this.studentData.updatedAt).toLocaleDateString()
+            : '--';
+        } else if (this.showGrade) {
+          if (data.text == 'Grade') {
+            this.canvaObjectInfo.elements[index].text = this.gradeInfo!.grade;
+          } else if (data.text == 'GPA') {
+            this.canvaObjectInfo.elements[index].text = this.gradeInfo!.gpa;
+          } else if (data.text == 'Grade Term') {
+            this.canvaObjectInfo.elements[index].text =
+              this.gradeInfo!.gradeTerm;
+          } else if (data.text == 'Percentage') {
+            this.canvaObjectInfo.elements[index].text =
+              this.gradeInfo.PercentageRange;
+          }
+        }
+        return data;
+      }
+    );
+    this.cloneCanvaObjects.push(...CleanData);
+    this.loadCanvaContent();
+  }
+
+  openDialog(): void {
+    this.canvaObjectInfo = null;
+    this.cloneCanvaObjects = [];
+    this.image_link = null;
     this.certificateService
       .getCertificateById(this.studentData.courseId.certificate_template_id)
       .subscribe((response: any) => {
+        this.canvaObjectInfo = response;
+
         this.course = response;
         let imageUrl = this.course.image;
         imageUrl = imageUrl.replace(/\\/g, '/');
         imageUrl = encodeURI(imageUrl);
         this.imgUrl = imageUrl;
-        // console.log("imageUrl==",this.course.image)
 
         this.certificateForm.patchValue({
           title: this.course.title,
         });
-        // Update content based on type
-        this.course.elements.forEach((element: any) => {
-          if (element.type === 'UserName') {
-            element.content =
-              this.studentData.studentId?.name || 'Default Name';
-          } else if (element.type === 'Course') {
-            element.content =
-              this.studentData.title ||
-              this.studentData?.courseId?.title ||
-              'Default Course';
-          } else if (element.type === 'Grade' && this.showGrade === true) {
-            element.content = this.gradeInfo!.grade;
-          } else if (element.type === 'GPA' && this.showGrade === true) {
-            element.content = this.gradeInfo!.gpa;
-          } else if (element.type === 'Grade Term' && this.showGrade === true) {
-            element.content = this.gradeInfo!.gradeTerm;
-          } else if (element.type === 'Percentage' && this.showGrade === true) {
-            element.content = this.gradeInfo.PercentageRange;
-          } else if (element.type === 'Date') {
-            element.content = this.studentData.updatedAt
-              ? new Date(this.studentData.updatedAt).toLocaleDateString()
-              : '--';
-          }
-        });
-        this.elements = this.course.elements || [];
-        this.setBackgroundImage(imageUrl);
+        this.CleanCanvaObject();
       });
-
-    this.dialogRef = this.dialog.open(templateRef, {
-      width: '1000px',
-      data: { certificate: this.certificateDetails },
-    });
   }
-
-  // end of displaying the certificate
 
   generateCertificate(element: Student) {
     this.studentData = element;
 
     this.actualScore = this.studentData.assessmentanswers.score;
     this.totalScore = this.studentData.assessmentanswers.totalScore;
+
     this.GradeCalculate();
-    this.openDialog(this.certificateDialog);
-    setTimeout(() => {
-      this.copyPreviewToContentToConvert();
-    }, 1000);
+
+    const dialogRef = this.dialog.open(this.certificateDialog, {
+      width: '900px',
+      height: '700px',
+    });
+
+    dialogRef.afterOpened().subscribe(() => {
+      this.initCanvas();
+    });
+  }
+  initCanvas() {
+    this.canvas = new fabric.Canvas('myCanvas', {
+      width: 789,
+      height: 555,
+    });
   }
   copyPreviewToContentToConvert() {
     const certificatePreview = document.querySelector(
@@ -565,7 +650,6 @@ export class CompletionListComponent {
               }
               count += 1;
             }
-            console.log(count, this.gradeDataset.length);
             if (count === this.gradeDataset.length) {
               const sorted = this.gradeDataset.sort((a: any, b: any) => {
                 const numA = parseInt(a.PercentageRange.split('-')[0]);
@@ -574,14 +658,15 @@ export class CompletionListComponent {
               });
               this.gradeInfo = sorted[0];
             }
+            this.showGrade = true;
           }
-          this.showGrade = true;
         } else {
           this.showGrade = false;
         }
       },
       error: (err) => {},
     });
+    this.openDialog();
   }
 
   // generateCertificatePDF(): void {

@@ -315,6 +315,38 @@ export class ManualEvaluationComponent {
 
     this.originalAnswers = JSON.parse(JSON.stringify(this.combinedAnswers));
   }
+  LiveUpdatedGrade() {
+    const TotalassignMart = this.combinedAnswers.reduce(
+      (acc, curr) => acc + curr.assignedMarks,
+      0
+    );
+    let calculatePercent = (TotalassignMart / this.totalScore) * 100;
+    if (calculatePercent <= 100) {
+      this.currentPercentage = Number.isNaN(calculatePercent)
+        ? 0
+        : Math.floor(calculatePercent);
+
+      let count = 0;
+      for (let i = 0; i < this.gradeDataset.length; i++) {
+        const max = this.gradeDataset[i].PercentageRange.split('-')[0];
+        const min = this.gradeDataset[i].PercentageRange.split('-')[1];
+        if (calculatePercent >= max && calculatePercent <= min) {
+          this.gradeInfo = this.gradeDataset[i];
+          break;
+        }
+        count += 1;
+      }
+
+      if (count === this.gradeDataset.length) {
+        const sorted = this.gradeDataset.sort((a: any, b: any) => {
+          const numA = parseInt(a.PercentageRange.split('-')[0]);
+          const numB = parseInt(b.PercentageRange.split('-')[0]);
+          return numA - numB;
+        });
+        this.gradeInfo = sorted[0];
+      }
+    }
+  }
 
   cancelChanges() {
     this.combinedAnswers = JSON.parse(JSON.stringify(this.originalAnswers));

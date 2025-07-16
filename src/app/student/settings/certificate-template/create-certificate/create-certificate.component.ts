@@ -698,7 +698,7 @@ export class CreateCertificateComponent implements OnInit, AfterViewInit {
         showConfirmButton: false,
       });
     } else {
-      const placeholderText = `[${placeholderKey}]`;
+      const placeholderText = placeholderKey;
       const text = new fabric.Text(placeholderText, {
         left: 100,
         top: 100,
