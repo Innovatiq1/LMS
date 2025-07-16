@@ -62,7 +62,6 @@ export class CreateCertificateComponent implements OnInit, AfterViewInit {
   context: CanvasRenderingContext2D | null = null;
   isInserted = false;
   canvas: any;
-
   certificateForm!: FormGroup;
   isSubmitted = false;
   editUrl!: boolean;
@@ -110,7 +109,6 @@ export class CreateCertificateComponent implements OnInit, AfterViewInit {
   };
   elementOptions = [
     'User Name',
-    'Signature',
     'Date',
     'Grade',
     'GPA',
@@ -648,7 +646,7 @@ export class CreateCertificateComponent implements OnInit, AfterViewInit {
         showConfirmButton: false,
       });
     } else {
-      const placeholderText = `[${placeholderKey}]`;
+      const placeholderText = `${placeholderKey}`;
       const text = new fabric.Textbox(placeholderText, {
         left: 100,
         top: 100,
@@ -662,11 +660,12 @@ export class CreateCertificateComponent implements OnInit, AfterViewInit {
       text.customId = uuidv4();
       this.canvas.add(text);
       this.canvas.renderAll();
+      console.log(this.canvas.getObjects());
     }
   }
 
   addParagraph() {
-    const placeholderText = `['paragraph']`;
+    const placeholderText = 'paragraph';
     const text = new fabric.Textbox(placeholderText, {
       left: 100,
       top: 100,
@@ -1084,16 +1083,16 @@ export class CreateCertificateComponent implements OnInit, AfterViewInit {
           cancelButtonColor: '#d33',
         }).then((result) => {
           if (result.isConfirmed) {
-            // this.certificateService
-            //   .updateCertificate(this.classId, formData)
-            //   .subscribe((response: any) => {
-            //     Swal.fire({
-            //       title: 'Success',
-            //       text: 'Certificate updated successfully.',
-            //       icon: 'success',
-            //     });
-            //     window.history.back();
-            //   });
+            this.certificateService
+              .updateCertificate(this.classId, formData)
+              .subscribe((response: any) => {
+                Swal.fire({
+                  title: 'Success',
+                  text: 'Certificate updated successfully.',
+                  icon: 'success',
+                });
+                window.history.back();
+              });
           }
         });
       }
@@ -1107,7 +1106,8 @@ export class CreateCertificateComponent implements OnInit, AfterViewInit {
     }
   }
 
-  async patchCanvaBackgroundImage(imageurl: any) {
+  patchCanvaBackgroundImage(imageurl: any) {
+    this.image_link = null;
     const imageDataUrl = imageurl;
     this.image_link = imageDataUrl;
 
@@ -1141,31 +1141,47 @@ export class CreateCertificateComponent implements OnInit, AfterViewInit {
 
     imgElement.src = imageDataUrl;
   }
-  async getData() {
+
+  loadCanvaContent(imageurl: any) {
+    const CleanedDataset: any = [];
+    this.canvaObjectsclone.map((element: any) => {
+      element.selectable = true;
+      CleanedDataset.push(element);
+    });
+    const canvasJson = {
+      version: '6.7.0',
+      objects: CleanedDataset,
+    };
+    console.log(canvasJson);
+
+    this.canvas.loadFromJSON(canvasJson, () => {
+      const allObjects = this.canvas.getObjects();
+
+      allObjects.forEach((obj: any) => {
+        obj.visible = true;
+        obj.opacity = obj.opacity !== undefined ? obj.opacity : 1;
+        obj.selectable = true;
+        obj.evented = obj.evented !== undefined ? obj.evented : true;
+        obj.setCoords();
+      });
+
+      this.canvas.requestRenderAll();
+      setTimeout(() => {
+        this.patchCanvaBackgroundImage(imageurl);
+      });
+    });
+  }
+
+  getData() {
     forkJoin({
       course: this.certificateService.getCertificateById(this.classId),
     }).subscribe((response: any) => {
+      this.canvas.clear();
+      this.canvaObjectsclone = response.course.elements;
+      this.loadCanvaContent(response.course.image);
       this.course = response.course;
       this.certificateForm.patchValue({
         title: this.course.title,
-      });
-      this.patchCanvaBackgroundImage(response.course.image);
-      this.canvas.clear();
-      const canvasJson = {
-        version: '6.7.0',
-        objects: response.course.elements,
-      };
-      this.canvas.loadFromJSON(canvasJson, () => {
-        const CanvaObjects = this.canvas.getObjects();
-        CanvaObjects.forEach((obj: any) => {
-          obj.visible = true;
-          obj.opacity = obj.opacity !== undefined ? obj.opacity : 1;
-          obj.selectable = obj.selectable !== undefined ? obj.selectable : true;
-          obj.evented = obj.evented !== undefined ? obj.evented : true;
-          obj.setCoords();
-        });
-        this.canvas.renderAll();
-        this.canvas.requestRenderAll();
       });
     });
   }
