@@ -74,7 +74,6 @@ export class GradeComponent implements OnInit {
       { term: 'Fail' },
     ];
     this.add_fields();
-    this.add_fields();
   }
 
   constructor(
@@ -95,7 +94,15 @@ export class GradeComponent implements OnInit {
       this.GradeForms.group({
         PercentageRange: ['', Validators.required],
         grade: ['', [Validators.required, Validators.pattern(/^[A-F][+-]?$/i)]],
-        gpa: ['', [Validators.required, Validators.min(0), Validators.max(10)]],
+        gpa: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern(
+              /^[+-]?(?:[0-9](?:\.\d*)?|10(?:\.0*)?|0?\.[0-9]\d*)$/
+            ),
+          ],
+        ],
         gradeTerm: ['', Validators.required],
       })
     );
@@ -113,7 +120,12 @@ export class GradeComponent implements OnInit {
           ],
           gpa: [
             data.gpa,
-            [Validators.required, Validators.min(0), Validators.max(10)],
+            [
+              Validators.required,
+              Validators.pattern(
+                /^[+-]?(?:[0-9](?:\.\d*)?|10(?:\.0*)?|0?\.[0-9]\d*)$/
+              ),
+            ],
           ],
           gradeTerm: [data.gradeTerm, Validators.required],
         })
@@ -257,8 +269,8 @@ export class GradeComponent implements OnInit {
               next: (res) => {
                 Swal.fire({
                   icon: 'success',
-                  title: 'Updated!',
-                  text: 'Grade has been Updated successfully',
+                  title: 'Deleted',
+                  text: 'Grade has been Deleted successfully',
                   timer: 2000,
                   showConfirmButton: false,
                 });
