@@ -71,6 +71,7 @@ export class AddExamQuestionsComponent implements OnInit, OnDestroy {
   totalmarks=0;
   fileSizeDataAlgo: any;
   violation_list: number[] = Array.from({ length: 20 }, (_, i) => i + 1);
+  filteredQuestionTypes: any[] = [];
 
   constructor(
     @Optional() @Inject(MAT_DIALOG_DATA) public data11: any,
@@ -155,7 +156,72 @@ export class AddExamQuestionsComponent implements OnInit, OnDestroy {
       }
     });
     this.loadData()
+
+    // this.questionFormTab2.get('selectedQuestionType')?.valueChanges.subscribe((value) => {
+    //   if (value === 'file' && this.questionFormTab2.get('videoAnalyzerReq')?.value === true) {
+    //     this.questionFormTab2.get('selectedQuestionType')?.setValue('');
+    //   }
+    // });
+  
+    // this.questionFormTab2.get('videoAnalyzerReq')?.valueChanges.subscribe((enabled: boolean) => {
+    //   if (enabled) {
+    //     // Remove 'file' from the options
+    //     this.filteredQuestionTypes = this.questionTypes.filter(q => q.value !== 'file');
+    //     if (this.questionFormTab2.get('selectedQuestionType')?.value === 'file') {
+    //       this.questionFormTab2.get('selectedQuestionType')?.setValue('');
+    //     }
+    //   } else {
+    //     this.filteredQuestionTypes = [...this.questionTypes];
+    //   }
+    // });
+  
+    // // Initialize filteredQuestionTypes on load
+    // const isAnalyzerEnabled = this.questionFormTab2.get('videoAnalyzerReq')?.value;
+    // this.filteredQuestionTypes = isAnalyzerEnabled
+    //   ? this.questionTypes.filter(q => q.value !== 'file')
+    //   : [...this.questionTypes];
+    this.questionFormTab2.get('selectedQuestionType')?.valueChanges.subscribe((value) => {
+      if (value !== 'file') {
+        this.questionFormTab2.get('fileSizeAlgorithm')?.setValue('');
+      }
+    });
+  
+    // Subscribe to changes of both relevant controls
+    this.questionFormTab2.get('videoAnalyzerReq')?.valueChanges.subscribe(() => {
+      this.updateQuestionTypeOptions();
+    });
+  
+    this.questionFormTab2.get('assessmentEvaluationType')?.valueChanges.subscribe(() => {
+      this.updateQuestionTypeOptions();
+    });
+  
+    this.questionFormTab2.get('selectedQuestionType')?.valueChanges.subscribe((value) => {
+      const isVideoAnalyzerEnabled = this.questionFormTab2.get('videoAnalyzerReq')?.value;
+      const isSystematicEval = this.questionFormTab2.get('assessmentEvaluationType')?.value === 'Systematic';
+  
+      if (value === 'file' && (isVideoAnalyzerEnabled || isSystematicEval)) {
+        this.questionFormTab2.get('selectedQuestionType')?.setValue('');
+      }
+    });
+  
+    // Initial load
+    this.updateQuestionTypeOptions();
   }
+
+  updateQuestionTypeOptions(): void {
+    const isVideoAnalyzerEnabled = this.questionFormTab2.get('videoAnalyzerReq')?.value;
+    const isSystematicEval = this.questionFormTab2.get('assessmentEvaluationType')?.value === 'Systematic';
+  
+    if (isVideoAnalyzerEnabled || isSystematicEval) {
+      this.filteredQuestionTypes = this.questionTypes.filter(q => q.value !== 'file');
+      if (this.questionFormTab2.get('selectedQuestionType')?.value === 'file') {
+        this.questionFormTab2.get('selectedQuestionType')?.setValue('');
+      }
+    } else {
+      this.filteredQuestionTypes = [...this.questionTypes];
+    }
+  }
+  
   startAutoSave() {
     setTimeout(() => {
       if (!this.draftSubscription) {

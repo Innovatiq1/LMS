@@ -61,6 +61,7 @@ export class AssesmentQuestionsComponent implements OnInit, OnDestroy {
   draftId!: string;
   thumbnail: any;
   totalmarks: number = 0;
+  filteredQuestionTypes: any[] = [];
   questionTypes = [
     { label: 'Multiple Choice Questions (MCQ)', value: 'mcq' },
     { label: 'One-Word Answer', value: 'text' },
@@ -161,12 +162,45 @@ export class AssesmentQuestionsComponent implements OnInit, OnDestroy {
     if (!this.editUrl) {
       this.draftId = this.commonService.generate4DigitId();
     }
-    this.questionFormTab3.get('selectedQuestionType')?.valueChanges.subscribe((value) => {
-      if (value !== 'file') {
-        this.questionFormTab3.get('fileSizeAlgorithm')?.setValue('');
-      }
-    });
+    // this.questionFormTab3.get('selectedQuestionType')?.valueChanges.subscribe((value) => {
+    //   if (value !== 'file') {
+    //     this.questionFormTab3.get('fileSizeAlgorithm')?.setValue('');
+    //   }
+    // });
+      // Filter initially based on the default value of assessmentEvaluationType
+  this.updateQuestionTypeOptions();
+
+  // Listen to evaluation type change
+  this.questionFormTab3.get('assessmentEvaluationType')?.valueChanges.subscribe(() => {
+    this.updateQuestionTypeOptions();
+  });
+
+  // Clear fileSizeAlgorithm if not file
+  this.questionFormTab3.get('selectedQuestionType')?.valueChanges.subscribe((value) => {
+    if (value !== 'file') {
+      this.questionFormTab3.get('fileSizeAlgorithm')?.setValue('');
+    }
+
+    // Prevent selection of 'file' when Systematic is selected
+    const isSystematic = this.questionFormTab3.get('assessmentEvaluationType')?.value === 'Systematic';
+    if (value === 'file' && isSystematic) {
+      this.questionFormTab3.get('selectedQuestionType')?.setValue('');
+    }
+  });
   }
+  updateQuestionTypeOptions(): void {
+    const isSystematic = this.questionFormTab3.get('assessmentEvaluationType')?.value === 'Systematic';
+  
+    if (isSystematic) {
+      this.filteredQuestionTypes = this.questionTypes.filter(q => q.value !== 'file');
+      if (this.questionFormTab3.get('selectedQuestionType')?.value === 'file') {
+        this.questionFormTab3.get('selectedQuestionType')?.setValue('');
+      }
+    } else {
+      this.filteredQuestionTypes = [...this.questionTypes];
+    }
+  }
+  
   startAutoSave() {
     setTimeout(() => {
       if (!this.draftSubscription) {
