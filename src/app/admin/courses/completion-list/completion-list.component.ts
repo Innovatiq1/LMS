@@ -459,6 +459,8 @@ export class CompletionListComponent {
   imgUrl: any;
 
   openDialog(templateRef: any): void {
+    this.image_link = null;
+    this.elements = [];
     this.certificateService
       .getCertificateById(this.studentData.courseId.certificate_template_id)
       .subscribe((response: any) => {
@@ -473,6 +475,7 @@ export class CompletionListComponent {
           title: this.course.title,
         });
         // Update content based on type
+
         this.course.elements.forEach((element: any) => {
           if (element.type === 'UserName') {
             element.content =
@@ -482,21 +485,39 @@ export class CompletionListComponent {
               this.studentData.title ||
               this.studentData?.courseId?.title ||
               'Default Course';
-          } else if (element.type === 'Grade' && this.showGrade === true) {
-            element.content = this.gradeInfo!.grade;
-          } else if (element.type === 'GPA' && this.showGrade === true) {
-            element.content = this.gradeInfo!.gpa;
-          } else if (element.type === 'Grade Term' && this.showGrade === true) {
-            element.content = this.gradeInfo!.gradeTerm;
-          } else if (element.type === 'Percentage' && this.showGrade === true) {
-            element.content = this.gradeInfo.PercentageRange;
+          } else if (this.showGrade) {
+            if (element.type === 'Grade') {
+              element.content = this.gradeInfo!.grade;
+            } else if (element.type === 'GPA') {
+              element.content = this.gradeInfo!.gpa;
+            } else if (element.type === 'Grade Term') {
+              element.content = this.gradeInfo!.gradeTerm;
+            } else if (element.type === 'Percentage') {
+              element.content = this.gradeInfo.PercentageRange;
+            }
           } else if (element.type === 'Date') {
             element.content = this.studentData.updatedAt
               ? new Date(this.studentData.updatedAt).toLocaleDateString()
               : '--';
           }
         });
-        this.elements = this.course.elements || [];
+        const checkGrade: any = [];
+        this.course.elements.map((Grade_element: any) => {
+          if (!this.showGrade) {
+            if (
+              Grade_element.type === 'Grade' ||
+              Grade_element.type === 'GPA' ||
+              Grade_element.type === 'Grade Term' ||
+              Grade_element.type === 'Percentage'
+            ) {
+            } else {
+              checkGrade.push(Grade_element);
+            }
+          } else {
+            checkGrade.push(Grade_element);
+          }
+        });
+        this.elements.push(...checkGrade);
         this.setBackgroundImage(imageUrl);
       });
 
@@ -514,6 +535,7 @@ export class CompletionListComponent {
     this.actualScore = this.studentData.assessmentanswers.score;
     this.totalScore = this.studentData.assessmentanswers.totalScore;
     this.GradeCalculate();
+
     this.openDialog(this.certificateDialog);
     setTimeout(() => {
       this.copyPreviewToContentToConvert();
@@ -565,7 +587,6 @@ export class CompletionListComponent {
               }
               count += 1;
             }
-            console.log(count, this.gradeDataset.length);
             if (count === this.gradeDataset.length) {
               const sorted = this.gradeDataset.sort((a: any, b: any) => {
                 const numA = parseInt(a.PercentageRange.split('-')[0]);
@@ -574,8 +595,8 @@ export class CompletionListComponent {
               });
               this.gradeInfo = sorted[0];
             }
+            this.showGrade = true;
           }
-          this.showGrade = true;
         } else {
           this.showGrade = false;
         }
