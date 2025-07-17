@@ -265,9 +265,7 @@ export class CreateCertificateComponent implements OnInit, AfterViewInit {
               };
               this.elements.push(newElement);
             },
-            (error) => {
-              console.error('Upload error:', error);
-            }
+            (error) => {}
           );
         }
       });
@@ -513,7 +511,6 @@ export class CreateCertificateComponent implements OnInit, AfterViewInit {
       const selected = e.selected?.[0];
       if (selected) {
         this.SelectedCanvaObject = selected;
-        console.log(this.SelectedCanvaObject, '===>><<<');
       }
     });
     this.canvas.on('mouse:down', (event: any) => {
@@ -528,7 +525,6 @@ export class CreateCertificateComponent implements OnInit, AfterViewInit {
       const selected = e.selected?.[0];
       if (selected) {
         this.SelectedCanvaObject = selected;
-        console.log(this.SelectedCanvaObject, '===>><<<');
       }
     });
   }
@@ -536,7 +532,6 @@ export class CreateCertificateComponent implements OnInit, AfterViewInit {
   uploadImage(event: Event): void {
     this.canvaObjectsclone = [...this.canvas.getObjects()];
     this.canvas.clear();
-    console.log(this.canvaObjectsclone, '===');
 
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
@@ -555,8 +550,6 @@ export class CreateCertificateComponent implements OnInit, AfterViewInit {
     const reader = new FileReader();
     reader.onload = (e) => {
       const imageDataUrl = e.target?.result as string;
-      console.log(imageDataUrl, '---->>> <<----');
-      console.log('======> END === <=============');
       this.image_link = imageDataUrl;
       const imgElement = new Image();
       imgElement.onload = () => {
@@ -621,7 +614,7 @@ export class CreateCertificateComponent implements OnInit, AfterViewInit {
       const fabricImg = new fabric.Image(img);
       const images_urls = fabricImg.toDataURL({});
       this.image_link = images_urls;
-      // console.log('Image as base64 data URL:', imps);
+
       fabricImg.set({
         left: 0,
         top: 0,
@@ -667,7 +660,6 @@ export class CreateCertificateComponent implements OnInit, AfterViewInit {
       text.customId = uuidv4();
       this.canvas.add(text);
       this.canvas.renderAll();
-      console.log(this.canvas.getObjects());
     }
   }
 
@@ -689,7 +681,7 @@ export class CreateCertificateComponent implements OnInit, AfterViewInit {
   }
   onElementSelect(placeholderKey: string): void {
     const CanvaResponse = this.findObjectInCanava(placeholderKey);
-    console.log(CanvaResponse);
+
     if (CanvaResponse) {
       Swal.fire({
         icon: 'info',
@@ -733,9 +725,6 @@ export class CreateCertificateComponent implements OnInit, AfterViewInit {
     }
   }
 
-  //   uploadLogo() {
-  //   this.logoInput.nativeElement.click();
-  // }
   uploadLogo() {
     this.logoInput.nativeElement.click();
   }
@@ -781,7 +770,6 @@ export class CreateCertificateComponent implements OnInit, AfterViewInit {
     const file = input.files?.[0];
 
     if (!file || !file.type.startsWith('image/')) {
-      alert('Please upload a valid image file');
       return;
     }
 
@@ -820,11 +808,6 @@ export class CreateCertificateComponent implements OnInit, AfterViewInit {
       });
 
       this.canvas.renderAll();
-    }
-  }
-
-  StyleCanvaObject() {
-    if (this.SelectedCanvaObject != null) {
     }
   }
 
@@ -899,7 +882,6 @@ export class CreateCertificateComponent implements OnInit, AfterViewInit {
     if (this.isEdit) {
       this.editingElementIndex = index;
       const selectedElement = this.elements[index];
-      console.log('selectedElement', selectedElement);
       this.currentElement = {
         fontSize: selectedElement.fontSize || 16,
         color: selectedElement.color || '#000',
@@ -965,9 +947,7 @@ export class CreateCertificateComponent implements OnInit, AfterViewInit {
           this.uploaded = image?.split('\\');
           this.uploadedImage = this.uploaded?.pop();
         },
-        (error) => {
-          console.error('Upload error:', error);
-        }
+        (error) => {}
       );
     }
   }
@@ -999,7 +979,7 @@ export class CreateCertificateComponent implements OnInit, AfterViewInit {
 
   private setBackgroundImage(imageUrl: string) {
     imageUrl = encodeURI(imageUrl);
-    console.log('Image Url=', imageUrl);
+
     this.image_link = imageUrl;
     this.backgroundTable.nativeElement.style.backgroundImage = `url(${imageUrl})`;
     setTimeout(() => {
@@ -1051,7 +1031,7 @@ export class CreateCertificateComponent implements OnInit, AfterViewInit {
   saveCertificate() {
     if (this.certificateForm.valid) {
       const formData = this.collectFormData();
-      console.log(formData, '==><==');
+
       if (!this.editUrl) {
         this.isSubmitted = true;
         Swal.fire({
@@ -1159,7 +1139,6 @@ export class CreateCertificateComponent implements OnInit, AfterViewInit {
       version: '6.7.0',
       objects: CleanedDataset,
     };
-    console.log(canvasJson);
 
     this.canvas.loadFromJSON(canvasJson, () => {
       const allObjects = this.canvas.getObjects();
@@ -1193,21 +1172,3 @@ export class CreateCertificateComponent implements OnInit, AfterViewInit {
     });
   }
 }
-
-// getData() {
-//   forkJoin({
-//     course: this.certificateService.getCertificateById(this.classId),
-//   }).subscribe((response: any) => {
-//     console.log()
-//     this.course = response.course;
-//     let imageUrl = this.course.image;
-//     imageUrl = imageUrl.replace(/\\/g, '/');
-//     imageUrl = encodeURI(imageUrl);
-
-//     this.certificateForm.patchValue({
-//       title: this.course.title,
-//     });
-//     this.elements = this.course.elements || [];
-//     this.setBackgroundImage(imageUrl);
-//   });
-// }
