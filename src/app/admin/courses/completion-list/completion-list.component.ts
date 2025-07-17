@@ -100,12 +100,13 @@ export class CompletionListComponent {
   uploadedImage: any;
   certificateForm!: FormGroup;
   selection = new SelectionModel<any>(true, []);
-  selectedRows: any[] = []; 
-    actualScore:number = 0; 
-  currentPercentage:number = 0;
-  totalScore:number = 0 
-  gradeDataset:any = [] 
-  gradeInfo:any =null
+  selectedRows: any[] = [];
+  actualScore: number = 0;
+  currentPercentage: number = 0;
+  totalScore: number = 0;
+  gradeDataset: any = [];
+  gradeInfo: any = null;
+  showGrade: boolean = false;
 
   config: AngularEditorConfig = {
     editable: true,
@@ -156,9 +157,9 @@ export class CompletionListComponent {
     private courseService: CourseService,
     private fb: FormBuilder,
     private authenService: AuthenService,
-    private assessmentService: AssessmentService, 
-      private SettingService:SettingsService,
-    public utils: UtilsService,
+    private assessmentService: AssessmentService,
+    private SettingService: SettingsService,
+    public utils: UtilsService
   ) {
     this.studentPaginationModel = {} as StudentPaginationModel;
     this.coursePaginationModel = {};
@@ -458,6 +459,8 @@ export class CompletionListComponent {
   imgUrl: any;
 
   openDialog(templateRef: any): void {
+    this.image_link = null;
+    this.elements = [];
     this.certificateService
       .getCertificateById(this.studentData.courseId.certificate_template_id)
       .subscribe((response: any) => {
@@ -472,34 +475,49 @@ export class CompletionListComponent {
           title: this.course.title,
         });
         // Update content based on type
-        this.course.elements.forEach((element: any) => { 
-            
+
+        this.course.elements.forEach((element: any) => {
           if (element.type === 'UserName') {
-              element.content =
-              this.studentData.studentId?.name || 'Default Name'; 
-
+            element.content =
+              this.studentData.studentId?.name || 'Default Name';
           } else if (element.type === 'Course') {
-            element.content = this.studentData.title || this.studentData?.courseId?.title || 'Default Course';
-          } else if(element.type === "Grade"){ 
-            element.content =  this.gradeInfo!.grade
-
-          }else if(element.type === "GPA"){ 
-              element.content =  this.gradeInfo!.gpa
-
-          }else if(element.type === "Grade Term"){
-                element.content =  this.gradeInfo!.gradeTerm
-          }else if(element.type === "Percentage"){ 
-              element.content =  this.gradeInfo.PercentageRange
-
-          }
-          
-          else if (element.type === 'Date') {
+            element.content =
+              this.studentData.title ||
+              this.studentData?.courseId?.title ||
+              'Default Course';
+          } else if (this.showGrade) {
+            if (element.type === 'Grade') {
+              element.content = this.gradeInfo!.grade;
+            } else if (element.type === 'GPA') {
+              element.content = this.gradeInfo!.gpa;
+            } else if (element.type === 'Grade Term') {
+              element.content = this.gradeInfo!.gradeTerm;
+            } else if (element.type === 'Percentage') {
+              element.content = this.gradeInfo.PercentageRange;
+            }
+          } else if (element.type === 'Date') {
             element.content = this.studentData.updatedAt
               ? new Date(this.studentData.updatedAt).toLocaleDateString()
               : '--';
           }
         });
-        this.elements = this.course.elements || [];
+        const checkGrade: any = [];
+        this.course.elements.map((Grade_element: any) => {
+          if (!this.showGrade) {
+            if (
+              Grade_element.type === 'Grade' ||
+              Grade_element.type === 'GPA' ||
+              Grade_element.type === 'Grade Term' ||
+              Grade_element.type === 'Percentage'
+            ) {
+            } else {
+              checkGrade.push(Grade_element);
+            }
+          } else {
+            checkGrade.push(Grade_element);
+          }
+        });
+        this.elements.push(...checkGrade);
         this.setBackgroundImage(imageUrl);
       });
 
@@ -512,11 +530,12 @@ export class CompletionListComponent {
   // end of displaying the certificate
 
   generateCertificate(element: Student) {
-    this.studentData = element; 
-    
-      this.actualScore = this.studentData.assessmentanswers.score
-      this.totalScore = this.studentData.assessmentanswers.totalScore  
-      this.GradeCalculate()
+    this.studentData = element;
+
+    this.actualScore = this.studentData.assessmentanswers.score;
+    this.totalScore = this.studentData.assessmentanswers.totalScore;
+    this.GradeCalculate();
+
     this.openDialog(this.certificateDialog);
     setTimeout(() => {
       this.copyPreviewToContentToConvert();
@@ -542,56 +561,48 @@ export class CompletionListComponent {
         certificatePreview.style.backgroundRepeat;
       contentToConvert.style.border = certificatePreview.style.border;
     }
-  } 
+  }
 
-  
-     GradeCalculate(){  
-    let calculatePercent = this.actualScore / this.totalScore * 100;
-    this.currentPercentage = Number.isNaN(calculatePercent) ? 0 : Math.floor(calculatePercent);
+  GradeCalculate() {
+    let calculatePercent = (this.actualScore / this.totalScore) * 100;
+    this.currentPercentage = Number.isNaN(calculatePercent)
+      ? 0
+      : Math.floor(calculatePercent);
 
-
-    const getCompanyId:any = localStorage.getItem('userLogs')
-    const parseid = JSON.parse(getCompanyId) 
+    const getCompanyId: any = localStorage.getItem('userLogs');
+    const parseid = JSON.parse(getCompanyId);
     this.SettingService.gradeFetch(parseid.companyId).subscribe({
-      next:(res:any)=>{
-       if(res.response != null ){ 
-         this.gradeDataset= []
-        this.gradeDataset.push(...res.response!.gradeList) 
-        let count = 0
-         for(let i = 0;  i < this.gradeDataset.length; i++ ){  
-         
-      const max = this.gradeDataset[i].PercentageRange.split('-')[0] 
-      const min = this.gradeDataset[i].PercentageRange.split('-')[1]
-      if(calculatePercent >= max &&  calculatePercent <=min){
-        this.gradeInfo =  this.gradeDataset[i]
-        break 
-        
-      } 
-      count +=1 
-    } 
-    console.log(count, this.gradeDataset.length)
-    if(count === this.gradeDataset.length){
-       const sorted = this.gradeDataset.sort((a:any, b:any) => {
-    const numA = parseInt(a.PercentageRange.split('-')[0]);
-    const numB = parseInt(b.PercentageRange.split('-')[0]);
-    return numA - numB; 
-    
-    }); 
-    this.gradeInfo = sorted[0]
-
-
-    }
-
-        
-       } 
-      },error:(err)=>{  
-        
-      }
-    })
-
-   
-    
-
+      next: (res: any) => {
+        if (res.response != null) {
+          if (res.response!.gradeList!.length != 0) {
+            this.gradeDataset = [];
+            this.gradeDataset.push(...res.response!.gradeList);
+            let count = 0;
+            for (let i = 0; i < this.gradeDataset.length; i++) {
+              const max = this.gradeDataset[i].PercentageRange.split('-')[0];
+              const min = this.gradeDataset[i].PercentageRange.split('-')[1];
+              if (calculatePercent >= max && calculatePercent <= min) {
+                this.gradeInfo = this.gradeDataset[i];
+                break;
+              }
+              count += 1;
+            }
+            if (count === this.gradeDataset.length) {
+              const sorted = this.gradeDataset.sort((a: any, b: any) => {
+                const numA = parseInt(a.PercentageRange.split('-')[0]);
+                const numB = parseInt(b.PercentageRange.split('-')[0]);
+                return numA - numB;
+              });
+              this.gradeInfo = sorted[0];
+            }
+            this.showGrade = true;
+          }
+        } else {
+          this.showGrade = false;
+        }
+      },
+      error: (err) => {},
+    });
   }
 
   // generateCertificatePDF(): void {
@@ -805,7 +816,7 @@ export class CompletionListComponent {
               icon: 'success',
             });
           },
-          (err) => { }
+          (err) => {}
         );
       }
     });
@@ -820,8 +831,8 @@ export class CompletionListComponent {
     this.isAllSelected()
       ? this.selection.clear()
       : this.dataSource.forEach((row: CourseModel) =>
-        this.selection.select(row)
-      );
+          this.selection.select(row)
+        );
   }
 
   updateSelectedRows() {
@@ -836,8 +847,6 @@ export class CompletionListComponent {
   isAnyRowSelected(): boolean {
     return this.selection.hasValue();
   }
-
-
 
   //   enableMultipleCertificates() {
   //   if (this.selectedRows.length === 0) {
@@ -987,14 +996,16 @@ export class CompletionListComponent {
       .then(() => {
         Swal.close();
 
-        const certificate = successfulCount > 1 ? 'certificates' : 'certificate';
+        const certificate =
+          successfulCount > 1 ? 'certificates' : 'certificate';
         let message = '';
         if (successfulCount > 0) {
           message = `${successfulCount} ${certificate} generated successfully!`;
         }
 
         if (alreadyIssuedCount > 0) {
-          const alreadyCount = alreadyIssuedCount > 1 ? 'certificates are ' : 'certificate is';
+          const alreadyCount =
+            alreadyIssuedCount > 1 ? 'certificates are ' : 'certificate is';
           const text = successfulCount > 0 ? 'For other' : '';
           message += ` ${text} selected course ${alreadyCount} already Issued`;
         }
@@ -1024,13 +1035,13 @@ export class CompletionListComponent {
       })
       .catch(() => {
         this.isGeneratingCertificates = false;
-        Swal.fire('Error', 'Failed to generate some certificates. Please try again.', 'error');
+        Swal.fire(
+          'Error',
+          'Failed to generate some certificates. Please try again.',
+          'error'
+        );
       });
   }
-
-
-
-
 
   generateCertificateForRow(row: any): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -1066,9 +1077,7 @@ export class CompletionListComponent {
         element.content = row.studentId?.name || 'Default Name';
       } else if (element.type === 'Course') {
         element.content = row.courseId.title || 'Default Course';
-      }  
-      
-      else if (element.type === 'Date') {
+      } else if (element.type === 'Date') {
         element.content = row.updatedAt
           ? new Date(row.updatedAt).toLocaleDateString()
           : '--';
@@ -1116,20 +1125,24 @@ export class CompletionListComponent {
                  font-family: ${element.fontStyle}
                  "
         >
-          <div style="font-size: ${element.fontSize}px; color: ${element.color
-            };">
-            ${element.type === 'Logo'
-              ? `<img src="${element.imageUrl}" style="max-width: ${element.width}px; height: ${element.height}px;">`
-              : ''
+          <div style="font-size: ${element.fontSize}px; color: ${
+            element.color
+          };">
+            ${
+              element.type === 'Logo'
+                ? `<img src="${element.imageUrl}" style="max-width: ${element.width}px; height: ${element.height}px;">`
+                : ''
             }
            
           </div>
-          <div style="font-size: ${element.fontSize}px; color: ${element.color
-            };">
+          <div style="font-size: ${element.fontSize}px; color: ${
+            element.color
+          };">
              
-            ${element.type === 'Signature'
-              ? `<img src="${element.imageUrl}" style="max-width: ${element.width}px; height: auto">`
-              : element.content
+            ${
+              element.type === 'Signature'
+                ? `<img src="${element.imageUrl}" style="max-width: ${element.width}px; height: auto">`
+                : element.content
             }
           </div>
         </div>
@@ -1439,8 +1452,9 @@ export class CompletionListComponent {
         if (alreadyAssignedCount > 0) {
           const alreadyText =
             alreadyAssignedCount > 1 ? 'exams are' : 'exam is';
-          message += `${examsEnabledCount > 0 ? 'For other' : ''
-            } selected ${alreadyText} already enabled.`;
+          message += `${
+            examsEnabledCount > 0 ? 'For other' : ''
+          } selected ${alreadyText} already enabled.`;
         }
 
         Swal.fire({
@@ -1467,15 +1481,13 @@ export class CompletionListComponent {
     this.updateSelectedRows();
   }
 
-
   evaluateRow(row: any, isEdit: boolean) {
     console.log('Evaluating row:', row, 'isEdit:', isEdit);
     this.router.navigate(['/admin/courses/manual-evaluation'], {
       queryParams: {
         id: row?._id,
-        isEdit: isEdit
-      }
+        isEdit: isEdit,
+      },
     });
   }
-
 }

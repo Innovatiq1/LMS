@@ -60,23 +60,70 @@
                 <div class="row p-3 d-flex justify-content-between">
                     <div class="col-lg-6 col-md-12 col-sm-12 col-12">
                         <div>
-                            <div *ngFor="let question of getPaginatedQuestions().slice(0, 5); let i=index">
+                            <div *ngFor="let question of getPaginatedQuestions().slice(0, 20); let i=index">
                                 <div class="text-black p-3 rounded bg-light mb-4">
-                                    <h6 class="ml-5">{{ i + 1 + skip }}. {{ question.questionText }}</h6>
-                                    <mat-radio-group [(ngModel)]="answers[i+skip].selectedOptionText" (change)="handleRadioChange(i+skip)">
-                                        <div *ngFor="let option of question.options; let k=index">
-                                            <mat-radio-button class="example-margin option-text" [ngClass]="{'bg-success': question.selectedOptionText === option.text}" [value]="option.text">{{ optionsLabel[k] }} {{ option.text }}</mat-radio-button>
-                                            <span>
-                                                <i *ngIf="question.status && question.selectedOption === option.text" class="fa fa-check text-success"></i>
-                                                <i *ngIf="question.status === false && question.selectedOption === option.text" class="fa fa-times text-danger"></i>
-                                            </span>
-                                        </div>
-                                    </mat-radio-group>
+                                  <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h6 class="ml-5 m-0">{{ i + 1 + skip }}. {{ question.questionText }}</h6>
+                                    <span class="text-muted font-weight-bold me-3">Score: {{ question.questionscore }}</span>
+                                  </div>
+                                  <div *ngIf="question.questionType === 'file' && question.fileAnswer?.length > 0" class="ml-5 mb-2">
+                                    <span class="text-primary font-weight-bold">Document: </span>
+                                    <a *ngFor="let file of question.fileAnswer" [href]="file.documentLink" target="_blank"
+                                      class="text-decoration-none">
+                                      <mat-icon class="ms-1" style="vertical-align: middle;">visibility</mat-icon>
+                                      {{ file.documentName }}
+                                    </a>
+                                  </div>
+                              
+                                  <!-- MCQ or Radio -->
+                                  <mat-radio-group *ngIf="question.questionType === 'mcq' || question.questionType === 'radio'"
+                                    [(ngModel)]="answers[i + skip].selectedOptionText" (change)="handleRadioChange(i + skip)">
+                                    <div *ngFor="let option of question.options; let k = index">
+                                      <mat-radio-button [value]="option.text">
+                                        {{ optionsLabel[k] }} {{ option.text }}
+                                      </mat-radio-button>
+                                    </div>
+                                  </mat-radio-group>
+                              
+                                  <!-- True/False -->
+                                  <mat-radio-group *ngIf="question.questionType === 'trueFalse'"
+                                    [(ngModel)]="answers[i + skip].selectedOptionText" (change)="handleRadioChange(i + skip)">
+                                    <mat-radio-button value="true">True</mat-radio-button>
+                                    <mat-radio-button value="false">False</mat-radio-button>
+                                  </mat-radio-group>
+                              
+                                  <!-- Text, Number, Fill in the blanks -->
+                                  <input *ngIf="['text', 'fillBlanks', 'number'].includes(question.questionType)" class="form-control mt-2"
+                                    [type]="question.questionType === 'number' ? 'number' : 'text'" [(ngModel)]="answers[i + skip].selectedOptionText"
+                                    (input)="handleRadioChange(i + skip)" />
+                              
+                                  <!-- Textarea -->
+                                  <textarea *ngIf="question.questionType === 'textarea'" class="form-control mt-2" rows="3"
+                                    [(ngModel)]="answers[i + skip].selectedOptionText" (input)="handleRadioChange(i + skip)"></textarea>
+                              
+                                  <!-- File Upload -->
+                                  <div *ngIf="question.questionType === 'file'" class="mt-2">
+                                    <label class="form-label">Type your answer:</label>
+                                    <textarea class="form-control mb-2" rows="3" [(ngModel)]="answers[i + skip].selectedOptionText"
+                                      [disabled]="answers[i + skip].fileName" (input)="handleTextChange(i + skip)"></textarea>
+                              
+                                    <div class="text-center my-2 text-muted">— or —</div>
+                              
+                                    <label class="form-label">Upload your answer file: {{ question.fileSize }} MB</label>
+                                    <input type="file" class="form-control" accept=".pdf,.doc,.docx,.ppt,.pptx,.txt,.mp3,.mp4,.wav,.avi,image/*"
+                                      [disabled]="answers[i + skip].selectedOptionText" (change)="handleFileChange($event, i + skip)" />
+                              
+                                    <div *ngIf="answers[i + skip].fileName" class="mt-1 text-muted">
+                                      Selected File: {{ answers[i + skip].fileName }}
+                                      <button class="btn btn-sm btn-link text-danger p-0" (click)="clearFileAnswer(i + skip)">Remove</button>
+                                    </div>
+                                  </div>
                                 </div>
-                            </div>
+                              </div>
+                              
                         </div>
                     </div>
-                    <div class="col-lg-6 col-md-12 col-sm-12 col-12">
+                    <!-- <div class="col-lg-6 col-md-12 col-sm-12 col-12">
                         <div>
                             <div *ngFor="let question of getPaginatedQuestions().slice(5, 10); let i=index">
                                 <div class="text-black p-3 rounded bg-light mb-4">
@@ -93,7 +140,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="row p-3">
                     <div class="col-lg-12">
