@@ -180,8 +180,13 @@
               <div class="col-md-4">
                 <h6>Select Question Type</h6>
                 <mat-form-field appearance="outline" style="width: 100%">
-                  <mat-select formControlName="selectedQuestionType">
+                  <!-- <mat-select formControlName="selectedQuestionType">
                     <mat-option *ngFor="let type of questionTypes" [value]="type.value">
+                      {{ type.label }}
+                    </mat-option>
+                  </mat-select> -->
+                  <mat-select formControlName="selectedQuestionType">
+                    <mat-option *ngFor="let type of filteredQuestionTypes" [value]="type.value">
                       {{ type.label }}
                     </mat-option>
                   </mat-select>
