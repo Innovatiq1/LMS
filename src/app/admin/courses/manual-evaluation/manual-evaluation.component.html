@@ -63,6 +63,7 @@
                 type="number"
                 id="marks-{{ i }}"
                 [(ngModel)]="item.assignedMarks"
+                (ngModelChange)="LiveUpdatedGrade()"
                 name="marks-{{ i }}"
                 min="0"
                 [max]="item.questionscore"
