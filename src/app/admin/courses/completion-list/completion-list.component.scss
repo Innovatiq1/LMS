@@ -251,5 +251,8 @@ mat-cell {
 .containers_Canvas {
   margin-top: 30px;
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
   justify-content: center;
 }

@@ -78,6 +78,8 @@ export class CompletionListComponent {
   ];
   @ViewChild('certificateDialog') certificateDialog!: TemplateRef<any>;
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
+  @ViewChild('certificateGenerate', { static: false })
+  certificateGenerate!: ElementRef;
 
   pdfData: any = [];
   dafaultGenratepdf: boolean = false;
@@ -552,6 +554,7 @@ export class CompletionListComponent {
               this.gradeInfo.PercentageRange;
           }
         }
+        data.selectable = false;
         return data;
       }
     );
@@ -604,27 +607,27 @@ export class CompletionListComponent {
       height: 555,
     });
   }
-  copyPreviewToContentToConvert() {
-    const certificatePreview = document.querySelector(
-      '.certificate-preview'
-    ) as HTMLElement;
-    const contentToConvert = document.getElementById(
-      'contentToConvert'
-    ) as HTMLElement;
+  // copyPreviewToContentToConvert() {
+  //   const certificatePreview = document.querySelector(
+  //     '.certificate-preview'
+  //   ) as HTMLElement;
+  //   const contentToConvert = document.getElementById(
+  //     'contentToConvert'
+  //   ) as HTMLElement;
 
-    if (certificatePreview && contentToConvert) {
-      contentToConvert.innerHTML = certificatePreview.innerHTML;
-      contentToConvert.style.backgroundImage =
-        certificatePreview.style.backgroundImage;
-      contentToConvert.style.backgroundSize =
-        certificatePreview.style.backgroundSize;
-      contentToConvert.style.backgroundPosition =
-        certificatePreview.style.backgroundPosition;
-      contentToConvert.style.backgroundRepeat =
-        certificatePreview.style.backgroundRepeat;
-      contentToConvert.style.border = certificatePreview.style.border;
-    }
-  }
+  //   if (certificatePreview && contentToConvert) {
+  //     contentToConvert.innerHTML = certificatePreview.innerHTML;
+  //     contentToConvert.style.backgroundImage =
+  //       certificatePreview.style.backgroundImage;
+  //     contentToConvert.style.backgroundSize =
+  //       certificatePreview.style.backgroundSize;
+  //     contentToConvert.style.backgroundPosition =
+  //       certificatePreview.style.backgroundPosition;
+  //     contentToConvert.style.backgroundRepeat =
+  //       certificatePreview.style.backgroundRepeat;
+  //     contentToConvert.style.border = certificatePreview.style.border;
+  //   }
+  // }
 
   GradeCalculate() {
     let calculatePercent = (this.actualScore / this.totalScore) * 100;
@@ -669,109 +672,28 @@ export class CompletionListComponent {
     this.openDialog();
   }
 
-  // generateCertificatePDF(): void {
-  //   const data = document.querySelector('.certificate-preview') as HTMLElement;
-  //   html2canvas(data, {
-  //     scale: 3,
-  //     useCORS: true,
-  //     backgroundColor: null,
-  //   }).then((canvas) => {
-  //     const imgWidth = 210;
-  //     const pageHeight=297;
-  //     const imgHeight = (canvas.height * imgWidth) / canvas.width;
-  //     const contentDataURL = canvas.toDataURL('image/png');
-
-  //     const pdf = new jsPDF('p', 'mm', 'a4');
-  //     const position = 0;
-
-  //     pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
-
-  //     if (imgHeight > pageHeight) {
-  //       let remainingHeight = imgHeight;
-  //       let yPosition = position;
-
-  //       while (remainingHeight > 0) {
-  //         remainingHeight -= pageHeight;
-  //         yPosition = Math.max(yPosition + pageHeight, pageHeight);
-  //         pdf.addPage();
-  //         pdf.addImage(contentDataURL, 'PNG', 0, yPosition, imgWidth, imgHeight);
-  //       }
-  //     }
-
-  //     pdf.save('certificate.pdf')
-  //     // const pdfBlob = pdf.output('blob');
-
-  //     // this.update(pdfBlob);
-  //     this.dialogRef.close();
-  //   });
-  // }
   generateCertificatePDF(): void {
-    const data = document.querySelector('.certificate-preview') as HTMLElement;
+    const data = this.certificateGenerate.nativeElement;
 
     html2canvas(data, {
       scale: 3,
       useCORS: true,
       backgroundColor: null,
     }).then((canvas) => {
-      const imgWidth = 216;
-      const pageHeight = 279;
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('l', 'mm', 'a4');
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = pdfWidth;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      const contentDataURL = canvas.toDataURL('image/png');
-
-      const pdf = new jsPDF('p', 'mm', [216, imgHeight]);
       const position = 0;
-
-      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
-
-      if (imgHeight > pageHeight) {
-        let remainingHeight = imgHeight;
-        let yPosition = position;
-
-        while (remainingHeight > 0) {
-          remainingHeight -= pageHeight;
-          yPosition = Math.max(yPosition + pageHeight, pageHeight);
-          pdf.addPage();
-          pdf.addImage(
-            contentDataURL,
-            'PNG',
-            0,
-            yPosition,
-            imgWidth,
-            imgHeight
-          );
-        }
-      }
-
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
       // pdf.save('certificate.pdf');
       const pdfBlob = pdf.output('blob');
-
       this.update(pdfBlob);
       this.dialogRef.close();
     });
   }
-
-  // update(pdfBlob: Blob) {
-  //   Swal.fire({
-  //     title: 'Certificate Generating...',
-  //     text: 'Please wait...',
-  //     allowOutsideClick: false,
-  //     timer: 24000,
-  //     timerProgressBar: true,
-  //   });
-
-  //   this.dafaultGenratepdf = true;
-  //   this.copyPreviewToContentToConvert();
-
-  //   var convertIdDynamic = 'contentToConvert';
-  //   this.genratePdf3(
-  //     convertIdDynamic,
-  //     this.studentData?.studentId._id,
-  //     this.studentData?.courseId._id,
-  //     pdfBlob
-  //   );
-
-  //   this.dialogRef.close();
-  // }
 
   update(pdfBlob: Blob) {
     let countdown = 60;
@@ -800,9 +722,9 @@ export class CompletionListComponent {
       },
     });
     this.dafaultGenratepdf = true;
-    this.copyPreviewToContentToConvert();
+    // this.copyPreviewToContentToConvert();
 
-    const convertIdDynamic = 'contentToConvert';
+    const convertIdDynamic = this.certificateGenerate.nativeElement;
     this.genratePdf3(
       convertIdDynamic,
       this.studentData?.studentId._id,
@@ -822,7 +744,7 @@ export class CompletionListComponent {
     // console.log('convertIdDynamic - ', convertIdDynamic, 'memberId -', memberId, 'memberProgrmId', memberProgrmId);
 
     setTimeout(() => {
-      const dashboard = document.getElementById(convertIdDynamic);
+      const dashboard = convertIdDynamic;
       if (dashboard != null) {
         // Upload the Blob
         const randomString = this.generateRandomString(10);

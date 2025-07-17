@@ -181,19 +181,7 @@
                     >{{ row.courseId.feeType | titlecase }}
                   </mat-cell>
                 </ng-container>
-                <!-- <ng-container matColumnDef="Instructorfee">
-                  <mat-header-cell *matHeaderCellDef  >{{commonRoles?.INSTRUCTOR_ROLE}}
-                    Fee</mat-header-cell>
-                  <mat-cell *matCellDef="let row" (click)="isView ? view(row.id) : null" >
-                    <span class="mobile-label">Instructor Fee:</span>
-                    <span *ngIf="row.classId?.instructorCost !== null && row.classId?.instructorCost !== undefined">
-                      <span>$</span> {{row.classId?.instructorCost || 0 }}.00
-                    </span>
-                    <span *ngIf="row.classId?.instructorCost == null && row.classId?.instructorCost == undefined">
-                      <span>$</span> 0.00
-                    </span>
-                  </mat-cell>
-                </ng-container> -->
+
                 <ng-container matColumnDef="Classstart">
                   <mat-header-cell *matHeaderCellDef
                     >Start Date</mat-header-cell
@@ -310,34 +298,6 @@
                   </mat-cell>
                 </ng-container>
 
-                <!-- <ng-container matColumnDef="actions">
-                  <mat-header-cell *matHeaderCellDef class="pr-0">Actions</mat-header-cell>
-                  <mat-cell *matCellDef="let row; let i = index;" class="mat-column-actions pr-0">
-                    <span class="mobile-label">Actions:</span>
-                  
-                    <div class="action-buttons-wrapper">
-                      <div *ngIf="row.assessmentanswers?.evaluationStatus === 'pending' || row.assessmentanswers?.evaluationStatus === 'completed'">
-                        <button mat-raised-button color="accent" class="mt-2"
-                          (click)="evaluateRow(row, row.assessmentanswers?.evaluationStatus === 'completed')"
-                          [disabled]="row.assessmentanswers?.assessmentEvaluationType === 'systomatic'">
-                          {{ row.assessmentanswers?.evaluationStatus === 'pending' ? 'Evaluate' : 'Re-Evaluate' }}
-                        </button>
-                      </div>
-                  
-                      <div *ngIf="row.certificate">
-                        <span class="label l-bg-green shadow-style" mat-raised-button id="issued">
-                          Certificate issued
-                        </span>
-                      </div>
-                      <div *ngIf="!row.certificate">
-                        <span class="label shadow-style" mat-raised-button id="submit" (click)="generateCertificate(row)">
-                          Issue Certificate
-                        </span>
-                      </div>
-                    </div>
-                  </mat-cell>
-                  
-                </ng-container> -->
                 <ng-container matColumnDef="actions">
                   <mat-header-cell *matHeaderCellDef class="pr-0"
                     >Actions</mat-header-cell
@@ -468,72 +428,15 @@
 
 <ng-template #certificateDialog let-dialogRef="dialogRef" let-data>
   <div class="containers_Canvas">
-    <canvas id="myCanvas" style="border: 1px solid red"></canvas>
-    <!-- <button mat-raised-button id="submit" (click)="generateCertificatePDF()">
-        Generate Certificate
-      </button> -->
-
-    <!-- <button mat-raised-button id="submit" (click)="update()" style="margin-left: 700px; margin-top: 10px;">
-                        Generate Certificate
-                      </button> -->
+    <canvas
+      #certificateGenerate
+      id="myCanvas"
+      style="border: 1px solid rgb(220, 217, 217)"
+    ></canvas>
+    <button mat-raised-button id="submit" (click)="generateCertificatePDF()">
+      Generate Certificate
+    </button>
   </div>
 </ng-template>
 
 <div *ngIf="dafaultGenratepdf" id="contentToConvert"></div>
-<!--  <div class="certificate-preview">
-        <div class="certificate-canvas" [ngStyle]="{
-                            'background-image': 'url(' + image_link + ')',
-                            'margin': '0 auto',
-                            'background-repeat': 'no-repeat',
-                            'background-position': 'center right',
-                            'background-size': '100% 100%',
-                            'border': '0.5px solid lightgray',
-                            'height': '700px',
-                            'width': '700px',
-                            'position': 'relative'
-                          }">
-          <div *ngFor="let element of elements; let i = index" class="element-container" [ngStyle]="{
-                              'display': 'flex',
-                              'justify-content': element.alignment,
-                              'position': 'absolute',
-                              'top': element.top + 'px',
-                              'left': (element.left+10) + 'px',
-                              
-                            }">
-            <div class="certificate-element">
-
-
-
-              <div [attr.contenteditable]="element.editable" [ngStyle]="{
-                                  'font-size': element.fontSize + 'px',
-                                  'color': element.color,
-                                  'font-family': element.fontStyle
-                                }" class="certificate-element-content">
-                
-                <ng-container *ngIf="element.type === 'Logo'; else textElement">
-                  <div class="resizable-logo" [ngStyle]="{
-                                      width: element.width + 'px',
-                                      height: element.height + 'px',
-                                    }">
-                    <img [src]="element.imageUrl" alt="Logo" style="max-width: 100%; height: auto;">
-                    <div class="resizer"></div>
-                  </div>
-                </ng-container>
-                <ng-container *ngIf="element.type === 'Signature';">
-                  <div class="resizable-logo" [ngStyle]="{
-                                      width: element.width + 'px',
-                                      height: element.height + 'px'
-                                    }">
-                    <img [src]="element.imageUrl" alt="Signature" style="max-width: 100%; height: auto;">
-                    <div class="resizer"></div>
-                  </div>
-                </ng-container>
-
-                <ng-template #textElement>
-                  {{ element.content }}
-                </ng-template>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> -->
