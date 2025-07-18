@@ -21,7 +21,7 @@
         align-items: center; // Center-align items vertically
         gap: 30px; // Space between color picker and button
       }
-      
+
       .color-picker {
         width: 35px; // Adjust the width for a round shape
         height: 35px; // Ensure the height matches the width
@@ -50,7 +50,7 @@
       color: #333; // Consistent label color
     }
   }
-  
+
   .dynamic-select {
     flex: 1; // Ensures the mat-form-field takes up remaining space
   }
@@ -152,20 +152,69 @@
   margin-top: 15px;
 
   label {
-    margin-bottom: 10px; 
+    margin-bottom: 10px;
   }
 
   canvas {
     border: 1px solid #000;
-    margin-bottom: 10px; 
+    margin-bottom: 10px;
   }
 
   .button-container {
-    margin-top: 10px; 
+    margin-top: 10px;
     display: flex;
-    justify-content: center; 
-    gap: 10px; 
+    justify-content: center;
+    gap: 10px;
   }
 }
 
+.choose_templates > span {
+  font-weight: bold;
 
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.square_temple {
+  display: flex;
+  gap: 15px;
+}
+
+.square_temple > span {
+  margin-top: 10px;
+  border: 2px solid rgb(224, 218, 218);
+  border-radius: 10px;
+  height: 80px;
+  width: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.square_temple > span:hover {
+  border-color: #007bff;
+}
+
+.square_temple > span img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.template-item.selected {
+  border-color: #28a745;
+  box-shadow: 0 0 10px rgba(40, 167, 69, 0.5);
+}
+
+.right_side_settings {
+  display: flex;
+  flex-direction: column;
+
+  gap: 20px;
+}
+.fontcolors > span {
+  font-weight: bold;
+}
