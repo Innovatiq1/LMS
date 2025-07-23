@@ -301,8 +301,8 @@ export class GradeComponent implements OnInit {
                 next: (res) => {
                   Swal.fire({
                     icon: 'success',
-                    title: 'Deleted',
-                    text: 'Grade has been Deleted successfully',
+                    title: 'Updated!',
+                    text: 'Grade has been Updated successfully',
                     timer: 2000,
                     showConfirmButton: false,
                   });
