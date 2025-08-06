@@ -33,12 +33,12 @@ export const environment = {
 
   /* */
   // Localhost server API connection URL  // http://35.154.206.124:3000/
-  apiUrl: 'http://uatskillera.innovatiqconsulting.com/api/',
-  apiEndpointNew: 'http://uatskillera.innovatiqconsulting.com/x-api/v1/',
-  frontEndUrl: 'http://uatskillera.innovatiqconsulting.com/',
-  apiNewEndpoint: 'http://uatskillera.innovatiqconsulting.com/api1/',
-   Url: 'http://uatskillera.innovatiqconsulting.com/',
-   publicApiUrl: 'http://uatskillera.innovatiqconsulting.com/x-api/v1/public/',
+  apiUrl: 'http://localhost:3001.com/api/',
+  apiEndpointNew: 'http://localhost:3001.com/x-api/v1/',
+  frontEndUrl: 'http://localhost:3001.com/',
+  apiNewEndpoint: 'http://localhost:3001.com/api1/',
+   Url: 'http://localhost:3001.com/',
+   publicApiUrl: 'http://localhost:3001.com/x-api/v1/public/',
   /* */
 
   /* */
