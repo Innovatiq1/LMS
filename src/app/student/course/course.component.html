@@ -352,9 +352,11 @@
               </ng-template>
               <div class="body">
                 <div class="row">
+                  <ng-container *ngFor="let data of studentCompletedClasses">
                   <div
                     class="col-md-3"
-                    *ngFor="let data of studentCompletedClasses"
+                    *ngIf="data.courseType
+                    !== 'direct'"
                   >
                     <div class="course-card course-card-blog">
                       <div
@@ -401,6 +403,7 @@
                       </div>
                     </div>
                   </div>
+                  </ng-container>
                 </div>
               </div>
               <mat-paginator

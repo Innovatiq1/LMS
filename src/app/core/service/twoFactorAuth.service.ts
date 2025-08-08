@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class TwoFactorAuthService {
-  private apiUrl = 'http://localhost:3001/api';
+  private apiUrl = 'http://uatskillera.innovatiqconsulting.com/api';
 
   constructor(private http: HttpClient) {}
 

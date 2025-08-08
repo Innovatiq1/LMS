@@ -1,4 +1,3 @@
-// import { Component } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CourseService } from '@core/service/course.service';
@@ -60,7 +59,7 @@ export class ExamManualEvaluationComponent {
       ];
     }
   }
-  
+
 //   ngOnInit(): void {
 //     this.route.queryParams.subscribe(params => {
 //       console.log("params",params);
@@ -81,7 +80,7 @@ export class ExamManualEvaluationComponent {
 //   this.combineAnswers()
 //   this.getEvaluatedDataByAssessmentId(this.examAssAnsId)
 // }
-    
+
 //     // this.getCategories(this.rowId)
 
 //   this.getExamQuestions();
@@ -91,7 +90,7 @@ export class ExamManualEvaluationComponent {
 
 ngOnInit(): void {
   this.route.queryParams.subscribe(params => {
-    // console.log("params", params);
+    console.log("params", params);
     this.courseId = params['courseId'];
     this.examAssAnsId = params['examAssAnsId'];
     this.examFirstAssAnsId = params['examFirstAssAnsId'];
@@ -302,7 +301,7 @@ let id=this.assessmentAnswer?._id;
           })
         window.history.back(); 
       });
-      
+
     },
     (error: any) => {
       console.error('Error:', error);
@@ -311,7 +310,7 @@ let id=this.assessmentAnswer?._id;
 }
 else{
   this.studentService.updateManualAssessmentAnswerById(this.manualReEvaluationDataId,payload1).subscribe((response)=>{
-    
+
     Swal.fire({
       title: 'Submitted!',
       text: 'Your Evaluated marks were Updated Successfully.',
@@ -337,7 +336,7 @@ else{
 
 
 //   getCategories(id: string): void {
-    
+
 //     this.getCategoryByID(id);
 //   }
 //   getCategoryByID(id: string) {
@@ -346,30 +345,30 @@ else{
 //       this.response = response;
 //       this.getAssessmentAnswer=response?.assessmentAnswer?.answers;
 //       this.assessmentAnswerId=response?.assessmentAnswer?._id;
-      
+
 
 //       // if(this.isEdit){
 //       //   this.getEvaluatedDataByAssessmentId(this.assessmentAnswerId);
 //       // }
 //       this.getAssessment(response?.assessmentAnswer?.assessmentId)
-    
+
 //     });
 //   }
 
 //   getAssessment(questionId: any) {
 //     this.questionService.getQuestionsById(questionId).subscribe((response: any) => {
 //       this.getAssessmentCorrectAns = response?.questions;
-     
+
 //       if (this.getAssessmentCorrectAns && this.getAssessmentAnswer) {
 //         this.combineAnswers();
-        
+
 //         if (this.isEdit) {
 //           this.getEvaluatedDataByAssessmentId(this.assessmentAnswerId);
 //         }
 //       }
 //     });
 //   }
-  
+
 // combineAnswers() {
 //   this.combinedAnswers = this.getAssessmentCorrectAns.map((question: any) => {
 //     const studentAnswer = this.getAssessmentAnswer.find((ans: any) =>
@@ -496,7 +495,7 @@ hasInvalidMarks(): boolean {
 //         // this.updateAssessmentAnswer(assesmentId, payload1);
 //         window.history.back(); 
 //       });
-      
+
 //     },
 //     (error: any) => {
 //       console.error('Error:', error);
@@ -533,7 +532,7 @@ hasInvalidMarks(): boolean {
 //         text: 'Your answers were submitted.',
 //         icon: 'success',
 //       })
-     
+
 //     },
 //     (error: any) => {
 //       console.error('Error:', error);
@@ -554,7 +553,7 @@ getEvaluatedDataByAssessmentId(id: any) {
        if (this.isEdit) {
         this.patchEvaluatedData();
       }
-      
+
     },
     (error: any) => {
       console.error('Error:', error);

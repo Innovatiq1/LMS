@@ -692,7 +692,7 @@ export class ViewCourseComponent implements OnDestroy {
     };
     // console.log('Payload:', payload);
 
-    this.http.post('http://localhost:3001/getGrantCalculations', payload).subscribe(
+    this.http.post('http://uatskillera.innovatiqconsulting.com/getGrantCalculations', payload).subscribe(
       (response: any) => {
         const course = response?.courses?.[0];
         if (course?.funding?.eligibleGrants?.eligibleGrantDetails?.length > 0) {

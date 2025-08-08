@@ -129,18 +129,20 @@
                   <mat-header-cell *matHeaderCellDef>Evaluate</mat-header-cell>
                   <mat-cell *matCellDef="let row">
                     <span class="mobile-label">Evaluate:</span>
-                
-                    <div *ngIf="!row?.examAssessmentAnswer?.studentView && row?.examAssessmentAnswer?.score == null">
-                      <button class="student-view" mat-flat-button color="primary" (click)="EvaluateExam(row, false)">
-                        <span>Evaluate</span>
-                      </button>
-                    </div>
-                
-                    <div *ngIf="!row?.examAssessmentAnswer?.studentView && row?.examAssessmentAnswer?.score !== null">
-                      <button class="student-view" mat-flat-button color="accent" (click)="EvaluateExam(row, true)">
-                        <span>Re-Evaluate</span>
-                      </button>
-                    </div>
+                <div *ngIf="isNotEmptyObject(row?.examAssessmentAnswer)">
+                  <div *ngIf="!row?.examAssessmentAnswer?.studentView && row?.examAssessmentAnswer?.score == null">
+                    <button class="student-view" mat-flat-button color="primary" (click)="EvaluateExam(row, false)">
+                      <span>Evaluate</span>
+                    </button>
+                  </div>
+              
+                  <div *ngIf="!row?.examAssessmentAnswer?.studentView && row?.examAssessmentAnswer?.score !== null">
+                    <button class="student-view" mat-flat-button color="accent" (click)="EvaluateExam(row, true)">
+                      <span>Re-Evaluate</span>
+                    </button>
+                  </div>
+                </div>
+                    
                   </mat-cell>
                 </ng-container>
                 

@@ -33,10 +33,12 @@ export const environment = {
 
   /* */
   // Localhost server API connection URL  // http://35.154.206.124:3000/
-  apiUrl: 'http://localhost:3000/api/',
-  apiEndpointNew: 'http://localhost:3000/x-api/v1/',
-  frontEndUrl: 'http://localhost:4300/',
-  apiNewEndpoint: 'http://localhost:3000/api1/',
+  apiUrl: 'http://localhost:3001.com/api/',
+  apiEndpointNew: 'http://localhost:3001.com/x-api/v1/',
+  frontEndUrl: 'http://localhost:3001.com/',
+  apiNewEndpoint: 'http://localhost:3001.com/api1/',
+   Url: 'http://localhost:3001.com/',
+   publicApiUrl: 'http://localhost:3001.com/x-api/v1/public/',
   /* */
 
   /* */

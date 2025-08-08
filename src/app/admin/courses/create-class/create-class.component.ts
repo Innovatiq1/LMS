@@ -1018,7 +1018,7 @@ export class CreateClassComponent {
 
       localStorage.setItem('teamsMeetingData', JSON.stringify(meetingData));
       const clientId = '636b351f-0248-4a2a-a67b-e0e65e183bea';
-      const redirectUri = 'http://localhost:3001/api/admin/teams/getToken';
+      const redirectUri = 'http://uatskillera.innovatiqconsulting.com/api/admin/teams/getToken';
       const scope = 'User.Read OnlineMeetings.ReadWrite openid profile email';
       const authUrl = `https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}&scope=${encodeURIComponent(
         scope

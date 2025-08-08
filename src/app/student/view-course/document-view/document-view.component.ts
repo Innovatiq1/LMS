@@ -107,7 +107,7 @@ export class DocumentViewComponent implements OnInit, OnDestroy {
 
   async convertPptToPdf(pptUrl: string): Promise<string> {
     try {
-      const response = await fetch('http://localhost:3001/convert-to-pdf', {
+      const response = await fetch('http://uatskillera.innovatiqconsulting.com/convert-to-pdf', {
         method: 'POST',
         body: JSON.stringify({ url: pptUrl }),
         headers: {
