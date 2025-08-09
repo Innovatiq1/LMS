@@ -105,14 +105,12 @@
               </div>
             </div>
             <h6 class="social-login-title" style="margin-top: 12px;">{{"OR" | translate}}</h6>
-            <div class="row">
-              <div class="col-3 mt-3">
-                <h6>Sign in with</h6>
-              </div>
-              <div class="col-4">
-                <a routerLink="/authentication/singpass-login">
-                  <button type="button" class="login-btn">
-                    <img src="/assets/images/login/singpass.svg" alt="singPass">
+            <div class="social-buttons-container">
+              
+              <div class="social-button-item">
+                <a (click)="loginWithSingpass()">
+                  <button type="button" class="social-login-btn singpass-btn">
+                    <span class="login-with-text">Log in With </span> <img src="/assets/singpass_logo_button.png" alt="SingPass" class="singpass-inline-logo">
                   </button>
                 </a>
               </div>
@@ -120,12 +118,10 @@
                   <button type="button" class="login-btn">
                   </button>
               </div> -->
-              <div class="col-2">
-                <a (click)="loginLinkedIn()">
-                  <button type="button" class="login-btn">
-                    <img src="assets/images/linkidein.png" alt="LinkedIn">
-                  </button>
-                </a>
+              <div class="social-button-item">
+                <button type="button" class="social-login-btn linkedin-btn" (click)="loginLinkedIn()">
+                  <img src="assets/images/linkidein.png" alt="LinkedIn">
+                </button>
               </div>
             </div>
             <!-- <div class="container-auth-form-btn1">

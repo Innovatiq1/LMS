@@ -20,6 +20,10 @@ const routes: Routes = [
     component: SigninComponent,
   },
   {
+    path: 'TMS/singpass/signin',
+    component: SigninComponent,
+  },
+  {
     path: 'signin-role',
     component: SigninRoleComponent,
   },

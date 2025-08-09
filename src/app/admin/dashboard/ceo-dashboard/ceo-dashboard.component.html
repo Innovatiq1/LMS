@@ -312,10 +312,9 @@
         </div>
 
         <div class="body" *ngIf="isHrPie">
-          <apx-chart
+          <apx-chart #chart
             [series]="hrPieChartOptions.series2!"
             [chart]="hrPieChartOptions.chart!"
-            [labels]="hrPieChartOptions.labels!"
             [colors]="hrPieChartOptions.colors!"
             [legend]="hrPieChartOptions.legend!"
           >

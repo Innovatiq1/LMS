@@ -134,7 +134,10 @@
                     GPA is required
                   </mat-error>
                   <mat-error
-                    *ngIf="gradeList.at(i).get('gpa')?.hasError('pattern')"
+                    *ngIf="
+                      gradeList.at(i).get('gpa')?.hasError('min') ||
+                      gradeList.at(i).get('gpa')?.hasError('max')
+                    "
                   >
                     GPA must be between 0 and 10
                   </mat-error>

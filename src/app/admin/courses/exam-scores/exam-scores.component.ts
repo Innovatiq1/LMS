@@ -60,8 +60,8 @@ export class ExamScoresComponent {
   }
   EvaluateExam(row:any,isEdit:any){
     // console.log("row",row)
-    
-      // console.log('Evaluating row:', row, 'isEdit:', isEdit);
+
+      console.log('Evaluating row:', row, 'isEdit:', isEdit);
       this.router.navigate(['/admin/courses/exam-manual-evaluation'], {
         queryParams: {
           courseId: row?.courseId?._id,
@@ -71,7 +71,7 @@ export class ExamScoresComponent {
           isEdit: isEdit
         }
       });
-    
+
   }
   getAllAnswers() {
     let company = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
@@ -151,5 +151,9 @@ export class ExamScoresComponent {
       width: '800px',
       data: payload,
     });
+  }
+
+  isNotEmptyObject(obj: any): boolean {
+    return obj && Object.keys(obj).length > 0;
   }
 }
