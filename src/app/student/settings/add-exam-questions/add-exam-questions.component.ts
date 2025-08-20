@@ -430,31 +430,40 @@ export class AddExamQuestionsComponent implements OnInit, OnDestroy {
     }
   }
 
-  // addQuestion() {
-  //   const newTempId = this.getLastQuestionId() + 1;
+  
+  // addQuestion(type: string, text: string, questionscore: any, fileSize?: any) {
   //   const questionGroup = this.formBuilder.group({
-  //     tempId: newTempId,
-  //     questionText: ['', Validators.required],
+  //     questionType: [type, Validators.required],
+  //     questionText: [text, Validators.required],
+  //     questionscore: [questionscore, Validators.required],
   //     isSelected: [false],
-  //     options: this.formBuilder.array([
-  //       this.formBuilder.group({
-  //         text: ['', Validators.required],
-  //         correct: [false],
-  //       }),
-  //       this.formBuilder.group({
-  //         text: ['', Validators.required],
-  //         correct: [false],
-  //       }),
-  //       this.formBuilder.group({
-  //         text: ['', Validators.required],
-  //         correct: [false],
-  //       }),
-  //       this.formBuilder.group({
-  //         text: ['', Validators.required],
-  //         correct: [false],
-  //       }),
-  //     ]),
+  //     options: this.formBuilder.array([]),
+  //     textAnswer: [''],
+  //     textareaAnswer: [''],
+  //     trueFalseAnswer: [null],
+  //     numberAnswer: [''],
+  //     fillBlankAnswer: [''],
+  //     angularEditorAnswer: [''],
+  //     fileSize: [fileSize || null],
+  //     // fileAnswer: [null]
+  //     fileAnswer: this.formBuilder.group({
+  //       documentName: [''],
+  //       uploadedFileName: [''],
+  //       documentLink: ['']
+  //     }),
   //   });
+
+  //   if (type === 'mcq' || type === 'checkbox' || type === 'radio') {
+  //     const optionsArray = questionGroup.get('options') as FormArray;
+  //     for (let i = 0; i < 4; i++) {
+  //       optionsArray.push(
+  //         this.formBuilder.group({
+  //           text: ['', Validators.required],
+  //           correct: [false],
+  //         })
+  //       );
+  //     }
+  //   }
   //   return questionGroup;
   // }
   addQuestion(type: string, text: string, questionscore: any, fileSize?: any) {
@@ -471,27 +480,50 @@ export class AddExamQuestionsComponent implements OnInit, OnDestroy {
       fillBlankAnswer: [''],
       angularEditorAnswer: [''],
       fileSize: [fileSize || null],
-      // fileAnswer: [null]
       fileAnswer: this.formBuilder.group({
         documentName: [''],
         uploadedFileName: [''],
         documentLink: ['']
       }),
     });
-
-    if (type === 'mcq' || type === 'checkbox' || type === 'radio') {
-      const optionsArray = questionGroup.get('options') as FormArray;
-      for (let i = 0; i < 4; i++) {
-        optionsArray.push(
-          this.formBuilder.group({
-            text: ['', Validators.required],
-            correct: [false],
-          })
-        );
-      }
+  
+    // Add validators dynamically based on type
+    switch (type) {
+      case 'text':
+        questionGroup.get('textAnswer')?.setValidators([Validators.required]);
+        break;
+      case 'textarea':
+        questionGroup.get('textareaAnswer')?.setValidators([Validators.required]);
+        break;
+      case 'number':
+        questionGroup.get('numberAnswer')?.setValidators([Validators.required]);
+        break;
+      case 'fillBlanks':
+        questionGroup.get('fillBlankAnswer')?.setValidators([Validators.required]);
+        break;
+      case 'trueFalse':
+        questionGroup.get('trueFalseAnswer')?.setValidators([Validators.required]);
+        break;
+      case 'file':
+        questionGroup.get('fileAnswer.documentName')?.setValidators([Validators.required]);
+        break;
+      case 'mcq':
+      case 'radio':
+        const optionsArray = questionGroup.get('options') as FormArray;
+        for (let i = 0; i < 4; i++) {
+          optionsArray.push(
+            this.formBuilder.group({
+              text: ['', Validators.required],
+              correct: [false],
+            })
+          );
+        }
+        break;
     }
+  
     return questionGroup;
   }
+  
 
   // addAdditionalQuestion() {
   //   const question = this.addQuestion();

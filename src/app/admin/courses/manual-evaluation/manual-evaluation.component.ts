@@ -170,6 +170,21 @@ export class ManualEvaluationComponent {
   }
 
   saveAnswers() {
+
+    const totalAssignedMarks = this.combinedAnswers.reduce(
+      (total, answer) => total + Number(answer.assignedMarks || 0),
+      0
+    );
+  
+    if (totalAssignedMarks > this.totalScore) {
+      Swal.fire({
+        title: 'Error!',
+        text: 'Manually entered marks is more than the total marks.',
+        icon: 'error',
+      });
+      return; // Stop saving
+    }
+  
     this.savedAnswers = this.combinedAnswers.map((answer) => ({
       questionText: answer.questionText,
       questionType: answer.questionType,
