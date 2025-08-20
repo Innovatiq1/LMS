@@ -13,6 +13,8 @@ export class GradeComponent implements OnInit {
   percentagelist: any[] = [];
   gradeTerm: any[] = [];
   saveButton: boolean = true;
+  grade_loadingSpinner: boolean = false;
+  gradeConfigData: any;
 
   breadscrums = [
     {
@@ -21,8 +23,10 @@ export class GradeComponent implements OnInit {
       active: 'Passing Criteria',
     },
   ];
+  GradeElementOptions = ['Exam', 'Assessment & Exam'];
 
   ngOnInit(): void {
+    this.grade_loadingSpinner = true;
     const getCompanyId: any = localStorage.getItem('userLogs');
     const parseid = JSON.parse(getCompanyId);
     this.SettingService.gradeFetch(parseid.companyId).subscribe({
@@ -33,18 +37,23 @@ export class GradeComponent implements OnInit {
             this.gradeDataset.push(...res.response!.gradeList);
             this.patchGrade();
             this.saveButton = false;
+            this.grade_loadingSpinner = false;
+            console.log(res.response, '===> <===');
           } else {
             this.gradeList.clear();
             this.add_fields();
             this.saveButton = true;
+            this.grade_loadingSpinner = false;
           }
         } else {
           this.saveButton = true;
+          this.grade_loadingSpinner = false;
         }
       },
       error: (err) => {
         this.gradeList.clear();
         this.add_fields();
+        this.grade_loadingSpinner = false;
       },
     });
     this.percentagelist = [
@@ -89,11 +98,12 @@ export class GradeComponent implements OnInit {
     return this.GradeFromList.get('gradeList') as FormArray;
   }
 
+  onElementSelect(data: any) {}
   add_fields() {
     this.gradeList.push(
       this.GradeForms.group({
         PercentageRange: ['', Validators.required],
-        grade: ['', [Validators.required, Validators.pattern(/^[A-F][+-]?$/i)]],
+        grade: ['', [Validators.required, Validators.pattern(/^[A-Z][+-]?$/i)]],
         gpa: [
           '',
           [
@@ -116,7 +126,7 @@ export class GradeComponent implements OnInit {
           PercentageRange: [data.PercentageRange, Validators.required],
           grade: [
             data.grade,
-            [Validators.required, Validators.pattern(/^[A-F][+-]?$/i)],
+            [Validators.required, Validators.pattern(/^[A-Z][+-]?$/i)],
           ],
           gpa: [
             data.gpa,
@@ -301,8 +311,8 @@ export class GradeComponent implements OnInit {
                 next: (res) => {
                   Swal.fire({
                     icon: 'success',
-                    title: 'Updated!',
-                    text: 'Grade has been Updated successfully',
+                    title: 'Deleted',
+                    text: 'Grade has been Deleted successfully',
                     timer: 2000,
                     showConfirmButton: false,
                   });
