@@ -451,6 +451,41 @@ export class AssesmentQuestionsComponent implements OnInit, OnDestroy {
 
 
 
+  // addQuestion(type: string, text: string, questionscore: any, fileSize?: any) {
+  //   const questionGroup = this.formBuilder.group({
+  //     questionType: [type, Validators.required],
+  //     questionText: [text, Validators.required],
+  //     questionscore: [questionscore, Validators.required],
+  //     isSelected: [false],
+  //     options: this.formBuilder.array([]),
+  //     textAnswer: [''],
+  //     textareaAnswer: [''],
+  //     trueFalseAnswer: [null],
+  //     numberAnswer: [''],
+  //     fillBlankAnswer: [''],
+  //     angularEditorAnswer: [''],
+  //     fileSize: [fileSize || null],
+  //     // fileAnswer: [null]
+  //     fileAnswer: this.formBuilder.group({
+  //       documentName: [''],
+  //       uploadedFileName: [''],
+  //       documentLink: ['']
+  //     }),
+  //   });
+
+  //   if (type === 'mcq' || type === 'checkbox' || type === 'radio') {
+  //     const optionsArray = questionGroup.get('options') as FormArray;
+  //     for (let i = 0; i < 4; i++) {
+  //       optionsArray.push(
+  //         this.formBuilder.group({
+  //           text: ['', Validators.required],
+  //           correct: [false],
+  //         })
+  //       );
+  //     }
+  //   }
+  //   return questionGroup;
+  // }
   addQuestion(type: string, text: string, questionscore: any, fileSize?: any) {
     const questionGroup = this.formBuilder.group({
       questionType: [type, Validators.required],
@@ -465,28 +500,56 @@ export class AssesmentQuestionsComponent implements OnInit, OnDestroy {
       fillBlankAnswer: [''],
       angularEditorAnswer: [''],
       fileSize: [fileSize || null],
-      // fileAnswer: [null]
       fileAnswer: this.formBuilder.group({
         documentName: [''],
         uploadedFileName: [''],
         documentLink: ['']
       }),
     });
-
-    if (type === 'mcq' || type === 'checkbox' || type === 'radio') {
-      const optionsArray = questionGroup.get('options') as FormArray;
-      for (let i = 0; i < 4; i++) {
-        optionsArray.push(
-          this.formBuilder.group({
-            text: ['', Validators.required],
-            correct: [false],
-          })
-        );
-      }
+  
+    switch (type) {
+      case 'mcq':
+      case 'checkbox':
+      case 'radio':
+        const optionsArray = questionGroup.get('options') as FormArray;
+        for (let i = 0; i < 4; i++) {
+          optionsArray.push(
+            this.formBuilder.group({
+              text: ['', Validators.required],
+              correct: [false],
+            })
+          );
+        }
+        break;
+  
+      case 'text':
+        questionGroup.get('textAnswer')?.setValidators([Validators.required]);
+        break;
+  
+      case 'textarea':
+        questionGroup.get('textareaAnswer')?.setValidators([Validators.required]);
+        break;
+  
+      case 'trueFalse':
+        questionGroup.get('trueFalseAnswer')?.setValidators([Validators.required]);
+        break;
+  
+      case 'number':
+        questionGroup.get('numberAnswer')?.setValidators([Validators.required]);
+        break;
+  
+      case 'fillBlanks':
+        questionGroup.get('fillBlankAnswer')?.setValidators([Validators.required]);
+        break;
+  
+      case 'file':
+        questionGroup.get('fileAnswer.documentName')?.setValidators([Validators.required]);
+        break;
     }
+  
     return questionGroup;
   }
-
+  
   getSelectedRadioOption(questionIndex: number): number | null {
     const optionsArray = this.getAnswers(questionIndex);
     return optionsArray.controls.findIndex(opt => opt.get('correct')?.value === true);
@@ -660,7 +723,15 @@ export class AssesmentQuestionsComponent implements OnInit, OnDestroy {
 
   onFileChoosed(event: any, index: number) {
     const file = event.target.files[0];
-    if (!file) return;
+    // if (!file) return;
+    // const file = event.target.files[0];
+  const fileControl = this.questions.at(index).get('fileAnswer.documentName');
+
+  if (!file) {
+    fileControl?.setValue('');
+    fileControl?.markAsTouched();
+    return;
+  }
 
     const question = this.questions.at(index);
     const allowedFileSizeMB = question.get('fileSize')?.value; // per-question fileSize

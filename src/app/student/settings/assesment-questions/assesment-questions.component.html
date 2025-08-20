@@ -272,6 +272,10 @@
                       <div *ngSwitchCase="'text'" class="mt-2">
                         <mat-form-field appearance="outline" style="width: 100%">
                           <textarea matInput formControlName="textAnswer" placeholder="Enter answer"></textarea>
+                          <mat-error
+                            *ngIf="question.get('textAnswer')?.hasError('required') && question.get('textAnswer')?.touched">
+                            Answer is required
+                          </mat-error>
                         </mat-form-field>
                       </div>
 
@@ -279,12 +283,21 @@
                         <mat-radio-group formControlName="trueFalseAnswer">
                           <mat-radio-button [value]="true">True</mat-radio-button>
                           <mat-radio-button [value]="false">False</mat-radio-button>
+                          
                         </mat-radio-group>
+                        <mat-error
+                            *ngIf="question.get('trueFalseAnswer')?.hasError('required') && question.get('trueFalseAnswer')?.touched">
+                            Answer is required
+                          </mat-error>
                       </div>
 
                       <div *ngSwitchCase="'number'" class="mt-2">
                         <mat-form-field appearance="outline" style="width: 100%">
                           <input matInput type="number" formControlName="numberAnswer" placeholder="Enter number" />
+                          <mat-error
+                            *ngIf="question.get('numberAnswer')?.hasError('required') && question.get('numberAnswer')?.touched">
+                            Answer is required
+                          </mat-error>
                         </mat-form-field>
                       </div>
 
@@ -292,6 +305,10 @@
                         <mat-form-field appearance="outline" style="width: 100%">
                           <input matInput type="text" formControlName="fillBlankAnswer"
                             placeholder="Enter correct answer" />
+                          <mat-error
+                            *ngIf="question.get('fillBlankAnswer')?.hasError('required') && question.get('fillBlankAnswer')?.touched">
+                            Answer is required
+                          </mat-error>
                         </mat-form-field>
                       </div>
 
@@ -299,14 +316,22 @@
                         <mat-form-field appearance="outline" style="width: 100%">
                           <textarea matInput formControlName="textareaAnswer" placeholder="Enter descriptive answer"
                             rows="3"></textarea>
+                          <mat-error
+                            *ngIf="question.get('textareaAnswer')?.hasError('required') && question.get('textareaAnswer')?.touched">
+                            Answer is required
+                          </mat-error>
                         </mat-form-field>
                       </div>
 
-                      <div *ngSwitchCase="'file'" class="mt-2">
+                      <!-- <div *ngSwitchCase="'file'" class="mt-2">
                         <label for="fileInput-{{ i }}">Choose File</label>
                         <input id="fileInput-{{ i }}" type="file"
                           accept=".pdf,.doc,.docx,.ppt,.pptx,.txt,.mp3,.mp4,.wav,.avi,image/*"
                           (change)="onFileChoosed($event, i)" class="form-control" />
+                        <mat-error *ngIf="question.get('fileAnswer')?.get('documentName')?.hasError('required') 
+           && question.get('fileAnswer')?.get('documentName')?.touched">
+                          Uploading File is required
+                        </mat-error>
                         <div class="mt-2" *ngIf="question.get('fileAnswer')?.get('documentName')?.value">
                           <strong>Uploaded File:</strong>
                           <a [href]="question.get('fileAnswer')?.get('documentLink')?.value" target="_blank"
@@ -315,7 +340,28 @@
                           </a>
                         </div>
 
+                      </div> -->
+                      <div *ngSwitchCase="'file'" class="mt-2">
+                        <label for="fileInput-{{ i }}">Choose File</label>
+                        <input id="fileInput-{{ i }}" type="file"
+                          accept=".pdf,.doc,.docx,.ppt,.pptx,.txt,.mp3,.mp4,.wav,.avi,image/*"
+                          (change)="onFileChoosed($event, i)" class="form-control" />
+                      
+                        <mat-error *ngIf="question.get('fileAnswer')?.get('documentName')?.hasError('required') 
+                                         && question.get('fileAnswer')?.get('documentName')?.touched">
+                          File is required
+                        </mat-error>
+                      
+                        <div class="mt-2" *ngIf="question.get('fileAnswer')?.get('documentName')?.value">
+                          <strong>Uploaded File:</strong>
+                          <a [href]="question.get('fileAnswer')?.get('documentLink')?.value" target="_blank"
+                            rel="noopener noreferrer">
+                            {{ question.get('fileAnswer')?.get('documentName')?.value }}
+                          </a>
+                        </div>
                       </div>
+                      
+                      
 
                     </ng-container>
                   </td>
