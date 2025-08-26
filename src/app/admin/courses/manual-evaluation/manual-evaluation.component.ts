@@ -170,12 +170,11 @@ export class ManualEvaluationComponent {
   }
 
   saveAnswers() {
-
     const totalAssignedMarks = this.combinedAnswers.reduce(
       (total, answer) => total + Number(answer.assignedMarks || 0),
       0
     );
-  
+
     if (totalAssignedMarks > this.totalScore) {
       Swal.fire({
         title: 'Error!',
@@ -184,7 +183,7 @@ export class ManualEvaluationComponent {
       });
       return; // Stop saving
     }
-  
+
     this.savedAnswers = this.combinedAnswers.map((answer) => ({
       questionText: answer.questionText,
       questionType: answer.questionType,
@@ -339,8 +338,7 @@ export class ManualEvaluationComponent {
     if (calculatePercent <= 100) {
       this.currentPercentage = Number.isNaN(calculatePercent)
         ? 0
-        : Math.floor(calculatePercent);
-
+        : Number(calculatePercent.toFixed(2));
       let count = 0;
       for (let i = 0; i < this.gradeDataset.length; i++) {
         const max = this.gradeDataset[i].PercentageRange.split('-')[0];
@@ -351,7 +349,6 @@ export class ManualEvaluationComponent {
         }
         count += 1;
       }
-
       if (count === this.gradeDataset.length) {
         const sorted = this.gradeDataset.sort((a: any, b: any) => {
           const numA = parseInt(a.PercentageRange.split('-')[0]);
@@ -371,7 +368,7 @@ export class ManualEvaluationComponent {
     let calculatePercent = (this.actualScore / this.totalScore) * 100;
     this.currentPercentage = Number.isNaN(calculatePercent)
       ? 0
-      : Math.floor(calculatePercent);
+      : Number(calculatePercent.toFixed(2));
 
     const getCompanyId: any = localStorage.getItem('userLogs');
     const parseid = JSON.parse(getCompanyId);
