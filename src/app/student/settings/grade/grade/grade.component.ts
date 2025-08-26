@@ -38,7 +38,6 @@ export class GradeComponent implements OnInit {
             this.patchGrade();
             this.saveButton = false;
             this.grade_loadingSpinner = false;
-            console.log(res.response, '===> <===');
           } else {
             this.gradeList.clear();
             this.add_fields();

@@ -174,7 +174,7 @@ export class PreviewTestAnswersheetComponent {
     let calculatePercent = (this.actualScore / this.totalScore) * 100;
     this.currentPercentage = Number.isNaN(calculatePercent)
       ? 0
-      : Math.floor(calculatePercent);
+      : Number(calculatePercent.toFixed(2));
 
     const getCompanyId: any = localStorage.getItem('userLogs');
     const parseid = JSON.parse(getCompanyId);

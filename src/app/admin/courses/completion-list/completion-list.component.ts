@@ -564,6 +564,10 @@ export class CompletionListComponent {
               this.canvaObjectInfo.elements[index].text = String(
                 this.currentPercentage
               );
+            } else if (data.text == '_score_') {
+              this.canvaObjectInfo.elements[index].text = String(
+                this.actualScore
+              );
             }
           }
           data.selectable = false;
@@ -615,7 +619,8 @@ export class CompletionListComponent {
 
     this.actualScore = this.studentData.assessmentanswers.score;
     this.totalScore = this.studentData.assessmentanswers.totalScore;
-    console.log(this.studentData.title, '===> !!! <===');
+    console.log(this.studentData, '===> !!! <===');
+    console.log(this.studentData.assessmentanswers.score);
     this.GradeCalculate();
 
     this.dialogRef = this.dialog.open(this.certificateDialog, {
@@ -659,7 +664,7 @@ export class CompletionListComponent {
     let calculatePercent = (this.actualScore / this.totalScore) * 100;
     this.currentPercentage = Number.isNaN(calculatePercent)
       ? 0
-      : Math.floor(calculatePercent);
+      : Number(calculatePercent.toFixed(2));
 
     const getCompanyId: any = localStorage.getItem('userLogs');
     const parseid = JSON.parse(getCompanyId);

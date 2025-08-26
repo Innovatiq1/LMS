@@ -7,10 +7,11 @@ import { Any } from '@tensorflow/tfjs';
 import { StudentsService } from 'app/admin/students/students.service';
 import Swal from 'sweetalert2';
 import { forkJoin } from 'rxjs';
+import { SettingsService } from '@core/service/settings.service';
 @Component({
   selector: 'app-exam-manual-evaluation',
   templateUrl: './exam-manual-evaluation.component.html',
-  styleUrls: ['./exam-manual-evaluation.component.scss']
+  styleUrls: ['./exam-manual-evaluation.component.scss'],
 })
 export class ExamManualEvaluationComponent {
   rowData: any;
@@ -35,10 +36,14 @@ export class ExamManualEvaluationComponent {
   examsTrainerQuestionsAnswer: any;
   examsStudentAnswers: any;
   combinedAnswers: any[] = [];
+  showGrade: boolean = false;
   assessmentAnswer: any;
 
-
-
+  actualScore: number = 0;
+  currentPercentage: number = 0;
+  totalScore: number = 0;
+  gradeDataset: any = [];
+  gradeInfo: any = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -46,6 +51,7 @@ export class ExamManualEvaluationComponent {
     private questionService: QuestionService,
     private quesAssessmentService: AssessmentService,
     private studentService: StudentsService,
+    private SettingService: SettingsService
   ) {
     const storedItems = localStorage.getItem('activeBreadcrumb');
     if (storedItems) {
@@ -60,18 +66,16 @@ export class ExamManualEvaluationComponent {
     }
   }
 
-
-
-// ngOnInit(): void {
-//   this.route.queryParams.subscribe(params => {
-//     console.log("params", params);
-//     this.courseId = params['courseId'];
-//     this.examAssAnsId = params['examAssAnsId'];
-//     this.examFirstAssAnsId = params['examFirstAssAnsId'];
-//     this.examQuestionId = params['examQuestionId'];
-//     this.isEdit = params['isEdit'] === 'true';
+  // ngOnInit(): void {
+  //   this.route.queryParams.subscribe(params => {
+  //     console.log("params", params);
+  //     this.courseId = params['courseId'];
+  //     this.examAssAnsId = params['examAssAnsId'];
+  //     this.examFirstAssAnsId = params['examFirstAssAnsId'];
+  //     this.examQuestionId = params['examQuestionId'];
+  //     this.isEdit = params['isEdit'] === 'true';
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       this.courseId = params['courseId'];
       this.examAssAnsId = params['examAssAnsId'];
       this.examFirstAssAnsId = params['examFirstAssAnsId'];
@@ -80,12 +84,13 @@ export class ExamManualEvaluationComponent {
 
       forkJoin([
         this.questionService.getAnswerQuestionById(this.examQuestionId),
-        this.quesAssessmentService.getAnswerById(this.examAssAnsId)
+        this.quesAssessmentService.getAnswerById(this.examAssAnsId),
       ]).subscribe(
         ([questionResponse, answerResponse]: any) => {
           this.examsTrainerQuestionsAnswer = questionResponse?.questions || [];
           this.assessmentAnswer = answerResponse?.assessmentAnswer;
-          this.examsStudentAnswers = answerResponse?.assessmentAnswer?.answers || [];
+          this.examsStudentAnswers =
+            answerResponse?.assessmentAnswer?.answers || [];
 
           this.combineAnswers();
 
@@ -93,34 +98,43 @@ export class ExamManualEvaluationComponent {
             this.getEvaluatedDataByAssessmentId(this.examAssAnsId);
           }
         },
-        error => {
+        (error) => {
           console.error('Error in loading questions or answers:', error);
         }
       );
-
     });
+    this.getExamQuestionsAnswer();
   }
   getExamQuestions() {
-    this.questionService.getAnswerQuestionById(this.examQuestionId).subscribe((response: any) => {
-      this.examsTrainerQuestionsAnswer = response?.questions;
-      this.tryCombineAnswers();
-
-
-    })
+    this.questionService
+      .getAnswerQuestionById(this.examQuestionId)
+      .subscribe((response: any) => {
+        this.examsTrainerQuestionsAnswer = response?.questions;
+        this.tryCombineAnswers();
+      });
   }
 
   getExamQuestionsAnswer() {
-    this.quesAssessmentService.getAnswerById(this.examAssAnsId).subscribe((response: any) => {
-      this.assessmentAnswer = response?.assessmentAnswer;
-      this.examsStudentAnswers = response?.assessmentAnswer?.answers;
-      this.tryCombineAnswers();
-      // console.log("quesAssessmentAns",response)
-    })
+    this.quesAssessmentService
+      .getAnswerById(this.examAssAnsId)
+      .subscribe((response: any) => {
+        this.assessmentAnswer = response?.assessmentAnswer;
+        this.examsStudentAnswers = response?.assessmentAnswer?.answers;
+
+        this.actualScore = response.assessmentAnswer.score;
+        this.totalScore = response.assessmentAnswer.totalScore;
+        this.GradeCalculate();
+
+        this.tryCombineAnswers();
+        // console.log("quesAssessmentAns",response)
+      });
   }
   getFirstExamQuestionsAnswer() {
-    this.quesAssessmentService.getAnswerById(this.examFirstAssAnsId).subscribe((response: any) => {
-      this.tryCombineAnswers();
-    })
+    this.quesAssessmentService
+      .getAnswerById(this.examFirstAssAnsId)
+      .subscribe((response: any) => {
+        this.tryCombineAnswers();
+      });
   }
   tryCombineAnswers() {
     // if (this.examsTrainerQuestionsAnswer?.questions && this.examsStudentAnswers?.answers) {
@@ -142,12 +156,15 @@ export class ExamManualEvaluationComponent {
 
       if (question?.fileAnswer?.length) {
         correctFileLink = question.fileAnswer[0]?.documentLink || '';
-        correctFileName = question.fileAnswer[0]?.uploadedFileName || 'Correct File';
+        correctFileName =
+          question.fileAnswer[0]?.uploadedFileName || 'Correct File';
       } else {
         switch (question.questionType) {
           case 'mcq':
           case 'radio':
-            const correctOption = question.options?.find((opt: any) => opt.correct);
+            const correctOption = question.options?.find(
+              (opt: any) => opt.correct
+            );
             correctAnswerText = correctOption?.text || '';
             break;
           case 'text':
@@ -169,13 +186,15 @@ export class ExamManualEvaluationComponent {
       }
 
       // Student answer details
-      let studentAnswerText = studentAnswer?.selectedOptionText || 'Not Answered';
+      let studentAnswerText =
+        studentAnswer?.selectedOptionText || 'Not Answered';
       let studentFileLink = '';
       let studentFileName = '';
 
       if (studentAnswer?.fileAnswer?.length) {
         studentFileLink = studentAnswer.fileAnswer[0]?.documentLink || '';
-        studentFileName = studentAnswer.fileAnswer[0]?.uploadedFileName || 'Student File';
+        studentFileName =
+          studentAnswer.fileAnswer[0]?.uploadedFileName || 'Student File';
       }
 
       return {
@@ -191,13 +210,12 @@ export class ExamManualEvaluationComponent {
 
         questionscore: question?.questionscore || 0,
         assignedMarks: 0,
-        remarks: ''
+        remarks: '',
       };
     });
 
     // console.log('Combined answers:', this.combinedAnswers);
   }
-
 
   saveAnswers() {
     const totalAssignedMarks = this.combinedAnswers.reduce(
@@ -218,7 +236,7 @@ export class ExamManualEvaluationComponent {
     }
 
     let id = this.assessmentAnswer?._id;
-    this.savedAnswers = this.combinedAnswers.map(answer => ({
+    this.savedAnswers = this.combinedAnswers.map((answer) => ({
       questionText: answer.questionText,
       questionType: answer.questionType,
       studentAnswer: answer.studentAnswer,
@@ -230,29 +248,35 @@ export class ExamManualEvaluationComponent {
     }));
     // const score = this.savedAnswers.reduce((total, answer) => total + Number(answer.assignedMarks || 0), 0);
     const score = Math.round(
-      this.savedAnswers.reduce((total, answer) => total + Number(answer.assignedMarks || 0), 0)
+      this.savedAnswers.reduce(
+        (total, answer) => total + Number(answer.assignedMarks || 0),
+        0
+      )
     );
-    const totalScore = this.savedAnswers.reduce((total, answer) => total + Number(answer.questionscore || 0), 0);
+    const totalScore = this.savedAnswers.reduce(
+      (total, answer) => total + Number(answer.questionscore || 0),
+      0
+    );
     const payload = {
       answers: this.assessmentAnswer?.answers,
       assessmentAnswerId: this.assessmentAnswer?.assessmentAnswerId,
       assessmentEvaluationType: this.assessmentAnswer?.assessmentEvaluationType,
       companyId: this.assessmentAnswer?.companyId,
       courseId: this.assessmentAnswer?.courseId,
-      evaluationStatus: "Completed",
+      evaluationStatus: 'Completed',
       examAssessmentId: this.assessmentAnswer?.examAssessmentId?.id,
       isSubmitted: this.assessmentAnswer?.isSubmitted,
       score: score,
       studentClassId: this.assessmentAnswer?.studentClassId,
       studentId: this.assessmentAnswer?.studentId,
       studentView: this.assessmentAnswer?.studentView,
-      totalScore: totalScore
-
-    }
+      totalScore: totalScore,
+    };
 
     const payload1 = {
       manuallyCorrected_Answers: this.savedAnswers,
-      assessmentEvaluationType: this.response?.assessmentAnswer?.assessmentEvaluationType,
+      assessmentEvaluationType:
+        this.response?.assessmentAnswer?.assessmentEvaluationType,
       score: score,
       examAssessmentId: this.assessmentAnswer?.examAssessmentId?.id,
       examAssessmentAnswerId: id,
@@ -260,8 +284,8 @@ export class ExamManualEvaluationComponent {
       courseId: this.assessmentAnswer?.courseId,
       studentId: this.assessmentAnswer?.studentId,
       totalScore: totalScore,
-      evaluationStatus: "completed",
-    }
+      evaluationStatus: 'completed',
+    };
 
     if (!this.isEdit) {
       this.studentService.submitManualAssessmentAnswer(payload1).subscribe(
@@ -272,37 +296,76 @@ export class ExamManualEvaluationComponent {
             icon: 'success',
           }).then(() => {
             // this.updateAssessmentAnswer(assesmentId, payload1);
-            this.quesAssessmentService.manualScoreUpdate(id, payload).subscribe((response) => {
-              // console.log("resole",response)
-            })
+            this.quesAssessmentService
+              .manualScoreUpdate(id, payload)
+              .subscribe((response) => {
+                // console.log("resole",response)
+              });
             window.history.back();
           });
-
         },
         (error: any) => {
           console.error('Error:', error);
         }
       );
-    }
-    else {
-      this.studentService.updateManualAssessmentAnswerById(this.manualReEvaluationDataId, payload1).subscribe((response) => {
-
-        Swal.fire({
-          title: 'Submitted!',
-          text: 'Your Evaluated marks were Updated Successfully.',
-          icon: 'success',
-        }).then(() => {
-          // this.updateAssessmentAnswer(assesmentId, payload1);
-          this.quesAssessmentService.manualScoreUpdate(id, payload).subscribe((response) => {
-            // console.log("resole",response)
-          })
-          window.history.back();
+    } else {
+      this.studentService
+        .updateManualAssessmentAnswerById(
+          this.manualReEvaluationDataId,
+          payload1
+        )
+        .subscribe((response) => {
+          Swal.fire({
+            title: 'Submitted!',
+            text: 'Your Evaluated marks were Updated Successfully.',
+            icon: 'success',
+          }).then(() => {
+            // this.updateAssessmentAnswer(assesmentId, payload1);
+            this.quesAssessmentService
+              .manualScoreUpdate(id, payload)
+              .subscribe((response) => {
+                // console.log("resole",response)
+              });
+            window.history.back();
+          });
         });
-      })
     }
   }
 
+  LiveUpdatedGrade() {
+    console.log(this.currentPercentage);
+    const TotalassignMart = this.combinedAnswers.reduce(
+      (acc, curr) => acc + curr.assignedMarks,
+      0
+    );
+    let calculatePercent = (TotalassignMart / this.totalScore) * 100;
 
+    if (calculatePercent <= 100) {
+      this.currentPercentage = Number.isNaN(calculatePercent)
+        ? 0
+        : Number(calculatePercent.toFixed(2));
+
+      let count = 0;
+      for (let i = 0; i < this.gradeDataset.length; i++) {
+        const max = this.gradeDataset[i].PercentageRange.split('-')[0];
+        const min = this.gradeDataset[i].PercentageRange.split('-')[1];
+        if (calculatePercent >= max && calculatePercent <= min) {
+          this.gradeInfo = this.gradeDataset[i];
+          break;
+        }
+        count += 1;
+      }
+
+      if (count === this.gradeDataset.length) {
+        const sorted = this.gradeDataset.sort((a: any, b: any) => {
+          const numA = parseInt(a.PercentageRange.split('-')[0]);
+          const numB = parseInt(b.PercentageRange.split('-')[0]);
+          return numA - numB;
+        });
+        this.gradeInfo = sorted[0];
+      }
+    }
+  }
 
   hasInvalidMarks(): boolean {
     return this.combinedAnswers.some(
@@ -322,7 +385,6 @@ export class ExamManualEvaluationComponent {
         if (this.isEdit) {
           this.patchEvaluatedData();
         }
-
       },
       (error: any) => {
         console.error('Error:', error);
@@ -330,9 +392,9 @@ export class ExamManualEvaluationComponent {
     );
   }
 
-
   patchEvaluatedData() {
-    const evaluatedAnswers = this.dataSourse[0]?.manuallyCorrected_Answers || [];
+    const evaluatedAnswers =
+      this.dataSourse[0]?.manuallyCorrected_Answers || [];
 
     this.combinedAnswers = this.combinedAnswers.map((item) => {
       const matched = evaluatedAnswers.find(
@@ -356,5 +418,48 @@ export class ExamManualEvaluationComponent {
   cancelChanges() {
     this.combinedAnswers = JSON.parse(JSON.stringify(this.originalAnswers));
     window.history.back();
+  }
+
+  GradeCalculate() {
+    let calculatePercent = (this.actualScore / this.totalScore) * 100;
+    this.currentPercentage = Number.isNaN(calculatePercent)
+      ? 0
+      : Number(calculatePercent.toFixed(2));
+
+    const getCompanyId: any = localStorage.getItem('userLogs');
+    const parseid = JSON.parse(getCompanyId);
+    this.SettingService.gradeFetch(parseid.companyId).subscribe({
+      next: (res: any) => {
+        if (res.response != null) {
+          if (res.response!.gradeList!.length != 0) {
+            this.gradeDataset = [];
+            this.gradeDataset.push(...res.response!.gradeList);
+            let count = 0;
+            for (let i = 0; i < this.gradeDataset.length; i++) {
+              const max = this.gradeDataset[i].PercentageRange.split('-')[0];
+              const min = this.gradeDataset[i].PercentageRange.split('-')[1];
+              if (calculatePercent >= max && calculatePercent <= min) {
+                this.gradeInfo = this.gradeDataset[i];
+                break;
+              }
+              count += 1;
+            }
+            console.log(count, this.gradeDataset.length);
+            if (count === this.gradeDataset.length) {
+              const sorted = this.gradeDataset.sort((a: any, b: any) => {
+                const numA = parseInt(a.PercentageRange.split('-')[0]);
+                const numB = parseInt(b.PercentageRange.split('-')[0]);
+                return numA - numB;
+              });
+              this.gradeInfo = sorted[0];
+            }
+            this.showGrade = true;
+          } else {
+            this.showGrade = false;
+          }
+        }
+      },
+      error: (err) => {},
+    });
   }
 }
