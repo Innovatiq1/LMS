@@ -239,13 +239,12 @@ export class GradeComponent implements OnInit {
 
   removeGrade(index: any) {
     const getDataset = this.gradeList.value[index];
+
     if (
       getDataset.PercentageRange != '' &&
       getDataset.grade != '' &&
       getDataset.gpa != '' &&
-      getDataset.gradeTerm != '' &&
-      this.gradeList.valid &&
-      this.gradeDataset.length != 0
+      getDataset.gradeTerm != ''
     ) {
       Swal.fire({
         title: 'Are you sure?',
