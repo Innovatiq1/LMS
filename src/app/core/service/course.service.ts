@@ -696,6 +696,39 @@ private tpUrl=environment.Url;
       const apiUrl = `${this.prefix}uploadScorm/${id}`;
       return this._Http.get<ApiResponse>(apiUrl);
     }
+
+    // IMSCC Kit methods
+    saveImsccKit(payload: any){
+      const apiUrl = `${this.prefix}uploadImscc/`;
+      return this._Http.post<any>(apiUrl, payload).pipe(map((response) => response));
+    }
+
+    createImsccPkg(payload:any) {
+      const apiUrl = `${this.prefix}uploadImscc/create/v2`;
+      return this._Http.post<any>(apiUrl, payload).pipe(map((response) => response));
+    }
+
+    getImsccKits(companyId:string){
+      const apiUrl = `${this.prefix}uploadImscc`;
+      return this._Http.get<any>(apiUrl, {
+        params: this.buildParams({companyId}),
+      }).pipe(map((response) => response));
+    }
+
+    updateImsccKit(id:string,payload: any){
+        const apiUrl = `${this.prefix}uploadImscc/${id}`;
+        return this._Http.put<ApiResponse>(apiUrl, payload);
+    }
+
+    getImsccKit(id:string) {
+      const apiUrl = `${this.prefix}uploadImscc/${id}`;
+      return this._Http.get<ApiResponse>(apiUrl);
+    }
+
+    deleteImsccKit(id:string) {
+      const apiUrl = `${this.prefix}uploadImscc/${id}`;
+      return this._Http.delete<ApiResponse>(apiUrl);
+    }
     createStudentScorm(payload: any){
       const apiUrl = `${this.prefix}uploadScorm/studentClasses/scorm`;
       return this._Http.post<any>(apiUrl, payload).pipe(map((response) => response));
