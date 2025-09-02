@@ -170,7 +170,7 @@
           position: absolute;
           top: calc(50% - 13px);
           right: 17px;
-          font-size: 19px;
+          font-size: 14px;
           @include transform(scale(0));
           @include transition(all 0.3s);
         }
@@ -208,7 +208,7 @@
           position: absolute;
           top: calc(50% - 13px);
           right: 17px;
-          font-size: 16px;
+          font-size: 14px;
           // @include transform(scale(0));
           @include transition(all 0.3s);
         }
@@ -232,7 +232,7 @@
           position: absolute;
           top: calc(50% - 13px);
           right: 17px;
-          font-size: 19px;
+          font-size: 14px;
           // @include transform(scale(0));
           @include transition(all 0.3s);
         }
@@ -254,7 +254,7 @@
           position: absolute;
           top: calc(50% - 13px);
           right: 17px;
-          font-size: 19px;
+          font-size: 14px;
           // @include transform(scale(0));
           @include transition(all 0.3s);
         }
@@ -298,7 +298,7 @@
           margin: 7px 0 7px 12px;
           color: #333;
           // font-weight: bold;
-          font-size: 16px;
+          font-size: 14px;
           overflow: hidden;
           font-weight: 500;
           // font-family: 'Nunito';
@@ -705,7 +705,7 @@
           content: "\2023";
           position: absolute;
           right: 0;
-          font-size: 25px;
+          font-size: 14px;
           top: 0;
           line-height: 22px;
         }
@@ -861,7 +861,17 @@
 }
 
 .sidebar-userpic-btn {
-  display: flex;
+  display: flex;.sidebar .menu .list a {
+    color: #376d1d;
+    position: relative;
+    font-size: 14px;
+    display: block;
+    overflow: hidden;
+    line-height: 2rem;
+    padding: 9px 9px 9px 9px;
+    margin: 8px 11px 0px 11px;
+    border-radius: 0.5rem;
+}
   place-content: space-around;
   margin: auto;
   line-height: 2rem;

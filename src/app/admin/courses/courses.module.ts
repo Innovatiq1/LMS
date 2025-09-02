@@ -38,6 +38,7 @@ import { EnquiryListComponent } from './enquiry-list/enquiry-list.component';
 import { ScheduleMeetingComponent } from './schedule-meeting/schedule-meeting.component';
 import { DivideBy60Pipe } from './pipes/divide-by60.pipe';
 import { ScormPlayerComponent } from './course-kit/scorm-player/scorm-player.component';
+import { ImsccPlayerComponent } from './course-kit/imscc-player/imscc-player.component';
 import { SafePipeAdmin } from '../pipes/safe.pipe';
 import { BlockedExamsComponent } from './blocked-exams/blocked-exams.component';
 import { ExamTrianeesComponent } from './exam-trianees/exam-trianees.component';
@@ -74,6 +75,7 @@ import { ExamManualEvaluationComponent } from './exam-manual-evaluation/exam-man
    EnquiryListComponent,
    DivideBy60Pipe,
    ScormPlayerComponent,
+   ImsccPlayerComponent,
     SafePipeAdmin,
     BlockedExamsComponent,
     ExamTrianeesComponent,

@@ -78,6 +78,7 @@ export class CreateCourseKitComponent implements OnInit {
   kitOpt: any[] = [
     { code: 'course', label: 'Course' },
     { code: 'scorm', label: 'Scorm' },
+    { code: 'imscc', label: 'IMSCC' },
   ];
   kitType: any[] = [];
   isScormKit: boolean = false;
@@ -138,7 +139,7 @@ export class CreateCourseKitComponent implements OnInit {
     );
 
     this.courseKitForm.get('kitType')?.valueChanges.subscribe((value) => {
-      if (value === 'scorm') {
+      if (value === 'scorm' || value === 'imscc') {
         this.isScormKit = true;
         this.courseKitForm.patchValue({
           videoLink: '',
@@ -152,9 +153,19 @@ export class CreateCourseKitComponent implements OnInit {
   }
   fetchScormKits() {
     var companyId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-    this.courseService.getScormKits(companyId).subscribe((res: any) => {
-      this.scorm_kit_list = res.data;
-    })
+    const selectedKitType = this.courseKitForm.get('kitType')?.value;
+    
+    if (selectedKitType === 'imscc') {
+      // Fetch IMSCC kits
+      this.courseService.getImsccKits(companyId).subscribe((res: any) => {
+        this.scorm_kit_list = res.data;
+      });
+    } else {
+      // Fetch SCORM kits (default)
+      this.courseService.getScormKits(companyId).subscribe((res: any) => {
+        this.scorm_kit_list = res.data;
+      });
+    }
   }
   dateValidator(group: FormGroup) {
     const startDate = group.get('startDate')?.value;
@@ -525,7 +536,7 @@ export class CreateCourseKitComponent implements OnInit {
     }
   }
 
-  openCreateScormPackage() {
+  openCreateContentPackage() {
     const dialogRef = this.dialog.open(ScormPkgCreateComponent, {
       width: '70%',
       height: '80%',
@@ -538,5 +549,15 @@ export class CreateCourseKitComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       this.fetchScormKits();
     });
+  }
+
+  getKitLabel(): string {
+    const selectedKitType = this.courseKitForm.get('kitType')?.value;
+    if (selectedKitType === 'scorm') {
+      return 'Scorm Kit';
+    } else if (selectedKitType === 'imscc') {
+      return 'IMSCC Kit';
+    }
+    return 'Scorm Kit'; // Default fallback
   }
 }

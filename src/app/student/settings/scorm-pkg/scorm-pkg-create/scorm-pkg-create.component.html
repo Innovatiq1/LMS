@@ -4,9 +4,9 @@
   </div>
   <div class="content-block">
     <ng-container *ngIf="!dialogStatus">
-      <div class="block-header" *ngFor="let breadscrum of breadscrums">
+      <div class="block-header">
         <!-- breadcrumb -->
-        <app-static-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
+        <app-static-breadcrumb [title]="getBreadcrumbTitle()" [items]="[getBreadcrumbTitle()]" [active_item]="getBreadcrumbActive()">
         </app-static-breadcrumb>
       </div>
     </ng-container>
@@ -25,7 +25,7 @@
             <div class="body m-4">
               <div class="row">
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                  <label>SCORM Package Title
+                  <label>{{ getPackageTitleLabel() }}
                     <span class="mandatory">&nbsp;*</span></label>
                   <mat-form-field class="example-full-width mb-3" appearance="outline">
                     <input matInput type="text" id="name" formControlName="title" class="form-control" required />
@@ -54,8 +54,13 @@
                     <div class="file1">
                       <button mat-raised-button color="primary" class="btn">
                         Choose file
-                        <input formControlName="documentLink" (change)="onFileUpload($event)" class="file-input"
-                          type="file" accept=".pdf, .zip" />
+                        <input
+                          formControlName="documentLink"
+                          (change)="onFileUpload($event)"
+                          class="file-input"
+                          type="file"
+                          accept=".pdf,.zip,.imscc,application/pdf,application/zip,application/x-zip-compressed,application/vnd.ims.imsccv1p1,application/vnd.ims.imsccv1p2,application/vnd.ims.imsccv1p3"
+                        />
                       </button>
                       <span class="file-msg">
                         <h6 title="{{ uploadedDocument }}">{{
@@ -82,7 +87,7 @@
                 [routerLink]="['/student/settings/configuration/scorm-kit']">Back</button>
             </div>
             <div class="col-md-2">
-              <button mat-raised-button id="submit" (click)="submitSCORMKit()">{{isEdit ? 'Update' : 'Create'}}</button>
+              <button mat-raised-button id="submit" (click)="submitSCORMKit()">{{isEdit ? 'Update' : 'Create'}} </button>
             </div>
           </div>
         </div>
