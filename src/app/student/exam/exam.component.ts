@@ -23,7 +23,9 @@ export class ExamComponent {
     // 'Assessment Name',
     'Course Name',
     'Submitted Date',
-    'Score',
+    'Score', 
+    'Grade', 
+    'Percentage',
     'Exam Type',
     'Retakes left',
     'Exam',
@@ -36,12 +38,16 @@ export class ExamComponent {
   pageSizeArr = this.utils.pageSizeArr;
   id: any;
   selection = new SelectionModel<any>(true, []);
-  dataSource: any;
+  dataSource: any; 
+  gradeDataset:any[] = []
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild('filter', { static: true }) filter!: ElementRef;
   isAssessment = false;
   isTutorial = false;
-  tab: number = 0;
+  tab: number = 0;   
+showGrade: boolean = false;
+    currentPercentage: number = 0;
+   gradeInfo: any = null;
 retakeTemp=0;
 retakeRequestData:any;
   breadscrums = [
@@ -84,7 +90,19 @@ retakeRequestData:any;
     if (!this.isAssessment) {
       this.tab = 1;
     }
-  }
+  } 
+ const getCompanyId: any = localStorage.getItem('userLogs');
+    const parseid = JSON.parse(getCompanyId);
+    this.settingService.gradeFetch(parseid.companyId).subscribe({
+      next: (res: any) => {  
+        this.gradeDataset = [] 
+        this.gradeDataset.push(...res.response!.gradeList)
+
+      },
+      error: (err) => {},
+    });
+    
+  
   this.getAllAnswers();
   }
   onTabChange(event: MatTabChangeEvent) {
@@ -396,6 +414,57 @@ retakeRequestData:any;
         console.log('User canceled the request.');
       }
     });
-  }
+  } 
+
+    GradeCalculate_percentage(actualScore:any,totalScore:any):any{ 
+
+       if (this.gradeDataset.length != 0) { 
+       
+         let calculatePercent = (actualScore / totalScore) * 100;
+    let currentPercentage = Number.isNaN(calculatePercent)
+      ? 0
+      : Number(calculatePercent.toFixed(2));
+
+          
+          return currentPercentage  
+       }else{
+        return "Not yet provided"
+       }
+    } 
+
+
+      GradeCalculate_grade(actualScore:any,totalScore:any):any{
+         let gradeData 
+         let calculatePercent = (actualScore / totalScore) * 100;
+    
+
+          if (this.gradeDataset.length != 0) {
+           
+            let count = 0;
+            for (let i = 0; i < this.gradeDataset.length; i++) {
+              const max = this.gradeDataset[i].PercentageRange.split('-')[0];
+              const min = this.gradeDataset[i].PercentageRange.split('-')[1];
+              if (calculatePercent >= max && calculatePercent <= min) {
+                gradeData = this.gradeDataset[i];
+                break;
+              }
+              count += 1;
+            }
+            if (count === this.gradeDataset.length) {
+              const sorted = this.gradeDataset.sort((a: any, b: any) => {
+                const numA = parseInt(a.PercentageRange.split('-')[0]);
+                const numB = parseInt(b.PercentageRange.split('-')[0]);
+                return numA - numB;
+              });
+              gradeData = sorted[0];
+            }
+          
+             return gradeData.grade
+          }
+         else {
+           return "Not yet provided"
+        }  
+           
+    }
   
 }
