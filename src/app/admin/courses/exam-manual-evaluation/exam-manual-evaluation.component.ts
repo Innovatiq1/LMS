@@ -33,7 +33,8 @@ export class ExamManualEvaluationComponent {
   examAssAnsId: any;
   examFirstAssAnsId: any;
   examQuestionId: any;
-  examsTrainerQuestionsAnswer: any;
+  examsTrainerQuestionsAnswer: any; 
+    evaluationStatus:boolean = false
   examsStudentAnswers: any;
   combinedAnswers: any[] = [];
   showGrade: boolean = false;
@@ -117,12 +118,21 @@ export class ExamManualEvaluationComponent {
   getExamQuestionsAnswer() {
     this.quesAssessmentService
       .getAnswerById(this.examAssAnsId)
-      .subscribe((response: any) => {
+      .subscribe((response: any) => { 
+
         this.assessmentAnswer = response?.assessmentAnswer;
         this.examsStudentAnswers = response?.assessmentAnswer?.answers;
+         
 
+          if(response.assessmentAnswer.evaluationStatus.toLowerCase() == "completed"){
+        this.evaluationStatus = true
+      }else{ 
+        this.evaluationStatus = false
+      }
         this.actualScore = response.assessmentAnswer.score;
-        this.totalScore = response.assessmentAnswer.totalScore;
+        this.totalScore = response.assessmentAnswer.totalScore;  
+
+      
         this.GradeCalculate();
 
         this.tryCombineAnswers();
@@ -332,19 +342,24 @@ export class ExamManualEvaluationComponent {
     }
   }
 
-  LiveUpdatedGrade() {
-    console.log(this.currentPercentage);
+  LiveUpdatedGrade() {  
+
+
+   
+      this.evaluationStatus = true 
+
+        if(this.actualScore == null || this.totalScore == null){ 
+           this.evaluationStatus = false
+        }
     const TotalassignMart = this.combinedAnswers.reduce(
       (acc, curr) => acc + curr.assignedMarks,
       0
     );
     let calculatePercent = (TotalassignMart / this.totalScore) * 100;
-
     if (calculatePercent <= 100) {
       this.currentPercentage = Number.isNaN(calculatePercent)
         ? 0
         : Number(calculatePercent.toFixed(2));
-
       let count = 0;
       for (let i = 0; i < this.gradeDataset.length; i++) {
         const max = this.gradeDataset[i].PercentageRange.split('-')[0];
@@ -355,7 +370,6 @@ export class ExamManualEvaluationComponent {
         }
         count += 1;
       }
-
       if (count === this.gradeDataset.length) {
         const sorted = this.gradeDataset.sort((a: any, b: any) => {
           const numA = parseInt(a.PercentageRange.split('-')[0]);

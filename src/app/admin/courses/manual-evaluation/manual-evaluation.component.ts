@@ -23,7 +23,8 @@ export class ManualEvaluationComponent {
   getAssessmentCorrectAns: any;
   getAssessmentAnswer: any;
   combinedAnswers: any[] = [];
-  savedAnswers: any[] = [];
+  savedAnswers: any[] = []; 
+  evaluationStatus:boolean = false
   originalAnswers: any[] = [];
   isEdit: boolean = false;
   assessmentAnswerId: any;
@@ -68,7 +69,14 @@ export class ManualEvaluationComponent {
   getCategoryByID(id: string) {
     this.courseService.getStudentClassById(id).subscribe((response: any) => {
       // this.classDataById = response?._id;
-      console.log("ressssssssssss",response)
+     
+      if(response.assessmentAnswer.evaluationStatus.toLowerCase() == "completed"){
+        this.evaluationStatus = true
+      }else{ 
+        this.evaluationStatus = false
+
+      }
+      
       this.response = response;
       this.getAssessmentAnswer = response?.assessmentAnswer?.answers;
       this.assessmentAnswerId = response?.assessmentAnswer?._id;
@@ -331,7 +339,8 @@ export class ManualEvaluationComponent {
 
     this.originalAnswers = JSON.parse(JSON.stringify(this.combinedAnswers));
   }
-  LiveUpdatedGrade() {
+  LiveUpdatedGrade() { 
+    this.evaluationStatus = true
     const TotalassignMart = this.combinedAnswers.reduce(
       (acc, curr) => acc + curr.assignedMarks,
       0
