@@ -623,7 +623,7 @@ export class CompletionListComponent {
    
 
     this.GradeCalculate();
-
+    console.log(".---")
     this.dialogRef = this.dialog.open(this.certificateDialog, {
       width: '900px',
       height: '700px',
