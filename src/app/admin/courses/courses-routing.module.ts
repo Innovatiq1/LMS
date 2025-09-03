@@ -177,6 +177,10 @@ const routes: Routes = [
     component: ScormPlayerComponent
   },
   {
+    path: 'imscc-player/view/:id',
+    component: ScormPlayerComponent
+  },
+  {
     path:'exam/trainees/:courseId',
     component: ExamTrianeesComponent
   }

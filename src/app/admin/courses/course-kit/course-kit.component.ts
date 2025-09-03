@@ -126,6 +126,7 @@ export class CourseKitComponent implements OnInit{
   
     this.courseService.getCourseKit(filter)
       .subscribe(response => {
+        console.log("courseKit response", response);
         this.isLoading = false;
         this.totalItems = response.totalDocs;
         this.dataSource = response.docs;

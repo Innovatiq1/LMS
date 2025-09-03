@@ -1,0 +1,95 @@
+<section class="content">
+    <div class="content-block">
+        <div class="block-header" *ngFor="let breadscrum of breadscrums">
+            <app-static-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items"
+                [active_item]="breadscrum.active">
+            </app-static-breadcrumb>
+        </div>
+        <div class="row clearfix p-2">
+            <div class="col-xl-9 col-sm-12 col-md-9 col-lg-9">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0" *ngIf="currentImsccModule">
+                            {{ currentImsccModule.title }}
+                        </h6>
+                        <div class="navigation-controls">
+                            <button 
+                                mat-icon-button 
+                                (click)="navigatePrevious()" 
+                                [disabled]="currentResourceIndex === 0"
+                                matTooltip="Previous">
+                                <mat-icon>chevron_left</mat-icon>
+                            </button>
+                            <span class="resource-counter mx-2">
+                                {{ currentResourceIndex + 1 }} / {{ resources.length }}
+                            </span>
+                            <button 
+                                mat-icon-button 
+                                (click)="navigateNext()" 
+                                [disabled]="currentResourceIndex === resources.length - 1"
+                                matTooltip="Next">
+                                <mat-icon>chevron_right</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <iframe 
+                            [src]="iframeUrl | safe" 
+                            width="100%" 
+                            height="500" 
+                            frameborder="0" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-12 col-md-3 col-lg-3">
+                <div class="card">
+                    <div class="card-header">
+                        <h6 class="mb-0">IMSCC Content:</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="resource-list">
+                            <div 
+                                class="resource-item pointer p-2 mb-2 rounded" 
+                                *ngFor="let resource of resources; let i=index"
+                                [ngClass]="{ 'active-resource' : i === currentResourceIndex }"
+                                (click)="openImsccResource(resource, i)">
+                                <div class="d-flex align-items-center">
+                                    <mat-icon class="resource-icon me-2">
+                                        {{ getResourceIcon(resource.type) }}
+                                    </mat-icon>
+                                    <div class="resource-info flex-grow-1">
+                                        <div class="resource-title font-weight-bold">
+                                            {{ resource.title || 'Resource ' + (i + 1) }}
+                                        </div>
+                                        <div class="resource-type text-muted small">
+                                            {{ resource.type | titlecase }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Progress indicator -->
+                        <div class="progress-section mt-3" *ngIf="resources.length > 0">
+                            <div class="progress-label small text-muted mb-1">
+                                Progress: {{ currentResourceIndex + 1 }} of {{ resources.length }}
+                            </div>
+                            <div class="progress" style="height: 6px;">
+                                <div 
+                                    class="progress-bar" 
+                                    role="progressbar" 
+                                    [style.width.%]="((currentResourceIndex + 1) / resources.length) * 100"
+                                    [attr.aria-valuenow]="currentResourceIndex + 1"
+                                    [attr.aria-valuemin]="1"
+                                    [attr.aria-valuemax]="resources.length">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

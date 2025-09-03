@@ -68,6 +68,7 @@ export class ManualEvaluationComponent {
   getCategoryByID(id: string) {
     this.courseService.getStudentClassById(id).subscribe((response: any) => {
       // this.classDataById = response?._id;
+      console.log("ressssssssssss",response)
       this.response = response;
       this.getAssessmentAnswer = response?.assessmentAnswer?.answers;
       this.assessmentAnswerId = response?.assessmentAnswer?._id;
@@ -87,6 +88,7 @@ export class ManualEvaluationComponent {
     this.questionService
       .getQuestionsById(questionId)
       .subscribe((response: any) => {
+        this.totalScore=response?.totalMarks;
         this.getAssessmentCorrectAns = response?.questions;
 
         if (this.getAssessmentCorrectAns && this.getAssessmentAnswer) {
