@@ -63,10 +63,10 @@
                       </mat-cell>
                     </ng-container>  
 
-                     <ng-container matColumnDef="Percentage">
-                      <mat-header-cell *matHeaderCellDef>Percentage</mat-header-cell>
-                      <mat-cell  *matCellDef="let row"><span class="mobile-label" >Percentage:</span>
-                        {{GradeCalculate_percentage(row.score,row.totalScore)}}
+                     <ng-container matColumnDef="GPA">
+                      <mat-header-cell *matHeaderCellDef>GPA</mat-header-cell>
+                      <mat-cell  *matCellDef="let row"><span class="mobile-label" >GPA:</span>
+                        {{GradeCalculate_gpa(row.score,row.totalScore)}}
                       </mat-cell>
                     </ng-container> 
 
