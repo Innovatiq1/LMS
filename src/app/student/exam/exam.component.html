@@ -52,7 +52,25 @@
                       <mat-cell *matCellDef="let row"><span class="mobile-label">Score:</span>{{row.score}} /
                         {{row.totalScore}}
                       </mat-cell>
-                    </ng-container>
+                    </ng-container>   
+       
+
+                     <ng-container  matColumnDef="Grade">
+                      <mat-header-cell *matHeaderCellDef>Grade</mat-header-cell>
+                      <mat-cell   *matCellDef="let row"><span class="mobile-label" >Grade:</span>
+                        
+                        {{GradeCalculate_grade(row.score,row.totalScore)}}
+                      </mat-cell>
+                    </ng-container>  
+
+                     <ng-container matColumnDef="Percentage">
+                      <mat-header-cell *matHeaderCellDef>Percentage</mat-header-cell>
+                      <mat-cell  *matCellDef="let row"><span class="mobile-label" >Percentage:</span>
+                        {{GradeCalculate_percentage(row.score,row.totalScore)}}
+                      </mat-cell>
+                    </ng-container> 
+
+
                     <ng-container matColumnDef="Exam Type">
                       <mat-header-cell *matHeaderCellDef>Exam Type</mat-header-cell>
                       <mat-cell *matCellDef="let row"><span class="mobile-label">Exam Type:</span> {{ examType(row) }}

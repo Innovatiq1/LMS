@@ -509,7 +509,7 @@ export class CompletionListComponent {
   }
 
   loadCanvaContent() {
-    console.log(this.studentData, '===> <====');
+    
     const canvasJson = {
       version: '6.7.0',
       objects: this.cloneCanvaObjects,
@@ -535,11 +535,12 @@ export class CompletionListComponent {
   }
 
   CleanCanvaObject() {
-    console.log(this.gradeInfo, '[[[[=====>>>');
+    
     if (
       this.canvaObjectInfo.elements.length != 0 &&
       this.canvaObjectInfo.elements[0].hasOwnProperty('customId')
-    ) {
+    ) { 
+      
       const CleanData = this.canvaObjectInfo.elements.map(
         (data: any, index: any) => {
           if (data.text == '_User Name_') {
@@ -619,8 +620,8 @@ export class CompletionListComponent {
 
     this.actualScore = this.studentData.assessmentanswers.score;
     this.totalScore = this.studentData.assessmentanswers.totalScore;
-    console.log(this.studentData, '===> !!! <===');
-    console.log(this.studentData.assessmentanswers.score);
+   
+
     this.GradeCalculate();
 
     this.dialogRef = this.dialog.open(this.certificateDialog, {
@@ -1083,12 +1084,14 @@ export class CompletionListComponent {
     });
   }
 
-  updateCertificateElements(row: any) {
+  updateCertificateElements(row: any) { 
+    console.log(row,'=====')
     let imageUrl = this.course.image;
     imageUrl = imageUrl.replace(/\\/g, '/');
     imageUrl = encodeURI(imageUrl);
     this.imgUrl = imageUrl;
-    this.image_link = imageUrl;
+    this.image_link = imageUrl;  
+ 
 
     this.course.elements.forEach((element: any) => {
       if (element.type === 'UserName') {

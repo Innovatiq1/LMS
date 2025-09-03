@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { NgChartsModule } from 'ng2-charts';
@@ -255,7 +255,8 @@ import { GradeComponent } from './settings/grade/grade/grade.component';
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts'),
     }),
-    FormsModule,
+    FormsModule, 
+    NgIf,
     ReactiveFormsModule,
     NgScrollbarModule,
     NgApexchartsModule,
