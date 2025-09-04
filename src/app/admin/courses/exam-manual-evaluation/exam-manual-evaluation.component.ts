@@ -8,6 +8,7 @@ import { StudentsService } from 'app/admin/students/students.service';
 import Swal from 'sweetalert2';
 import { forkJoin } from 'rxjs';
 import { SettingsService } from '@core/service/settings.service';
+import { AdminService } from '@core/service/admin.service';
 @Component({
   selector: 'app-exam-manual-evaluation',
   templateUrl: './exam-manual-evaluation.component.html',
@@ -33,10 +34,12 @@ export class ExamManualEvaluationComponent {
   examAssAnsId: any;
   examFirstAssAnsId: any;
   examQuestionId: any;
-  examsTrainerQuestionsAnswer: any;
+  examsTrainerQuestionsAnswer: any; 
+    evaluationStatus:boolean = false
   examsStudentAnswers: any;
   combinedAnswers: any[] = [];
-  showGrade: boolean = false;
+  showGrade: boolean = false; 
+  display_grade:boolean = false
   assessmentAnswer: any;
 
   actualScore: number = 0;
@@ -51,7 +54,8 @@ export class ExamManualEvaluationComponent {
     private questionService: QuestionService,
     private quesAssessmentService: AssessmentService,
     private studentService: StudentsService,
-    private SettingService: SettingsService
+    private SettingService: SettingsService, 
+     private adminService:AdminService,
   ) {
     const storedItems = localStorage.getItem('activeBreadcrumb');
     if (storedItems) {
@@ -74,7 +78,28 @@ export class ExamManualEvaluationComponent {
   //     this.examFirstAssAnsId = params['examFirstAssAnsId'];
   //     this.examQuestionId = params['examQuestionId'];
   //     this.isEdit = params['isEdit'] === 'true';
-  ngOnInit(): void {
+  ngOnInit(): void { 
+
+    
+     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    this.adminService
+      .getUserTypeList({ allRows: true }, userId)
+      .subscribe((response: any) => {
+        if(response.length != 0){ 
+          response.map((data:any)=>{ 
+            data.typeName == "admin" ?   
+                data.settingsMenuItems.map((inner_data:any)=>{ 
+                  inner_data.title == "Configuration" ?   
+                      inner_data.children.map((nav_menu:any)=>{
+                        nav_menu.title == "Grade" ? (this.display_grade = true  ) : this.display_grade = false  
+                      } 
+                    )
+                  : ""
+                })
+            : ""
+          })
+        }
+      });
     this.route.queryParams.subscribe((params) => {
       this.courseId = params['courseId'];
       this.examAssAnsId = params['examAssAnsId'];
@@ -117,13 +142,24 @@ export class ExamManualEvaluationComponent {
   getExamQuestionsAnswer() {
     this.quesAssessmentService
       .getAnswerById(this.examAssAnsId)
-      .subscribe((response: any) => {
+      .subscribe((response: any) => { 
+
         this.assessmentAnswer = response?.assessmentAnswer;
         this.examsStudentAnswers = response?.assessmentAnswer?.answers;
+         
 
+          if(response.assessmentAnswer.evaluationStatus.toLowerCase() == "completed"){
+        this.evaluationStatus = true
+      }else{ 
+        this.evaluationStatus = false
+      }
         this.actualScore = response.assessmentAnswer.score;
-        this.totalScore = response.assessmentAnswer.totalScore;
-        this.GradeCalculate();
+        this.totalScore = response.assessmentAnswer.totalScore;  
+
+      if(this.display_grade){
+        this.GradeCalculate(); 
+      } 
+      
 
         this.tryCombineAnswers();
         // console.log("quesAssessmentAns",response)
@@ -332,19 +368,24 @@ export class ExamManualEvaluationComponent {
     }
   }
 
-  LiveUpdatedGrade() {
-    console.log(this.currentPercentage);
+  LiveUpdatedGrade() {  
+
+
+   
+      this.evaluationStatus = true 
+
+        if(this.actualScore == null || this.totalScore == null){ 
+           this.evaluationStatus = false
+        }
     const TotalassignMart = this.combinedAnswers.reduce(
       (acc, curr) => acc + curr.assignedMarks,
       0
     );
     let calculatePercent = (TotalassignMart / this.totalScore) * 100;
-
     if (calculatePercent <= 100) {
       this.currentPercentage = Number.isNaN(calculatePercent)
         ? 0
         : Number(calculatePercent.toFixed(2));
-
       let count = 0;
       for (let i = 0; i < this.gradeDataset.length; i++) {
         const max = this.gradeDataset[i].PercentageRange.split('-')[0];
@@ -355,7 +396,6 @@ export class ExamManualEvaluationComponent {
         }
         count += 1;
       }
-
       if (count === this.gradeDataset.length) {
         const sorted = this.gradeDataset.sort((a: any, b: any) => {
           const numA = parseInt(a.PercentageRange.split('-')[0]);

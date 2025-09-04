@@ -216,10 +216,12 @@ export class CreateUserTypeComponent {
     );
   }
 
-  initMenuItemsV2() {
+  initMenuItemsV2() { 
+    console.log('====>>>')
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
-        this.logoService.getSidemenu(userId).subscribe((response: any) => {
-      let MENU_LIST = response.data.docs[0].MENU_LIST;
+        this.logoService.getSidemenu(userId).subscribe((response: any) => { 
+      let MENU_LIST = response.data.docs[0].MENU_LIST; 
+      console.log(response,"====>>>><<<<<")
       const items = this.convertToMenuV2(MENU_LIST, this.userType?.menuItems);
       items?.forEach((item, index) => {
         if (!this.dataSourceArray.some((v) => v.id === item.id))
