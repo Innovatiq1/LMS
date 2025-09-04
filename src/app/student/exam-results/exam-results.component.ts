@@ -9,6 +9,7 @@ import { AssessmentService } from '@core/service/assessment.service';
 import { SettingsService } from '@core/service/settings.service';
 import Swal from 'sweetalert2';
 import { AppConstants } from '@shared/constants/app.constants';
+import { AdminService } from '@core/service/admin.service';
 
 @Component({
   selector: 'app-exam-results',
@@ -19,10 +20,8 @@ export class ExamResultsComponent {
   displayedColumns: string[] = [
     'Course Title',
     'Exam Name', 
-    
     'Exam Score', 
-    'Grade', 
-    'GPA',
+   
     'Submitted At',
     'Retakes left',
     'Exam',
@@ -35,7 +34,9 @@ export class ExamResultsComponent {
       items: ['Course'],
       active: 'Exam Results',
     },
-  ];
+  ]; 
+
+  display_grade:boolean = false
 
   assessmentPaginationModel!: Partial<AssessmentQuestionsPaginationModel>;
   totalItems: any;
@@ -53,13 +54,39 @@ export class ExamResultsComponent {
 
   constructor(public utils: UtilsService, 
     private assessmentService: AssessmentService,
-    private settingService:SettingsService,
+    private settingService:SettingsService, 
+    private adminService:AdminService,
     public router: Router){
     this.assessmentPaginationModel = {};
   }
 
   ngOnInit() { 
-     const getCompanyId: any = localStorage.getItem('userLogs');
+    
+     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    this.adminService
+      .getUserTypeList({ allRows: true }, userId)
+      .subscribe((response: any) => {
+        if(response.length != 0){ 
+          response.map((data:any)=>{ 
+            data.typeName == "admin" ?   
+                data.settingsMenuItems.map((inner_data:any)=>{ 
+                  inner_data.title == "Configuration" ?   
+                      inner_data.children.map((nav_menu:any)=>{
+                        nav_menu.title == "Grade" ? (this.display_grade = true , this.GetGradeDataset()) : this.display_grade = false  
+                      } 
+                    )
+                  : ""
+                })
+            : ""
+          })
+        }
+      });
+    this.getAllAnswers()
+   } 
+GetGradeDataset(){ 
+  if(this.display_grade){ 
+    this.displayedColumns.push( 'Grade', 'GPA',)
+    const getCompanyId: any = localStorage.getItem('userLogs');
     const parseid = JSON.parse(getCompanyId);
     this.settingService.gradeFetch(parseid.companyId).subscribe({
       next: (res: any) => {  
@@ -68,10 +95,9 @@ export class ExamResultsComponent {
 
       },
       error: (err) => {},
-    });
-    this.getAllAnswers()
-   }
-
+    });  
+  }
+  }
    getAllAnswers() {
     let studentId = localStorage.getItem('id')||'';
     let role = localStorage.getItem('user_type');

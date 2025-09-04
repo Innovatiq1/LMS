@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { AdminService } from '@core/service/admin.service';
 import { CourseService } from '@core/service/course.service';
 import { QuestionService } from '@core/service/question.service';
 import { SettingsService } from '@core/service/settings.service';
@@ -27,7 +28,8 @@ export class ManualEvaluationComponent {
   evaluationStatus:boolean = false
   originalAnswers: any[] = [];
   isEdit: boolean = false;
-  assessmentAnswerId: any;
+  assessmentAnswerId: any; 
+  display_grade:boolean = false
   dataSourse: any;
   // constructor(private route: ActivatedRoute,private courseService: CourseService,private questionService: QuestionService,) {}
   breadscrums: any[] = [];
@@ -39,7 +41,8 @@ export class ManualEvaluationComponent {
     private courseService: CourseService,
     private questionService: QuestionService,
     private studentService: StudentsService,
-    private SettingService: SettingsService
+    private SettingService: SettingsService, 
+     private adminService:AdminService,
   ) {
     const storedItems = localStorage.getItem('activeBreadcrumb');
     if (storedItems) {
@@ -59,10 +62,28 @@ export class ManualEvaluationComponent {
       this.rowId = params['id'];
       this.isEdit = params['isEdit'] === 'true';
     });
-
+ let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    this.adminService
+      .getUserTypeList({ allRows: true }, userId)
+      .subscribe((response: any) => {
+        if(response.length != 0){ 
+          response.map((data:any)=>{ 
+            data.typeName == "admin" ?   
+                data.settingsMenuItems.map((inner_data:any)=>{ 
+                  inner_data.title == "Configuration" ?   
+                      inner_data.children.map((nav_menu:any)=>{
+                        nav_menu.title == "Grade" ? (this.display_grade = true ) : this.display_grade = false  
+                      } 
+                    )
+                  : ""
+                })
+            : ""
+          })
+        }
+      });
     this.getCategories(this.rowId);
   }
-
+ 
   getCategories(id: string): void {
     this.getCategoryByID(id);
   }
@@ -82,9 +103,12 @@ export class ManualEvaluationComponent {
       this.assessmentAnswerId = response?.assessmentAnswer?._id;
 
       this.actualScore = response.assessmentAnswer.score;
-      this.totalScore = response.assessmentAnswer.totalScore;
-      this.GradeCalculate();
+      this.totalScore = response.assessmentAnswer.totalScore; 
+      if(this.display_grade){
+         this.GradeCalculate();
 
+      }
+     
       // if(this.isEdit){
       //   this.getEvaluatedDataByAssessmentId(this.assessmentAnswerId);
       // }

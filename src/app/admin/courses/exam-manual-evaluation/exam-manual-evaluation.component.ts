@@ -8,6 +8,7 @@ import { StudentsService } from 'app/admin/students/students.service';
 import Swal from 'sweetalert2';
 import { forkJoin } from 'rxjs';
 import { SettingsService } from '@core/service/settings.service';
+import { AdminService } from '@core/service/admin.service';
 @Component({
   selector: 'app-exam-manual-evaluation',
   templateUrl: './exam-manual-evaluation.component.html',
@@ -37,7 +38,8 @@ export class ExamManualEvaluationComponent {
     evaluationStatus:boolean = false
   examsStudentAnswers: any;
   combinedAnswers: any[] = [];
-  showGrade: boolean = false;
+  showGrade: boolean = false; 
+  display_grade:boolean = false
   assessmentAnswer: any;
 
   actualScore: number = 0;
@@ -52,7 +54,8 @@ export class ExamManualEvaluationComponent {
     private questionService: QuestionService,
     private quesAssessmentService: AssessmentService,
     private studentService: StudentsService,
-    private SettingService: SettingsService
+    private SettingService: SettingsService, 
+     private adminService:AdminService,
   ) {
     const storedItems = localStorage.getItem('activeBreadcrumb');
     if (storedItems) {
@@ -75,7 +78,28 @@ export class ExamManualEvaluationComponent {
   //     this.examFirstAssAnsId = params['examFirstAssAnsId'];
   //     this.examQuestionId = params['examQuestionId'];
   //     this.isEdit = params['isEdit'] === 'true';
-  ngOnInit(): void {
+  ngOnInit(): void { 
+
+    
+     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    this.adminService
+      .getUserTypeList({ allRows: true }, userId)
+      .subscribe((response: any) => {
+        if(response.length != 0){ 
+          response.map((data:any)=>{ 
+            data.typeName == "admin" ?   
+                data.settingsMenuItems.map((inner_data:any)=>{ 
+                  inner_data.title == "Configuration" ?   
+                      inner_data.children.map((nav_menu:any)=>{
+                        nav_menu.title == "Grade" ? (this.display_grade = true  ) : this.display_grade = false  
+                      } 
+                    )
+                  : ""
+                })
+            : ""
+          })
+        }
+      });
     this.route.queryParams.subscribe((params) => {
       this.courseId = params['courseId'];
       this.examAssAnsId = params['examAssAnsId'];
@@ -132,8 +156,10 @@ export class ExamManualEvaluationComponent {
         this.actualScore = response.assessmentAnswer.score;
         this.totalScore = response.assessmentAnswer.totalScore;  
 
+      if(this.display_grade){
+        this.GradeCalculate(); 
+      } 
       
-        this.GradeCalculate();
 
         this.tryCombineAnswers();
         // console.log("quesAssessmentAns",response)

@@ -55,7 +55,7 @@
                     </ng-container>   
        
 
-                     <ng-container  matColumnDef="Grade">
+                      <ng-container  *ngIf="display_grade"  matColumnDef="Grade">
                       <mat-header-cell *matHeaderCellDef>Grade</mat-header-cell>
                       <mat-cell   *matCellDef="let row"><span class="mobile-label" >Grade:</span>
                         
@@ -63,7 +63,7 @@
                       </mat-cell>
                     </ng-container>  
 
-                     <ng-container matColumnDef="GPA">
+                     <ng-container  *ngIf="display_grade" matColumnDef="GPA">
                       <mat-header-cell *matHeaderCellDef>GPA</mat-header-cell>
                       <mat-cell  *matCellDef="let row"><span class="mobile-label" >GPA:</span>
                         {{GradeCalculate_gpa(row.score,row.totalScore)}}
@@ -149,12 +149,27 @@
                           Date:</span>{{row?.submittedAt | date: 'MM/dd/yyyy'}}
                       </mat-cell>
                     </ng-container>
-                    <ng-container matColumnDef="Score">
+                    <ng-container   matColumnDef="Score">
                       <mat-header-cell *matHeaderCellDef>Score</mat-header-cell>
                       <mat-cell *matCellDef="let row"><span class="mobile-label">Score:</span>{{row.score}} /
                         {{row.totalScore}}
                       </mat-cell>
-                    </ng-container>
+                    </ng-container> 
+
+                          <ng-container  *ngIf="display_grade"  matColumnDef="Grade">
+                      <mat-header-cell *matHeaderCellDef>Grade</mat-header-cell>
+                      <mat-cell   *matCellDef="let row"><span class="mobile-label" >Grade:</span>
+                        
+                        {{GradeCalculate_grade(row.score,row.totalScore)}}
+                      </mat-cell>
+                    </ng-container>  
+
+                     <ng-container  *ngIf="display_grade" matColumnDef="GPA">
+                      <mat-header-cell *matHeaderCellDef>GPA</mat-header-cell>
+                      <mat-cell  *matCellDef="let row"><span class="mobile-label" >GPA:</span>
+                        {{GradeCalculate_gpa(row.score,row.totalScore)}}
+                      </mat-cell>
+                    </ng-container> 
                     <ng-container matColumnDef="Exam Type">
                       <mat-header-cell *matHeaderCellDef>Exam Type</mat-header-cell>
                       <mat-cell *matCellDef="let row"><span class="mobile-label">Exam Type:</span> {{ examType(row) }}

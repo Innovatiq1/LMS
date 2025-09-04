@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute } from '@angular/router';
+import { AdminService } from '@core/service/admin.service';
 import { AssessmentService } from '@core/service/assessment.service';
 import { SettingsService } from '@core/service/settings.service';
 import { StudentsService } from 'app/admin/students/students.service';
@@ -20,7 +21,8 @@ export class PreviewTestAnswersheetComponent {
   gradeDataset: any = [];
   gradeInfo: any = null;
   pageSize: number = 10;
-  currentPage: number = 0;
+  currentPage: number = 0; 
+  display_grade:boolean = false
   showGrade: boolean = false;
   totalQuestions: number = 0;
   skip: number = 0;
@@ -41,9 +43,33 @@ export class PreviewTestAnswersheetComponent {
     private studentService: StudentsService,
     private route: ActivatedRoute,
     private assessmentService: AssessmentService,
-    private SettingService: SettingsService
+    private SettingService: SettingsService, 
+    private adminService:AdminService
   ) {}
-  ngOnInit() {
+  ngOnInit() { 
+
+     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    this.adminService
+      .getUserTypeList({ allRows: true }, userId)
+      .subscribe((response: any) => {
+        if(response.length != 0){ 
+          response.map((data:any)=>{ 
+            data.typeName == "admin" ?   
+                data.settingsMenuItems.map((inner_data:any)=>{ 
+                  inner_data.title == "Configuration" ?   
+                      inner_data.children.map((nav_menu:any)=>{
+                        nav_menu.title == "Grade" ? (this.display_grade = true ) : this.display_grade = false  
+                      } 
+                    )
+                  : ""
+                })
+            : ""
+          })
+        }
+      });  
+
+      console.log(this.display_grade,'===')
+
     const answerId = this.route.snapshot.paramMap.get('id') || '';
     const studentId = this.route.snapshot.paramMap.get('studentId') || '';
     const assessmentType =
@@ -67,9 +93,12 @@ export class PreviewTestAnswersheetComponent {
     this.studentService.getAnswerById(answerId).subscribe((res: any) => {
       this.answerResult = res.assessmentAnswer;
       this.actualScore = res.assessmentAnswer.score;
-      this.totalScore = res.assessmentAnswer.totalScore;
+      this.totalScore = res.assessmentAnswer.totalScore;  
+    
+      if(this.display_grade){ 
+        console.log("inside ....")
       this.GradeCalculate();
-
+      }
       const assessmentAnswer = res.assessmentAnswer;
       this.getAssessmentName = assessmentAnswer.assessmentId.name;
       const assessmentId = assessmentAnswer.assessmentId;
@@ -102,8 +131,11 @@ export class PreviewTestAnswersheetComponent {
   getExamAnswerById(answerId: string) {
     this.assessmentService.getAnswerById(answerId).subscribe((res: any) => {
       this.actualScore = res.assessmentAnswer.score;
-      this.totalScore = res.assessmentAnswer.totalScore;
+      this.totalScore = res.assessmentAnswer.totalScore; 
+      if(this.display_grade){
       this.GradeCalculate();
+      }
+
       console.log('this.res', res.assessmentAnswer.examAssessmentId.name);
       this.getAssessmentName = res.assessmentAnswer.examAssessmentId.name;
       this.answerResult = res.assessmentAnswer;

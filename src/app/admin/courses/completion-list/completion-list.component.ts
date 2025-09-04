@@ -45,6 +45,7 @@ import { AssessmentService } from '@core/service/assessment.service';
 import { CourseModel, CoursePaginationModel } from '@core/models/course.model';
 import { UtilsService } from '@core/service/utils.service';
 import { SettingsService } from '@core/service/settings.service';
+import { AdminService } from '@core/service/admin.service';
 
 @Component({
   selector: 'app-completion-list',
@@ -109,7 +110,8 @@ export class CompletionListComponent {
   selectedRows: any[] = [];
   actualScore: number = 0;
   currentPercentage: number = 0;
-  totalScore: number = 0;
+  totalScore: number = 0; 
+  display_grade:boolean = false
   gradeDataset: any = [];
   canvaObjectInfo: any = null;
   cloneCanvaObjects: any = [];
@@ -168,7 +170,8 @@ export class CompletionListComponent {
     private authenService: AuthenService,
     private assessmentService: AssessmentService,
     private SettingService: SettingsService,
-    public utils: UtilsService
+    public utils: UtilsService, 
+    private adminService:AdminService,
   ) {
     this.studentPaginationModel = {} as StudentPaginationModel;
     this.coursePaginationModel = {};
@@ -182,7 +185,28 @@ export class CompletionListComponent {
     }
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void { 
+
+      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    this.adminService
+      .getUserTypeList({ allRows: true }, userId)
+      .subscribe((response: any) => {
+        if(response.length != 0){ 
+          response.map((data:any)=>{ 
+            data.typeName == "admin" ?   
+                data.settingsMenuItems.map((inner_data:any)=>{ 
+                  inner_data.title == "Configuration" ?   
+                      inner_data.children.map((nav_menu:any)=>{
+                        nav_menu.title == "Grade" ? (this.display_grade = true ) : this.display_grade = false  
+                      } 
+                    )
+                  : ""
+                })
+            : ""
+          })
+        }
+      }) 
+      console.log(this.display_grade,"===========++++====")
     const roleDetails = this.authenService.getRoleDetails()[0].menuItems;
     let urlPath = this.router.url.split('/');
     const parentId = `${urlPath[1]}/${urlPath[2]}`;
@@ -201,7 +225,14 @@ export class CompletionListComponent {
     if (viewAction.length > 0) {
       this.isView = true;
     }
-    this.commonRoles = AppConstants;
+    this.commonRoles = AppConstants;  
+
+   
+
+
+
+
+    
     this.getCompletedClasses();
     this.certificateForm = this.fb.group({
       text1: [''],
@@ -509,6 +540,7 @@ export class CompletionListComponent {
   }
 
   loadCanvaContent() {
+     
     
     const canvasJson = {
       version: '6.7.0',
@@ -516,9 +548,13 @@ export class CompletionListComponent {
     };
 
     this.canvas.loadFromJSON(canvasJson, () => {
-      const allObjects = this.canvas.getObjects();
+      const allObjects = this.canvas.getObjects(); 
+     
 
-      allObjects.forEach((obj: any) => {
+      allObjects.forEach((obj: any) => { 
+        
+          
+        
         obj.visible = true;
         obj.opacity = obj.opacity !== undefined ? obj.opacity : 1;
         obj.selectable = true;
@@ -534,12 +570,15 @@ export class CompletionListComponent {
     });
   }
 
-  CleanCanvaObject() {
-    
+  CleanCanvaObject() { 
+
+   
+
     if (
       this.canvaObjectInfo.elements.length != 0 &&
       this.canvaObjectInfo.elements[0].hasOwnProperty('customId')
-    ) { 
+    ) {  
+
       
       const CleanData = this.canvaObjectInfo.elements.map(
         (data: any, index: any) => {
@@ -553,7 +592,15 @@ export class CompletionListComponent {
               .updatedAt
               ? new Date(this.studentData.updatedAt).toLocaleDateString()
               : '--';
-          } else if (this.showGrade) {
+          }  
+           else if (data.text == '_score_') {
+              this.canvaObjectInfo.elements[index].text = String(
+                this.actualScore
+              );
+            }
+          
+          
+          else if (this.showGrade  && this.display_grade) {
             if (data.text == '_Grade_') {
               this.canvaObjectInfo.elements[index].text = this.gradeInfo!.grade;
             } else if (data.text == '_GPA_') {
@@ -564,10 +611,6 @@ export class CompletionListComponent {
             } else if (data.text == '_Percentage_') {
               this.canvaObjectInfo.elements[index].text = String(
                 this.currentPercentage
-              );
-            } else if (data.text == '_score_') {
-              this.canvaObjectInfo.elements[index].text = String(
-                this.actualScore
               );
             }
           }
@@ -598,8 +641,25 @@ export class CompletionListComponent {
     this.image_link = null;
     this.certificateService
       .getCertificateById(this.studentData.courseId.certificate_template_id)
-      .subscribe((response: any) => {
-        this.canvaObjectInfo = response;
+      .subscribe((response: any) => { 
+  
+
+         if(this.display_grade){  
+          this.canvaObjectInfo = response; 
+
+
+         }else{
+          let filterDataset = ['_Grade_' , "_GPA_" , "_Grade Term_"  , "_Percentage_"] 
+          let elements = (response.elements || []).filter((data:any) => data && !filterDataset.includes(data.text)) 
+          const finaldataset = { 
+            ...response, 
+            elements
+          } 
+           this.canvaObjectInfo = finaldataset; 
+         }
+        
+
+
 
         this.course = response;
         let imageUrl = this.course.image;
@@ -621,9 +681,13 @@ export class CompletionListComponent {
     this.actualScore = this.studentData.assessmentanswers.score;
     this.totalScore = this.studentData.assessmentanswers.totalScore;
    
+    if(this.display_grade){
+    this.GradeCalculate();  
+    }else{
+      this.openDialog();
+    } 
+  
 
-    this.GradeCalculate();
-    console.log(".---")
     this.dialogRef = this.dialog.open(this.certificateDialog, {
       width: '900px',
       height: '700px',

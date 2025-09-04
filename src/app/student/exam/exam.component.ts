@@ -12,6 +12,8 @@ import { CourseService } from '@core/service/course.service';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { AuthenService } from '@core/service/authen.service';
 import { SettingsService } from '@core/service/settings.service';
+import { LogoService } from '../settings/logo.service';
+import { AdminService } from '@core/service/admin.service';
 
 @Component({
   selector: 'app-exam',
@@ -24,8 +26,7 @@ export class ExamComponent {
     'Course Name',
     'Submitted Date',
     'Score', 
-    'Grade', 
-    'GPA',
+   
     'Exam Type',
     'Retakes left',
     'Exam',
@@ -47,7 +48,8 @@ export class ExamComponent {
   tab: number = 0;   
 showGrade: boolean = false;
     currentPercentage: number = 0;
-   gradeInfo: any = null;
+   gradeInfo: any = null; 
+   display_grade:boolean = false
 retakeTemp=0;
 retakeRequestData:any;
   breadscrums = [
@@ -63,13 +65,15 @@ retakeRequestData:any;
     private assessmentService: AssessmentService,
     private courseService: CourseService,
     private authenService: AuthenService,
-    private settingService:SettingsService
+    private settingService:SettingsService, 
+    private adminService:AdminService
   ) {
     this.assessmentPaginationModel = {};
   }
 
   ngOnInit() {
-    const roleDetails =this.authenService.getRoleDetails()[0].menuItems
+    const roleDetails =this.authenService.getRoleDetails()[0].menuItems 
+   
     let urlPath = this.router.url.split('/');
     const parentId = `${urlPath[1]}/${urlPath[2]}`;
     const childId =  urlPath[urlPath.length - 1];
@@ -91,7 +95,36 @@ retakeRequestData:any;
       this.tab = 1;
     }
   } 
- const getCompanyId: any = localStorage.getItem('userLogs');
+
+     
+    let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    this.adminService
+      .getUserTypeList({ allRows: true }, userId)
+      .subscribe((response: any) => {
+        if(response.length != 0){ 
+          response.map((data:any)=>{ 
+            data.typeName == "admin" ?   
+                data.settingsMenuItems.map((inner_data:any)=>{ 
+                  inner_data.title == "Configuration" ?   
+                      inner_data.children.map((nav_menu:any)=>{
+                        nav_menu.title == "Grade" ? (this.display_grade = true , this.GetGradeDataset()) : this.display_grade = false  
+                      } 
+                    )
+                  : ""
+                })
+            : ""
+          })
+        }
+      });
+    
+  
+  this.getAllAnswers();
+  } 
+
+  GetGradeDataset(){ 
+    if(this.display_grade){ 
+      this.displayedColumns.push('Grade','GPA')
+     const getCompanyId: any = localStorage.getItem('userLogs');
     const parseid = JSON.parse(getCompanyId);
     this.settingService.gradeFetch(parseid.companyId).subscribe({
       next: (res: any) => {  
@@ -100,10 +133,8 @@ retakeRequestData:any;
 
       },
       error: (err) => {},
-    });
-    
-  
-  this.getAllAnswers();
+    }); 
+  }
   }
   onTabChange(event: MatTabChangeEvent) {
     this.assessmentPaginationModel.page = 1;
