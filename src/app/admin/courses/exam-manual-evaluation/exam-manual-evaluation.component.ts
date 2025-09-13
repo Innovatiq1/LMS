@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { forkJoin } from 'rxjs';
 import { SettingsService } from '@core/service/settings.service';
 import { AdminService } from '@core/service/admin.service';
+import { co } from '@fullcalendar/core/internal-common';
 @Component({
   selector: 'app-exam-manual-evaluation',
   templateUrl: './exam-manual-evaluation.component.html',
@@ -115,7 +116,7 @@ export class ExamManualEvaluationComponent {
           this.examsTrainerQuestionsAnswer = questionResponse?.questions || [];
           this.assessmentAnswer = answerResponse?.assessmentAnswer;
           this.examsStudentAnswers =
-            answerResponse?.assessmentAnswer?.answers || [];
+            answerResponse?.assessmentAnswer?.answers || []; 
 
           this.combineAnswers();
 
@@ -149,12 +150,16 @@ export class ExamManualEvaluationComponent {
          
 
           if(response.assessmentAnswer.evaluationStatus.toLowerCase() == "completed"){
-        this.evaluationStatus = true
-      }else{ 
+        this.evaluationStatus = true 
+         this.actualScore = response.assessmentAnswer.score;
+        this.totalScore = response.assessmentAnswer.totalScore;  
+      }else{    
+       
+            this.actualScore = 0;
+        this.totalScore = response.assessmentAnswer.examAssessmentId.totalMarks; 
         this.evaluationStatus = false
       }
-        this.actualScore = response.assessmentAnswer.score;
-        this.totalScore = response.assessmentAnswer.totalScore;  
+       
 
       if(this.display_grade){
         this.GradeCalculate(); 
