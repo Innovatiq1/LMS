@@ -44,6 +44,7 @@ import { BlockedExamsComponent } from './blocked-exams/blocked-exams.component';
 import { ExamTrianeesComponent } from './exam-trianees/exam-trianees.component';
 import { ManualEvaluationComponent } from './manual-evaluation/manual-evaluation.component';
 import { ExamManualEvaluationComponent } from './exam-manual-evaluation/exam-manual-evaluation.component';
+import { CourseProgressComponent } from './course-progress/course-progress.component';
 
 
 
@@ -80,7 +81,8 @@ import { ExamManualEvaluationComponent } from './exam-manual-evaluation/exam-man
     BlockedExamsComponent,
     ExamTrianeesComponent,
     ManualEvaluationComponent,
-    ExamManualEvaluationComponent
+    ExamManualEvaluationComponent,
+    CourseProgressComponent
 
   ],
   imports: [

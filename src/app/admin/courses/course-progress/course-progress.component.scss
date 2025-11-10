@@ -1,0 +1,66 @@
+svg {
+    position: absolute;
+    fill: #000;
+    background-color: #d3cdcd;
+    margin-top: -15px;
+    margin-left: -15px;
+    border-radius: 10px;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #198754;
+    border-radius: 50%; // To make it a circle
+    display: inline-block;
+    margin-right: 5px; // Space between dot and text
+  }
+  .status-red {
+    width: 8px;
+    height: 8px;
+    background-color: #f11541;
+    border-radius: 50%; // To make it a circle
+    display: inline-block;
+    margin-right: 5px; // Space between dot and text
+  }
+// modal-box styling
+::ng-deep .mat-mdc-menu-content {
+        margin: 0;
+        padding: 8px 20px;
+        border-radius: 10px;
+        list-style-type: none;
+       
+}
+// modal-box curving
+::ng-deep .mat-mdc-menu-panel{
+    --mat-menu-container-shape: 12px;
+}
+.menu-text{
+    padding-left: 20px;
+}
+.paginator{
+    background: none;
+  }
+
+::ng-deep .mat-mdc-tab-body-content{
+    overflow-x: hidden !important;
+  }
+
+  .student-view {
+    min-width: 150px;
+    padding: 5px;
+    font-size: 12px !important;
+  }
+   .assessment-header{
+    min-width: 150px;
+    white-space: nowrap;
+  }
+  mat-cell:first-of-type, mat-header-cell:first-of-type, mat-footer-cell:first-of-type {
+    padding-left: 24px; 
+   }
+   @media (max-width: 600px) {
+     mat-cell:first-of-type, mat-header-cell:first-of-type, mat-footer-cell:first-of-type {
+       padding-left: 15px;
+     }
+     }
