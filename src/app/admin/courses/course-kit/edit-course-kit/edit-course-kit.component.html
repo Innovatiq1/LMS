@@ -7,6 +7,189 @@
         </div>
         <div class="row clearfix" *ngIf="editUrl">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+              <div class="card">
+                <form [formGroup]="courseKitForm" (ngSubmit)="submitCourseKit()">
+                  <div class="body m-4">
+                    <div class="row">
+                      <!-- Course Kit Name -->
+                      <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                        <label>Course Kit Name <span class="mandatory">*</span></label>
+                        <mat-form-field class="example-full-width mb-3" appearance="outline">
+                          <input matInput formControlName="name" required />
+                          <mat-error *ngIf="courseKitForm.get('name')?.invalid && courseKitForm.get('name')?.touched">
+                            {{ utils.getErrorMessage1(courseKitForm.get("name"), "coursekitName") }}
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+          
+                      <!-- Description -->
+                      <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                        <label>Description</label>
+                        <mat-form-field class="example-full-width mb-3" appearance="outline">
+                          <input matInput formControlName="longDescription" />
+                        </mat-form-field>
+                      </div>
+          
+                      <!-- Course Kit Type -->
+                      <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                        <label>Course Kit Type <span class="mandatory">*</span></label>
+                        <mat-form-field class="example-full-width mb-3" appearance="outline">
+                          <mat-select formControlName="kitType" required>
+                            <mat-option *ngFor="let item of kitTypeOpt" [value]="item.code">
+                              {{ item.label }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+          
+                      <!-- File Type (if Course) -->
+                      <div *ngIf="courseKitForm.get('kitType')?.value === 'course'" 
+                           class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                        <label>Select File Type <span class="mandatory">*</span></label>
+                        <mat-form-field class="example-full-width mb-3" appearance="outline">
+                          <mat-select formControlName="fileType" (selectionChange)="onFileTypeChange($event.value)">
+                            <mat-option *ngFor="let type of fileTypeOptions" [value]="type.value">
+                              {{ type.label }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+          
+                      <!-- File Size -->
+                      <div *ngIf="showFileSizeDropdown" 
+                           class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                        <label>Select File Size (MB) <span class="mandatory">*</span></label>
+                        <mat-form-field class="example-full-width mb-3" appearance="outline">
+                          <mat-select formControlName="fileSize">
+                            <mat-option *ngFor="let size of fileSizeOptions" [value]="size">{{ size }} MB</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+          
+                      <!-- Document Upload (if Course) -->
+                      <div *ngIf="courseKitForm.get('kitType')?.value === 'course' && showFileSizeDropdown" 
+                           class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                        <label>Document <span class="mandatory">*</span></label>
+                        <div class="file-drop-area1">
+                          <mat-progress-spinner *ngIf="isUploading" mode="indeterminate" diameter="40" color="accent">
+                          </mat-progress-spinner>
+                          <div class="file1">
+                            <button mat-raised-button color="primary" class="btn">
+                              Choose file
+                              <input formControlName="documentLink"
+                                     (change)="onFileUpload($event, false)"
+                                     class="file-input"
+                                     type="file"
+                                     [accept]="acceptedFormats" />
+                            </button>
+                            <span class="file-msg">
+                              <h6>{{ uploadedDocument ? uploadedDocument : 'Drag and Drop File Here' }}</h6>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+          
+                      <!-- 3rd Party Link -->
+                      <div *ngIf="showThirdPartyInput" class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                        <label>Enter Link <span class="mandatory">*</span></label>
+                        <mat-form-field class="example-full-width mb-3" appearance="outline">
+                          <input matInput placeholder="Paste URL" formControlName="thirdPartyLink" />
+                        </mat-form-field>
+                      </div>
+          
+                      <!-- Add File Button -->
+                      <div *ngIf="docs || (showThirdPartyInput && courseKitForm.get('thirdPartyLink')?.value)" 
+                           class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                        <button mat-raised-button color="accent" (click)="addUploadedFile()">Add</button>
+                      </div>
+          
+                      <!-- SCORM Kit -->
+                      <div *ngIf="courseKitForm.get('kitType')?.value === 'scorm'" 
+                           class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                        <div class="label-container">
+                          <label>Scorm Kit <span class="mandatory">*</span></label>
+                          <button class="btn" type="button" (click)="openCreateScormPackage()">
+                            <img src="/assets/Close.svg" alt="plus" />
+                          </button>
+                        </div>
+                        <mat-form-field class="example-full-width mb-3" appearance="outline">
+                          <mat-select formControlName="scormKit" single>
+                            <mat-option *ngFor="let item of scorm_kit_list" [value]="item.id">
+                              {{ item.title }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+          
+                      <!-- Allow Download -->
+                      <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                        <mat-checkbox formControlName="allowDownload">
+                          Allow students to download this Course Kit
+                        </mat-checkbox>
+                      </div>
+                    </div>
+                  </div>
+          
+                  <!-- Uploaded Files Table -->
+                  <div *ngIf="uploadedFiles.length > 0" class="col-12 mt-3">
+                    <table mat-table [dataSource]="uploadedFilesDataSource" class="mat-elevation-z8 w-100">
+                      <!-- File Name -->
+                      <ng-container matColumnDef="fileName">
+                        <th mat-header-cell *matHeaderCellDef>File Name</th>
+                        <td mat-cell *matCellDef="let element">
+                          <ng-container *ngIf="element.type === 'thirdparty'; else fileNameText">
+                            <a href="{{ element.thirdPartyLink }}" target="_blank">{{ element.name }}</a>
+                          </ng-container>
+                          <ng-template #fileNameText>{{ element.name }}</ng-template>
+                        </td>
+                      </ng-container>
+                      <!-- File Size -->
+                      <ng-container matColumnDef="fileSize">
+                        <th mat-header-cell *matHeaderCellDef>File Size (KB)</th>
+                        <td mat-cell *matCellDef="let element">{{ element.size | number:'1.0-0' }}</td>
+                      </ng-container>
+                      <!-- File Type -->
+                      <ng-container matColumnDef="fileType">
+                        <th mat-header-cell *matHeaderCellDef>Type</th>
+                        <td mat-cell *matCellDef="let element">
+                          {{ element.type === 'thirdparty' ? '3rd Party Link' : element.type }}
+                        </td>
+                      </ng-container>
+                      <!-- Actions -->
+                      <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef>Actions</th>
+                        <td mat-cell *matCellDef="let element; let i = index">
+                          <button mat-icon-button color="primary" (click)="viewFile(element)">
+                            <mat-icon>visibility</mat-icon>
+                          </button>
+                          <button mat-icon-button color="warn" (click)="deleteFile(i)">
+                            <mat-icon>delete</mat-icon>
+                          </button>
+                        </td>
+                      </ng-container>
+          
+                      <tr mat-header-row *matHeaderRowDef="uploadedDisplayedColumns"></tr>
+                      <tr mat-row *matRowDef="let row; columns: uploadedDisplayedColumns;"></tr>
+                    </table>
+                  </div>
+          
+                  <!-- Footer Buttons -->
+                  <div class="row body">
+                    <div class="col-md-9">
+                      <button mat-raised-button id="back" (click)="cancel()">Back</button>
+                    </div>
+                    <div class="col-md-3 d-grid d-md-flex">
+                      <button mat-raised-button color="warn" (click)="cancel()">Cancel</button>
+                      <button mat-raised-button id="save" type="submit">Update</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          
+        <!-- <div class="row clearfix" *ngIf="editUrl">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                 <div class="card">
                     <div class="header">
                     </div>
@@ -169,7 +352,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <div *ngIf="viewUrl" class="row clearfix">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
