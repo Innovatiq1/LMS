@@ -684,23 +684,38 @@ export class ViewCourseComponent implements OnDestroy {
     //     });
     //   });
     // }
+    
     if (ext === 'pdf') {
       getDocument(fileUrl).promise.then(pdfDoc => {
-        pdfDoc.getPage(1).then(page => {
-          const viewport = page.getViewport({ scale: 1.2 });
-          const canvas = document.createElement('canvas');
-          const context = canvas.getContext('2d')!;
-          canvas.height = viewport.height;
-          canvas.width = viewport.width;
-          container.appendChild(canvas);
+        const totalPages = pdfDoc.numPages;
     
-          page.render({ canvasContext: context, viewport }).promise.then(() => {
-            this.onFileCompleted(); 
+        // Clear previous content
+        container.innerHTML = '';
+    
+        const renderPage = (pageNum: number) => {
+          pdfDoc.getPage(pageNum).then(page => {
+            const viewport = page.getViewport({ scale: 1.2 });
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d')!;
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+            canvas.style.marginBottom = '20px'; // spacing between pages
+    
+            container.appendChild(canvas);
+    
+            page.render({ canvasContext: context, viewport }).promise.then(() => {
+              if (pageNum < totalPages) {
+                renderPage(pageNum + 1);
+              } else {
+                this.onFileCompleted(); // All pages rendered
+              }
+            });
           });
-        });
+        };
+    
+        renderPage(1); // Start rendering from page 1
       });
     }
-    
     
     else if (ext === 'docx') {
       fetch(fileUrl)

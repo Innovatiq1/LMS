@@ -155,6 +155,7 @@
               </div>
             
               <div *ngIf="!currentScormModule && !isScormKit" class="content-frame">
+                
                 <ng-container [ngSwitch]="currentFileType">
             
                   <video *ngSwitchCase="'video'" #videoPlayer class="fixed-content" controls (ended)="onFileCompleted()">
@@ -162,10 +163,6 @@
                     Your browser does not support the video tag.
                   </video>
             
-                  <!-- <audio *ngSwitchCase="'audio'" class="fixed-content" controls (ended)="onFileCompleted()">
-                    <source [src]="currentFileUrl" type="audio/mpeg" />
-                    Your browser does not support the audio tag.
-                  </audio> -->
                   <div *ngSwitchCase="'audio'" class="audio-wrapper">
                     <img src="assets/images/image-gallery/music.jpg" class="audio-background" alt="Audio Background" />
                     
@@ -196,7 +193,10 @@
                   </ng-container>
             
                   <div *ngSwitchDefault class="placeholder">
-                    ⚠️ Unsupported file format
+                    <!-- ⚠️ Unsupported file format -->
+                    <img 
+       src="assets/images/image-gallery/music.jpg"
+       class="default-placeholder-image"  />
                   </div>
             
                 </ng-container>
