@@ -252,7 +252,7 @@ uploadedDisplayedColumns: string[] = ['fileName', 'fileSize', 'fileType', 'actio
         this.acceptedFormats = 'video/mp4,video/x-matroska,video/x-msvideo';
         break;
       case 'audio':
-        this.acceptedFormats = 'audio/mp3,audio/wav,audio/aac';
+        this.acceptedFormats = 'audio/mpeg,audio/wav,audio/aac';
         break;
       case 'youtube':
       case 'thirdparty':
@@ -632,7 +632,7 @@ uploadedDisplayedColumns: string[] = ['fileName', 'fileSize', 'fileType', 'actio
     if ((file.type.startsWith('video/') || file.type.startsWith('audio/')) && file.size <= 10000000) {
       this.videoLink = file;
       this.videoSrc = this.videoLink.name;
-    } else if (!(file.type.startsWith('video/') || file.type === 'audio/mp3')) {
+    } else if (!(file.type.startsWith('video/') || file.type === 'audio/mpeg')) {
       Swal.fire({
         title: 'Oops...',
         text: 'Selected format doesn\'t support. Only video and MP3 formats are allowed!',
@@ -694,7 +694,7 @@ onFileUpload(event: any, isScormKit: boolean = false) {
     'video/mp4',
     'video/x-matroska',
     'video/x-msvideo',
-    'audio/mp3',
+    'audio/mpeg',
     'audio/wav',
     'audio/aac',
     'image/png',
