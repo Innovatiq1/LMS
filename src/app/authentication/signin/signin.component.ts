@@ -89,7 +89,7 @@ export class SigninComponent
   ) {
     super();
     let urlPath = this.router.url.split('/');
-    this.tmsUrl = urlPath.includes('TMS');
+    this.tmsUrl = urlPath.includes('LMS');
     this.lmsUrl = urlPath.includes('LMS');
     this.linkedinUrl = urlPath.includes('linkedin');
 
@@ -152,7 +152,7 @@ export class SigninComponent
     if (this.tmsUrl) {
       this.commonService.navigateWithCompanyName(
         this.extractedName,
-        'authentication/TMS/forgot-password'
+        'authentication/LMS/forgot-password'
       );
     } else if (this.lmsUrl) {
       this.commonService.navigateWithCompanyName(
@@ -167,7 +167,7 @@ export class SigninComponent
       .subscribe((resp: any) => {
         let companyId = resp[0]?.companyId;
         localStorage.setItem('companyId', companyId);
-        this.domain = resp[0]?.company||"TMS";
+        this.domain = resp[0]?.company||"LMS";
         this.settingsService
           .getKeysByCompanyId(companyId)
           .subscribe((res: any) => {
@@ -527,7 +527,7 @@ export class SigninComponent
             .subscribe((res: any) => {
               (this.profileForm.value.companyId = res[0]?.companyId),
                 (this.profileForm.value.company = res[0]?.company),
-                (this.profileForm.value.domain = res[0]?.identifier||"TMS");
+                (this.profileForm.value.domain = res[0]?.identifier||"LMS");
               this.profileForm.value.Active = true;
               this.profileForm.value.type = this.profileForm.value.role;
               this.profileForm.value.isLogin = true;

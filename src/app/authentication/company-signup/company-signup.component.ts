@@ -83,7 +83,7 @@ export class CompanySignupComponent implements OnInit {
     private emailConfigService:EmailConfigService
   ) { 
     let urlPath = this.router.url.split('/')
-    this.tmsUrl = urlPath.includes('TMS');
+    this.tmsUrl = urlPath.includes('LMS');
     this.lmsUrl = urlPath.includes('LMS');
     this.extractedName = urlPath[1];
     this.authForm = this.formBuilder.group({
@@ -109,7 +109,7 @@ export class CompanySignupComponent implements OnInit {
   signin(){
 
     if(this.tmsUrl){
-      this.commonService.navigateWithCompanyName(this.extractedName,'authentication/TMS/signin')
+      this.commonService.navigateWithCompanyName(this.extractedName,'authentication/LMS/signin')
     } else if(this.lmsUrl){
       this.commonService.navigateWithCompanyName(this.extractedName,'authentication/LMS/signin')
 
