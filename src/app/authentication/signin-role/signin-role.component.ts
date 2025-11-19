@@ -38,7 +38,7 @@ export class SigninRoleComponent {
     const pathSegments = this.router.url.split('/');
     let extractedName = pathSegments[1];
     if (this.selectedUser === 'staff' || this.selectedUser === 'super admin') {
-      this.commonService.navigateWithCompanyName(extractedName,'authentication/TMS/signin')
+      this.commonService.navigateWithCompanyName(extractedName,'authentication/LMS/signin')
         } else if (this.selectedUser === 'student') {
       this.commonService.navigateWithCompanyName(extractedName,'authentication/LMS/signin')
     } else {

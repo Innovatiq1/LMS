@@ -40,7 +40,7 @@ export class ForgotPasswordComponent implements OnInit {
     private userService: UserService
   ) {
     let urlPath = this.router.url.split('/');
-    this.tmsUrl = urlPath.includes('TMS');
+    this.tmsUrl = urlPath.includes('LMS');
     this.lmsUrl = urlPath.includes('LMS');
     this.extractedName = urlPath[1];
   }
@@ -81,7 +81,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   signin() {
     if (this.tmsUrl) {
-      this.commonService.navigateWithCompanyName(this.extractedName, 'authentication/TMS/signin');
+      this.commonService.navigateWithCompanyName(this.extractedName, 'authentication/LMS/signin');
     } else if (this.lmsUrl) {
       this.commonService.navigateWithCompanyName(this.extractedName, 'authentication/LMS/signin');
     }
@@ -112,7 +112,7 @@ export class ForgotPasswordComponent implements OnInit {
                       icon: 'success',
                     });
                     if (this.tmsUrl) {
-                      this.router.navigate([`${this.extractedName}/authentication/TMS/signin`]);
+                      this.router.navigate([`${this.extractedName}/authentication/LMS/signin`]);
                     } else if (this.lmsUrl) {
                       this.router.navigate([`${this.extractedName}/authentication/LMS/signin`]);
                     }

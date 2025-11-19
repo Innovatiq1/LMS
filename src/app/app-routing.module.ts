@@ -25,7 +25,7 @@ const routes: Routes = [
     component: MainLayoutComponent,
     canActivate: [AuthGuard],
     children: [
-      { path: '', redirectTo: '/authentication/TMS/signin', pathMatch: 'full' },
+      { path: '', redirectTo: '/authentication/LMS/signin', pathMatch: 'full' },
       {
         path: 'admin',
         loadChildren: () =>
