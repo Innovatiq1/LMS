@@ -35,6 +35,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { CourseService } from '@core/service/course.service';
 import { AuthenService } from '@core/service/authen.service';
+import * as fabric from 'fabric';
 
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
@@ -44,6 +45,8 @@ import { AssessmentService } from '@core/service/assessment.service';
 import { CourseModel, CoursePaginationModel } from '@core/models/course.model';
 import { UtilsService } from '@core/service/utils.service';
 import { SettingsService } from '@core/service/settings.service';
+import { AdminService } from '@core/service/admin.service';
+
 @Component({
   selector: 'app-completion-list',
   templateUrl: './completion-list.component.html',
@@ -76,12 +79,15 @@ export class CompletionListComponent {
   ];
   @ViewChild('certificateDialog') certificateDialog!: TemplateRef<any>;
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
+  @ViewChild('certificateGenerate', { static: false })
+  certificateGenerate!: ElementRef;
 
   pdfData: any = [];
   dafaultGenratepdf: boolean = false;
   element: any;
   certifiacteUrl: boolean = false;
   isGeneratingCertificates = false;
+  canvas: any;
   dataSource: any;
   pageSizeArr = this.utils.pageSizeArr;
   totalItems: any;
@@ -95,6 +101,7 @@ export class CompletionListComponent {
   certificateUrl: any;
   isCertificate: boolean = false;
   certificateId: any;
+  Certificate_loadingSpinner: boolean = false;
   image_link: any;
   uploaded: any;
   uploadedImage: any;
@@ -103,8 +110,12 @@ export class CompletionListComponent {
   selectedRows: any[] = [];
   actualScore: number = 0;
   currentPercentage: number = 0;
-  totalScore: number = 0;
+  totalScore: number = 0; 
+  display_grade:boolean = false
   gradeDataset: any = [];
+  canvaObjectInfo: any = null;
+  cloneCanvaObjects: any = [];
+
   gradeInfo: any = null;
   showGrade: boolean = false;
 
@@ -159,7 +170,8 @@ export class CompletionListComponent {
     private authenService: AuthenService,
     private assessmentService: AssessmentService,
     private SettingService: SettingsService,
-    public utils: UtilsService
+    public utils: UtilsService, 
+    private adminService:AdminService,
   ) {
     this.studentPaginationModel = {} as StudentPaginationModel;
     this.coursePaginationModel = {};
@@ -173,7 +185,28 @@ export class CompletionListComponent {
     }
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void { 
+
+      let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    this.adminService
+      .getUserTypeList({ allRows: true }, userId)
+      .subscribe((response: any) => {
+        if(response.length != 0){ 
+          response.map((data:any)=>{ 
+            data.typeName == "admin" ?   
+                data.settingsMenuItems.map((inner_data:any)=>{ 
+                  inner_data.title == "Configuration" ?   
+                      inner_data.children.map((nav_menu:any)=>{
+                        nav_menu.title == "Grade" ? (this.display_grade = true ) : this.display_grade = false  
+                      } 
+                    )
+                  : ""
+                })
+            : ""
+          })
+        }
+      }) 
+      console.log(this.display_grade,"===========++++====")
     const roleDetails = this.authenService.getRoleDetails()[0].menuItems;
     let urlPath = this.router.url.split('/');
     const parentId = `${urlPath[1]}/${urlPath[2]}`;
@@ -192,14 +225,26 @@ export class CompletionListComponent {
     if (viewAction.length > 0) {
       this.isView = true;
     }
-    this.commonRoles = AppConstants;
+    this.commonRoles = AppConstants;  
+
+   
+
+
+
+
+    
     this.getCompletedClasses();
     this.certificateForm = this.fb.group({
       text1: [''],
       image_link: [''],
     });
   }
-
+  ngAfterViewInit(): void {
+    this.canvas = new fabric.Canvas('myCanvas', {
+      width: 789,
+      height: 555,
+    });
+  }
   pageSizeChange($event: any) {
     this.coursePaginationModel.page = $event?.pageIndex + 1;
     this.coursePaginationModel.limit = $event?.pageSize;
@@ -458,116 +503,233 @@ export class CompletionListComponent {
 
   imgUrl: any;
 
-  openDialog(templateRef: any): void {
+  patchCanvaBackgroundImage() {
     this.image_link = null;
-    this.elements = [];
+    const imageDataUrl = this.canvaObjectInfo.image;
+    this.image_link = imageDataUrl;
+
+    const imgElement = new Image();
+    imgElement.onload = () => {
+      const fabricImg = new fabric.Image(imgElement);
+      (fabricImg as any).customId = 'BACKGROUND_IMAGE';
+      const canvasWidth = this.canvas.getWidth();
+      const canvasHeight = this.canvas.getHeight();
+
+      fabricImg.set({
+        left: 0,
+        top: 0,
+        selectable: false,
+        evented: false,
+      });
+
+      fabricImg.scaleToWidth(canvasWidth);
+      fabricImg.scaleToHeight(canvasHeight);
+
+      try {
+        this.canvas.backgroundImage = fabricImg;
+        this.canvas.requestRenderAll();
+      } catch (error) {
+        (fabricImg as any).excludeFromExport = false;
+        this.canvas.add(fabricImg);
+        this.canvas.sendToBack(fabricImg);
+        this.canvas.requestRenderAll();
+      }
+    };
+
+    imgElement.src = imageDataUrl;
+  }
+
+  loadCanvaContent() {
+     
+    
+    const canvasJson = {
+      version: '6.7.0',
+      objects: this.cloneCanvaObjects,
+    };
+
+    this.canvas.loadFromJSON(canvasJson, () => {
+      const allObjects = this.canvas.getObjects(); 
+     
+
+      allObjects.forEach((obj: any) => { 
+        
+          
+        
+        obj.visible = true;
+        obj.opacity = obj.opacity !== undefined ? obj.opacity : 1;
+        obj.selectable = true;
+        obj.evented = obj.evented !== undefined ? obj.evented : true;
+        obj.setCoords();
+      });
+
+      this.canvas.requestRenderAll();
+      setTimeout(() => {
+        this.patchCanvaBackgroundImage();
+        this.Certificate_loadingSpinner = false;
+      });
+    });
+  }
+
+  CleanCanvaObject() { 
+
+   
+
+    if (
+      this.canvaObjectInfo.elements.length != 0 &&
+      this.canvaObjectInfo.elements[0].hasOwnProperty('customId')
+    ) {  
+
+      
+      const CleanData = this.canvaObjectInfo.elements.map(
+        (data: any, index: any) => {
+          if (data.text == '_User Name_') {
+            this.canvaObjectInfo.elements[index].text =
+              this.studentData.studentId?.name;
+          } else if (data.text == '_Course Name_') {
+            this.canvaObjectInfo.elements[index].text = this.studentData.title;
+          } else if (data.text == '_Date_') {
+            this.canvaObjectInfo.elements[index].text = this.studentData
+              .updatedAt
+              ? new Date(this.studentData.updatedAt).toLocaleDateString()
+              : '--';
+          }  
+           else if (data.text == '_score_') {
+              this.canvaObjectInfo.elements[index].text = String(
+                this.actualScore
+              );
+            }
+          
+          
+          else if (this.showGrade  && this.display_grade) {
+            if (data.text == '_Grade_') {
+              this.canvaObjectInfo.elements[index].text = this.gradeInfo!.grade;
+            } else if (data.text == '_GPA_') {
+              this.canvaObjectInfo.elements[index].text = this.gradeInfo!.gpa;
+            } else if (data.text == '_Grade Term_') {
+              this.canvaObjectInfo.elements[index].text =
+                this.gradeInfo!.gradeTerm;
+            } else if (data.text == '_Percentage_') {
+              this.canvaObjectInfo.elements[index].text = String(
+                this.currentPercentage
+              );
+            }
+          }
+          data.selectable = false;
+          return data;
+        }
+      );
+      this.cloneCanvaObjects.push(...CleanData);
+      this.loadCanvaContent();
+    } else {
+      this.Certificate_loadingSpinner = false;
+      this.canvaObjectInfo = null;
+      this.canvas.clear();
+      this.canvas.requestRenderAll();
+      this.dialogRef.close();
+      Swal.fire({
+        icon: 'info',
+        text: 'Please Update your Certificate',
+        timer: 2000,
+        showConfirmButton: false,
+      });
+    }
+  }
+
+  openDialog(): void {
+    this.canvaObjectInfo = null;
+    this.cloneCanvaObjects = [];
+    this.image_link = null;
     this.certificateService
       .getCertificateById(this.studentData.courseId.certificate_template_id)
-      .subscribe((response: any) => {
+      .subscribe((response: any) => { 
+  
+
+         if(this.display_grade){  
+          this.canvaObjectInfo = response; 
+
+
+         }else{
+          let filterDataset = ['_Grade_' , "_GPA_" , "_Grade Term_"  , "_Percentage_"] 
+          let elements = (response.elements || []).filter((data:any) => data && !filterDataset.includes(data.text)) 
+          const finaldataset = { 
+            ...response, 
+            elements
+          } 
+           this.canvaObjectInfo = finaldataset; 
+         }
+        
+
+
+
         this.course = response;
         let imageUrl = this.course.image;
         imageUrl = imageUrl.replace(/\\/g, '/');
         imageUrl = encodeURI(imageUrl);
         this.imgUrl = imageUrl;
-        // console.log("imageUrl==",this.course.image)
 
         this.certificateForm.patchValue({
           title: this.course.title,
         });
-        // Update content based on type
-
-        this.course.elements.forEach((element: any) => {
-          if (element.type === 'UserName') {
-            element.content =
-              this.studentData.studentId?.name || 'Default Name';
-          } else if (element.type === 'Course') {
-            element.content =
-              this.studentData.title ||
-              this.studentData?.courseId?.title ||
-              'Default Course';
-          } else if (this.showGrade) {
-            if (element.type === 'Grade') {
-              element.content = this.gradeInfo!.grade;
-            } else if (element.type === 'GPA') {
-              element.content = this.gradeInfo!.gpa;
-            } else if (element.type === 'Grade Term') {
-              element.content = this.gradeInfo!.gradeTerm;
-            } else if (element.type === 'Percentage') {
-              element.content = this.gradeInfo.PercentageRange;
-            }
-          } else if (element.type === 'Date') {
-            element.content = this.studentData.updatedAt
-              ? new Date(this.studentData.updatedAt).toLocaleDateString()
-              : '--';
-          }
-        });
-        const checkGrade: any = [];
-        this.course.elements.map((Grade_element: any) => {
-          if (!this.showGrade) {
-            if (
-              Grade_element.type === 'Grade' ||
-              Grade_element.type === 'GPA' ||
-              Grade_element.type === 'Grade Term' ||
-              Grade_element.type === 'Percentage'
-            ) {
-            } else {
-              checkGrade.push(Grade_element);
-            }
-          } else {
-            checkGrade.push(Grade_element);
-          }
-        });
-        this.elements.push(...checkGrade);
-        this.setBackgroundImage(imageUrl);
+        this.CleanCanvaObject();
       });
-
-    this.dialogRef = this.dialog.open(templateRef, {
-      width: '1000px',
-      data: { certificate: this.certificateDetails },
-    });
   }
 
-  // end of displaying the certificate
-
   generateCertificate(element: Student) {
+    this.Certificate_loadingSpinner = true;
     this.studentData = element;
 
     this.actualScore = this.studentData.assessmentanswers.score;
     this.totalScore = this.studentData.assessmentanswers.totalScore;
-    this.GradeCalculate();
+   
+    if(this.display_grade){
+    this.GradeCalculate();  
+    }else{
+      this.openDialog();
+    } 
+  
 
-    this.openDialog(this.certificateDialog);
-    setTimeout(() => {
-      this.copyPreviewToContentToConvert();
-    }, 1000);
-  }
-  copyPreviewToContentToConvert() {
-    const certificatePreview = document.querySelector(
-      '.certificate-preview'
-    ) as HTMLElement;
-    const contentToConvert = document.getElementById(
-      'contentToConvert'
-    ) as HTMLElement;
+    this.dialogRef = this.dialog.open(this.certificateDialog, {
+      width: '900px',
+      height: '700px',
+    });
 
-    if (certificatePreview && contentToConvert) {
-      contentToConvert.innerHTML = certificatePreview.innerHTML;
-      contentToConvert.style.backgroundImage =
-        certificatePreview.style.backgroundImage;
-      contentToConvert.style.backgroundSize =
-        certificatePreview.style.backgroundSize;
-      contentToConvert.style.backgroundPosition =
-        certificatePreview.style.backgroundPosition;
-      contentToConvert.style.backgroundRepeat =
-        certificatePreview.style.backgroundRepeat;
-      contentToConvert.style.border = certificatePreview.style.border;
-    }
+    this.dialogRef.afterOpened().subscribe(() => {
+      this.initCanvas();
+    });
   }
+  initCanvas() {
+    this.canvas = new fabric.Canvas('myCanvas', {
+      width: 789,
+      height: 555,
+    });
+  }
+  // copyPreviewToContentToConvert() {
+  //   const certificatePreview = document.querySelector(
+  //     '.certificate-preview'
+  //   ) as HTMLElement;
+  //   const contentToConvert = document.getElementById(
+  //     'contentToConvert'
+  //   ) as HTMLElement;
+
+  //   if (certificatePreview && contentToConvert) {
+  //     contentToConvert.innerHTML = certificatePreview.innerHTML;
+  //     contentToConvert.style.backgroundImage =
+  //       certificatePreview.style.backgroundImage;
+  //     contentToConvert.style.backgroundSize =
+  //       certificatePreview.style.backgroundSize;
+  //     contentToConvert.style.backgroundPosition =
+  //       certificatePreview.style.backgroundPosition;
+  //     contentToConvert.style.backgroundRepeat =
+  //       certificatePreview.style.backgroundRepeat;
+  //     contentToConvert.style.border = certificatePreview.style.border;
+  //   }
+  // }
 
   GradeCalculate() {
     let calculatePercent = (this.actualScore / this.totalScore) * 100;
     this.currentPercentage = Number.isNaN(calculatePercent)
       ? 0
-      : Math.floor(calculatePercent);
+      : Number(calculatePercent.toFixed(2));
 
     const getCompanyId: any = localStorage.getItem('userLogs');
     const parseid = JSON.parse(getCompanyId);
@@ -603,111 +765,31 @@ export class CompletionListComponent {
       },
       error: (err) => {},
     });
+    this.openDialog();
   }
 
-  // generateCertificatePDF(): void {
-  //   const data = document.querySelector('.certificate-preview') as HTMLElement;
-  //   html2canvas(data, {
-  //     scale: 3,
-  //     useCORS: true,
-  //     backgroundColor: null,
-  //   }).then((canvas) => {
-  //     const imgWidth = 210;
-  //     const pageHeight=297;
-  //     const imgHeight = (canvas.height * imgWidth) / canvas.width;
-  //     const contentDataURL = canvas.toDataURL('image/png');
-
-  //     const pdf = new jsPDF('p', 'mm', 'a4');
-  //     const position = 0;
-
-  //     pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
-
-  //     if (imgHeight > pageHeight) {
-  //       let remainingHeight = imgHeight;
-  //       let yPosition = position;
-
-  //       while (remainingHeight > 0) {
-  //         remainingHeight -= pageHeight;
-  //         yPosition = Math.max(yPosition + pageHeight, pageHeight);
-  //         pdf.addPage();
-  //         pdf.addImage(contentDataURL, 'PNG', 0, yPosition, imgWidth, imgHeight);
-  //       }
-  //     }
-
-  //     pdf.save('certificate.pdf')
-  //     // const pdfBlob = pdf.output('blob');
-
-  //     // this.update(pdfBlob);
-  //     this.dialogRef.close();
-  //   });
-  // }
   generateCertificatePDF(): void {
-    const data = document.querySelector('.certificate-preview') as HTMLElement;
+    const data = this.certificateGenerate.nativeElement;
 
     html2canvas(data, {
       scale: 3,
       useCORS: true,
       backgroundColor: null,
     }).then((canvas) => {
-      const imgWidth = 216;
-      const pageHeight = 279;
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('l', 'mm', 'a4');
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = pdfWidth;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      const contentDataURL = canvas.toDataURL('image/png');
-
-      const pdf = new jsPDF('p', 'mm', [216, imgHeight]);
       const position = 0;
-
-      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
-
-      if (imgHeight > pageHeight) {
-        let remainingHeight = imgHeight;
-        let yPosition = position;
-
-        while (remainingHeight > 0) {
-          remainingHeight -= pageHeight;
-          yPosition = Math.max(yPosition + pageHeight, pageHeight);
-          pdf.addPage();
-          pdf.addImage(
-            contentDataURL,
-            'PNG',
-            0,
-            yPosition,
-            imgWidth,
-            imgHeight
-          );
-        }
-      }
-
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
       // pdf.save('certificate.pdf');
       const pdfBlob = pdf.output('blob');
-
       this.update(pdfBlob);
       this.dialogRef.close();
     });
   }
-
-  // update(pdfBlob: Blob) {
-  //   Swal.fire({
-  //     title: 'Certificate Generating...',
-  //     text: 'Please wait...',
-  //     allowOutsideClick: false,
-  //     timer: 24000,
-  //     timerProgressBar: true,
-  //   });
-
-  //   this.dafaultGenratepdf = true;
-  //   this.copyPreviewToContentToConvert();
-
-  //   var convertIdDynamic = 'contentToConvert';
-  //   this.genratePdf3(
-  //     convertIdDynamic,
-  //     this.studentData?.studentId._id,
-  //     this.studentData?.courseId._id,
-  //     pdfBlob
-  //   );
-
-  //   this.dialogRef.close();
-  // }
 
   update(pdfBlob: Blob) {
     let countdown = 60;
@@ -736,9 +818,9 @@ export class CompletionListComponent {
       },
     });
     this.dafaultGenratepdf = true;
-    this.copyPreviewToContentToConvert();
+    // this.copyPreviewToContentToConvert();
 
-    const convertIdDynamic = 'contentToConvert';
+    const convertIdDynamic = this.certificateGenerate.nativeElement;
     this.genratePdf3(
       convertIdDynamic,
       this.studentData?.studentId._id,
@@ -758,7 +840,7 @@ export class CompletionListComponent {
     // console.log('convertIdDynamic - ', convertIdDynamic, 'memberId -', memberId, 'memberProgrmId', memberProgrmId);
 
     setTimeout(() => {
-      const dashboard = document.getElementById(convertIdDynamic);
+      const dashboard = convertIdDynamic;
       if (dashboard != null) {
         // Upload the Blob
         const randomString = this.generateRandomString(10);
@@ -803,6 +885,7 @@ export class CompletionListComponent {
       cancelButtonColor: '#d33',
     }).then((result) => {
       if (result.isConfirmed) {
+        this.dialogRef.close();
         this.classService.updateCertificateUser(objpdf).subscribe(
           (response) => {
             if (response.data.certifiacteUrl) {
@@ -1065,12 +1148,14 @@ export class CompletionListComponent {
     });
   }
 
-  updateCertificateElements(row: any) {
+  updateCertificateElements(row: any) { 
+    console.log(row,'=====')
     let imageUrl = this.course.image;
     imageUrl = imageUrl.replace(/\\/g, '/');
     imageUrl = encodeURI(imageUrl);
     this.imgUrl = imageUrl;
-    this.image_link = imageUrl;
+    this.image_link = imageUrl;  
+ 
 
     this.course.elements.forEach((element: any) => {
       if (element.type === 'UserName') {

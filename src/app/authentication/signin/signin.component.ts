@@ -162,6 +162,7 @@ export class SigninComponent
     }
   }
   ngOnInit() {
+    console.log("ngoning",this.extractedName)
     this.userService
       .getCompanyByIdentifierWithoutToken(this.extractedName)
       .subscribe((resp: any) => {
@@ -324,6 +325,22 @@ export class SigninComponent
       }
     }
   }
+
+  loginWithSingpass() {
+    window.location.href = 'https://skillera.innovatiqconsulting.com/api/auth/singpasslogin';
+    // Swal.fire({
+    //   title: 'User Not Found',
+    //   html: `
+    //     <p>You do not have an account registered with us.</p>
+    //     <a href="/signup" class="swal2-confirm swal2-styled" style="display:inline-block;margin-top:10px;">
+    //       Join Now
+    //     </a>
+    //   `,
+    //   icon: 'error',
+    //   showConfirmButton: false
+    // });
+  }
+
   loginLinkedIn(): void {
     if (this.extractedName == 'authentication') {
       this.authenticationService.loginWithLinkedIn();
@@ -609,6 +626,7 @@ export class SigninComponent
     let formData = this.authForm.getRawValue();
     if (formData.email.trim() === 'superadmin1@tms.com') {
       this.isLoading = true;
+      console.log("1st",this.extractedName)
       this.userService.getCompanyByIdentifierWithoutToken(this.extractedName).subscribe(
         (res: any) => {
           console.log("1st",res)

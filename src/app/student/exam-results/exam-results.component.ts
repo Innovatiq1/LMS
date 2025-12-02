@@ -9,6 +9,7 @@ import { AssessmentService } from '@core/service/assessment.service';
 import { SettingsService } from '@core/service/settings.service';
 import Swal from 'sweetalert2';
 import { AppConstants } from '@shared/constants/app.constants';
+import { AdminService } from '@core/service/admin.service';
 
 @Component({
   selector: 'app-exam-results',
@@ -18,8 +19,9 @@ import { AppConstants } from '@shared/constants/app.constants';
 export class ExamResultsComponent {
   displayedColumns: string[] = [
     'Course Title',
-    'Exam Name',
-    'Exam Score',
+    'Exam Name', 
+    'Exam Score', 
+   
     'Submitted At',
     'Retakes left',
     'Exam',
@@ -32,7 +34,9 @@ export class ExamResultsComponent {
       items: ['Course'],
       active: 'Exam Results',
     },
-  ];
+  ]; 
+
+  display_grade:boolean = false
 
   assessmentPaginationModel!: Partial<AssessmentQuestionsPaginationModel>;
   totalItems: any;
@@ -41,7 +45,7 @@ export class ExamResultsComponent {
   selection = new SelectionModel<any>(true, []);
   dataSource :any;
   studentClassId:any;
-
+ gradeDataset:any[] = []
   isCertIssued:boolean=true;
   retakeRequestData:any;
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
@@ -50,15 +54,50 @@ export class ExamResultsComponent {
 
   constructor(public utils: UtilsService, 
     private assessmentService: AssessmentService,
-    private settingService:SettingsService,
+    private settingService:SettingsService, 
+    private adminService:AdminService,
     public router: Router){
     this.assessmentPaginationModel = {};
   }
 
-  ngOnInit() {
+  ngOnInit() { 
+    
+     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    this.adminService
+      .getUserTypeList({ allRows: true }, userId)
+      .subscribe((response: any) => {
+        if(response.length != 0){ 
+          response.map((data:any)=>{ 
+            data.typeName == "admin" ?   
+                data.settingsMenuItems.map((inner_data:any)=>{ 
+                  inner_data.title == "Configuration" ?   
+                      inner_data.children.map((nav_menu:any)=>{
+                        nav_menu.title == "Grade" ? (this.display_grade = true , this.GetGradeDataset()) : this.display_grade = false  
+                      } 
+                    )
+                  : ""
+                })
+            : ""
+          })
+        }
+      });
     this.getAllAnswers()
-   }
+   } 
+GetGradeDataset(){ 
+  if(this.display_grade){ 
+    this.displayedColumns.push( 'Grade', 'GPA',)
+    const getCompanyId: any = localStorage.getItem('userLogs');
+    const parseid = JSON.parse(getCompanyId);
+    this.settingService.gradeFetch(parseid.companyId).subscribe({
+      next: (res: any) => {  
+        this.gradeDataset = [] 
+        this.gradeDataset.push(...res.response!.gradeList)
 
+      },
+      error: (err) => {},
+    });  
+  }
+  }
    getAllAnswers() {
     let studentId = localStorage.getItem('id')||'';
     let role = localStorage.getItem('user_type');
@@ -264,6 +303,76 @@ export class ExamResultsComponent {
         console.log('User canceled the request.');
       }
     });
-  }
+  } 
+
+
+   GradeCalculate_gpa(actualScore:any,totalScore:any):any{ 
+
+     let gradeData 
+         let calculatePercent = (actualScore / totalScore) * 100;
+    
+
+          if (this.gradeDataset.length != 0) {
+           
+            let count = 0;
+            for (let i = 0; i < this.gradeDataset.length; i++) {
+              const max = this.gradeDataset[i].PercentageRange.split('-')[0];
+              const min = this.gradeDataset[i].PercentageRange.split('-')[1];
+              if (calculatePercent >= max && calculatePercent <= min) {
+                gradeData = this.gradeDataset[i];
+                break;
+              }
+              count += 1;
+            }
+            if (count === this.gradeDataset.length) {
+              const sorted = this.gradeDataset.sort((a: any, b: any) => {
+                const numA = parseInt(a.PercentageRange.split('-')[0]);
+                const numB = parseInt(b.PercentageRange.split('-')[0]);
+                return numA - numB;
+              });
+              gradeData = sorted[0];
+            }
+          
+             return gradeData.gpa
+          }
+         else {
+           return "Not yet provided"
+        }  
+    } 
+
+
+      GradeCalculate_grade(actualScore:any,totalScore:any):any{
+         let gradeData 
+         let calculatePercent = (actualScore / totalScore) * 100;
+    
+
+          if (this.gradeDataset.length != 0) {
+           
+            let count = 0;
+            for (let i = 0; i < this.gradeDataset.length; i++) {
+              const max = this.gradeDataset[i].PercentageRange.split('-')[0];
+              const min = this.gradeDataset[i].PercentageRange.split('-')[1];
+              if (calculatePercent >= max && calculatePercent <= min) {
+                gradeData = this.gradeDataset[i];
+                break;
+              }
+              count += 1;
+            }
+            if (count === this.gradeDataset.length) {
+              const sorted = this.gradeDataset.sort((a: any, b: any) => {
+                const numA = parseInt(a.PercentageRange.split('-')[0]);
+                const numB = parseInt(b.PercentageRange.split('-')[0]);
+                return numA - numB;
+              });
+              gradeData = sorted[0];
+            }
+          
+             return gradeData.grade
+          }
+         else {
+           return "Not yet provided"
+        }  
+           
+    }
   
 }

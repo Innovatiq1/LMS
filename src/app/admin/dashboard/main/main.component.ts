@@ -375,6 +375,7 @@ export class MainComponent implements OnInit {
 
     //Student
     let user=JSON.parse(localStorage.getItem('currentUser')!);
+    console.log("user123",user);
     this.studentName = user?.user?.name;
     this.getRegisteredAndApprovedCourses();
     //Student End

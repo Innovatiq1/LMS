@@ -127,7 +127,9 @@ export class ScormPkgCreateComponent implements OnInit {
       const formdata = new FormData();
       let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
       formdata.append('companyId', userId);
-      let msg = this.isEdit ? 'You want to update the SCORM Package!' : 'You want to create a SCORM Package!';
+      const isImscc = this.docs?.name?.toLowerCase().endsWith('.imscc');
+      const packageType = isImscc ? 'IMSCC Package' : 'SCORM Package';
+      let msg = this.isEdit ? `You want to update the ${packageType}!` : `You want to create a ${packageType}!`;
       if (this.docs) {
         const isPDF = this.docs?.type === 'application/pdf';
         if (isPDF) {
@@ -135,7 +137,7 @@ export class ScormPkgCreateComponent implements OnInit {
         } else {
           formdata.append('file', this.docs);
         }
-        msg =!this.isEdit && isPDF ? 'You want to create a SCORM Package!' : 'You want to upload SCORM Package';
+        msg =!this.isEdit && isPDF ? `You want to create a ${packageType}!` : `You want to upload ${packageType}`;
       }
       const data = this.pkgForm.value;
       formdata.append('title', data.title)
@@ -176,7 +178,14 @@ export class ScormPkgCreateComponent implements OnInit {
   }
 
   createScormKit(data:any, isPDF: boolean = false) {
-    if (isPDF) {
+    const isImscc = this.docs?.name?.toLowerCase().endsWith('.imscc');
+    
+    if (isImscc) {
+      // Handle IMSCC files
+      this.courseService.saveImsccKit(data).subscribe(res => {
+        this.closeDialog()
+      })
+    } else if (isPDF) {
       this.courseService.createScormPkg(data).subscribe(res => {
         this.closeDialog()
       })
@@ -212,18 +221,26 @@ export class ScormPkgCreateComponent implements OnInit {
 
   onFileUpload(event: any, isScormKit: boolean = false) {
     const file = event.target.files[0];
+        console.log("fileType",file)
     let allowedFileTypes = [
-      'application/pdf', 'application/x-zip-compressed'
+      'application/pdf',
+      'application/x-zip-compressed',
+      'application/zip',
+      // IMS Common Cartridge MIME types
+      'application/vnd.ims.imsccv1p1',
+      'application/vnd.ims.imsccv1p2',
+      'application/vnd.ims.imsccv1p3'
     ];
 
     if (file) {
-      if (allowedFileTypes.includes(file.type)) {
+  
+      if (allowedFileTypes.includes(file.type) || file.name.toLowerCase().endsWith('.imscc')) {
         this.uploadedDocument = file.name;
         this.docs = file;
       } else {
         Swal.fire({
           title: 'Oops...',
-          text: 'Selected format doesn\'t support. Only document formats are allowed!',
+          text: 'Selected format doesn\'t support. Only PDF, ZIP, or IMSCC files are allowed!',
           icon: 'error',
         });
       }
@@ -231,9 +248,12 @@ export class ScormPkgCreateComponent implements OnInit {
   }
 
   deleteScormKit(){
+    const isImscc = this.docs?.name?.toLowerCase().endsWith('.imscc');
+    const packageType = isImscc ? 'IMSCC Package' : 'SCORM Package';
+    
     Swal.fire({
       title: 'Are you sure?',
-      text: 'You want to delete the SCORM Package!',
+      text: `You want to delete the ${packageType}!`,
       icon: 'warning',
       confirmButtonText: 'Yes',
       showCancelButton: true,
@@ -246,5 +266,30 @@ export class ScormPkgCreateComponent implements OnInit {
       }
     })
    
+  }
+
+  getPackageTitleLabel(): string {
+    if (this.docs?.name?.toLowerCase().endsWith('.imscc')) {
+      return 'IMSCC Package Title';
+    } else if (this.docs?.type === 'application/pdf') {
+      return 'SCORM Package Title';
+    } else if (this.docs?.type === 'application/x-zip-compressed' || this.docs?.type === 'application/zip') {
+      return 'SCORM Package Title';
+    }
+    return 'Package Title'; 
+  }
+
+  getBreadcrumbTitle(): string {
+    if (this.docs?.name?.toLowerCase().endsWith('.imscc')) {
+      return 'IMSCC Package';
+    }
+    return 'SCORM Package';
+  }
+
+  getBreadcrumbActive(): string {
+    if (this.docs?.name?.toLowerCase().endsWith('.imscc')) {
+      return this.isEdit ? 'Edit IMSCC Package' : 'Create IMSCC Package';
+    }
+    return this.isEdit ? 'Edit SCORM Package' : 'Create SCORM Package';
   }
 }

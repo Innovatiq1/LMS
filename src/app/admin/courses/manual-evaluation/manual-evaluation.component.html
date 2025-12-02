@@ -92,12 +92,12 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> 
     <div class="d-flex gap-3" *ngIf="showGrade">
-      <span class="text-primary">Percentage: {{ currentPercentage }}</span>
-      <span class="text-primary">Grade: {{ gradeInfo?.grade }}</span>
-      <span class="text-primary">GPA: {{ gradeInfo?.gpa }}</span>
-      <span class="text-primary">Outcome: {{ gradeInfo?.gradeTerm }}</span>
+      <span class="text-primary"   *ngIf="evaluationStatus">Percentage: {{   currentPercentage }}</span>
+      <span class="text-primary"   *ngIf="evaluationStatus">Grade: {{ gradeInfo?.grade }}</span>
+      <span class="text-primary "  *ngIf="evaluationStatus">GPA: {{ gradeInfo?.gpa }}</span>
+      <span class="text-primary"  *ngIf="evaluationStatus">Outcome: {{ gradeInfo?.gradeTerm }}</span>
     </div>
     <div class="action-buttons">
       <button

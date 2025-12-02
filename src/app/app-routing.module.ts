@@ -69,7 +69,7 @@ const routes: Routes = [
           import('./admin/dashboard/dashboard.module').then(
             (m) => m.DashboardModule
           ),
-        canActivate: [LoginGuard],
+        // canActivate: [LoginGuard],
       },
       
       

@@ -1,3 +1,8 @@
+<div *ngIf="grade_loadingSpinner" class="overlay">
+  <mat-progress-spinner color="primary" [diameter]="60" mode="indeterminate">
+  </mat-progress-spinner>
+</div>
+
 <section class="content">
   <div class="content-block">
     <div class="block-header" *ngFor="let breadscrum of breadscrums">
@@ -121,7 +126,7 @@
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="w-20">
-                  <mat-label>Enter the GPA</mat-label>
+                  <mat-label>Enter the GPA.</mat-label>
                   <input
                     matInput
                     type="text"
@@ -134,12 +139,9 @@
                     GPA is required
                   </mat-error>
                   <mat-error
-                    *ngIf="
-                      gradeList.at(i).get('gpa')?.hasError('min') ||
-                      gradeList.at(i).get('gpa')?.hasError('max')
-                    "
+                    *ngIf="gradeList.at(i).get('gpa')?.hasError('pattern')"
                   >
-                    GPA must be between 0 and 10
+                    Enter gpa range with in 10
                   </mat-error>
                   <mat-error *ngIf="gradeList.get('gpa')?.hasError('duplicate')"
                     >Duplicate</mat-error

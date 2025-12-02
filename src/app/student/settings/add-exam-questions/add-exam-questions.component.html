@@ -296,6 +296,9 @@
                       <div *ngSwitchCase="'text'" class="mt-2">
                         <mat-form-field appearance="outline" style="width: 100%">
                           <textarea matInput formControlName="textAnswer" placeholder="Enter answer"></textarea>
+                          <mat-error *ngIf="question.get('textAnswer')?.hasError('required') && question.get('textAnswer')?.touched">
+                            Answer is required
+                          </mat-error>
                         </mat-form-field>
                       </div>
 
@@ -304,11 +307,17 @@
                           <mat-radio-button [value]="true">True</mat-radio-button>
                           <mat-radio-button [value]="false">False</mat-radio-button>
                         </mat-radio-group>
+                        <mat-error *ngIf="question.get('trueFalseAnswer')?.hasError('required') && question.get('trueFalseAnswer')?.touched">
+                          Answer is required
+                        </mat-error>
                       </div>
 
                       <div *ngSwitchCase="'number'" class="mt-2">
                         <mat-form-field appearance="outline" style="width: 100%">
                           <input matInput type="number" formControlName="numberAnswer" placeholder="Enter number" />
+                          <mat-error *ngIf="question.get('numberAnswer')?.hasError('required') && question.get('numberAnswer')?.touched">
+                            Answer is required
+                          </mat-error>
                         </mat-form-field>
                       </div>
 
@@ -316,13 +325,20 @@
                         <mat-form-field appearance="outline" style="width: 100%">
                           <input matInput type="text" formControlName="fillBlankAnswer"
                             placeholder="Enter correct answer" />
+                            <mat-error *ngIf="question.get('fillBlankAnswer')?.hasError('required') && question.get('fillBlankAnswer')?.touched">
+                              Answer is required
+                            </mat-error>
                         </mat-form-field>
                       </div>
 
                       <div *ngSwitchCase="'textarea'" class="mt-2">
                         <mat-form-field appearance="outline" style="width: 100%">
                           <textarea matInput formControlName="textareaAnswer" placeholder="Enter descriptive answer"
-                            rows="3"></textarea>
+                            rows="3">
+                          </textarea>
+                          <mat-error *ngIf="question.get('textareaAnswer')?.hasError('required') && question.get('textareaAnswer')?.touched">
+                            Answer is required
+                          </mat-error>
                         </mat-form-field>
                       </div>
 

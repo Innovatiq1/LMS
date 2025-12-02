@@ -692,7 +692,7 @@ export class ViewCourseComponent implements OnDestroy {
     };
     // console.log('Payload:', payload);
 
-    this.http.post('http://localhost:3001/getGrantCalculations', payload).subscribe(
+    this.http.post('http://uatskillera.innovatiqconsulting.com/getGrantCalculations', payload).subscribe(
       (response: any) => {
         const course = response?.courses?.[0];
         if (course?.funding?.eligibleGrants?.eligibleGrantDetails?.length > 0) {
@@ -1354,14 +1354,14 @@ export class ViewCourseComponent implements OnDestroy {
         scormKit: kit.scormKit,
       }));
 
-      this.isScormCourseKit = this.courseKit.some((v) => v.kitType === 'scorm');
-      // console.log('courseKit:',this.courseKit);
+      this.isScormCourseKit = this.courseKit.some((v) => v.kitType === 'scorm' || v.kitType === 'imscc');
+      console.log('courseKit:',this.courseKit);
 
       this.scormModules =
-        this.courseKit.find((v) => v.kitType === 'scorm')?.scormKit?.modules ||
+        this.courseKit.find((v) => v.kitType === 'scorm' || v.kitType === 'imscc')?.scormKit?.modules ||
         [];
       this.scormKit = this.courseKit.find(
-        (v) => v.kitType === 'scorm'
+        (v) => v.kitType === 'scorm' || v.kitType === 'imscc'
       )?.scormKit;
       // console.log(this.studentClassDetails)
       this.scormKitInit();
@@ -1410,7 +1410,7 @@ export class ViewCourseComponent implements OnDestroy {
   }
 
   scormKitInit() {
-    this.isScormKit = this.courseKit?.some((v) => v.kitType === 'scorm');
+    this.isScormKit = this.courseKit?.some((v) => v.kitType === 'scorm' || v.kitType === 'imscc');
     this.isVideoKit = !this.isScormKit
 
     if (this.scormModules.length && !this.isScormKitInit) {

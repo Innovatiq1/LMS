@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import { ClassService } from 'app/admin/schedule-class/class.service';
 import { CourseService } from '@core/service/course.service';
 import { SettingsService } from '@core/service/settings.service';
+import { AdminService } from '@core/service/admin.service';
 
 @Component({
   selector: 'app-questions',
@@ -49,7 +50,8 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
   courseId!: string;
   assessmentId: any;
   isCertIssued: boolean = false;
-  isEvaluationSubmitted: boolean = false;
+  isEvaluationSubmitted: boolean = false; 
+  display_grade:boolean = false
   answer: any[] = [];
   actualScore: number = 0;
   currentPercentage: number = 0;
@@ -65,12 +67,34 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
     private router: Router,
     private classService: ClassService,
     private courseService: CourseService,
-    private SettingService: SettingsService
+    private SettingService: SettingsService, 
+    private adminService:AdminService
   ) {
     let urlPath = this.router.url.split('/');
   }
 
-  ngOnInit() {
+  ngOnInit() { 
+
+     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    this.adminService
+      .getUserTypeList({ allRows: true }, userId)
+      .subscribe((response: any) => {
+        if(response.length != 0){ 
+          response.map((data:any)=>{ 
+            data.typeName == "admin" ?   
+                data.settingsMenuItems.map((inner_data:any)=>{ 
+                  inner_data.title == "Configuration" ?   
+                      inner_data.children.map((nav_menu:any)=>{
+                        nav_menu.title == "Grade" ? (this.display_grade = true ) : this.display_grade = false  
+                      } 
+                    )
+                  : ""
+                })
+            : ""
+          })
+        }
+      });  
+
     this.answers = Array.from({ length: this.questionList.length }, () => ({
       questionText: null,
       selectedOptionText: null,
@@ -250,8 +274,10 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
   navigateContinue(data: boolean) {
     // console.log("this.answer",this.answersResult)
     this.actualScore = this.answersResult.score;
-    this.totalScore = this.answersResult.totalScore;
-    this.GradeCalculate();
+    this.totalScore = this.answersResult.totalScore; 
+    if(this.display_grade){
+    this.GradeCalculate(); 
+    }
     const score = this.answersResult.score;
     const passingCriteria = this.answersResult.assessmentId.passingCriteria;
     const assessmentEvaluationType =
@@ -316,7 +342,7 @@ export class QuestionTestComponent implements OnInit, OnDestroy {
     let calculatePercent = (this.actualScore / this.totalScore) * 100;
     this.currentPercentage = Number.isNaN(calculatePercent)
       ? 0
-      : Math.floor(calculatePercent);
+      : Number(calculatePercent.toFixed(2));
 
     const getCompanyId: any = localStorage.getItem('userLogs');
     const parseid = JSON.parse(getCompanyId);

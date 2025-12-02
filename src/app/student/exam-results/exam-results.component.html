@@ -46,7 +46,25 @@
                                 <mat-cell *matCellDef="let row">
                                   <span class="mobile-label">Exam Score:</span>{{ row?.score }} / {{row?.totalScore}}
                                 </mat-cell>
-                              </ng-container>
+                              </ng-container>  
+
+                                    <ng-container *ngIf="display_grade"  matColumnDef="Grade">
+                      <mat-header-cell *matHeaderCellDef>Grade</mat-header-cell>
+                      <mat-cell   *matCellDef="let row"><span class="mobile-label" >Grade:</span>
+                        
+                        {{GradeCalculate_grade(row.score,row.totalScore)}}
+                      </mat-cell>
+                    </ng-container>   
+
+                     <ng-container  *ngIf="display_grade" matColumnDef="GPA">
+                      <mat-header-cell *matHeaderCellDef>GPA</mat-header-cell>
+                      <mat-cell  *matCellDef="let row"><span class="mobile-label" >GPA:</span>
+                        {{GradeCalculate_gpa(row.score,row.totalScore)}}
+                      </mat-cell>
+                    </ng-container> 
+
+
+                              
 
                               <ng-container matColumnDef="Submitted At">
                                 <mat-header-cell *matHeaderCellDef>Submitted At

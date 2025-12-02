@@ -52,8 +52,8 @@ Thumbs.db
 
 package.json
 package-lock.json
-
-/src/environments 
-environments/
-src/environments/
+/src/environments/
+# /src/environments 
+# environments/
+# src/environments/
 
