@@ -230,7 +230,7 @@
                     </div>
                   </div>
 
-                  <div class="col-12">
+                  <!-- <div class="col-12">
                     <div class="row clearfix">
                       <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12">
                         <div class="header mt-3">
@@ -244,7 +244,7 @@
                                   <th>Course Kit</th>
                                   <th>Description</th>
                                   <th>Document Link</th>
-                                  <th>Media Link</th>
+                                  <th>Media Link123</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -282,7 +282,60 @@
                         </div>
                       </div>
                     </div>
+                  </div> -->
+                  <div class="col-12">
+                    <div class="row clearfix">
+                      <div class="header mt-3">
+                        <h2>CourseKit Details</h2>
+                      </div>
+                      <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12" *ngFor="let kit of coursekitData">
+                        <div class="header mt-3">
+                          <h4>{{ kit.name }}</h4>
+                        </div>
+                        <div class="tableBody">
+                          <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                              <thead class="thead-dark">
+                                <tr>
+                                  <th>File Name</th>
+                                  <th>Type</th>
+                                  <th>Size</th>
+                                  <th>View</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let file of kit.videoLink[0]?.files">
+                                  <td>{{ file.name }}</td>
+                                  <td>{{ file.type }}</td>
+                                  <td>{{ file.size }}</td>
+                                  <td>
+                                    <a
+                                      *ngIf="file.type !== 'thirdparty'; else external"
+                                      [href]="file.url"
+                                      target="_blank"
+                                      class="btn btn-sm btn-primary"
+                                    >
+                                      View
+                                    </a>
+                                    <ng-template #external>
+                                      <a
+                                        [href]="file.url"
+                                        target="_blank"
+                                        class="btn btn-sm btn-warning"
+                                      >
+                                        Open Link
+                                      </a>
+                                    </ng-template>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
+                  
                 </div>
                 <div class="col-md-10 my-3">
                   <button mat-raised-button id="back" (click)="back()">

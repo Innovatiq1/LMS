@@ -24,10 +24,10 @@ import { AuthenService } from '@core/service/authen.service';
 export class CourseKitComponent implements OnInit{
   displayedColumns: string[] = [
     'Course',
-    'Short Description',
+    // 'Short Description',
     'Long Description',
-    'Media Link',
-    'Document Link'
+    // 'Media Link',
+    // 'Document Link'
   ];
 
   // breadscrums = [
