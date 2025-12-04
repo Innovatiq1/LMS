@@ -132,13 +132,13 @@
                     *matCellDef="let row"
                     (click)="isView ? view(row.id) : null"
                   >
-                    <span class="mobile-label"
+                    <!-- <span class="mobile-label"
                       >{{ commonRoles.STUDENT_ROLE }}:</span
-                    >
+                    > -->
                     <span class="name">{{
                       row.studentId?.name
-                    }}</span></mat-cell
-                  >
+                    }}</span>
+                    </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="email">
                   <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
@@ -364,7 +364,7 @@
 
                 <ng-container matColumnDef="view">
                   <mat-header-cell *matHeaderCellDef
-                    >View Certificate</mat-header-cell
+                    >View Certificate123</mat-header-cell
                   >
                   <mat-cell
                     *matCellDef="let row"

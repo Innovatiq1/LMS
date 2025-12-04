@@ -330,6 +330,7 @@ export class MainComponent implements OnInit {
   isSurveyDataAvailable: boolean=false;
   isUserDataAvailable: boolean=false;
   coursExameData:any[]=[];
+  courseProgress:any;
   constructor(
     private courseService: CourseService,
     private userService: UserService,
@@ -846,6 +847,7 @@ export class MainComponent implements OnInit {
     this.getProgramClassList();
     this.getClassList1();
     this.chart1Ins();
+    this.getStudentClassesByCompanyIdDept();
     // this.chart2Ins();
     this.instructorData();
     this.getProgramList();
@@ -858,6 +860,25 @@ export class MainComponent implements OnInit {
     this.getAllClasses();
   }
   classListSample:any[]=[];
+
+  getStudentClassesByCompanyIdDept(){
+    let company = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    let department = JSON.parse(localStorage.getItem('user_data')!).user.department;
+    const payload = {
+      companyId: company,
+      department:department,
+    };
+    this.courseService.getStudentClassesByCompanyDept(payload).subscribe({
+      next: (res) => {
+        console.log("Filtered student classes:", res.data);
+        this.courseProgress = res.data ? res.data.slice(0, 5) : [];
+      },
+      error: (err) => {
+        console.error("Error fetching filtered classes:", err);
+      }
+    });
+    
+  }
   getClassList() {
     let userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
         this.classService.getClassListWithPagination({},userId).subscribe(
