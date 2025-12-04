@@ -378,6 +378,12 @@ SIDEMENU_LIST =[
                   "class": "ml-menu2"
               },
               {
+                "title": "Course Progress",
+                "id": "course-progress",
+                "actions": [],
+                  "class": "ml-menu2"
+              },
+              {
                 "title": "Retake Requests",
                 "id": "retake-requests",
                 "actions": [],
