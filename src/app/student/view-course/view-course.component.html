@@ -4,11 +4,7 @@
 <section *ngIf="paid || program" class="content">
   <div class="content-block">
     <div class="block-header" *ngFor="let breadscrum of breadscrums">
-      <app-breadcrumb
-        [title]="breadscrum.title"
-        [items]="breadscrum.items"
-        [active_item]="breadscrum.active"
-      >
+      <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
       </app-breadcrumb>
     </div>
     <div class="row clearfix mt-5">
@@ -24,16 +20,10 @@
                   {{ classDetails?.courseId?.courseCode }}
                 </div>
               </div>
-              <img
-                src="{{ classDetails?.courseId?.image_link }}"
-                class="user-img"
-                alt=""
-              />
-              <p
-                [innerHTML]="
+              <img src="{{ classDetails?.courseId?.image_link }}" class="user-img" alt="" />
+              <p [innerHTML]="
                 getSafeHtml(classDetails?.courseId?.course_description)
-                "
-              ></p>
+                "></p>
 
               <div class="row">
                 <!-- <div class="col-3">
@@ -48,15 +38,15 @@
                   }}</span>
                   <span class="dis_font">Hours</span>
                 </div> -->
-                <div  style="padding-left: 20px;">
+                <div style="padding-left: 20px;">
                   <!-- <span class="day_font"
                     >{{ classDetails?.courseId?.fee }}$</span
                   >
                   <span class="dis_font">Fee</span> -->
                   <span class="day_font">
                     ${{ (classDetails?.courseId?.fee || 0) + (classDetails?.instructorCost || 0) }}
-                </span>
-                                  <span class="dis_font">Fee</span>
+                  </span>
+                  <span class="dis_font">Fee</span>
                 </div>
               </div>
             </div>
@@ -66,18 +56,12 @@
           <mat-tab-group mat-align-tabs="start">
             <mat-tab label="About">
               <div class="p-4">
-                <label
-                  *ngIf="classDetails?.courseId?.course_detailed_description"
-                  class="font-bold"
-                  >Description:</label
-                >
-                <p
-                  class="text-default"
-                  [innerHTML]="
+                <label *ngIf="classDetails?.courseId?.course_detailed_description"
+                  class="font-bold">Description:</label>
+                <p class="text-default" [innerHTML]="
                   getSafeHtml(classDetails?.courseId?.course_detailed_description
                       )
-                  "
-                ></p>
+                  "></p>
 
                 <ul class="list-group list-group-unbordered">
                   <li class="list-group-item">
@@ -110,129 +94,180 @@
       <div *ngIf="isApproved || isCompleted" class="col-lg-12 col-md-8">
         <div class="row">
           <div class="col-lg-9 col-md-9">
-            <div style="min-height: 400px;">
-              <div *ngIf="currentScormModule&&isScormKit">
-              <iframe
-                  [src]="iframeUrl|safe"
-                  width="100%"
-                  height="500"
-                  frameborder="0"
-                  allowfullscreen
-                ></iframe>
-                </div>
-              <div *ngIf="!currentScormModule&&isVideoKit" class="video-container" (click)="toggleVideoPlay()">
-                <video
-                  #videoPlayer
-                  width="100%"
-                  controlsList="nodownload"
-                  (timeupdate)="onTimeUpdate($event)"
-                  controls
-                  controlsList="nodownload"
-                  (pause)="destroyModal()"
-                  (play)="onPlay()"
-                  style="border-radius: 12px; box-shadow: rgb(23, 23, 24)"
-                >
-                  Your browser does not support the video tag.
-                </video>
-                <div *ngIf="!isPlaying" class="play-button"></div>
+            <!-- <div style="min-height: 400px;">
+              <div *ngIf="currentScormModule && isScormKit">
+                <iframe [src]="iframeUrl | safe" width="100%" height="500" frameborder="0" allowfullscreen></iframe>
               </div>
-              <div class="">
-                <h4 c>{{ header }}</h4>
-                <p>{{ sdiscrption }}</p>
+
+              <div *ngIf="!currentScormModule && !isScormKit">
+                <ng-container [ngSwitch]="currentFileType">
+
+                  <video *ngSwitchCase="'video'" #videoPlayer width="100%" controls (ended)="onFileCompleted()">
+                    <source [src]="currentFileUrl" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                  <audio *ngSwitchCase="'audio'" controls (ended)="onFileCompleted()">
+                    <source [src]="currentFileUrl" type="audio/mpeg" />
+                    Your browser does not support the audio tag.
+                  </audio>
+                  <img *ngSwitchCase="'image'" [src]="currentFileUrl" width="100%" (load)="onFileCompleted()" />
+                  <iframe *ngSwitchCase="'pdf'" [src]="currentFileUrl | safe" width="100%" height="500" frameborder="0"
+                    (load)="onFileCompleted()"></iframe>
+                  <div *ngSwitchCase="'document'" id="office-doc-viewer" style="max-height: 500px; overflow-y: auto;">
+                  </div>
+                  <ng-container *ngSwitchCase="'thirdparty'">
+                    <iframe *ngIf="currentFileUrl" [src]="currentFileUrl | safe" width="100%" height="400"
+                      allowfullscreen (load)="onFileCompleted()"></iframe>
+                  </ng-container>
+
+                  <ng-container *ngSwitchCase="'unknown'">
+                    <p>This content cannot be embedded.
+                      <a [href]="currentFileUrl" target="_blank" rel="noopener">Click here to open</a>
+                    </p>
+                  </ng-container>
+
+                  <p *ngSwitchDefault>⚠️ Unsupported file format</p>
+
+                </ng-container>
+              </div>
+              <div class="mt-2 d-flex align-items-center justify-content-between">
+                <div>
+                  <h4>{{ header }}</h4>
+                  <p>{{ sdiscrption }}</p>
+                </div>
+
+                <div class="d-flex align-items-center gap-2">
+                  <button (click)="loadPrevFile()" [disabled]="currentFileIndex === 0">
+                    Previous
+                  </button>
+                  <span>{{ currentFileIndex + 1 }} / {{ currentFiles.length }}</span>
+                  <button (click)="loadNextFile()"
+                    [disabled]="!fileCompleted || currentFileIndex >= currentFiles.length - 1">
+                    Next ➡
+                  </button>
+                </div>
+              </div>
+
+            </div> -->
+            <div class="content-container">
+              <div *ngIf="currentScormModule && isScormKit" class="content-frame">
+                <iframe [src]="iframeUrl | safe" class="fixed-content" frameborder="0" allowfullscreen></iframe>
+              </div>
+            
+              <div *ngIf="!currentScormModule && !isScormKit" class="content-frame">
+                
+                <ng-container [ngSwitch]="currentFileType">
+            
+                  <video *ngSwitchCase="'video'" #videoPlayer class="fixed-content" controls (ended)="onFileCompleted()">
+                    <source [src]="currentFileUrl" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+            
+                  <div *ngSwitchCase="'audio'" class="audio-wrapper">
+                    <img src="assets/images/image-gallery/music.jpg" class="audio-background" alt="Audio Background" />
+                    
+                    <audio class="audio-player" controls (ended)="onFileCompleted()">
+                      <source [src]="currentFileUrl" type="audio/mpeg" />
+                      Your browser does not support the audio tag.
+                    </audio>
+                  </div>
+                  
+            
+                  <img *ngSwitchCase="'image'" [src]="currentFileUrl" class="fixed-content" (load)="onFileCompleted()" />
+            
+            
+                  <div *ngSwitchCase="'document'" id="office-doc-viewer" class="fixed-content">
+                  </div>
+            
+                  <ng-container *ngSwitchCase="'thirdparty'">
+                    <iframe *ngIf="currentFileUrl" [src]="currentFileUrl | safe" class="fixed-content"
+                      allowfullscreen (load)="onFileCompleted()"></iframe>
+                  </ng-container>
+            
+                  <ng-container *ngSwitchCase="'unknown'">
+                    <div class="placeholder">
+                      <p>This content cannot be embedded.
+                        <a [href]="currentFileUrl" target="_blank" rel="noopener">Click here to open</a>
+                      </p>
+                    </div>
+                  </ng-container>
+            
+                  <div *ngSwitchDefault class="placeholder">
+                    <!-- ⚠️ Unsupported file format -->
+                    <img 
+       src="assets/images/image-gallery/music.jpg"
+       class="default-placeholder-image"  />
+                  </div>
+            
+                </ng-container>
+              </div>
+            
+              <!-- Footer with nav -->
+              <div class="mt-2 d-flex align-items-center justify-content-between">
+                <div>
+                  <h4>{{ header }}</h4>
+                  <p>{{ sdiscrption }}</p>
+                </div>
+            
+                <div class="d-flex align-items-center gap-2">
+                  <button (click)="loadPrevFile()" [disabled]="currentFileIndex === 0">
+                    Previous
+                  </button>
+                  
+                  <span>{{ currentFileIndex + 1 }} / {{ currentFiles.length }}</span>
+                  
+                  <button (click)="loadNextFile()" [disabled]="currentFileIndex >= currentFiles.length - 1">
+                    Next ➡
+                  </button>
+                  
+                </div>
               </div>
             </div>
+            
+
 
             <div class="card" *ngIf="isApproved || isCompleted">
               <div class="card-header">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                   <li class="nav-item" role="presentation">
-                    <button
-                      class="nav-link active"
-                      id="home-tab"
-                      data-bs-toggle="tab"
-                      data-bs-target="#home"
-                      type="button"
-                      role="tab"
-                      aria-controls="home"
-                      aria-selected="true"
-                      [class]="{ active: defaultTab === 'home' }"
-                    >
+                    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home"
+                      type="button" role="tab" aria-controls="home" aria-selected="true"
+                      [class]="{ active: defaultTab === 'home' }">
                       Course Details
                     </button>
                   </li>
                   <li class="nav-item" role="presentation">
-                    <button
-                      class="nav-link"
-                      id="profile-tab"
-                      data-bs-toggle="tab"
-                      data-bs-target="#profile"
-                      type="button"
-                      role="tab"
-                      aria-controls="profile"
-                      aria-selected="false"
-                      [class]="{ active: defaultTab === 'profile' }"
-                    >
+                    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile"
+                      type="button" role="tab" aria-controls="profile" aria-selected="false"
+                      [class]="{ active: defaultTab === 'profile' }">
                       Classes
                     </button>
                   </li>
                   <li class="nav-item" role="presentation" *ngIf="
                   isApproved && classDetails?.classDeliveryType == 'online'
                 ">
-                    <button
-                      class="nav-link"
-                      id="zoomLink-tab"
-                      data-bs-toggle="tab"
-                      data-bs-target="#zoomLink"
-                      type="button"
-                      role="tab"
-                      aria-controls="zoomLink"
-                      aria-selected="false"
-                      [class]="{ active: defaultTab === 'zoomLink' }"
-                    >
+                    <button class="nav-link" id="zoomLink-tab" data-bs-toggle="tab" data-bs-target="#zoomLink"
+                      type="button" role="tab" aria-controls="zoomLink" aria-selected="false"
+                      [class]="{ active: defaultTab === 'zoomLink' }">
                       Meeting Link
                     </button>
                   </li>
                   <li class="nav-item" role="presentation" *ngIf="isTest">
-                    <button
-                      class="nav-link"
-                      id="test-tab"
-                      data-bs-toggle="tab"
-                      data-bs-target="#test"
-                      type="button"
-                      role="tab"
-                      aria-controls="test"
-                      aria-selected="false"
-                      [class]="{ active: defaultTab === 'test' }"
-                    >
+                    <button class="nav-link" id="test-tab" data-bs-toggle="tab" data-bs-target="#test" type="button"
+                      role="tab" aria-controls="test" aria-selected="false" [class]="{ active: defaultTab === 'test' }">
                       Assessment
                     </button>
                   </li>
                   <li class="nav-item" role="presentation" *ngIf="isTest">
-                    <button
-                      class="nav-link"
-                      id="feedback-tab"
-                      data-bs-toggle="tab"
-                      data-bs-target="#feedback"
-                      type="button"
-                      role="tab"
-                      aria-controls="feedback"
-                      aria-selected="false"
-                      [class]="{ active: defaultTab === 'feedback' }"
-                    >
+                    <button class="nav-link" id="feedback-tab" data-bs-toggle="tab" data-bs-target="#feedback"
+                      type="button" role="tab" aria-controls="feedback" aria-selected="false"
+                      [class]="{ active: defaultTab === 'feedback' }">
                       Feedback
                     </button>
                   </li>
                   <li class="nav-item" role="presentation" *ngIf="isCompleted">
-                    <button
-                      class="nav-link"
-                      id="contact-tab"
-                      data-bs-toggle="tab"
-                      data-bs-target="#contact"
-                      type="button"
-                      role="tab"
-                      aria-controls="contact"
-                      aria-selected="false"
-                    >
+                    <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact"
+                      type="button" role="tab" aria-controls="contact" aria-selected="false">
                       Certificate
                     </button>
                   </li>
@@ -240,14 +275,9 @@
               </div>
               <div class="card-body">
                 <div class="tab-content" id="myTabContent">
-                  <div
-                    class="tab-pane fade"
-                    id="home"
-                    role="tabpanel"
-                    aria-labelledby="home-tab"
-                    [ngClass]="{ 'show active': defaultTab === 'home' }"
-                  >
-                    <h5 class="py-2" *ngIf="isDocument">
+                  <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab"
+                    [ngClass]="{ 'show active': defaultTab === 'home' }">
+                    <!-- <h5 class="py-2" *ngIf="isDocument">
                       Course Completed:
                       <span
                         [ngClass]="{
@@ -256,32 +286,35 @@
                         }"
                         >{{ playBackTime.toFixed(2) || 0 }}%</span
                       >
+                    </h5> -->
+                    <h5 class="py-2" *ngIf="isDocument">
+                      Course Completed:
+                      <span [ngClass]="{
+                          'red-text': playBackTime < 50,
+                          'green-text': playBackTime >= 50
+                        }">
+                        {{ playBackTime.toFixed(2) || 0 }}%
+                      </span>
                     </h5>
                     <span class="font-bold">Course Description:</span>
-                    <p
-                      [innerHTML]="
+                    <p [innerHTML]="
                       getSafeHtml(classDetails?.courseId?.course_description
                           )
-                      "
-                    ></p>
+                      "></p>
                     <div class="row p-2 bg-light" style="border-radius: 5px">
                       <div class="col-6">
-                        <span class="font-bold"
-                          >Title:
+                        <span class="font-bold">Title:
                           <p>
                             {{ classDetails?.courseId?.title }}
-                          </p></span
-                        >
-                        <span class="font-bold"
-                          >Course Code:
-                          <p>{{ classDetails?.courseId?.courseCode }}</p></span
-                        >
+                          </p>
+                        </span>
+                        <span class="font-bold">Course Code:
+                          <p>{{ classDetails?.courseId?.courseCode }}</p>
+                        </span>
                       </div>
                       <div class="col-6">
                         <label class="font-bold">About</label>
-                        <div
-                          class="d-flex justify-content-between shadow-lg rounded-3 p-2"
-                        >
+                        <div class="d-flex justify-content-between shadow-lg rounded-3 p-2">
                           <!-- <div>
                             <span class="day_font">{{
                               classDetails?.courseId?.course_duration_in_days
@@ -295,9 +328,8 @@
                             <span class="dis_font">Hours</span>
                           </div> -->
                           <div>
-                            <span class="day_font"
-                              >${{ classDetails?.courseId?.feeType == 'paid'? (classDetails?.courseId?.fee+ classDetails?.instructorCost):'0' }}.00</span
-                            >
+                            <span class="day_font">${{ classDetails?.courseId?.feeType == 'paid'?
+                              (classDetails?.courseId?.fee+ classDetails?.instructorCost):'0' }}.00</span>
                             <span class="dis_font">Fee</span>
                           </div>
                         </div>
@@ -327,40 +359,30 @@
                         </div>
                         <div class="col-6">
                           {{
-                            classDetails?.isGuaranteedToRun == true
-                              ? "Yes"
-                              : "No"
+                          classDetails?.isGuaranteedToRun == true
+                          ? "Yes"
+                          : "No"
                           }}
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div
-                    class="tab-pane fade"
-                    id="des"
-                    role="tabpanel"
-                    aria-labelledby="des-tab"
-                    [class]="{ 'show active': defaultTab === 'des' }"
-                  >
+                  <div class="tab-pane fade" id="des" role="tabpanel" aria-labelledby="des-tab"
+                    [class]="{ 'show active': defaultTab === 'des' }">
                     {{ longDescription }}
                   </div>
 
-                  <div
-                    class="tab-pane fade"
-                    id="profile"
-                    role="tabpanel"
-                    aria-labelledby="profile-tab"
-                    [class]="{ 'show active': defaultTab === 'profile' }"
-                  >
+                  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab"
+                    [class]="{ 'show active': defaultTab === 'profile' }">
                     <table mat-table [dataSource]="dataSource">
                       <ng-container matColumnDef="position">
                         <th mat-header-cell *matHeaderCellDef>{{commonRoles?.INSTRUCTOR_ROLE}}</th>
                         <td mat-cell *matCellDef="let element">
                           {{ element?.instructorId?.name || 'No ' + commonRoles?.INSTRUCTOR_ROLE }}
                           {{
-                            element?.instructorId?.last_name
-                              ? element?.instructorId?.last_name
-                              : ""
+                          element?.instructorId?.last_name
+                          ? element?.instructorId?.last_name
+                          : ""
                           }}
                         </td>
                       </ng-container>
@@ -385,104 +407,65 @@
                       <ng-container matColumnDef="action">
                         <th mat-header-cell *matHeaderCellDef>Action</th>
                         <td mat-cell *matCellDef="let element">
-                          <button
-                          *ngIf="
+                          <button *ngIf="
                             !isRegistered && !verify &&
                             !isStatus &&
                             !isApproved &&
                             !isCancelled &&
                             !isCompleted 
-                          "
-                          class="btn btn-primary"
-                          (click)="submitForVerification(courseDetails._id)"
-                        >
-                          Register
-                        </button>
-                        <button
-                        *ngIf="
+                          " class="btn btn-primary" (click)="submitForVerification(courseDetails._id)">
+                            Register
+                          </button>
+                          <button *ngIf="
                           !isRegistered &&  verify &&
                           !isStatus &&
                           !isApproved &&
                           !isCancelled &&
                           !isCompleted
-                        "
-                        class="btn btn-primary"
-                        (click)="registerClass(courseDetails._id)"
-                      >
-                        Pay
-                      </button>
+                        " class="btn btn-primary" (click)="registerClass(courseDetails._id)">
+                            Pay
+                          </button>
 
-                      <span
-                      class="badge badge-solid-orange mx-2"
-                      *ngIf="isRegistered  || isStatus"
-                      >Registered</span
-                    >
+                          <span class="badge badge-solid-orange mx-2"
+                            *ngIf="isRegistered  || isStatus">Registered</span>
 
-                          <span
-                            class="badge badge-solid-green mx-2"
-                            *ngIf="isApproved"
-                            >Approved</span
-                          >
-                          <span
-                            class="badge badge-solid-red mx-2"
-                            *ngIf="isCancelled"
-                            >Cancelled</span
-                          >
-                          <span
-                            class="badge badge-solid-green mx-2"
-                            *ngIf="isCompleted"
-                            >Completed</span
-                          >
+                          <span class="badge badge-solid-green mx-2" *ngIf="isApproved">Approved</span>
+                          <span class="badge badge-solid-red mx-2" *ngIf="isCancelled">Cancelled</span>
+                          <span class="badge badge-solid-green mx-2" *ngIf="isCompleted">Completed</span>
                         </td>
                       </ng-container>
 
-                      <tr
-                        mat-header-row
-                        *matHeaderRowDef="displayedColumns"
-                      ></tr>
-                      <tr
-                        mat-row
-                        *matRowDef="let row; columns: displayedColumns"
-                      ></tr>
+                      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
                     </table>
                   </div>
-                  <div
-                  class="tab-pane fade"
-                  id="zoomLink"
-                  role="tabpanel"
-                  aria-labelledby="zoomLink-tab"
-                  [class]="{ 'show active': defaultTab === 'zoomLink' }"
-                >
-                  <!-- Zoom Link Content -->
-                  <div class="p-3">
-                    <h5>Meeting Link</h5>
-                    <div *ngIf="!hasSessionEnded() && isMeetingAvailableToday()">
-                      <span>Here is the Meeting link:</span>
-                      <button class="btn btn-link meeting-link" (click)="openMeeting(classDetails?.meetingUrl)">
-                        Click here
-                      </button>
-                    </div>
-                    <!-- <div *ngIf="classDetails?.meetingPlatform === 'teams'">
+                  <div class="tab-pane fade" id="zoomLink" role="tabpanel" aria-labelledby="zoomLink-tab"
+                    [class]="{ 'show active': defaultTab === 'zoomLink' }">
+                    <!-- Zoom Link Content -->
+                    <div class="p-3">
+                      <h5>Meeting Link</h5>
+                      <div *ngIf="!hasSessionEnded() && isMeetingAvailableToday()">
+                        <span>Here is the Meeting link:</span>
+                        <button class="btn btn-link meeting-link" (click)="openMeeting(classDetails?.meetingUrl)">
+                          Click here
+                        </button>
+                      </div>
+                      <!-- <div *ngIf="classDetails?.meetingPlatform === 'teams'">
                       <label>Microsoft Teams Meeting</label>
                       <a [href]="classDetails.meetingUrl" target="_blank">Join Teams Meeting</a>
                     </div> -->
-                    
-                    <p *ngIf="hasSessionEnded()">
-                      The session has ended, and the meeting link is no longer available.
-                    </p>
-                    <p *ngIf="!hasSessionEnded() && !isMeetingAvailableToday()">
-                      Today's Meeting was not available.
-                    </p>
+
+                      <p *ngIf="hasSessionEnded()">
+                        The session has ended, and the meeting link is no longer available.
+                      </p>
+                      <p *ngIf="!hasSessionEnded() && !isMeetingAvailableToday()">
+                        Today's Meeting was not available.
+                      </p>
+                    </div>
                   </div>
-                </div>
-                
-                  <div
-                    class="tab-pane fade"
-                    id="contact"
-                    role="tabpanel"
-                    aria-labelledby="contact-tab"
-                    [class]="{ 'show active': defaultTab === 'contact' }"
-                  >
+
+                  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab"
+                    [class]="{ 'show active': defaultTab === 'contact' }">
                     <table mat-table [dataSource]="dataSource">
 
                       <ng-container matColumnDef="position">
@@ -490,9 +473,9 @@
                         <td mat-cell *matCellDef="let element">
                           {{ element?.instructorId?.name || 'No ' + commonRoles?.INSTRUCTOR_ROLE }}
                           {{
-                            element?.instructorId?.last_name
-                              ? element?.instructorId?.last_name
-                              : ""
+                          element?.instructorId?.last_name
+                          ? element?.instructorId?.last_name
+                          : ""
                           }}
                         </td>
                       </ng-container>
@@ -520,98 +503,56 @@
                         <div *ngIf="!certificateIssued">
                           <td mat-cell *matCellDef="let element">
                             <span class="badge badge-solid-green">
-                              Certificate will be available</span
-                            >
+                              Certificate will be available</span>
                           </td>
                         </div>
 
                         <div *ngIf="certificateIssued">
                           <td mat-cell *matCellDef="let element">
-                            <a
-                              href="{{ studentClassDetails?.certifiacteUrl }}"
-                              target="_blank"
-                            >
-                              <mat-icon>download</mat-icon></a
-                            >
+                            <a href="{{ studentClassDetails?.certifiacteUrl }}" target="_blank">
+                              <mat-icon>download</mat-icon></a>
                           </td>
                         </div>
                       </ng-container>
-                      <tr
-                        mat-header-row
-                        *matHeaderRowDef="displayedColumns"
-                      ></tr>
-                      <tr
-                        mat-row
-                        *matRowDef="let row; columns: displayedColumns"
-                      ></tr>
+                      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
                     </table>
                   </div>
-                  <div
-                    class="tab-pane fade"
-                    id="test"
-                    role="tabpanel"
-                    aria-labelledby="test"
-                    [ngClass]="{ 'show active': defaultTab == 'test' }"
-                  >
-                    <p
-                      class="text-center text-muted"
-                      *ngIf="
+                  <div class="tab-pane fade" id="test" role="tabpanel" aria-labelledby="test"
+                    [ngClass]="{ 'show active': defaultTab == 'test' }">
+                    <p class="text-center text-muted" *ngIf="
                         assessmentTaken != undefined &&
                         assessmentTaken >= assessmentInfo?.retake && !assessmentTempInfo
-                      "
-                    >
+                      ">
                       Max No. of Retake Reached
                     </p>
-              
-                    <ng-container
-                      *ngIf="isShowAssessmentQuestions"
-                    >
-                      <app-questions
-                        *ngIf="questionList.length"
-                        [questionList]="questionList"
-                        [answersResult]="answersResult"
-                        [getAssessmentId]="getAssessmentId"
-                        [totalTime]="questionList.length * questionTimer"
-                        (submitAnswers)="submitAnswers($event)"
-                        (navigate)="openFeedBack($event)"
-                        [isAnswersSubmitted]="isAnswersSubmitted"
-                        [isCertificate] = "isCertificate"
-                        [autoSubmit]="true"
-                      ></app-questions>
+
+                    <ng-container *ngIf="isShowAssessmentQuestions">
+                      <app-questions *ngIf="questionList.length" [questionList]="questionList"
+                        [answersResult]="answersResult" [getAssessmentId]="getAssessmentId"
+                        [totalTime]="questionList.length * questionTimer" (submitAnswers)="submitAnswers($event)"
+                        (navigate)="openFeedBack($event)" [isAnswersSubmitted]="isAnswersSubmitted"
+                        [isCertificate]="isCertificate" [autoSubmit]="true"></app-questions>
                     </ng-container>
-                    <ng-container
-                      *ngIf="
+                    <ng-container *ngIf="
                         questionList.length &&
                         isAnswersSubmitted &&
                         (isShowFeedback) &&
                         !isFeedBackSubmitted
-                      "
-                    >
+                      ">
                       <p class="text-danger" *ngIf="assessmentInfo.resultAfterFeedback">
                         Please Submit the Feedback to view the result
                       </p>
-                      <app-feedbackcommon
-                        [feedbackInfo]="feedbackInfo"
-                        [isPreview]="false"
-                        [showSkip]="!courseDetails.isFeedbackRequired"
-                        (submitAnswers)="submitFeedback($event)"
-                        (skip)="skipFeedback()"
-                      ></app-feedbackcommon>
+                      <app-feedbackcommon [feedbackInfo]="feedbackInfo" [isPreview]="false"
+                        [showSkip]="!courseDetails.isFeedbackRequired" (submitAnswers)="submitFeedback($event)"
+                        (skip)="skipFeedback()"></app-feedbackcommon>
                     </ng-container>
                   </div>
-                  <div
-                    class="tab-pane fade"
-                    id="feedback"
-                    role="tabpanel"
-                    aria-labelledby="feedback"
-                    [class]="{ 'show active': defaultTab === 'feedback' }"
-                  >
+                  <div class="tab-pane fade" id="feedback" role="tabpanel" aria-labelledby="feedback"
+                    [class]="{ 'show active': defaultTab === 'feedback' }">
                     <div>
-                      <app-feedbackcommon
-                        [feedbackInfo]="feedbackInfo"
-                        [isPreview]="false"
-                        (submitAnswers)="submitFeedback($event)"
-                      ></app-feedbackcommon>
+                      <app-feedbackcommon [feedbackInfo]="feedbackInfo" [isPreview]="false"
+                        (submitAnswers)="submitFeedback($event)"></app-feedbackcommon>
                     </div>
                   </div>
                 </div>
@@ -620,96 +561,55 @@
           </div>
           <div class="col-lg-3" *ngIf="isApproved || isCompleted ">
             <div class="card">
-              <table mat-table [dataSource]="coursekitDetails" *ngIf="!isScormCourseKit && coursekitDetails.length">
+             
+              <table mat-table [dataSource]="courseKit" *ngIf="!isScormCourseKit && courseKit.length">
                 <ng-container matColumnDef="video">
                   <th mat-header-cell *matHeaderCellDef>
                     <span class="kit">Course Kit</span>
                   </th>
                   <td mat-cell *matCellDef="let row; let i = index">
-                    <div 
-                      class="pointer"
-                      (click)="
-                        playVideos({
-                          name: row.name,
-                          discription: row.shortDescription,
-                          id: row.videoId,
-                          playbackTime: row.playbackTime
-                        })
-                      "
-                    >
-                      <span class="font-bold top"
-                        >Section:{{ i + 1 }} &nbsp;&nbsp;{{ row.name }}
+                    <div class="pointer module-header" 
+                         (click)="playVideos({name: row.name, discription: row.shortDescription, id: row.videoId, playbackTime: row.playbackTime, row: row})">
+                      
+                      <span class="font-bold top" 
+                            [ngClass]="{ 'text-blue-600': highlightedModuleId === row.videoId }">
+                        Module:{{ i + 1 }} &nbsp;&nbsp;{{ row.name }}
                       </span>
-                      <div class="d-flex" *ngIf="isDocument">
-                        <span class="d-flex align-items-start"
-                          ><i class="material-icons icon" color="warn"
-                            >ondemand_video</i
-                          > </span
-                        >&nbsp;<span
-                          class="duration"
-                          [ngClass]="{
-                            'red-text': row.playbackTime < 50,
-                            'green-text': row.playbackTime >= 50
-                          }"
-                          >{{ row.playbackTime | number : "1.2-2" }}%</span
-                        >
-                      </div>
-                      <div class="">
-                        <span class="d-flex align-items-start"
-                          ><i class="material-icons icon">article</i>&nbsp;
-                          <a
-                            href="javascript:void(0)"
-                            class="m-b-20 text-black"
-                            (click)="openDocumentDialog(row.documentLink, row.filename)"
-                             >
-                            <span class="duration">{{ row.filename | truncate: 20 }}</span>
-                            </a>
-
-                          <!-- <a
-                            href="{{ row.documentLink }}"
-                            href=""
-                            class="m-b-20 text-black"
-                            target="_blank"
-                          >
-                            <span class="duration">{{
-                              row.filename | truncate : 20
-                            }}</span></a
-                          > -->
-                        </span>
-                      </div>
-                    </div>                    
+                  
+                      <ng-container *ngIf="row.allowDownload">
+                        <button mat-icon-button (click)="downloadModuleFiles(row.videoId, $event)">
+                          <mat-icon>download</mat-icon>
+                        </button>
+                      </ng-container>
+                    </div>
+                  
+                    <mat-progress-bar *ngIf="moduleProgress[row.videoId] !== undefined"
+                      [value]="moduleProgress[row.videoId]" mode="determinate">
+                    </mat-progress-bar>
                   </td>
+                  
                 </ng-container>
                 <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
-                <tr
-                  mat-row
-                  *matRowDef="let row; columns: displayedColumns1"
-                ></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns1"></tr>
               </table>
               <div *ngIf="isScormCourseKit">
-                <table mat-table [dataSource]="courseKit" >
+                <table mat-table [dataSource]="courseKit">
                   <ng-container matColumnDef="scormKit">
                     <th mat-header-cell *matHeaderCellDef>
                       <span class="kit">Course Kit</span>
                     </th>
                     <td mat-cell *matCellDef="let row; let i = index">
-                      <div 
-                        class="pointer my-2"
-                       *ngFor="let module of row.scormKit.modules; let j=index"
-                      >
+                      <div class="pointer my-2" *ngFor="let module of row.scormKit.modules; let j=index">
                         <span class="font-bold top"
-                        [ngClass]="{ 'text-green' : module._id === currentScormModule?._id } "
-                        (click)="openScormModule(module, row.scormKit)"
-                          >Module:{{ j + 1 }} &nbsp;&nbsp;{{ module.title }}
+                          [ngClass]="{ 'text-green' : module._id === currentScormModule?._id } "
+                          (click)="openScormModule(module, row.scormKit)">Module:{{ j + 1 }} &nbsp;&nbsp;{{ module.title
+                          }}
                         </span>
-                      </div>                    
+                      </div>
                     </td>
                   </ng-container>
                   <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
-                  <tr
-                    mat-row
-                    *matRowDef="let row; columns: displayedColumns2"
-                  ></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns2"></tr>
                 </table>
               </div>
 
@@ -734,9 +634,9 @@
                         <td mat-cell *matCellDef="let element">
                           {{ element?.instructorId?.name || 'No ' + commonRoles?.INSTRUCTOR_ROLE }}
                           {{
-                            element?.instructorId?.last_name
-                              ? element?.instructorId?.last_name
-                              : ""
+                          element?.instructorId?.last_name
+                          ? element?.instructorId?.last_name
+                          : ""
                           }}
                         </td>
                       </ng-container>
@@ -761,97 +661,52 @@
                       <ng-container matColumnDef="action">
                         <th mat-header-cell *matHeaderCellDef>Action</th>
                         <td mat-cell *matCellDef="let element">
-                          <button
-                          *ngIf="
+                          <button *ngIf="
                             !isRegistered && !verify &&
                             !isStatus &&
                             !isApproved &&
                             !isCancelled &&
                             !isCompleted 
-                          "
-                          class="btn btn-primary"
-                          (click)="submitForVerification(courseDetails._id)"
-                        >
-                          Register
-                        </button>
-                        <button
-                        *ngIf="
+                          " class="btn btn-primary" (click)="submitForVerification(courseDetails._id)">
+                            Register
+                          </button>
+                          <button *ngIf="
                           isRegistered &&  verify && payment && !paidAmount &&
                           isStatus &&
                           !isApproved &&
                           !isCancelled &&
                           !isCompleted
-                        "
-                        class="btn btn-primary"
-                        (click)="registerClass(courseDetails._id)"
-                      >
-                        Pay
-                      </button>
+                        " class="btn btn-primary" (click)="registerClass(courseDetails._id)">
+                            Pay
+                          </button>
 
-                      <span
-                      class="badge badge-solid-orange mx-2"
-                      *ngIf="isRegistered && payment && paidAmount && verify "
-                      >Registered</span
-                    >
-                    <span
-                    class="badge badge-solid-orange mx-2"
-                    *ngIf="isRegistered && !payment && !verify  && !paidAmount"
-                    >Wait for Payment </span
-                  >
+                          <span class="badge badge-solid-orange mx-2"
+                            *ngIf="isRegistered && payment && paidAmount && verify ">Registered</span>
+                          <span class="badge badge-solid-orange mx-2"
+                            *ngIf="isRegistered && !payment && !verify  && !paidAmount">Wait for Payment </span>
 
-                    <span
-                            class="badge badge-solid-green mx-2"
-                            *ngIf="isApproved"
-                            >Approved</span
-                          >
-                          <span
-                            class="badge badge-solid-red mx-2"
-                            *ngIf="isCancelled && isDiscountVerification"
-                            >Cancelled   </span
-                          >
-                          <button  *ngIf="isCancelled && isDiscountVerification"
-                           
-                        class="btn btn-primary"
-                        (click)="submitForVerification(courseDetails._id,'verification')"
-                      >
-                        Register
-                      </button>
-                          <span
-                          class="badge badge-solid-red mx-2"
-                          *ngIf="isCancelled && isApproval"
-                          >Cancelled</span
-                        >
-                        <button  *ngIf="isCancelled && isApproval"
-                           
-                        class="btn btn-primary"
-                        (click)="reRegister()"
-                      >
-                        Register
-                      </button>
-                          <span
-                            class="badge badge-solid-green mx-2"
-                            *ngIf="isCompleted"
-                            >Completed</span
-                          >
+                          <span class="badge badge-solid-green mx-2" *ngIf="isApproved">Approved</span>
+                          <span class="badge badge-solid-red mx-2"
+                            *ngIf="isCancelled && isDiscountVerification">Cancelled </span>
+                          <button *ngIf="isCancelled && isDiscountVerification" class="btn btn-primary"
+                            (click)="submitForVerification(courseDetails._id,'verification')">
+                            Register
+                          </button>
+                          <span class="badge badge-solid-red mx-2" *ngIf="isCancelled && isApproval">Cancelled</span>
+                          <button *ngIf="isCancelled && isApproval" class="btn btn-primary" (click)="reRegister()">
+                            Register
+                          </button>
+                          <span class="badge badge-solid-green mx-2" *ngIf="isCompleted">Completed</span>
                         </td>
                       </ng-container>
 
-                      <tr
-                        mat-header-row
-                        *matHeaderRowDef="displayedColumns"
-                      ></tr>
-                      <tr
-                        mat-row
-                        *matRowDef="let row; columns: displayedColumns"
-                      ></tr>
+                      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
                     </table>
 
-                    <p
-                      class="m-t-30"
-                      [innerHTML]="
+                    <p class="m-t-30" [innerHTML]="
                       getSafeHtml(classDetails?.courseId?.course_detailed_description)
-                      "
-                    >
+                      ">
                       <br />
                     </p>
                   </div>
@@ -891,88 +746,89 @@
   <div *ngIf="isInvoice" id="contentToConvert">
     <div class="container-fluid"
       style="cursor: pointer; height: 700px;width: 70%;margin: auto;background-color: rgb(255, 248, 238);border-radius: 10px;">
-    
-    <div class="row my-3">
-      <div class="col-5 m-3">
-        <img src="/assets/images/logo/innovatiq-logo-index.png" style="height: 80px; width: 80px" />
-      </div>
-      <div class="col-6">
-        <h3 style="justify-content: end; display: flex; margin-top: 40px">
-          INVOICE SUMMARY
-        </h3>
-      </div>
-    </div>
 
-    <div class="row">
-      <div class="col-11 mt-4">
-        <h6 style="justify-content: end; display: flex">
-          {{ listpdfData?.invoiceDate }}
-        </h6>
+      <div class="row my-3">
+        <div class="col-5 m-3">
+          <img src="/assets/images/logo/innovatiq-logo-index.png" style="height: 80px; width: 80px" />
+        </div>
+        <div class="col-6">
+          <h3 style="justify-content: end; display: flex; margin-top: 40px">
+            INVOICE SUMMARY
+          </h3>
+        </div>
       </div>
-    </div>
 
-    <div class="row">
-      <div class="col-10 mx-auto">
-        <div class="table-wrapper" >
-          <div class="table-responsive" style="margin-bottom: 40px;margin-top: 40px;max-height: 260px;overflow: hidden;">
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th>Item</th>
-                  <th style="text-align: center;">Quantity</th>
-                  <th style="text-align: right;">Unit Price</th>
-                  <th style="text-align: right; padding-right: 15px">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr style="cursor: pointer">
-                  <td style="width: 45%;">{{listpdfData?.title | titlecase}}</td>
-                  <td style="text-align: center;">1</td>
-                  <td style=" text-align: right">${{listpdfData.courseFee}}.00</td>
-                  <td style=" text-align: right;">${{listpdfData.courseFee}}.00</td>
-                </tr>
-                <tr></tr>
-                <tr>
-                  <td>
-                    <h6>Subtotal</h6>
-                  </td>
-                  <td colspan="4" style=" text-align: right" class="price">
-                    ${{listpdfData.courseFee}}.00
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <h6>Discount({{discountValue}}{{discountType =='percentage'? '%':''}})</h6>
-                  </td>
-                  <td colspan="4" style=" text-align: right" *ngIf="discountType == 'fixed'" class="price">
-                    - ${{(discountValue) | number : '1.2-2'}}
-                  </td>
-                  <td colspan="4" style=" text-align: right" *ngIf="discountType == 'percentage'" class="price">
-                    - ${{(listpdfData.courseFee * discountValue / 100) | number : '1.2-2'}}
-                  </td>
+      <div class="row">
+        <div class="col-11 mt-4">
+          <h6 style="justify-content: end; display: flex">
+            {{ listpdfData?.invoiceDate }}
+          </h6>
+        </div>
+      </div>
 
-                </tr>
-                <tr>
-                  <td>
-                    <h6>Total</h6>
-                  </td>
-                  <td colspan="4" style=" text-align: right; padding-right: 15px" *ngIf="discountType == 'fixed'"
-                    class="price">
-                    ${{listpdfData.courseFee - discountValue | number : '1.2-2'}}
-                  </td>
-                  <td colspan="4" style=" text-align: right; padding-right: 15px" *ngIf="discountType == 'percentage'"
-                    class="price">
-                    ${{listpdfData.courseFee - (listpdfData.courseFee * discountValue / 100) | number : '1.2-2'}}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+      <div class="row">
+        <div class="col-10 mx-auto">
+          <div class="table-wrapper">
+            <div class="table-responsive"
+              style="margin-bottom: 40px;margin-top: 40px;max-height: 260px;overflow: hidden;">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th style="text-align: center;">Quantity</th>
+                    <th style="text-align: right;">Unit Price</th>
+                    <th style="text-align: right; padding-right: 15px">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="cursor: pointer">
+                    <td style="width: 45%;">{{listpdfData?.title | titlecase}}</td>
+                    <td style="text-align: center;">1</td>
+                    <td style=" text-align: right">${{listpdfData.courseFee}}.00</td>
+                    <td style=" text-align: right;">${{listpdfData.courseFee}}.00</td>
+                  </tr>
+                  <tr></tr>
+                  <tr>
+                    <td>
+                      <h6>Subtotal</h6>
+                    </td>
+                    <td colspan="4" style=" text-align: right" class="price">
+                      ${{listpdfData.courseFee}}.00
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <h6>Discount({{discountValue}}{{discountType =='percentage'? '%':''}})</h6>
+                    </td>
+                    <td colspan="4" style=" text-align: right" *ngIf="discountType == 'fixed'" class="price">
+                      - ${{(discountValue) | number : '1.2-2'}}
+                    </td>
+                    <td colspan="4" style=" text-align: right" *ngIf="discountType == 'percentage'" class="price">
+                      - ${{(listpdfData.courseFee * discountValue / 100) | number : '1.2-2'}}
+                    </td>
+
+                  </tr>
+                  <tr>
+                    <td>
+                      <h6>Total</h6>
+                    </td>
+                    <td colspan="4" style=" text-align: right; padding-right: 15px" *ngIf="discountType == 'fixed'"
+                      class="price">
+                      ${{listpdfData.courseFee - discountValue | number : '1.2-2'}}
+                    </td>
+                    <td colspan="4" style=" text-align: right; padding-right: 15px" *ngIf="discountType == 'percentage'"
+                      class="price">
+                      ${{listpdfData.courseFee - (listpdfData.courseFee * discountValue / 100) | number : '1.2-2'}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 </div>
 
 <ng-template #discountDialog let-dialogRef="dialogRef" let-data>
@@ -980,12 +836,13 @@
   <div *ngIf="discount_Type === 'application discount'">
     <div class="row mt-4 mx-auto">
       <div class="col-4" *ngFor="let discount of discounts">
-      <div  class="card discount">
-            <h6 class="mt-3" style="text-align:center">{{discount.discountTitle}}</h6>
-            <h6 class="mt-3 col-green" style="text-align:center">{{discount.value}} {{discount.discountType =='percentage'?'%':''}}</h6>
-            <p class="mt-3 " style="text-align:center">{{discount?.description}}</p>
-    
-          </div>
+        <div class="card discount">
+          <h6 class="mt-3" style="text-align:center">{{discount.discountTitle}}</h6>
+          <h6 class="mt-3 col-green" style="text-align:center">{{discount.value}} {{discount.discountType
+            =='percentage'?'%':''}}</h6>
+          <p class="mt-3 " style="text-align:center">{{discount?.description}}</p>
+
+        </div>
       </div>
     </div>
     <h2 mat-dialog-title>Select Discount</h2>
@@ -1004,15 +861,15 @@
       <button mat-button (click)="submitDiscount(dialogRef)">Submit</button>
     </div>
   </div>
-  
+
   <div *ngIf="discount_Type === 'tp gateway discount'">
     <div class="row mt-4 mx-auto">
       <div class="col-4" *ngFor="let discount of tpDiscountValue">
-      <div  class="card discount">
-            <h6 class="mt-3" style="text-align:center">{{discount?.schemeName}}</h6>
-            <h6 class="mt-3 col-green" style="text-align:center">${{discount?.amount}}</h6>
-    
-          </div>
+        <div class="card discount">
+          <h6 class="mt-3" style="text-align:center">{{discount?.schemeName}}</h6>
+          <h6 class="mt-3 col-green" style="text-align:center">${{discount?.amount}}</h6>
+
+        </div>
       </div>
     </div>
     <h2 mat-dialog-title>Select Discount</h2>

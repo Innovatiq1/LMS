@@ -13,6 +13,7 @@ import { EditCourseKitComponent } from './course-kit/edit-course-kit/edit-course
 import { ViewCourseKitComponent } from './course-kit/view-course-kit/view-course-kit.component';
 import { ApproveListComponent } from '../approval/approve-list/approve-list.component';
 import { ExamScoresComponent } from './exam-scores/exam-scores.component';
+import { CourseProgressComponent } from './course-progress/course-progress.component';
 import { ActiveCoursesComponent } from './active-courses/active-courses.component';
 import { InActiveCoursesComponent } from './in-active-courses/in-active-courses.component';
 import { StudentPendingCoursesComponent } from './student-pending-courses/student-pending-courses.component';
@@ -147,6 +148,10 @@ const routes: Routes = [
   {
     path: 'student-courses/exam-scores',
     component: ExamScoresComponent,
+  },
+  {
+    path: 'student-courses/course-progress',
+    component: CourseProgressComponent,
   },
   {
     path:'student-courses/registered-pending-courses',

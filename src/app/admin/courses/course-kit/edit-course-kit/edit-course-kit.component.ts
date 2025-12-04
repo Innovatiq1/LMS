@@ -16,7 +16,7 @@ import * as moment from 'moment';
 import { forkJoin } from 'rxjs';
 import Swal from 'sweetalert2';
 import { ScormPkgCreateComponent } from '../../../../student/settings/scorm-pkg/scorm-pkg-create/scorm-pkg-create.component';
-
+import { MatTableDataSource } from '@angular/material/table';
 @Component({
   selector: 'app-edit-course-kit',
   templateUrl: './edit-course-kit.component.html',
@@ -64,8 +64,32 @@ export class EditCourseKitComponent {
     { code: 'scorm', label: 'Scorm' },
   ];
   isScormKit: boolean = false;
-  acceptedFormats: string = ".pdf,.ppt,.pptx,.doc,.docx,.xls,.xlsx,.txt";
+  // acceptedFormats: string = ".pdf,.ppt,.pptx,.doc,.docx,.xls,.xlsx,.txt";
   scorm_kit_list: any[] = [];
+  fileTypeOptions = [
+    { value: 'pdf', label: 'PDF' },
+    { value: 'img', label: 'Image (PNG, JPG, GIF)' },
+    { value: 'word', label: 'Word' },
+    { value: 'ppt', label: 'PPT' },
+    { value: 'txt', label: 'Text File (.txt)' },
+    { value: 'excel', label: 'Excel File (.xlsx)' },
+    { value: 'video', label: 'Video' },
+    { value: 'audio', label: 'Audio' },
+    { value: 'thirdparty', label: '3rd Party Learning Link (Udemy, GDrive,YouTube)' }
+  ];
+  
+  fileSizeOptions = [5, 10, 20, 50, 100];
+  
+  showFileSizeDropdown = false;
+  showChooseFile = false;
+  showThirdPartyInput = false;
+  acceptedFormats = '';
+  selectedFileName = '';
+  // uploadedFiles: any[] = [];
+  uploadedFiles: any[] = [];
+uploadedFilesDataSource = new MatTableDataSource<any>();
+uploadedDisplayedColumns: string[] = ['fileName', 'fileSize', 'fileType', 'actions'];
+
 
   constructor(
     private router: Router,
@@ -105,6 +129,10 @@ export class EditCourseKitComponent {
       longDescription: new FormControl('', [
         ...this.utils.validators.longDescription,
         ...this.utils.validators.noLeadingSpace,]),
+        allowDownload: new FormControl(false),
+      fileType: new FormControl('', [Validators.required]),
+       fileSize: new FormControl('',[Validators.required]),
+     thirdPartyLink: new FormControl('',[]),
       videoLink: new FormControl('', [
         ...this.utils.validators.noLeadingSpace,]),
       kitType: new FormControl('', [...this.utils.validators.descripton,
@@ -193,24 +221,122 @@ export class EditCourseKitComponent {
 
 
   }
+  // submitCourseKit(): void {
+  //   const formdata = new FormData();
+  //   formdata.append('files', this.docs);
+  //   if (this.videoLink && !this.isScormKit) {
+  //     formdata.append('files', this.videoLink);
+  //   }
+  //   if (!this.isScormKit) {
+  //     formdata.append('video_filename', this.videoSrc);
+  //     formdata.append('doc_filename', this.uploadedDocument);
+  //   }
+  //   if (this.isScormKit) {
+  //     const courseKitData: CourseKit = this.courseKitForm.value;
+  //     delete courseKitData.videoLink;
+  //     delete courseKitData.documentLink;
+  //     if (courseKitData) {
+  //       this.editCourseKit(courseKitData);
+  //     }
+  //   } else {
+  //     Swal.fire({
+  //       title: 'Uploading...',
+  //       text: 'Please wait...',
+  //       allowOutsideClick: false,
+  //       timer: 90000,
+  //       timerProgressBar: true,
+  //     });
+  //     if (!this.docs) {
+  //       const courseKitData: CourseKit = this.courseKitForm.value;
+  //       delete courseKitData.videoLink;
+  //       delete courseKitData.documentLink;
+  //       this.editCourseKit(courseKitData);
+  //     } else {
+  //       this.courseService.updateVideo(this.videoId, formdata).subscribe((data) => {
+  //         const courseKitData: CourseKit = this.courseKitForm.value;
+  //         courseKitData.videoLink = data.data._id;
+  //         courseKitData.documentLink = data.data.document;
+  //         this.editCourseKit(courseKitData);
+  //       },
+  //         (error) => {
+  //           Swal.fire({
+  //             icon: 'error',
+  //             title: 'Upload Failed',
+  //             text: 'An error occurred while uploading the video',
+  //           });
+  //           Swal.close();
+  //         });
+  //     }
+  //   }
+  // }
   submitCourseKit(): void {
+    if (!this.courseKitForm.valid) {
+      this.courseKitForm.markAllAsTouched();
+      return;
+    }
+  
     const formdata = new FormData();
-    formdata.append('files', this.docs);
-    if (this.videoLink && !this.isScormKit) {
-      formdata.append('files', this.videoLink);
-    }
-    if (!this.isScormKit) {
-      formdata.append('video_filename', this.videoSrc);
-      formdata.append('doc_filename', this.uploadedDocument);
-    }
-    if (this.isScormKit) {
-      const courseKitData: CourseKit = this.courseKitForm.value;
-      delete courseKitData.videoLink;
-      delete courseKitData.documentLink;
-      if (courseKitData) {
-        this.editCourseKit(courseKitData);
+    const thirdPartyLinks: any[] = [];
+    const existingFiles: any[] = [];
+  
+    // Separate files
+    this.uploadedFiles.forEach(fileObj => {
+      if (fileObj.type === 'thirdparty') {
+        // Third party links
+        thirdPartyLinks.push({
+          name: fileObj.name,
+          thirdPartyLink: fileObj.thirdPartyLink,
+          type: fileObj.type
+        });
+      } else if (fileObj.file) {
+        // New file uploaded in this session
+        formdata.append('files', fileObj.file);
+  
+        // Also add to existingFiles so it persists after update
+        existingFiles.push({
+          name: fileObj.name,
+          size: fileObj.size,
+          type: fileObj.type,
+          url: fileObj.url || '' // backend will overwrite later
+        });
+      } else {
+        // Existing file from DB
+        existingFiles.push({
+          name: fileObj.name,
+          size: fileObj.size,
+          type: fileObj.type,
+          url: fileObj.url
+        });
       }
-    } else {
+    });
+  
+    formdata.append('file_names', JSON.stringify(this.uploadedFiles.map(f => f.name)));
+  
+    const userId = JSON.parse(localStorage.getItem('user_data')!).user.companyId;
+    formdata.append('companyId', userId);
+    formdata.append('allowDownload', this.courseKitForm.get('allowDownload')?.value);
+  
+    if (!this.isScormKit) {
+      formdata.append('thirdPartyLinks', JSON.stringify(thirdPartyLinks));
+      formdata.append('existingFiles', JSON.stringify(existingFiles));
+      formdata.append('courseKitName', this.courseKitForm.value.name);
+      formdata.append('uploadedBy', 'Prosanjeet');
+  
+      formdata.append('video_filename', this.videoSrc || '');
+      formdata.append('doc_filename', this.uploadedFiles.map(f => f.name).join(', '));
+  
+      // Debug log before sending
+      console.log('📦 FormData values before sending:');
+      formdata.forEach((value, key) => {
+        if (value instanceof File) {
+          console.log(key, '=> File:', value.name, '(', value.type, ')', 'size:', value.size);
+        } else {
+          console.log(key, '=>', value);
+        }
+      });
+      console.log('📂 thirdPartyLinks:', thirdPartyLinks);
+      console.log('📂 existingFiles:', existingFiles);
+  
       Swal.fire({
         title: 'Uploading...',
         text: 'Please wait...',
@@ -218,29 +344,42 @@ export class EditCourseKitComponent {
         timer: 90000,
         timerProgressBar: true,
       });
-      if (!this.docs) {
-        const courseKitData: CourseKit = this.courseKitForm.value;
-        delete courseKitData.videoLink;
-        delete courseKitData.documentLink;
-        this.editCourseKit(courseKitData);
-      } else {
-        this.courseService.updateVideo(this.videoId, formdata).subscribe((data) => {
+  
+      this.courseService.updateMultiFiles(this.videoId, formdata).subscribe(
+        (res) => {
+          console.log("rrrrrrrrrr",res)
           const courseKitData: CourseKit = this.courseKitForm.value;
-          courseKitData.videoLink = data.data._id;
-          courseKitData.documentLink = data.data.document;
-          this.editCourseKit(courseKitData);
+          courseKitData.videoLink = res.data._id;
+  
+          // Update documentLink with the actual uploaded file URL
+          courseKitData.documentLink =
+            res.data.files?.find((f: any) => !f.isThirdParty && f.type.includes('application'))?.url || '';
+  
+           this.editCourseKit(courseKitData);
         },
-          (error) => {
-            Swal.fire({
-              icon: 'error',
-              title: 'Upload Failed',
-              text: 'An error occurred while uploading the video',
-            });
-            Swal.close();
+        (error) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Upload Failed',
+            text: 'An error occurred while uploading the video',
           });
+          Swal.close();
+        }
+      );
+    } else {
+      const courseKitData: CourseKit = this.courseKitForm.value;
+      delete courseKitData.videoLink;
+      delete courseKitData.documentLink;
+  
+      if (courseKitData) {
+        this.editCourseKit(courseKitData);
       }
     }
   }
+  
+  
+  
+  
   cancel() {
     window.history.back();
   }
@@ -276,8 +415,27 @@ export class EditCourseKitComponent {
           shortDescription: response?.course?.shortDescription,
           longDescription: response?.course?.longDescription,
           kitType: response?.course?.kitType,
-          scormKit: response?.course?.scormKit?.id
+          scormKit: response?.course?.scormKit?.id,
+          allowDownload: response?.course?.allowDownload
         });
+
+        
+  
+        // if files exist from API, map them into uploadedFiles
+        if (response.course?.videoLink?.length > 0 && response.course.videoLink[0].files) {
+          this.uploadedFiles = response.course.videoLink[0].files.map((f: any) => {
+            return {
+              name: f.name,
+              size: parseFloat(f.size), // remove "KB" if string
+              type: f.isThirdParty ? 'thirdparty' : f.type,
+              thirdPartyLink: f.isThirdParty ? f.name : null,
+              url: f.url
+            };
+          });
+  
+          // update the datasource for mat-table
+          this.uploadedFilesDataSource.data = [...this.uploadedFiles];
+        }
         if (this.kitType === 'scorm') {
           this.fetchScormKits();
         }
@@ -287,6 +445,114 @@ export class EditCourseKitComponent {
   onFileDropped($event: any) {
     this.prepareFilesList($event);
     this.fileName = '';
+  }
+
+  //Edit coursekit new features ss
+
+  onFileTypeChange(fileType: string) {
+    this.showFileSizeDropdown = false;
+    this.acceptedFormats = '';
+    this.showThirdPartyInput = false;
+  
+    switch (fileType) {
+      case 'pdf':
+        this.acceptedFormats = '.pdf';
+        break;
+      case 'img':
+        this.acceptedFormats = 'image/png,image/jpeg,image/jpg,image/gif';
+        break;
+      case 'word':
+        this.acceptedFormats = '.doc,.docx';
+        break;
+      case 'ppt':
+        this.acceptedFormats = '.ppt,.pptx';
+        break;
+      case 'txt':
+          this.acceptedFormats = '.txt';
+          break;
+      case 'excel':
+          this.acceptedFormats = '.xlsx';
+          break;
+      case 'video':
+        this.acceptedFormats = 'video/mp4,video/x-matroska,video/x-msvideo';
+        break;
+      case 'audio':
+        this.acceptedFormats = 'audio/mp3,audio/wav,audio/aac';
+        break;
+      case 'youtube':
+      case 'thirdparty':
+        this.showThirdPartyInput = true;
+        break;
+    }
+  
+    // Always show Document upload for allowed formats
+    if (['pdf', 'img', 'word', 'ppt', 'video', 'audio','txt', 'excel'].includes(fileType)) {
+      this.showFileSizeDropdown = true;
+    }
+  }
+
+  addUploadedFile() {
+    const thirdPartyLink = this.courseKitForm.get('thirdPartyLink')?.value;
+  
+    if (this.showThirdPartyInput && thirdPartyLink) {
+      const existing = this.uploadedFiles.some(
+        f => f.type === 'thirdparty' && f.thirdPartyLink === thirdPartyLink
+      );
+      if (existing) {
+        Swal.fire('Duplicate Link', 'This third-party link is already added.', 'warning');
+        return;
+      }
+  
+      this.uploadedFiles.push({
+        name: thirdPartyLink, 
+        size: 0,
+        type: 'thirdparty',
+        thirdPartyLink: thirdPartyLink
+      });
+  
+      this.uploadedFilesDataSource.data = [...this.uploadedFiles];
+      this.courseKitForm.get('thirdPartyLink')?.reset();
+      return;
+    }
+  
+    if (this.docs) {
+      const file = this.docs;
+      const size = (file.size / 1024).toFixed(2);
+      if (this.uploadedFiles.some(f => f.name === file.name && f.size === size)) {
+        Swal.fire('Duplicate File', 'This file is already added.', 'warning');
+        return;
+      }
+  
+      this.uploadedFiles.push({
+        name: file.name,
+        size: size,
+        type: file.type,
+        file: file,
+         url: '',
+      });
+  
+      this.uploadedFilesDataSource.data = [...this.uploadedFiles];
+      this.docs = null;
+      this.uploadedDocument = '';
+      this.courseKitForm.get('documentLink')?.reset();
+    }
+  }
+
+  deleteFile(index: number) {
+    this.uploadedFiles.splice(index, 1);
+    this.uploadedFilesDataSource.data = [...this.uploadedFiles]; 
+  }
+
+  // viewFile(file: any) {
+  //   const blob = new Blob([file.file], { type: file.type });
+  //   const url = URL.createObjectURL(blob);
+  //   window.open(url, '_blank');
+  // }
+
+  viewFile(file: any) {
+    if (file?.url) {
+      window.open(file.url, '_blank');
+    }
   }
 
   /**
@@ -345,59 +611,29 @@ export class EditCourseKitComponent {
   }
 
   isUploading = false;
-  // onFileUpload(event: any) {
-  //   const file = event.target.files[0];
-  //   if (file) {
-  //     if (
-  //       file.type === 'application/vnd.ms-powerpoint' ||
-  //       file.type === 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
-  //     ) {
-  //       this.isUploading = true;
-
-  //       this.courseService.uploadFile(file).subscribe(
-  //         (response) => {
-  //           const byteCharacters = atob(response.fileContent);
-  //           const byteNumbers = new Array(byteCharacters.length);
-  //           for (let i = 0; i < byteCharacters.length; i++) {
-  //             byteNumbers[i] = byteCharacters.charCodeAt(i);
-  //           }
-  //           const byteArray = new Uint8Array(byteNumbers);
-  //           const blob = new Blob([byteArray], { type: 'application/pdf' });
-  //           const fileToUpload = new File([blob], response.filename, { type: 'application/pdf' });
-  //          this.uploadedDocument = file.name;
-  //           this.docs = fileToUpload;
-  //           const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
-  //           if (fileInput) {
-  //             const dataTransfer = new DataTransfer();
-  //             dataTransfer.items.add(fileToUpload);
-  //             fileInput.files = dataTransfer.files; 
-  //           }
-  //           this.isUploading = false;
-  //         },
-  //         (error) => {
-  //           //console.error('File upload failed', error);
-  //           this.isUploading = false;
-  //           Swal.fire('Upload Failed', 'Unable to convert the file.', 'error');
-  //         }
-  //       );
-  //     } else {
-  //       this.uploadedDocument = file.name;
-  //       this.docs = file;
-  //     }
-  //   }
-  // }
+ 
   onFileUpload(event: any, isScormKit: boolean = false) {
     const file = event.target.files[0];
     // console.log("Selected file:", file.name, "Type:", file.type);
     const allowedFileTypes = [
       'application/pdf',
-      'application/vnd.ms-powerpoint',
-      'application/vnd.openxmlformats-officedocument.presentationml.presentation',
       'application/msword',
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'application/vnd.ms-powerpoint',
+      'application/vnd.openxmlformats-officedocument.presentationml.presentation',
       'application/vnd.ms-excel',
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      'text/plain'
+      'text/plain',
+      'video/mp4',
+      'video/x-matroska',
+      'video/x-msvideo',
+      'audio/mp3',
+      'audio/wav',
+      'audio/aac',
+      'image/png',
+      'image/jpeg',
+      'image/jpg',
+      'image/gif',
     ];
     if (isScormKit) {
       allowedFileTypes.push('application/x-zip-compressed')
@@ -466,5 +702,7 @@ export class EditCourseKitComponent {
       this.fetchScormKits();
     });
   }
+
+
 
 }

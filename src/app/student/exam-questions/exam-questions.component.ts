@@ -741,6 +741,7 @@ export class ExamQuestionsComponent {
   //     .length;
   // }
   attendedQuestions() {
+    this.calculateTotalTime();
     return this.answers.filter((answer: any) => {
       const isTextAnswered = answer.selectedOptionText !== null && answer.selectedOptionText !== '';
       const isFileAnswered = answer.fileAnswer?.length > 0;
@@ -750,6 +751,7 @@ export class ExamQuestionsComponent {
   
   calculateTotalTime() {
     this.totalTime = this.questionList.length * this.timerInSeconds;
+    console.log(this.totalTime)
     this.startTimer();
   }
 

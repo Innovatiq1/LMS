@@ -33,6 +33,8 @@ export class ViewCourseKitComponent {
   actionItems: any[] = [];
   edit = false;
   delete =false;
+  filesDataSource: any[] = [];
+  displayedFileColumns: string[] = ['fileName', 'fileSize', 'fileType', 'actions'];
 
   constructor(
     private _router: Router,
@@ -90,7 +92,9 @@ export class ViewCourseKitComponent {
   fetchCourseKits() {
     this.courseService.getCourseKit({ ...this.courseKitModel })
       .subscribe(response => {
+        console.log("this.courseKitData",this.courseKitData)
         this.courseKitData = response.docs;
+        console.log("this.courseKitData",this.courseKitData)
         this.getJobTemplates();
       }, (error) => {
 
@@ -112,11 +116,31 @@ export class ViewCourseKitComponent {
 
     this.getCategoryByID(id);
   }
+  // getCategoryByID(id: string) {
+  //  course: this.courseService.getCourseKitById(id).subscribe((response: any) => {
+
+  // console.log("this is responsesss",response)
+  //     this.classDataById = response?._id;
+  //     this.response = response;
+  //   });
+  // }
+
+  
   getCategoryByID(id: string) {
-   course: this.courseService.getCourseKitById(id).subscribe((response: any) => {
-      this.classDataById = response?._id;
+    this.courseService.getCourseKitById(id).subscribe((response: any) => {
       this.response = response;
+
+      // Bind files into datasource
+      if (this.response?.videoLink?.length && this.response.videoLink[0]?.files?.length) {
+        this.filesDataSource = this.response.videoLink[0].files;
+      }
     });
+  }
+
+  viewFile(file: any) {
+    if (file?.url) {
+      window.open(file.url, '_blank');
+    }
   }
   playVideo(video: { video_url: any; }): void {
     

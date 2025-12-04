@@ -608,6 +608,16 @@ MENU_LIST =[
               "checked": true,
               "indeterminate": false,
               "isLeaf": true
+            },
+            {
+              "title": "Course Progress",
+              "id": "course-progress",
+              "children": [],
+              "actions": [],
+              "isAction": false,
+              "checked": true,
+              "indeterminate": false,
+              "isLeaf": true
             }
           ],
           "actions": [],
