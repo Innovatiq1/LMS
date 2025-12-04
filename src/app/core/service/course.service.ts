@@ -9,6 +9,7 @@ import { FundingGrant, Instructor, MainCategory, SubCategory, Survey } from "@co
 import { isPlatformBrowser } from "@angular/common";
 import { AppConstants } from "@shared/constants/app.constants";
 import { timeout } from 'rxjs/operators';
+import { Fragment } from "@fullcalendar/core/preact";
 @Injectable({
   providedIn: 'root'
 })
@@ -134,7 +135,13 @@ private tpUrl=environment.Url;
     const apiUrl = `${this.prefix}admin/studentClasses`;
     return this._Http.post<any>(apiUrl, payload).pipe(map((response) => response));
   }
-
+  getStudentClassesByCompanyDept(payload: any) {
+    const apiUrl = `${this.prefix}admin/studentClasses/filterByCompanyDept`;
+    return this._Http.post<any>(apiUrl, payload).pipe(
+      map((response) => response)
+    );
+  }
+  
   registerProgramClass(payload:any) {
     const apiUrl = `${this.prefix}admin/studentClasses/registerProgram`;
     return this._Http.post<any>(apiUrl, payload).pipe(map((response) => response));
@@ -325,6 +332,30 @@ private tpUrl=environment.Url;
       .delete<Vendor>(apiUrl)
       .pipe(map((response) => response));
   }
+
+  saveCourseKitProgress(data:any){
+    const apiUrl = `${this.prefix}admin/courseKitProgress/file-complete`;
+    return this._Http.post<any>(apiUrl, data).pipe(map((response) => response));
+  }
+  // getCourseKitProgress():Observable<any>{
+  //   const url = `${this.prefix}admin/courseKitProgress`;
+  //   return this._Http.get(url);
+  // }
+  getCourseKitProgressById(userId:any, courseId:any) {
+    const apiUrl = `${this.prefix}admin/courseKitProgress//${userId}/${courseId}`;
+    return this._Http.get<any>(apiUrl).pipe(map((response) => response));
+  }
+  // updateCourseKitProgressById(id:string, payload:any) {
+  //   const apiUrl = `${this.prefix}admin/courseKitProgress/${id}`;
+  //   return this._Http.put<any>(apiUrl, payload).pipe(map((response) => response));
+  // }
+  // deleteCourseKitProgressById(id:string){
+  //   const apiUrl = `${this.prefix}admin/courseKitProgress/${id}`;
+  //   return this._Http
+  //     .delete<Discount>(apiUrl)
+  //     .pipe(map((response) => response));
+  // }
+
 
   createDiscount(payload:any) {
     const apiUrl = `${this.prefix}admin/discount`;
@@ -664,6 +695,25 @@ private tpUrl=environment.Url;
       const apiUrl = `${this.prefix}uploadVideo/`;
       return this._Http.post<any>(apiUrl, payload).pipe(map((response) => response));
     }
+
+    // uploadMultiFiles(formdata: FormData): Observable<any> {
+    //   // return this._Http.post(`${environment.apiUrl}/api/video-upload/multi-file-upload`, formdata);
+    //   console.log("environment.apiUrl",environment.apiUrl)
+    //   return this._Http.post(`${environment.apiUrl}video-upload/multi-file-upload`, formdata);
+
+    // }
+    uploadMultiFiles(formdata: FormData): Observable<any> {
+      const apiUrl = `${environment.apiUrl}uploadVideo/`; 
+      return this._Http.post(`${apiUrl}multi-file-upload`, formdata);
+    }
+
+    updateMultiFiles(Id: any, formData: FormData): Observable<ApiResponse> {
+      console.log("data",formData)
+      const apiUrl = `${environment.apiUrl}uploadVideo/multi-file-upload/${Id}`;
+      return this._Http.put<ApiResponse>(apiUrl, formData);
+    }
+    
+    
 
     saveScormKit(payload: any){
       const apiUrl = `${this.prefix}uploadScorm/`;
