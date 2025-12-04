@@ -59,11 +59,11 @@
                     <span class="mobile-label">Course Kit:</span> <span class="name" >{{row.name ? (row.name) : "--"}}</span></mat-cell>
                 </ng-container>
                 <!-- Short Description -->
-                <ng-container matColumnDef="Short Description">
+                <!-- <ng-container matColumnDef="Short Description">
                   <mat-header-cell *matHeaderCellDef >Short Description</mat-header-cell>
                   <mat-cell *matCellDef="let row" [routerLink]="view?['/admin/courses/course-kit/',row.id]:null">
                     <span class="mobile-label">Short Description:</span>{{row.shortDescription ? (row.shortDescription) : "--"}}</mat-cell>
-                </ng-container>
+                </ng-container> -->
                  <!-- Long Description -->
                  <ng-container matColumnDef="Long Description">
                   <mat-header-cell *matHeaderCellDef >Long Description</mat-header-cell>
@@ -71,7 +71,7 @@
                     <span class="mobile-label">Long Description:</span>{{row.longDescription ? (row.longDescription) : "--"}}</mat-cell>
                 </ng-container>
                 <!-- Video Link -->
-                <ng-container matColumnDef="Media Link" >
+                <!-- <ng-container matColumnDef="Media Link" >
                   <mat-header-cell *matHeaderCellDef >Media Link
                   </mat-header-cell>
                   <mat-cell *matCellDef="let row">
@@ -86,9 +86,9 @@
                     alt="">
                     </ng-container>
                    </mat-cell>
-                </ng-container>
+                </ng-container> -->
                 <!-- Document Link -->
-                <ng-container matColumnDef="Document Link">
+                <!-- <ng-container matColumnDef="Document Link">
                   <mat-header-cell *matHeaderCellDef >Document Link</mat-header-cell>
                   <mat-cell *matCellDef="let row">
                     <div *ngIf="row.videoLink && row.videoLink?.length">
@@ -104,7 +104,7 @@
                     </div>
                      
                   </mat-cell>
-                </ng-container>
+                </ng-container> -->
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayedColumns;"
                   [style.cursor]="'pointer'" matRipple>

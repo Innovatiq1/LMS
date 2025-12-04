@@ -570,6 +570,72 @@
           </div>
         </div>
         </ng-container>
+
+        <ng-container *ngFor="let component of dashboard.components">
+          <div *ngIf="component.id === 'latest-enrolled-courses'" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="card">
+              <div class="header">
+                <h2>Student's Progress </h2>
+              </div>
+              <div class="tableBody">
+                <ng-scrollbar style="height: 300px" visibility="hover">
+                  <div class="table-responsive">
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th>Student Name</th>
+                          <th>Course Title</th>
+                          <th>Department</th>
+                          <th>Course start date</th>
+                          <th>Course end date</th>
+                          <th>Student enrollment date</th>
+                          <th>Student Completed Date</th>
+                          <th>Progress Percentage</th>
+                        </tr>
+                      </thead>
+                     
+                      <tbody *ngIf="courseProgress && this.courseProgress.length > 0; else noData">
+                        <tr *ngFor="let row of courseProgress">
+                          <td>{{
+                            row?.studentId.name | capitalizeFirstLetter }}
+                            {{ row?.studentId?.last_name | capitalizeFirstLetter }}</td>
+                          <td>{{ row?.courseId?.title | titlecase }}</td>
+                          <td>
+                            {{ row?.department | capitalizeFirstLetter }}
+                          </td>
+                          <td>{{row?.classId?.sessions[0]?.sessionStartDate | date}}</td>
+                          <td>
+                            {{row?.courseEndDate | date}}
+                          </td>
+                          <td>{{row?.registeredOn | date}}</td>
+                          <td>
+                            {{ row?.playbackTime === 100 ? (row?.updatedAt | date) : '--' }}
+                          </td>
+                          <td [ngClass]="{'red-text': row?.playbackTime?.toFixed(2) < 50, 'green-text': row?.playbackTime?.toFixed(2) >= 50}">
+                            {{row?.playbackTime?.toFixed(2) || 0}}%
+                          </td>
+                        </tr>
+                        <tr>
+                        <td colspan="8" class="text-center py-3 no-data-text cursor-pointer" routerLink="/admin/courses/student-courses/course-progress">View more</td>
+                      </tr>
+                      </tbody>
+                      
+                      <ng-template #noData>
+                        <tbody>
+                          <tr>
+                            <td colspan="6" class="no-data-text">No data found</td>
+                          </tr>
+                        </tbody>
+                      </ng-template>
+                      
+  
+                    </table>
+                  </div>
+                </ng-scrollbar>
+              </div>
+            </div>
+          </div>
+          </ng-container>
         <ng-container *ngFor="let component of dashboard.components">
         <div *ngIf="component.id === 'upcoming-course-classes'" class="col-xl-4 col-lg-4 col-md-6 col-sm-12">
           <div class="card">
@@ -742,6 +808,8 @@
       
   
     </ng-container>
+
+    
     </div>
 </ng-container>
 

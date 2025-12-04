@@ -176,10 +176,12 @@ back() {
   }
 
   getCourseByCourseId(id: string) {
+
+    console.log("idddddd",id)
     this._courseService.getCourseById(id).subscribe((data) => {
       // console.log("response",data)
       if (data) {
-        // console.log("ddddd",data);
+        console.log("ddddd",data);
         this.sourceData = data;
         this.getSourseData();
         this.coursekitData = data.course_kit;

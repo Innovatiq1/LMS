@@ -44,6 +44,12 @@ import { AppConstants } from '@shared/constants/app.constants';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { environment } from 'environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist';
+import { renderAsync } from 'docx-preview';
+import * as XLSX from 'xlsx';
+import * as JSZip from 'jszip';
+import * as FileSaver from "file-saver";
+// PDF.js worker path
 
 declare var Scorm2004API: any;
 declare var Scorm12API: any;
@@ -191,6 +197,18 @@ export class ViewCourseComponent implements OnDestroy {
   isScormKit: boolean = false;
   isVideoKit: boolean = false;
   isLoading: boolean = true;
+  currentFiles: any[] = [];
+  currentFileIndex: number = 0;
+  currentFileUrl: string = '';
+  currentFileType: string = '';
+  fileCompleted: boolean = false;
+  googleViewerUrl: string = '';
+  totalNumberOfModules:number=0;
+  highlightedModuleId: string | null = null;
+  completedFiles: { [key: string]: Set<string> } = {};
+  moduleProgress: { [key: string]: number } = {};
+  private progressInterval: any;
+  completedModules: Set<string> = new Set();
   constructor(
     private classService: ClassService,
     private activatedRoute: ActivatedRoute,
@@ -213,7 +231,7 @@ export class ViewCourseComponent implements OnDestroy {
     this.paidCourse = urlPath.includes('view-course');
     this.freeCourse = urlPath.includes('view-freecourse');
     this.paidProgram = urlPath.includes('view-programcourse');
-
+    GlobalWorkerOptions.workerSrc = 'assets/pdf.worker.js';
     if (this.freeCourse) {
       this.free = true;
       this.subscribeParams = this.activatedRoute.params.subscribe((params) => {
@@ -255,6 +273,30 @@ export class ViewCourseComponent implements OnDestroy {
     setTimeout(() => {
       this.isLoading = false;
     }, 3000);
+    const classId = localStorage.getItem('classId');
+    const studentId = localStorage.getItem('id');
+  
+    if (classId && studentId) {
+      this.courseService.getCourseKitProgressById(studentId, classId).subscribe((progress) => {
+        if (progress && progress.modules) {
+          // restore module progress
+          progress.modules.forEach((m: any) => {
+            this.moduleProgress[m.moduleId] = m.progress;
+            if (m.progress === 100) this.completedModules.add(m.moduleId);
+          });
+  
+          this.playBackTime = progress.courseProgress;
+  
+          this.updateIsTestCondition(); 
+          const lastModule = progress.modules.find((m: any) => m.lastPlayedFileId);
+          if (lastModule) {
+            this.highlightedModuleId = lastModule.moduleId;
+            this.loadCourseKitFiles(lastModule.moduleId, lastModule.lastPlayedFileId);
+          }
+        }
+      });
+    }
+
   }
   // openDocumentDialog(documentLink: string, filename: string): void {
   //   this.dialog.open(DocumentViewComponent, {
@@ -267,7 +309,6 @@ export class ViewCourseComponent implements OnDestroy {
     return this.sanitizer.bypassSecurityTrustHtml(html);
   }
   openDocumentDialog(url: string, filename: string): void {
-    // console.log("viewCourse page ==",url);
     this.dialog.open(DocumentViewComponent, {
       width: '100%',
       height: '100%',
@@ -293,72 +334,72 @@ export class ViewCourseComponent implements OnDestroy {
     });
   }
 
-  onTimeUpdate(event: any) {
-    let time = this.commonService.getPlayBackTime();
-    this.videoPlayer.nativeElement.addEventListener('timeupdate', () => {
-      const progress =
-        (this.videoPlayer.nativeElement.currentTime /
-          this.videoPlayer.nativeElement.duration) *
-        100;
-      this.array.push(progress);
+  // onTimeUpdate(event: any) {
+  //   let time = this.commonService.getPlayBackTime();
+  //   this.videoPlayer.nativeElement.addEventListener('timeupdate', () => {
+  //     const progress =
+  //       (this.videoPlayer.nativeElement.currentTime /
+  //         this.videoPlayer.nativeElement.duration) *
+  //       100;
+  //     this.array.push(progress);
 
-      this.commonService.setProgress(this.array);
-    });
-    this.videoPlayer.nativeElement.addEventListener('loadedmetadata', () => {
-      const initialPlaybackPosition =
-        (time / 100) * this.videoPlayer.nativeElement.duration;
+  //     this.commonService.setProgress(this.array);
+  //   });
+  //   this.videoPlayer.nativeElement.addEventListener('loadedmetadata', () => {
+  //     const initialPlaybackPosition =
+  //       (time / 100) * this.videoPlayer.nativeElement.duration;
 
-      this.videoPlayer.nativeElement.currentTime = initialPlaybackPosition;
-    });
-    if (this.paid) {
-      this.videoPlayer.nativeElement.addEventListener('ended', () => {
-        let classId = localStorage.getItem('classId');
-        let studentId = localStorage.getItem('id');
-        const videoDetails = this.commonService.getVideoDetails();
-        this.courseService
-          .getVideoPlayedById(studentId, classId, videoDetails.id)
-          .subscribe((response) => {
-            if (response) {
-              this.checkStudentClassRedirect();
-            } else {
-              let payload = {
-                status: 'ended',
-                studentId: studentId,
-                classId: classId,
-                videoId: videoDetails.id,
-              };
+  //     this.videoPlayer.nativeElement.currentTime = initialPlaybackPosition;
+  //   });
+  //   if (this.paid) {
+  //     this.videoPlayer.nativeElement.addEventListener('ended', () => {
+  //       let classId = localStorage.getItem('classId');
+  //       let studentId = localStorage.getItem('id');
+  //       const videoDetails = this.commonService.getVideoDetails();
+  //       this.courseService
+  //         .getVideoPlayedById(studentId, classId, videoDetails.id)
+  //         .subscribe((response) => {
+  //           if (response) {
+  //             this.checkStudentClassRedirect();
+  //           } else {
+  //             let payload = {
+  //               status: 'ended',
+  //               studentId: studentId,
+  //               classId: classId,
+  //               videoId: videoDetails.id,
+  //             };
 
-              this.courseService.saveVideoPlayTime(payload).subscribe(() => {
-                this.checkStudentClassRedirect();
-              });
-            }
-          });
-      });
-    } else if (this.free) {
-      this.videoPlayer.nativeElement.addEventListener('ended', () => {
-        let courseId = this.courseDetailsId;
-        let studentId = localStorage.getItem('id');
-        const videoDetails = this.commonService.getVideoDetails();
-        this.courseService
-          .getVideoPlayedById(studentId, courseId, videoDetails.id)
-          .subscribe((response) => {
-            if (response) {
-              this.checkStudentClassRedirect();
-            } else {
-              let payload = {
-                status: 'ended',
-                studentId: studentId,
-                courseId: courseId,
-                videoId: videoDetails.id,
-              };
-              this.courseService.saveVideoPlayTime(payload).subscribe(() => {
-                this.checkStudentClassRedirect();
-              });
-            }
-          });
-      });
-    }
-  }
+  //             this.courseService.saveVideoPlayTime(payload).subscribe(() => {
+  //               this.checkStudentClassRedirect();
+  //             });
+  //           }
+  //         });
+  //     });
+  //   } else if (this.free) {
+  //     this.videoPlayer.nativeElement.addEventListener('ended', () => {
+  //       let courseId = this.courseDetailsId;
+  //       let studentId = localStorage.getItem('id');
+  //       const videoDetails = this.commonService.getVideoDetails();
+  //       this.courseService
+  //         .getVideoPlayedById(studentId, courseId, videoDetails.id)
+  //         .subscribe((response) => {
+  //           if (response) {
+  //             this.checkStudentClassRedirect();
+  //           } else {
+  //             let payload = {
+  //               status: 'ended',
+  //               studentId: studentId,
+  //               courseId: courseId,
+  //               videoId: videoDetails.id,
+  //             };
+  //             this.courseService.saveVideoPlayTime(payload).subscribe(() => {
+  //               this.checkStudentClassRedirect();
+  //             });
+  //           }
+  //         });
+  //     });
+  //   }
+  // }
 
   checkStudentClassRedirect() {
     let courseId = this.courseDetailsId;
@@ -387,6 +428,7 @@ export class ViewCourseComponent implements OnDestroy {
               .getStudentClass(studentId, this.classId)
               .subscribe((response) => {
                 this.studentClassDetails = response.data.docs[0];
+                this.updateIsTestCondition();
                 this.scormKitInit();
                 const issueCertificate =
                   this.studentClassDetails.classId.courseId.issueCertificate;
@@ -532,26 +574,395 @@ export class ViewCourseComponent implements OnDestroy {
     this.isPlaying = true;
   }
 
+  
   playVideos(video: {
     name: any;
     discription: string;
     id: any;
     playbackTime: any;
+    row: any;
   }) {
-    this.videoPlayer.nativeElement.currentTime = video?.playbackTime;
-    this.commonService.setPlayBackTime(video?.playbackTime);
 
-    this.courseService.getCoursekitVideoById(video.id).subscribe((data) => {
-      let videoUrl = data?.data;
-      this.videoPlayer.nativeElement.src = videoUrl?.video_url;
+    //       let classId = localStorage.getItem('classId');
+  //       let studentId = localStorage.getItem('id');
+    this.highlightedModuleId = video.id;
+    this.currentFiles = [];
+    this.currentFileIndex = 0;
+    this.fileCompleted = false;
+    this.loadCourseKitFiles(video.id);
+  
+    
+  }
+  
+  loadCourseKitFiles(videoId: any, resumeFileId?: string) {
+    this.courseService.getCoursekitVideoById(videoId).subscribe((data) => {
+      this.currentFiles = data?.data?.files || [];
+      this.header = data?.data?.courseKitName;
+      this.sdiscrption = data?.data?.description;
+  
+      if (resumeFileId) {
+        const resumeIndex = this.currentFiles.findIndex((f: any) => f.id === resumeFileId);
+        this.currentFileIndex = resumeIndex !== -1 ? resumeIndex : 0;
+      } else {
+        this.currentFileIndex = 0;
+      }
+  
+      this.loadFile(this.currentFileIndex);
     });
-    this.sdiscrption = video.discription;
-    this.header = video.name;
-    this.commonService.setVideoDetails(video);
+  }
+  
+
+  loadFile(index: number) {
+    const file = this.currentFiles[index];
+    if (!file) return;
+
+    this.fileCompleted = false;
+
+    const type = file.type.toLowerCase();
+    let url = file.url.replace(/\\/g, '/');
+    url = encodeURI(url);
+    if (!url.startsWith('http')) {
+      url = `http://localhost:3001${url.startsWith('/') ? '' : '/'}${url}`;
+    }
+    this.currentFileUrl = url;
+
+    if (type.includes('video')) {
+      this.currentFileType = 'video';
+    } else if (type.includes('audio')) {
+      this.currentFileType = 'audio';
+    } else if (type.includes('image')) {
+      this.currentFileType = 'image';
+     } 
+    //  else if (type.includes('pdf')) {
+    //   this.currentFileType = 'pdf';
+    // }
+     else if (
+      type.includes('pdf')||
+      type.includes('word') ||
+      type.includes('excel') ||
+      type.includes('spreadsheet') ||
+      type.includes('text') ||
+      type.includes('ppt')
+    ) {
+      this.currentFileType = 'document';
+      setTimeout(() => this.renderOfficeDocument(url, type), 0);
+    }
+    //  else if (file.isThirdParty || type === 'thirdparty' || url.includes('youtube.com')) {
+    //   this.currentFileType = 'thirdparty';
+    // } 
+    else if (file.isThirdParty || type === 'thirdparty' || url.includes('youtube.com') || url.includes('docs.google.com')) {
+      const embedInfo = this.getEmbedUrl(url);
+      this.currentFileType = embedInfo.canEmbed ? 'thirdparty' : 'unknown';
+      this.currentFileUrl = embedInfo.url;
+    }
+
+    else {
+      this.currentFileType = 'unknown';
+    }
+  }
+
+  renderOfficeDocument(fileUrl: string, type: string) {
+    const container = document.getElementById('office-doc-viewer');
+    if (!container) return;
+    container.innerHTML = '';
+
+    const ext = fileUrl.split('.').pop()?.toLowerCase();
+
+    // if (ext === 'pdf') {
+    //   getDocument(fileUrl).promise.then(pdfDoc => {
+    //     pdfDoc.getPage(1).then(page => {
+    //       const viewport = page.getViewport({ scale: 1.2 });
+    //       const canvas = document.createElement('canvas');
+    //       const context = canvas.getContext('2d')!;
+    //       canvas.height = viewport.height;
+    //       canvas.width = viewport.width;
+    //       container.appendChild(canvas);
+    
+    //       page.render({ canvasContext: context, viewport }).promise.then(() => {
+    //         this.onFileCompleted(); 
+    //       });
+    //     });
+    //   });
+    // }
+    
+    if (ext === 'pdf') {
+      getDocument(fileUrl).promise.then(pdfDoc => {
+        const totalPages = pdfDoc.numPages;
+    
+        // Clear previous content
+        container.innerHTML = '';
+    
+        const renderPage = (pageNum: number) => {
+          pdfDoc.getPage(pageNum).then(page => {
+            const viewport = page.getViewport({ scale: 1.2 });
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d')!;
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+            canvas.style.marginBottom = '20px'; // spacing between pages
+    
+            container.appendChild(canvas);
+    
+            page.render({ canvasContext: context, viewport }).promise.then(() => {
+              if (pageNum < totalPages) {
+                renderPage(pageNum + 1);
+              } else {
+                this.onFileCompleted(); // All pages rendered
+              }
+            });
+          });
+        };
+    
+        renderPage(1); // Start rendering from page 1
+      });
+    }
+    
+    else if (ext === 'docx') {
+      fetch(fileUrl)
+        .then(r => r.arrayBuffer())
+        .then(data => {
+          renderAsync(data, container);
+          this.onFileCompleted();
+        });
+    }
+    else if (ext === 'xlsx') {
+      fetch(fileUrl)
+        .then(r => r.arrayBuffer())
+        .then(data => {
+          const wb = XLSX.read(data, { type: 'array' });
+          container.innerHTML = XLSX.utils.sheet_to_html(wb.Sheets[wb.SheetNames[0]]);
+          this.onFileCompleted();
+        });
+    }
+    else if (ext === 'txt') {
+      fetch(fileUrl)
+        .then(r => r.text())
+        .then(text => {
+          container.innerText = text;
+          this.onFileCompleted();
+        });
+    }
+    else if (ext === 'ppt' || ext === 'pptx') {
+      container.innerHTML = `<p>📄 PPT/PPTX preview not directly supported in browser. Convert to PDF for inline view.</p>`;
+      this.onFileCompleted();
+    }
+  }
+
+  private getEmbedUrl(link: string): { url: string; canEmbed: boolean } {
+    if (link.includes('youtube.com/watch')) {
+      const videoId = link.split('v=')[1]?.split('&')[0];
+      return { url: `https://www.youtube.com/embed/${videoId}`, canEmbed: true };
+    }
+    if (link.includes('docs.google.com')) {
+      return { url: link.replace('/edit', '/preview'), canEmbed: true };
+    }
+    if (link.includes('drive.google.com/file/d/')) {
+      const fileId = link.split('/d/')[1]?.split('/')[0];
+      return { url: `https://drive.google.com/file/d/${fileId}/preview`, canEmbed: true };
+    }
+    return { url: link, canEmbed: false };
+  }
+
+  onFileCompleted() {
+    const moduleId = this.highlightedModuleId;
+    if (!moduleId) return;
+  
+    const fileId = this.currentFiles[this.currentFileIndex]?.id || this.currentFileUrl;
+    if (!this.completedFiles[moduleId]) {
+      this.completedFiles[moduleId] = new Set<string>();
+    }
+    if (this.completedFiles[moduleId].has(fileId)) {
+      return;
+    }
+    this.completedFiles[moduleId].add(fileId);
+  
+    let classId = localStorage.getItem('classId');
+    let studentId = localStorage.getItem('id');
+  
+    let payload = {
+      userId: studentId,
+      courseId: classId,
+      moduleId,
+      fileId,
+      totalFiles: this.currentFiles.length,
+      totalNumberOfModules:this.totalNumberOfModules,
+    };
+  
+    this.courseService.saveCourseKitProgress(payload).subscribe((res) => {
+      this.moduleProgress[moduleId] = res.moduleProgress;
+      this.playBackTime = res.courseProgress;
+      this.fileCompleted = true;
+  
+      this.updateModuleProgress(moduleId);
+    });
+  }
+  
+  
+  updateModuleProgress(moduleId: string) {
+    if (!moduleId) return;
+  
+    const totalFiles = this.currentFiles.length || 1;
+    const completed = this.completedFiles[moduleId]?.size || 0;
+    const progress = (completed / totalFiles) * 100;
+  
+    this.moduleProgress[moduleId] = progress;
+  
+    if (progress === 100) {
+      this.markModuleAsCompleted(moduleId);  
+    }
+  }
+  
+  markModuleAsCompleted(moduleId: string) {
+    console.log("moduleId", moduleId)
+    this.completedModules.add(moduleId);
+    this.calculateCourseCompletion();
+  }
+
+  // calculateCourseCompletion() {
+  //   console.log("thissssss====",this.isTest)
+  //   const totalModules = this.coursekitDetails?.length || 1;
+  //   const completedModules = this.completedModules.size;
+
+  //   this.playBackTime = (completedModules / totalModules) * 100;
+  //   this.updateIsTestCondition();
+  //   const issueCertificate = this.studentClassDetails?.classId?.courseId?.issueCertificate;
+  //   this.isTest = issueCertificate === 'test' && this.playBackTime === 100;
+  //   this.isDocument = issueCertificate !== 'document';
+  // }
+  calculateCourseCompletion() {
+    const totalModules = this.coursekitDetails?.length || 0;
+    const completedModules = this.completedModules.size;
+  
+    // Use backend value if available, else fallback to calculated
+    if (this.studentClassDetails?.playbackTime) {
+      this.playBackTime = this.studentClassDetails.playbackTime;
+    } else if (totalModules > 0) {
+      this.playBackTime = (completedModules / totalModules) * 100;
+    }
+  
+    this.updateIsTestCondition();
+    const issueCertificate = this.studentClassDetails?.classId?.courseId?.issueCertificate;
+    this.isTest = issueCertificate === 'test' && this.playBackTime === 100;
+    this.isDocument = issueCertificate !== 'document';
+    //below is the course progress update 
+    const studentId = localStorage.getItem('id');
+  const classId = localStorage.getItem('classId');
+
+  let payload = {
+    classId: this.classId,
+    playbackTime: this.playBackTime,
+    status: this.playBackTime === 100 ? 'completed' : 'approved',
+    studentId: studentId,
+  };
+
+  this.classService.saveApprovedClasses(this.classId, payload).subscribe((res)=>{
+    console.log("res")
+  });
+  }
+  
+
+  loadNextFile() {
+    if (this.currentFileIndex < this.currentFiles.length - 1) {
+      this.currentFileIndex++;
+      this.fileCompleted = false; 
+      this.loadFile(this.currentFileIndex);
+    }
+  }
+  
+  loadPrevFile() {
+    if (this.currentFileIndex > 0) {
+      this.currentFileIndex--;
+      this.fileCompleted = false; 
+      this.loadFile(this.currentFileIndex);
+    }
+  }
+  
+  
+  
+  // private updateIsTestCondition() {
+  //   const issueCertificate = this.studentClassDetails?.classId?.courseId?.issueCertificate;
+  //   const playbackTime = Number(this.studentClassDetails?.playbackTime ?? this.playBackTime ?? 0);
+  //   this.isTest = issueCertificate === 'test' && playbackTime == 100?true:false;
+  //   this.isDocument = issueCertificate !== 'document';
+  // }
+  private updateIsTestCondition() {
+    const issueCertificate = this.studentClassDetails?.classId?.courseId?.issueCertificate;
+    const backendPlaybackTime = Number(this.studentClassDetails?.playbackTime ?? 0);
+    const localPlaybackTime = Number(this.playBackTime ?? 0);
+  
+    // Always prefer backend value
+    const effectivePlaybackTime = backendPlaybackTime > 0 ? backendPlaybackTime : localPlaybackTime;
+  
+    this.isTest = issueCertificate === 'test' && effectivePlaybackTime === 100;
+    this.isDocument = issueCertificate !== 'document';
+  }
+  
+  
+  // downloadModuleFiles(videoId: string, event: MouseEvent) {
+  //   event.stopPropagation(); // prevent triggering playVideos()
+  
+  //   this.courseService.getCoursekitVideoById(videoId).subscribe((data) => {
+  //     const files = data?.data?.files || [];
+  //     console.log("filesssss",files)
+  //     if (!files.length) return;
+  
+  //     files.forEach((file:any) => {
+  //       const type = file.type?.toLowerCase() || '';
+  //       const url = file.url?.replace(/\\/g, '/');
+  
+  //       // If it's third-party → open link instead of download
+  //       if (file.isThirdParty || type === 'thirdparty' || url.includes('youtube.com') || url.includes('docs.google.com')) {
+  //         window.open(url, '_blank');
+  //         return;
+  //       }
+  
+  //       // Otherwise, trigger download
+  //       let downloadUrl = url;
+  //       if (!downloadUrl.startsWith('http')) {
+  //         downloadUrl = `http://localhost:3001${downloadUrl.startsWith('/') ? '' : '/'}${downloadUrl}`;
+  //       }
+  
+  //       const a = document.createElement('a');
+  //       a.href = downloadUrl;
+  //       a.download = file.name || 'file'; // use actual filename if available
+  //       document.body.appendChild(a);
+  //       a.click();
+  //       document.body.removeChild(a);
+  //     });
+  //   });
+  // }
+  downloadModuleFiles(videoId: string, event: MouseEvent) {
+    event.stopPropagation();
+  
+    this.courseService.getCoursekitVideoById(videoId).subscribe(async (data) => {
+      const files = data?.data?.files || [];
+      if (!files.length) return;
+  
+      const zip = new JSZip();
+  
+      for (const file of files) {
+        let url = file.url.replace(/\\/g, '/');
+        if (!url.startsWith('http')) {
+          url = `http://localhost:3001${url.startsWith('/') ? '' : '/'}${url}`;
+        }
+  
+        // Skip third-party links
+        if (file.isThirdParty || url.includes("youtube.com") || url.includes("docs.google.com")) {
+          continue;
+        }
+  
+        const response = await fetch(url);
+        const blob = await response.blob();
+  
+        zip.file(file.name || "file", blob);
+      }
+  
+      const content = await zip.generateAsync({ type: "blob" });
+      FileSaver.saveAs(content, `module-${videoId}.zip`);
+    });
   }
 
   getDiscounts(id: any) {
-    // debugger
     this.courseService.getDiscount(id).subscribe((response) => {
       this.discounts = response.filter(
         (item) => !item.discountTitle.includes('&')
@@ -710,7 +1121,6 @@ export class ViewCourseComponent implements OnDestroy {
   }
 
   submitForVerification(classId: string, action?: string) {
-    // debugger
     var userdata = JSON.parse(localStorage.getItem('currentUser')!);
     let department = JSON.parse(localStorage.getItem('user_data')!).user
       .department;
@@ -1331,7 +1741,9 @@ export class ViewCourseComponent implements OnDestroy {
     this.courseService.getCourseById(id).subscribe((response) => {
       this.courseKitDetails = response?.course_kit;
       this.courseDetails = response;
-      // console.log('this.courseDetails', this.courseDetails);
+      this.totalNumberOfModules=this.courseKitDetails.length;
+      console.log('this.courseKitDetails', this.courseKitDetails);
+      console.log("this.totalNumberOfModules",this.totalNumberOfModules)
       this.discount_Type = this.courseDetails.discount_type;
       // console.log('this.courseDetails', this.discount_Type);
       this.courseKitDetails.map((item: any) => {
@@ -1352,6 +1764,7 @@ export class ViewCourseComponent implements OnDestroy {
         playbackTime: 0,
         kitType: kit.kitType,
         scormKit: kit.scormKit,
+        allowDownload:kit.allowDownload
       }));
 
       this.isScormCourseKit = this.courseKit.some((v) => v.kitType === 'scorm' || v.kitType === 'imscc');

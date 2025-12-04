@@ -1,0 +1,120 @@
+<section class="content">
+    <div class="content-block">
+      <div class="block-header">
+        <app-breadcrumb>
+        </app-breadcrumb>
+      </div>
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="card">
+            <div class="materialTableHeader">
+              <div class="right">
+                <ul class="tbl-export-btn">
+                  <li>
+                    <ul class="header-buttons-left ms-0">
+                      <li class="tbl-search-box">
+                        <label for="search-input"><i class="material-icons search-icon">search</i></label>
+                        <input placeholder="Search" type="text" #filter class="browser-default search-field"
+                          aria-label="Search box" class="browser-default search-field" (keyup)="onKeyup($event)" />
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="body overflow-auto">
+              <div class="responsive_table">
+                <table mat-table matSort [dataSource]="courseProgress" class="mat-cell advance-table">
+                 
+                  <ng-container matColumnDef="Student Name">
+                    <mat-header-cell *matHeaderCellDef>{{commonRoles.STUDENT_ROLE}}</mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                      <span class="mobile-label">{{commonRoles.STUDENT_ROLE}}:</span> <span class="name">{{
+                        row?.studentId.name | capitalizeFirstLetter }}
+                        {{ row?.studentId?.last_name | capitalizeFirstLetter }}</span>
+                    </mat-cell>
+                  </ng-container>
+  
+                 
+                  <ng-container matColumnDef="Course Title">
+                    <mat-header-cell *matHeaderCellDef>Course
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                      <span class="mobile-label">Course:</span>{{ row?.courseId?.title | titlecase }}</mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Department">
+                    <mat-header-cell *matHeaderCellDef>Department</mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                      <span class="mobile-label">Department</span> <span class="name">{{
+                        row?.department | capitalizeFirstLetter }}
+                        </span>
+                    </mat-cell>
+                  </ng-container>
+  
+                  <ng-container matColumnDef="Course start date">
+                    <mat-header-cell *matHeaderCellDef>
+                      Course Start Date
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                      <span class="mobile-label">Course start date:</span>{{ row?.classId?.sessions[0]?.sessionStartDate | date}}
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Course end date">
+                    <mat-header-cell *matHeaderCellDef>
+                      Course End Date
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                      <span class="mobile-label">Course end date:</span>{{ row?.courseEndDate | date}}
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Student enrollment date">
+                    <mat-header-cell *matHeaderCellDef>
+                      Student Enrollment Date
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                      <span class="mobile-label">Student enrollment date:</span>{{ row?.registeredOn | date}}
+                    </mat-cell>
+                  </ng-container>
+
+                 
+
+                  <ng-container matColumnDef="Student completed date">
+                    <mat-header-cell *matHeaderCellDef>
+                      Student Completed Date
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                      <span class="mobile-label">Student completed date:</span>{{ row?.playbackTime === 100 ? (row?.updatedAt | date) : '--' }}
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Progress percentage">
+                    <mat-header-cell *matHeaderCellDef>
+                      Progress Percentage 
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                      <span class="mobile-label">Progress percentage :</span>{{ row?.playbackTime || 0}} %
+                    </mat-cell>
+                  </ng-container>
+  
+                  
+                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumns" [style.cursor]="'pointer'" matRipple>
+                  </mat-row>
+                </table>
+  
+                <div *ngIf="!dataSource?.length" class="text-center py-3 no-data-text">
+                  No data found
+                </div>
+                <mat-paginator class="paginator rounded-5" #paginator [length]="totalItems"
+                  (page)="pageSizeChange($event)" [pageSizeOptions]="pageSizeArr" aria-label="select pagination option">
+                </mat-paginator>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
